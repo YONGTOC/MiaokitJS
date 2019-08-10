@@ -1,8 +1,17 @@
 # MiaokitJS帮助文档
 ## 简介
-MiaokitJS是一个轻量级的，高效的，移动WEB优先的3D数据可视化框架。
-MiaokitJS框架主要由3组API组成。分别是基于WebGL2.0的3D图形库API、基于SVE三维场景可视化编辑器的三维场景交互API、用于定制开发业务逻辑功能的可视化交互API。为了更深入地了解这3组API，需要先了解MiaokitJ框架所设计的一些基本概念。
-MiaokitJS需要运行在支持ES6.0、WebGL2.0、Webassembly特性的浏览器环境中，目前市面上主流的PC和移动端浏览器都支持这些特性。
+MiaokitJS是一个轻量级的，高效的，移动WEB优先的3D数据可视化框架。(尚未可用)
+MiaokitJS框架主要由3部分API组成。分别是基于WebGL2.0的3D图形库API、基于SVE三维场景可视化编辑器的三维场景交互API、用于定制开发业务逻辑功能的可视化交互API。为了更深入地了解这3组API，需要先了解MiaokitJ框架所设计的一些基本概念。
+
+### 运行环境
+MiaokitJS框架需要运行在支持ES6.0、WebGL2.0、Webassembly特性的浏览器环境中，目前主流的PC和移动端浏览器均已支持。
+### 项目地址
+MiaokitJS框架前端Javascript代码目前已经开源在> [GitHub](https://github.com/YONGTOC/MiaokitJS)上，欢迎为该项目做贡献。
+### 项目交流
+商务合作：QQ501347081/QQ501347081  
+技术交流：QQ501347081
+
+
 ## 基本概念
 - 图形库对象
     - GameObject：3D图形对象，一个3D场景由多个GameObject组成；
