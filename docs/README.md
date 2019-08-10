@@ -8,14 +8,12 @@ MiaokitJS是一个轻量级的、移动WEB优先的3D数据可视化框架。框
 ### 运行环境
 MiaokitJS框架需要运行在支持ES6.0、WebGL2.0、Webassembly特性的浏览器环境中，目前主流的PC和移动端浏览器均已支持。
 ### 项目地址
-MiaokitJS框架前端Javascript代码目前已经开源在[GitHub](https://github.com/YONGTOC/MiaokitJS)上，欢迎为该项目做贡献。
+MiaokitJS框架前端JavaScript代码目前已经开源在[GitHub](https://github.com/YONGTOC/MiaokitJS)上，欢迎为该项目做贡献。
 ### 项目交流
 商务合作：QQ501347081/QQ501347081  
 技术交流：QQ501347081
-
-
 ## 基本对象
-通过理解以下列出的各个框架所包含的基本对象，我们将对MiaokitJS框架有个基本理解。
+通过理解以下列出的各个框架所包含的基本对象，我们将对MiaokitJS框架有个基本理解。  
 ### 图形渲染
 - GameObject：3D图形对象，一个3D场景由多个GameObject组成；
 - Mesh：3D网格组件，描述一个3D图形对象的三维空间形态；
@@ -23,7 +21,7 @@ MiaokitJS框架前端Javascript代码目前已经开源在[GitHub](https://githu
 - Transform：3D变换组件，描述一个3D图形对象的空间位置，旋转和大小缩放，以及不同对象间的层级关系；
 - Material：渲染材质，用于控制3D网格渲染效果；
 - Texture2D：贴图，用于设置3D网格的表面纹理；
-- Camera：摄像机组件，观察三维场景的抽象摄像机，用于将视野范围内的三维场景投影到画布上；
+- Camera：摄像机组件，观察三维场景的抽象摄像机，用于将视野范围内的三维场景投影到画布上；  
 ### 场景装载
 - World：世界，虚拟的三维地球、GIS地图；
 - Tile：地图瓦片，[SVE](http://sve.yongtoc.com/)导出的工程数据将被作为一个Tile装载到World中，World可以同时装载多个Tile，为了优化性能和内存开销，需要基于某些机制动态装载卸载Tile；
@@ -32,9 +30,9 @@ MiaokitJS框架前端Javascript代码目前已经开源在[GitHub](https://githu
 - Room：空间区域，一个Layer包含多个Room，通常，在[SVE](http://sve.yongtoc.com/)中，室内用Room指代一个房间、大厅、过道等空间区域；
 - Object3D：三维对象。大楼、楼层、门、窗、幕墙、家具、设备、资产等不同级别的三维对象以及不可见对象都用Object3D表示，区别于GameObject，Object3D包含了UUID和资产属性等信息，这些信息一般关联着数据库记录；
 - RoadPoint：路径节点，[SVE](http://sve.yongtoc.com/)规划路径中的节点对象，通常用于定位和导航规划；
-- Site：位置标记。[SVE](http://sve.yongtoc.com/)规划路径中的位置标记对象，通常用于定位和导航规划；
+- Site：位置标记。[SVE](http://sve.yongtoc.com/)规划路径中的位置标记对象，通常用于定位和导航规划；  
 ### 逻辑交互
-- MiaokitLoader：MiaokitJS框架装载器，使用Miaokit框架的唯一入口，每个框架实例在其独立的闭包环境中运行，即，可以在页面中创建多个框架实例显示多个可视化界面；
+- MiaokitLoader：MiaokitJS框架装载器，使用MiaokitJS框架的唯一入口，每个框架实例在其独立的闭包环境中运行，即，可以在页面中创建多个框架实例显示多个可视化界面；
 - SVE：[SVE](http://sve.yongtoc.com/)场景装载器，用于动态装载卸载瓦片数据，访问当前已装载瓦片的不同层级对象数据，控制不同层级对象的表现和行为；
 - CameraCtrl：MiaokitJS框架提供的默认摄像机控制器，用于在三维场景中漫游查看；
 - Navigator：导航路径生成器，用于搜索两个位置点间的最优路径；
