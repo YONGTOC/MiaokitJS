@@ -75,7 +75,7 @@
     // 设置用户标识。
     MiaokitJS.m_pID = "WWW.YONGTOC.COM";
     // 设置启动界面LOGO。
-    MiaokitJS.m_pLogo = "Logo.png";
+    MiaokitJS.m_pLogo = "logo.png";
     // 设置程序背景色。
     MiaokitJS.m_pBackground = new MiaokitJS.Color(1.0, 1.0, 1.0, 1.0);
     // 设置程序背景图片。
