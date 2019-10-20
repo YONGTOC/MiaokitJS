@@ -1,0 +1,13 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "system",
+    "outDir": "../../../Bin/js/Miaokit",
+    "outFile": "../../../Bin/js/Miaokit/Miaokit.js",
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": true,
+    "sourceMap": false,
+    "target": "es6"
+  }
+}
