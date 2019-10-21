@@ -2,8 +2,8 @@
   "compileOnSave": true,
   "compilerOptions": {
     "module": "system",
-    "outDir": "../../../Bin/js/Miaokit",
-    "outFile": "../../../Bin/js/Miaokit/Miaokit.js",
+    "outDir": "../examples",
+    "outFile": "../examples/miaokit.js",
     "noImplicitAny": false,
     "noEmitOnError": true,
     "removeComments": true,
