@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath></OutputPath>
+  </PropertyGroup>
+  
+  <Import Project="..\Miaokit\MiaokitCS\MiaokitCS.projitems" Label="Shared" />
+  
+  <ItemGroup>
+    <Compile Remove="Assets\**" />
+    <Compile Remove="Packages\**" />
+    <Compile Remove="Plugins\**" />
+    <Compile Remove="ProjectSettings\**" />
+    <EmbeddedResource Remove="Assets\**" />
+    <EmbeddedResource Remove="Packages\**" />
+    <EmbeddedResource Remove="Plugins\**" />
+    <EmbeddedResource Remove="ProjectSettings\**" />
+    <None Remove="Assets\**" />
+    <None Remove="Packages\**" />
+    <None Remove="Plugins\**" />
+    <None Remove="ProjectSettings\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="UnityEngine">
+      <HintPath>D:\Program Files (x86)\Unity\Unity 2019.3.0b1\Editor\Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /y &quot;$(OutDir)MiaokitU3D.dll&quot; &quot;$(OutDir)..\..\..\Assets\Scripts&quot;" />
+  </Target>
+
+</Project>
