@@ -14,8 +14,8 @@ MiaokitJS框架需要运行在支持ES6.0、WebGL2.0、Webassembly特性的浏�
 MiaokitJS框架前端JavaScript代码目前已经开源在[GitHub](https://github.com/YONGTOC/MiaokitJS)上，欢迎为该项目做贡献。
   
 ### 项目交流
-商务合作：QQ501347081/QQ501347081  
-技术交流：QQ501347081
+商务合作：400-808-3066 
+技术交流QQ群：333184682
   
 ## 基本对象
 通过理解以下列出的各个框架所包含的基本对象，我们将对MiaokitJS框架有个基本理解。  
