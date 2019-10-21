@@ -15,17 +15,23 @@
   
   <ItemGroup>
     <Compile Remove="Assets\**" />
+    <Compile Remove="Library\**" />
     <Compile Remove="Packages\**" />
     <Compile Remove="Plugins\**" />
     <Compile Remove="ProjectSettings\**" />
+    <Compile Remove="Temp\**" />
     <EmbeddedResource Remove="Assets\**" />
+    <EmbeddedResource Remove="Library\**" />
     <EmbeddedResource Remove="Packages\**" />
     <EmbeddedResource Remove="Plugins\**" />
     <EmbeddedResource Remove="ProjectSettings\**" />
+    <EmbeddedResource Remove="Temp\**" />
     <None Remove="Assets\**" />
+    <None Remove="Library\**" />
     <None Remove="Packages\**" />
     <None Remove="Plugins\**" />
     <None Remove="ProjectSettings\**" />
+    <None Remove="Temp\**" />
   </ItemGroup>
 
   <ItemGroup>
