@@ -5,6 +5,8 @@ Github: https://github.com/YONGTOC/MiaokitJS
 
 Doc: https://yongtoc.github.io/MiaokitJS/#/
 
+![图片](./docs/素材/整体介绍1.jpg)
+
 ## 文件夹结构
 * ./doc                  : 帮助文档文件夹
 * ./unity                : Unity开发样例工程文件夹
