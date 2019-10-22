@@ -635,6 +635,7 @@ class SVE {
         this.m_pCamera = MiaokitJS.Miaokit.camera;
         this.m_pCameraCtrl = new MiaokitJS.SVECLASS.CameraCtrl(this.m_pCamera);
         this.m_pPicker = new MiaokitJS.SVECLASS.EntityPicker();
+        this.m_pGis = MiaokitJS.Miaokit.gis;
         this.RegisterEvent(this.m_pCanvas2D, MiaokitJS.Miaokit.cameraCtrl);
         this.InitProject();
     }
@@ -791,6 +792,9 @@ class SVE {
                         if (2 !== nIndex++) {
                             continue;
                         }
+                        let pObject = pScene.object3D;
+                        pObject.transform.localPosition = { x: 0.0, y: 164.0, z: 0.0 };
+                        pObject.transform.euler = { x: 1.0, y: -42 + 180.0, z: 1.0 };
                         let nHeight = 0.0;
                         console.log("场景：", pScene.id);
                         for (let pLayer of pScene.layers) {
@@ -807,16 +811,15 @@ class SVE {
             }
         });
         this.m_pCameraCtrl.Jump(MiaokitJS.SVECLASS.CTRL_MODE.PANORAMA, {
-            m_nLng: 0,
-            m_nLat: 0,
+            m_nLng: 110.326477,
+            m_nLat: 25.247935,
             m_mTarget: { x: 0.0, y: 0.0, z: 0.0 },
-            m_nDistance: 128.0,
+            m_nDistance: 1280.0,
             m_nPitch: 60.0,
             m_nYaw: 0
         });
     }
     InitGis() {
-        this.m_pGis = MiaokitJS.Miaokit.gis;
         this.m_pCameraCtrl.Jump(MiaokitJS.SVECLASS.CTRL_MODE.REMOTE, {
             m_nLng: 110.30,
             m_nLat: 25.22,
