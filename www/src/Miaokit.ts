@@ -45,7 +45,7 @@ class SVE {
 
         this.m_pCameraCtrl.Update();
 
-        if (this.m_pGis) {
+        if (this.m_pGis && !this.m_pPicker.indoor) {
             this.m_pGis.Update(this.m_pCameraCtrl.lng * (Math.PI / 180), this.m_pCameraCtrl.lat * (Math.PI / 180), this.m_pCameraCtrl.height);
         }
     }
@@ -260,6 +260,52 @@ class SVE {
             }
         });
 
+        /// 注册添加一个SVE工程到GIS中，实现动态管理
+        this.m_pGis.AddSvetile({
+            m_nID: 1,
+            m_nFlags: 0,
+            m_pUrl: "data/upload/admin/project/20190807/5d4a310351522.txt",
+            m_mLngLat: { x: 110.326814, y: 25.248106 },
+            m_mSize: { x: 1000.0, y: 1000.0 },
+            OnActive: function (pTile, bActive) {
+                if (bActive) {
+                    pTile.m_mOffet = { x: -10.0, y: 164.0, z: -40.0 };
+                    pTile.m_mEuler = { x: 0.0, y: -42, z: 0.0 };
+
+                    /// 遍历当前瓦片所有场景，打印场景ID
+                    for (let pScene of pTile.scenes) {
+                        if (pTile.m_mOffet && pTile.m_mEuler) {
+                            let pObject = pScene.object3D;
+                            pObject.transform.localPosition = pTile.m_mOffet;
+                            pObject.transform.euler = pTile.m_mEuler;
+                        }  
+
+                        let nHeight = 0.0;
+                        console.log("场景：", pScene.id);
+
+                        /// 遍历当前场景所有楼层，打印楼层ID
+                        for (let pLayer of pScene.layers) {
+                            let pObject = pLayer.object3D;
+                            pObject.transform.localPosition = { x: 0.0, y: nHeight, z: 0.0 }; nHeight += 9.0;
+                            console.log("楼层：", pLayer, pObject, nHeight);
+                            pLayer._Draw();
+
+                            if (10.0 < nHeight) {
+                                break;
+                            }
+                            //for (let pSite of pLayer.sites) {
+                            //    console.log("位置点：", pSite.id, pSite.type, pSite.number, pSite.scene.id, pSite.layer.id, pSite.position);
+                            //}
+                        }
+                        break;
+                    }
+                }
+                else {
+                    console.log("隐藏显示");
+                }
+            }
+        });
+
         this.m_pCameraCtrl.Jump(MiaokitJS.SVECLASS.CTRL_MODE.PANORAMA, {
             m_nLng: 110.326477,
             m_nLat: 25.247935,
@@ -270,56 +316,6 @@ class SVE {
         });
     }
 
-    /// 初始化GIS对象。
-    private InitGis(): void {
-        
-
-        this.m_pCameraCtrl.Jump(MiaokitJS.SVECLASS.CTRL_MODE.REMOTE, {
-            m_nLng: 110.30,
-            m_nLat: 25.22,
-            m_nHeight: 6378137.0
-        });
-
-        let pSvetileDesc = {
-            m_nID: 1,
-            m_nFlags: 0,
-            m_pUrl: "data/upload/admin/project/20191018/5da9159b2005e.txt",//,"data/upload/admin/project/20191016/5da68216b3b7c.txt",//"data/upload/admin/project/20190807/5d4a310351522.txt",
-            m_mLngLat: { x: 110.326814, y: 25.248106 },
-            m_mSize: { x: 1000.0, y: 1000.0 },
-            OnActive: this.OnActive
-        };
-
-        this.m_pGis.AddSvetile(pSvetileDesc);
-    }
-
-    /// 响应SVE瓦片激活。
-    private OnActive(pTile, bActive): void {
-        console.log("OnActive:", pTile, bActive);
-
-        if (bActive) {
-            /// 遍历当前瓦片所有场景，打印场景ID
-            for (let pScene of pTile.scenes) {
-                let pObject = pScene.object3D;
-                pObject.transform.localPosition = { x: 0.0, y: 164.0, z: 0.0 };
-                pObject.transform.euler = { x: 1.0, y: -42 + 180.0, z: 1.0 };
-
-                let nHeight = 0.0;
-                console.log("场景：", pScene.id);
-
-                /// 遍历当前场景所有楼层，打印楼层ID
-                for (let pLayer of pScene.layers) {
-                    let pObject = pLayer.object3D;
-                    pObject.transform.localPosition = { x: 0.0, y: nHeight, z: 0.0 }; nHeight += 9.0;
-                    console.log("楼层：", pLayer, pObject, nHeight);
-                    pLayer._Draw();
-                    //for (let pSite of pLayer.sites) {
-                    //    console.log("位置点：", pSite.id, pSite.type, pSite.number, pSite.scene.id, pSite.layer.id, pSite.position);
-                    //}
-                }
-                break;
-            }
-        }
-    }
 
     /// 画布容器。
     public m_pContainer: any = null;

@@ -236,6 +236,12 @@ class EntityPicker {
 
     /// 激活场景。
     public ActiveScene(pScene): void {
+        if (true/*pTile.m_mOffet && pTile.m_mEuler*/) {
+            let pObject = pScene.object3D;
+            pObject.transform.localPosition = { x: 0.0, y: 164.0, z: 0.0 };
+            pObject.transform.euler = { x: 1.0, y: -42 + 180.0, z: 1.0 };
+        } 
+
         let nHeight = 0.0;
         console.log("场景：", pScene.id);
 
@@ -267,6 +273,11 @@ class EntityPicker {
         }
 
         return null;
+    }
+
+    /// 当前是否处于室内。
+    public get indoor() {
+        return 1 < this.m_aSceneStack.length;
     }
 
 
