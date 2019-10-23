@@ -651,9 +651,6 @@ class SVE {
         this.m_nTick++;
         this.Draw2D();
         this.m_pCameraCtrl.Update();
-        if (this.m_pGis && !this.m_pPicker.indoor) {
-            this.m_pGis.Update(this.m_pCameraCtrl.lng * (Math.PI / 180), this.m_pCameraCtrl.lat * (Math.PI / 180), this.m_pCameraCtrl.height);
-        }
     }
     Draw2D() {
         this.m_pCanvasCtx2D.clearRect(0, 0, this.m_pCanvas2D.clientWidth, this.m_pCanvas2D.clientHeight);
@@ -724,6 +721,14 @@ class SVE {
                             pThis.m_pCameraCtrl.Fly(MiaokitJS.SVECLASS.CTRL_MODE.PANORAMA, pSelect.m_pViewState);
                         }
                     }
+                    if (pThis["pObject2"]) {
+                        pThis["pObject2"].Destory();
+                        pThis["pObject2"] = null;
+                    }
+                    else if (pThis["pObject"]) {
+                        pThis["pObject"].Destory();
+                        pThis["pObject"] = null;
+                    }
                 }
                 else {
                 }
@@ -776,6 +781,20 @@ class SVE {
     }
     InitProject() {
         let pThis = this;
+        pThis.m_pCameraCtrl.Jump(MiaokitJS.SVECLASS.CTRL_MODE.PANORAMA, {
+            m_nLng: 110.326477,
+            m_nLat: 25.247935,
+            m_mTarget: { x: 0.0, y: 0.0, z: 0.0 },
+            m_nDistance: 1280.0,
+            m_nPitch: 60.0,
+            m_nYaw: 0
+        });
+        MiaokitJS.LoadPrefab("./examples/data/prefab.assetbundle.bin", function (pPrefab) {
+            pThis.pObject = pPrefab.Instantiate();
+            pThis.pObject2 = new MiaokitJS.GameObject();
+            console.log(pThis.pObject, pThis.pObject2);
+        });
+        return;
         MiaokitJS["SVE"].OnGUI = function (pCanvas, pCanvasCtx) {
             if (!pThis.m_pTile) {
                 let pMsg = "正在加载工程文件: " + (pThis.m_nTick ? pThis.m_nTick : 0.0).toFixed(2);
@@ -818,7 +837,7 @@ class SVE {
                 });
             }
         });
-        this.m_pGis.AddSvetile({
+        pThis.m_pGis.AddSvetile({
             m_nID: 1,
             m_nFlags: 0,
             m_pUrl: "data/upload/admin/project/20190807/5d4a310351522.txt",
@@ -853,14 +872,6 @@ class SVE {
                     console.log("隐藏显示");
                 }
             }
-        });
-        this.m_pCameraCtrl.Jump(MiaokitJS.SVECLASS.CTRL_MODE.PANORAMA, {
-            m_nLng: 110.326477,
-            m_nLat: 25.247935,
-            m_mTarget: { x: 0.0, y: 0.0, z: 0.0 },
-            m_nDistance: 1280.0,
-            m_nPitch: 60.0,
-            m_nYaw: 0
         });
     }
 }
