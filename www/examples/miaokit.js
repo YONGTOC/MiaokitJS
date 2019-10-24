@@ -643,7 +643,6 @@ class SVE {
         this.m_pCamera = MiaokitJS.Miaokit.camera;
         this.m_pCameraCtrl = new MiaokitJS.SVECLASS.CameraCtrl(this.m_pCamera);
         this.m_pPicker = new MiaokitJS.SVECLASS.EntityPicker();
-        this.m_pGis = MiaokitJS.Miaokit.gis;
         this.RegisterEvent(this.m_pCanvas2D, MiaokitJS.Miaokit.cameraCtrl);
         this.InitProject();
     }
@@ -658,6 +657,15 @@ class SVE {
     Draw2D() {
         this.m_pCanvasCtx2D.clearRect(0, 0, this.m_pCanvas2D.clientWidth, this.m_pCanvas2D.clientHeight);
         this.Analyze();
+        if (0 < MiaokitJS.Miaokit.progress) {
+            let pMsg = "正在执行任务: " + MiaokitJS.Miaokit.progress;
+            this.m_pCanvasCtx2D.font = "20px Microsoft YaHei";
+            this.m_pCanvasCtx2D.strokeStyle = "black";
+            this.m_pCanvasCtx2D.lineWidth = 2;
+            this.m_pCanvasCtx2D.fillStyle = "#FFFFFF";
+            this.m_pCanvasCtx2D.strokeText(pMsg, this.m_pCanvas2D.clientWidth / 2 - 20.0, this.m_pCanvas2D.clientHeight / 2);
+            this.m_pCanvasCtx2D.fillText(pMsg, this.m_pCanvas2D.clientWidth / 2 - 20.0, this.m_pCanvas2D.clientHeight / 2);
+        }
         if (this.OnGUI) {
             this.OnGUI(this.m_pCanvas2D, this.m_pCanvasCtx2D);
         }
@@ -787,9 +795,9 @@ class SVE {
         pThis.m_pCameraCtrl.Jump(MiaokitJS.SVECLASS.CTRL_MODE.PANORAMA, {
             m_nLng: 110.326477,
             m_nLat: 25.247935,
-            m_mTarget: { x: 0.0, y: 0.0, z: 0.0 },
-            m_nDistance: 1280.0,
-            m_nPitch: 60.0,
+            m_mTarget: { x: 0.0, y: 164.0, z: 0.0 },
+            m_nDistance: 600.0,
+            m_nPitch: 30.0,
             m_nYaw: 0
         });
         MiaokitJS["SVE"].OnGUI = function (pCanvas, pCanvasCtx) {
@@ -834,6 +842,8 @@ class SVE {
                 });
             }
         });
+        this.m_pGis = MiaokitJS.Miaokit.gis;
+        return;
         pThis.m_pGis.AddSvetile({
             m_nID: 1,
             m_nFlags: 0,
