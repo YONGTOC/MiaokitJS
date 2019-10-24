@@ -651,6 +651,9 @@ class SVE {
         this.m_nTick++;
         this.Draw2D();
         this.m_pCameraCtrl.Update();
+        if (this.m_pGis && !this.m_pPicker.indoor) {
+            this.m_pGis.Update(this.m_pCameraCtrl.lng * (Math.PI / 180), this.m_pCameraCtrl.lat * (Math.PI / 180), this.m_pCameraCtrl.height);
+        }
     }
     Draw2D() {
         this.m_pCanvasCtx2D.clearRect(0, 0, this.m_pCanvas2D.clientWidth, this.m_pCanvas2D.clientHeight);
@@ -789,12 +792,6 @@ class SVE {
             m_nPitch: 60.0,
             m_nYaw: 0
         });
-        MiaokitJS.LoadPrefab("./examples/data/prefab.assetbundle.bin", function (pPrefab) {
-            pThis.pObject = pPrefab.Instantiate();
-            pThis.pObject2 = new MiaokitJS.GameObject();
-            console.log(pThis.pObject, pThis.pObject2);
-        });
-        return;
         MiaokitJS["SVE"].OnGUI = function (pCanvas, pCanvasCtx) {
             if (!pThis.m_pTile) {
                 let pMsg = "正在加载工程文件: " + (pThis.m_nTick ? pThis.m_nTick : 0.0).toFixed(2);

@@ -45,9 +45,9 @@ class SVE {
 
         this.m_pCameraCtrl.Update();
 
-        //if (this.m_pGis && !this.m_pPicker.indoor) {
-        //    this.m_pGis.Update(this.m_pCameraCtrl.lng * (Math.PI / 180), this.m_pCameraCtrl.lat * (Math.PI / 180), this.m_pCameraCtrl.height);
-        //}
+        if (this.m_pGis && !this.m_pPicker.indoor) {
+            this.m_pGis.Update(this.m_pCameraCtrl.lng * (Math.PI / 180), this.m_pCameraCtrl.lat * (Math.PI / 180), this.m_pCameraCtrl.height);
+        }
     }
 
     /// 绘制2D画布。
@@ -222,14 +222,14 @@ class SVE {
         });
 
         // 4个对象
-        MiaokitJS.LoadPrefab("./examples/data/prefab.assetbundle.bin", function (pPrefab) {
-            pThis.pObject = pPrefab.Instantiate();
-            pThis.pObject2 = new MiaokitJS.GameObject();
+        //MiaokitJS.LoadPrefab("./examples/data/prefab.assetbundle.bin", function (pPrefab) {
+        //    pThis.pObject = pPrefab.Instantiate();
+        //    pThis.pObject2 = new MiaokitJS.GameObject();
 
-            console.log(pThis.pObject, pThis.pObject2);
-        });
+        //    console.log(pThis.pObject, pThis.pObject2);
+        //});
 
-        return;
+        //return;
 
         // 加载进度显示
         MiaokitJS["SVE"].OnGUI = function (pCanvas, pCanvasCtx) {
