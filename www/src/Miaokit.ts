@@ -230,6 +230,17 @@ class SVE {
             m_nYaw: 0
         });
 
+
+        //let pDioramas = new MiaokitJS.Dioramas3MX("./examples/data/Production_8.3mx");
+
+        //MiaokitJS["Request"]("GET", "arraybuffer", "./examples/data/Tile_p001_p001_L20_0010t7.bin", null, null, function (aData) {
+        //    let pDioramas = new MiaokitJS.Dioramas3MX();
+        //    console.log(pDioramas);
+        //    pDioramas.Parse("./examples/data/Tile_p001_p001_L20_0010t7.bin", aData);
+        //});
+
+        //return;
+
         // 4个对象
         //MiaokitJS.LoadPrefab("./examples/data/prefab.assetbundle.bin", function (pPrefab) {
         //    pThis.pObject = pPrefab.Instantiate();
@@ -295,12 +306,9 @@ class SVE {
             }
         });
 
-        
-
         // 获取GIS对象
         this.m_pGis = MiaokitJS.Miaokit.gis;
-        return;
-
+        
         /// 注册添加一个SVE工程到GIS中，实现动态管理
         pThis.m_pGis.AddSvetile({
             m_nID: 1,

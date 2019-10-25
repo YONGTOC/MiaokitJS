@@ -843,7 +843,6 @@ class SVE {
             }
         });
         this.m_pGis = MiaokitJS.Miaokit.gis;
-        return;
         pThis.m_pGis.AddSvetile({
             m_nID: 1,
             m_nFlags: 0,
