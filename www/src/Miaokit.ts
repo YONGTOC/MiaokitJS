@@ -43,6 +43,7 @@ class SVE {
         this.Draw2D();
 
         this.m_pCameraCtrl.Update();
+        this["m_pDioramas"].Update();
 
         if (this.m_pGis && !this.m_pPicker.indoor) {
             this.m_pGis.Update(this.m_pCameraCtrl.lng * (Math.PI / 180), this.m_pCameraCtrl.lat * (Math.PI / 180), this.m_pCameraCtrl.height);
@@ -230,8 +231,11 @@ class SVE {
             m_nYaw: 0
         });
 
-
-        //let pDioramas = new MiaokitJS.Dioramas3MX("./examples/data/Production_8.3mx");
+        let pPath = "http://120.76.211.50:8081/data/upload/PictureModel/PictureModel2/Production_8.3mx";
+        let pDioramas = new MiaokitJS.Dioramas3MX(pPath);
+        pThis.m_pDioramas = pDioramas;
+        
+        return;
 
         //MiaokitJS["Request"]("GET", "arraybuffer", "./examples/data/Tile_p001_p001_L20_0010t7.bin", null, null, function (aData) {
         //    let pDioramas = new MiaokitJS.Dioramas3MX();
@@ -387,12 +391,3 @@ class SVE {
 MiaokitJS.SVECLASS = MiaokitJS.SVECLASS || {};
 MiaokitJS.SVECLASS.SVE = SVE;
 MiaokitJS.SVE = new SVE();
-
-// UNITY:4/C++:9/JS:3  // 5个对象
-// UNITY:3/C++:8/JS:2  // 4个对象
-// UNITY:-1/C++:7/JS:1 // 0个对象
-
-// UNITY:3/C++:4/JS:1  // 0个对象
-// UNITY:8/C++:9/JS:3  // 1+4个对象
-// UNITY:7/C++:8/JS:2  // 0+4个对象
-// UNITY:3/C++:4/JS:1  // 0+0个对象

@@ -650,6 +650,7 @@ class SVE {
         this.m_nTick++;
         this.Draw2D();
         this.m_pCameraCtrl.Update();
+        this["m_pDioramas"].Update();
         if (this.m_pGis && !this.m_pPicker.indoor) {
             this.m_pGis.Update(this.m_pCameraCtrl.lng * (Math.PI / 180), this.m_pCameraCtrl.lat * (Math.PI / 180), this.m_pCameraCtrl.height);
         }
@@ -800,6 +801,10 @@ class SVE {
             m_nPitch: 30.0,
             m_nYaw: 0
         });
+        let pPath = "http://120.76.211.50:8081/data/upload/PictureModel/PictureModel2/Production_8.3mx";
+        let pDioramas = new MiaokitJS.Dioramas3MX(pPath);
+        pThis.m_pDioramas = pDioramas;
+        return;
         MiaokitJS["SVE"].OnGUI = function (pCanvas, pCanvasCtx) {
             if (!pThis.m_pTile) {
                 let pMsg = "正在加载工程文件: " + (pThis.m_nTick ? pThis.m_nTick : 0.0).toFixed(2);
