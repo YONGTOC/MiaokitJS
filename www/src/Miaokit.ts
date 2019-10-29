@@ -43,7 +43,10 @@ class SVE {
         this.Draw2D();
 
         this.m_pCameraCtrl.Update();
-        this["m_pDioramas"].Update();
+
+        if (this["m_pDioramas"]) {
+            this["m_pDioramas"].Update();
+        }
 
         if (this.m_pGis && !this.m_pPicker.indoor) {
             this.m_pGis.Update(this.m_pCameraCtrl.lng * (Math.PI / 180), this.m_pCameraCtrl.lat * (Math.PI / 180), this.m_pCameraCtrl.height);
@@ -225,17 +228,17 @@ class SVE {
         pThis.m_pCameraCtrl.Jump(MiaokitJS.SVECLASS.CTRL_MODE.PANORAMA, {
             m_nLng: 110.326477,
             m_nLat: 25.247935,
-            m_mTarget: { x: 0.0, y: 164.0, z: 0.0 },
-            m_nDistance: 600.0,
+            m_mTarget: { x: 0.0, y: -481.0, z: 0.0 },
+            m_nDistance: 2000.0,
             m_nPitch: 30.0,
             m_nYaw: 0
         });
 
-        let pPath = "http://120.76.211.50:8081/data/upload/PictureModel/PictureModel2/Production_8.3mx";
-        let pDioramas = new MiaokitJS.Dioramas3MX(pPath);
-        pThis.m_pDioramas = pDioramas;
+        //let pPath = "./examples/data/某镇政府/Production_8.3mx";
+        //let pDioramas = new MiaokitJS.Dioramas3MX(pPath);
+        //pThis.m_pDioramas = pDioramas;
         
-        return;
+        //return;
 
         //MiaokitJS["Request"]("GET", "arraybuffer", "./examples/data/Tile_p001_p001_L20_0010t7.bin", null, null, function (aData) {
         //    let pDioramas = new MiaokitJS.Dioramas3MX();
@@ -267,48 +270,46 @@ class SVE {
             }
         };
 
-        // 输入账号、密码、工程名打开工程
-        MiaokitJS["SVE"].GetTileInfo("18593230989", "18593230989", "贴图尺寸异常", function (pTileInfo) {
-            if (pTileInfo) {
-                pTileInfo["m_pPath"] = "http://sve.yongtoc.com:80/data/upload/admin/project/20191018/5da9159b2005e.txt";//"http://sve.yongtoc.com:80/data/upload/admin/project/20190923/1733039104.txt";//"http://sve.yongtoc.com/data/upload/admin/project/20190807/5d4a310351522.txt";//"http://sve.yongtoc.com/data/upload/admin/project/20191016/5da68216b3b7c.txt";//
-                MiaokitJS["Request"]("GET", "arraybuffer", pTileInfo["m_pPath"], null,
-                    function (nRate) {
-                        pThis.m_nTick = nRate;
-                    },
-                    function (aData) {
-                        pTileInfo["m_pData"] = aData;
-                        pTileInfo["m_pTile"] = MiaokitJS["Miaokit"]["LoadTile"](aData);
+        /// 加载工程路径
+        MiaokitJS["Request"]("GET", "arraybuffer", "./examples/data/5db799d41b740.txt", null,
+            function (nRate) {
+                pThis.m_nTick = nRate;
+            },
+            function (aData) {
+                let pTileInfo = {
+                    m_pData: aData,
+                    m_pTile: MiaokitJS["Miaokit"]["LoadTile"](aData)
+                };
 
-                        let nIndex = 0;
+                let nIndex = 0;
 
-                        /// 遍历当前瓦片所有场景，打印场景ID
-                        for (let pScene of pTileInfo["m_pTile"].scenes) {
-                            if (2 !== nIndex++) {
-                                continue;
-                            }
+                /// 遍历当前瓦片所有场景，打印场景ID
+                for (let pScene of pTileInfo["m_pTile"].scenes) {
+                    if (1 !== nIndex++) {
+                        continue;
+                    }
 
-                            let pObject = pScene.object3D;
-                            pObject.transform.localPosition = { x: 0.0, y: 164.0, z: 0.0 };
-                            pObject.transform.euler = { x: 1.0, y: -42 + 180.0, z: 1.0 };
+                    let pObject = pScene.object3D;
+                    pObject.transform.localPosition = { x: 0.0, y: 164.0, z: 0.0 };
+                    pObject.transform.euler = { x: 1.0, y: -42 + 180.0, z: 1.0 };
 
-                            let nHeight = 0.0;
-                            console.log("场景：", pScene.id);
+                    let nHeight = 0.0;
+                    console.log("场景：", pScene.id);
 
-                            /// 遍历当前场景所有楼层，打印楼层ID
-                            for (let pLayer of pScene.layers) {
-                                let pObject = pLayer.object3D;
-                                pObject.transform.localPosition = { x: 0.0, y: nHeight, z: 0.0 }; nHeight += 9.0;
-                                console.log("楼层：", pLayer, pObject, nHeight);
-                                pLayer._Draw();
-                            }
+                    /// 遍历当前场景所有楼层，打印楼层ID
+                    for (let pLayer of pScene.layers) {
+                        let pObject = pLayer.object3D;
+                        pObject.transform.localPosition = { x: 0.0, y: nHeight, z: 0.0 }; nHeight += 9.0;
+                        console.log("楼层：", pLayer, pObject, nHeight);
+                        pLayer._Draw();
+                    }
 
-                            break;
-                        }
+                    break;
+                }
 
-                        pThis.m_pTile = pTileInfo["m_pTile"];
-                    });
-            }
-        });
+                pThis.m_pTile = pTileInfo["m_pTile"];
+            });
+        return;
 
         // 获取GIS对象
         this.m_pGis = MiaokitJS.Miaokit.gis;

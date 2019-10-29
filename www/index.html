@@ -7,13 +7,16 @@
     <script src="js/Miaokit/MiaokitLoader.min.js"></script>
     <script>
         let MiaokitJS = new MiaokitModule();
+        //MiaokitJS["Server"] = "http://sve.yongtoc.com/";
+        MiaokitJS["Server"] = "./examples/";
         MiaokitJS.Preload();
 
         window.oncontextmenu = function (e) {
             e.preventDefault();
         };
     </script>
-
+    <script src="js/ctm/lzma.js"></script>
+    <script src="js/ctm/ctm.js"></script>
     <script src="examples/miaokit.js"></script>
     <script src="examples/examples.js"></script>
 </head>
