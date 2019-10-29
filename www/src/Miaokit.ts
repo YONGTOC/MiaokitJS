@@ -234,6 +234,15 @@ class SVE {
             m_nYaw: 0
         });
 
+        /// 新功能测试代码
+        if (false) {
+            let pPath = "./examples/temp/某镇政府/Production_8.3mx";
+            let pDioramas = new MiaokitJS.Dioramas3MX(pPath);
+            pThis.m_pDioramas = pDioramas;
+
+            return;
+        }
+
         // 加载进度显示
         MiaokitJS["SVE"].OnGUI = function (pCanvas, pCanvasCtx) {
             if (!pThis.m_pTile) {

@@ -704,6 +704,7 @@ GameObject:
   - component: {fileID: 1742944002}
   - component: {fileID: 1742944001}
   - component: {fileID: 1742944006}
+  - component: {fileID: 1742944007}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -816,3 +817,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 083a053539956fc4abd26c319ecfb970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!64 &1742944007
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742944000}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}

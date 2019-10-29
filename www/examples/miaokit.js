@@ -803,6 +803,12 @@ class SVE {
             m_nPitch: 30.0,
             m_nYaw: 0
         });
+        if (false) {
+            let pPath = "./examples/temp/某镇政府/Production_8.3mx";
+            let pDioramas = new MiaokitJS.Dioramas3MX(pPath);
+            pThis.m_pDioramas = pDioramas;
+            return;
+        }
         MiaokitJS["SVE"].OnGUI = function (pCanvas, pCanvasCtx) {
             if (!pThis.m_pTile) {
                 let pMsg = "正在加载工程文件: " + (pThis.m_nTick ? pThis.m_nTick : 0.0).toFixed(2);
