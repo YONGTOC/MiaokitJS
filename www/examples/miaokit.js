@@ -814,16 +814,13 @@ class SVE {
                 pCanvasCtx.fillText(pMsg, pCanvas.clientWidth / 2 - 20.0, pCanvas.clientHeight / 2);
             }
         };
-        MiaokitJS["Request"]("GET", "arraybuffer", "./examples/data/5db799d41b740.txt", null, function (nRate) {
+        MiaokitJS["Request"]("GET", "arraybuffer", "http://sve.yongtoc.com:80/data/upload/admin/project/20191018/5da9159b2005e.txt", null, function (nRate) {
             pThis.m_nTick = nRate;
         }, function (aData) {
-            let pTileInfo = {
-                m_pData: aData,
-                m_pTile: MiaokitJS["Miaokit"]["LoadTile"](aData)
-            };
+            let pTile = MiaokitJS["Miaokit"]["LoadTile"](aData);
             let nIndex = 0;
-            for (let pScene of pTileInfo["m_pTile"].scenes) {
-                if (1 !== nIndex++) {
+            for (let pScene of pTile.scenes) {
+                if (2 !== nIndex++) {
                     continue;
                 }
                 let pObject = pScene.object3D;
@@ -840,9 +837,8 @@ class SVE {
                 }
                 break;
             }
-            pThis.m_pTile = pTileInfo["m_pTile"];
+            pThis.m_pTile = pTile;
         });
-        return;
         this.m_pGis = MiaokitJS.Miaokit.gis;
         pThis.m_pGis.AddSvetile({
             m_nID: 1,

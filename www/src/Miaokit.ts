@@ -234,29 +234,6 @@ class SVE {
             m_nYaw: 0
         });
 
-        //let pPath = "./examples/data/某镇政府/Production_8.3mx";
-        //let pDioramas = new MiaokitJS.Dioramas3MX(pPath);
-        //pThis.m_pDioramas = pDioramas;
-        
-        //return;
-
-        //MiaokitJS["Request"]("GET", "arraybuffer", "./examples/data/Tile_p001_p001_L20_0010t7.bin", null, null, function (aData) {
-        //    let pDioramas = new MiaokitJS.Dioramas3MX();
-        //    console.log(pDioramas);
-        //    pDioramas.Parse("./examples/data/Tile_p001_p001_L20_0010t7.bin", aData);
-        //});
-
-        //return;
-
-        // 4个对象
-        //MiaokitJS.LoadPrefab("./examples/data/prefab.assetbundle.bin", function (pPrefab) {
-        //    pThis.pObject = pPrefab.Instantiate();
-        //    pThis.pObject2 = new MiaokitJS.GameObject();
-
-        //    console.log(pThis.pObject, pThis.pObject2);
-        //});
-        //return;
-
         // 加载进度显示
         MiaokitJS["SVE"].OnGUI = function (pCanvas, pCanvasCtx) {
             if (!pThis.m_pTile) {
@@ -271,21 +248,17 @@ class SVE {
         };
 
         /// 加载工程路径
-        MiaokitJS["Request"]("GET", "arraybuffer", "./examples/data/5db799d41b740.txt", null,
+        MiaokitJS["Request"]("GET", "arraybuffer", "http://sve.yongtoc.com:80/data/upload/admin/project/20191018/5da9159b2005e.txt", null,
             function (nRate) {
                 pThis.m_nTick = nRate;
             },
             function (aData) {
-                let pTileInfo = {
-                    m_pData: aData,
-                    m_pTile: MiaokitJS["Miaokit"]["LoadTile"](aData)
-                };
-
+                let pTile = MiaokitJS["Miaokit"]["LoadTile"](aData)
                 let nIndex = 0;
 
                 /// 遍历当前瓦片所有场景，打印场景ID
-                for (let pScene of pTileInfo["m_pTile"].scenes) {
-                    if (1 !== nIndex++) {
+                for (let pScene of pTile.scenes) {
+                    if (2 !== nIndex++) {
                         continue;
                     }
 
@@ -307,13 +280,12 @@ class SVE {
                     break;
                 }
 
-                pThis.m_pTile = pTileInfo["m_pTile"];
+                pThis.m_pTile = pTile;
             });
-        return;
 
         // 获取GIS对象
         this.m_pGis = MiaokitJS.Miaokit.gis;
-        
+
         /// 注册添加一个SVE工程到GIS中，实现动态管理
         pThis.m_pGis.AddSvetile({
             m_nID: 1,
