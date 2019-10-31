@@ -136,16 +136,6 @@
 				fixed4 mColor = tex2D(_MainTex, i.uv.xy);
 				mColor.rgb *= mDiffuse;
 				
-				//if (10.0f < _Tile.w)
-				//{
-				//	mColor.r = (_Tile.w - 10.0f) / 10;
-				//	mColor.gb = 0.0f;
-				//}
-				//else
-				//{
-				//	mColor.rgb = _Tile.w / 10;
-				//}
-
                 return mColor;
             }
             ENDCG

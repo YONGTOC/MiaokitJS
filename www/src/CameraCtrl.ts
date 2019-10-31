@@ -256,8 +256,11 @@ class CameraCtrl {
             let offsetLng = nOffsetX / nWidth * nAngle;
             let offsetLat = nOffsetY / nHeight * nAngle;
 
-            nLng += offsetLng;
-            nLat += offsetLat;
+            let rYaw = (this.yaw / 180.0) * Math.PI;
+            nLng += offsetLng * Math.cos(rYaw);
+            nLat -= offsetLng * Math.sin(rYaw);
+            nLat += offsetLat * Math.cos(rYaw);
+            nLng += offsetLat * Math.sin(rYaw);
 
             this.lng = nLng;
             this.lat = nLat;
@@ -397,6 +400,19 @@ class CameraCtrl {
     /// 获取当前摄像机控制模式。
     public get ctrlMode(): CTRL_MODE {
         return this.m_eCtrlMode;
+    }
+
+    /// 获取当前摄像机状态。
+    public get curView(): any {
+        return {
+            m_eCtrlMode: this.m_eCtrlMode,
+            m_nLng: this.m_nLng,
+            m_nLat: this.m_nLat,
+            m_mTarget: this.m_mTarget,
+            m_nDistance: this.m_nDistance,
+            m_nPitch: this.m_nPitch,
+            m_nYaw: this.m_nYaw
+        }
     }
 
     /// 获取当前经度参数。

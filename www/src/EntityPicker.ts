@@ -1,5 +1,10 @@
 ﻿
 class EntityPicker {
+    /// 构造函数。
+    public constructor(pCameraCtrl) {
+        this.m_pCameraCtrl = pCameraCtrl
+    }
+
     /// 选中一个对象。
     public Select(): any {
         let pObject = MiaokitJS.Miaokit.PickEntity(0xFFFFFFF);
@@ -28,6 +33,10 @@ class EntityPicker {
                 }
             }
 
+            if (1 === this.m_aStack.length) {
+                this.m_pFirstView = this.m_pCameraCtrl.curView;
+            }
+
             return nEntity;
         }
 
@@ -52,6 +61,11 @@ class EntityPicker {
         }
         else {
             this.PopScene();
+        }
+
+        if (0 === this.m_aStack.length && this.m_pFirstView) {
+            this.m_pCameraCtrl.Jump(this.m_pFirstView.m_eCtrlMode, this.m_pFirstView);
+            this.m_pFirstView = null;
         }
 
         return this.entity;
@@ -236,21 +250,8 @@ class EntityPicker {
 
     /// 激活场景。
     public ActiveScene(pScene): void {
-        if (true/*pTile.m_mOffet && pTile.m_mEuler*/) {
-            let pObject = pScene.object3D;
-            pObject.transform.localPosition = { x: 0.0, y: 164.0, z: 0.0 };
-            pObject.transform.euler = { x: 1.0, y: -42 + 180.0, z: 1.0 };
-        } 
-
-        let nHeight = 0.0;
-        console.log("场景：", pScene.id);
-
-        /// 遍历当前场景所有楼层，打印楼层ID
-        for (let pLayer of pScene.layers) {
-            let pObject = pLayer.object3D;
-            pObject.transform.localPosition = { x: 0.0, y: nHeight, z: 0.0 }; nHeight += 9.0;
-            console.log("楼层：", pLayer, pObject, nHeight);
-            pLayer._Draw();
+        if (pScene.OnSelect) {
+            pScene.OnSelect();
         }
 
         pScene.object3D.active = true;
@@ -266,7 +267,7 @@ class EntityPicker {
         return null;
     }
 
-    /// 当前选中实体。
+    /// 当前选中场景。
     public get scene() {
         if (0 < this.m_aSceneStack.length) {
             return this.m_aSceneStack[this.m_aSceneStack.length - 1];
@@ -281,6 +282,10 @@ class EntityPicker {
     }
 
 
+    /// 未选中任何对象前的视角。
+    private m_pFirstView: any = [];
+    /// 摄像机控制器。
+    private m_pCameraCtrl: any = null;
     /// 选中实体堆栈。
     private m_aStack: any[] = [];
     /// 场景堆栈。

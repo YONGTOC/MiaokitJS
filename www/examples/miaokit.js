@@ -212,8 +212,11 @@ class CameraCtrl {
             let nAngle = nDistance / 6378137.0 * 120.0;
             let offsetLng = nOffsetX / nWidth * nAngle;
             let offsetLat = nOffsetY / nHeight * nAngle;
-            nLng += offsetLng;
-            nLat += offsetLat;
+            let rYaw = (this.yaw / 180.0) * Math.PI;
+            nLng += offsetLng * Math.cos(rYaw);
+            nLat -= offsetLng * Math.sin(rYaw);
+            nLat += offsetLat * Math.cos(rYaw);
+            nLng += offsetLat * Math.sin(rYaw);
             this.lng = nLng;
             this.lat = nLat;
         }
@@ -322,6 +325,17 @@ class CameraCtrl {
     get ctrlMode() {
         return this.m_eCtrlMode;
     }
+    get curView() {
+        return {
+            m_eCtrlMode: this.m_eCtrlMode,
+            m_nLng: this.m_nLng,
+            m_nLat: this.m_nLat,
+            m_mTarget: this.m_mTarget,
+            m_nDistance: this.m_nDistance,
+            m_nPitch: this.m_nPitch,
+            m_nYaw: this.m_nYaw
+        };
+    }
     get lng() {
         return this.m_nLng;
     }
@@ -400,9 +414,12 @@ MiaokitJS.SVECLASS.PanoramaParam = PanoramaParam;
 MiaokitJS.SVECLASS.WanderParam = WanderParam;
 MiaokitJS.SVECLASS.CameraCtrl = CameraCtrl;
 class EntityPicker {
-    constructor() {
+    constructor(pCameraCtrl) {
+        this.m_pFirstView = [];
+        this.m_pCameraCtrl = null;
         this.m_aStack = [];
         this.m_aSceneStack = [];
+        this.m_pCameraCtrl = pCameraCtrl;
     }
     Select() {
         let pObject = MiaokitJS.Miaokit.PickEntity(0xFFFFFFF);
@@ -426,6 +443,9 @@ class EntityPicker {
                     }
                 }
             }
+            if (1 === this.m_aStack.length) {
+                this.m_pFirstView = this.m_pCameraCtrl.curView;
+            }
             return nEntity;
         }
         return null;
@@ -445,6 +465,10 @@ class EntityPicker {
         }
         else {
             this.PopScene();
+        }
+        if (0 === this.m_aStack.length && this.m_pFirstView) {
+            this.m_pCameraCtrl.Jump(this.m_pFirstView.m_eCtrlMode, this.m_pFirstView);
+            this.m_pFirstView = null;
         }
         return this.entity;
     }
@@ -574,19 +598,8 @@ class EntityPicker {
         }
     }
     ActiveScene(pScene) {
-        if (true) {
-            let pObject = pScene.object3D;
-            pObject.transform.localPosition = { x: 0.0, y: 164.0, z: 0.0 };
-            pObject.transform.euler = { x: 1.0, y: -42 + 180.0, z: 1.0 };
-        }
-        let nHeight = 0.0;
-        console.log("场景：", pScene.id);
-        for (let pLayer of pScene.layers) {
-            let pObject = pLayer.object3D;
-            pObject.transform.localPosition = { x: 0.0, y: nHeight, z: 0.0 };
-            nHeight += 9.0;
-            console.log("楼层：", pLayer, pObject, nHeight);
-            pLayer._Draw();
+        if (pScene.OnSelect) {
+            pScene.OnSelect();
         }
         pScene.object3D.active = true;
     }
@@ -642,7 +655,7 @@ class SVE {
         this.m_pCanvasCtx2D = pCanvas2D.getContext('2d');
         this.m_pCamera = MiaokitJS.Miaokit.camera;
         this.m_pCameraCtrl = new MiaokitJS.SVECLASS.CameraCtrl(this.m_pCamera);
-        this.m_pPicker = new MiaokitJS.SVECLASS.EntityPicker();
+        this.m_pPicker = new MiaokitJS.SVECLASS.EntityPicker(this.m_pCameraCtrl);
         this.RegisterEvent(this.m_pCanvas2D, MiaokitJS.Miaokit.cameraCtrl);
         this.InitProject();
     }
@@ -653,7 +666,7 @@ class SVE {
         if (this["m_pDioramas"]) {
             this["m_pDioramas"].Update();
         }
-        if (this.m_pGis && !this.m_pPicker.indoor) {
+        if (this.m_pGis) {
             this.m_pGis.Update(this.m_pCameraCtrl.lng * (Math.PI / 180), this.m_pCameraCtrl.lat * (Math.PI / 180), this.m_pCameraCtrl.height);
         }
     }
@@ -795,57 +808,38 @@ class SVE {
     }
     InitProject() {
         let pThis = this;
-        pThis.m_pCameraCtrl.Jump(MiaokitJS.SVECLASS.CTRL_MODE.PANORAMA, {
+        pThis.m_pCameraCtrl.Jump(MiaokitJS.SVECLASS.CTRL_MODE.EAGLE, {
             m_nLng: 110.326477,
             m_nLat: 25.247935,
-            m_mTarget: { x: 0.0, y: -481.0, z: 0.0 },
+            m_mTarget: { x: 0.0, y: 0.0, z: 0.0 },
             m_nDistance: 2000.0,
             m_nPitch: 30.0,
             m_nYaw: 0
         });
         if (false) {
             let pPath = "./examples/temp/某镇政府/Production_8.3mx";
-            let pDioramas = new MiaokitJS.Dioramas3MX(pPath);
+            let pDioramas = new MiaokitJS.Dioramas3MX(pPath, {
+                m_pGis: MiaokitJS.Miaokit.gis,
+                m_mLngLat: { x: 110.323782, y: 25.243572 },
+                m_mOffset: { x: -50.0, y: 170.0, z: -200.0 }
+            });
             pThis.m_pDioramas = pDioramas;
-            return;
         }
-        MiaokitJS["SVE"].OnGUI = function (pCanvas, pCanvasCtx) {
-            if (!pThis.m_pTile) {
-                let pMsg = "正在加载工程文件: " + (pThis.m_nTick ? pThis.m_nTick : 0.0).toFixed(2);
-                pCanvasCtx.font = "20px Microsoft YaHei";
-                pCanvasCtx.strokeStyle = "black";
-                pCanvasCtx.lineWidth = 2;
-                pCanvasCtx.fillStyle = "#FFFFFF";
-                pCanvasCtx.strokeText(pMsg, pCanvas.clientWidth / 2 - 20.0, pCanvas.clientHeight / 2);
-                pCanvasCtx.fillText(pMsg, pCanvas.clientWidth / 2 - 20.0, pCanvas.clientHeight / 2);
-            }
-        };
-        MiaokitJS["Request"]("GET", "arraybuffer", "http://sve.yongtoc.com:80/data/upload/admin/project/20191018/5da9159b2005e.txt", null, function (nRate) {
-            pThis.m_nTick = nRate;
-        }, function (aData) {
-            let pTile = MiaokitJS["Miaokit"]["LoadTile"](aData);
-            let nIndex = 0;
-            for (let pScene of pTile.scenes) {
-                if (2 !== nIndex++) {
-                    continue;
-                }
-                let pObject = pScene.object3D;
-                pObject.transform.localPosition = { x: 0.0, y: 164.0, z: 0.0 };
-                pObject.transform.euler = { x: 1.0, y: -42 + 180.0, z: 1.0 };
-                let nHeight = 0.0;
-                console.log("场景：", pScene.id);
-                for (let pLayer of pScene.layers) {
-                    let pObject = pLayer.object3D;
-                    pObject.transform.localPosition = { x: 0.0, y: nHeight, z: 0.0 };
-                    nHeight += 9.0;
-                    console.log("楼层：", pLayer, pObject, nHeight);
-                    pLayer._Draw();
-                }
-                break;
-            }
-            pThis.m_pTile = pTile;
-        });
         this.m_pGis = MiaokitJS.Miaokit.gis;
+        this.m_pGis.imageServer = "http://t%d.tianditu.gov.cn/DataServer?T=img_c&tk=fb14b0853d59b619e18c259898bd0d4d&x=%d&y=%d&l=%d";
+        this.m_pGis.terrainServer = "https://t%d.tianditu.gov.cn/dem_sjk/DataServer?T=ele_c&tk=fb14b0853d59b619e18c259898bd0d4d&x=%d&y=%d&l=%d";
+        pThis.m_pGis.AddMapbox({
+            m_mOffset: { x: 0.0, y: 160.0, z: 0.0 },
+            m_mScale: { x: 0.90, y: 1.0, z: 0.91 },
+            m_mLngLat: { x: 110.310452, y: 25.276903 },
+            m_mSize: { x: 10000.0, y: 10000.0 }
+        });
+        pThis.m_pGis.AddMapbox({
+            m_mOffset: { x: 0.0, y: 160.0, z: 0.0 },
+            m_mScale: { x: 0.90, y: 1.0, z: 0.91 },
+            m_mLngLat: { x: 114.183684, y: 22.296143 },
+            m_mSize: { x: 8000.0, y: 8000.0 }
+        });
         pThis.m_pGis.AddSvetile({
             m_nID: 1,
             m_nFlags: 0,
@@ -873,6 +867,51 @@ class SVE {
                             if (10.0 < nHeight) {
                                 break;
                             }
+                        }
+                        break;
+                    }
+                }
+                else {
+                    console.log("隐藏显示");
+                }
+            }
+        });
+        pThis.m_pGis.AddSvetile({
+            m_nID: 1,
+            m_nFlags: 0,
+            m_pUrl: "data/upload/admin/project/20191018/5da9159b2005e.txt",
+            m_mLngLat: { x: 110.326814, y: 25.248106 },
+            m_mSize: { x: 1000.0, y: 1000.0 },
+            OnActive: function (pTile, bActive) {
+                if (bActive) {
+                    pTile.m_mOffet = { x: -450.0, y: 155.0, z: -400.0 };
+                    pTile.m_mEuler = { x: 0.0, y: -42 + 180.0, z: 0.0 };
+                    let nIndex = 0;
+                    for (let pScene of pTile.scenes) {
+                        if (2 !== nIndex++) {
+                            pScene.OnSelect = function () {
+                                let pObject = pScene.object3D;
+                                pObject.transform.localPosition = pTile.m_mOffet;
+                                pObject.transform.localEuler = pTile.m_mEuler;
+                                let nHeight = 0.0;
+                                for (let pLayer of pScene.layers) {
+                                    let pObject = pLayer.object3D;
+                                    pObject.transform.localPosition = { x: 0, y: nHeight, z: 0 };
+                                    nHeight += 9.0;
+                                    pLayer._Draw();
+                                }
+                            };
+                            continue;
+                        }
+                        let pObject = pScene.object3D;
+                        pObject.transform.localPosition = pTile.m_mOffet;
+                        pObject.transform.localEuler = pTile.m_mEuler;
+                        let nHeight = 0.0;
+                        for (let pLayer of pScene.layers) {
+                            let pObject = pLayer.object3D;
+                            pObject.transform.localPosition = { x: 0.0, y: nHeight, z: 0.0 };
+                            nHeight += 9.0;
+                            pLayer._Draw();
                         }
                         break;
                     }

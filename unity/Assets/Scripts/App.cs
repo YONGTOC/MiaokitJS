@@ -11,6 +11,7 @@ public class App : MonoBehaviour
         m_pCamera = Camera.main.gameObject;
         m_pCameraCtrl = new CameraCtrl(m_pCamera);
         m_pPicker = null;
+        m_pGis = Miaokit.g_pIns.gis;
 
         InitProject();
     }
@@ -21,6 +22,7 @@ public class App : MonoBehaviour
         OnEvent();
 
         m_pCameraCtrl.Update();
+        m_pGis.Update(110.326477f * (Mathf.PI / 180), 25.247935f * (Mathf.PI / 180), 2000.0f);
     }
 
     // 响应鼠标控制事件。
@@ -95,7 +97,7 @@ public class App : MonoBehaviour
         PanoramaParam pParam = new PanoramaParam();
         pParam.m_nLng = 0.0f;
         pParam.m_nLat = 0.0f;
-        pParam.m_mTarget = Vector3.zero;
+        pParam.m_mTarget = new Vector3(0.0f, 160.0f, 0.0f);// Vector3.zero;
         pParam.m_nDistance = 128.0f;
         pParam.m_nPitch = 60.0f;
         pParam.m_nYaw = 0.0f;
