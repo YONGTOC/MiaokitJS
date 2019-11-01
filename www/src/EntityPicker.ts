@@ -58,14 +58,14 @@ class EntityPicker {
             else {
                 this.PopScene();
             }
+
+            if (0 === this.m_aStack.length && this.m_pFirstView) {
+                this.m_pCameraCtrl.Jump(this.m_pFirstView.m_eCtrlMode, this.m_pFirstView);
+                this.m_pFirstView = null;
+            }
         }
         else {
             this.PopScene();
-        }
-
-        if (0 === this.m_aStack.length && this.m_pFirstView) {
-            this.m_pCameraCtrl.Jump(this.m_pFirstView.m_eCtrlMode, this.m_pFirstView);
-            this.m_pFirstView = null;
         }
 
         return this.entity;

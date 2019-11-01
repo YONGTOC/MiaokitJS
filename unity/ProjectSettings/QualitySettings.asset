@@ -228,7 +228,7 @@ QualitySettings:
     Nintendo Switch: 5
     PS4: 5
     Standalone: 5
-    WebGL: 1
+    WebGL: 3
     Windows Store Apps: 5
     XboxOne: 5
     iPhone: 2

@@ -1,9 +1,11 @@
 # MiaokitJS（测试版）
 3D数据可视化框架，SVE SDK，可视化场景编辑器，3MX，实景模型，浙江永拓信息科技有限公司
 
-Github: https://github.com/YONGTOC/MiaokitJS
+SEV: http://sve.yongtoc.com
 
 Doc: https://yongtoc.github.io/MiaokitJS/#/
+
+Github: https://github.com/YONGTOC/MiaokitJS
 
 ![图片](./docs/素材/整体介绍1.jpg)
 

@@ -462,13 +462,13 @@ class EntityPicker {
             else {
                 this.PopScene();
             }
+            if (0 === this.m_aStack.length && this.m_pFirstView) {
+                this.m_pCameraCtrl.Jump(this.m_pFirstView.m_eCtrlMode, this.m_pFirstView);
+                this.m_pFirstView = null;
+            }
         }
         else {
             this.PopScene();
-        }
-        if (0 === this.m_aStack.length && this.m_pFirstView) {
-            this.m_pCameraCtrl.Jump(this.m_pFirstView.m_eCtrlMode, this.m_pFirstView);
-            this.m_pFirstView = null;
         }
         return this.entity;
     }
@@ -818,16 +818,19 @@ class SVE {
         });
         if (false) {
             let pPath = "./examples/temp/某镇政府/Production_8.3mx";
-            let pDioramas = new MiaokitJS.Dioramas3MX(pPath, {
-                m_pGis: MiaokitJS.Miaokit.gis,
-                m_mLngLat: { x: 110.323782, y: 25.243572 },
-                m_mOffset: { x: -50.0, y: 170.0, z: -200.0 }
-            });
+            let pDioramas = new MiaokitJS.Dioramas3MX(pPath);
             pThis.m_pDioramas = pDioramas;
+            return;
         }
         this.m_pGis = MiaokitJS.Miaokit.gis;
         this.m_pGis.imageServer = "http://t%d.tianditu.gov.cn/DataServer?T=img_c&tk=fb14b0853d59b619e18c259898bd0d4d&x=%d&y=%d&l=%d";
         this.m_pGis.terrainServer = "https://t%d.tianditu.gov.cn/dem_sjk/DataServer?T=ele_c&tk=fb14b0853d59b619e18c259898bd0d4d&x=%d&y=%d&l=%d";
+        MiaokitJS.LoadPrefab("./examples/temp/5db01bfa4c76b.assetbundle", function (pPrefab) {
+            let pObject = pPrefab.Instantiate();
+            pThis.m_pGis.AddGameObject(pObject, 110.311673, 25.249855);
+            pObject.transform.Translate({ x: 0.0, y: 200.0, z: 0.0 }, 1);
+            pObject.transform.Rotate({ x: 0.0, y: -15.0, z: 0.0 }, 1);
+        });
         pThis.m_pGis.AddMapbox({
             m_mOffset: { x: 0.0, y: 160.0, z: 0.0 },
             m_mScale: { x: 0.90, y: 1.0, z: 0.91 },

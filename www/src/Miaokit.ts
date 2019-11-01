@@ -225,7 +225,7 @@ class SVE {
     private InitProject(): void {
         let pThis: any = this;
 
-        pThis.m_pCameraCtrl.Jump(MiaokitJS.SVECLASS.CTRL_MODE.EAGLE, {
+        pThis.m_pCameraCtrl.Jump(MiaokitJS.SVECLASS.CTRL_MODE./*PANORAMA*/EAGLE, {
             m_nLng: 110.326477,
             m_nLat: 25.247935,
             m_mTarget: { x: 0.0, y: 0.0, z: 0.0 },
@@ -237,17 +237,15 @@ class SVE {
         /// 新功能测试代码
         if (false) {
             let pPath = "./examples/temp/某镇政府/Production_8.3mx";
-            let pDioramas = new MiaokitJS.Dioramas3MX(pPath, {
-                m_pGis: MiaokitJS.Miaokit.gis,
-                m_mLngLat: { x: 110.323782, y: 25.243572 },
-                m_mOffset: { x: -50.0, y: 170.0, z: -200.0 }
-            });
+            let pDioramas = new MiaokitJS.Dioramas3MX(pPath);
+            //let pDioramas = new MiaokitJS.Dioramas3MX(pPath, {
+            //    m_pGis: MiaokitJS.Miaokit.gis,
+            //    m_mLngLat: { x: 110.323782, y: 25.243572 },
+            //    m_mOffset: { x: -50.0, y: 170.0, z: -200.0 }
+            //});
+
             pThis.m_pDioramas = pDioramas;
-
-            //MiaokitJS.Miaokit.gis.AddGameObject(pDioramas.object3D, 110.318779, 25.246309);
-            //pDioramas.object3D.transform.localPosition = { x: 0.0, y: 164.0, z: 0.0 };
-
-            //return;
+            return;
 
             /*
             // 加载进度显示
@@ -307,8 +305,12 @@ class SVE {
         this.m_pGis.imageServer = "http://t%d.tianditu.gov.cn/DataServer?T=img_c&tk=fb14b0853d59b619e18c259898bd0d4d&x=%d&y=%d&l=%d";
         this.m_pGis.terrainServer = "https://t%d.tianditu.gov.cn/dem_sjk/DataServer?T=ele_c&tk=fb14b0853d59b619e18c259898bd0d4d&x=%d&y=%d&l=%d";
 
-        /// 实现3MX支持、调整场景环境灯光参数、优化GIS瓦片裂缝问题、增加GIS瓦片服务路径配置、优化GIS3D显示样式
-        /// 增加GIS3D区域配置、优化样例摄像机从全局到局部的交互
+        MiaokitJS.LoadPrefab("./examples/temp/5db01bfa4c76b.assetbundle", function (pPrefab) {
+            let pObject = pPrefab.Instantiate();
+            pThis.m_pGis.AddGameObject(pObject, 110.311673, 25.249855);
+            pObject.transform.Translate({ x: 0.0, y: 200.0, z: 0.0 }, 1);
+            pObject.transform.Rotate({ x: 0.0, y: -15.0, z: 0.0 }, 1);
+        });
 
         /// 添加桂林区域3D地图
         pThis.m_pGis.AddMapbox({
