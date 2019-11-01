@@ -1,5 +1,5 @@
 # MiaokitJS（测试版）
-3D数据可视化框架，SVE SDK，可视化场景编辑器，3MX，实景模型，浙江永拓信息科技有限公司
+SVE，SVE SDK, 永拓科技，3D可视化，室内导航，GIS，3D GIS，航拍实景模型，倾斜摄影模型，3MX，WebGL，Unity，WASM，Webassembly，浙江永拓信息科技有限公司
 
 SVE: http://sve.yongtoc.com
 
