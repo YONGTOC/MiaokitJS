@@ -523,7 +523,7 @@ MonoBehaviour:
   selectiveFromColor: {r: 1, g: 1, b: 1, a: 1}
   selectiveToColor: {r: 1, g: 1, b: 1, a: 1}
   mode: 0
-  updateTextures: 0
+  updateTextures: 1
   colorCorrectionCurvesShader: {fileID: 4800000, guid: 9595c69e9bf680344b857062bc67d4ca,
     type: 3}
   simpleColorCorrectionCurvesShader: {fileID: 4800000, guid: a5ea547ecbfe2cd4da4545f40d14590a,
@@ -711,7 +711,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &1742944001
 Animator:
   serializedVersion: 3

@@ -236,18 +236,18 @@ class SVE {
 
         /// 新功能测试代码
         if (false) {
-            let pPath = "./examples/temp/某镇政府/Production_8.3mx";
-            let pDioramas = new MiaokitJS.Dioramas3MX(pPath);
+            //let pPath = "./examples/temp/某镇政府/Production_8.3mx";
+            //let pDioramas = new MiaokitJS.Dioramas3MX(pPath);
             //let pDioramas = new MiaokitJS.Dioramas3MX(pPath, {
             //    m_pGis: MiaokitJS.Miaokit.gis,
             //    m_mLngLat: { x: 110.323782, y: 25.243572 },
             //    m_mOffset: { x: -50.0, y: 170.0, z: -200.0 }
             //});
 
-            pThis.m_pDioramas = pDioramas;
-            return;
+            //pThis.m_pDioramas = pDioramas;
+            //return;
 
-            /*
+            
             // 加载进度显示
             MiaokitJS["SVE"].OnGUI = function (pCanvas, pCanvasCtx) {
                 if (!pThis.m_pTile) {
@@ -261,8 +261,10 @@ class SVE {
                 }
             };
 
+            let pPath = "http://sve.yongtoc.com:80/data/upload/admin/project/20190807/5d4a310351522.txt";
+            //let pPath = "http://sve.yongtoc.com:80/data/upload/admin/project/20191018/5da9159b2005e.txt";
             /// 加载工程路径
-            MiaokitJS["Request"]("GET", "arraybuffer", "http://sve.yongtoc.com:80/data/upload/admin/project/20191018/5da9159b2005e.txt", null,
+            MiaokitJS["Request"]("GET", "arraybuffer", pPath, null,
                 function (nRate) {
                     pThis.m_nTick = nRate;
                 },
@@ -270,15 +272,36 @@ class SVE {
                     let pTile = MiaokitJS["Miaokit"]["LoadTile"](aData)
                     let nIndex = 0;
 
+                    pTile.m_mOffet = { x: 0.0, y: 0.0, z: 0.0 };
+                    pTile.m_mEuler = { x: 0.0, y: 0.0, z: 0.0 };
+
                     /// 遍历当前瓦片所有场景，打印场景ID
                     for (let pScene of pTile.scenes) {
-                        if (2 !== nIndex++) {
+                        if (0 !== nIndex++) {
+                            pScene.OnSelect = function () {
+                                let pObject = pScene.object3D;
+                                pObject.transform.localPosition = pTile.m_mOffet;
+                                pObject.transform.localEuler = pTile.m_mEuler;
+
+                                let nHeight = 0.0;
+
+                                /// 遍历当前场景所有楼层，打印楼层ID
+                                for (let pLayer of pScene.layers) {
+                                    let pObject = pLayer.object3D;
+                                    pObject.transform.localPosition = { x: 0, y: nHeight, z: 0 }; nHeight += 9.0;
+                                    pLayer._Draw();
+
+                                    for (let pSite of pLayer.sites) {
+                                    }
+                                }
+                            }
+
                             continue;
                         }
 
                         let pObject = pScene.object3D;
-                        pObject.transform.localPosition = { x: 0.0, y: 164.0, z: 0.0 };
-                        pObject.transform.euler = { x: 1.0, y: -42 + 180.0, z: 1.0 };
+                        pObject.transform.localPosition = { x: 0.0, y: 0.0, z: 0.0 };
+                        pObject.transform.euler = { x: 0.0, y: 0.0, z: 0.0 };
 
                         let nHeight = 0.0;
                         console.log("场景：", pScene.id);
@@ -287,8 +310,33 @@ class SVE {
                         for (let pLayer of pScene.layers) {
                             let pObject = pLayer.object3D;
                             pObject.transform.localPosition = { x: 0.0, y: nHeight, z: 0.0 }; nHeight += 9.0;
-                            console.log("楼层：", pLayer, pObject, nHeight);
+                            console.log("楼层：", pLayer, pObject, nHeight, pLayer.sites.length);
                             pLayer._Draw();
+                        }
+
+                        /// 绘制POI
+                        MiaokitJS["SVE"].OnGUI = function (pCanvas, pCanvasCtx) {
+                            pCanvas.font = "16px Microsoft YaHei";
+                            pCanvas.strokeStyle = "black";
+                            pCanvas.lineWidth = 2;
+                            pCanvas.fillStyle = "#FFFFFF";
+
+                            for (let pLayer of pScene.layers) {
+                                if ("4F" !== pLayer.id) {
+                                    continue;
+                                }
+
+                                let pTransform = pLayer.object3D.transform;
+                                for (let pSite of pLayer.sites) {
+                                    let pPosition = pTransform.TransformPoint(pSite.position);
+                                    let pPoint = MiaokitJS.Miaokit.WorldToScreenPoint(pPosition);
+                                    let pText = pSite.id;
+                                    let pRect = pCanvasCtx.measureText(pText);
+
+                                    pCanvasCtx.strokeText(pText, pPoint.x - pRect.width / 2, pCanvas.height - pPoint.y);
+                                    pCanvasCtx.fillText(pText, pPoint.x - pRect.width / 2, pCanvas.height - pPoint.y);
+                                }
+                            }
                         }
 
                         break;
@@ -296,21 +344,22 @@ class SVE {
 
                     pThis.m_pTile = pTile;
                 });
-            */
+
+            return;
         }
 
         // 获取GIS对象
         this.m_pGis = MiaokitJS.Miaokit.gis;
-        //this.m_pGis.imageServer = "http://t%d.tianditu.gov.cn/DataServer?T=vec_c&tk=fb14b0853d59b619e18c259898bd0d4d&x=%d&y=%d&l=%d";
-        this.m_pGis.imageServer = "http://t%d.tianditu.gov.cn/DataServer?T=img_c&tk=fb14b0853d59b619e18c259898bd0d4d&x=%d&y=%d&l=%d";
+        this.m_pGis.imageServer = "http://t%d.tianditu.gov.cn/DataServer?T=vec_c&tk=fb14b0853d59b619e18c259898bd0d4d&x=%d&y=%d&l=%d";
+        //this.m_pGis.imageServer = "http://t%d.tianditu.gov.cn/DataServer?T=img_c&tk=fb14b0853d59b619e18c259898bd0d4d&x=%d&y=%d&l=%d";
         this.m_pGis.terrainServer = "https://t%d.tianditu.gov.cn/dem_sjk/DataServer?T=ele_c&tk=fb14b0853d59b619e18c259898bd0d4d&x=%d&y=%d&l=%d";
 
-        MiaokitJS.LoadPrefab("./examples/temp/5db01bfa4c76b.assetbundle", function (pPrefab) {
-            let pObject = pPrefab.Instantiate();
-            pThis.m_pGis.AddGameObject(pObject, 110.311673, 25.249855);
-            pObject.transform.Translate({ x: 0.0, y: 200.0, z: 0.0 }, 1);
-            pObject.transform.Rotate({ x: 0.0, y: -15.0, z: 0.0 }, 1);
-        });
+        //MiaokitJS.LoadPrefab("./examples/temp/5db01bfa4c76b.assetbundle", function (pPrefab) {
+        //    let pObject = pPrefab.Instantiate();
+        //    pThis.m_pGis.AddGameObject(pObject, 110.311673, 25.249855);
+        //    pObject.transform.Translate({ x: 0.0, y: 200.0, z: 0.0 }, 1);
+        //    pObject.transform.Rotate({ x: 0.0, y: -15.0, z: 0.0 }, 1);
+        //});
 
         /// 添加桂林区域3D地图
         pThis.m_pGis.AddMapbox({
@@ -361,10 +410,33 @@ class SVE {
                             if (10.0 < nHeight) {
                                 break;
                             }
-                            //for (let pSite of pLayer.sites) {
-                            //    console.log("位置点：", pSite.id, pSite.type, pSite.number, pSite.scene.id, pSite.layer.id, pSite.position);
-                            //}
                         }
+
+                        /// 绘制POI
+                        MiaokitJS["SVE"].OnGUI = function (pCanvas, pCanvasCtx) {
+                            pCanvas.font = "16px Microsoft YaHei";
+                            pCanvas.strokeStyle = "black";
+                            pCanvas.lineWidth = 2;
+                            pCanvas.fillStyle = "#FFFFFF";
+
+                            for (let pLayer of pScene.layers) {
+                                if ("1F" !== pLayer.id) {
+                                    continue;
+                                }
+
+                                let pTransform = pLayer.object3D.transform;
+                                for (let pSite of pLayer.sites) {
+                                    let pPosition = pTransform.TransformPoint(pSite.position);
+                                    let pPoint = MiaokitJS.Miaokit.WorldToScreenPoint(pPosition);
+                                    let pText = pSite.id;
+                                    let pRect = pCanvasCtx.measureText(pText);
+
+                                    pCanvasCtx.strokeText(pText, pPoint.x - pRect.width / 2, pCanvas.height - pPoint.y);
+                                    pCanvasCtx.fillText(pText, pPoint.x - pRect.width / 2, pCanvas.height - pPoint.y);
+                                }
+                            }
+                        }
+
                         break;
                     }
                 }
