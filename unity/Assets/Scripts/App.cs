@@ -11,8 +11,7 @@ public class App : MonoBehaviour
         m_pCamera = Camera.main.gameObject;
         m_pCameraCtrl = new CameraCtrl(m_pCamera);
         m_pPicker = null;
-        m_pGis = Miaokit.g_pIns.gis;
-
+        
         InitProject();
     }
 
@@ -22,7 +21,16 @@ public class App : MonoBehaviour
         OnEvent();
 
         m_pCameraCtrl.Update();
-        m_pGis.Update(110.326477f * (Mathf.PI / 180), 25.247935f * (Mathf.PI / 180), 2000.0f);
+
+        if(null != m_pGis)
+        {
+            m_pGis.Update(110.326477f * (Mathf.PI / 180), 25.247935f * (Mathf.PI / 180), 2000.0f);
+        }
+
+        if(null != m_pDioramas)
+        {
+            m_pDioramas.Update();
+        }
     }
 
     // 响应鼠标控制事件。
@@ -60,6 +68,23 @@ public class App : MonoBehaviour
     // 初始化项目。
     private void InitProject()
     {
+        PanoramaParam pParam = new PanoramaParam();
+        pParam.m_nLng = 0.0f;
+        pParam.m_nLat = 0.0f;
+        pParam.m_mTarget = Vector3.zero; //new Vector3(0.0f, 160.0f, 0.0f);// Vector3.zero;
+        pParam.m_nDistance = 128.0f;
+        pParam.m_nPitch = 60.0f;
+        pParam.m_nYaw = 0.0f;
+
+        m_pCameraCtrl.Jump(CTRL_MODE.PANORAMA, pParam);
+
+        if(true)
+        {
+            m_pDioramas = Miaokit.g_pIns.CreateDioramas("file://H:/PictureModel/某镇政府/Production_8.3mx");
+
+            return;
+        }
+
         Miaokit.g_pIns.Load("data/upload/admin/project/20191018/5da9159b2005e.txt", delegate (byte[] aData)
         {
             if (null != aData)
@@ -94,15 +119,7 @@ public class App : MonoBehaviour
             }
         });
 
-        PanoramaParam pParam = new PanoramaParam();
-        pParam.m_nLng = 0.0f;
-        pParam.m_nLat = 0.0f;
-        pParam.m_mTarget = new Vector3(0.0f, 160.0f, 0.0f);// Vector3.zero;
-        pParam.m_nDistance = 128.0f;
-        pParam.m_nPitch = 60.0f;
-        pParam.m_nYaw = 0.0f;
-
-        m_pCameraCtrl.Jump(CTRL_MODE.PANORAMA, pParam);
+        m_pGis = Miaokit.g_pIns.gis;
     }
 
 
@@ -114,6 +131,8 @@ public class App : MonoBehaviour
     private CameraCtrl m_pCameraCtrl = null;
     /// 对象拾取器。
     private object m_pPicker = null;
+    /// 实景模型对象。
+    private Dioramas3MX m_pDioramas = null;
 
     /// 上一光标位置。
     private Vector3 m_pLastMouse = Vector3.zero;

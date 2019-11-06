@@ -1,33 +1,27 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <ApplicationIcon />
-    <StartupObject />
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath></OutputPath>
-  </PropertyGroup>
-  
-  <Import Project="..\Miaokit\MiaokitCS\MiaokitCS.projitems" Label="Shared" />
-  
   <ItemGroup>
     <Compile Remove="Assets\**" />
     <Compile Remove="Library\**" />
+    <Compile Remove="MiaokitU3D\**" />
     <Compile Remove="Packages\**" />
     <Compile Remove="Plugins\**" />
     <Compile Remove="ProjectSettings\**" />
     <Compile Remove="Temp\**" />
     <EmbeddedResource Remove="Assets\**" />
     <EmbeddedResource Remove="Library\**" />
+    <EmbeddedResource Remove="MiaokitU3D\**" />
     <EmbeddedResource Remove="Packages\**" />
     <EmbeddedResource Remove="Plugins\**" />
     <EmbeddedResource Remove="ProjectSettings\**" />
     <EmbeddedResource Remove="Temp\**" />
     <None Remove="Assets\**" />
     <None Remove="Library\**" />
+    <None Remove="MiaokitU3D\**" />
     <None Remove="Packages\**" />
     <None Remove="Plugins\**" />
     <None Remove="ProjectSettings\**" />
@@ -35,10 +29,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="unity.rar" />
+    <None Remove="新建文本文档.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="UnityEngine">
       <HintPath>D:\Program Files (x86)\Unity\Unity 2019.3.0b1\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+  <Import Project="..\Miaokit\MiaokitCS\MiaokitCS.projitems" Label="Shared" />
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="xcopy /y &quot;$(OutDir)MiaokitU3D.dll&quot; &quot;$(OutDir)..\..\..\Assets\Scripts&quot;" />
