@@ -36,6 +36,16 @@ public class App : MonoBehaviour
     // 响应鼠标控制事件。
     private void OnEvent()
     {
+        //if(Input.GetKeyDown(KeyCode.N))
+        //{
+        //    System.Windows.Forms.OpenFileDialog pDialog = new System.Windows.Forms.OpenFileDialog();
+        //    pDialog.InitialDirectory = "file://" + UnityEngine.Application.dataPath;
+        //    if (pDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+        //    {
+        //        m_pDioramas = Miaokit.g_pIns.CreateDioramas("file://" + pDialog.FileName);
+        //    }
+        //}
+
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
         {
             m_pLastMouse = Input.mousePosition;
@@ -78,10 +88,14 @@ public class App : MonoBehaviour
 
         m_pCameraCtrl.Jump(CTRL_MODE.PANORAMA, pParam);
 
-        if(true)
+        if (true)
         {
-            m_pDioramas = Miaokit.g_pIns.CreateDioramas("file://H:/PictureModel/某镇政府/Production_8.3mx");
-
+            string pPath0 = "file://H:/PictureModel/金秀县城/Scene/Production_1.3mx";
+            string pPath1 = "file://H:/PictureModel/某镇政府/Production_8.3mx";
+            string pPath2 = "file://H:/PictureModel/上海国际会展中心/all/Scene/all.3mx";
+            string pPath3 = "file://H:/PictureModel/苏州大剧院/Production_8.3mx";
+            string pPath4 = "file://H:/PictureModel/临桂政务中心/Production_1.3mx";
+            m_pDioramas = Miaokit.g_pIns.CreateDioramas(pPath1);
             return;
         }
 

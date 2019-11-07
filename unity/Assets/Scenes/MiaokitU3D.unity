@@ -703,15 +703,15 @@ GameObject:
   - component: {fileID: 1742944003}
   - component: {fileID: 1742944002}
   - component: {fileID: 1742944001}
-  - component: {fileID: 1742944006}
   - component: {fileID: 1742944007}
+  - component: {fileID: 1742944006}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &1742944001
 Animator:
   serializedVersion: 3
@@ -751,7 +751,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1742944000}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
