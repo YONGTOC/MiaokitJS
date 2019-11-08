@@ -6,9 +6,8 @@
     <script src="js/Miaokit/MiaokitU3D/Build/UnityLoader.js"></script>
     <script src="js/Miaokit/MiaokitLoader.min.js"></script>
     <script>
-        let MiaokitJS = new MiaokitModule();
-        MiaokitJS["Server"] = "http://sve.yongtoc.com/";
-        //MiaokitJS["Server"] = "./examples/";
+        let MiaokitJS = new MiaokitModule(/*"Sisyphus"*/);
+        //MiaokitJS["m_pServer"] = "./examples/";
         MiaokitJS.Preload();
 
         window.oncontextmenu = function (e) {

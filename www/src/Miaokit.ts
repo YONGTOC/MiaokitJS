@@ -234,18 +234,23 @@ class SVE {
             m_nYaw: 0
         });
 
+        //MiaokitJS["Request"]("GET", "arraybuffer", "./examples/data/logo.png", null, null,
+        //    function (aData) {
+        //        console.log(new Uint8Array(aData).toString());
+        //    });
+
         /// 新功能测试代码
         if (false) {
-            //let pPath = "./examples/temp/某镇政府/Production_8.3mx";
-            //let pDioramas = new MiaokitJS.Dioramas3MX(pPath);
+            let p3mxPath = "./examples/temp/某镇政府/Production_8.3mx";
+            let pDioramas = new MiaokitJS.Dioramas3MX(p3mxPath);
             //let pDioramas = new MiaokitJS.Dioramas3MX(pPath, {
             //    m_pGis: MiaokitJS.Miaokit.gis,
             //    m_mLngLat: { x: 110.323782, y: 25.243572 },
             //    m_mOffset: { x: -50.0, y: 170.0, z: -200.0 }
             //});
 
-            //pThis.m_pDioramas = pDioramas;
-            //return;
+            pThis.m_pDioramas = pDioramas;
+            return;
 
             
             // 加载进度显示
