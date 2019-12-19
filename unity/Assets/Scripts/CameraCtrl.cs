@@ -90,8 +90,11 @@ class CameraCtrl
             float offsetLng = nOffsetX / nWidth * nAngle;
             float offsetLat = nOffsetY / nHeight * nAngle;
 
-            nLng += offsetLng;
-            nLat += offsetLat;
+            float rYaw = (yaw / 180.0f) * Mathf.PI;
+            nLng += offsetLng * Mathf.Cos(rYaw);
+            nLat -= offsetLng * Mathf.Sin(rYaw);
+            nLat += offsetLat * Mathf.Cos(rYaw);
+            nLng += offsetLat * Mathf.Sin(rYaw);
 
             lng = nLng;
             lat = nLat;

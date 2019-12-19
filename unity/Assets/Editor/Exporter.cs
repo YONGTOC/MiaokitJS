@@ -29,6 +29,47 @@ public class Exporter
         }
     }
 
+    [MenuItem("GameObject/转换移动端资源包", false, 0)]
+    static void Convert()
+    {
+        string pPath = EditorUtility.OpenFolderPanel("转换移动端资源包", m_pProjectPath, "");
+        if (null != pPath && 0 < pPath.Length)
+        {
+            string[] aFile = Directory.GetFiles(pPath, "*.assetbundle", SearchOption.AllDirectories);
+
+            foreach (string pFile in aFile)
+            {
+                AssetBundle pAsset = AssetBundle.LoadFromFile(pFile);
+                UnityEngine.Object pPrefab = pAsset.LoadAsset(pAsset.GetAllAssetNames()[0]);
+
+                m_pPacker.PackObject(pPrefab as GameObject, pFile + ".bin");
+
+                pAsset.Unload(false);
+
+                Debug.LogError("转换文件：" + pFile);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("请选择一个文件夹！");
+        }
+    }
+
+    [MenuItem("GameObject/导出移动端模型", false, 0)]
+    static void ExportWX()
+    {
+        if (null != Selection.activeGameObject)
+        {
+            m_pPacker.PackObject(Selection.activeGameObject);
+
+            Debug.LogWarning("导出移动端模型完成：" + Selection.activeGameObject.name);
+        }
+        else
+        {
+            Debug.LogWarning("请选中一个对象！");
+        }
+    }
+
     [MenuItem("Assets/加载并优化模型", false, 0)]
     static void LoadOptimize()
     {
@@ -41,7 +82,7 @@ public class Exporter
             GameObject pObject = m_pOptimizer.Combine(pPrefab as GameObject);
             pObject.name = pPrefab.name;
 
-            pAsset.Unload(false);
+            pAsset.Unload(true);
 
             Debug.LogWarning("加载优化模型完成：" + pFile);
         }
@@ -124,6 +165,7 @@ public class Exporter
     private static string m_pPath = Application.dataPath + "/";
     private static string m_pProjectPath = m_pPath.Substring(0, m_pPath.Length - 7);
     private static Optimizer m_pOptimizer = new Optimizer();
+    private static Packer m_pPacker = new Packer();
 }
 
 
@@ -315,6 +357,7 @@ public class Optimizer
             {
                 pMesh.Optimize();
                 pMesh.name = "" + i + "-" + pMesh.name;
+
                 AssetDatabase.CreateAsset(pMesh, pPathMesh + "/" + pMesh.name + ".asset");
             }
         }
@@ -586,6 +629,727 @@ public class Optimizer
         public List<CombineInstance> m_aInstance = new List<CombineInstance>();
         public Material m_pMaterial = null;
         public CombineInstance m_pInstance;
+    }
+    #endregion
+}
+
+
+public class Packer
+{
+    /// <summary>
+    /// 构造函数。
+    /// </summary>
+    public Packer()
+    {
+    }
+
+    /// <summary>
+    /// 打包对象。
+    /// </summary>
+    /// <param name="pObject"></param>
+    public void PackObject(GameObject pObject, string pFile ="xxx.bin")
+    {
+        // 版本，头数据大小，名称数据大小
+        Group_.g_nTotalHeader = 4 + 4 + 4;
+        Group_.g_nTotalName = 0;
+
+        m_aCroup = new Group_[5];
+
+        for (int i = 0; i < m_aCroup.Length; i++)
+        {
+            m_aCroup[i] = new Group_();
+        }
+
+
+        Pack(pObject, -1);
+
+
+        FileStream pStream = new FileStream(pFile, FileMode.OpenOrCreate);
+        BinaryWriter pWriter = new BinaryWriter(pStream);
+
+        pWriter.Write(1);
+        pWriter.Write(Group_.g_nTotalHeader - 12);
+        pWriter.Write(Group_.g_nTotalName);
+
+        int nNameOffset = Group_.g_nTotalHeader;
+        int nDataOffset = Group_.g_nTotalHeader + Group_.g_nTotalName;
+
+        for (int i = 0; i < m_aCroup.Length; i++)
+        {
+            m_aCroup[i].WriteHeader(pWriter, ref nNameOffset, ref nDataOffset);
+        }
+
+        for (int i = 0; i < m_aCroup.Length; i++)
+        {
+            m_aCroup[i].WriteNameBuffer(pWriter);
+        }
+
+        for (int i = 0; i < m_aCroup.Length; i++)
+        {
+            m_aCroup[i].WriteDataBuffer(pWriter);
+        }
+
+        for (int i = 0; i < m_aCroup.Length; i++)
+        {
+            m_aCroup[i].Close();
+        }
+
+        pWriter.Close();
+        pStream.Close();
+    }
+
+    /// <summary>
+    /// 收集数据。
+    /// </summary>
+    /// <param name="pObject"></param>
+    private void Pack(GameObject pObject, int nParent)
+    {
+        // [是否启用，父级索引，网格索引，网格渲染器索引，本地变换数据]
+
+        int nMesh = -1;
+        int nMeshRenderer = -1;
+        int nObject = -1;
+
+        MeshFilter pFilter = pObject.GetComponent<MeshFilter>();
+        if (null != pFilter)
+        {
+            MeshRenderer pRenderer = pFilter.GetComponent<MeshRenderer>();
+            if (null != pFilter.sharedMesh && null != pRenderer)
+            {
+                nMesh = m_aCroup[MESH].FindObject(pFilter.sharedMesh);
+                if (-1 == nMesh)
+                {
+                    if (pFilter.sharedMesh.isReadable)
+                    {
+                        nMesh = m_aCroup[MESH].AddObject(pFilter.sharedMesh);
+                        Pack(pFilter.sharedMesh);
+                    }
+                    else
+                    {
+                        Debug.LogError("PackMesh(网格数据不可读): " + pFilter.sharedMesh.name);
+                    }
+                }
+
+                foreach (Material pMaterial in pRenderer.sharedMaterials)
+                {
+                    int nMaterial = m_aCroup[MATERIAL].FindObject(pMaterial);
+                    if (-1 == nMaterial)
+                    {
+                        nMaterial = m_aCroup[MATERIAL].AddObject(pMaterial);
+                        Pack(pMaterial);
+                    }
+                }
+
+                if (-1 == nMeshRenderer)
+                {
+                    nMeshRenderer = m_aCroup[RENDERER].AddObject(pRenderer);
+                    Pack(pRenderer);
+                }
+            }
+        }
+
+        if (-1 == nObject)
+        {
+            nObject = m_aCroup[OBJECT].AddObject(pObject);
+
+            m_aCroup[OBJECT].WriteName(pObject.name);
+
+            if (-1 == nParent)
+            {
+                m_aCroup[OBJECT].WriteData(1);
+            }
+            else
+            {
+                m_aCroup[OBJECT].WriteData(pObject.activeInHierarchy ? 1 : 0);
+            }
+
+            m_aCroup[OBJECT].WriteData(nMesh);
+            m_aCroup[OBJECT].WriteData(nMeshRenderer);
+
+            m_aCroup[OBJECT].WriteData(nParent);
+
+            m_aCroup[OBJECT].WriteData(pObject.transform.localPosition);
+            m_aCroup[OBJECT].WriteData(pObject.transform.localRotation);
+            m_aCroup[OBJECT].WriteData(pObject.transform.localScale);
+
+            Debug.LogError("OBJECT: " + nParent);
+        }
+
+
+        foreach (Transform pChild in pObject.transform)
+        {
+            Pack(pChild.gameObject, nObject);
+        }
+    }
+
+    /// <summary>
+    /// 打包网格对象。
+    /// </summary>
+    /// <param name="pMesh"></param>
+    private void Pack(Mesh pMesh)
+    {
+        //[顶点数量，输入数量，子网格数量，{ 输入插槽，数据地址 }，{ 图元类型，数据数量，数据地址 }]
+
+        m_aCroup[MESH].WriteName(pMesh.name);
+
+        Vector3[] aPosition = pMesh.vertices;
+        Vector3[] aNormal = pMesh.normals;
+        Vector2[] aUV = pMesh.uv;
+
+        int nInputCount = 1 + (null == aNormal ? 0 : 1) + (null == aUV ? 0 : 1);
+        int nSubCount = pMesh.subMeshCount;
+        int nDescCount = 3 + 2 * nInputCount + 3 * nSubCount;
+        int[] aDesc = new int[nDescCount];
+
+        int nIndex = 0;
+        int nAddr = 4 * nDescCount;
+
+        aDesc[nIndex++] = aPosition.Length;
+        aDesc[nIndex++] = nInputCount;
+        aDesc[nIndex++] = nSubCount;
+
+        if (null != aPosition)
+        {
+            aDesc[nIndex++] = 0;
+            aDesc[nIndex++] = nAddr;
+
+            nAddr += 12 * aPosition.Length;
+        }
+
+        if (null != aNormal)
+        {
+            aDesc[nIndex++] = 1;
+            aDesc[nIndex++] = nAddr;
+
+            nAddr += 12 * aPosition.Length;
+        }
+
+        if (null != aUV)
+        {
+            aDesc[nIndex++] = 2;
+            aDesc[nIndex++] = nAddr;
+
+            nAddr += 8 * aPosition.Length;
+        }
+
+        for (int i = 0; i < nSubCount; i++)
+        {
+            int[] aIndex = pMesh.GetTriangles(i);
+
+            aDesc[nIndex++] = 0;
+            aDesc[nIndex++] = aIndex.Length;
+            aDesc[nIndex++] = nAddr;
+
+            nAddr += 4 * aIndex.Length;
+        }
+
+        m_aCroup[MESH].WriteData(aDesc);
+        m_aCroup[MESH].WriteData(aPosition);
+        m_aCroup[MESH].WriteData(aNormal);
+        m_aCroup[MESH].WriteData(aUV);
+
+        for (int i = 0; i < nSubCount; i++)
+        {
+            m_aCroup[MESH].WriteData(pMesh.GetTriangles(i));
+        }
+
+        Debug.LogError("MESH: " + pMesh.vertexCount);
+    }
+
+    /// <summary>
+    /// 打包材质对象。
+    /// </summary>
+    /// <param name="pMesh"></param>
+    private void Pack(Material pMaterial)
+    {
+        // [着色器名称，渲染模式，主颜色，贴图数量，贴图名称，贴图索引，贴图变换...]
+
+        m_aCroup[MATERIAL].WriteName(pMaterial.name);
+
+        int nMode = 0;
+        if (pMaterial.HasProperty("_Mode"))
+        {
+            float nMode_ = pMaterial.GetFloat("_Mode");
+            if (2.0f == nMode_)
+            {
+                nMode = 2;
+            }
+
+            if (3.0f == nMode)
+            {
+                nMode = 1;
+            }
+        }
+
+        m_aCroup[MATERIAL].WriteData(pMaterial.shader.name);
+        m_aCroup[MATERIAL].WriteData(nMode);
+
+        m_aCroup[MATERIAL].WriteData(pMaterial.color);
+
+        Dictionary<string, int> pImageList = new Dictionary<string, int>();
+
+        int nCount = ShaderUtil.GetPropertyCount(pMaterial.shader);
+        for (int k = 0; k < nCount; k++)
+        {
+            switch (ShaderUtil.GetPropertyType(pMaterial.shader, k))
+            {
+                case ShaderUtil.ShaderPropertyType.TexEnv:
+                    string pName = ShaderUtil.GetPropertyName(pMaterial.shader, k);
+                    Texture pTexture = pMaterial.GetTexture(pName);
+                    if (pTexture && pTexture.dimension == UnityEngine.Rendering.TextureDimension.Tex2D)
+                    {
+                        int nImage = m_aCroup[IMAGE].FindObject(pTexture);
+                        if (-1 == nImage)
+                        {
+                            nImage = m_aCroup[IMAGE].AddObject(pTexture);
+                            Pack((Texture2D)pTexture);
+                        }
+
+                        if (-1 != nImage)
+                        {
+                            pImageList.Add(pName, nImage);
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        m_aCroup[MATERIAL].WriteData(pImageList.Count);
+
+        foreach (var pImage in pImageList)
+        {
+            m_aCroup[MATERIAL].WriteData(pImage.Key);
+            m_aCroup[MATERIAL].WriteData(pImage.Value);
+
+            Vector2 mOffset = pMaterial.GetTextureOffset(pImage.Key);
+            Vector2 mScale = pMaterial.GetTextureScale(pImage.Key);
+
+            m_aCroup[MATERIAL].WriteData(mOffset);
+            m_aCroup[MATERIAL].WriteData(mScale);
+        }
+
+        Debug.LogError("MATERIAL: " + pMaterial.shader.name);
+    }
+
+    /// <summary>
+    /// 打包贴图对象。
+    /// </summary>
+    /// <param name="pMesh"></param>
+    private void Pack(Texture2D pOrgin)
+    {
+        // [数据大小，数据]
+
+        Texture2D pUncompress = null;
+        Texture2D pSwitch = new Texture2D(pOrgin.width, pOrgin.height, pOrgin.format, pOrgin.mipmapCount > 1, false);
+        pSwitch.LoadRawTextureData(pOrgin.GetRawTextureData());
+        pSwitch.Apply(false, false);
+
+        if (!pOrgin.alphaIsTransparency)
+        {
+            pUncompress = new Texture2D(pOrgin.width / 2, pOrgin.height / 2, TextureFormat.RGB24, true, false);
+        }
+        else
+        {
+            pUncompress = new Texture2D(pOrgin.width, pOrgin.height, TextureFormat.RGBA32, true, false);
+        }
+
+        for (int level = 0; level < pSwitch.mipmapCount - 1; level++)
+        {
+            pUncompress.SetPixels(pSwitch.GetPixels(level + 1), level);
+        }
+
+        pUncompress.Apply(false, false);
+
+        byte[] aData = pOrgin.alphaIsTransparency ? pUncompress.EncodeToPNG() : pUncompress.EncodeToJPG();
+
+        Texture2D.DestroyImmediate(pUncompress);
+        Texture2D.DestroyImmediate(pSwitch);
+
+        m_aCroup[IMAGE].WriteName(pOrgin.name);
+        m_aCroup[IMAGE].WriteData(aData.Length);
+        m_aCroup[IMAGE].WriteData(aData);
+
+        Debug.LogError("IMAGE: " + aData.Length);
+    }
+
+    /// <summary>
+    /// 打包网格对象。
+    /// </summary>
+    /// <param name="pMesh"></param>
+    private void Pack(MeshRenderer pRenderer)
+    {
+        // [是否启用，材质数量，材质列表]
+
+        m_aCroup[RENDERER].WriteName(null);
+
+        m_aCroup[RENDERER].WriteData(pRenderer.enabled ? 1 : 0);
+        m_aCroup[RENDERER].WriteData(pRenderer.sharedMaterials.Length);
+
+        foreach (Material pMaterial in pRenderer.sharedMaterials)
+        {
+            int nIndex = m_aCroup[MATERIAL].FindObject(pMaterial);
+            m_aCroup[RENDERER].WriteData(nIndex);
+        }
+
+        Debug.LogError("RENDERER: " + pRenderer.sharedMaterials.Length);
+    }
+
+
+    /// <summary>
+    /// 各类数据组[0-图片，1-材质，2-网格，3-网格渲染器，4-对象]。
+    /// </summary>
+    private Group_[] m_aCroup;
+    private const int IMAGE = 0;
+    private const int MATERIAL = 1;
+    private const int MESH = 2;
+    private const int RENDERER = 3;
+    private const int OBJECT = 4;
+
+    #region 嵌套类型
+    /// <summary>
+    /// 数据组。
+    /// </summary>
+    private class Group_
+    {
+        /// <summary>
+        /// 构造函数。
+        /// </summary>
+        public Group_()
+        {
+            m_aDesc = new List<int>();
+
+            m_pNameStream = new MemoryStream();
+            m_pNameWriter = new BinaryWriter(m_pNameStream);
+
+            m_pDataStream = new MemoryStream();
+            m_pDataWriter = new BinaryWriter(m_pDataStream);
+
+            m_pDict = new Dictionary<Object, int>();
+
+            // 数量、名称地址、数据地址
+            g_nTotalHeader += 4 + 4 + 4;
+        }
+
+        /// <summary>
+        /// 关闭数据组。
+        /// </summary>
+        public void Close()
+        {
+            m_pNameWriter.Close();
+            m_pNameStream.Close();
+
+            m_pDataWriter.Close();
+            m_pDataStream.Close();
+        }
+
+        /// <summary>
+        /// 写入数据组头数据。
+        /// </summary>
+        /// <param name="pWriter"></param>
+        /// <param name="nNameOffset"></param>
+        /// <param name="nDataOffset"></param>
+        public void WriteHeader(BinaryWriter pWriter, ref int nNameOffset, ref int nDataOffset)
+        {
+            pWriter.Write(m_aDesc.Count / 2);
+            pWriter.Write(nNameOffset);
+            pWriter.Write(nDataOffset);
+
+            foreach (int i in m_aDesc)
+            {
+                pWriter.Write(i);
+            }
+
+            nNameOffset += (int)m_pNameStream.Position;
+            nDataOffset += (int)m_pDataStream.Position;
+        }
+
+        /// <summary>
+        /// 写入名称缓存。
+        /// </summary>
+        /// <param name="pWriter"></param>
+        public void WriteNameBuffer(BinaryWriter pWriter)
+        {
+            pWriter.Write(m_pNameStream.GetBuffer(), 0, (int)m_pNameStream.Position);
+        }
+
+        /// <summary>
+        /// 写入名称缓存。
+        /// </summary>
+        /// <param name="pWriter"></param>
+        public void WriteDataBuffer(BinaryWriter pWriter)
+        {
+            pWriter.Write(m_pDataStream.GetBuffer(), 0, (int)m_pDataStream.Position);
+        }
+
+
+        /// <summary>
+        /// 写入名称。
+        /// </summary>
+        /// <param name="pName"></param>
+        public void WriteName(string pName)
+        {
+            if (null == pName)
+            {
+                pName = "UNNAME";
+            }
+
+            byte[] aName = System.Text.ASCIIEncoding.UTF8.GetBytes(pName);
+
+            m_pNameWriter.Write(aName.Length);
+
+            AddName((int)m_pNameStream.Position);
+            AddData((int)m_pDataStream.Position);
+
+            m_pNameWriter.Write(aName);
+            m_pNameWriter.Write((byte)0);
+
+            // 名称地址偏移、数据地址偏移
+            g_nTotalHeader += 4 + 4;
+            g_nTotalName += 4 + aName.Length + 1;
+        }
+
+        /// <summary>
+        /// 写入数据。
+        /// </summary>
+        /// <param name="aData"></param>
+        public void WriteData(byte[] aData)
+        {
+            if (null == aData)
+            {
+                return;
+            }
+
+            m_pDataWriter.Write(aData);
+        }
+
+        /// <summary>
+        /// 写入数据。
+        /// </summary>
+        /// <param name="aData"></param>
+        public void WriteData(int[] aData)
+        {
+            if (null == aData)
+            {
+                return;
+            }
+
+            for (int i = 0; i < aData.Length; i++)
+            {
+                m_pDataWriter.Write(aData[i]);
+            }
+        }
+
+        /// <summary>
+        /// 写入数据。
+        /// </summary>
+        /// <param name="aData"></param>
+        public void WriteData(Vector3[] aData)
+        {
+            if (null == aData)
+            {
+                return;
+            }
+
+            for (int i = 0; i < aData.Length; i++)
+            {
+                m_pDataWriter.Write(aData[i].x);
+                m_pDataWriter.Write(aData[i].y);
+                m_pDataWriter.Write(aData[i].z);
+            }
+        }
+
+        /// <summary>
+        /// 写入数据。
+        /// </summary>
+        /// <param name="aData"></param>
+        public void WriteData(Vector2[] aData)
+        {
+            if (null == aData)
+            {
+                return;
+            }
+
+            for (int i = 0; i < aData.Length; i++)
+            {
+                m_pDataWriter.Write(aData[i].x);
+                m_pDataWriter.Write(aData[i].y);
+            }
+        }
+
+        /// <summary>
+        /// 写入数据。
+        /// </summary>
+        /// <param name="aData"></param>
+        public void WriteData(Vector2 mData)
+        {
+            m_pDataWriter.Write(mData.x);
+            m_pDataWriter.Write(mData.y);
+        }
+
+        /// <summary>
+        /// 写入数据。
+        /// </summary>
+        /// <param name="aData"></param>
+        public void WriteData(Vector3 mData)
+        {
+            m_pDataWriter.Write(mData.x);
+            m_pDataWriter.Write(mData.y);
+            m_pDataWriter.Write(mData.z);
+        }
+
+        /// <summary>
+        /// 写入数据。
+        /// </summary>
+        /// <param name="aData"></param>
+        public void WriteData(Quaternion mData)
+        {
+            m_pDataWriter.Write(mData.x);
+            m_pDataWriter.Write(mData.y);
+            m_pDataWriter.Write(mData.z);
+            m_pDataWriter.Write(mData.w);
+        }
+
+        /// <summary>
+        /// 写入数据。
+        /// </summary>
+        /// <param name="aData"></param>
+        public void WriteData(Color mData)
+        {
+            m_pDataWriter.Write(mData.r);
+            m_pDataWriter.Write(mData.g);
+            m_pDataWriter.Write(mData.b);
+            m_pDataWriter.Write(mData.a);
+        }
+
+        /// <summary>
+        /// 写入数据。
+        /// </summary>
+        /// <param name="aData"></param>
+        public void WriteData(int nData)
+        {
+            m_pDataWriter.Write(nData);
+        }
+
+        /// <summary>
+        /// 写入数据。
+        /// </summary>
+        /// <param name="pName"></param>
+        public void WriteData(string pData)
+        {
+            if (null == pData)
+            {
+                pData = "";
+            }
+
+            byte[] aData = System.Text.ASCIIEncoding.UTF8.GetBytes(pData);
+
+            m_pDataWriter.Write(aData.Length);
+            m_pDataWriter.Write(aData);
+            m_pDataWriter.Write((byte)0);
+        }
+
+
+        /// <summary>
+        /// 添加名称地址。
+        /// </summary>
+        /// <param name="nAddr"></param>
+        private void AddName(int nAddr)
+        {
+            if (0 != m_aDesc.Count % 2)
+            {
+                Debug.LogError("AddName(): 0 != m_aDesc.Count % 2");
+            }
+
+            m_aDesc.Add(nAddr);
+        }
+
+        /// <summary>
+        /// 添加名称地址。
+        /// </summary>
+        /// <param name="nAddr"></param>
+        private void AddData(int nAddr)
+        {
+            if (1 != m_aDesc.Count % 2)
+            {
+                Debug.LogError("AddData(): 0 != m_aDesc.Count % 2");
+            }
+
+            m_aDesc.Add(nAddr);
+        }
+
+
+        /// <summary>
+        /// 查找对象索引。
+        /// </summary>
+        /// <param name="pObject"></param>
+        /// <returns></returns>
+        public int FindObject(Object pObject)
+        {
+            if (!m_pDict.ContainsKey(pObject))
+            {
+                return -1;
+            }
+
+            return m_pDict[pObject];
+        }
+
+        /// <summary>
+        /// 添加新对象。
+        /// </summary>
+        /// <param name="pObject"></param>
+        /// <returns></returns>
+        public int AddObject(Object pObject)
+        {
+            int nIndex = m_pDict.Count;
+
+            m_pDict.Add(pObject, nIndex);
+
+            return nIndex;
+        }
+
+
+        /// <summary>
+        /// 数据项数据引用描述：[名称地址偏移、数据地址偏移]
+        /// </summary>
+        private List<int> m_aDesc;
+
+        /// <summary>
+        /// 名称数据流对象。
+        /// </summary>
+        private MemoryStream m_pNameStream;
+
+        /// <summary>
+        /// 名称写入器对象。
+        /// </summary>
+        private BinaryWriter m_pNameWriter;
+
+        /// <summary>
+        /// 数据数据流对象。
+        /// </summary>
+        private MemoryStream m_pDataStream;
+
+        /// <summary>
+        /// 数据写入器对象。
+        /// </summary>
+        private BinaryWriter m_pDataWriter;
+
+        /// <summary>
+        /// 对象字典。
+        /// </summary>
+        private Dictionary<Object, int> m_pDict;
+
+
+        /// <summary>
+        /// 头数据总计大小。
+        /// </summary>
+        public static int g_nTotalHeader = 0;
+
+        /// <summary>
+        /// 名称数据总计大小。
+        /// </summary>
+        public static int g_nTotalName = 0;
     }
     #endregion
 }

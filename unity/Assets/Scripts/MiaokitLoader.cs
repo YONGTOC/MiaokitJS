@@ -59,10 +59,17 @@ public class MiaokitLoader : MonoBehaviour, IMiaokitLoader
     public void LoadLibrary()
     {
 #if !((UNITY_IPHONE || UNITY_WEBGL) && !UNITY_EDITOR)
+#if UNITY_EDITOR
         if (IntPtr.Zero == m_nLib)
         {
             m_nLib = LoadLibrary(Application.dataPath.Replace("Assets", "./Plugins/x86_64/Miaokit.dll"));
         }
+#else
+        if (IntPtr.Zero == m_nLib)
+        {
+            m_nLib = LoadLibrary("./Plugins/x86_64/Miaokit.dll");
+        }
+#endif
 #endif
     }
 
@@ -96,13 +103,17 @@ public class MiaokitLoader : MonoBehaviour, IMiaokitLoader
 #if !((UNITY_IPHONE || UNITY_WEBGL) && !UNITY_EDITOR)
         if (IntPtr.Zero != m_nLib)
         {
+            if("CopyMemory" == pFunc)
+            {
+                return Marshal.GetFunctionPointerForDelegate<dynCall_vjji>(CopyMemory);
+            }
+
             return GetProcAddress(m_nLib, pFunc);
         }
 #endif
 
         return IntPtr.Zero;
     }
-
 
 
     /// <summary>
@@ -173,6 +184,11 @@ public class MiaokitLoader : MonoBehaviour, IMiaokitLoader
     /// 函数签名。
     /// </summary>
     private delegate void dynCall_v();
+    /// <summary>
+    /// 函数签名。
+    /// </summary>
+    private delegate void dynCall_vjji(IntPtr p0, IntPtr p1, int p2);
+
 
 #if !((UNITY_IPHONE || UNITY_WEBGL) && !UNITY_EDITOR)
     [DllImport("kernel32.dll")]
@@ -181,5 +197,8 @@ public class MiaokitLoader : MonoBehaviour, IMiaokitLoader
     private extern static IntPtr GetProcAddress(IntPtr nLib, string pFunc);
     [DllImport("kernel32.dll")]
     private extern static bool FreeLibrary(IntPtr nLib);
+    [DllImport("kernel32.dll")]
+    [AOT.MonoPInvokeCallback(typeof(dynCall_vjji))]
+    private extern static void CopyMemory(IntPtr nDest, IntPtr nSrc, int nCount);
 #endif
 }

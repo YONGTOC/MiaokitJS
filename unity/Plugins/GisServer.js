@@ -28,7 +28,7 @@ function LoadFS(pCallback) {
 function LoadVectorTileData(nCol, nRow, nLevel, pCallback) {
     let pKey = GetTileKey(nCol, nRow, nLevel);
     let pUrl = GetTilesUrl(nCol, nRow, nLevel);
-
+    
     if (!pFeatureStyle) {
         if (undefined === pFeatureStyle) {
             pFeatureStyle = null;

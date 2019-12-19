@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MiaokitJS;
@@ -12,7 +12,7 @@ public class App : MonoBehaviour
         m_pCamera = Camera.main.gameObject;
         m_pCameraCtrl = new CameraCtrl(m_pCamera);
         m_pPicker = null;
-        
+
         InitProject();
     }
 
@@ -23,12 +23,12 @@ public class App : MonoBehaviour
 
         m_pCameraCtrl.Update();
 
-        if(null != m_pGis)
+        if (null != m_pGis)
         {
-            m_pGis.Update(110.326477f * (Mathf.PI / 180), 25.247935f * (Mathf.PI / 180), 2000.0f);
+            m_pGis.Update(m_pCameraCtrl.lng * (Mathf.PI / 180), m_pCameraCtrl.lat * (Mathf.PI / 180), m_pCameraCtrl.distance);
         }
 
-        if(null != m_pDioramas)
+        if (null != m_pDioramas)
         {
             m_pDioramas.Update();
         }
@@ -79,35 +79,31 @@ public class App : MonoBehaviour
     // 初始化项目。
     private void InitProject()
     {
-        PanoramaParam pParam = new PanoramaParam();
-        pParam.m_nLng = 0.0f;
-        pParam.m_nLat = 0.0f;
-        pParam.m_mTarget = Vector3.zero; //new Vector3(0.0f, 160.0f, 0.0f);// Vector3.zero;
-        pParam.m_nDistance = 128.0f;
+        EagleParam pParam = new EagleParam();
+        pParam.m_nLng = 110.326477f;
+        pParam.m_nLat = 25.247935f;
+        pParam.m_nDistance = 20000.0f;
         pParam.m_nPitch = 60.0f;
         pParam.m_nYaw = 0.0f;
 
-        m_pCameraCtrl.Jump(CTRL_MODE.PANORAMA, pParam);
+        m_pCameraCtrl.Jump(CTRL_MODE.EAGLE, pParam);
+        
+        m_pGis = Miaokit.g_pIns.gis;
+        m_pGis.imageServer = "http://t%d.tianditu.gov.cn/DataServer?T=img_c&tk=addfe5066d3d51cff95f9b58976befe0&x=%d&y=%d&l=%d";
+        m_pGis.terrainServer = "https://t%d.tianditu.gov.cn/dem_sjk/DataServer?T=ele_c&tk=addfe5066d3d51cff95f9b58976befe0&x=%d&y=%d&l=%d";
 
-        if (true)
-        {
-            string pPath0 = "file://H:/PictureModel/金秀县城/Scene/Production_1.3mx";
-            string pPath1 = "file://H:/PictureModel/某镇政府/Production_8.3mx";
-            string pPath2 = "file://H:/PictureModel/上海国际会展中心/all/Scene/all.3mx";
-            string pPath3 = "file://H:/PictureModel/苏州大剧院/Production_8.3mx";
-            string pPath4 = "file://H:/PictureModel/临桂政务中心/Production_1.3mx";
-            m_pDioramas = Miaokit.g_pIns.CreateDioramas(pPath1);
-            return;
-        }
+        /// 添加桂林区域3D地图（请启动Plugins文件夹下的GisServer.bat服务）
+        m_pGis.AddMapbox(new Vector2(110.310452f, 25.276903f), new Vector2(10000.0f, 10000.0f), new Vector3(0.0f, 160.0f, 0.0f), new Vector3(0.90f, 1.0f, 0.91f));
 
-        Miaokit.g_pIns.Load("data/upload/admin/project/20191018/5da9159b2005e.txt", delegate (byte[] aData)
+        /// 注册添加一个SVE工程到GIS中，实现动态管理
+        m_pGis.AddSvetile("data/upload/admin/project/20191018/5da9159b2005e.txt", 1, 0, new Vector2(110.326814f, 25.248106f), new Vector2(1000.0f, 1000.0f), delegate (Tile pTile, bool bActive)
         {
-            if (null != aData)
+            if (bActive)
             {
-                Tile pTile = Miaokit.g_pIns.LoadTile(aData);
-                int nIndex = 0;
+                Vector3 mOffset = new Vector3(-450.0f, 155.0f, -400.0f);
+                Vector3 mEuler = new Vector3(0.0f, -42 + 180.0f, 0.0f);
 
-                Debug.LogError("瓦片：" + pTile.handle + " " + pTile.sceneCount);
+                int nIndex = 0;
 
                 foreach (Scene pScene in pTile.scenes)
                 {
@@ -117,6 +113,9 @@ public class App : MonoBehaviour
                     }
 
                     Object3D pObject = pScene.object3D;
+                    pObject.transform.localPosition = mOffset;
+                    pObject.transform.localEulerAngles = mEuler;
+
                     float nHeight = 0.0f;
 
                     Debug.LogError("场景：" + pScene.id + " " + pScene.layerCount);
@@ -134,7 +133,45 @@ public class App : MonoBehaviour
             }
         });
 
-        m_pGis = Miaokit.g_pIns.gis;
+        /// 注册添加一个SVE工程(仅含一个内景)到GIS中，实现动态管理
+        m_pGis.AddSvetile("data/upload/admin/project/20190807/5d4a310351522.txt", 2, 0, new Vector2(110.326814f, 25.248106f), new Vector2(1000.0f, 1000.0f), delegate (Tile pTile, bool bActive)
+        {
+            if (bActive)
+            {
+                Vector3 mOffset = new Vector3(-10.0f, 164.0f, -40.0f);
+                Vector3 mEuler = new Vector3(0.0f, -42.0f, 0.0f);
+
+                foreach (Scene pScene in pTile.scenes)
+                {
+                    Object3D pObject = pScene.object3D;
+                    pObject.transform.localPosition = mOffset;
+                    pObject.transform.localEulerAngles = mEuler;
+
+                    float nHeight = 0.0f;
+
+                    Debug.LogError("2场景：" + pScene.id + " " + pScene.layerCount);
+
+                    foreach (Layer pLayer in pScene.layers)
+                    {
+                        Object3D pLayerObj = pLayer.object3D;
+                        pLayerObj.transform.localPosition = new Vector3(0.0f, nHeight, 0.0f); nHeight += 9.0f;
+
+                        Debug.LogError("2楼层：" + pLayer.id + " " + pLayer.siteCount);
+
+                        pLayer.Draw();
+
+                        if (10.0 < nHeight)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+        
+
+        /// 注册一个实景模型到GIS中。
+        //m_pDioramas = Miaokit.g_pIns.CreateDioramas("file://H:/PictureModel/金秀县城/Scene/Production_1.3mx");
     }
 
 
@@ -152,3 +189,12 @@ public class App : MonoBehaviour
     /// 上一光标位置。
     private Vector3 m_pLastMouse = Vector3.zero;
 }
+
+/*
+11276 47957 18 https://ss1.bdstatic.com/8bo_dTSlR1gBo1vgoIiO_jowehsv/pvd/?qt=tile&param=3N5L>;C8:ME>;EK9FL5@@;G8NE9FA;C9
+2E98O5K?CDI8A=B?BE92A;B6KCHLA;C6KH8DM=;@BPEB>38@GD9:A;D82JED>3K86ND>OCO82J544
+11274 47959 18 https://ss3.bdstatic.com/8bo_dTSlR1gBo1vgoIiO_jowehsv/pvd/?qt=tile&param=3N5L>;C8:ME:;EK9FL5@@;G96E9FA;C9
+2E98O5K?CDI8A=B?BE92A;B6KCHLA;C6KH8DM=;@BPEB>38@GD9:A;D82JED>3K86ND>OCO82J544
+11274 47958 18 https://ss2.bdstatic.com/8bo_dTSlR1gBo1vgoIiO_jowehsv/pvd/?qt=tile&param=3N5L>;C8:ME:;EK9FL5@@;G92E9FA;C9
+2E98O5K?CDI8A=B?BE92A;B6KCHLA;C6KH8DM=;@BPEB>38@GD9:A;D82JED>3K86ND>OCO82J544
+ * */

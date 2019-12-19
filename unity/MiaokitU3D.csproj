@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,12 +27,7 @@
     <None Remove="ProjectSettings\**" />
     <None Remove="Temp\**" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="unity.rar" />
-    <None Remove="新建文本文档.txt" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <Reference Include="UnityEngine">
       <HintPath>D:\Program Files (x86)\Unity\Unity 2019.3.0b1\Editor\Data\Managed\UnityEngine.dll</HintPath>
