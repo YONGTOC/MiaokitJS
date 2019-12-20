@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using MiaokitJS;
 
@@ -80,14 +78,14 @@ public class App : MonoBehaviour
     private void InitProject()
     {
         EagleParam pParam = new EagleParam();
-        pParam.m_nLng = 110.326477f;
-        pParam.m_nLat = 25.247935f;
+        pParam.m_nLng = 110.20429f;//110.326477f;
+        pParam.m_nLat = 24.12514f;//25.247935f;
         pParam.m_nDistance = 20000.0f;
         pParam.m_nPitch = 60.0f;
         pParam.m_nYaw = 0.0f;
 
         m_pCameraCtrl.Jump(CTRL_MODE.EAGLE, pParam);
-        
+
         m_pGis = Miaokit.g_pIns.gis;
         m_pGis.imageServer = "http://t%d.tianditu.gov.cn/DataServer?T=img_c&tk=addfe5066d3d51cff95f9b58976befe0&x=%d&y=%d&l=%d";
         m_pGis.terrainServer = "https://t%d.tianditu.gov.cn/dem_sjk/DataServer?T=ele_c&tk=addfe5066d3d51cff95f9b58976befe0&x=%d&y=%d&l=%d";
@@ -168,10 +166,12 @@ public class App : MonoBehaviour
                 }
             }
         });
-        
 
         /// 注册一个实景模型到GIS中。
-        //m_pDioramas = Miaokit.g_pIns.CreateDioramas("file://H:/PictureModel/金秀县城/Scene/Production_1.3mx");
+        m_pDioramas = Miaokit.g_pIns.CreateDioramas("file://H:/PictureModel/金秀县城/Scene/Production_1.3mx");
+        m_pGis.AddGameObject(m_pDioramas.object3D, new Vector2(110.20429f, 24.12514f));
+        m_pDioramas.object3D.gameObject.name = "Dioramas";
+        m_pDioramas.object3D.gameObject.transform.localPosition = new Vector3(-221.5f, 800.0f - 38.7f, -116.5f);
     }
 
 
@@ -189,12 +189,3 @@ public class App : MonoBehaviour
     /// 上一光标位置。
     private Vector3 m_pLastMouse = Vector3.zero;
 }
-
-/*
-11276 47957 18 https://ss1.bdstatic.com/8bo_dTSlR1gBo1vgoIiO_jowehsv/pvd/?qt=tile&param=3N5L>;C8:ME>;EK9FL5@@;G8NE9FA;C9
-2E98O5K?CDI8A=B?BE92A;B6KCHLA;C6KH8DM=;@BPEB>38@GD9:A;D82JED>3K86ND>OCO82J544
-11274 47959 18 https://ss3.bdstatic.com/8bo_dTSlR1gBo1vgoIiO_jowehsv/pvd/?qt=tile&param=3N5L>;C8:ME:;EK9FL5@@;G96E9FA;C9
-2E98O5K?CDI8A=B?BE92A;B6KCHLA;C6KH8DM=;@BPEB>38@GD9:A;D82JED>3K86ND>OCO82J544
-11274 47958 18 https://ss2.bdstatic.com/8bo_dTSlR1gBo1vgoIiO_jowehsv/pvd/?qt=tile&param=3N5L>;C8:ME:;EK9FL5@@;G92E9FA;C9
-2E98O5K?CDI8A=B?BE92A;B6KCHLA;C6KH8DM=;@BPEB>38@GD9:A;D82JED>3K86ND>OCO82J544
- * */
