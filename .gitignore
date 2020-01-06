@@ -8,4 +8,7 @@
 !/unity/MiaokitU3D.csproj
 !/unity/MiaokitU3D.sln
 /www/examples/temp/
-/Miaokit/
+/web/private/node_modules
+/web/public/data
+/web/public/data.rar
+/miaokit

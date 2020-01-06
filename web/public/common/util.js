@@ -467,7 +467,6 @@ class App {
             this["m_pDioramas"].Update();
         }
         if (this.m_pGis) {
-            console.log('xxxxxxxxxxxxxxxxxx');
             this.m_pGis.Update(this.m_pCameraCtrl.lng * (Math.PI / 180), this.m_pCameraCtrl.lat * (Math.PI / 180), this.m_pCameraCtrl.height);
         }
     }

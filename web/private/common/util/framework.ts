@@ -46,6 +46,11 @@ class App {
             m_nYaw: 0
         });
 
+        // 获取GIS对象
+        //this.m_pGis = MiaokitJS.Miaokit.gis;
+        //this.m_pGis.imageServer = "http://t%d.tianditu.gov.cn/DataServer?T=img_c&tk=3d26628c3a0e2694fecfbbb983ff7d87&x=%d&y=%d&l=%d"; // vec_c
+        //this.m_pGis.terrainServer = "https://t%d.tianditu.gov.cn/dem_sjk/DataServer?T=ele_c&tk=3d26628c3a0e2694fecfbbb983ff7d87&x=%d&y=%d&l=%d";
+
         //this.InitProject();
     }
 
@@ -61,7 +66,6 @@ class App {
         }
 
         if (this.m_pGis) {
-            console.log('xxxxxxxxxxxxxxxxxx');
             this.m_pGis.Update(this.m_pCameraCtrl.lng * (Math.PI / 180), this.m_pCameraCtrl.lat * (Math.PI / 180), this.m_pCameraCtrl.height);
         }
     }
