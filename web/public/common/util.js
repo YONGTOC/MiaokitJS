@@ -686,6 +686,31 @@ class App {
 MiaokitJS.UTIL = MiaokitJS.UTIL || {};
 MiaokitJS.UTIL.App = App;
 MiaokitJS.App = new App();
+class Shader {
+    constructor() {
+    }
+}
+class ShaderLab {
+    constructor() {
+        this.m_pCodeStore = {};
+        this.m_pStore = {
+            "Default": {
+                "VS": "Default.vs.glsl",
+                "FS": "Default.fs.glsl"
+            }
+        };
+    }
+    GetShader(pName) {
+        let pShader = this.m_pStore[pName];
+        if (!pShader) {
+            console.error("Can't find shader:", pName);
+            return null;
+        }
+        if (pShader["Instance"]) {
+            return pShader["Instance"];
+        }
+    }
+}
 class EntityPicker {
     constructor(pCameraCtrl) {
         this.m_pFirstView = [];
@@ -908,3 +933,154 @@ class EntityPicker {
 }
 MiaokitJS.UTIL = MiaokitJS.UTIL || {};
 MiaokitJS.UTIL.EntityPicker = EntityPicker;
+MiaokitJS.ShaderLab.Pipeline = {
+    "_name": "Pipeline",
+    ColorTarget: [
+        { ID: 1, Handle: 0, Format: "RGBA32_FLOAT" },
+        { ID: 2, Handle: 0, Format: "RGBA32_FLOAT" }
+    ],
+    DepthTarget: [
+        { ID: 1, Handle: 0, Format: "D16_UNORM" }
+    ],
+    BlendState: [
+        { ID: 1, Enable: false },
+        { ID: 2, Enable: true, ColorOP: "Add", AlphaOP: "Add", ColorSrc: "One", ColorDest: "One", AlphaSrc: "One", AlphaDest: "One" }
+    ],
+    DepthState: [
+        { ID: 1, Enable: false },
+        { ID: 2, Enable: true, Write: true, TestOP: "LessEqual" },
+        { ID: 3, Enable: true, Write: false, TestOP: "LessEqual" }
+    ],
+    Pass: [
+        {
+            Name: "绘制不透明物体",
+            Type: "Render",
+            Mask: ["Opaque"],
+            Target: [1, 1],
+            Blend: 1
+        },
+        {
+            Name: "绘制透明物体",
+            Type: "Render",
+            Mask: ["Transparent"],
+            Target: [2, 1],
+            Blend: 2
+        },
+        {
+            Name: "合成图像",
+            Type: "Postprocess",
+            Mask: [],
+            Target: [0, 0],
+            Uniforms: function () {
+                return null;
+            }
+        }
+    ],
+    InternalShader: [
+        "Default", "Default", "Default", "Default",
+        "Default", "Default", "Default", "Default",
+        "Default", "Default", "Default", "Default",
+        "Default", "Default", "Default", "Default"
+    ]
+};
+MiaokitJS.ShaderLab.Shader["Common"] = {
+    code_vs: `
+precision highp float;
+
+attribute vec3 a_Position;
+attribute vec3 a_Normal;
+attribute vec2 a_UV;
+attribute vec4 a_Color;
+attribute vec4 a_Tangent;
+attribute vec4 a_Binormal;
+attribute vec2 a_UV2;
+
+uniform mat4 u_MatW;
+uniform mat4 u_MatWV;
+uniform mat4 u_MatWVP;
+
+varying vec3 v_Position;
+varying vec3 v_Normal;
+varying vec2 v_UV;
+varying vec4 v_Color;
+varying vec4 v_Tangent;
+varying vec4 v_Binormal;
+
+/// 对象空间坐标转世界空间坐标
+vec3 ObjectToWorldPos(vec3 i_Position)
+{
+    return (u_MatW * vec4(i_Position, 1.0)).xyz;
+}
+
+/// 对象空间坐标转摄像机空间坐标
+vec3 ObjectToViewPos(vec3 i_Position)
+{
+    return (u_MatWV * vec4(i_Position, 1.0)).xyz;
+}
+
+/// 对象空间坐标转裁剪空间坐标
+vec4 ObjectToClipPos(vec3 i_Position)
+{
+    return u_MatWVP * vec4(i_Position, 1.0);
+}
+        `,
+    code_fs: `
+precision highp float;
+
+uniform mat4 u_MatW;
+uniform mat4 u_MatWV;
+uniform mat4 u_MatWVP;
+uniform sampler2D u_MainTex;
+
+varying vec3 v_Position;
+varying vec3 v_Normal;
+varying vec2 v_UV;
+varying vec4 v_Color;
+varying vec4 v_Tangent;
+varying vec4 v_Binormal;
+
+/// 对象空间坐标转世界空间坐标
+vec3 ObjectToWorldPos(vec3 i_Position)
+{
+    return (u_MatW * vec4(i_Position, 1.0)).xyz;
+}
+
+/// 对象空间坐标转摄像机空间坐标
+vec3 ObjectToViewPos(vec3 i_Position)
+{
+    return (u_MatWV * vec4(i_Position, 1.0)).xyz;
+}
+
+/// 对象空间坐标转裁剪空间坐标
+vec4 ObjectToClipPos(vec3 i_Position)
+{
+    return u_MatWVP * vec4(i_Position, 1.0);
+}
+
+/// 采样2D纹理
+vec4 Tex2D(sampler2D i_Tex, vec2 i_UV)
+{
+    i_UV.x = fract(i_UV.x);
+    i_UV.y = fract(1.0 - i_UV.y);
+
+    return texture2D(i_Tex, i_UV);
+}
+        `
+};
+MiaokitJS.ShaderLab.Shader["Default"] = {
+    mark: ["Opaque"],
+    code_vs: `
+void main()
+{
+    gl_Position = ObjectToClipPos(a_Position);
+    v_Normal = a_Normal;
+    v_UV = a_UV;
+}
+        `,
+    code_fs: `
+void main()
+{
+    gl_FragColor = Tex2D(u_MainTex, v_UV);
+}
+        `
+};

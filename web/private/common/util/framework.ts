@@ -366,3 +366,42 @@ class App {
 MiaokitJS.UTIL = MiaokitJS.UTIL || {};
 MiaokitJS.UTIL.App = App;
 MiaokitJS.App = new App();
+
+
+class Shader {
+    public constructor() {
+        // this["u_MainTex"]["Slot"]();
+        // 解析着色器，得到所有统一变量（名称与查找），调用统一变量初始化方法初始化统一变量，如果材质实例没有赋值，则从着色器中取默认值
+    }
+}
+
+class ShaderLab {
+    public constructor() {
+
+    }
+
+    /// 获取着色器程序实例
+    public GetShader(pName) {
+        let pShader = this.m_pStore[pName];
+        if (!pShader) {
+            console.error("Can't find shader:", pName);
+            return null;
+        }
+
+        if (pShader["Instance"]) {
+            return pShader["Instance"];
+        }
+    }
+
+
+    /// 着色器代码仓库
+    private m_pCodeStore = {};
+
+    /// 着色器程序仓库
+    private m_pStore = {
+        "Default": {
+            "VS": "Default.vs.glsl",
+            "FS": "Default.fs.glsl"
+        }
+    };
+}
