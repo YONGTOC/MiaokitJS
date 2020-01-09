@@ -935,52 +935,60 @@ MiaokitJS.UTIL = MiaokitJS.UTIL || {};
 MiaokitJS.UTIL.EntityPicker = EntityPicker;
 MiaokitJS.ShaderLab.Pipeline = {
     "_name": "Pipeline",
-    ColorTarget: [
-        { ID: 1, Handle: 0, Format: "RGBA32_FLOAT" },
-        { ID: 2, Handle: 0, Format: "RGBA32_FLOAT" }
+    ColorTarget: [null,
+        { ID: 1, Format: "RGBA32_FLOAT" },
+        { ID: 2, Format: "RGBA32_FLOAT" }
     ],
-    DepthTarget: [
-        { ID: 1, Handle: 0, Format: "D16_UNORM" }
+    DepthTarget: [null,
+        { ID: 1, Format: "D16_UNORM" }
+    ],
+    RenderTarget: [null,
+        { ID: 1, ColorTarget: 1, DepthTarget: 1 },
+        { ID: 1, ColorTarget: 2, DepthTarget: 1 }
     ],
     BlendState: [
-        { ID: 1, Enable: false },
-        { ID: 2, Enable: true, ColorOP: "Add", AlphaOP: "Add", ColorSrc: "One", ColorDest: "One", AlphaSrc: "One", AlphaDest: "One" }
+        { ID: 0, Enable: false },
+        { ID: 1, Enable: true, ColorOP: "Add", AlphaOP: "Add", ColorSrc: "One", ColorDest: "One", AlphaSrc: "One", AlphaDest: "One" }
     ],
     DepthState: [
-        { ID: 1, Enable: false },
-        { ID: 2, Enable: true, Write: true, TestOP: "LessEqual" },
-        { ID: 3, Enable: true, Write: false, TestOP: "LessEqual" }
+        { ID: 0, Enable: false },
+        { ID: 1, Enable: true, Write: true, TestOP: "LessEqual" },
+        { ID: 2, Enable: true, Write: false, TestOP: "LessEqual" }
     ],
     Pass: [
         {
             Name: "绘制不透明物体",
             Type: "Render",
             Mask: ["Opaque"],
-            Target: [1, 1],
-            Blend: 1
+            Target: 1,
+            Depth: 1,
+            Blend: 0
         },
         {
             Name: "绘制透明物体",
             Type: "Render",
             Mask: ["Transparent"],
-            Target: [2, 1],
-            Blend: 2
+            Target: 1,
+            Depth: 2,
+            Blend: 1
         },
         {
             Name: "合成图像",
             Type: "Postprocess",
             Mask: [],
-            Target: [0, 0],
+            Target: 0,
+            Depth: 1,
+            Blend: 0,
             Uniforms: function () {
                 return null;
             }
         }
     ],
     InternalShader: [
+        "Default", "Wall", "Default", "Default",
         "Default", "Default", "Default", "Default",
         "Default", "Default", "Default", "Default",
-        "Default", "Default", "Default", "Default",
-        "Default", "Default", "Default", "Default"
+        "Default", "Default", "Default", "Present"
     ]
 };
 MiaokitJS.ShaderLab.Shader["Common"] = {
@@ -996,7 +1004,7 @@ attribute vec4 a_Binormal;
 attribute vec2 a_UV2;
 
 uniform mat4 u_MatW;
-uniform mat4 u_MatWV;
+uniform mat4 u_MatVP;
 uniform mat4 u_MatWVP;
 
 varying vec3 v_Position;
@@ -1012,12 +1020,6 @@ vec3 ObjectToWorldPos(vec3 i_Position)
     return (u_MatW * vec4(i_Position, 1.0)).xyz;
 }
 
-/// 对象空间坐标转摄像机空间坐标
-vec3 ObjectToViewPos(vec3 i_Position)
-{
-    return (u_MatWV * vec4(i_Position, 1.0)).xyz;
-}
-
 /// 对象空间坐标转裁剪空间坐标
 vec4 ObjectToClipPos(vec3 i_Position)
 {
@@ -1028,7 +1030,7 @@ vec4 ObjectToClipPos(vec3 i_Position)
 precision highp float;
 
 uniform mat4 u_MatW;
-uniform mat4 u_MatWV;
+uniform mat4 u_MatVP;
 uniform mat4 u_MatWVP;
 uniform sampler2D u_MainTex;
 
@@ -1045,12 +1047,6 @@ vec3 ObjectToWorldPos(vec3 i_Position)
     return (u_MatW * vec4(i_Position, 1.0)).xyz;
 }
 
-/// 对象空间坐标转摄像机空间坐标
-vec3 ObjectToViewPos(vec3 i_Position)
-{
-    return (u_MatWV * vec4(i_Position, 1.0)).xyz;
-}
-
 /// 对象空间坐标转裁剪空间坐标
 vec4 ObjectToClipPos(vec3 i_Position)
 {
@@ -1065,10 +1061,37 @@ vec4 Tex2D(sampler2D i_Tex, vec2 i_UV)
 
     return texture2D(i_Tex, i_UV);
 }
+
+float DefaultLight(vec3 v_Normal)
+{
+    vec3 _Normal = normalize(v_Normal);
+    vec3 _Light = normalize(vec3(2.0, 3.0, 1.0));
+
+    return clamp(dot(_Normal, _Light), 0.0, 1.0) + 0.2;
+}
         `
 };
 MiaokitJS.ShaderLab.Shader["Default"] = {
     mark: ["Opaque"],
+    code_vs: `
+void main()
+{
+    gl_Position = ObjectToClipPos(a_Position.xyz);
+    v_Normal = a_Normal;
+    v_UV = a_UV;
+}
+        `,
+    code_fs: `
+void main()
+{
+    gl_FragColor = Tex2D(u_MainTex, v_UV);
+    gl_FragColor.rgb *= DefaultLight(v_Normal);
+    gl_FragColor.a = 1.0;
+}
+        `
+};
+MiaokitJS.ShaderLab.Shader["Wall"] = {
+    mark: ["Transparent"],
     code_vs: `
 void main()
 {
@@ -1080,7 +1103,26 @@ void main()
     code_fs: `
 void main()
 {
+    gl_FragColor = vec4(0.0196, 0.6431, 0.9294, 1.0);
+    gl_FragColor.rgb *= DefaultLight(v_Normal);
+    gl_FragColor.a = 1.0;
+}
+        `
+};
+MiaokitJS.ShaderLab.Shader["Present"] = {
+    mark: ["Opaque"],
+    code_vs: `
+void main()
+{
+    gl_Position = vec4(a_Position, 1.0);
+    v_UV = a_UV;
+}
+        `,
+    code_fs: `
+void main()
+{
     gl_FragColor = Tex2D(u_MainTex, v_UV);
+    gl_FragColor /= gl_FragColor.a;
 }
         `
 };
