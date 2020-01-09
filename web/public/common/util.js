@@ -961,6 +961,11 @@ MiaokitJS.ShaderLab.Pipeline = {
             Type: "Render",
             Mask: ["Opaque"],
             Target: 1,
+            ClearTarget: {
+                Color: { r: 0.198, g: 0.323, b: 0.561, a: 1.0 },
+                Depth: 1.0,
+                Stencil: 0.0
+            },
             Depth: 1,
             Blend: 0
         },
@@ -979,8 +984,9 @@ MiaokitJS.ShaderLab.Pipeline = {
             Target: 0,
             Depth: 1,
             Blend: 0,
-            Uniforms: function () {
-                return null;
+            Shader: "Present",
+            SetUniforms: function (pUniforms) {
+                pUniforms.u_MainTex = MiaokitJS.ShaderLab.Pipeline.ColorTarget[1].Texture;
             }
         }
     ],
