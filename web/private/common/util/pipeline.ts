@@ -11,14 +11,16 @@ MiaokitJS.ShaderLab.Pipeline = {
 
     DepthTarget: [null,
         /// 1.绘制物体深度缓存
-        { ID: 1, Format: "D16_UNORM" }
+        { ID: 1, Format: "D24_UNORM" }
     ],
 
     RenderTarget: [null,
         /// 1.不透明物体渲染目标
         { ID: 1, ColorTarget: 1, DepthTarget: 1 },
-        /// 1.透明物体渲染目标
-        { ID: 1, ColorTarget: 2, DepthTarget: 1 }
+        /// 2.透明物体渲染目标
+        { ID: 2, ColorTarget: 2, DepthTarget: 1 },
+        /// 3.不透明物体轮廓提取目标
+        { ID: 3, ColorTarget: 1, DepthTarget: 0 }
     ],
 
     BlendState: [
@@ -37,6 +39,34 @@ MiaokitJS.ShaderLab.Pipeline = {
         { ID: 2, Enable: true, Write: false, TestOP: "LessEqual" }
     ],
 
+    /* 渲染流程描述：
+     * 绘制不透明显示轮廓对象到不透明缓存
+     * 从不透明缓存提取轮廓到模糊缓存
+     * 绘制不透明不显示轮廓对象到不透明缓存
+     * 从不透明缓存提取高光数据到高光缓存
+     *
+     * 绘制透明显示轮廓对象到透明缓存
+     * 从透明缓存提取轮廓到模糊缓存
+     * 绘制透明不显示轮廓对象到透明缓存
+     * 从透明缓存提取高光数据到高光缓存
+     *
+     * !!!半透明物体选中问题（不同顺序的物体总是写入，不保证记录的ID是最前面的）
+     * !!!非透明物体轮廓显示在半透明物体之上，而非画布的边缘，以为我们使用深度检测边缘，但是半透明物体并没有写入深度
+     * 
+     * 透明物体也要按顺序绘制一遍，这样才能得到最前端ID
+     * 没有iOS设备支持渲染到浮点纹理OES_texture_float OES_texture_half_float
+     * WEBGL_color_buffer_float
+     * 显然有些iOS设备支持 EXT_color_buffer_half_float
+     * 
+     * 使用透明通道记录对象是否是边缘
+     * 使用蒙版来运行深度写入部分
+     * 要使用透明体，必须让所有像素通过测试，要绘制最前端ID，则必须有深度写入，所以透明物体要绘制两遍，对于海量半透明物体（树叶）又浪费了性能
+     * 如果让局部进行深度覆盖，局部不覆盖
+     * 裁剪测试只对像素起作用
+     * 对于不透明物体也用混合，设置A=0为高丽区域
+     * 必须通过所有，在指定位置又不能通过所有，唯一方法是对局部进行深度写入
+     */
+
     Pass: [
         {
             Name: "绘制不透明物体",
@@ -50,6 +80,21 @@ MiaokitJS.ShaderLab.Pipeline = {
             },
             Depth: 1,
             Blend: 0
+        },
+        {
+            Name: "提取不透明物体轮廓",
+            Type: "Postprocess",
+            Mask: [],
+            Target: 3,
+            Depth: 0,
+            Blend: 1,
+            Shader: "EdgeDetection",
+            SetUniforms: function (pUniforms) {
+                let pCanvas = MiaokitJS["GL"]["Ctx"].canvas;
+
+                pUniforms.u_MainTex = MiaokitJS.ShaderLab.Pipeline.DepthTarget[1].Texture;
+                pUniforms.u_InvTexSize = [1.0 / pCanvas.width, 1.0 / pCanvas.height];
+            }
         },
         {
             Name: "绘制透明物体",
@@ -220,3 +265,35 @@ void main()
 }
         `
 };
+
+MiaokitJS.ShaderLab.Shader["EdgeDetection"] = {
+    mark: ["Opaque"],
+    code_vs: `
+void main()
+{
+    gl_Position = vec4(a_Position, 1.0);
+    v_UV = a_UV;
+}
+        `,
+    code_fs: `
+#extension GL_EXT_frag_depth : enable
+uniform vec2 u_InvTexSize;
+
+void main()
+{
+	vec4 _OffsetUV = vec4(1.0, 0.0, 0.0, 1.0) * vec4(u_InvTexSize, u_InvTexSize);\
+
+    vec4 _Color1 = Tex2D(u_MainTex, v_UV + _OffsetUV.xy);
+    vec4 _Color2 = Tex2D(u_MainTex, v_UV - _OffsetUV.xy);
+    vec4 _Color3 = Tex2D(u_MainTex, v_UV + _OffsetUV.yw);
+    vec4 _Color4 = Tex2D(u_MainTex, v_UV - _OffsetUV.yw);
+
+    float _Diff1 = (floor(_Color1.r) - floor(_Color2.r)) * 0.5;
+	float _Diff2 = (floor(_Color3.r) - floor(_Color4.r)) * 0.5;
+	float _Diff = length(vec2(_Diff1, _Diff2));
+    gl_FragDepthEXT = 1.0;
+    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0) * _Diff;
+}
+        `
+};
+

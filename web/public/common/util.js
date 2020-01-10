@@ -940,11 +940,12 @@ MiaokitJS.ShaderLab.Pipeline = {
         { ID: 2, Format: "RGBA32_FLOAT" }
     ],
     DepthTarget: [null,
-        { ID: 1, Format: "D16_UNORM" }
+        { ID: 1, Format: "D24_UNORM" }
     ],
     RenderTarget: [null,
         { ID: 1, ColorTarget: 1, DepthTarget: 1 },
-        { ID: 1, ColorTarget: 2, DepthTarget: 1 }
+        { ID: 2, ColorTarget: 2, DepthTarget: 1 },
+        { ID: 3, ColorTarget: 1, DepthTarget: 0 }
     ],
     BlendState: [
         { ID: 0, Enable: false },
@@ -968,6 +969,20 @@ MiaokitJS.ShaderLab.Pipeline = {
             },
             Depth: 1,
             Blend: 0
+        },
+        {
+            Name: "提取不透明物体轮廓",
+            Type: "Postprocess",
+            Mask: [],
+            Target: 3,
+            Depth: 0,
+            Blend: 1,
+            Shader: "EdgeDetection",
+            SetUniforms: function (pUniforms) {
+                let pCanvas = MiaokitJS["GL"]["Ctx"].canvas;
+                pUniforms.u_MainTex = MiaokitJS.ShaderLab.Pipeline.DepthTarget[1].Texture;
+                pUniforms.u_InvTexSize = [1.0 / pCanvas.width, 1.0 / pCanvas.height];
+            }
         },
         {
             Name: "绘制透明物体",
@@ -1129,6 +1144,36 @@ void main()
 {
     gl_FragColor = Tex2D(u_MainTex, v_UV);
     gl_FragColor /= gl_FragColor.a;
+}
+        `
+};
+MiaokitJS.ShaderLab.Shader["EdgeDetection"] = {
+    mark: ["Opaque"],
+    code_vs: `
+void main()
+{
+    gl_Position = vec4(a_Position, 1.0);
+    v_UV = a_UV;
+}
+        `,
+    code_fs: `
+#extension GL_EXT_frag_depth : enable
+uniform vec2 u_InvTexSize;
+
+void main()
+{
+	vec4 _OffsetUV = vec4(1.0, 0.0, 0.0, 1.0) * vec4(u_InvTexSize, u_InvTexSize);\
+
+    vec4 _Color1 = Tex2D(u_MainTex, v_UV + _OffsetUV.xy);
+    vec4 _Color2 = Tex2D(u_MainTex, v_UV - _OffsetUV.xy);
+    vec4 _Color3 = Tex2D(u_MainTex, v_UV + _OffsetUV.yw);
+    vec4 _Color4 = Tex2D(u_MainTex, v_UV - _OffsetUV.yw);
+
+    float _Diff1 = (floor(_Color1.r) - floor(_Color2.r)) * 0.5;
+	float _Diff2 = (floor(_Color3.r) - floor(_Color4.r)) * 0.5;
+	float _Diff = length(vec2(_Diff1, _Diff2));
+    gl_FragDepthEXT = 1.0;
+    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0) * _Diff;
 }
         `
 };
