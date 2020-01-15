@@ -64,7 +64,7 @@ module.exports = {
       ]
     },
     plugins: [
-      new CleanWebpackPlugin(),
+     // new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
         title: 'production',
         template: './index.html'    // 模板文件位置
