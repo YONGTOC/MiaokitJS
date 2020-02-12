@@ -10,3 +10,5 @@
 /www/examples/temp/
 /web/private/node_modules
 /web/public/data
+/web/public/_park
+/web/public/common/antd/lib

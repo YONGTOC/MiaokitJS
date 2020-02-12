@@ -640,7 +640,7 @@ class App {
         pThis.m_pGis = MiaokitJS.Miaokit.gis;
         pThis.m_pGis.imageServer = "http://t%d.tianditu.gov.cn/DataServer?T=img_c&tk=3d26628c3a0e2694fecfbbb983ff7d87&x=%d&y=%d&l=%d";
         pThis.m_pGis.terrainServer = "https://t%d.tianditu.gov.cn/dem_sjk/DataServer?T=ele_c&tk=3d26628c3a0e2694fecfbbb983ff7d87&x=%d&y=%d&l=%d";
-        pThis.m_pDioramas = new MiaokitJS.Dioramas3MX("./diors/Production_1.3mx", {
+        pThis.m_pDioramas = new MiaokitJS.Dioramas3MX("./data/diors/Production_1.3mx", {
             m_pGis: MiaokitJS.Miaokit.gis,
             m_mLngLat: { x: 110.341637, y: 25.270798 },
             m_mOffset: { x: -24.0, y: 242.0, z: 0.0 }
