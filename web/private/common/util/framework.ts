@@ -36,22 +36,7 @@ class App {
         this.m_pPicker = new MiaokitJS.UTIL.EntityPicker(this.m_pCameraCtrl);
 
         this.RegisterEvent(this.m_pCanvas2D, MiaokitJS.Miaokit.cameraCtrl);
-
-        this.m_pCameraCtrl.Jump(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, {
-            m_nLng: 110.326477,
-            m_nLat: 25.247935,
-            m_mTarget: { x: 0.0, y: 0.0, z: 0.0 },
-            m_nDistance: 200.0,
-            m_nPitch: 30.0,
-            m_nYaw: 0
-        });
-
-        // 获取GIS对象
-        //this.m_pGis = MiaokitJS.Miaokit.gis;
-        //this.m_pGis.imageServer = "http://t%d.tianditu.gov.cn/DataServer?T=img_c&tk=3d26628c3a0e2694fecfbbb983ff7d87&x=%d&y=%d&l=%d"; // vec_c
-        //this.m_pGis.terrainServer = "https://t%d.tianditu.gov.cn/dem_sjk/DataServer?T=ele_c&tk=3d26628c3a0e2694fecfbbb983ff7d87&x=%d&y=%d&l=%d";
-
-        //this.InitProject();
+        this.InitProject();
     }
 
     /// SVE核心逻辑功能帧更新。
@@ -59,14 +44,19 @@ class App {
         this.m_nTick++;
         this.Draw2D();
 
+        if (this.m_pStartMovie) {
+            this.m_pStartMovie();
+            return;
+        }
+
         this.m_pCameraCtrl.Update();
 
-        if (this["m_pDioramas"]) {
-            this["m_pDioramas"].Update();
+        if (this.m_pDioramas) {
+            this.m_pDioramas.Update();
         }
 
         if (this.m_pGis) {
-            this.m_pGis.Update(this.m_pCameraCtrl.lng * (Math.PI / 180), this.m_pCameraCtrl.lat * (Math.PI / 180), this.m_pCameraCtrl.height);
+            this.m_pGis.Update(this.m_pCameraCtrl.lng, this.m_pCameraCtrl.lat, this.m_pCameraCtrl.height);
         }
     }
 
@@ -120,9 +110,17 @@ class App {
                 pCanvas.fillText(pInfo, 10, nOffset);
                 nOffset += 18;
             }
+
+
+            if (MiaokitJS.Profiler) {
+                let pInfo = MiaokitJS.Profiler.m_pMsg;
+                pCanvas.strokeText(pInfo, 10, nOffset);
+                pCanvas.fillText(pInfo, 10, nOffset);
+                nOffset += 18;
+            }
+
         }
     }
-
 
     /// 注册交互事件。
     private RegisterEvent(pCavans: HTMLElement, pCamera): void {
@@ -254,15 +252,15 @@ class App {
 
     /// 初始化项目。
     private InitProject(): void {
-        let pThis: any = this;
+        let pThis = this;
 
-        pThis.m_pCameraCtrl.Jump(MiaokitJS.UTIL.CTRL_MODE./*PANORAMA*/EAGLE, {
-            m_nLng: 110.326477,
-            m_nLat: 25.247935,
+        pThis.m_pCameraCtrl.Jump(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, {
+            m_nLng: 110.344301,
+            m_nLat: 25.272208,
             m_mTarget: { x: 0.0, y: 0.0, z: 0.0 },
-            m_nDistance: 20000.0,
+            m_nDistance: 30.0,
             m_nPitch: 30.0,
-            m_nYaw: 0
+            m_nYaw: 21
         });
 
         // 获取GIS对象
@@ -270,71 +268,227 @@ class App {
         pThis.m_pGis.imageServer = "http://t%d.tianditu.gov.cn/DataServer?T=img_c&tk=3d26628c3a0e2694fecfbbb983ff7d87&x=%d&y=%d&l=%d"; // vec_c
         pThis.m_pGis.terrainServer = "https://t%d.tianditu.gov.cn/dem_sjk/DataServer?T=ele_c&tk=3d26628c3a0e2694fecfbbb983ff7d87&x=%d&y=%d&l=%d";
 
-        /// 添加桂林区域3D地图
-        pThis.m_pGis.AddMapbox({
-            m_mOffset: { x: 0.0, y: 160.0, z: 0.0 },
-            m_mScale: { x: 0.90, y: 1.0, z: 0.91 },
-            m_mLngLat: { x: 110.310452, y: 25.276903 },
-            m_mSize: { x: 10000.0, y: 10000.0 }
+        // 添加实景对象
+        pThis.m_pDioramas = new MiaokitJS.Dioramas3MX("./diors/Production_1.3mx", {
+            m_pGis: MiaokitJS.Miaokit.gis,
+            m_mLngLat: { x: 110.341637, y: 25.270798 },
+            m_mOffset: { x: -24.0, y: 242.0, z: 0.0 }
         });
 
-        /// 注册添加一个SVE工程到GIS中，实现动态管理
-        pThis.m_pGis.AddSvetile({
-            m_nID: 1,
-            m_nFlags: 0,
-            m_pUrl: "data/upload/admin/project/20191018/5da9159b2005e.txt",
-            m_mLngLat: { x: 110.326814, y: 25.248106 },
-            m_mSize: { x: 1000.0, y: 1000.0 },
-            OnActive: function (pTile, bActive) {
-                if (bActive) {
-                    pTile.m_mOffet = { x: -450.0, y: 155.0, z: -400.0 };
-                    pTile.m_mEuler = { x: 0.0, y: -42 + 180.0, z: 0.0 };
+        // 添加开始动画
+        pThis.InitMovie();
+    }
 
-                    let nIndex = 0;
+    /// 初始化开始动画
+    private InitMovie(): void {
+        let pThis: any = this;
+        let pCamera = this.m_pCameraCtrl;
+        let pDoing = null;
 
-                    /// 遍历当前瓦片所有场景，打印场景ID
-                    for (let pScene of pTile.scenes) {
-                        if (2 !== nIndex++) {
-                            pScene.OnSelect = function () {
-                                let pObject = pScene.object3D;
-                                pObject.transform.localPosition = pTile.m_mOffet;
-                                pObject.transform.localEuler = pTile.m_mEuler;
+        let aList: any[] = [
+            {
+                m_pCtrl: "Jump",
+                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
+                m_pParam: {
+                    m_nLng: 110.344301,
+                    m_nLat: 25.272208,
+                    m_mTarget: { x: -75126.2, y: 170.0, z: -1438049.8 },
+                    m_nDistance: 2003360.0,
+                    m_nPitch: 5.0,
+                    m_nYaw: -70.0
+                }
+            },
+            {
+                m_pCtrl: "Fly",
+                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
+                m_pParam: {
+                    m_nLng: 110.344301,
+                    m_nLat: 25.272208,
+                    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
+                    m_nDistance: 2003360.0,
+                    m_nPitch: 5.0,
+                    m_nYaw: -45.0
+                }
+            },
+            {
+                m_pCtrl: "Fly",
+                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
+                m_pParam: {
+                    m_nLng: 110.344301,
+                    m_nLat: 25.272208,
+                    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
+                    m_nDistance: 570475.0,
+                    m_nPitch: 5.0,
+                    m_nYaw: 90.0
+                }
+            },
+            {
+                m_pCtrl: "Fly",
+                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
+                m_nSpeed: 0.05,
+                m_pParam: {
+                    m_nLng: 110.344301,
+                    m_nLat: 25.272208,
+                    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
+                    m_nDistance: 95500.0,
+                    m_nPitch: 19.0,
+                    m_nYaw: 90.0
+                }
+            },
+            {
+                m_pCtrl: "Fly",
+                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
+                m_nSpeed: 0.02,
+                m_pParam: {
+                    m_nLng: 110.344301,
+                    m_nLat: 25.272208,
+                    m_mTarget: { x: 18.0, y: 170.0, z: -3.0 },
+                    m_nDistance: 288.0,
+                    m_nPitch: 18.6,
+                    m_nYaw: 67.4
+                }
+            },
+            {
+                m_pCtrl: "Fly",
+                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
+                m_pParam: {
+                    m_nLng: 110.344301,
+                    m_nLat: 25.272208,
+                    m_mTarget: { x: 25.0, y: 170.0, z: -35.0 },
+                    m_nDistance: 313.0,
+                    m_nPitch: 15.0,
+                    m_nYaw: -122.0
+                }
+            },
+            {
+                m_pCtrl: "Fly",
+                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
+                m_pParam: {
+                    m_nLng: 110.344301,
+                    m_nLat: 25.272208,
+                    m_mTarget: { x: 25.0, y: 170.0, z: -35.0 },
+                    m_nDistance: 313.0,
+                    m_nPitch: 15.0,
+                    m_nYaw: -122.0
+                },
+                Do: function () {
+                    let nStart = 15.0;
+                    let nEnd = 175.0;
 
-                                let nHeight = 0.0;
-
-                                /// 遍历当前场景所有楼层，打印楼层ID
-                                for (let pLayer of pScene.layers) {
-                                    let pObject = pLayer.object3D;
-                                    pObject.transform.localPosition = { x: 0, y: nHeight, z: 0 }; nHeight += 9.0;
-                                    pLayer._Draw();
-                                }
-                            }
-
-                            continue;
+                    pDoing = function () {
+                        if (nStart > nEnd) {
+                            pDoing = null;
                         }
-
-                        let pObject = pScene.object3D;
-                        pObject.transform.localPosition = pTile.m_mOffet;
-                        pObject.transform.localEuler = pTile.m_mEuler;
-
-                        let nHeight = 0.0;
-
-                        /// 遍历当前场景所有楼层，打印楼层ID
-                        for (let pLayer of pScene.layers) {
-                            let pObject = pLayer.object3D;
-                            pObject.transform.localPosition = { x: 0.0, y: nHeight, z: 0.0 }; nHeight += 9.0;
-                            pLayer._Draw();
+                        else {
+                            nStart += 1.0;
+                            MiaokitJS.ShaderLab.SetSunlight(0.0, nStart, 1.0);
                         }
-
-                        break;
                     }
                 }
-                else {
-                    console.log("隐藏显示");
+            }
+            //{
+            //    m_pCtrl: "Fly",
+            //    m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
+            //    m_pParam: {
+            //        m_nLng: 110.344301,
+            //        m_nLat: 25.272208,
+            //        m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
+            //        m_nDistance: 283.0,
+            //        m_nPitch: 5.0,
+            //        m_nYaw: 90.0
+            //    }
+            //},
+            //{
+            //    m_pCtrl: "Fly",
+            //    m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
+            //    m_pParam: {
+            //        m_nLng: 110.344301,
+            //        m_nLat: 25.272208,
+            //        m_mTarget: { x: -50.0, y: 170.0, z: 39.0 },
+            //        m_nDistance: 165.0,
+            //        m_nPitch: 10.0,
+            //        m_nYaw: -56.0
+            //    }
+            //},
+            //{
+            //    m_pCtrl: "Fly",
+            //    m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
+            //    m_pParam: {
+            //        m_nLng: 110.344301,
+            //        m_nLat: 25.272208,
+            //        m_mTarget: { x: 0, y: 170.0, z: 0 },
+            //        m_nDistance: 180.0,
+            //        m_nPitch: 11.05,
+            //        m_nYaw: -72.73
+            //    },
+            //    Do: function () {
+            //        let nStart = 15.0;
+            //        let nEnd = 175.0;
+
+            //        pDoing = function () {
+            //            if (nStart > nEnd) {
+            //                pDoing = null;
+            //            }
+            //            else {
+            //                nStart += 1.0;
+            //                MiaokitJS.ShaderLab.SetSunlight(0.0, nStart, 1.0);
+            //            }
+            //        }
+            //    }
+            //}
+        ];
+
+        /// 添加开始动画
+        pThis.m_pStartMovie = (function () {
+            let nIndex = 0;
+            let pFlash = function () {
+                /// 等待程序初始化到最高性能
+                if (0 < nIndex && 120 > pThis.m_nTick) {
+                    return false;
+                }
+
+                if (!pDoing && !pCamera.m_pFlyTask) {
+                    if (nIndex === aList.length) {
+                        return true;
+                    }
+
+                    let pState = aList[nIndex];
+                    if (pState.m_pCtrl) {
+                        pCamera[pState.m_pCtrl](pState.m_nMode, pState.m_pParam, pState.m_nSpeed);
+                    }
+                    if (pState.Do) {
+                        pState.Do();
+                    }
+
+                    nIndex++;
+                }
+                else if (pDoing) {
+                    pDoing();
+                }
+
+                return false;
+            };
+
+            return function () {
+                let bEnd = pFlash();
+
+                pCamera.Update();
+
+                if (pThis.m_pDioramas) {
+                    pThis.m_pDioramas.Update();
+                }
+
+                if (pThis.m_pGis) {
+                    pThis.m_pGis.Update(pCamera.lng, pCamera.lat, 5 > nIndex ? 50000.0 : 5000.0);
+                }
+
+                if (bEnd) {
+                    pThis.m_pStartMovie = null;
                 }
             }
-        });
+        })();
     }
+
 
     /// 画布容器。
     public m_pContainer: any = null;
@@ -354,54 +508,19 @@ class App {
 
     /// GIS对象。
     private m_pGis: any = null;
+    /// 实景对象。
+    private m_pDioramas: any = null;
     /// 摄像机对象。
     private m_pCamera: any = null;
     /// 摄像机控制器。
     private m_pCameraCtrl: any = null;
     /// 对象拾取器。
     private m_pPicker: any = null;
+    /// 开始动画。
+    private m_pStartMovie: any = null;
 }
 
 
 MiaokitJS.UTIL = MiaokitJS.UTIL || {};
 MiaokitJS.UTIL.App = App;
 MiaokitJS.App = new App();
-
-
-class Shader {
-    public constructor() {
-        // this["u_MainTex"]["Slot"]();
-        // 解析着色器，得到所有统一变量（名称与查找），调用统一变量初始化方法初始化统一变量，如果材质实例没有赋值，则从着色器中取默认值
-    }
-}
-
-class ShaderLab {
-    public constructor() {
-
-    }
-
-    /// 获取着色器程序实例
-    public GetShader(pName) {
-        let pShader = this.m_pStore[pName];
-        if (!pShader) {
-            console.error("Can't find shader:", pName);
-            return null;
-        }
-
-        if (pShader["Instance"]) {
-            return pShader["Instance"];
-        }
-    }
-
-
-    /// 着色器代码仓库
-    private m_pCodeStore = {};
-
-    /// 着色器程序仓库
-    private m_pStore = {
-        "Default": {
-            "VS": "Default.vs.glsl",
-            "FS": "Default.fs.glsl"
-        }
-    };
-}

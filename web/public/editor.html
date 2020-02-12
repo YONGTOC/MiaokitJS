@@ -25,36 +25,50 @@
             Active: function () {
                 let pTile = this.m_pTile;
 
-                pTile.m_mOffet = { x: 0.0, y: 0.0, z: 0.0 };
-                pTile.m_mEuler = { x: 0.0, y: 0.0, z: 0.0 };
+                pTile.m_mOffet = { x: 200.0, y: 167.0, z: -50.0 };
+                pTile.m_mEuler = { x: 0.0, y: -85.0, z: 0.0 };
 
                 /// 遍历当前瓦片所有场景，打印场景ID
                 for (let pScene of pTile.scenes) {
-                    let pObject = pScene.object3D;
-                    pObject.transform.localPosition = { x: 0.0, y: 0.0, z: 0.0 };
-                    pObject.transform.euler = { x: 0.0, y: 0.0, z: 0.0 };
+                    if ("Default" === pScene.id) {
+                        let pObject = pScene.object3D;
+                        pObject.transform.localPosition = pTile.m_mOffet;
+                        pObject.transform.euler = pTile.m_mEuler;
 
-                    let nHeight = 0.0;
+                        let nHeight = 0.0;
 
-                    /// 遍历当前场景所有楼层，打印楼层ID
-                    for (let pLayer of pScene.layers) {
-                        let pObject = pLayer.object3D;
+                        /// 遍历当前场景所有楼层，打印楼层ID
+                        for (let pLayer of pScene.layers) {
+                            let pObject = pLayer.object3D;
 
-                        pObject.transform.localPosition = { x: 0.0, y: nHeight, z: 0.0 }; nHeight += 9.0;
+                            pObject.transform.localPosition = { x: 0.0, y: nHeight, z: 0.0 }; nHeight += 9.0;
 
-                        pLayer._Draw();
+                            pLayer._Draw();
+                        }
+
+
+                        Root = pObject;
                     }
 
-                    
-                    Root = pObject;
-
-                    break;
+                    //break;
                 }
             }
         });
         MiaokitJS.Preload();
 
         window.onload = function () {
+            MiaokitJS.Load(function () {
+                MiaokitJS.App.Start();
+            }, function (nEventID) {
+                MiaokitJS.App.Update();
+            });
+
+            window.oncontextmenu = function (e) {
+                e.preventDefault();
+            };
+        };
+
+        window.onload1 = function () {
             require.config({
                 baseUrl: "editor",
                 paths: {
@@ -101,7 +115,7 @@
              * 材质系统和渲染管线由JS端配置，材质由JS端主动创建，Sisyphus场景同时分配JSID。
              * 网格材质生命期管理，预制件材质类型匹配
              * 管线通道中增设glCullFace，glPolygonOffset设置，使用分层渲染，远近两组对象的绘制使用使用不同的裁剪距离设置。
-             * 
+             *
              * 绘制不含被选中对象深度缓存
              * 只绘制高亮物体，做深度测试（这样可以判断边缘是被隐藏的边缘：对象区域B通道为1，对象可见区域通道G为1）
              * 降采样
@@ -110,20 +124,19 @@
              * 混合结果
              * 需要6遍处理，（放大对象再绘制的方法，如果选中整个场景会带来巨额开销）
              * 在鼠标位置绘制ID。
-             * 
+             *
              * 绘制被选中对象，进行边缘检测，绘制其它对象，对边缘进行模糊，叠加（乘法）
-             * 
+             *
              * 最理想方法：
              * 绘制不透明轮廓
              * 绘制不透明
              * 绘制透明轮廓
              * 提取轮廓线（A值小于1的区域）
              * 绘制透明，提取高光，提取ID，抹除ID
-             * 
-             * 
+             *
              * 提取命中对象，在着色器中进行与不透明深度的深度测试，
-             * 
-             * 
+             * 加载模型URL类型需要配置。
+             *
              */
         };
     </script>
@@ -133,7 +146,7 @@
 <body style="height: 100%; margin: 0; padding: 0;">
     <!-- html,body { height: 100%;margin: 0; padding: 0;} div height: 100% 才会起效，因为继承父级高度-->
     <!-- 微信端不能为任意尺寸，否则会崩溃 -->
-    <!--<div id="unityContainer" style="width: 100%; height: 100%; background:blue; margin: auto"></div>-->
-    <div id="viewContainer" style="width: 100%; height: 100%; background:blue; margin: auto"></div>
+    <div id="unityContainer" style="width: 100%; height: 100%; background:blue; margin: auto"></div>
+    <!--<div id="viewContainer" style="width: 100%; height: 100%; background:blue; margin: auto"></div>-->
 </body>
 </html>

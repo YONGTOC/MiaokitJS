@@ -1,299 +1,768 @@
 
 MiaokitJS.ShaderLab.Pipeline = {
-    "_name": "Pipeline",
-
-    ColorTarget: [null,
-        /// 1.»æÖÆ²»Í¸Ã÷ÎïÌåÑÕÉ«»º´æ;
-        { ID: 1, Format: "RGBA32_FLOAT" },
-        /// 2.»æÖÆÍ¸Ã÷ÎïÌåÑÕÉ«»º´æ
-        { ID: 2, Format: "RGBA32_FLOAT" }
-    ],
-
-    DepthTarget: [null,
-        /// 1.»æÖÆÎïÌåÉî¶È»º´æ
-        { ID: 1, Format: "D24_UNORM" }
-    ],
-
     RenderTarget: [null,
-        /// 1.²»Í¸Ã÷ÎïÌåäÖÈ¾Ä¿±ê
-        { ID: 1, ColorTarget: 1, DepthTarget: 1 },
-        /// 2.Í¸Ã÷ÎïÌåäÖÈ¾Ä¿±ê
-        { ID: 2, ColorTarget: 2, DepthTarget: 1 },
-        /// 3.²»Í¸Ã÷ÎïÌåÂÖÀªÌáÈ¡Ä¿±ê
-        { ID: 3, ColorTarget: 1, DepthTarget: 0 }
+        /// 1.ç»˜åˆ¶ç‰©ä½“é¢œè‰²ç¼“å­˜
+        { ID: 1, Format: "RGBA16_FLOAT" },
+        /// 2.è½®å»“ä¸é«˜å…‰é¢œè‰²ç¼“å­˜
+        { ID: 2, Format: "RGBA16_FLOAT" },
+        /// 3.ç»˜åˆ¶ä¸é€æ˜ç‰©ä½“æ·±åº¦ç¼“å­˜
+        { ID: 3, Format: "D24_UNORM" },
+        /// 4.é«˜å…‰æ¨¡ç³Šé¢œè‰²ç¼“å­˜1
+        { ID: 4, Format: "RGBA16_FLOAT"/*, Width: 512, Height: 1024*/ },
+        /// 5.é«˜å…‰æ¨¡ç³Šé¢œè‰²ç¼“å­˜2
+        { ID: 5, Format: "RGBA16_FLOAT"/*, Width: 512, Height: 1024*/ },
     ],
 
-    BlendState: [
-        /// 0.²»ÆôÓÃ»ìºÏ
-        { ID: 0, Enable: false },
-        /// 1.ÆôÓÃ»ìºÏ£¬ÓÃÓÚ»æÖÆÍ¸Ã÷ÎïÌå
-        { ID: 1, Enable: true, ColorOP: "Add", AlphaOP: "Add", ColorSrc: "One", ColorDest: "One", AlphaSrc: "One", AlphaDest: "One" }
+    Resource: [null,
+        /// 1.æ˜Ÿç©ºèƒŒæ™¯è´´å›¾
+        { ID: 1, TYPE: "2D", URL: "./data/star.jpg" },
     ],
-
-    DepthState: [
-        /// 0.²»ÆôÓÃÉî¶ÈºÍÄ£°å²Ù×÷
-        { ID: 0, Enable: false },
-        /// 1.ÆôÓÃÉî¶È²âÊÔ£¬ÆôÓÃÉî¶ÈĞ´Èë
-        { ID: 1, Enable: true, Write: true, TestOP: "LessEqual" },
-        /// 2.ÆôÓÃÉî¶È²âÊÔ£¬¹Ø±ÕÉî¶ÈĞ´Èë
-        { ID: 2, Enable: true, Write: false, TestOP: "LessEqual" }
-    ],
-
-    /* äÖÈ¾Á÷³ÌÃèÊö£º
-     * »æÖÆ²»Í¸Ã÷ÏÔÊ¾ÂÖÀª¶ÔÏóµ½²»Í¸Ã÷»º´æ
-     * ´Ó²»Í¸Ã÷»º´æÌáÈ¡ÂÖÀªµ½Ä£ºı»º´æ
-     * »æÖÆ²»Í¸Ã÷²»ÏÔÊ¾ÂÖÀª¶ÔÏóµ½²»Í¸Ã÷»º´æ
-     * ´Ó²»Í¸Ã÷»º´æÌáÈ¡¸ß¹âÊı¾İµ½¸ß¹â»º´æ
-     *
-     * »æÖÆÍ¸Ã÷ÏÔÊ¾ÂÖÀª¶ÔÏóµ½Í¸Ã÷»º´æ
-     * ´ÓÍ¸Ã÷»º´æÌáÈ¡ÂÖÀªµ½Ä£ºı»º´æ
-     * »æÖÆÍ¸Ã÷²»ÏÔÊ¾ÂÖÀª¶ÔÏóµ½Í¸Ã÷»º´æ
-     * ´ÓÍ¸Ã÷»º´æÌáÈ¡¸ß¹âÊı¾İµ½¸ß¹â»º´æ
-     *
-     * !!!°ëÍ¸Ã÷ÎïÌåÑ¡ÖĞÎÊÌâ£¨²»Í¬Ë³ĞòµÄÎïÌå×ÜÊÇĞ´Èë£¬²»±£Ö¤¼ÇÂ¼µÄIDÊÇ×îÇ°ÃæµÄ£©
-     * !!!·ÇÍ¸Ã÷ÎïÌåÂÖÀªÏÔÊ¾ÔÚ°ëÍ¸Ã÷ÎïÌåÖ®ÉÏ£¬¶ø·Ç»­²¼µÄ±ßÔµ£¬ÒÔÎªÎÒÃÇÊ¹ÓÃÉî¶È¼ì²â±ßÔµ£¬µ«ÊÇ°ëÍ¸Ã÷ÎïÌå²¢Ã»ÓĞĞ´ÈëÉî¶È
-     * 
-     * Í¸Ã÷ÎïÌåÒ²Òª°´Ë³Ğò»æÖÆÒ»±é£¬ÕâÑù²ÅÄÜµÃµ½×îÇ°¶ËID
-     * Ã»ÓĞiOSÉè±¸Ö§³ÖäÖÈ¾µ½¸¡µãÎÆÀíOES_texture_float OES_texture_half_float
-     * WEBGL_color_buffer_float
-     * ÏÔÈ»ÓĞĞ©iOSÉè±¸Ö§³Ö EXT_color_buffer_half_float
-     * 
-     * Ê¹ÓÃÍ¸Ã÷Í¨µÀ¼ÇÂ¼¶ÔÏóÊÇ·ñÊÇ±ßÔµ
-     * Ê¹ÓÃÃÉ°æÀ´ÔËĞĞÉî¶ÈĞ´Èë²¿·Ö
-     * ÒªÊ¹ÓÃÍ¸Ã÷Ìå£¬±ØĞëÈÃËùÓĞÏñËØÍ¨¹ı²âÊÔ£¬Òª»æÖÆ×îÇ°¶ËID£¬Ôò±ØĞëÓĞÉî¶ÈĞ´Èë£¬ËùÒÔÍ¸Ã÷ÎïÌåÒª»æÖÆÁ½±é£¬¶ÔÓÚº£Á¿°ëÍ¸Ã÷ÎïÌå£¨Ê÷Ò¶£©ÓÖÀË·ÑÁËĞÔÄÜ
-     * Èç¹ûÈÃ¾Ö²¿½øĞĞÉî¶È¸²¸Ç£¬¾Ö²¿²»¸²¸Ç
-     * ²Ã¼ô²âÊÔÖ»¶ÔÏñËØÆğ×÷ÓÃ
-     * ¶ÔÓÚ²»Í¸Ã÷ÎïÌåÒ²ÓÃ»ìºÏ£¬ÉèÖÃA=0Îª¸ßÀöÇøÓò
-     * ±ØĞëÍ¨¹ıËùÓĞ£¬ÔÚÖ¸¶¨Î»ÖÃÓÖ²»ÄÜÍ¨¹ıËùÓĞ£¬Î¨Ò»·½·¨ÊÇ¶Ô¾Ö²¿½øĞĞÉî¶ÈĞ´Èë
-     */
 
     Pass: [
+        // 0ã€å¯ç”¨æ·±åº¦æµ‹è¯•ï¼Œå¯ç”¨æ·±åº¦å†™å…¥ï¼Œå…³é—­æ··åˆã€‚æ¸…ç©ºç”»å¸ƒï¼Œç»˜åˆ¶å¤©ç©ºç›’
         {
-            Name: "»æÖÆ²»Í¸Ã÷ÎïÌå",
-            Type: "Render",
+            Name: "ç»˜åˆ¶å¤©ç©ºç›’",
+            Type: "Clear",
             Mask: ["Opaque"],
-            Target: 1,
+            RenderTarget: [1, 0],
             ClearTarget: {
                 Color: { r: 0.198, g: 0.323, b: 0.561, a: 1.0 },
-                Depth: 1.0,
-                Stencil: 0.0
+                Depth: 1.0
             },
-            Depth: 1,
-            Blend: 0
         },
+        // 1ã€å¯ç”¨æ·±åº¦æµ‹è¯•ï¼Œå¯ç”¨æ·±åº¦å†™å…¥ï¼Œå…³é—­æ··åˆã€‚ç»˜åˆ¶ä¸é€æ˜ç‰©ä½“ï¼Œæ— è½®å»“å¯¹è±¡Aå€¼ä¸º1ï¼Œæœ‰è½®å»“å¯¹è±¡Aå€¼ä¸º0.99
         {
-            Name: "ÌáÈ¡²»Í¸Ã÷ÎïÌåÂÖÀª",
-            Type: "Postprocess",
-            Mask: [],
-            Target: 3,
-            Depth: 0,
-            Blend: 1,
-            Shader: "EdgeDetection",
-            SetUniforms: function (pUniforms) {
-                let pCanvas = MiaokitJS["GL"]["Ctx"].canvas;
-
-                pUniforms.u_MainTex = MiaokitJS.ShaderLab.Pipeline.DepthTarget[1].Texture;
-                pUniforms.u_InvTexSize = [1.0 / pCanvas.width, 1.0 / pCanvas.height];
+            Name: "ç»˜åˆ¶ä¸é€æ˜ç‰©ä½“",
+            Type: "Render",
+            Mask: ["Opaque"],
+            RenderTarget: [1, 3],
+            ClearTarget: {
+                Depth: 1.0
+            },
+            Depth: {
+                Func: "LEQUAL",
+                Write: true
             }
         },
+        // 2ã€å¯ç”¨æ·±åº¦æµ‹è¯•ï¼Œå…³é—­æ·±åº¦å†™å…¥ï¼Œå¼€å¯æ··åˆã€‚ç»˜åˆ¶åŠé€æ˜ç‰©ä½“ï¼Œæ— è½®å»“å¯¹è±¡Aå€¼ä¸º1ï¼Œæœ‰è½®å»“å¯¹è±¡Aå€¼ä¸º0.99
         {
-            Name: "»æÖÆÍ¸Ã÷ÎïÌå",
+            Name: "ç»˜åˆ¶åŠé€æ˜ç‰©ä½“",
             Type: "Render",
             Mask: ["Transparent"],
-            Target: 1, // 2
-            Depth: 2,
-            Blend: 1
+            RenderTarget: [1, 3],
+            Depth: {
+                Func: "LEQUAL",
+                Write: false
+            },
+            Blend: {
+                ColorFunc: "FUNC_ADD",
+                ColorSrc: "ONE",
+                ColorDest: "ONE",
+                AlphaFunc: "FUNC_ADD",
+                AlphaSrc: "ONE",
+                AlphaDest: "ONE"
+            }
         },
+        // 3ã€å…³é—­æ·±åº¦æµ‹è¯•ï¼Œå…³é—­æ·±åº¦å†™å…¥ï¼Œå…³é—­æ··åˆã€‚åæœŸå¤„ç†ï¼Œæå–ç‰©ä½“è½®å»“ï¼ŒæŠ—é”¯é½¿ï¼Œé¢œè‰²æ··åˆ
         {
-            Name: "ºÏ³ÉÍ¼Ïñ",
+            Name: "æå–ç‰©ä½“è½®å»“",
             Type: "Postprocess",
             Mask: [],
-            Target: 0,
-            Depth: 1,
-            Blend: 0,
+            RenderTarget: [2, 3],
+            Shader: "EdgeDetection",
+            SetUniforms: function (aAttr, gl: WebGLRenderingContext) {
+                let aTarget = MiaokitJS.ShaderLab.Pipeline.RenderTarget;
+
+                aAttr[8]("u_MainTex", [0, aTarget[1].Handle, 0, 0]);
+                aAttr[8]("u_InvTexSize", aTarget[1].Size);
+            }
+        },
+        // 4ã€å…³é—­æ·±åº¦æµ‹è¯•ï¼Œå…³é—­æ·±åº¦å†™å…¥ï¼Œå…³é—­æ··åˆã€‚åæœŸå¤„ç†ï¼Œæå–ç”»é¢é«˜å…‰éƒ¨åˆ†
+        {
+            Name: "æå–ç”»é¢é«˜å…‰éƒ¨åˆ†",
+            Type: "Postprocess",
+            Mask: [],
+            RenderTarget: [4, 0],
+            Shader: "HDR",
+            SetUniforms: function (aAttr, gl: WebGLRenderingContext) {
+                let aTarget = MiaokitJS.ShaderLab.Pipeline.RenderTarget;
+
+                aAttr[8]("u_MainTex", [0, aTarget[2].Handle, 0, 0]);
+                aAttr[8]("u_InvTexSize", aTarget[2].Size);
+            }
+        },
+        // 5ã€å…³é—­æ·±åº¦æµ‹è¯•ï¼Œå…³é—­æ·±åº¦å†™å…¥ï¼Œå…³é—­æ··åˆã€‚åæœŸå¤„ç†ï¼Œæ¨¡ç³Šé«˜å…‰
+        {
+            Name: "æ¨¡ç³Šé«˜å…‰",
+            Type: "Postprocess",
+            Mask: [],
+            Shader: "GaussianBlur",
+            PingpongCount: 1,
+            Pingpong: [
+                {
+                    RenderTarget: [5, 0],
+                    SetUniforms: function (aAttr, gl: WebGLRenderingContext) {
+                        let aTarget = MiaokitJS.ShaderLab.Pipeline.RenderTarget;
+
+                        aAttr[8]("u_MainTex", [0, aTarget[4].Handle, 0, 0]);
+                        aAttr[8]("u_InvTexSize", [aTarget[4].Size[0], 0.0, 0.0, 0.0]);
+                    }
+                },
+                {
+                    RenderTarget: [4, 0],
+                    SetUniforms: function (aAttr, gl: WebGLRenderingContext) {
+                        let aTarget = MiaokitJS.ShaderLab.Pipeline.RenderTarget;
+
+                        aAttr[8]("u_MainTex", [0, aTarget[5].Handle, 0, 0]);
+                        aAttr[8]("u_InvTexSize", [0.0, aTarget[5].Size[1], 0.0, 0.0]);
+                    }
+                }
+            ]
+        },
+        // 6ã€å…³é—­æ·±åº¦æµ‹è¯•ï¼Œå…³é—­æ·±åº¦å†™å…¥ï¼Œå…³é—­æ··åˆã€‚åæœŸå¤„ç†ï¼Œæäº¤å›¾åƒ
+        {
+            Name: "æäº¤å›¾åƒ",
+            Type: "Postprocess",
+            Mask: [],
             Shader: "Present",
-            SetUniforms: function (pUniforms) {
-                pUniforms.u_MainTex = MiaokitJS.ShaderLab.Pipeline.ColorTarget[1].Texture;
+            SetUniforms: function (aAttr, gl: WebGLRenderingContext) {
+                let aTarget = MiaokitJS.ShaderLab.Pipeline.RenderTarget;
+
+                aAttr[8]("u_MainTex", [0, aTarget[2].Handle, 0, 0]);
+                aAttr[8]("u_MinorTex", [0, aTarget[4].Handle, 0, 0]);
+                aAttr[8]("u_InvTexSize", aTarget[1].Size);
             }
         }
     ],
 
     InternalShader: [
         "Default", /*00*/ "Wall", /*01*/ "Default", /*02*/ "Default", /*03*/
-        "Default", /*04*/ "Default", /*05*/ "Default", /*06*/ "Default", /*07*/
-        "Default", /*08*/ "Default", /*09*/ "Default", /*10*/ "Default", /*11*/
-        "Default", /*12*/ "Default", /*13*/ "Default", /*14*/ "Present"  /*15*/
-    ]
+        "Default", /*04*/ "Default", /*05*/ "Default", /*06*/ "GIS", /*07*/
+        "Mapbox", /*08*/ "Mapbox2", /*09*/ "Default", /*10*/ "Mapbox2", /*11*/
+        "Cosmos", /*12*/ "Ground", /*13*/ "Sky", /*14*/ "Present"  /*15*/
+    ],
 };
 
-
-MiaokitJS.ShaderLab.Shader["Common"] = {
-    code_vs: `
-precision highp float;
-
-attribute vec3 a_Position;
-attribute vec3 a_Normal;
-attribute vec2 a_UV;
-attribute vec4 a_Color;
-attribute vec4 a_Tangent;
-attribute vec4 a_Binormal;
-attribute vec2 a_UV2;
-
-uniform mat4 u_MatW;
-uniform mat4 u_MatVP;
-uniform mat4 u_MatWVP;
-
-varying vec3 v_Position;
-varying vec3 v_Normal;
-varying vec2 v_UV;
-varying vec4 v_Color;
-varying vec4 v_Tangent;
-varying vec4 v_Binormal;
-
-/// ¶ÔÏó¿Õ¼ä×ø±ê×ªÊÀ½ç¿Õ¼ä×ø±ê
-vec3 ObjectToWorldPos(vec3 i_Position)
-{
-    return (u_MatW * vec4(i_Position, 1.0)).xyz;
-}
-
-/// ¶ÔÏó¿Õ¼ä×ø±ê×ª²Ã¼ô¿Õ¼ä×ø±ê
-vec4 ObjectToClipPos(vec3 i_Position)
-{
-    return u_MatWVP * vec4(i_Position, 1.0);
-}
-        `,
-    code_fs: `
-precision highp float;
-
-uniform mat4 u_MatW;
-uniform mat4 u_MatVP;
-uniform mat4 u_MatWVP;
-uniform sampler2D u_MainTex;
-
-varying vec3 v_Position;
-varying vec3 v_Normal;
-varying vec2 v_UV;
-varying vec4 v_Color;
-varying vec4 v_Tangent;
-varying vec4 v_Binormal;
-
-/// ¶ÔÏó¿Õ¼ä×ø±ê×ªÊÀ½ç¿Õ¼ä×ø±ê
-vec3 ObjectToWorldPos(vec3 i_Position)
-{
-    return (u_MatW * vec4(i_Position, 1.0)).xyz;
-}
-
-/// ¶ÔÏó¿Õ¼ä×ø±ê×ª²Ã¼ô¿Õ¼ä×ø±ê
-vec4 ObjectToClipPos(vec3 i_Position)
-{
-    return u_MatWVP * vec4(i_Position, 1.0);
-}
-
-/// ²ÉÑù2DÎÆÀí
-vec4 Tex2D(sampler2D i_Tex, vec2 i_UV)
-{
-    i_UV.x = fract(i_UV.x);
-    i_UV.y = fract(1.0 - i_UV.y);
-
-    return texture2D(i_Tex, i_UV);
-}
-
-float DefaultLight(vec3 v_Normal)
-{
-    vec3 _Normal = normalize(v_Normal);
-    vec3 _Light = normalize(vec3(2.0, 3.0, 1.0));
-
-    return clamp(dot(_Normal, _Light), 0.0, 1.0) + 0.2;
-}
-        `
-};
 
 MiaokitJS.ShaderLab.Shader["Default"] = {
+    type: "Render",
     mark: ["Opaque"],
-    code_vs: `
-void main()
+    vs_src: `
+vec4 vs()
 {
-    gl_Position = ObjectToClipPos(a_Position.xyz);
-    v_Normal = a_Normal;
+    v_Position = ObjectToWorldPos(a_Position.xyz);
+    v_Normal = ObjectToWorldNormal(a_Normal);
+    v_Tangent = ObjectToWorldNormal(a_Tangent.xyz);
+    v_Binormal = normalize(cross(v_Tangent, v_Normal));
     v_UV = a_UV;
+    
+    return ObjectToClipPos(a_Position.xyz);
 }
         `,
-    code_fs: `
-void main()
+    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + `
+vec4 fs()
 {
-    gl_FragColor = Tex2D(u_MainTex, v_UV);
-    gl_FragColor.rgb *= DefaultLight(v_Normal);
-    gl_FragColor.a = 1.0;
+    vec4 mColor = Tex2D(u_MainTex, v_UV);
+    
+    // å½“å‰åˆ‡çº¿è®¡ç®—æœ‰æ¼æ´ï¼Œä¼šå¯¼è‡´æ’å€¼å‡º0
+    if(0.3 < length(v_Tangent))
+    {
+        vec3 _ViewDir = normalize(u_EyePos.xyz - v_Position);
+        vec3 _Light = normalize(u_Sunlight.xyz);
+        mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, v_Tangent, v_Binormal) * 0.4;
+    }
+    
+    return mColor;
 }
         `
 };
 
 MiaokitJS.ShaderLab.Shader["Wall"] = {
+    type: "Render",
     mark: ["Transparent"],
-    code_vs: `
-void main()
+    vs_src: `
+vec4 vs()
 {
-    gl_Position = ObjectToClipPos(a_Position);
-    v_Normal = a_Normal;
+    v_Normal = ObjectToWorldNormal(a_Normal);
+    v_Tangent = ObjectToWorldNormal(a_Tangent.xyz);
+    v_Binormal = normalize(cross(v_Tangent, v_Normal));
     v_UV = a_UV;
+    
+    return ObjectToClipPos(a_Position);
 }
         `,
-    code_fs: `
-void main()
+    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + `
+vec4 fs()
 {
-    gl_FragColor = vec4(0.0196, 0.6431, 0.9294, 1.0);
-    gl_FragColor.rgb *= DefaultLight(v_Normal);
-    gl_FragColor.a = 1.0;
+    vec4 mColor = vec4(0.3, 0.3, 0.3, 1.0);
+    // å½“å‰åˆ‡çº¿è®¡ç®—æœ‰æ¼æ´ï¼Œä¼šå¯¼è‡´æ’å€¼å‡º0
+    if(0.3 < length(v_Tangent))
+    {
+        vec3 _ViewDir = normalize(u_EyePos.xyz - v_Position);
+        vec3 _Light = normalize(u_Sunlight.xyz);
+        mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, v_Tangent, v_Binormal) * 0.7;
+    }
+    
+    return mColor;
 }
         `
 };
 
-MiaokitJS.ShaderLab.Shader["Present"] = {
+MiaokitJS.ShaderLab.Shader["GIS"] = {
+    type: "Render",
     mark: ["Opaque"],
-    code_vs: `
-void main()
+    vs_src: MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereVS"] + `
+// å·¦ä¸Šè§’ç»åº¦ã€å·¦ä¸Šè§’çº¬åº¦ã€ç»çº¬åº¦å®½åº¦ã€ç»çº¬åº¦è·¨è·
+uniform vec4 u_LngLat;
+// é«˜åº¦å›¾ç¼©æ”¾ã€é«˜åº¦å›¾åç§»Xã€é«˜åº¦å›¾åç§»Yã€ç“¦ç‰‡å±‚çº§
+uniform vec4 u_Tile;
+// åœ°å­¦é«˜åº¦å›¾
+uniform sampler2D _HeightTex;
+
+vec4 CalNormal(float nTexU, float nTexV)
 {
-    gl_Position = vec4(a_Position, 1.0);
-    v_UV = a_UV;
+	vec4 aUV[5];
+	aUV[0] = vec4(nTexU, nTexV, 0.0, 0.0);
+	aUV[1] = vec4(nTexU - u_LngLat.w, nTexV, 0.0, 0.0);
+	aUV[2] = vec4(nTexU + u_LngLat.w, nTexV, 0.0, 0.0);
+	aUV[3] = vec4(nTexU, nTexV - u_LngLat.w, 0.0, 0.0);
+	aUV[4] = vec4(nTexU, nTexV + u_LngLat.w, 0.0, 0.0);
+    
+	float aHeight[5];
+	aHeight[0] = 0.0; aHeight[1] = 0.0; aHeight[2] = 0.0; aHeight[3] = 0.0; aHeight[4] = 0.0;
+    
+	for (int i = 0; i < 5; i++)
+	{
+		aUV[i].xy /= u_LngLat.z;
+		aUV[i].x = aUV[i].x * u_Tile.x + u_Tile.y;
+		aUV[i].y = aUV[i].y * u_Tile.x + u_Tile.z;
+        
+		vec4 mHeight = texture2D(_HeightTex, aUV[i].xy);
+		float nHeight = ((mHeight.r * 256.0 * 256.0 * 256.0) + (mHeight.g * 256.0 * 256.0) + (mHeight.b * 256.0)) * 0.001;
+        
+		aHeight[i] = nHeight;
+	}
+    
+	float nLng = (u_LngLat.x + nTexU) / 131072.0 * 3.141592654;
+	float nLat = (u_LngLat.y - nTexV) / 131072.0 * 3.141592654;
+    
+	vec3 mNormal = vec3(0.0, 0.0, 0.0);
+	vec3 mBinormal = vec3(0.0, 0.0, 0.0);
+	vec3 mTangent = vec3(0.0, 0.0, 0.0);
+    
+	mNormal.y = sin(nLat);
+	mNormal.x = cos(nLat) * cos(nLng);
+	mNormal.z = cos(nLat) * sin(nLng);
+    
+	mBinormal.y = sin(nLat);
+	mBinormal.x = cos(nLat) * cos(nLng + 1.57079633);
+	mBinormal.z = cos(nLat) * sin(nLng + 1.57079633);
+    
+	mTangent.y = sin(nLat + 1.57079633);
+	mTangent.x = cos(nLat + 1.57079633) * cos(nLng);
+	mTangent.z = cos(nLat + 1.57079633) * sin(nLng);
+    
+	float nScale = 1.0 / ((u_LngLat.w / 131072.0 *  3.141592654) * 6378137.0);
+    nScale *= 2.0;
+	mNormal += mBinormal * (aHeight[1] - aHeight[2]) * nScale + mTangent * (-aHeight[3] + aHeight[4]) * nScale;
+	normalize(mNormal);
+    
+	return vec4(mNormal, aHeight[0]);
+}
+
+vec4 vs()
+{
+    float nTexU = u_LngLat.w * a_Position.x;
+	float nTexV = u_LngLat.w * a_Position.y;
+    
+	float nLng = (u_LngLat.x + nTexU) / 131072.0 * 3.141592654;
+	float nLat = (u_LngLat.y - nTexV) / 131072.0 * 3.141592654;
+    
+	float nVertexY = sin(nLat);
+	float nVertexX = cos(nLat) * cos(nLng);
+	float nVertexZ = cos(nLat) * sin(nLng);
+    
+	vec4 mNormal = vec4(0.0, 0.0, 0.0, 0.0);
+	if (8.0 < u_Tile.w)
+	{
+		mNormal = CalNormal(nTexU, nTexV);
+		mNormal.w -= 1000.0;
+	}
+	else
+	{
+		mNormal = vec4(nVertexX, nVertexY, nVertexZ, 0.0);
+	}
+    
+    nTexU /= u_LngLat.z;
+	nTexV /= u_LngLat.z;
+	/*ç½‘æ ¼ä»å·¦ä¸Šè§’å¼€å§‹ï¼Œå½±å“è´´å›¾ä»å·¦ä¸‹è§’å¼€å§‹*/
+	nTexV = 1.0 - nTexV;
+    
+    v_UV = vec2(nTexU, nTexV);
+    v_Normal = ObjectToWorldNormal(mNormal.xyz);
+    
+    vec3 mPos = vec3(nVertexX, nVertexY, nVertexZ) * (6378137.0 + (mNormal.w));
+    vec3 mLightDir = normalize(u_Sunlight.xyz);
+    Atmosphere(mLightDir, ObjectToWorldPos(mPos));
+    
+	return ObjectToClipPos(mPos);
 }
         `,
-    code_fs: `
-void main()
+    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
+vec4 fs()
 {
-    gl_FragColor = Tex2D(u_MainTex, v_UV);
-    gl_FragColor /= gl_FragColor.a;
+    vec4 mColor = Tex2D(u_MainTex, v_UV);
+    
+    vec3 _ViewDir = normalize(v_ViewDir);
+    vec3 _Light = normalize(u_Sunlight.xyz);
+    mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, vec3(1.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0)) * 0.4;
+    
+    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
+    mColor.a = 1.0;
+    
+    return mColor;
+}
+        `
+};
+
+MiaokitJS.ShaderLab.Shader["Mapbox"] = {
+    type: "Render",
+    mark: ["Opaque"],
+    vs_src: MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereVS"] + `
+vec4 vs()
+{
+    v_Position = ObjectToWorldPos(a_Position.xyz);
+    v_Normal = ObjectToWorldNormal(a_Normal);
+    v_Tangent = ObjectToWorldNormal(a_Tangent.xyz);
+    v_Binormal = normalize(cross(v_Tangent, v_Normal));
+    
+    vec3 mLightDir = normalize(u_Sunlight.xyz);
+    Atmosphere(mLightDir, v_Position);
+    
+    return ObjectToClipPos(a_Position.xyz);
+}
+        `,
+    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
+vec4 fs()
+{
+    vec4 mColor = vec4(0.6019608, 0.7862745, 0.8254902, 1.0);
+    
+    // å½“å‰åˆ‡çº¿è®¡ç®—æœ‰æ¼æ´ï¼Œä¼šå¯¼è‡´æ’å€¼å‡º0
+    if(0.3 < length(v_Tangent))
+    {
+        vec3 _ViewDir = normalize(u_EyePos.xyz - v_Position);
+        vec3 _Light = normalize(u_Sunlight.xyz);
+        mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, v_Tangent, v_Binormal) * 0.4;
+    }
+
+    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
+    mColor.a = 1.0;
+
+    return mColor;
+}
+        `
+};
+
+MiaokitJS.ShaderLab.Shader["Mapbox2"] = {
+    type: "Render",
+    mark: ["Opaque"],
+    vs_src: MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereVS"] + `
+vec4 vs()
+{
+    v_Position = ObjectToWorldPos(a_Position.xyz);
+    v_Normal = vec3(0.0, 1.0, 0.0);
+    v_Tangent = vec3(0.0, 0.0, 1.0);
+    v_Binormal = vec3(1.0, 0.0, 0.0);
+    
+    vec3 mLightDir = normalize(u_Sunlight.xyz);
+    Atmosphere(mLightDir, v_Position);
+    
+    return ObjectToClipPos(a_Position.xyz);
+}
+        `,
+    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
+vec4 fs()
+{
+    vec4 mColor = vec4(0.6019608, 0.7862745, 0.8254902, 1.0);
+    
+    // å½“å‰åˆ‡çº¿è®¡ç®—æœ‰æ¼æ´ï¼Œä¼šå¯¼è‡´æ’å€¼å‡º0
+    if(0.3 < length(v_Tangent))
+    {
+        vec3 _ViewDir = normalize(u_EyePos.xyz - v_Position);
+        vec3 _Light = normalize(u_Sunlight.xyz);
+        mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, v_Tangent, v_Binormal) * 0.4;
+    }
+
+    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
+    //mColor = v_Normal;
+    mColor.a = 1.0;
+
+    return mColor;
+}
+        `
+};
+
+//MiaokitJS.ShaderLab.Shader["Mapbox3"] = {
+//    type: "Render",
+//    mark: ["Opaque"],
+//    vs_src: `
+//vec4 vs()
+//{
+//    return ObjectToClipPos(a_Position.xyz);
+//}
+//        `,
+//    fs_src: `
+//vec4 fs()
+//{
+//    vec4 mColor = vec4(5.0, 1.0, 0.0, 1.0);
+    
+//    return mColor;
+//}
+//        `
+//};
+
+MiaokitJS.ShaderLab.Shader["Corner"] = {
+    type: "Render",
+    mark: ["Transparent"],
+    vs_src: `
+vec4 vs()
+{
+    return ObjectToClipPos(a_Position);
+}
+        `,
+    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + `
+vec4 fs()
+{
+    vec4 mColor = vec4(1.98, 3.23, 5.61, 1.0);
+
+    return mColor;
 }
         `
 };
 
 MiaokitJS.ShaderLab.Shader["EdgeDetection"] = {
+    type: "Postprocess",
     mark: ["Opaque"],
-    code_vs: `
-void main()
+    vs_src: `
+vec4 vs()
 {
-    gl_Position = vec4(a_Position, 1.0);
     v_UV = a_UV;
+
+    return vec4(a_Position, 1.0);
 }
         `,
-    code_fs: `
-#extension GL_EXT_frag_depth : enable
-uniform vec2 u_InvTexSize;
+    fs_src: `
+uniform vec4 u_InvTexSize;
 
-void main()
+#define FXAA_REDUCE_MIN   (1.0/ 128.0)
+#define FXAA_REDUCE_MUL   (1.0 / 8.0)
+#define FXAA_SPAN_MAX     8.0
+
+vec4 fs()
 {
-	vec4 _OffsetUV = vec4(1.0, 0.0, 0.0, 1.0) * vec4(u_InvTexSize, u_InvTexSize);\
+    vec4 _OffsetUV = vec4(-1.0, 1.0, 1.0, 1.0) * vec4(u_InvTexSize.xy, u_InvTexSize.xy);
+    
+    /// é‡‡æ ·ä¸­å¿ƒåŠå‘¨è¾¹æ–œè§’4ä¸ªç‚¹çš„é¢œè‰²================================
+    vec4 _Color0 = Tex2D(u_MainTex, v_UV);
+    vec4 _Color1 = Tex2D(u_MainTex, v_UV + _OffsetUV.xy); // NW
+    vec4 _Color2 = Tex2D(u_MainTex, v_UV - _OffsetUV.xy); // SE
+    vec4 _Color3 = Tex2D(u_MainTex, v_UV + _OffsetUV.zw); // NE
+    vec4 _Color4 = Tex2D(u_MainTex, v_UV - _OffsetUV.zw); // SW
+    
+    /// è·å–ä¸­å¿ƒåŠå‘¨è¾¹æ–œè§’4ä¸ªç‚¹çš„é¢œè‰²æ··åˆæ¬¡æ•°========================
+    float _Count0 = ceil(_Color0.a);
+    float _Count1 = ceil(_Color1.a);
+    float _Count2 = ceil(_Color2.a);
+    float _Count3 = ceil(_Color3.a);
+    float _Count4 = ceil(_Color4.a);
+    
+    /// è®¡ç®—ä¸­å¿ƒåŠå‘¨è¾¹æ–œè§’4ä¸ªç‚¹çš„é¢œè‰²ç°åº¦============================
+    vec3 _Luma = vec3(0.299, 0.587, 0.114);
+    
+    float _LumaM  = dot(_Color0.rgb / _Count0, _Luma);
+    float _LumaNW = dot(_Color1.rgb / _Count1, _Luma);
+    float _LumaNE = dot(_Color3.rgb / _Count3, _Luma);
+    float _LumaSW = dot(_Color4.rgb / _Count4, _Luma);
+    float _LumaSE = dot(_Color2.rgb / _Count2, _Luma);
+    
+    float _LumaMin = min(_LumaM, min(min(_LumaNW, _LumaNE), min(_LumaSW, _LumaSE)));
+    float _LumaMax = max(_LumaM, max(max(_LumaNW, _LumaNE), max(_LumaSW, _LumaSE)));
+    
+    ///è®¡ç®—é€‰ä¸­å¯¹è±¡è½®å»“==============================================
+    _Count1 = ceil(_Count1 - _Color1.a);
+    _Count2 = ceil(_Count2 - _Color2.a);
+    _Count3 = ceil(_Count3 - _Color3.a);
+    _Count4 = ceil(_Count4 - _Color4.a);
 
-    vec4 _Color1 = Tex2D(u_MainTex, v_UV + _OffsetUV.xy);
-    vec4 _Color2 = Tex2D(u_MainTex, v_UV - _OffsetUV.xy);
-    vec4 _Color3 = Tex2D(u_MainTex, v_UV + _OffsetUV.yw);
-    vec4 _Color4 = Tex2D(u_MainTex, v_UV - _OffsetUV.yw);
-
-    float _Diff1 = (floor(_Color1.r) - floor(_Color2.r)) * 0.5;
-	float _Diff2 = (floor(_Color3.r) - floor(_Color4.r)) * 0.5;
+    float _Diff1 = (_Count1 - _Count2) * 0.5;
+	float _Diff2 = (_Count3 - _Count4) * 0.5;
 	float _Diff = length(vec2(_Diff1, _Diff2));
-    gl_FragDepthEXT = 1.0;
-    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0) * _Diff;
+    
+    ///FXAAå¤„ç†======================================================
+    vec2 _Dir = vec2(-((_LumaNW + _LumaNE) - (_LumaSW + _LumaSE)), ((_LumaNW + _LumaSW) - (_LumaNE + _LumaSE)));
+
+    float _DirReduce = max((_LumaNW + _LumaNE + _LumaSW + _LumaSE) * (0.25 * FXAA_REDUCE_MUL), FXAA_REDUCE_MIN);
+    float _RcpDirMin = 1.0 / (min(abs(_Dir.x), abs(_Dir.y)) + _DirReduce);
+
+    _Dir = min(vec2(FXAA_SPAN_MAX, FXAA_SPAN_MAX), max(vec2(-FXAA_SPAN_MAX, -FXAA_SPAN_MAX), _Dir * _RcpDirMin)) * u_InvTexSize.xy;
+
+    vec4 _Blend0 = Tex2D(u_MainTex, v_UV + _Dir * (1.0 / 3.0 - 0.5));
+    vec4 _Blend1 = Tex2D(u_MainTex, v_UV + _Dir * (2.0 / 3.0 - 0.5));
+    vec4 _Blend2 = Tex2D(u_MainTex, v_UV + _Dir * -0.5);
+    vec4 _Blend3 = Tex2D(u_MainTex, v_UV + _Dir *  0.5);
+
+    vec3 _ColorA = vec3(0.0, 0.0, 0.0);
+    _ColorA += _Blend0.rgb / _Blend0.a;
+    _ColorA += _Blend1.rgb / _Blend1.a;
+    _ColorA *= 0.5;
+
+    vec3 _ColorB = vec3(0.0, 0.0, 0.0);
+    _ColorB += _Blend2.rgb / _Blend2.a;
+    _ColorB += _Blend3.rgb / _Blend3.a;
+    _ColorB *= 0.25;
+    _ColorB += 0.5 * _ColorA;
+
+    float _LumaB = dot(_ColorB, _Luma);
+    if ((_LumaB < _LumaMin) || (_LumaB > _LumaMax))
+    {
+        _Color0.rgb = _ColorA;
+    }
+    else
+    {
+        _Color0.rgb = _ColorB;
+    }
+    ///è®¡ç®—ç´ æçº¿æ¡==================================================
+    _Color0.a = _LumaM / (_LumaMax - _LumaMin);
+    ///å åŠ é€‰ä¸­å¯¹è±¡è½®å»“==============================================
+    //_Color0.rgb += vec3(5.0, 0.7, 0.0) * _Diff;
+    
+    return _Color0;
 }
         `
 };
 
+MiaokitJS.ShaderLab.Shader["HDR"] = {
+    type: "Postprocess",
+    mark: ["Opaque"],
+    vs_src: `
+vec4 vs()
+{
+    v_UV = a_UV;
+
+    return vec4(a_Position, 1.0);
+}
+        `,
+    fs_src: `
+uniform vec4 u_InvTexSize;
+
+vec4 fs()
+{
+    vec4 mColor = Tex2D(u_MainTex, v_UV);
+    
+    mColor.r = 1.0 < mColor.r ? mColor.r - 1.0: 0.0;
+    mColor.g = 1.0 < mColor.g ? mColor.g - 1.0: 0.0;
+    mColor.b = 1.0 < mColor.b ? mColor.b - 1.0: 0.0;
+
+    //float nBrightness = dot(mColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+    //if(nBrightness < 1.0)
+    //{
+    //    mColor.rgb = vec3(0.0, 0.0, 0.0);
+    //}
+    
+    return mColor;
+}
+        `
+};
+
+MiaokitJS.ShaderLab.Shader["GaussianBlur"] = {
+    type: "Postprocess",
+    mark: ["Opaque"],
+    vs_src: `
+vec4 vs()
+{
+    v_UV = a_UV;
+
+    return vec4(a_Position, 1.0);
+}
+        `,
+    fs_src: `
+uniform vec4 u_InvTexSize;
+
+vec4 fs()
+{
+    vec4 mColor = vec4(0.0, 0.0, 0.0, 0.0);
+    
+    mColor += Tex2D(u_MainTex, v_UV - u_InvTexSize.xy * 15.0) * 0.004094;
+    mColor += Tex2D(u_MainTex, v_UV - u_InvTexSize.xy * 14.0) * 0.006254;
+    mColor += Tex2D(u_MainTex, v_UV - u_InvTexSize.xy * 13.0) * 0.008415;
+    mColor += Tex2D(u_MainTex, v_UV - u_InvTexSize.xy * 12.0) * 0.010576;
+    mColor += Tex2D(u_MainTex, v_UV - u_InvTexSize.xy * 11.0) * 0.015011;
+    mColor += Tex2D(u_MainTex, v_UV - u_InvTexSize.xy * 10.0) * 0.019447;
+    mColor += Tex2D(u_MainTex, v_UV - u_InvTexSize.xy * 9.0) * 0.023882;
+    mColor += Tex2D(u_MainTex, v_UV - u_InvTexSize.xy * 8.0) * 0.029568;
+    mColor += Tex2D(u_MainTex, v_UV - u_InvTexSize.xy * 7.0) * 0.035255;
+    mColor += Tex2D(u_MainTex, v_UV - u_InvTexSize.xy * 6.0) * 0.040941;
+    mColor += Tex2D(u_MainTex, v_UV - u_InvTexSize.xy * 5.0) * 0.046286;
+    mColor += Tex2D(u_MainTex, v_UV - u_InvTexSize.xy * 4.0) * 0.051632;
+    mColor += Tex2D(u_MainTex, v_UV - u_InvTexSize.xy * 3.0) * 0.056977;
+    mColor += Tex2D(u_MainTex, v_UV - u_InvTexSize.xy * 2.0) * 0.059024;
+    mColor += Tex2D(u_MainTex, v_UV - u_InvTexSize.xy * 1.0) * 0.061071;
+
+    mColor += Tex2D(u_MainTex, v_UV + u_InvTexSize.xy * 15.0) * 0.004094;
+    mColor += Tex2D(u_MainTex, v_UV + u_InvTexSize.xy * 14.0) * 0.006254;
+    mColor += Tex2D(u_MainTex, v_UV + u_InvTexSize.xy * 13.0) * 0.008415;
+    mColor += Tex2D(u_MainTex, v_UV + u_InvTexSize.xy * 12.0) * 0.010576;
+    mColor += Tex2D(u_MainTex, v_UV + u_InvTexSize.xy * 11.0) * 0.015011;
+    mColor += Tex2D(u_MainTex, v_UV + u_InvTexSize.xy * 10.0) * 0.019447;
+    mColor += Tex2D(u_MainTex, v_UV + u_InvTexSize.xy * 9.0) * 0.023882;
+    mColor += Tex2D(u_MainTex, v_UV + u_InvTexSize.xy * 8.0) * 0.029568;
+    mColor += Tex2D(u_MainTex, v_UV + u_InvTexSize.xy * 7.0) * 0.035255;
+    mColor += Tex2D(u_MainTex, v_UV + u_InvTexSize.xy * 6.0) * 0.040941;
+    mColor += Tex2D(u_MainTex, v_UV + u_InvTexSize.xy * 5.0) * 0.046286;
+    mColor += Tex2D(u_MainTex, v_UV + u_InvTexSize.xy * 4.0) * 0.051632;
+    mColor += Tex2D(u_MainTex, v_UV + u_InvTexSize.xy * 3.0) * 0.056977;
+    mColor += Tex2D(u_MainTex, v_UV + u_InvTexSize.xy * 2.0) * 0.059024;
+    mColor += Tex2D(u_MainTex, v_UV + u_InvTexSize.xy * 1.0) * 0.061071;
+
+    mColor += Tex2D(u_MainTex, v_UV - u_InvTexSize.xy * 1.0) * 0.063119;
+    
+    return mColor;
+}
+        `
+};
+
+MiaokitJS.ShaderLab.Shader["Present"] = {
+    type: "Postprocess",
+    mark: ["Opaque"],
+    vs_src: `
+vec4 vs()
+{
+    v_UV = a_UV;
+
+    return vec4(a_Position, 1.0);
+}
+        `,
+    fs_src: `
+uniform vec4 u_InvTexSize;
+uniform sampler2D u_MinorTex;
+
+vec4 fs()
+{
+    vec4 mColor = Tex2D(u_MainTex, v_UV);
+    mColor += Tex2D(u_MinorTex, v_UV);
+    
+    return mColor;
+}
+        `
+};
+
+MiaokitJS.ShaderLab.Shader["Cosmos"] = {
+    type: "Clear",
+    mark: ["Opaque"],
+    uniform_values: [["u_MainTex", 1]],
+    vs_src: `
+// å·¦ä¸Šè§’ç»åº¦ã€å·¦ä¸Šè§’çº¬åº¦ã€ç»çº¬åº¦å®½åº¦ã€ç»çº¬åº¦è·¨è·
+uniform vec4 u_LngLat;
+
+vec4 vs()
+{
+    float nLng = u_LngLat.x + u_LngLat.z * a_Position.x;
+    float nLat = u_LngLat.y - u_LngLat.w * a_Position.y;
+    
+    float nY = sin(nLat);
+    float nX = cos(nLat) * cos(nLng);
+    float nZ = cos(nLat) * sin(nLng);
+    
+    v_Normal = vec3(nX, nY, nZ);
+    v_UV = a_Position.xy / 64.0;
+    
+    return ObjectToClipPos(v_Normal);
+}
+        `,
+    fs_src: `
+vec4 fs()
+{
+    vec4 mColor = Tex2D(u_MainTex, v_UV);
+    mColor.a = 1.0;
+
+    return mColor;
+}
+        `
+};
+
+MiaokitJS.ShaderLab.Shader["Sky"] = {
+    type: "Clear",
+    mark: ["Opaque"],
+    vs_src: MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereVS"] + `
+// å·¦ä¸Šè§’ç»åº¦ã€å·¦ä¸Šè§’çº¬åº¦ã€ç»çº¬åº¦å®½åº¦ã€ç»çº¬åº¦è·¨è·
+uniform vec4 u_LngLat;
+
+vec4 vs()
+{
+    float nLng = u_LngLat.x + u_LngLat.z * a_Position.x;
+    float nLat = u_LngLat.y - u_LngLat.w * a_Position.y;
+    
+    float nY = sin(nLat);
+    float nX = cos(nLat) * cos(nLng);
+    float nZ = cos(nLat) * sin(nLng);
+    
+    v_Normal = vec3(nX, nY, nZ);
+    
+    vec3 mLightDir = normalize(u_Sunlight.xyz);
+    vec3 mWorldPos = ObjectToWorldPos(v_Normal);
+    
+    Atmosphere(mLightDir, mWorldPos);
+    
+    return ObjectToClipPos(v_Normal);
+}
+        `,
+    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
+vec4 fs()
+{
+    return AtmosphereColor(normalize(u_Sunlight.xyz));
+}
+        `
+};
+
+MiaokitJS.ShaderLab.Shader["Ground"] = {//ç»çº¬åº¦è·¨åº¦å¤§ï¼Œæœ‰äº›é¢å…ƒé¡¶ç‚¹è¶…è¿‡è§†é”¥ä½“ï¼Œè¢«è£å‰ªæ¶ˆå¤±
+    type: "Clear",
+    mark: ["Opaque"],
+    vs_src: MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereVS"] + `
+// å·¦ä¸Šè§’ç»åº¦ã€å·¦ä¸Šè§’çº¬åº¦ã€ç»çº¬åº¦å®½åº¦ã€ç»çº¬åº¦è·¨è·
+uniform vec4 u_LngLat;
+
+vec4 vs()
+{
+    float nLng = u_LngLat.x + u_LngLat.z * a_Position.x;
+    float nLat = u_LngLat.y - u_LngLat.w * a_Position.y;
+    
+    float nY = sin(nLat);
+    float nX = cos(nLat) * cos(nLng);
+    float nZ = cos(nLat) * sin(nLng);
+    
+    v_Normal = vec3(nX, nY, nZ);
+    
+    vec3 mLightDir = normalize(u_Sunlight.xyz);
+    vec3 mWorldPos = ObjectToWorldPos(v_Normal);
+    
+    Atmosphere(mLightDir, mWorldPos);
+    
+    return ObjectToClipPos(v_Normal);
+}
+        `,
+    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
+vec4 fs()
+{
+    vec4 mColor = vec4(0.1019608, 0.2862745, 0.3254902, 1.0);
+    vec3 _ViewDir = normalize(v_ViewDir);
+    vec3 _Light = normalize(u_Sunlight.xyz);
+    mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, vec3(1.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0)) * 0.4;
+
+    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
+    mColor.a = 1.0;
+    
+    return mColor;
+}
+        `
+};
+//æ•¬ç•è‡ªç„¶ï¼Œççˆ±å®¶å›­

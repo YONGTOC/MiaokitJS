@@ -122,7 +122,7 @@ class CameraCtrl {
     }
 
     /// 飞行切换到指定状态。
-    public Fly(eMode: CTRL_MODE, pParam: any): void {
+    public Fly(eMode: CTRL_MODE, pParam: any, nSpeed_: any): void {
         let pThis = this;
 
         pThis.m_pFlyTask = {
@@ -130,7 +130,7 @@ class CameraCtrl {
             m_pParam: pParam,
             Update: function () {
                 let bComplete = true;
-                let bSpeed = 0.5;
+                let bSpeed = nSpeed_ ? nSpeed_ : 0.1;
 
                 if (undefined !== this.m_pParam.m_nLng) {
                     let nBias = this.m_pParam.m_nLng - pThis.m_nLng;
@@ -157,7 +157,7 @@ class CameraCtrl {
                 let nDistance = undefined != this.m_pParam.m_nHeight ? this.m_pParam.m_nHeight : this.m_pParam.m_nDistance;
                 if (undefined !== nDistance) {
                     let nBias = nDistance - pThis.m_nDistance;
-                    if (-1 > nBias || 1 < nBias) {
+                    if (-1.0 > nBias || 1.0 < nBias) {
                         pThis.m_nDistance += nBias * bSpeed;
                         bComplete = false;
                     }
@@ -394,8 +394,13 @@ class CameraCtrl {
         else {
             console.log("未实现漫游模式");
         }
-    }
 
+        if (180 === this.iii++) {
+            console.log(this);
+            this.iii = 0;
+        }
+    }
+    public iii = 0;
 
     /// 获取当前摄像机控制模式。
     public get ctrlMode(): CTRL_MODE {
