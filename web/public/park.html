@@ -9,7 +9,6 @@
     <link href="./common/antd/dist/antd.min.css" rel="stylesheet" type="text/css">
 
     <script>
-        let UI = undefined;
         let MiaokitJS = new MiaokitModule({
             m_bUnity: false,
             m_pUnityPath: "./common/miaokit/MiaokitU3D/Build/MiaokitU3D.json",
@@ -22,41 +21,17 @@
             m_pData: null,
             m_pTile: null,
             Active: function () {
-                let pTile = this.m_pTile;
-
-                pTile.m_mOffet = { x: 200.0, y: 167.0, z: -50.0 };
-                pTile.m_mEuler = { x: 0.0, y: -85.0, z: 0.0 };
-
-                /// 遍历当前瓦片所有场景，打印场景ID
-                for (let pScene of pTile.scenes) {
-                    if ("Default" === pScene.id) {
-                        let pObject = pScene.object3D;
-                        pObject.transform.localPosition = pTile.m_mOffet;
-                        pObject.transform.euler = pTile.m_mEuler;
-
-                        let nHeight = 0.0;
-
-                        /// 遍历当前场景所有楼层，打印楼层ID
-                        for (let pLayer of pScene.layers) {
-                            let pObject = pLayer.object3D;
-
-                            pObject.transform.localPosition = { x: 0.0, y: nHeight, z: 0.0 }; nHeight += 9.0;
-
-                            pLayer._Draw();
-                        }
-
-
-                        Root = pObject;
-                    }
-
-                    //break;
-                }
+                MiaokitJS.App.ActiveTile(this.m_pTile);
             }
         });
 
         MiaokitJS.Preload();
 
         window.onload = function () {
+            window.oncontextmenu = function (e) {
+                e.preventDefault();
+            };
+
             MiaokitJS.Load(function () {
                 MiaokitJS.App.Start();
             }, function (nEventID) {
@@ -84,12 +59,8 @@
             });
 
             require(['Index'], function (view) {
-                UI = view.default.g_pIns;
+                MiaokitJS.App.UI = view.default.g_pIns;
             });
-
-            window.oncontextmenu = function (e) {
-                e.preventDefault();
-            };
         }
     </script>
 
