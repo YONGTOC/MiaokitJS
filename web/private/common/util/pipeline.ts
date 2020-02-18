@@ -138,7 +138,7 @@ MiaokitJS.ShaderLab.Pipeline = {
     InternalShader: [
         "Default", /*00*/ "Wall", /*01*/ "Default", /*02*/ "Default", /*03*/
         "Default", /*04*/ "Default", /*05*/ "Default", /*06*/ "GIS", /*07*/
-        "Mapbox", /*08*/ "Mapbox2", /*09*/ "Default", /*10*/ "Mapbox2", /*11*/
+        "Mapbox", /*08*/ "Mapbox2", /*09*/ "Dioramas", /*10*/ "Mapbox2", /*11*/
         "Cosmos", /*12*/ "Ground", /*13*/ "Sky", /*14*/ "Present"  /*15*/
     ],
 };
@@ -171,6 +171,45 @@ vec4 fs()
         vec3 _Light = normalize(u_Sunlight.xyz);
         mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, v_Tangent, v_Binormal) * 0.4;
     }
+    
+    return mColor;
+}
+        `
+};
+
+MiaokitJS.ShaderLab.Shader["Dioramas"] = {
+    type: "Render",
+    mark: ["Opaque"],
+    vs_src: MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereVS"] + `
+vec4 vs()
+{
+    v_Position = ObjectToWorldPos(a_Position.xyz);
+    v_Normal = ObjectToWorldNormal(a_Normal);
+    v_Tangent = ObjectToWorldNormal(a_Tangent.xyz);
+    v_Binormal = normalize(cross(v_Tangent, v_Normal));
+    v_UV = a_UV;
+    
+    Atmosphere(normalize(u_Sunlight.xyz), v_Position);
+
+    return ObjectToClipPos(a_Position.xyz);
+}
+        `,
+    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
+vec4 fs()
+{
+    vec4 mColor = Tex2D(u_MainTex, v_UV);
+    
+    // 当前切线计算有漏洞，会导致插值出0
+    if(0.3 < length(v_Tangent))
+    {
+        vec3 _ViewDir = normalize(u_EyePos.xyz - v_Position);
+        vec3 _Light = normalize(u_Sunlight.xyz);
+        mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, v_Tangent, v_Binormal) * 0.4;
+    }
+
+    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
+    //mColor.rgb = v_Normal;
+    mColor.a = 1.0;
     
     return mColor;
 }
@@ -401,25 +440,6 @@ vec4 fs()
 }
         `
 };
-
-//MiaokitJS.ShaderLab.Shader["Mapbox3"] = {
-//    type: "Render",
-//    mark: ["Opaque"],
-//    vs_src: `
-//vec4 vs()
-//{
-//    return ObjectToClipPos(a_Position.xyz);
-//}
-//        `,
-//    fs_src: `
-//vec4 fs()
-//{
-//    vec4 mColor = vec4(5.0, 1.0, 0.0, 1.0);
-    
-//    return mColor;
-//}
-//        `
-//};
 
 MiaokitJS.ShaderLab.Shader["Corner"] = {
     type: "Render",
@@ -765,4 +785,3 @@ vec4 fs()
 }
         `
 };
-//敬畏自然，珍爱家园
