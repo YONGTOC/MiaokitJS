@@ -31,13 +31,13 @@
             window.oncontextmenu = function (e) {
                 e.preventDefault();
             };
-
+            
             MiaokitJS.Load(function () {
                 MiaokitJS.App.Start();
             }, function (nEventID) {
                 MiaokitJS.App.Update();
             });
-
+            return;
             require.config({
                 baseUrl: "park",
                 paths: {
