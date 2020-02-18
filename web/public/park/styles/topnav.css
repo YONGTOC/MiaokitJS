@@ -38,7 +38,7 @@ li {
 }
 
 .topRight {
-    width: 70px;
+    width: 186px;
     float: right;
     margin-right: 35px;
     color: #B0B0B0;
@@ -47,6 +47,7 @@ li {
     text-align: right;
     margin-right: 36px;
     /* border: 1px solid; */
+    cursor:pointer;
 }
 
 .bottomNav {

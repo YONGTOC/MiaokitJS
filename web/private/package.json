@@ -8,6 +8,7 @@
     "@types/react": "16.9.0",
     "@types/react-dom": "16.9.0",
     "@types/react-router": "5.1.2",
-    "@types/react-router-dom": "5.1.2"
+    "@types/react-router-dom": "5.1.2",
+    "@antv/g2plot": "^0.11.21",
   }
 }

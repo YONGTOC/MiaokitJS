@@ -120,7 +120,7 @@ class App extends React.Component {
                             title: "GO:0",
                         },
                         {
-                            key: "0-2-1",
+                            key: "0-2-1",ctrl
                             title: "GO:1",
                         }
                     ]
