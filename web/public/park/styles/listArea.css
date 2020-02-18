@@ -103,7 +103,7 @@
 }
 
 .rowOne {
-    width: 100%;
+  width: 100%;
     border-bottom: 1px solid rgba(229, 229, 229, 1);
     padding-bottom: 5px;
     margin: 0;
@@ -127,7 +127,8 @@
 .contentTwo {
     margin-top: 26px;
 }
-.imgBox{
+
+.imgBox {
     padding-top: 26px;
 }
 /*-----*/
@@ -166,9 +167,9 @@
     margin-left: -40px;
 }
 
-.areaScope ul li:first-child {
-    color: #D50000;
-}
+    .areaScope ul li:first-child {
+        color: #D50000;
+    }
 
 .areaScope li {
     float: left;
@@ -205,14 +206,14 @@
     height: 69vh;
 }
 
-.roomList::-webkit-scrollbar {
-    width: 8px;
-    background-color: #FFF;
-}
+    .roomList::-webkit-scrollbar {
+        width: 8px;
+        background-color: #FFF;
+    }
 
-.roomList::-webkit-scrollbar-thumb {
-    background-color: rgba(251, 251, 251, 1);
-}
+    .roomList::-webkit-scrollbar-thumb {
+        background-color: rgba(251, 251, 251, 1);
+    }
 
 .roomP {
     border-bottom: 1px solid rgb(237, 237, 237);
@@ -223,28 +224,29 @@
     cursor: pointer;
 }
 
-.roomP:hover {
-    background-color: #FBFBFB;
-}
+    .roomP:hover {
+        background-color: #FBFBFB;
+    }
 
-.roomP p {
-    font-size: 14px;
-}
+    .roomP p {
+        font-size: 14px;
+    }
 
-.roomP span {
-    font-size: 14px;
-}
+    .roomP span {
+        font-size: 14px;
+    }
 
 .icontop3 {
     position: relative;
     top: 0px;
 }
 
-.roomTit {
+.roomP p:first-child {
     font-size: 16px;
     font-weight: bold;
     color: #333333 !important;
 }
+
 
 
 

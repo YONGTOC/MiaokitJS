@@ -1,0 +1,37 @@
+.base-data {
+  width:360px;
+  height:820px;
+  background:rgba(42,46,51,1);
+  opacity:0.8;
+  border-radius:6px;
+  overflow: hidden;
+}
+.option {
+  margin: 20px 0 0 35px;
+  height: 60px;
+}
+.span-a {
+  font-size:10px;
+  font-family:Microsoft YaHei;
+  font-weight:400;
+  line-height:24px;
+  color:rgba(184,187,204,1);
+  opacity:1;
+}
+.span-b {
+  font-size:20px;
+  font-family:Microsoft YaHei;
+  font-weight:bold;
+  line-height:24px;
+  color:rgba(255,255,255,1);
+  opacity:1;
+}
+.span-c {
+  font-size:12px;
+  font-family:Microsoft YaHei;
+  font-weight:400;
+  line-height:24px;
+  color:rgba(255,255,255,1);
+  opacity:1;
+  margin-left: 8px;
+}
