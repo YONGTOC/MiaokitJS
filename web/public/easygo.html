@@ -9,31 +9,17 @@
     <meta name="format-detection" content="email=no" />
     <meta name="revised" content="dielang, 2017/09/22" />
     <meta name="author" content="yongtop-tec" />
-    <meta name="description" content="山西省体育中心" />
+    <meta name="description" content="惠阳政务中心" />
 
-    <title>山西省体育中心</title>
+    <title>惠阳政务中心</title>
 
     <script src="./common/miaokit/MiaokitLoader.min.js"></script>
     <script>
-        let MiaokitJS = new MiaokitModule({
-            m_bUnity: false,
-            m_pUnityPath: "./common/miaokit/MiaokitU3D/Build/MiaokitU3D.json",
-            m_pModulePath: "./common/miaokit/Miaokit.wasm",
-            m_pServer: "./data/test/project/"
-        });
-
-        MiaokitJS["m_aTiles"].push({
-            m_pPath: "./data/test/project/project.lzma.bin",
-            m_pData: null,
-            m_pTile: null,
-            Active: function () {
-                MiaokitJS.App.m_pProject.ActiveTile(this.m_pTile);
-            }
-        });
-
-        MiaokitJS.Preload();
+        let MiaokitJS = new MiaokitModule("Sisyphus", "./data/projects/config.txt");
 
         window.onload = function () {
+            MiaokitJS.Track("Window.onload");
+
             window.oncontextmenu = function (e) {
                 e.preventDefault();
             };

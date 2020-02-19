@@ -2,20 +2,32 @@ class Main {
     constructor() {
         this.m_pApp = null;
         this.m_pTile = null;
-        this.m_aScene = null;
-        this.m_aAdjust = null;
-        this.m_nScene = 0;
+        this.m_pCurScene = null;
         this.m_nTaskMax = 0;
         this.MajorProgress = null;
         this.MinorProgress = null;
         this.Inited = null;
+        this.m_pWait = null;
         this.OnInit = null;
-        this.m_pApp = MiaokitJS.App;
-        this.m_pApp.m_pProject = this;
+        let pThis = this;
+        pThis.m_pApp = MiaokitJS.App;
+        pThis.m_pApp.m_pProject = this;
     }
-    Init() {
-        this.MajorProgress(true, 0.4);
-        this.m_pApp.m_pCameraCtrl.Jump(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, {
+    Preload() {
+        let pThis = this;
+        MiaokitJS.Track("LoadServerData");
+        pThis.LoadData(function (pTile) {
+            MiaokitJS.Track("LoadServerData End");
+            pThis.m_pTile = pTile;
+            if (pThis.m_pWait) {
+                pThis.m_pWait();
+            }
+        });
+    }
+    Start() {
+        let pThis = this;
+        pThis.MajorProgress(true, 0.4);
+        pThis.m_pApp.m_pCameraCtrl.Jump(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, {
             m_nLng: 110.344301,
             m_nLat: 25.272208,
             m_mTarget: { x: 0.0, y: 0.0, z: 0.0 },
@@ -52,60 +64,209 @@ class Main {
     }
     ActiveTile(pTile) {
         let pThis = this;
-        let aScene = [];
-        for (let pScene of pTile.scenes) {
-            aScene.push(pScene);
+        if (!pThis.m_pTile) {
+            pThis.m_pWait = function () {
+                pThis.ActiveTile(pTile);
+            };
+            return;
         }
-        pTile.m_mOffet = { x: 0.0, y: 0.0, z: 0.0 };
-        pTile.m_mEuler = { x: 0.0, y: 0.0, z: 0.0 };
-        pThis.m_aAdjust = [
-            [{ x: 2.0, y: 2.5, z: 2.0 }, { x: 0.0, y: 180.0, z: 0.0 }, 6.0],
-            [{ x: 71.0, y: 1.0, z: -6.0 }, { x: 0.0, y: -90.0, z: 0.0 }, 9.0],
-            [null, null, 0.0]
-        ];
-        for (let i = aScene.length - 1; i > -1; i--) {
-            let pScene = aScene[i];
-            let pAdjust = pThis.m_aAdjust[i];
-            let pObject = pScene.object3D;
-            pObject.transform.localPosition = pTile.m_mOffet;
-            pObject.transform.euler = pTile.m_mEuler;
-            pObject.active = (aScene.length - 1) === i ? true : false;
-            for (let pLayer of pScene.layers) {
-                let pObject = pLayer.object3D;
-                if (pAdjust[0]) {
-                    pObject.transform.localPosition = pAdjust[0];
-                    pAdjust[0].y += pAdjust[2];
+        let pOutdoor = null;
+        for (let pScene3D of pTile.m_pTile.scenes) {
+            let pScene = null;
+            for (let pSceneData of pTile.m_aScene) {
+                if (!pSceneData.scene && pScene3D.id === pSceneData.building_id) {
+                    pSceneData.scene = pScene3D;
+                    pScene = pSceneData;
+                    break;
                 }
-                if (pAdjust[1]) {
-                    pObject.transform.localEuler = pAdjust[1];
+            }
+            if (!pScene && 1 === pScene3D.layers.length) {
+                if (pOutdoor) {
+                    console.log("该场景后台未录入信息", pScene3D);
+                    continue;
                 }
-                if ((aScene.length - 1) === i) {
-                    pLayer._Draw();
-                    pThis.m_nScene = i;
+                let pID = pScene3D.id;
+                pOutdoor = {
+                    BuildingNum: pID,
+                    Name: pID,
+                    building_id: pID,
+                    building_name: pID,
+                    ID: "0",
+                    id: "0",
+                    Icon: "",
+                    icon_url: "",
+                    layerList: [null],
+                    scene: pScene3D
+                };
+                for (let pLayer of pScene3D.layers) {
+                    pID = pLayer.id;
+                    pOutdoor.layerList[0] = {
+                        FloorID: pID,
+                        floor_id: pID,
+                        id: pID,
+                        b_id: pID,
+                        name: pID,
+                        floor_name: pID,
+                        build_name: pOutdoor.building_id,
+                        build_num: pOutdoor.BuildingNum,
+                        building_name: pOutdoor.building_name,
+                        detail: "外景",
+                        icon: null,
+                        iconUrl: null,
+                        is_default: "0",
+                    };
+                    pTile.m_aLayer.push(pOutdoor.layerList[0]);
+                }
+                for (let pSite of pTile.m_aSite) {
+                    if (!pSite.layer) {
+                        pSite.layer = pOutdoor.layerList[0];
+                        pSite.floorID = pOutdoor.layerList[0].floor_id;
+                        pSite.buildingID = pOutdoor.building_id;
+                    }
+                }
+                pScene = pOutdoor;
+                pTile.m_aScene.push(pOutdoor);
+            }
+        }
+        pOutdoor = pTile.m_pOutdoor;
+        for (let pScene of pTile.m_aScene) {
+            let pAdjust = pTile.m_aAdjust[pScene.building_id];
+            let pObject = pScene.scene.object3D;
+            let bOutdoor = pScene.building_id === pOutdoor;
+            pObject.transform.localPosition = pTile.m_nOffset;
+            pObject.transform.euler = pTile.m_mRotate;
+            pObject.active = bOutdoor ? true : false;
+            for (let pLayer3D of pScene.scene.layers) {
+                if (pAdjust) {
+                    let pObject = pLayer3D.object3D;
+                    if (pAdjust[0]) {
+                        pObject.transform.localPosition = pAdjust[0];
+                        pAdjust[0].y += pAdjust[2];
+                    }
+                    if (pAdjust[1]) {
+                        pObject.transform.localEuler = pAdjust[1];
+                    }
+                }
+                if (bOutdoor) {
+                    pLayer3D._Draw();
+                }
+                for (let pLayerData of pScene.layerList) {
+                    if (pLayerData.floor_id === pLayer3D.id) {
+                        pLayerData.layer = pLayer3D;
+                        break;
+                    }
                 }
             }
         }
-        pThis.m_pTile = pTile;
-        pThis.m_aScene = aScene;
         pThis.OnInit = function () {
-            for (let i = 0; i < (pThis.m_aScene.length - 1); i++) {
-                let pScene = aScene[i];
-                for (let pLayer of pScene.layers) {
-                    pLayer._Draw();
-                }
-            }
             pThis.Inited(null);
             pThis.OnInit = null;
+            let nIndex = 0;
+            for (let pScene of pTile.m_aScene) {
+                if (pOutdoor !== pScene.building_id) {
+                    for (let pLayer of pScene.layerList) {
+                        pLayer.layer._Draw();
+                    }
+                }
+                else {
+                    pThis.m_pCurScene = pScene;
+                }
+                pScene.index = nIndex++;
+            }
+            console.log(pTile);
         };
     }
     SwitchScene(pName) {
         let pThis = this;
-        let nScene = "体育场" === pName ? 0 : (this.m_aScene.length - 1);
-        if (pThis.m_nScene !== nScene) {
-            pThis.m_aScene[pThis.m_nScene].object3D.active = false;
-            pThis.m_aScene[nScene].object3D.active = true;
-            pThis.m_nScene = nScene;
+        if (!pName) {
+            pName = pThis.m_pTile.m_pOutdoor;
         }
+        for (let pScene of pThis.m_pTile.m_aScene) {
+            if (pName !== pScene.building_id) {
+                pThis.m_pCurScene.scene.object3D.active = false;
+                pScene.scene.object3D.active = true;
+                pThis.m_pCurScene = pScene;
+                break;
+            }
+        }
+    }
+    LoadData(pCallback) {
+        let pConfig = MiaokitJS.m_pConfig.SVE[0];
+        let pServer = pConfig.m_pEasygoServer;
+        let aServer = [
+            pServer + "api/info/getBuildingListH5.php",
+            pServer + "api/info/getFloorListH5.php?id=",
+            pServer + "api/info/getroomlistH5.php",
+        ];
+        MiaokitJS.Request("GET", "json", aServer[0], null, null, function (pSceneList) {
+            if (pSceneList && pSceneList.response) {
+                let aScene = pSceneList.response;
+                let nSceneCount = aScene.length;
+                let nSceneIndex = 0;
+                let aLayer = [];
+                let aSite = null;
+                for (let i = 0; i < nSceneCount; i++) {
+                    let pScene = aScene[i];
+                    pScene.id = pScene.ID;
+                    pScene.icon_url = pScene.Icon;
+                    pScene.building_id = pScene.BuildingNum;
+                    pScene.building_name = pScene.Name;
+                    pScene.layerList = null;
+                    MiaokitJS.Request("GET", "json", aServer[1] + pScene.id, null, null, function (pLayerList) {
+                        if (pLayerList && pLayerList.response) {
+                            let aLayer_ = pLayerList.response;
+                            for (let pLayer of aLayer_) {
+                                pLayer.id = pLayer.FloorID;
+                                pLayer.b_id = pLayer.FloorID;
+                                pLayer.floor_id = pLayer.FloorID;
+                                pLayer.floor_name = pLayer.name;
+                                pLayer.build_num = pLayer.building_name;
+                                pLayer.build_name = pLayer.building_name;
+                                pLayer.icon = pLayer.iconUrl;
+                                pLayer.detail = pLayer.name;
+                                pLayer.is_default = "0";
+                                pLayer.scene = pScene;
+                                pLayer.sites = [];
+                                aLayer.push(pLayer);
+                            }
+                            pScene.layerList = aLayer_;
+                        }
+                        if (++nSceneIndex === nSceneCount) {
+                            MiaokitJS.Request("GET", "json", aServer[2], null, null, function (pSiteList) {
+                                if (pSiteList && pSiteList.response) {
+                                    aSite = pSiteList.response;
+                                    for (let pSite of aSite) {
+                                        pSite.HyID = parseInt(pSite.HyID);
+                                        pSite.buildingID = "默认值";
+                                        pSite.layer = null;
+                                        if (2 > pSite.HyID) {
+                                            pSite.HyID = 0;
+                                        }
+                                        for (let pLayer of aLayer) {
+                                            if (pLayer.id === pSite.floorID) {
+                                                pSite.layer = pLayer;
+                                                if (pLayer.scene) {
+                                                    pSite.buildingID = pScene.building_id;
+                                                }
+                                                pLayer.sites.push(pSite);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                pConfig.m_aScene = aScene;
+                                pConfig.m_aLayer = aLayer;
+                                pConfig.m_aSite = aSite;
+                                pCallback(pConfig);
+                            });
+                        }
+                    });
+                }
+            }
+            else {
+                pCallback(null);
+            }
+        });
     }
 }
 new Main();

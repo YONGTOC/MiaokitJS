@@ -452,6 +452,9 @@ class App {
         this.m_pPicker = null;
         this.m_pProject = null;
     }
+    Preload() {
+        this.m_pProject.Preload();
+    }
     Start() {
         let pContainer = document.getElementById("unityContainer");
         let pCanvas2D = document.createElement("canvas");
@@ -475,13 +478,16 @@ class App {
         this.m_pCameraCtrl = new MiaokitJS.UTIL.CameraCtrl(this.m_pCamera);
         this.m_pPicker = new MiaokitJS.UTIL.EntityPicker(this.m_pCameraCtrl);
         this.RegisterEvent(this.m_pCanvas2D, MiaokitJS.Miaokit.cameraCtrl);
-        this.m_pProject.Init();
+        this.m_pProject.Start();
     }
     Update() {
         this.m_nTick++;
         this.Draw2D();
         this.m_pCameraCtrl.Update();
         this.m_pProject.Update();
+    }
+    ActiveTile(pTile) {
+        this.m_pProject.ActiveTile(pTile);
     }
     Draw2D() {
         this.m_pCanvasCtx2D.clearRect(0, 0, this.m_pCanvas2D.clientWidth, this.m_pCanvas2D.clientHeight);

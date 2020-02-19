@@ -247,6 +247,7 @@ function Init3D(pCallback) {
         GLOBAL.Action.pMinorProgress(bShow, nRate);
     };
     pProject.Inited = function (pError) {
+        SVE_H5_URL = pProject.m_pTile.m_pEasygoServer;
         pCallback(pError);
     };
 }
@@ -257,8 +258,18 @@ function Stop() {
     MiaokitJS.Stop();
 }
 function SwitchScene(pName) {
-    MiaokitJS.App.m_pProject.SwitchScene(pName);
-    GLOBAL.Action.pLayerListFlush(4, 0);
+    if (pName) {
+        pName = "A栋";
+        MiaokitJS.App.m_pProject.SwitchScene(pName);
+        currentScene = pName;
+        GLOBAL.pCurBuilding = MiaokitJS.App.m_pProject.m_pCurScene;
+    }
+    else {
+        MiaokitJS.App.m_pProject.SwitchScene(pName);
+        currentScene = "室外";
+        GLOBAL.pCurBuilding = null;
+    }
+    GLOBAL.Action.pLayerListFlush(0, 0);
     $("#select-add").text("返回室外");
     $(".floor_box ul li:first").trigger("click", {
         type: "noNeedActive"
@@ -331,6 +342,7 @@ var GLOBAL = {
         pPathNotFound: null,
     }
 };
+var SVE_H5_URL = null;
 var startIcon = null;
 var endIcon = null;
 var endName = null;
@@ -871,9 +883,6 @@ var scale = {
     y: 1
 };
 var upLoadPath = "../";
-var host = window.location.host;
-host = "47.112.5.194:8010";
-var SVE_H5_URL = "http://" + host + "/";
 var pageSymble = location.href.indexOf("#") > -1 ? location.href.split("#")[1] : "index";
 var popped = "state" in window.history;
 var initialURL = location.href;

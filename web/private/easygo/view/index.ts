@@ -650,9 +650,6 @@ var scale = {
     y: 1
 };
 var upLoadPath = "../";
-var host = window.location.host;
-host = "47.112.5.194:8010";
-var SVE_H5_URL = /*window.location.protocol +*/ "http://" + host + "/";
 
 var pageSymble = location.href.indexOf("#") > -1 ? location.href.split("#")[1] : "index";
 var popped = "state" in window.history;

@@ -6,6 +6,11 @@ class App {
     public constructor() {
     }
 
+    /// 数据预加载。
+    public Preload(): void {
+        this.m_pProject.Preload();
+    }
+
     /// SVE核心逻辑功能启动。
     public Start(): void {
         let pContainer = document.getElementById("unityContainer");
@@ -36,7 +41,7 @@ class App {
         this.m_pPicker = new MiaokitJS.UTIL.EntityPicker(this.m_pCameraCtrl);
 
         this.RegisterEvent(this.m_pCanvas2D, MiaokitJS.Miaokit.cameraCtrl);
-        this.m_pProject.Init();
+        this.m_pProject.Start();
     }
 
     /// SVE核心逻辑功能帧更新。
@@ -45,6 +50,11 @@ class App {
         this.Draw2D();
         this.m_pCameraCtrl.Update();
         this.m_pProject.Update();
+    }
+
+    /// SVE瓦片激活。
+    public ActiveTile(pTile): void {
+        this.m_pProject.ActiveTile(pTile);
     }
 
     /// 绘制2D画布。

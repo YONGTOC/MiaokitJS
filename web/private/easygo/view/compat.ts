@@ -396,6 +396,7 @@ function Init3D(pCallback) {
     };
 
     pProject.Inited = function (pError) {
+        SVE_H5_URL = pProject.m_pTile.m_pEasygoServer;
         pCallback(pError);
     };
 }
@@ -412,8 +413,20 @@ function Stop() {
 
 /// TODO:切换室内外场景
 function SwitchScene(pName) {
-    MiaokitJS.App.m_pProject.SwitchScene(pName);
-    GLOBAL.Action.pLayerListFlush(4, 0);
+    if (pName) {
+        pName = "A栋"; // TODO
+
+        MiaokitJS.App.m_pProject.SwitchScene(pName);
+        currentScene = pName;
+        GLOBAL.pCurBuilding = MiaokitJS.App.m_pProject.m_pCurScene;
+    }
+    else {        
+        MiaokitJS.App.m_pProject.SwitchScene(pName);
+        currentScene = "室外";
+        GLOBAL.pCurBuilding = null;
+    }
+    
+    GLOBAL.Action.pLayerListFlush(0, 0);
     $("#select-add").text("返回室外");
     $(".floor_box ul li:first").trigger("click", {
         type: "noNeedActive"
@@ -532,6 +545,7 @@ var GLOBAL = {
     }
 };
 
+var SVE_H5_URL: string = null;
 var startIcon: any = null;
 var endIcon: any = null;
 var endName: any = null;
