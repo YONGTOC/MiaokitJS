@@ -1,21 +1,27 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-//import * as ReactRouter  from 'react-router';
-import * as RouterDOM from 'react-router-dom';
-
 import TopNav from "topNav";
 import LeftNav from "leftNav";
 import IconView from "iconView";
 import Data from "data";
+import Share from "share";
 
 
 import "css!./styles/index.css"
+import { HashRouter, Route, Redirect, Switch } from 'react-router-dom';
 
 
+interface IProps {
 
+}
 
-class Index extends React.Component {
+interface IState {
+    isFullScreen: boolean,
+    isShare: boolean
+}
+
+class Index extends React.Component<IProps, IState> {
     constructor(props) {
         super(props);
         this.toggleShare = this.toggleShare.bind(this);
@@ -23,6 +29,10 @@ class Index extends React.Component {
         Index.g_pIns = this;
     }
 
+    public readonly state: Readonly<IState> = {
+        isFullScreen: false,
+        isShare: false
+    }
     // 
     public static g_pIns: Index = null;
 
@@ -46,6 +56,11 @@ class Index extends React.Component {
         this.btnClick(a);
     }
 
+    public doPlay(a) {
+        // console.log(a);
+        this.btnPlay(a);
+    }
+
     public render() {
         return (
             //<TopNav />
@@ -64,38 +79,41 @@ class Index extends React.Component {
                         <LeftNav leftNavFather={this.leftNavSon} />
                     </span>
                 }
-
+                {
+                this.state.isShare ?
+                    <div className="share"><Share toggleShare={this.toggleShare} /></div>
+                    : null
+                }
                 <div className={"iconView"}>
-                    <IconView />
+                    <IconView toggleShare={this.toggleShare} fullScreen={this.fullScreen} iconFather={this.iconSon} />
                 </div>
-               
-                <RouterDOM.Switch>
-                    <RouterDOM.Route exact path="/data" component={Data} />
-                </RouterDOM.Switch>
+            
                
             </div>
         )
     }
 
-    public state = {
-        isShare: false, // 分享
-        isFullScreen: false, //全屏
-    }
 
     public deo: Deo = new Deo();
 
-    // TopNav ,子组件指向
+    // ref, 建立连接, 子组件指向
     public topNavSon = ref => { this.topNavChild = ref };
     public leftNavSon = ref => { this.leftNavChild = ref };
+    public iconSon = ref => { this.iconChild = ref };
 
     // 父组件调用 index的子组件的方法；
     public btnClick = (a) => {
         this.topNavChild.getValuefromChild(a)
-       // this.leftNavChild.getValuefromChild(a)
+        // this.leftNavChild.getValuefromChild(a)
     }
 
- 
+    // 父组件调用 iconView的子组件的方法；
+    public btnPlay = (a) => {
+        console.log(a);
+        this.iconChild.play(a)
+    }
 }
+
 
 // 
 class Deo {
@@ -110,9 +128,18 @@ class Deo {
 
 
 ReactDOM.render(
-    <RouterDOM.HashRouter>
-        <Index />
-    </RouterDOM.HashRouter>
+    //<RouterDOM.HashRouter>
+    //    <Index />
+    //</RouterDOM.HashRouter>
+
+    <HashRouter>
+        <>
+            <Switch>
+                <Route path="/data" component={Data} />
+                <Route exact path="/" component={Index} />
+            </Switch>
+        </>
+    </HashRouter>
     , document.getElementById('viewContainer'));
 
 export default Index;
