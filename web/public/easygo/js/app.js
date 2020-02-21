@@ -26,7 +26,6 @@ class Main {
     }
     Start() {
         let pThis = this;
-        pThis.MajorProgress(true, 0.4);
         pThis.m_pApp.m_pCameraCtrl.Jump(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, {
             m_nLng: 110.344301,
             m_nLat: 25.272208,
@@ -37,6 +36,7 @@ class Main {
         });
     }
     Update() {
+        return;
         let pThis = this;
         let nTaskCount = MiaokitJS.Miaokit.progress;
         if (0 < nTaskCount) {
