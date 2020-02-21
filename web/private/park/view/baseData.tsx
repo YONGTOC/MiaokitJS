@@ -2,11 +2,8 @@ import * as React from "react";
 import "css!./styles/baseData.css";
 
 
-//import { StackArea } from 'g2plot';
+import { StackArea } from 'g2plot';
 
-
-//const requireContext = require.context("../image/baseData", true, /^\.\/.*\.png$/);
-//const images = requireContext.keys().map(requireContext);
 
 
 const data = [
@@ -82,33 +79,29 @@ const data = [
     },
 ];
 
+interface IProps {
+ 
+}
+
+interface IState {
+    baseData: Array<any>
+}
 
 
 
 
 
-class BaseData extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            baseData: [{ name: "建筑总面积", number: "95,000", unit: "平方米", img: 'architecture' }, { name: "入驻企业", number: "150", unit: "家", img: "enterprise" },
-            { name: "园内人员", number: "6,000", unit: "人", img: "personnel" }, { name: "摄像监控", number: "900", unit: "台", img: "monitoring" },
-            { name: "智能设备", number: "2,600", unit: "台", img: "equipment" }, { name: "停车位", number: "600", unit: "个", img: "car" }], // 基础数据
-        }
+
+class BaseData extends React.Component<IProps, IState> {
+    public readonly state: Readonly<IState> = {
+        baseData: [{ name: "建筑总面积", number: "95,000", unit: "平方米", img: "./park/image/baseData/architecture.png" }, { name: "入驻企业", number: "150", unit: "家", img: "./park/image/baseData/enterprise.png" },
+            { name: "园内人员", number: "6,000", unit: "人", img: "./park/image/baseData/personnel.png" }, { name: "摄像监控", number: "900", unit: "台", img: "./park/image/baseData/monitoring.png" },
+            { name: "智能设备", number: "2,600", unit: "台", img: "./park/image/baseData/equipment.png" }, { name: "停车位", number: "600", unit: "个", img: "./park/image/baseData/car.png" }], // 基础数据
     }
+    
 
 
     componentDidMount() {
-        let baseDate = this.state.baseData
-        baseDate.forEach((item, index) => {
-            requireContext.keys().forEach((it, ind) => {
-                if (it.substring(2, it.length - 4) === item.img) {
-                    item.img = images[ind].default
-                }
-            })
-        })
-        this.setState({ baseData: baseDate })
-
         const areaPlot = new StackArea(document.getElementById('curve'), {
             data,
             xField: 'month',
@@ -134,7 +127,7 @@ class BaseData extends React.Component {
 
     render() {
         return (
-            <div className={"baseData"}>
+            <div className="base-data">
                 <div style={{ marginTop: "20px", marginLeft: "25px" }}>
                     <div style={{
                         borderLeft: "2px solid #07D1D3", height: "16px", width: "2px",
@@ -145,13 +138,13 @@ class BaseData extends React.Component {
                 </div>
                 {
                     this.state.baseData.map((item, index) => {
-                        return <div className={"option"} key={index}>
+                        return <div className="base-option" key={index}>
                             <img src={item.img} width="45px" height="45px" style={{ float: "left", marginTop: "3px" }} />
                             <div style={{ float: "left", marginLeft: "18px" }}>
-                                <span className={"spanA"}>{item.name}</span>
+                                <span className="base-span-a">{item.name}</span>
                                 <br />
-                                <span className={"spanB"}>{item.number}</span>
-                                <span className={"spanC"}>{item.unit}</span>
+                                <span className="base-span-b">{item.number}</span>
+                                <span className="base-span-c">{item.unit}</span>
                             </div>
                         </div>
                     })
@@ -176,6 +169,8 @@ class BaseData extends React.Component {
             </div>
         )
     }
+
+
 }
 
 

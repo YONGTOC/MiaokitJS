@@ -11,10 +11,16 @@ import "css!./styles/iconView.css";
 //declare var React2: any;
 
 //ReactPlayer.React2 = React
+
+// http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3
+// http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3
+
+
 class IconView extends React.Component {
     public constructor(props) {
         super(props);
         this.play = this.play.bind(this);
+        this.plays = this.plays.bind(this);
         this.endedAudio = this.endedAudio.bind(this);
     }
 
@@ -36,15 +42,28 @@ class IconView extends React.Component {
     }
 
     // ²¥·Å
-    play() {
+    public play(a) {
         console.log("play");
-         this.setState({ isPlaying: !this.state.isPlaying })
+        this.setState({ isPlaying: !this.state.isPlaying });
+        var audio = document.getElementById("bgMusic");
+        audio.src = a;
+        audio.play();
+    }
+
+    public plays(a) {
+        console.log("playplay", a);
+
+    }
+
+    public componentDidMount() {
+        this.props.iconFather(this);
     }
 
     public render() {
 
         return (
             <div className={"icon-view "}>
+                <Audio /> 
                 <div style={{ position: "fixed", top: "300px", left: "500px" }}>
                     {/*<ReactPlayer url={this.state.audioArray[this.state.currentAudio]}
                         playing={this.state.isPlaying} controls={this.state.isControls}
@@ -52,9 +71,9 @@ class IconView extends React.Component {
                 </div>
                 <RouterDOM.Link to="/data"><Analyze /></RouterDOM.Link>
               
-                <span onClick={this.play}><Play /></span>
-                <span ><Share /></span>
-                <span ><Amplification /></span>
+                <span onClick={this.plays.bind("http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3")}><Play /></span>
+                <span onClick={() => { this.props.toggleShare() }}><Share /></span>
+                <span onClick={() => { this.props.fullScreen() }}><Amplification /></span>
              
             </div>
         )
@@ -102,3 +121,21 @@ const Amplification = () =>
 export default IconView;
 
 
+class Audio extends React.Component<{ onended: any }>{
+
+    public componentDidMount() {
+
+    }
+
+    public render() {
+        return (
+            <div>
+                <div id="audioBox" style={{display:"none"}}>
+                    <audio controls id="bgMusic">
+                        <source src="" />
+                    </audio>
+                </div>
+            </div>
+        )
+    }
+}
