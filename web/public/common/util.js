@@ -49,10 +49,10 @@ class WanderParam {
 }
 class CameraCtrl {
     constructor(pCamera) {
-        this.iii = 0;
         this.m_pCamera = null;
         this.m_pTransform = null;
         this.m_eCtrlMode = CTRL_MODE.REMOTE;
+        this.m_nViewMode = 3;
         this.m_nLng = 0.0;
         this.m_nLat = 0.0;
         this.m_nDistance = 0.0;
@@ -227,11 +227,17 @@ class CameraCtrl {
             nOffsetX *= nFactor;
             nOffsetY *= nFactor;
             let mTarget = this.target;
-            let rYaw = (this.yaw / 180.0) * Math.PI;
-            mTarget.x += nOffsetX * Math.cos(rYaw);
-            mTarget.z -= nOffsetX * Math.sin(rYaw);
-            mTarget.z += nOffsetY * Math.cos(rYaw);
-            mTarget.x += nOffsetY * Math.sin(rYaw);
+            if (2 === this.m_nViewMode) {
+                mTarget.x += nOffsetX;
+                mTarget.z += nOffsetY;
+            }
+            else {
+                let rYaw = (this.yaw / 180.0) * Math.PI;
+                mTarget.x += nOffsetX * Math.cos(rYaw);
+                mTarget.z -= nOffsetX * Math.sin(rYaw);
+                mTarget.z += nOffsetY * Math.cos(rYaw);
+                mTarget.x += nOffsetY * Math.sin(rYaw);
+            }
             this.target = mTarget;
         }
     }
@@ -312,23 +318,37 @@ class CameraCtrl {
                 }
                 this.target = mTarget;
             }
-            this.m_pTransform.position = { x: 0, y: 0, z: 0 };
-            this.m_pTransform.euler = { x: 0, y: 0, z: 0 };
-            this.m_pTransform.Rotate2({ x: 1, y: 0, z: 0 }, this.pitch, 1);
-            this.m_pTransform.Rotate2({ x: 0, y: 1, z: 0 }, this.yaw, 0);
-            this.m_pTransform.position = this.target;
-            this.m_pTransform.Translate(MiaokitJS.Vector3.Scale(-this.distance, { x: 0, y: 0, z: 1 }), 1);
+            if (2 === this.m_nViewMode) {
+                this.m_pTransform.position = { x: 0, y: 0, z: 0 };
+                this.m_pTransform.euler = { x: 0, y: 0, z: 0 };
+                this.m_pTransform.Rotate2({ x: 1, y: 0, z: 0 }, 90, 0);
+                this.m_pTransform.position = this.target;
+                this.m_pTransform.Translate(MiaokitJS.Vector3.Scale(-this.distance, { x: 0, y: 0, z: 1 }), 1);
+            }
+            else {
+                this.m_pTransform.position = { x: 0, y: 0, z: 0 };
+                this.m_pTransform.euler = { x: 0, y: 0, z: 0 };
+                this.m_pTransform.Rotate2({ x: 1, y: 0, z: 0 }, this.pitch, 1);
+                this.m_pTransform.Rotate2({ x: 0, y: 1, z: 0 }, this.yaw, 0);
+                this.m_pTransform.position = this.target;
+                this.m_pTransform.Translate(MiaokitJS.Vector3.Scale(-this.distance, { x: 0, y: 0, z: 1 }), 1);
+            }
         }
         else {
             console.log("未实现漫游模式");
         }
-        if (180 === this.iii++) {
-            console.log(this);
-            this.iii = 0;
-        }
     }
     get ctrlMode() {
         return this.m_eCtrlMode;
+    }
+    get viewMode() {
+        return this.m_nViewMode;
+    }
+    set viewMode(mode) {
+        if (this.m_nViewMode !== mode) {
+            this.m_nViewMode = mode;
+            MiaokitJS.Miaokit.cameraMode = mode;
+        }
     }
     get curView() {
         return {
@@ -427,13 +447,13 @@ class App {
         this.m_nTick = null;
         this.m_nTime = 0;
         this.m_aAnalyze = null;
-        this.m_pGis = null;
-        this.m_pDioramas = null;
         this.m_pCamera = null;
         this.m_pCameraCtrl = null;
         this.m_pPicker = null;
-        this.m_pStartMovie = null;
-        this.m_aTile = [];
+        this.m_pProject = null;
+    }
+    Preload() {
+        this.m_pProject.Preload();
     }
     Start() {
         let pContainer = document.getElementById("unityContainer");
@@ -458,35 +478,20 @@ class App {
         this.m_pCameraCtrl = new MiaokitJS.UTIL.CameraCtrl(this.m_pCamera);
         this.m_pPicker = new MiaokitJS.UTIL.EntityPicker(this.m_pCameraCtrl);
         this.RegisterEvent(this.m_pCanvas2D, MiaokitJS.Miaokit.cameraCtrl);
-        this.InitProject();
+        this.m_pProject.Start();
     }
     Update() {
         this.m_nTick++;
         this.Draw2D();
-        if (this.m_pStartMovie) {
-            this.m_pStartMovie();
-            return;
-        }
         this.m_pCameraCtrl.Update();
-        if (this.m_pDioramas) {
-            this.m_pDioramas.Update();
-        }
-        if (this.m_pGis) {
-            this.m_pGis.Update(this.m_pCameraCtrl.lng, this.m_pCameraCtrl.lat, this.m_pCameraCtrl.height);
-        }
+        this.m_pProject.Update();
+    }
+    ActiveTile(pTile) {
+        this.m_pProject.ActiveTile(pTile);
     }
     Draw2D() {
         this.m_pCanvasCtx2D.clearRect(0, 0, this.m_pCanvas2D.clientWidth, this.m_pCanvas2D.clientHeight);
         this.Analyze();
-        if (0 < MiaokitJS.Miaokit.progress) {
-            let pMsg = "正在执行任务: " + MiaokitJS.Miaokit.progress;
-            this.m_pCanvasCtx2D.font = "20px Microsoft YaHei";
-            this.m_pCanvasCtx2D.strokeStyle = "black";
-            this.m_pCanvasCtx2D.lineWidth = 2;
-            this.m_pCanvasCtx2D.fillStyle = "#FF0000";
-            this.m_pCanvasCtx2D.strokeText(pMsg, this.m_pCanvas2D.clientWidth / 2 - 20.0, this.m_pCanvas2D.clientHeight / 2);
-            this.m_pCanvasCtx2D.fillText(pMsg, this.m_pCanvas2D.clientWidth / 2 - 20.0, this.m_pCanvas2D.clientHeight / 2);
-        }
         if (this.OnGUI) {
             this.OnGUI(this.m_pCanvas2D, this.m_pCanvasCtx2D);
         }
@@ -505,7 +510,7 @@ class App {
         }
         let pCanvas = this.m_pCanvasCtx2D;
         let aInfo = this.m_aAnalyze;
-        let nOffset = 18;
+        let nOffset = 68;
         if (aInfo) {
             pCanvas.font = "14px Microsoft YaHei";
             pCanvas.strokeStyle = "black";
@@ -627,316 +632,6 @@ class App {
             }
         }, false);
         pCavans.addEventListener("touchend", function (e) { nDrag = -1; pStartEvent = null; }, false);
-    }
-    InitProject() {
-        let pThis = this;
-        pThis.m_pCameraCtrl.Jump(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, {
-            m_nLng: 110.344301,
-            m_nLat: 25.272208,
-            m_mTarget: { x: 0.0, y: 0.0, z: 0.0 },
-            m_nDistance: 30.0,
-            m_nPitch: 30.0,
-            m_nYaw: 21
-        });
-        pThis.m_pGis = MiaokitJS.Miaokit.gis;
-        pThis.m_pGis.imageServer = "http://t%d.tianditu.gov.cn/DataServer?T=img_c&tk=3d26628c3a0e2694fecfbbb983ff7d87&x=%d&y=%d&l=%d";
-        pThis.m_pGis.terrainServer = "https://t%d.tianditu.gov.cn/dem_sjk/DataServer?T=ele_c&tk=3d26628c3a0e2694fecfbbb983ff7d87&x=%d&y=%d&l=%d";
-        pThis.m_pDioramas = new MiaokitJS.Dioramas3MX("./data/diors/Production_1.3mx", {
-            m_pGis: MiaokitJS.Miaokit.gis,
-            m_mLngLat: { x: 110.341637, y: 25.270798 },
-            m_mOffset: { x: -24.0, y: 242.0, z: 0.0 }
-        });
-        pThis.InitMovie();
-    }
-    InitMovie() {
-        let pThis = this;
-        let pCamera = this.m_pCameraCtrl;
-        let pDoing = null;
-        let aList = [
-            {
-                m_pCtrl: "Jump",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: -75126.2, y: 170.0, z: -1438049.8 },
-                    m_nDistance: 2003360.0,
-                    m_nPitch: 5.0,
-                    m_nYaw: -70.0
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
-                    m_nDistance: 2003360.0,
-                    m_nPitch: 5.0,
-                    m_nYaw: -45.0
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
-                    m_nDistance: 570475.0,
-                    m_nPitch: 5.0,
-                    m_nYaw: 90.0
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_nSpeed: 0.05,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
-                    m_nDistance: 95500.0,
-                    m_nPitch: 19.0,
-                    m_nYaw: 90.0
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_nSpeed: 0.02,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 18.0, y: 170.0, z: -3.0 },
-                    m_nDistance: 288.0,
-                    m_nPitch: 18.6,
-                    m_nYaw: 67.4
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 25.0, y: 170.0, z: -35.0 },
-                    m_nDistance: 313.0,
-                    m_nPitch: 15.0,
-                    m_nYaw: -122.0
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 25.0, y: 170.0, z: -35.0 },
-                    m_nDistance: 313.0,
-                    m_nPitch: 15.0,
-                    m_nYaw: -122.0
-                },
-                Do: function () {
-                    let nStart = 15.0;
-                    let nEnd = 175.0;
-                    pDoing = function () {
-                        if (nStart > nEnd) {
-                            pDoing = null;
-                        }
-                        else {
-                            nStart += 1.0;
-                            MiaokitJS.ShaderLab.SetSunlight(0.0, nStart, 1.0);
-                        }
-                    };
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 125.0, y: 170.0, z: -35.0 },
-                    m_nDistance: 130.0,
-                    m_nPitch: 35.0,
-                    m_nYaw: -270.0
-                },
-                Do: function () {
-                    pThis.ShowIndoor(0, 0, 0);
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 200.0, y: 170.0, z: -35.0 },
-                    m_nDistance: 100.0,
-                    m_nPitch: 35.0,
-                    m_nYaw: -270.0
-                },
-                Do: function () {
-                    pThis.ShowIndoor(0, 0, 1);
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 217.0, y: 170.0, z: -13.0 },
-                    m_nDistance: 133.0,
-                    m_nPitch: 28.0,
-                    m_nYaw: -185.0
-                },
-                Do: function () {
-                    pThis.HideIndoor(0, 0);
-                    pThis.ShowIndoor(0, 1, 0);
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 217.0, y: 170.0, z: -13.0 },
-                    m_nDistance: 100.0,
-                    m_nPitch: 28.0,
-                    m_nYaw: -175.0
-                },
-                Do: function () {
-                    pThis.ShowIndoor(0, 1, 1);
-                }
-            },
-        ];
-        pThis.m_pStartMovie = (function () {
-            let nIndex = 0;
-            let pFlash = function () {
-                if (0 < nIndex && 120 > pThis.m_nTick) {
-                    return false;
-                }
-                if (!pDoing && !pCamera.m_pFlyTask) {
-                    if (nIndex === aList.length) {
-                        return true;
-                    }
-                    let pState = aList[nIndex];
-                    if (pState.m_pCtrl) {
-                        pCamera[pState.m_pCtrl](pState.m_nMode, pState.m_pParam, pState.m_nSpeed);
-                    }
-                    if (pState.Do) {
-                        pState.Do();
-                    }
-                    nIndex++;
-                }
-                else if (pDoing) {
-                    pDoing();
-                }
-                return false;
-            };
-            return function () {
-                let bEnd = pFlash();
-                pCamera.Update();
-                if (pThis.m_pDioramas) {
-                    pThis.m_pDioramas.Update();
-                }
-                if (pThis.m_pGis) {
-                    pThis.m_pGis.Update(pCamera.lng, pCamera.lat, 5 > nIndex ? 50000.0 : 5000.0);
-                }
-                if (bEnd) {
-                    pThis.m_pStartMovie = null;
-                }
-            };
-        })();
-    }
-    ActiveTile(pTile) {
-        let aScene = [];
-        for (let pScene of pTile.scenes) {
-            console.log(pScene);
-            aScene.push(pScene);
-        }
-        pTile.m_mOffet = { x: 200.0, y: 167.0, z: -50.0 };
-        pTile.m_mEuler = { x: 0.0, y: -85.0, z: 0.0 };
-        let aAdjust = [
-            [{ x: 2.0, y: 2.5, z: 2.0 }, { x: 0.0, y: 180.0, z: 0.0 }, 6.0],
-            [{ x: 71.0, y: 1.0, z: -6.0 }, { x: 0.0, y: -90.0, z: 0.0 }, 9.0],
-            [{ x: 0.0, y: 0.0, z: 0.0 }, null, 9.0]
-        ];
-        for (let i = aScene.length - 1; i > -1; i--) {
-            let pScene = aScene[i];
-            let pAdjust = aAdjust[i];
-            let pObject = pScene.object3D;
-            pObject.transform.localPosition = pTile.m_mOffet;
-            pObject.transform.euler = pTile.m_mEuler;
-            pObject.active = (aScene.length - 1) === i ? true : false;
-            for (let pLayer of pScene.layers) {
-                let pObject = pLayer.object3D;
-                pObject.transform.localPosition = pAdjust[0];
-                pAdjust[0].y += pAdjust[2];
-                if (pAdjust[1]) {
-                    pObject.transform.localEuler = pAdjust[1];
-                }
-                pLayer._Draw();
-            }
-        }
-        this.m_aTile[0] = {
-            m_aScene: aScene
-        };
-    }
-    ShowIndoor(nTile, nScene, nType) {
-        let pTile = this.m_aTile[nTile];
-        if (pTile) {
-            let pScene = pTile.m_aScene[nScene];
-            if (pScene) {
-                let pBuilding = pScene.binding;
-                if (pBuilding) {
-                    let pBuildingObj = pBuilding.object3D;
-                    if (pBuildingObj) {
-                        if (0 === nType) {
-                            pBuildingObj.transparent = true;
-                        }
-                        else {
-                            pBuildingObj.transparent = false;
-                            pBuildingObj.active = false;
-                        }
-                    }
-                }
-                pScene.object3D.active = true;
-                let pPosition = null;
-                let nOffset = 0 === nType ? 6.0 : 9.0;
-                for (let pLayer of pScene.layers) {
-                    let pObject = pLayer.object3D;
-                    if (pPosition) {
-                        pPosition.y += nOffset;
-                        pObject.transform.localPosition = pPosition;
-                    }
-                    else {
-                        pPosition = pObject.transform.localPosition;
-                    }
-                    pLayer._Draw();
-                }
-            }
-        }
-    }
-    HideIndoor(nTile, nScene) {
-        let pTile = this.m_aTile[nTile];
-        if (pTile) {
-            let pScene = pTile.m_aScene[nScene];
-            if (pScene) {
-                let pBuilding = pScene.binding;
-                if (pBuilding) {
-                    let pBuildingObj = pBuilding.object3D;
-                    if (pBuildingObj) {
-                        pBuildingObj.active = true;
-                    }
-                }
-                pScene.object3D.active = false;
-            }
-        }
     }
 }
 MiaokitJS.UTIL = MiaokitJS.UTIL || {};
@@ -1323,16 +1018,27 @@ MiaokitJS.ShaderLab.Shader["Dioramas"] = {
     mark: ["Opaque"],
     vs_src: MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereVS"] + `
 vec4 vs()
-{
-    v_Position = ObjectToWorldPos(a_Position.xyz);
-    v_Normal = ObjectToWorldNormal(a_Normal);
+{   vec3 mLocalPos = a_Position.xyz;
+    //if(mLocalPos.x < 100.0)
+    //{
+    //    mLocalPos.z = 100.0;
+    //}
+    
+    
+    float n = a_Normal.x; 
+    float nx = n / 8.0;  n = floor(nx); nx = (nx - n) * 4.0 - 1.0;
+    float ny = n / 8.0;  n = floor(ny); ny = (ny - n) * 4.0 - 1.0;
+    float nz = (n - 2.0) * 0.5;
+
+    v_Position = ObjectToWorldPos(mLocalPos.xyz);
+    v_Normal = ObjectToWorldNormal(vec3(nx, ny, nz));
     v_Tangent = ObjectToWorldNormal(a_Tangent.xyz);
     v_Binormal = normalize(cross(v_Tangent, v_Normal));
     v_UV = a_UV;
     
     Atmosphere(normalize(u_Sunlight.xyz), v_Position);
 
-    return ObjectToClipPos(a_Position.xyz);
+    return ObjectToClipPos(mLocalPos.xyz);
 }
         `,
     fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
@@ -1346,10 +1052,10 @@ vec4 fs()
         vec3 _ViewDir = normalize(u_EyePos.xyz - v_Position);
         vec3 _Light = normalize(u_Sunlight.xyz);
         mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, v_Tangent, v_Binormal) * 0.4;
+        mColor.rgb = clamp(mColor.rgb, 0.0, 1.0);
     }
 
     mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
-    //mColor.rgb = v_Normal;
     mColor.a = 1.0;
     
     return mColor;

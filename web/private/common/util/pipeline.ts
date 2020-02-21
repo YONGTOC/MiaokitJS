@@ -182,16 +182,27 @@ MiaokitJS.ShaderLab.Shader["Dioramas"] = {
     mark: ["Opaque"],
     vs_src: MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereVS"] + `
 vec4 vs()
-{
-    v_Position = ObjectToWorldPos(a_Position.xyz);
-    v_Normal = ObjectToWorldNormal(a_Normal);
+{   vec3 mLocalPos = a_Position.xyz;
+    //if(mLocalPos.x < 100.0)
+    //{
+    //    mLocalPos.z = 100.0;
+    //}
+    
+    
+    float n = a_Normal.x; 
+    float nx = n / 8.0;  n = floor(nx); nx = (nx - n) * 4.0 - 1.0;
+    float ny = n / 8.0;  n = floor(ny); ny = (ny - n) * 4.0 - 1.0;
+    float nz = (n - 2.0) * 0.5;
+
+    v_Position = ObjectToWorldPos(mLocalPos.xyz);
+    v_Normal = ObjectToWorldNormal(vec3(nx, ny, nz));
     v_Tangent = ObjectToWorldNormal(a_Tangent.xyz);
     v_Binormal = normalize(cross(v_Tangent, v_Normal));
     v_UV = a_UV;
     
     Atmosphere(normalize(u_Sunlight.xyz), v_Position);
 
-    return ObjectToClipPos(a_Position.xyz);
+    return ObjectToClipPos(mLocalPos.xyz);
 }
         `,
     fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
@@ -205,10 +216,10 @@ vec4 fs()
         vec3 _ViewDir = normalize(u_EyePos.xyz - v_Position);
         vec3 _Light = normalize(u_Sunlight.xyz);
         mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, v_Tangent, v_Binormal) * 0.4;
+        mColor.rgb = clamp(mColor.rgb, 0.0, 1.0);
     }
 
     mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
-    //mColor.rgb = v_Normal;
     mColor.a = 1.0;
     
     return mColor;
