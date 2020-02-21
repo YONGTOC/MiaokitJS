@@ -1,98 +1,89 @@
-define("baseData", ["require", "exports", "react", "css!./styles/baseData.css"], function (require, exports, React) {
+define("baseData", ["require", "exports", "react", "g2plot", "css!./styles/baseData.css"], function (require, exports, React, g2plot_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     const data = [
         {
-            country: '����',
-            month: '1��',
+            country: '国王',
+            month: '1月',
             value: 30,
         },
         {
-            country: '����',
-            month: '2��',
+            country: '国王',
+            month: '2月',
             value: 50,
         },
         {
-            country: '����',
-            month: '3��',
+            country: '国王',
+            month: '3月',
             value: 80,
         },
         {
-            country: '����',
-            month: '4��',
+            country: '国王',
+            month: '4月',
             value: 100,
         },
         {
-            country: '����',
-            month: '5��',
+            country: '国王',
+            month: '5月',
             value: 80,
         },
         {
-            country: '����',
-            month: '6��',
+            country: '国王',
+            month: '6月',
             value: 50,
         },
         {
-            country: '����',
-            month: '7��',
+            country: '国王',
+            month: '7月',
             value: 30,
         },
         {
-            country: '�ʺ�',
-            month: '1��',
+            country: '皇后',
+            month: '1月',
             value: 20,
         },
         {
-            country: '�ʺ�',
-            month: '2��',
+            country: '皇后',
+            month: '2月',
             value: 60,
         },
         {
-            country: '�ʺ�',
-            month: '3��',
+            country: '皇后',
+            month: '3月',
             value: 120,
         },
         {
-            country: '�ʺ�',
-            month: '4��',
+            country: '皇后',
+            month: '4月',
             value: 70,
         },
         {
-            country: '�ʺ�',
-            month: '5��',
+            country: '皇后',
+            month: '5月',
             value: 50,
         },
         {
-            country: '�ʺ�',
-            month: '6��',
+            country: '皇后',
+            month: '6月',
             value: 30,
         },
         {
-            country: '�ʺ�',
-            month: '7��',
+            country: '皇后',
+            month: '7月',
             value: 20,
         },
     ];
     class BaseData extends React.Component {
-        constructor(props) {
-            super(props);
+        constructor() {
+            super(...arguments);
             this.state = {
-                baseData: [{ name: "���������", number: "95,000", unit: "ƽ����", img: 'architecture' }, { name: "��פ��ҵ", number: "150", unit: "��", img: "enterprise" },
-                    { name: "԰����Ա", number: "6,000", unit: "��", img: "personnel" }, { name: "������", number: "900", unit: "̨", img: "monitoring" },
-                    { name: "�����豸", number: "2,600", unit: "̨", img: "equipment" }, { name: "ͣ��λ", number: "600", unit: "��", img: "car" }],
+                baseData: [{ name: "建筑总面积", number: "95,000", unit: "平方米", img: "./park/image/baseData/architecture.png" }, { name: "入驻企业", number: "150", unit: "家", img: "./park/image/baseData/enterprise.png" },
+                    { name: "园内人员", number: "6,000", unit: "人", img: "./park/image/baseData/personnel.png" }, { name: "摄像监控", number: "900", unit: "台", img: "./park/image/baseData/monitoring.png" },
+                    { name: "智能设备", number: "2,600", unit: "台", img: "./park/image/baseData/equipment.png" }, { name: "停车位", number: "600", unit: "个", img: "./park/image/baseData/car.png" }],
             };
         }
         componentDidMount() {
-            let baseDate = this.state.baseData;
-            baseDate.forEach((item, index) => {
-                requireContext.keys().forEach((it, ind) => {
-                    if (it.substring(2, it.length - 4) === item.img) {
-                        item.img = images[ind].default;
-                    }
-                });
-            });
-            this.setState({ baseData: baseDate });
-            const areaPlot = new StackArea(document.getElementById('curve'), {
+            const areaPlot = new g2plot_1.StackArea(document.getElementById('curve'), {
                 data,
                 xField: 'month',
                 yField: 'value',
@@ -114,41 +105,272 @@ define("baseData", ["require", "exports", "react", "css!./styles/baseData.css"],
             areaPlot.render();
         }
         render() {
-            return (React.createElement("div", { className: "baseData" },
+            return (React.createElement("div", { className: "base-data" },
                 React.createElement("div", { style: { marginTop: "20px", marginLeft: "25px" } },
                     React.createElement("div", { style: {
                             borderLeft: "2px solid #07D1D3", height: "16px", width: "2px",
                             float: "left", marginTop: "4px", marginRight: "5px"
                         } }),
-                    React.createElement("span", { style: { color: "#FFFFFF", fontSize: "16px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u0373\uFFFD\uFFFD")),
+                    React.createElement("span", { style: { color: "#FFFFFF", fontSize: "16px" } }, "\u57FA\u672C\u6570\u636E\u7EDF\u8BA1")),
                 this.state.baseData.map((item, index) => {
-                    return React.createElement("div", { className: "option", key: index },
+                    return React.createElement("div", { className: "base-option", key: index },
                         React.createElement("img", { src: item.img, width: "45px", height: "45px", style: { float: "left", marginTop: "3px" } }),
                         React.createElement("div", { style: { float: "left", marginLeft: "18px" } },
-                            React.createElement("span", { className: "spanA" }, item.name),
+                            React.createElement("span", { className: "base-span-a" }, item.name),
                             React.createElement("br", null),
-                            React.createElement("span", { className: "spanB" }, item.number),
-                            React.createElement("span", { className: "spanC" }, item.unit)));
+                            React.createElement("span", { className: "base-span-b" }, item.number),
+                            React.createElement("span", { className: "base-span-c" }, item.unit)));
                 }),
                 React.createElement("div", { style: { color: "#FFFFFF", marginLeft: "35px" } },
-                    React.createElement("div", { style: { fontSize: "12px", float: "left" } }, "\u0530\uFFFD\uFFFD\uFFFD\u00B4\uFFFD\uFFFD\uFFFDGDP"),
-                    React.createElement("div", { style: { fontSize: "12px", marginLeft: "10px", float: "left" } }, "(\uFFFD\uFFFD\uFFFD\uFFFD)"),
+                    React.createElement("div", { style: { fontSize: "12px", float: "left" } }, "\u56ED\u533A\u6708\u521B\u9020GDP"),
+                    React.createElement("div", { style: { fontSize: "12px", marginLeft: "10px", float: "left" } }, "(\u767E\u4E07)"),
                     React.createElement("div", { style: {
                             borderTop: "2px solid #07D1D3", width: "10px", height: "3px", float: "left", opacity: 1,
                             marginLeft: "50px", marginTop: "8px"
                         } }),
-                    React.createElement("div", { style: { float: "left", fontSize: "6px", marginLeft: "5px" } }, "\uFFFD\uFFFD\u01F0\u05B5"),
+                    React.createElement("div", { style: { float: "left", fontSize: "6px", marginLeft: "5px" } }, "\u5F53\u524D\u503C"),
                     React.createElement("div", { style: {
                             borderTop: "2px solid #229FCE", width: "10px", height: "3px", float: "left", opacity: 1,
                             marginLeft: "10px", marginTop: "8px"
                         } }),
-                    React.createElement("div", { style: { float: "left", fontSize: "6px", marginLeft: "5px" } }, "\uFFFD\uFFFD\u05FC\u05B5")),
+                    React.createElement("div", { style: { float: "left", fontSize: "6px", marginLeft: "5px" } }, "\u6807\u51C6\u503C")),
                 React.createElement("div", { id: "curve", style: { width: "350px", height: "260px", marginLeft: "12px" } })));
         }
     }
     exports.default = BaseData;
 });
-define("data", ["require", "exports", "react", "react-router-dom", "g2plot", "css!./styles/data.css"], function (require, exports, React, react_router_dom_1, g2plot_1) {
+define("monitorData", ["require", "exports", "react", "g2plot", "css!./styles/monitorData.css"], function (require, exports, React, g2plot_2) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    const data = [
+        {
+            type: '分类一',
+            value: 27,
+        },
+        {
+            type: '分类二',
+            value: 25,
+        },
+        {
+            type: '分类三',
+            value: 18,
+        },
+        {
+            type: '分类四',
+            value: 15,
+        },
+        {
+            type: '分类五',
+            value: 10,
+        },
+        {
+            type: '其它',
+            value: 10,
+        },
+    ];
+    const brokenLineData = [
+        {
+            month: '1月',
+            value: 30,
+        },
+        {
+            month: '2月',
+            value: 50,
+        },
+        {
+            month: '3月',
+            value: 80,
+        },
+        {
+            month: '4月',
+            value: 100,
+        },
+        {
+            month: '5月',
+            value: 80,
+        },
+        {
+            month: '6月',
+            value: 50,
+        },
+        {
+            month: '7月',
+            value: 30,
+        },
+        {
+            month: '1月',
+            value: 20,
+        },
+        {
+            month: '2月',
+            value: 60,
+        },
+        {
+            month: '3月',
+            value: 120,
+        },
+        {
+            month: '4月',
+            value: 70,
+        },
+        {
+            month: '5月',
+            value: 50,
+        },
+        {
+            month: '6月',
+            value: 30,
+        },
+        {
+            month: '7月',
+            value: 20,
+        },
+    ];
+    const htmlcontent = { name: "总量", value: "100 %" };
+    class MonitorData extends React.Component {
+        constructor() {
+            super(...arguments);
+            this.state = {
+                monitorData: [
+                    { name: "房间面积", allTag: "总面积", allNumber: "20,000", usingTag: "已使用", usingNumber: "5,000", remainTag: "剩余", remainNumber: "15,000", unit: "(㎡)" },
+                    { name: "功耗统计", allTag: "总功耗", allNumber: "2,600", usingTag: "已使用", usingNumber: "2,000", remainTag: "剩余", remainNumber: "600", unit: "(kw)" },
+                    { name: "车位", allTag: "总车位", allNumber: "600", usingTag: "已使用", usingNumber: "300", remainTag: "剩余", remainNumber: "300", unit: "(个)" }
+                ],
+                infoData: [
+                    { name: "今日用水量", number: "200", unit: "吨", img: "./park/image/monitorData/water.png" },
+                    { name: "今日用电量", number: "1200", unit: "度", img: "./park/image/monitorData/electricity.png" }
+                ]
+            };
+        }
+        componentDidMount() {
+            const areaPlot = new g2plot_2.Area(document.getElementById('brokenLine'), {
+                forcefit: true,
+                padding: [0, 0, 0, 0],
+                data: brokenLineData,
+                xField: 'month',
+                yField: 'value',
+                xaxis: {
+                    type: 'datetime',
+                    tickcount: 5,
+                },
+            });
+            const ringPlot0 = new g2plot_2.Ring(document.getElementById('loop0'), {
+                forceFit: true,
+                padding: [0, 0, 0, 0],
+                data,
+                angleField: 'value',
+                colorField: 'type',
+                label: {
+                    visible: false
+                },
+                legend: {
+                    visible: false
+                },
+                statistic: {
+                    visible: true,
+                    htmlcontent: htmlcontent,
+                    triggeron: '',
+                    triggeroff: ''
+                }
+            });
+            const ringPlot1 = new g2plot_2.Ring(document.getElementById('loop0'), {
+                forceFit: true,
+                padding: [0, 0, 0, 0],
+                data,
+                angleField: 'value',
+                colorField: 'type',
+                label: {
+                    visible: false
+                },
+                legend: {
+                    visible: false
+                },
+                statistic: {
+                    visible: true,
+                    htmlcontent: htmlcontent,
+                    triggeron: '',
+                    triggeroff: ''
+                }
+            });
+            const ringPlot2 = new g2plot_2.Ring(document.getElementById('loop0'), {
+                forceFit: true,
+                padding: [0, 0, 0, 0],
+                data,
+                angleField: 'value',
+                colorField: 'type',
+                label: {
+                    visible: false
+                },
+                legend: {
+                    visible: false
+                },
+                statistic: {
+                    visible: true,
+                    htmlcontent: htmlcontent,
+                    triggeron: '',
+                    triggeroff: ''
+                }
+            });
+            areaPlot.render();
+            ringPlot0.render();
+            ringPlot1.render();
+            ringPlot2.render();
+        }
+        render() {
+            return (React.createElement("div", { className: "monitor-data" },
+                React.createElement("div", { style: { marginTop: "20px", marginLeft: "25px" } },
+                    React.createElement("div", { style: {
+                            borderLeft: "2px solid #07D1D3", height: "16px", width: "2px",
+                            float: "left", marginTop: "4px", marginRight: "5px"
+                        } }),
+                    React.createElement("span", { style: { color: "#FFFFFF", fontSize: "16px" } }, "\u667A\u80FD\u6570\u636E\u76D1\u63A7")),
+                this.state.monitorData.map((item, index) => {
+                    return React.createElement("div", { style: { width: "80%", height: "120px", marginLeft: "35px", marginTop: "15px" }, key: index },
+                        React.createElement("div", { style: { width: "53%", height: "100%", float: "left" } },
+                            React.createElement("span", { className: "span-a" }, item.name + item.unit),
+                            React.createElement("br", null),
+                            React.createElement("div", { style: { width: "70px", height: "50px", float: "left" } },
+                                React.createElement("span", { className: "span-b" }, item.allTag + item.unit),
+                                React.createElement("br", null),
+                                React.createElement("span", { className: "span-c" }, item.allNumber)),
+                            React.createElement("div", { style: { width: "70px", height: "50px", float: "right" } },
+                                React.createElement("span", { className: "span-b" }, item.usingTag + item.unit),
+                                React.createElement("br", null),
+                                React.createElement("span", { className: "span-c" }, item.usingNumber)),
+                            React.createElement("div", { style: { overflow: "hidden", width: "100%" } },
+                                React.createElement("span", { className: "span-b" }, item.remainTag + item.unit),
+                                React.createElement("br", null),
+                                React.createElement("span", { className: "span-c" }, item.remainNumber))),
+                        React.createElement("div", { style: { float: "right", width: "47%", height: "100%", top: "10px" }, id: "loop" + index }));
+                }),
+                React.createElement("div", { style: { marginTop: "20px", marginLeft: "25px" } },
+                    React.createElement("div", { style: {
+                            borderLeft: "2px solid #07D1D3", height: "16px", width: "2px",
+                            float: "left", marginTop: "4px", marginRight: "5px"
+                        } }),
+                    React.createElement("span", { style: { color: "#FFFFFF", fontSize: "16px" } }, "\u6C34\u7535\u4FE1\u606F\u7EDF\u8BA1")),
+                this.state.infoData.map((item, index) => {
+                    return React.createElement("div", { className: index === 0 ? "add-option" : "option", key: index },
+                        React.createElement("img", { src: item.img, width: "45px", height: "45px", style: { float: "left", marginTop: "3px" } }),
+                        React.createElement("div", { style: { float: "left", marginLeft: "18px" } },
+                            React.createElement("span", { className: "span-d" }, item.name),
+                            React.createElement("br", null),
+                            React.createElement("span", { className: "span-e" }, item.number),
+                            React.createElement("span", { className: "span-f" }, item.unit)));
+                }),
+                React.createElement("div", { id: "container" }),
+                React.createElement("div", { id: "brokenLine", style: { width: "300px", height: "120px", overflow: "hidden", marginLeft: "35px" } }),
+                React.createElement("div", { className: "electricity-view" },
+                    React.createElement("div", { className: "span-g" }, "\u4F01\u4E1A\u4ECA\u65E5\u5E73\u5747\u7528\u6C34\u91CF"),
+                    React.createElement("div", { className: "span-h" }, "6")),
+                React.createElement("div", { className: "water-view" },
+                    React.createElement("div", { className: "span-g" }, "\u4F01\u4E1A\u4ECA\u65E5\u5E73\u5747\u7528\u7535\u91CF"),
+                    React.createElement("div", { className: "span-h" }, "2"))));
+        }
+    }
+    exports.default = MonitorData;
+});
+define("data", ["require", "exports", "react", "baseData", "monitorData", "react-router-dom", "css!./styles/data.css"], function (require, exports, React, baseData_1, monitorData_1, react_router_dom_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Data extends React.Component {
@@ -157,29 +379,11 @@ define("data", ["require", "exports", "react", "react-router-dom", "g2plot", "cs
             this.state = {};
         }
         componentDidMount() {
-            console.log("ddddddddddd");
-            const data = [
-                { year: '1991', value: 3 },
-                { year: '1992', value: 4 },
-                { year: '1993', value: 3.5 },
-                { year: '1994', value: 5 },
-                { year: '1995', value: 4.9 },
-                { year: '1996', value: 6 },
-                { year: '1997', value: 7 },
-                { year: '1998', value: 9 },
-                { year: '1999', value: 13 },
-            ];
-            const linePlot = new g2plot_1.Line('canvas', {
-                data,
-                xField: 'year',
-                yField: 'value',
-            });
-            linePlot.render();
         }
         render() {
             return (React.createElement("div", { className: "data" },
-                React.createElement("div", { className: "dataTop" },
-                    React.createElement("div", { className: "dataTitle", style: { float: "left", marginLeft: "3%", marginTop: "-5`px", color: "#FFFFFF" } }, "\u6842\u6797\u4FE1\u606F\u4EA7\u4E1A\u56ED\u6570\u636E\u5206\u6790"),
+                React.createElement("div", { className: "data-top" },
+                    React.createElement("div", { className: "data-title", style: { float: "left", marginLeft: "3%", marginTop: "-5px" } }, "\u6842\u6797\u4FE1\u606F\u4EA7\u4E1A\u56ED\u6570\u636E\u5206\u6790"),
                     React.createElement(react_router_dom_1.Link, { to: "/" },
                         React.createElement("div", { style: { float: "right", marginRight: "15px", color: "#FFFFFF" } },
                             React.createElement(Industry, null))),
@@ -189,7 +393,10 @@ define("data", ["require", "exports", "react", "react-router-dom", "g2plot", "cs
                     React.createElement("div", { style: { color: "#FFFFFF", fontSize: "15px", float: "right", marginRight: "12px" } }, "20 \u00B0C"),
                     React.createElement("div", { style: { float: "right", marginRight: "3px" } },
                         React.createElement(Sun, null))),
-                React.createElement("div", { id: "canvas" })));
+                React.createElement("div", { className: "base-data" },
+                    React.createElement(baseData_1.default, null)),
+                React.createElement("div", { className: "monitor-data" },
+                    React.createElement(monitorData_1.default, null))));
         }
     }
     const Sun = () => React.createElement("svg", { className: "icon", "aria-hidden": "true" },
@@ -728,27 +935,74 @@ define("topNav", ["require", "exports", "react", "css!./styles/topnav.css"], fun
     }
     exports.default = TopNav;
 });
-define("Index", ["require", "exports", "react", "react-dom", "react-router-dom", "topNav", "leftNav", "iconView", "data", "css!./styles/index.css"], function (require, exports, React, ReactDOM, RouterDOM, topNav_1, leftNav_1, iconView_1, data_1) {
+define("share", ["require", "exports", "antd", "react", "css!./styles/share.css"], function (require, exports, antd_2, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class Share extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                value: "www.baidu.com"
+            };
+            this.copy = this.copy.bind(this);
+            this.cancel = this.cancel.bind(this);
+        }
+        componentDidMount() {
+        }
+        copy() {
+            var Url2 = document.getElementById("copy").innerText;
+            var oInput = document.createElement('input');
+            oInput.value = Url2;
+            document.body.appendChild(oInput);
+            oInput.select();
+            document.execCommand("Copy");
+            oInput.className = 'oInput';
+            oInput.style.display = 'none';
+            antd_2.message.success('复制成功!', 1);
+            this.props.toggleShare();
+        }
+        cancel() {
+            this.props.toggleShare();
+        }
+        render() {
+            return (React.createElement("div", { className: "share" },
+                React.createElement("div", { className: "share-title" }, "\u56ED\u533A\u5206\u4EAB"),
+                React.createElement("div", { className: "url" },
+                    React.createElement("span", { className: "share-span-a" }, "\u94FE\u63A5"),
+                    React.createElement("span", { className: "share-span-b", id: "copy" }, this.state.value)),
+                React.createElement("div", { className: "share-bt" },
+                    React.createElement("div", { className: "share-span-c", onClick: this.cancel }, "\u53D6\u6D88"),
+                    React.createElement("div", { className: "share-span-d", onClick: this.copy }, "\u590D\u5236\u94FE\u63A5"))));
+        }
+    }
+    exports.default = Share;
+});
+define("Index", ["require", "exports", "react", "react-dom", "topNav", "leftNav", "iconView", "data", "share", "react-router-dom", "css!./styles/index.css"], function (require, exports, React, ReactDOM, topNav_1, leftNav_1, iconView_1, data_1, share_1, react_router_dom_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
         constructor(props) {
             super(props);
+            this.state = {
+                isFullScreen: false,
+                isShare: false
+            };
             this.toggleShare = (e) => {
                 this.setState({ isShare: !this.state.isShare });
             };
             this.fullScreen = (e) => {
                 this.setState({ isFullScreen: !this.state.isFullScreen });
             };
-            this.state = {
-                isShare: false,
-                isFullScreen: false,
-            };
             this.deo = new Deo();
             this.topNavSon = ref => { this.topNavChild = ref; };
             this.leftNavSon = ref => { this.leftNavChild = ref; };
+            this.iconSon = ref => { this.iconChild = ref; };
             this.btnClick = (a) => {
                 this.topNavChild.getValuefromChild(a);
+            };
+            this.btnPlay = (a) => {
+                console.log(a);
+                this.iconChild.play(a);
             };
             this.toggleShare = this.toggleShare.bind(this);
             Index.g_pIns = this;
@@ -758,16 +1012,21 @@ define("Index", ["require", "exports", "react", "react-dom", "react-router-dom",
             this.deo.sdeo(a);
             this.btnClick(a);
         }
+        doPlay(a) {
+            this.btnPlay(a);
+        }
         render() {
             return (React.createElement("div", { className: "web" },
                 this.state.isFullScreen ? null :
                     React.createElement("span", null,
                         React.createElement(topNav_1.default, { topNavFather: this.topNavSon }),
                         React.createElement(leftNav_1.default, { leftNavFather: this.leftNavSon })),
+                this.state.isShare ?
+                    React.createElement("div", { className: "share" },
+                        React.createElement(share_1.default, { toggleShare: this.toggleShare }))
+                    : null,
                 React.createElement("div", { className: "iconView" },
-                    React.createElement(iconView_1.default, null)),
-                React.createElement(RouterDOM.Switch, null,
-                    React.createElement(RouterDOM.Route, { exact: true, path: "/data", component: data_1.default }))));
+                    React.createElement(iconView_1.default, { toggleShare: this.toggleShare, fullScreen: this.fullScreen, iconFather: this.iconSon }))));
         }
     }
     Index.g_pIns = null;
@@ -777,8 +1036,11 @@ define("Index", ["require", "exports", "react", "react-dom", "react-router-dom",
         }
         ;
     }
-    ReactDOM.render(React.createElement(RouterDOM.HashRouter, null,
-        React.createElement(Index, null)), document.getElementById('viewContainer'));
+    ReactDOM.render(React.createElement(react_router_dom_2.HashRouter, null,
+        React.createElement(React.Fragment, null,
+            React.createElement(react_router_dom_2.Switch, null,
+                React.createElement(react_router_dom_2.Route, { path: "/data", component: data_1.default }),
+                React.createElement(react_router_dom_2.Route, { exact: true, path: "/", component: Index })))), document.getElementById('viewContainer'));
     exports.default = Index;
 });
 define("iconView", ["require", "exports", "react", "react-router-dom", "css!./styles/iconView.css"], function (require, exports, React, RouterDOM) {
@@ -798,6 +1060,7 @@ define("iconView", ["require", "exports", "react", "react-router-dom", "css!./st
                 currentAudio: 0
             };
             this.play = this.play.bind(this);
+            this.plays = this.plays.bind(this);
             this.endedAudio = this.endedAudio.bind(this);
         }
         endedAudio() {
@@ -815,20 +1078,30 @@ define("iconView", ["require", "exports", "react", "react-router-dom", "css!./st
                 this.setState({ isPlaying: true });
             });
         }
-        play() {
+        play(a) {
             console.log("play");
             this.setState({ isPlaying: !this.state.isPlaying });
+            var audio = document.getElementById("bgMusic");
+            audio.src = a;
+            audio.play();
+        }
+        plays(a) {
+            console.log("playplay", a);
+        }
+        componentDidMount() {
+            this.props.iconFather(this);
         }
         render() {
             return (React.createElement("div", { className: "icon-view " },
+                React.createElement(Audio, null),
                 React.createElement("div", { style: { position: "fixed", top: "300px", left: "500px" } }),
                 React.createElement(RouterDOM.Link, { to: "/data" },
                     React.createElement(Analyze, null)),
-                React.createElement("span", { onClick: this.play },
+                React.createElement("span", { onClick: this.plays.bind("http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3") },
                     React.createElement(Play, null)),
-                React.createElement("span", null,
+                React.createElement("span", { onClick: () => { this.props.toggleShare(); } },
                     React.createElement(Share, null)),
-                React.createElement("span", null,
+                React.createElement("span", { onClick: () => { this.props.fullScreen(); } },
                     React.createElement(Amplification, null))));
         }
     }
@@ -843,4 +1116,14 @@ define("iconView", ["require", "exports", "react", "react-router-dom", "css!./st
     const Amplification = () => React.createElement("svg", { className: "icon", "aria-hidden": "true", style: { height: "17px", width: "17px", marginLeft: "22px", cursor: "pointer", color: "#FFFFFF" } },
         React.createElement("use", { xlinkHref: "#iconmengbanzu" }));
     exports.default = IconView;
+    class Audio extends React.Component {
+        componentDidMount() {
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { id: "audioBox", style: { display: "none" } },
+                    React.createElement("audio", { controls: true, id: "bgMusic" },
+                        React.createElement("source", { src: "" })))));
+        }
+    }
 });
