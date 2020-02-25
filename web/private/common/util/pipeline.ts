@@ -137,8 +137,8 @@ MiaokitJS.ShaderLab.Pipeline = {
 
     InternalShader: [
         "Default", /*00*/ "Wall", /*01*/ "Default", /*02*/ "Default", /*03*/
-        "Default", /*04*/ "Default", /*05*/ "Default", /*06*/ "Default"/*"GIS"*/, /*07*/
-        "Default"/*"Mapbox"*/, /*08*/ "Default"/*"Mapbox2"*/, /*09*/ "Default"/*"Dioramas"*/, /*10*/ "Default"/*"Mapbox2"*/, /*11*/
+        "Default", /*04*/ "Default", /*05*/ "Default", /*06*/ "GIS", /*07*/
+        "Mapbox", /*08*/ "Mapbox2", /*09*/ "Dioramas", /*10*/ "Mapbox2", /*11*/
         "Cosmos", /*12*/ "Ground", /*13*/ "Sky", /*14*/ "Present"  /*15*/
     ],
 };
@@ -425,6 +425,9 @@ uniform vec4 u_Tile;
 // 地学高度图
 uniform sampler2D _HeightTex;
 
+varying vec3 v_Normal;
+varying vec2 v_UV;
+
 vec4 CalNormal(float nTexU, float nTexV)
 {
 	vec4 aUV[5];
@@ -515,11 +518,14 @@ vec4 vs()
 }
         `,
     fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
+varying vec3 v_Normal;
+varying vec2 v_UV;
+
 vec4 fs()
 {
     vec4 mColor = Tex2D(u_MainTex, v_UV);
     
-    vec3 _ViewDir = normalize(v_ViewDir);
+    vec3 _ViewDir = normalize(v_ViewDir.xyz);
     vec3 _Light = normalize(u_Sunlight.xyz);
     mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, vec3(1.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0)) * 0.4;
     

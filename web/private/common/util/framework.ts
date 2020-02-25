@@ -40,6 +40,25 @@ class App {
         this.m_pCameraCtrl = new MiaokitJS.UTIL.CameraCtrl(this.m_pCamera);
         this.m_pPicker = new MiaokitJS.UTIL.EntityPicker(this.m_pCameraCtrl);
 
+        if (MiaokitJS.m_pConfig.GIS) {
+            this.m_pGis = MiaokitJS.Miaokit.gis;
+            this.m_pGis.imageServer = MiaokitJS.m_pConfig.GIS.m_pImageServer;
+
+            if (MiaokitJS.m_pConfig.GIS.m_pTerrainServer) {
+                this.m_pGis.terrainServer = MiaokitJS.m_pConfig.GIS.m_pTerrainServer;
+            }
+        }
+
+        if (MiaokitJS.m_pConfig.DIORS) {
+            for (let pDior of MiaokitJS.m_pConfig.DIORS) {
+                pDior.m_pDior = new MiaokitJS.Dioramas3MX(pDior.m_pPath, !this.m_pGis ? null : {
+                    m_pGis: this.m_pGis,
+                    m_mLngLat: pDior.m_mLngLat,
+                    m_mOffset: pDior.m_nOffset
+                });
+            }
+        }
+
         this.RegisterEvent(this.m_pCanvas2D, MiaokitJS.Miaokit.cameraCtrl);
         this.m_pProject.Start();
     }
@@ -259,6 +278,8 @@ class App {
     private m_pCameraCtrl: any = null;
     /// 对象拾取器。
     private m_pPicker: any = null;
+    /// GIS对象。
+    private m_pGis: any = null;
     /// 项目逻辑对象。
     private m_pProject: any = null;
 }

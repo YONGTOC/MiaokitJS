@@ -3,73 +3,73 @@ define("baseData", ["require", "exports", "react", "g2plot", "css!./styles/baseD
     Object.defineProperty(exports, "__esModule", { value: true });
     const data = [
         {
-            country: '国王',
-            month: '1月',
+            country: '����',
+            month: '1��',
             value: 30,
         },
         {
-            country: '国王',
-            month: '2月',
+            country: '����',
+            month: '2��',
             value: 50,
         },
         {
-            country: '国王',
-            month: '3月',
+            country: '����',
+            month: '3��',
             value: 80,
         },
         {
-            country: '国王',
-            month: '4月',
+            country: '����',
+            month: '4��',
             value: 100,
         },
         {
-            country: '国王',
-            month: '5月',
+            country: '����',
+            month: '5��',
             value: 80,
         },
         {
-            country: '国王',
-            month: '6月',
+            country: '����',
+            month: '6��',
             value: 50,
         },
         {
-            country: '国王',
-            month: '7月',
+            country: '����',
+            month: '7��',
             value: 30,
         },
         {
-            country: '皇后',
-            month: '1月',
+            country: '�ʺ�',
+            month: '1��',
             value: 20,
         },
         {
-            country: '皇后',
-            month: '2月',
+            country: '�ʺ�',
+            month: '2��',
             value: 60,
         },
         {
-            country: '皇后',
-            month: '3月',
+            country: '�ʺ�',
+            month: '3��',
             value: 120,
         },
         {
-            country: '皇后',
-            month: '4月',
+            country: '�ʺ�',
+            month: '4��',
             value: 70,
         },
         {
-            country: '皇后',
-            month: '5月',
+            country: '�ʺ�',
+            month: '5��',
             value: 50,
         },
         {
-            country: '皇后',
-            month: '6月',
+            country: '�ʺ�',
+            month: '6��',
             value: 30,
         },
         {
-            country: '皇后',
-            month: '7月',
+            country: '�ʺ�',
+            month: '7��',
             value: 20,
         },
     ];
@@ -77,9 +77,9 @@ define("baseData", ["require", "exports", "react", "g2plot", "css!./styles/baseD
         constructor() {
             super(...arguments);
             this.state = {
-                baseData: [{ name: "建筑总面积", number: "95,000", unit: "平方米", img: "./park/image/baseData/architecture.png" }, { name: "入驻企业", number: "150", unit: "家", img: "./park/image/baseData/enterprise.png" },
-                    { name: "园内人员", number: "6,000", unit: "人", img: "./park/image/baseData/personnel.png" }, { name: "摄像监控", number: "900", unit: "台", img: "./park/image/baseData/monitoring.png" },
-                    { name: "智能设备", number: "2,600", unit: "台", img: "./park/image/baseData/equipment.png" }, { name: "停车位", number: "600", unit: "个", img: "./park/image/baseData/car.png" }],
+                baseData: [{ name: "���������", number: "95,000", unit: "ƽ����", img: "./park/image/baseData/architecture.png" }, { name: "��פ��ҵ", number: "150", unit: "��", img: "./park/image/baseData/enterprise.png" },
+                    { name: "԰����Ա", number: "6,000", unit: "��", img: "./park/image/baseData/personnel.png" }, { name: "������", number: "900", unit: "̨", img: "./park/image/baseData/monitoring.png" },
+                    { name: "�����豸", number: "2,600", unit: "̨", img: "./park/image/baseData/equipment.png" }, { name: "ͣ��λ", number: "600", unit: "��", img: "./park/image/baseData/car.png" }],
             };
         }
         componentDidMount() {
@@ -111,7 +111,7 @@ define("baseData", ["require", "exports", "react", "g2plot", "css!./styles/baseD
                             borderLeft: "2px solid #07D1D3", height: "16px", width: "2px",
                             float: "left", marginTop: "4px", marginRight: "5px"
                         } }),
-                    React.createElement("span", { style: { color: "#FFFFFF", fontSize: "16px" } }, "\u57FA\u672C\u6570\u636E\u7EDF\u8BA1")),
+                    React.createElement("span", { style: { color: "#FFFFFF", fontSize: "16px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u0373\uFFFD\uFFFD")),
                 this.state.baseData.map((item, index) => {
                     return React.createElement("div", { className: "base-option", key: index },
                         React.createElement("img", { src: item.img, width: "45px", height: "45px", style: { float: "left", marginTop: "3px" } }),
@@ -122,18 +122,18 @@ define("baseData", ["require", "exports", "react", "g2plot", "css!./styles/baseD
                             React.createElement("span", { className: "base-span-c" }, item.unit)));
                 }),
                 React.createElement("div", { style: { color: "#FFFFFF", marginLeft: "35px" } },
-                    React.createElement("div", { style: { fontSize: "12px", float: "left" } }, "\u56ED\u533A\u6708\u521B\u9020GDP"),
-                    React.createElement("div", { style: { fontSize: "12px", marginLeft: "10px", float: "left" } }, "(\u767E\u4E07)"),
+                    React.createElement("div", { style: { fontSize: "12px", float: "left" } }, "\u0530\uFFFD\uFFFD\uFFFD\u00B4\uFFFD\uFFFD\uFFFDGDP"),
+                    React.createElement("div", { style: { fontSize: "12px", marginLeft: "10px", float: "left" } }, "(\uFFFD\uFFFD\uFFFD\uFFFD)"),
                     React.createElement("div", { style: {
                             borderTop: "2px solid #07D1D3", width: "10px", height: "3px", float: "left", opacity: 1,
                             marginLeft: "50px", marginTop: "8px"
                         } }),
-                    React.createElement("div", { style: { float: "left", fontSize: "6px", marginLeft: "5px" } }, "\u5F53\u524D\u503C"),
+                    React.createElement("div", { style: { float: "left", fontSize: "6px", marginLeft: "5px" } }, "\uFFFD\uFFFD\u01F0\u05B5"),
                     React.createElement("div", { style: {
                             borderTop: "2px solid #229FCE", width: "10px", height: "3px", float: "left", opacity: 1,
                             marginLeft: "10px", marginTop: "8px"
                         } }),
-                    React.createElement("div", { style: { float: "left", fontSize: "6px", marginLeft: "5px" } }, "\u6807\u51C6\u503C")),
+                    React.createElement("div", { style: { float: "left", fontSize: "6px", marginLeft: "5px" } }, "\uFFFD\uFFFD\u05FC\u05B5")),
                 React.createElement("div", { id: "curve", style: { width: "350px", height: "260px", marginLeft: "12px" } })));
         }
     }
@@ -144,101 +144,101 @@ define("monitorData", ["require", "exports", "react", "g2plot", "css!./styles/mo
     Object.defineProperty(exports, "__esModule", { value: true });
     const data = [
         {
-            type: '分类一',
+            type: '����һ',
             value: 27,
         },
         {
-            type: '分类二',
+            type: '�����',
             value: 25,
         },
         {
-            type: '分类三',
+            type: '������',
             value: 18,
         },
         {
-            type: '分类四',
+            type: '������',
             value: 15,
         },
         {
-            type: '分类五',
+            type: '������',
             value: 10,
         },
         {
-            type: '其它',
+            type: '����',
             value: 10,
         },
     ];
     const brokenLineData = [
         {
-            month: '1月',
+            month: '1��',
             value: 30,
         },
         {
-            month: '2月',
+            month: '2��',
             value: 50,
         },
         {
-            month: '3月',
+            month: '3��',
             value: 80,
         },
         {
-            month: '4月',
+            month: '4��',
             value: 100,
         },
         {
-            month: '5月',
+            month: '5��',
             value: 80,
         },
         {
-            month: '6月',
+            month: '6��',
             value: 50,
         },
         {
-            month: '7月',
+            month: '7��',
             value: 30,
         },
         {
-            month: '1月',
+            month: '1��',
             value: 20,
         },
         {
-            month: '2月',
+            month: '2��',
             value: 60,
         },
         {
-            month: '3月',
+            month: '3��',
             value: 120,
         },
         {
-            month: '4月',
+            month: '4��',
             value: 70,
         },
         {
-            month: '5月',
+            month: '5��',
             value: 50,
         },
         {
-            month: '6月',
+            month: '6��',
             value: 30,
         },
         {
-            month: '7月',
+            month: '7��',
             value: 20,
         },
     ];
-    const htmlcontent = { name: "总量", value: "100 %" };
+    const htmlcontent = { name: "����", value: "100 %" };
     class MonitorData extends React.Component {
         constructor() {
             super(...arguments);
             this.state = {
                 monitorData: [
-                    { name: "房间面积", allTag: "总面积", allNumber: "20,000", usingTag: "已使用", usingNumber: "5,000", remainTag: "剩余", remainNumber: "15,000", unit: "(㎡)" },
-                    { name: "功耗统计", allTag: "总功耗", allNumber: "2,600", usingTag: "已使用", usingNumber: "2,000", remainTag: "剩余", remainNumber: "600", unit: "(kw)" },
-                    { name: "车位", allTag: "总车位", allNumber: "600", usingTag: "已使用", usingNumber: "300", remainTag: "剩余", remainNumber: "300", unit: "(个)" }
+                    { name: "�������", allTag: "�����", allNumber: "20,000", usingTag: "��ʹ��", usingNumber: "5,000", remainTag: "ʣ��", remainNumber: "15,000", unit: "(�O)" },
+                    { name: "����ͳ��", allTag: "�ܹ���", allNumber: "2,600", usingTag: "��ʹ��", usingNumber: "2,000", remainTag: "ʣ��", remainNumber: "600", unit: "(kw)" },
+                    { name: "��λ", allTag: "�ܳ�λ", allNumber: "600", usingTag: "��ʹ��", usingNumber: "300", remainTag: "ʣ��", remainNumber: "300", unit: "(��)" }
                 ],
                 infoData: [
-                    { name: "今日用水量", number: "200", unit: "吨", img: "./park/image/monitorData/water.png" },
-                    { name: "今日用电量", number: "1200", unit: "度", img: "./park/image/monitorData/electricity.png" }
+                    { name: "������ˮ��", number: "200", unit: "��", img: "./park/image/monitorData/water.png" },
+                    { name: "�����õ���", number: "1200", unit: "��", img: "./park/image/monitorData/electricity.png" }
                 ]
             };
         }
@@ -323,7 +323,7 @@ define("monitorData", ["require", "exports", "react", "g2plot", "css!./styles/mo
                             borderLeft: "2px solid #07D1D3", height: "16px", width: "2px",
                             float: "left", marginTop: "4px", marginRight: "5px"
                         } }),
-                    React.createElement("span", { style: { color: "#FFFFFF", fontSize: "16px" } }, "\u667A\u80FD\u6570\u636E\u76D1\u63A7")),
+                    React.createElement("span", { style: { color: "#FFFFFF", fontSize: "16px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u077C\uFFFD\uFFFD")),
                 this.state.monitorData.map((item, index) => {
                     return React.createElement("div", { style: { width: "80%", height: "120px", marginLeft: "35px", marginTop: "15px" }, key: index },
                         React.createElement("div", { style: { width: "53%", height: "100%", float: "left" } },
@@ -348,7 +348,7 @@ define("monitorData", ["require", "exports", "react", "g2plot", "css!./styles/mo
                             borderLeft: "2px solid #07D1D3", height: "16px", width: "2px",
                             float: "left", marginTop: "4px", marginRight: "5px"
                         } }),
-                    React.createElement("span", { style: { color: "#FFFFFF", fontSize: "16px" } }, "\u6C34\u7535\u4FE1\u606F\u7EDF\u8BA1")),
+                    React.createElement("span", { style: { color: "#FFFFFF", fontSize: "16px" } }, "\u02EE\uFFFD\uFFFD\uFFFD\uFFFD\u03E2\u0373\uFFFD\uFFFD")),
                 this.state.infoData.map((item, index) => {
                     return React.createElement("div", { className: index === 0 ? "add-option" : "option", key: index },
                         React.createElement("img", { src: item.img, width: "45px", height: "45px", style: { float: "left", marginTop: "3px" } }),
@@ -361,10 +361,10 @@ define("monitorData", ["require", "exports", "react", "g2plot", "css!./styles/mo
                 React.createElement("div", { id: "container" }),
                 React.createElement("div", { id: "brokenLine", style: { width: "300px", height: "120px", overflow: "hidden", marginLeft: "35px" } }),
                 React.createElement("div", { className: "electricity-view" },
-                    React.createElement("div", { className: "span-g" }, "\u4F01\u4E1A\u4ECA\u65E5\u5E73\u5747\u7528\u6C34\u91CF"),
+                    React.createElement("div", { className: "span-g" }, "\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\uFFFD\uFFFD\u01BD\uFFFD\uFFFD\uFFFD\uFFFD\u02EE\uFFFD\uFFFD"),
                     React.createElement("div", { className: "span-h" }, "6")),
                 React.createElement("div", { className: "water-view" },
-                    React.createElement("div", { className: "span-g" }, "\u4F01\u4E1A\u4ECA\u65E5\u5E73\u5747\u7528\u7535\u91CF"),
+                    React.createElement("div", { className: "span-g" }, "\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\uFFFD\uFFFD\u01BD\uFFFD\uFFFD\uFFFD\u00F5\uFFFD\uFFFD\uFFFD"),
                     React.createElement("div", { className: "span-h" }, "2"))));
         }
     }
@@ -383,14 +383,14 @@ define("data", ["require", "exports", "react", "baseData", "monitorData", "react
         render() {
             return (React.createElement("div", { className: "data" },
                 React.createElement("div", { className: "data-top" },
-                    React.createElement("div", { className: "data-title", style: { float: "left", marginLeft: "3%", marginTop: "-5px" } }, "\u6842\u6797\u4FE1\u606F\u4EA7\u4E1A\u56ED\u6570\u636E\u5206\u6790"),
+                    React.createElement("div", { className: "data-title", style: { float: "left", marginLeft: "3%", marginTop: "-5px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u03E2\uFFFD\uFFFD\u04B5\u0530\uFFFD\uFFFD\uFFFD\u0777\uFFFD\uFFFD\uFFFD"),
                     React.createElement(react_router_dom_1.Link, { to: "/" },
                         React.createElement("div", { style: { float: "right", marginRight: "15px", color: "#FFFFFF" } },
                             React.createElement(Industry, null))),
                     React.createElement("div", { style: { border: "1px solid #A1D4CF", float: "right", height: "10px", marginTop: "50px", marginRight: "12px" } }),
                     React.createElement("div", { style: { fontSize: "15px", color: "#FFFFFF", float: "right", marginRight: "12px" } }, "12:10:20"),
                     React.createElement("div", { style: { border: "1px solid #A1D4CF", float: "right", height: "10px", marginTop: "50px", marginRight: "12px" } }),
-                    React.createElement("div", { style: { color: "#FFFFFF", fontSize: "15px", float: "right", marginRight: "12px" } }, "20 \u00B0C"),
+                    React.createElement("div", { style: { color: "#FFFFFF", fontSize: "15px", float: "right", marginRight: "12px" } }, "20 \uFFFD\uFFFDC"),
                     React.createElement("div", { style: { float: "right", marginRight: "3px" } },
                         React.createElement(Sun, null))),
                 React.createElement("div", { className: "base-data" },
@@ -958,7 +958,7 @@ define("share", ["require", "exports", "antd", "react", "css!./styles/share.css"
             document.execCommand("Copy");
             oInput.className = 'oInput';
             oInput.style.display = 'none';
-            antd_2.message.success('复制成功!', 1);
+            antd_2.message.success('���Ƴɹ�!', 1);
             this.props.toggleShare();
         }
         cancel() {
@@ -966,13 +966,13 @@ define("share", ["require", "exports", "antd", "react", "css!./styles/share.css"
         }
         render() {
             return (React.createElement("div", { className: "share" },
-                React.createElement("div", { className: "share-title" }, "\u56ED\u533A\u5206\u4EAB"),
+                React.createElement("div", { className: "share-title" }, "\u0530\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"),
                 React.createElement("div", { className: "url" },
-                    React.createElement("span", { className: "share-span-a" }, "\u94FE\u63A5"),
+                    React.createElement("span", { className: "share-span-a" }, "\uFFFD\uFFFD\uFFFD\uFFFD"),
                     React.createElement("span", { className: "share-span-b", id: "copy" }, this.state.value)),
                 React.createElement("div", { className: "share-bt" },
-                    React.createElement("div", { className: "share-span-c", onClick: this.cancel }, "\u53D6\u6D88"),
-                    React.createElement("div", { className: "share-span-d", onClick: this.copy }, "\u590D\u5236\u94FE\u63A5"))));
+                    React.createElement("div", { className: "share-span-c", onClick: this.cancel }, "\u0221\uFFFD\uFFFD"),
+                    React.createElement("div", { className: "share-span-d", onClick: this.copy }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"))));
         }
     }
     exports.default = Share;

@@ -450,6 +450,7 @@ class App {
         this.m_pCamera = null;
         this.m_pCameraCtrl = null;
         this.m_pPicker = null;
+        this.m_pGis = null;
         this.m_pProject = null;
     }
     Preload() {
@@ -477,6 +478,22 @@ class App {
         this.m_pCamera = MiaokitJS.Miaokit.camera;
         this.m_pCameraCtrl = new MiaokitJS.UTIL.CameraCtrl(this.m_pCamera);
         this.m_pPicker = new MiaokitJS.UTIL.EntityPicker(this.m_pCameraCtrl);
+        if (MiaokitJS.m_pConfig.GIS) {
+            this.m_pGis = MiaokitJS.Miaokit.gis;
+            this.m_pGis.imageServer = MiaokitJS.m_pConfig.GIS.m_pImageServer;
+            if (MiaokitJS.m_pConfig.GIS.m_pTerrainServer) {
+                this.m_pGis.terrainServer = MiaokitJS.m_pConfig.GIS.m_pTerrainServer;
+            }
+        }
+        if (MiaokitJS.m_pConfig.DIORS) {
+            for (let pDior of MiaokitJS.m_pConfig.DIORS) {
+                pDior.m_pDior = new MiaokitJS.Dioramas3MX(pDior.m_pPath, !this.m_pGis ? null : {
+                    m_pGis: this.m_pGis,
+                    m_mLngLat: pDior.m_mLngLat,
+                    m_mOffset: pDior.m_nOffset
+                });
+            }
+        }
         this.RegisterEvent(this.m_pCanvas2D, MiaokitJS.Miaokit.cameraCtrl);
         this.m_pProject.Start();
     }
@@ -976,8 +993,8 @@ MiaokitJS.ShaderLab.Pipeline = {
     ],
     InternalShader: [
         "Default", "Wall", "Default", "Default",
-        "Default", "Default", "Default", "Default",
-        "Default", "Default", "Default", "Default",
+        "Default", "Default", "Default", "GIS",
+        "Mapbox", "Mapbox2", "Dioramas", "Mapbox2",
         "Cosmos", "Ground", "Sky", "Present"
     ],
 };
@@ -1249,6 +1266,9 @@ uniform vec4 u_Tile;
 // 地学高度图
 uniform sampler2D _HeightTex;
 
+varying vec3 v_Normal;
+varying vec2 v_UV;
+
 vec4 CalNormal(float nTexU, float nTexV)
 {
 	vec4 aUV[5];
@@ -1339,11 +1359,14 @@ vec4 vs()
 }
         `,
     fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
+varying vec3 v_Normal;
+varying vec2 v_UV;
+
 vec4 fs()
 {
     vec4 mColor = Tex2D(u_MainTex, v_UV);
     
-    vec3 _ViewDir = normalize(v_ViewDir);
+    vec3 _ViewDir = normalize(v_ViewDir.xyz);
     vec3 _Light = normalize(u_Sunlight.xyz);
     mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, vec3(1.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0)) * 0.4;
     
