@@ -38,9 +38,12 @@ class Main {
 
         pThis.InitStartMovie();
     }
-
+    private iii = 0;
     /// 帧更新方法。
     public Update(): void {
+        if ((this.iii++) % 180 === 0) {
+            console.log(this.m_pApp.m_pCameraCtrl);
+        }
         let pState = undefined;
 
         if (this.m_pStartMovie) {
@@ -214,7 +217,7 @@ class Main {
                     m_nLng: 110.344301,
                     m_nLat: 25.272208,
                     m_mTarget: { x: 200.0, y: 170.0, z: -35.0 },
-                    m_nDistance: 100.0,
+                    m_nDistance: 80.0,
                     m_nPitch: 35.0,
                     m_nYaw: -270.0
                 },
@@ -229,7 +232,7 @@ class Main {
                     m_nLng: 110.344301,
                     m_nLat: 25.272208,
                     m_mTarget: { x: 217.0, y: 170.0, z: -13.0 },
-                    m_nDistance: 133.0,
+                    m_nDistance: 130.0,
                     m_nPitch: 28.0,
                     m_nYaw: -185.0
                 },
@@ -245,7 +248,7 @@ class Main {
                     m_nLng: 110.344301,
                     m_nLat: 25.272208,
                     m_mTarget: { x: 217.0, y: 170.0, z: -13.0 },
-                    m_nDistance: 100.0,
+                    m_nDistance: 80.0,
                     m_nPitch: 28.0,
                     m_nYaw: -175.0
                 },
@@ -259,15 +262,39 @@ class Main {
                 m_pParam: {
                     m_nLng: 110.344301,
                     m_nLat: 25.272208,
-                    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
-                    m_nDistance: 100.0,
-                    m_nPitch: 90.0,
-                    m_nYaw: 0.0
-                },
-                Do: function () {
-                    pThis.ShowIndoor(0, 1, 1);
+                    m_mTarget: { x: 222.0, y: 170.0, z: 18.0 },
+                    m_nDistance: 35.0,
+                    m_nPitch: 27.0,
+                    m_nYaw: -265.0
                 }
             },
+            {
+                m_pCtrl: "Fly",
+                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
+                m_pParam: {
+                    m_nLng: 110.344301,
+                    m_nLat: 25.272208,
+                    m_mTarget: { x: 245.0, y: 170.0, z: 14.0 },
+                    m_nDistance: 27.0,
+                    m_nPitch: 24.0,
+                    m_nYaw: -265.0
+                }
+            },
+            //{
+            //    m_pCtrl: "Fly",
+            //    m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
+            //    m_pParam: {
+            //        m_nLng: 110.344301,
+            //        m_nLat: 25.272208,
+            //        m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
+            //        m_nDistance: 100.0,
+            //        m_nPitch: 90.0,
+            //        m_nYaw: 0.0
+            //    },
+            //    Do: function () {
+            //        pThis.ShowIndoor(0, 1, 1);
+            //    }
+            //},
         ];
 
         /// 添加开始动画
@@ -523,7 +550,6 @@ class Main {
 
             if (pTile.m_pOutdoorID === pScene.building_id) {
                 pTile.m_pOutdoor = pScene;
-
             }
         }
 
@@ -531,7 +557,7 @@ class Main {
             let pAdjust = pTile.m_aAdjust[pScene.building_id];
             let pObject = pScene.m_pScene.object3D;
             let bOutdoor = pScene.building_id === pTile.m_pOutdoor.building_id;
-
+            
             pObject.transform.localPosition = pTile.m_nOffset;
             pObject.transform.euler = pTile.m_mRotate;
             pObject.active = bOutdoor ? true : false;
@@ -588,11 +614,10 @@ class Main {
 
     /// 显示室内。
     private ShowIndoor(nTile, nScene, nType): void {
-        return;
         let pTile = this.m_aTile[nTile];
         if (pTile) {
             let pScene = pTile.m_aScene[nScene];
-            if (pScene) {
+            if (pScene && (pScene = pScene.m_pScene)) {
                 let pBuilding = pScene.binding;
                 if (pBuilding) {
                     let pBuildingObj = pBuilding.object3D;
@@ -630,11 +655,10 @@ class Main {
 
     /// 隐藏室内。
     private HideIndoor(nTile, nScene): void {
-        return;
         let pTile = this.m_aTile[nTile];
         if (pTile) {
             let pScene = pTile.m_aScene[nScene];
-            if (pScene) {
+            if (pScene && (pScene = pScene.m_pScene)) {
                 let pBuilding = pScene.binding;
                 if (pBuilding) {
                     let pBuildingObj = pBuilding.object3D;

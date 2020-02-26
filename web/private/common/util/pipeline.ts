@@ -42,6 +42,11 @@ MiaokitJS.ShaderLab.Pipeline = {
             Depth: {
                 Func: "LEQUAL",
                 Write: true
+            },
+            Postprocess: (gl: WebGLRenderingContext) => {
+                if (MiaokitJS.ShaderLab.Pipeline.Picker) {
+                    MiaokitJS.ShaderLab.PickObject();
+                }
             }
         },
         // 2、启用深度测试，关闭深度写入，开启混合。绘制半透明物体，无轮廓对象A值为1，有轮廓对象A值为0.99
@@ -134,6 +139,8 @@ MiaokitJS.ShaderLab.Pipeline = {
             }
         }
     ],
+
+    Picker: null,
 
     InternalShader: [
         "Default", /*00*/ "Wall", /*01*/ "Default", /*02*/ "Default", /*03*/
@@ -710,7 +717,7 @@ vec4 fs()
     ///计算素描线条==================================================
     _Color0.a = _LumaM / (_LumaMax - _LumaMin);
     ///叠加选中对象轮廓==============================================
-    //_Color0.rgb += vec3(5.0, 0.7, 0.0) * _Diff;
+    _Color0.rgb += vec3(5.0, 0.7, 0.0) * _Diff;
     
     return _Color0;
 }

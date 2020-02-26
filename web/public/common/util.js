@@ -551,6 +551,7 @@ class App {
         let nPressTime = MiaokitJS.Time();
         let nClickTime = 0;
         let pThis = this;
+        let pLastObj = null;
         pCavans.addEventListener("mousewheel", function (e) {
             pThis.m_pCameraCtrl.Scale(e.deltaY / Math.abs(e.deltaY), pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
         }, true);
@@ -599,6 +600,22 @@ class App {
             nDrag = -1;
         }, false);
         pCavans.addEventListener("mousemove", function (e) {
+            MiaokitJS.ShaderLab.Pipeline.Picker = {
+                Feedback: (pObject, nSubmesh) => {
+                    if (pObject) {
+                        if (!pLastObj || pLastObj.m_nID !== pObject.m_nID) {
+                            if (pLastObj) {
+                                pLastObj.highlight = false;
+                            }
+                            console.log(pObject.name, nSubmesh);
+                            pObject.highlight = true;
+                            pLastObj = pObject;
+                        }
+                    }
+                },
+                x: e.clientX,
+                y: e.clientY
+            };
             if (0 === nDrag) {
                 pThis.m_pCameraCtrl.Move(-e.movementX, e.movementY, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
             }
@@ -909,6 +926,11 @@ MiaokitJS.ShaderLab.Pipeline = {
             Depth: {
                 Func: "LEQUAL",
                 Write: true
+            },
+            Postprocess: (gl) => {
+                if (MiaokitJS.ShaderLab.Pipeline.Picker) {
+                    MiaokitJS.ShaderLab.PickObject();
+                }
             }
         },
         {
@@ -991,6 +1013,7 @@ MiaokitJS.ShaderLab.Pipeline = {
             }
         }
     ],
+    Picker: null,
     InternalShader: [
         "Default", "Wall", "Default", "Default",
         "Default", "Default", "Default", "GIS",
@@ -1547,7 +1570,7 @@ vec4 fs()
     ///计算素描线条==================================================
     _Color0.a = _LumaM / (_LumaMax - _LumaMin);
     ///叠加选中对象轮廓==============================================
-    //_Color0.rgb += vec3(5.0, 0.7, 0.0) * _Diff;
+    _Color0.rgb += vec3(5.0, 0.7, 0.0) * _Diff;
     
     return _Color0;
 }

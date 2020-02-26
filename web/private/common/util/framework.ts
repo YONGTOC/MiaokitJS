@@ -137,6 +137,8 @@ class App {
         let nClickTime = 0;
         let pThis = this;
 
+        let pLastObj = null;
+
         pCavans.addEventListener("mousewheel", function (e: WheelEvent) {
             pThis.m_pCameraCtrl.Scale(e.deltaY / Math.abs(e.deltaY), pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
         }, true);
@@ -194,6 +196,25 @@ class App {
             nDrag = -1;
         }, false);
         pCavans.addEventListener("mousemove", function (e: MouseEvent) {
+            MiaokitJS.ShaderLab.Pipeline.Picker = {
+                Feedback: (pObject, nSubmesh) => {
+                    if (pObject) {
+                        if (!pLastObj || pLastObj.m_nID !== pObject.m_nID) {
+                            if (pLastObj) {
+                                pLastObj.highlight = false;
+                            }
+
+                            console.log(pObject.name, nSubmesh);
+                            pObject.highlight = true;
+
+                            pLastObj = pObject;
+                        }
+                    }
+                },
+                x: e.clientX,
+                y: e.clientY
+            };
+
             if (0 === nDrag) {
                 pThis.m_pCameraCtrl.Move(-e.movementX, e.movementY, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
             }
