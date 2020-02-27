@@ -23,7 +23,7 @@ class IconView extends React.Component  {
        // console.log("3434343", window)
     }
 
-    // ÒôÆµ½áÊø
+    // éŸ³é¢‘ç»“æŸ
     endedAudio() {
         let currentAudio = this.state.currentAudio
         if (currentAudio !== 2) {
@@ -39,7 +39,7 @@ class IconView extends React.Component  {
         })
     }
 
-    // ²¥·Å
+    // æ’­æ”¾
     static play(a) { }
     public play(a) {
         console.log("play");
@@ -75,14 +75,14 @@ class IconView extends React.Component  {
     }
 
     public state = {
-        isPlaying: false, // ²¥·Å×´Ì¬
-        isControls: true, // ¿ØÖÆÆ÷ÏÔÊ¾
+        isPlaying: false, // æ’­æ”¾çŠ¶æ€
+        isControls: true, // æ§åˆ¶å™¨æ˜¾ç¤º
         audioArray: [
             'https://eb-sycdn.kuwo.cn/ad367daf58355b6e9006e8b44a61057d/5e1d18eb/resource/n1/96/98/1578806792.mp3',
             'https://win-web-ri01-sycdn.kuwo.cn/5b05672e4e9f39f61178ba25a8b913b0/5e1d1918/resource/n1/73/40/4073043717.mp3',
             'https://win-web-re01-sycdn.kuwo.cn/f9cea19f40dc54473bd09c916aa9e312/5e1d1936/resource/n2/69/33/1625071345.mp3'
-        ], // ÒôÆµ
-        currentAudio: 0 // µ±Ç°ÒôÆµ
+        ], // éŸ³é¢‘
+        currentAudio: 0 // å½“å‰éŸ³é¢‘
     }
 
 
@@ -125,7 +125,7 @@ class Audio extends React.Component {
     public componentDidMount() {
         let aud = document.getElementById("bgMusic");
         aud.onended = function () {
-            console.log("ÒôÆµ²¥·ÅÍê³É");
+            console.log("éŸ³é¢‘æ’­æ”¾å®Œæˆ");
         };
     }
 

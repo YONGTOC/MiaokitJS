@@ -35,12 +35,12 @@ class Index extends React.Component<IProps, IState> {
 
     public static g_pIns: Index = null;
 
-    // ·ÖÏí
+    // åˆ†äº«
     toggleShare = (e) => {
         this.setState({ isShare: !this.state.isShare })
     }
 
-    // È«ÆÁ
+    // å…¨å±
     fullScreen = (e) => {
         this.setState({ isFullScreen: !this.state.isFullScreen })
     }
@@ -72,49 +72,49 @@ class Index extends React.Component<IProps, IState> {
     public iconSon = ref => { this.iconChild = ref };
 
   
-    //do ´«²Î¾ö¶¨ÏÔÊ¾ÇøÓò £¬ 1 - Ô°Çø½éÉÜ; 2 - ÇøÓòÓÅÊÆ; 3 - ÕĞÉÌÁĞ±í; 4 - Èë×¤ÆóÒµ; 10 - ¶¥²¿Ê÷ĞÎÁĞ±í;
+    //do ä¼ å‚å†³å®šæ˜¾ç¤ºåŒºåŸŸ ï¼Œ 1 - å›­åŒºä»‹ç»; 2 - åŒºåŸŸä¼˜åŠ¿; 3 - æ‹›å•†åˆ—è¡¨; 4 - å…¥é©»ä¼ä¸š; 10 - é¡¶éƒ¨æ ‘å½¢åˆ—è¡¨;
     public showLeftview(a) {
         // LeftNav.showList-- ListArea.showList
         LeftNav.showList(a);
     }
-    // Òş²Ø×é¼ş
+    // éšè—ç»„ä»¶
     public hideLeftview(a) {
         LeftNav.indexCh(a);
         LeftNav.showList(a);
     }
 
-    //Ë¢ĞÂÊ÷ĞÎÍ¼Êı¾İ
+    //åˆ·æ–°æ ‘å½¢å›¾æ•°æ®
     public updateTree(data) {
         // LeftNav.refreshTree -- TreeArea.setTreedata
         LeftNav.refreshTree(data);
     }
 
-    //¼¤»î·¿¼ä×é¼ş
+    //æ¿€æ´»æˆ¿é—´ç»„ä»¶
     public updateBusiness(a) {
         console.log("flushRoom", a);
         // LeftNav.outBusinessdata(a) -- BusinessArea.outRoomdata(a);
         LeftNav.updateBusiness(a)
     }
-    // ¼¤»îÆóÒµ×é¼ş
+    // æ¿€æ´»ä¼ä¸šç»„ä»¶
     public updateCompany(a) {
         console.log("flushRoom", a);
         // LeftNav.outCompanydata  --  CompanyArea.outRoomdata(a);
         LeftNav.updateCompany(a)
     }
 
-    // ¼¤»î·¿¼äÈ«¾°
+    // æ¿€æ´»æˆ¿é—´å…¨æ™¯
     public roomScene(a) {
         console.log("roomScene", a);
     }
 
-    //¼¤»î·¿¼ä½²½â
+    //æ¿€æ´»æˆ¿é—´è®²è§£
     public roomAduio(a) {
         IconView.play(a);
     }
 
     public dataService: DataService = new DataService();
 
-    // µã»÷µØÍ¼µã£¬»ñÈ¡»Øµ÷
+    // ç‚¹å‡»åœ°å›¾ç‚¹ï¼Œè·å–å›è°ƒ
     public callback(a, pBack) {
         this.dataService.callback(a, pBack);
     }

@@ -49,10 +49,10 @@ class WanderParam {
 }
 class CameraCtrl {
     constructor(pCamera) {
-        this.iii = 0;
         this.m_pCamera = null;
         this.m_pTransform = null;
         this.m_eCtrlMode = CTRL_MODE.REMOTE;
+        this.m_nViewMode = 3;
         this.m_nLng = 0.0;
         this.m_nLat = 0.0;
         this.m_nDistance = 0.0;
@@ -227,11 +227,17 @@ class CameraCtrl {
             nOffsetX *= nFactor;
             nOffsetY *= nFactor;
             let mTarget = this.target;
-            let rYaw = (this.yaw / 180.0) * Math.PI;
-            mTarget.x += nOffsetX * Math.cos(rYaw);
-            mTarget.z -= nOffsetX * Math.sin(rYaw);
-            mTarget.z += nOffsetY * Math.cos(rYaw);
-            mTarget.x += nOffsetY * Math.sin(rYaw);
+            if (2 === this.m_nViewMode) {
+                mTarget.x += nOffsetX;
+                mTarget.z += nOffsetY;
+            }
+            else {
+                let rYaw = (this.yaw / 180.0) * Math.PI;
+                mTarget.x += nOffsetX * Math.cos(rYaw);
+                mTarget.z -= nOffsetX * Math.sin(rYaw);
+                mTarget.z += nOffsetY * Math.cos(rYaw);
+                mTarget.x += nOffsetY * Math.sin(rYaw);
+            }
             this.target = mTarget;
         }
     }
@@ -312,23 +318,37 @@ class CameraCtrl {
                 }
                 this.target = mTarget;
             }
-            this.m_pTransform.position = { x: 0, y: 0, z: 0 };
-            this.m_pTransform.euler = { x: 0, y: 0, z: 0 };
-            this.m_pTransform.Rotate2({ x: 1, y: 0, z: 0 }, this.pitch, 1);
-            this.m_pTransform.Rotate2({ x: 0, y: 1, z: 0 }, this.yaw, 0);
-            this.m_pTransform.position = this.target;
-            this.m_pTransform.Translate(MiaokitJS.Vector3.Scale(-this.distance, { x: 0, y: 0, z: 1 }), 1);
+            if (2 === this.m_nViewMode) {
+                this.m_pTransform.position = { x: 0, y: 0, z: 0 };
+                this.m_pTransform.euler = { x: 0, y: 0, z: 0 };
+                this.m_pTransform.Rotate2({ x: 1, y: 0, z: 0 }, 90, 0);
+                this.m_pTransform.position = this.target;
+                this.m_pTransform.Translate(MiaokitJS.Vector3.Scale(-this.distance, { x: 0, y: 0, z: 1 }), 1);
+            }
+            else {
+                this.m_pTransform.position = { x: 0, y: 0, z: 0 };
+                this.m_pTransform.euler = { x: 0, y: 0, z: 0 };
+                this.m_pTransform.Rotate2({ x: 1, y: 0, z: 0 }, this.pitch, 1);
+                this.m_pTransform.Rotate2({ x: 0, y: 1, z: 0 }, this.yaw, 0);
+                this.m_pTransform.position = this.target;
+                this.m_pTransform.Translate(MiaokitJS.Vector3.Scale(-this.distance, { x: 0, y: 0, z: 1 }), 1);
+            }
         }
         else {
             console.log("未实现漫游模式");
         }
-        if (180 === this.iii++) {
-            console.log(this);
-            this.iii = 0;
-        }
     }
     get ctrlMode() {
         return this.m_eCtrlMode;
+    }
+    get viewMode() {
+        return this.m_nViewMode;
+    }
+    set viewMode(mode) {
+        if (this.m_nViewMode !== mode) {
+            this.m_nViewMode = mode;
+            MiaokitJS.Miaokit.cameraMode = mode;
+        }
     }
     get curView() {
         return {
@@ -427,13 +447,14 @@ class App {
         this.m_nTick = null;
         this.m_nTime = 0;
         this.m_aAnalyze = null;
-        this.m_pGis = null;
-        this.m_pDioramas = null;
         this.m_pCamera = null;
         this.m_pCameraCtrl = null;
         this.m_pPicker = null;
-        this.m_pStartMovie = null;
-        this.m_aTile = [];
+        this.m_pGis = null;
+        this.m_pProject = null;
+    }
+    Preload() {
+        this.m_pProject.Preload();
     }
     Start() {
         let pContainer = document.getElementById("unityContainer");
@@ -457,36 +478,37 @@ class App {
         this.m_pCamera = MiaokitJS.Miaokit.camera;
         this.m_pCameraCtrl = new MiaokitJS.UTIL.CameraCtrl(this.m_pCamera);
         this.m_pPicker = new MiaokitJS.UTIL.EntityPicker(this.m_pCameraCtrl);
+        if (MiaokitJS.m_pConfig.GIS) {
+            this.m_pGis = MiaokitJS.Miaokit.gis;
+            this.m_pGis.imageServer = MiaokitJS.m_pConfig.GIS.m_pImageServer;
+            if (MiaokitJS.m_pConfig.GIS.m_pTerrainServer) {
+                this.m_pGis.terrainServer = MiaokitJS.m_pConfig.GIS.m_pTerrainServer;
+            }
+        }
+        if (MiaokitJS.m_pConfig.DIORS) {
+            for (let pDior of MiaokitJS.m_pConfig.DIORS) {
+                pDior.m_pDior = new MiaokitJS.Dioramas3MX(pDior.m_pPath, !this.m_pGis ? null : {
+                    m_pGis: this.m_pGis,
+                    m_mLngLat: pDior.m_mLngLat,
+                    m_mOffset: pDior.m_nOffset
+                });
+            }
+        }
         this.RegisterEvent(this.m_pCanvas2D, MiaokitJS.Miaokit.cameraCtrl);
-        this.InitProject();
+        this.m_pProject.Start();
     }
     Update() {
         this.m_nTick++;
         this.Draw2D();
-        if (this.m_pStartMovie) {
-            this.m_pStartMovie();
-            return;
-        }
         this.m_pCameraCtrl.Update();
-        if (this.m_pDioramas) {
-            this.m_pDioramas.Update();
-        }
-        if (this.m_pGis) {
-            this.m_pGis.Update(this.m_pCameraCtrl.lng, this.m_pCameraCtrl.lat, this.m_pCameraCtrl.height);
-        }
+        this.m_pProject.Update();
+    }
+    ActiveTile(pTile) {
+        this.m_pProject.ActiveTile(pTile);
     }
     Draw2D() {
         this.m_pCanvasCtx2D.clearRect(0, 0, this.m_pCanvas2D.clientWidth, this.m_pCanvas2D.clientHeight);
         this.Analyze();
-        if (0 < MiaokitJS.Miaokit.progress) {
-            let pMsg = "正在执行任务: " + MiaokitJS.Miaokit.progress;
-            this.m_pCanvasCtx2D.font = "20px Microsoft YaHei";
-            this.m_pCanvasCtx2D.strokeStyle = "black";
-            this.m_pCanvasCtx2D.lineWidth = 2;
-            this.m_pCanvasCtx2D.fillStyle = "#FF0000";
-            this.m_pCanvasCtx2D.strokeText(pMsg, this.m_pCanvas2D.clientWidth / 2 - 20.0, this.m_pCanvas2D.clientHeight / 2);
-            this.m_pCanvasCtx2D.fillText(pMsg, this.m_pCanvas2D.clientWidth / 2 - 20.0, this.m_pCanvas2D.clientHeight / 2);
-        }
         if (this.OnGUI) {
             this.OnGUI(this.m_pCanvas2D, this.m_pCanvasCtx2D);
         }
@@ -505,7 +527,7 @@ class App {
         }
         let pCanvas = this.m_pCanvasCtx2D;
         let aInfo = this.m_aAnalyze;
-        let nOffset = 18;
+        let nOffset = 68;
         if (aInfo) {
             pCanvas.font = "14px Microsoft YaHei";
             pCanvas.strokeStyle = "black";
@@ -529,6 +551,7 @@ class App {
         let nPressTime = MiaokitJS.Time();
         let nClickTime = 0;
         let pThis = this;
+        let pLastObj = null;
         pCavans.addEventListener("mousewheel", function (e) {
             pThis.m_pCameraCtrl.Scale(e.deltaY / Math.abs(e.deltaY), pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
         }, true);
@@ -577,6 +600,22 @@ class App {
             nDrag = -1;
         }, false);
         pCavans.addEventListener("mousemove", function (e) {
+            MiaokitJS.ShaderLab.Pipeline.Picker = {
+                Feedback: (pObject, nSubmesh) => {
+                    if (pObject) {
+                        if (!pLastObj || pLastObj.m_nID !== pObject.m_nID) {
+                            if (pLastObj) {
+                                pLastObj.highlight = false;
+                            }
+                            console.log(pObject.name, nSubmesh);
+                            pObject.highlight = true;
+                            pLastObj = pObject;
+                        }
+                    }
+                },
+                x: e.clientX,
+                y: e.clientY
+            };
             if (0 === nDrag) {
                 pThis.m_pCameraCtrl.Move(-e.movementX, e.movementY, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
             }
@@ -627,316 +666,6 @@ class App {
             }
         }, false);
         pCavans.addEventListener("touchend", function (e) { nDrag = -1; pStartEvent = null; }, false);
-    }
-    InitProject() {
-        let pThis = this;
-        pThis.m_pCameraCtrl.Jump(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, {
-            m_nLng: 110.344301,
-            m_nLat: 25.272208,
-            m_mTarget: { x: 0.0, y: 0.0, z: 0.0 },
-            m_nDistance: 30.0,
-            m_nPitch: 30.0,
-            m_nYaw: 21
-        });
-        pThis.m_pGis = MiaokitJS.Miaokit.gis;
-        pThis.m_pGis.imageServer = "http://t%d.tianditu.gov.cn/DataServer?T=img_c&tk=3d26628c3a0e2694fecfbbb983ff7d87&x=%d&y=%d&l=%d";
-        pThis.m_pGis.terrainServer = "https://t%d.tianditu.gov.cn/dem_sjk/DataServer?T=ele_c&tk=3d26628c3a0e2694fecfbbb983ff7d87&x=%d&y=%d&l=%d";
-        pThis.m_pDioramas = new MiaokitJS.Dioramas3MX("./data/diors/Production_1.3mx", {
-            m_pGis: MiaokitJS.Miaokit.gis,
-            m_mLngLat: { x: 110.341637, y: 25.270798 },
-            m_mOffset: { x: -24.0, y: 242.0, z: 0.0 }
-        });
-        pThis.InitMovie();
-    }
-    InitMovie() {
-        let pThis = this;
-        let pCamera = this.m_pCameraCtrl;
-        let pDoing = null;
-        let aList = [
-            {
-                m_pCtrl: "Jump",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: -75126.2, y: 170.0, z: -1438049.8 },
-                    m_nDistance: 2003360.0,
-                    m_nPitch: 5.0,
-                    m_nYaw: -70.0
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
-                    m_nDistance: 2003360.0,
-                    m_nPitch: 5.0,
-                    m_nYaw: -45.0
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
-                    m_nDistance: 570475.0,
-                    m_nPitch: 5.0,
-                    m_nYaw: 90.0
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_nSpeed: 0.05,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
-                    m_nDistance: 95500.0,
-                    m_nPitch: 19.0,
-                    m_nYaw: 90.0
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_nSpeed: 0.02,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 18.0, y: 170.0, z: -3.0 },
-                    m_nDistance: 288.0,
-                    m_nPitch: 18.6,
-                    m_nYaw: 67.4
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 25.0, y: 170.0, z: -35.0 },
-                    m_nDistance: 313.0,
-                    m_nPitch: 15.0,
-                    m_nYaw: -122.0
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 25.0, y: 170.0, z: -35.0 },
-                    m_nDistance: 313.0,
-                    m_nPitch: 15.0,
-                    m_nYaw: -122.0
-                },
-                Do: function () {
-                    let nStart = 15.0;
-                    let nEnd = 175.0;
-                    pDoing = function () {
-                        if (nStart > nEnd) {
-                            pDoing = null;
-                        }
-                        else {
-                            nStart += 1.0;
-                            MiaokitJS.ShaderLab.SetSunlight(0.0, nStart, 1.0);
-                        }
-                    };
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 125.0, y: 170.0, z: -35.0 },
-                    m_nDistance: 130.0,
-                    m_nPitch: 35.0,
-                    m_nYaw: -270.0
-                },
-                Do: function () {
-                    pThis.ShowIndoor(0, 0, 0);
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 200.0, y: 170.0, z: -35.0 },
-                    m_nDistance: 100.0,
-                    m_nPitch: 35.0,
-                    m_nYaw: -270.0
-                },
-                Do: function () {
-                    pThis.ShowIndoor(0, 0, 1);
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 217.0, y: 170.0, z: -13.0 },
-                    m_nDistance: 133.0,
-                    m_nPitch: 28.0,
-                    m_nYaw: -185.0
-                },
-                Do: function () {
-                    pThis.HideIndoor(0, 0);
-                    pThis.ShowIndoor(0, 1, 0);
-                }
-            },
-            {
-                m_pCtrl: "Fly",
-                m_nMode: MiaokitJS.UTIL.CTRL_MODE.PANORAMA,
-                m_pParam: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 217.0, y: 170.0, z: -13.0 },
-                    m_nDistance: 100.0,
-                    m_nPitch: 28.0,
-                    m_nYaw: -175.0
-                },
-                Do: function () {
-                    pThis.ShowIndoor(0, 1, 1);
-                }
-            },
-        ];
-        pThis.m_pStartMovie = (function () {
-            let nIndex = 0;
-            let pFlash = function () {
-                if (0 < nIndex && 120 > pThis.m_nTick) {
-                    return false;
-                }
-                if (!pDoing && !pCamera.m_pFlyTask) {
-                    if (nIndex === aList.length) {
-                        return true;
-                    }
-                    let pState = aList[nIndex];
-                    if (pState.m_pCtrl) {
-                        pCamera[pState.m_pCtrl](pState.m_nMode, pState.m_pParam, pState.m_nSpeed);
-                    }
-                    if (pState.Do) {
-                        pState.Do();
-                    }
-                    nIndex++;
-                }
-                else if (pDoing) {
-                    pDoing();
-                }
-                return false;
-            };
-            return function () {
-                let bEnd = pFlash();
-                pCamera.Update();
-                if (pThis.m_pDioramas) {
-                    pThis.m_pDioramas.Update();
-                }
-                if (pThis.m_pGis) {
-                    pThis.m_pGis.Update(pCamera.lng, pCamera.lat, 5 > nIndex ? 50000.0 : 5000.0);
-                }
-                if (bEnd) {
-                    pThis.m_pStartMovie = null;
-                }
-            };
-        })();
-    }
-    ActiveTile(pTile) {
-        let aScene = [];
-        for (let pScene of pTile.scenes) {
-            console.log(pScene);
-            aScene.push(pScene);
-        }
-        pTile.m_mOffet = { x: 200.0, y: 167.0, z: -50.0 };
-        pTile.m_mEuler = { x: 0.0, y: -85.0, z: 0.0 };
-        let aAdjust = [
-            [{ x: 2.0, y: 2.5, z: 2.0 }, { x: 0.0, y: 180.0, z: 0.0 }, 6.0],
-            [{ x: 71.0, y: 1.0, z: -6.0 }, { x: 0.0, y: -90.0, z: 0.0 }, 9.0],
-            [{ x: 0.0, y: 0.0, z: 0.0 }, null, 9.0]
-        ];
-        for (let i = aScene.length - 1; i > -1; i--) {
-            let pScene = aScene[i];
-            let pAdjust = aAdjust[i];
-            let pObject = pScene.object3D;
-            pObject.transform.localPosition = pTile.m_mOffet;
-            pObject.transform.euler = pTile.m_mEuler;
-            pObject.active = (aScene.length - 1) === i ? true : false;
-            for (let pLayer of pScene.layers) {
-                let pObject = pLayer.object3D;
-                pObject.transform.localPosition = pAdjust[0];
-                pAdjust[0].y += pAdjust[2];
-                if (pAdjust[1]) {
-                    pObject.transform.localEuler = pAdjust[1];
-                }
-                pLayer._Draw();
-            }
-        }
-        this.m_aTile[0] = {
-            m_aScene: aScene
-        };
-    }
-    ShowIndoor(nTile, nScene, nType) {
-        let pTile = this.m_aTile[nTile];
-        if (pTile) {
-            let pScene = pTile.m_aScene[nScene];
-            if (pScene) {
-                let pBuilding = pScene.binding;
-                if (pBuilding) {
-                    let pBuildingObj = pBuilding.object3D;
-                    if (pBuildingObj) {
-                        if (0 === nType) {
-                            pBuildingObj.transparent = true;
-                        }
-                        else {
-                            pBuildingObj.transparent = false;
-                            pBuildingObj.active = false;
-                        }
-                    }
-                }
-                pScene.object3D.active = true;
-                let pPosition = null;
-                let nOffset = 0 === nType ? 6.0 : 9.0;
-                for (let pLayer of pScene.layers) {
-                    let pObject = pLayer.object3D;
-                    if (pPosition) {
-                        pPosition.y += nOffset;
-                        pObject.transform.localPosition = pPosition;
-                    }
-                    else {
-                        pPosition = pObject.transform.localPosition;
-                    }
-                    pLayer._Draw();
-                }
-            }
-        }
-    }
-    HideIndoor(nTile, nScene) {
-        let pTile = this.m_aTile[nTile];
-        if (pTile) {
-            let pScene = pTile.m_aScene[nScene];
-            if (pScene) {
-                let pBuilding = pScene.binding;
-                if (pBuilding) {
-                    let pBuildingObj = pBuilding.object3D;
-                    if (pBuildingObj) {
-                        pBuildingObj.active = true;
-                    }
-                }
-                pScene.object3D.active = false;
-            }
-        }
     }
 }
 MiaokitJS.UTIL = MiaokitJS.UTIL || {};
@@ -1197,6 +926,11 @@ MiaokitJS.ShaderLab.Pipeline = {
             Depth: {
                 Func: "LEQUAL",
                 Write: true
+            },
+            Postprocess: (gl) => {
+                if (MiaokitJS.ShaderLab.Pipeline.Picker) {
+                    MiaokitJS.ShaderLab.PickObject();
+                }
             }
         },
         {
@@ -1279,6 +1013,7 @@ MiaokitJS.ShaderLab.Pipeline = {
             }
         }
     ],
+    Picker: null,
     InternalShader: [
         "Default", "Wall", "Default", "Default",
         "Default", "Default", "Default", "GIS",
@@ -1286,107 +1021,264 @@ MiaokitJS.ShaderLab.Pipeline = {
         "Cosmos", "Ground", "Sky", "Present"
     ],
 };
+let PNTT = `
+varying vec4 v_Position;
+varying vec4 v_Normal;
+varying vec4 v_Tangent;
+varying vec4 v_UV;
+
+void PNTT()
+{
+    v_Position.xyz = ObjectToWorldPos(a_Position.xyz);
+    v_Normal.xyz = ObjectToWorldNormal(a_Normal.xyz);
+    v_Tangent.xyz = ObjectToWorldNormal(a_Tangent.xyz);
+    v_UV = vec4(a_UV, 0.0, 0.0);
+    
+    vec3 mBinormal = normalize(cross(v_Tangent.xyz, v_Normal.xyz));
+    v_Position.w = mBinormal.x;
+    v_Normal.w = mBinormal.y;
+    v_Tangent.w = mBinormal.z;
+}
+`;
+let PNTT_P = `
+varying vec4 v_Position;
+varying vec4 v_Normal;
+varying vec4 v_Tangent;
+varying vec4 v_UV;
+
+void PNTT(vec3 mPosition, vec3 mNormal, vec3 mTangent)
+{
+    v_Position.xyz = ObjectToWorldPos(mPosition.xyz);
+    v_Normal.xyz = ObjectToWorldNormal(mNormal.xyz);
+    v_Tangent.xyz = ObjectToWorldNormal(mTangent.xyz);
+    v_UV = vec4(a_UV, 0.0, 0.0);
+
+    vec3 mBinormal = normalize(cross(v_Tangent.xyz, v_Normal.xyz));
+    v_Position.w = mBinormal.x;
+    v_Normal.w = mBinormal.y;
+    v_Tangent.w = mBinormal.z;
+}
+`;
+let PNT_SPHERE = `
+// 左上角经度、左上角纬度、经度跨距、纬度跨距
+uniform vec4 u_LngLat;
+
+varying vec4 v_Position;
+varying vec4 v_Normal;
+varying vec4 v_UV;
+
+vec4 SPHERE(float nTessell)
+{
+    float nLng = u_LngLat.x + u_LngLat.z * a_Position.x;
+    float nLat = u_LngLat.y - u_LngLat.w * a_Position.y;
+
+    float nY = sin(nLat);
+    float nX = cos(nLat) * cos(nLng);
+    float nZ = cos(nLat) * sin(nLng);
+
+    v_Normal.xyz = vec3(nX, nY, nZ);
+    v_Position.xyz = ObjectToWorldPos(v_Normal.xyz);
+    v_UV = vec4(a_Position.xy / 64.0, 0.0, 0.0);
+    
+    v_Normal.w = 0.0;
+    v_Position.w = 0.0;
+    
+    return ObjectToClipPos(v_Normal.xyz);
+}
+`;
+let BRDF = MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + `
+varying vec4 v_Position;
+varying vec4 v_Normal;
+varying vec4 v_Tangent;
+varying vec4 v_UV;
+
+vec3 BRDF_LIGHT()
+{
+    // 当前切线计算有漏洞，会导致插值出0
+    if(0.3 < length(v_Tangent.xyz))
+    {
+        vec3 _Light = normalize(u_Sunlight.xyz);
+        vec3 _ViewDir = normalize(u_EyePos.xyz - v_Position.xyz);
+        
+        return BRDF(_Light, _ViewDir, v_Normal.xyz, v_Tangent.xyz, vec3(v_Position.w, v_Normal.w, v_Tangent.w)) * 0.4;
+    }
+
+    return vec3(0.0, 0.0, 0.0);
+}
+`;
+let BRDF_P = MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + `
+varying vec4 v_Position;
+varying vec4 v_Normal;
+varying vec4 v_Tangent;
+varying vec4 v_UV;
+
+vec3 BRDF_LIGHT(vec3 mTangent, vec3 mBinormal)
+{
+    vec3 _Light = normalize(u_Sunlight.xyz);
+    vec3 _ViewDir = normalize(u_EyePos.xyz - v_Position.xyz);
+        
+    return BRDF(_Light, _ViewDir, v_Normal.xyz, mTangent, mBinormal) * 0.4;
+}
+`;
+let ATMOS_VS = MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereVS"];
+let ATMOS_FS = MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"];
 MiaokitJS.ShaderLab.Shader["Default"] = {
+    name: "Default",
     type: "Render",
     mark: ["Opaque"],
-    vs_src: `
+    vs_src: PNTT + `
 vec4 vs()
 {
-    v_Position = ObjectToWorldPos(a_Position.xyz);
-    v_Normal = ObjectToWorldNormal(a_Normal);
-    v_Tangent = ObjectToWorldNormal(a_Tangent.xyz);
-    v_Binormal = normalize(cross(v_Tangent, v_Normal));
-    v_UV = a_UV;
-    
-    return ObjectToClipPos(a_Position.xyz);
-}
-        `,
-    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + `
-vec4 fs()
-{
-    vec4 mColor = Tex2D(u_MainTex, v_UV);
-    
-    // 当前切线计算有漏洞，会导致插值出0
-    if(0.3 < length(v_Tangent))
-    {
-        vec3 _ViewDir = normalize(u_EyePos.xyz - v_Position);
-        vec3 _Light = normalize(u_Sunlight.xyz);
-        mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, v_Tangent, v_Binormal) * 0.4;
-    }
-    
-    return mColor;
-}
-        `
-};
-MiaokitJS.ShaderLab.Shader["Dioramas"] = {
-    type: "Render",
-    mark: ["Opaque"],
-    vs_src: MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereVS"] + `
-vec4 vs()
-{
-    v_Position = ObjectToWorldPos(a_Position.xyz);
-    v_Normal = ObjectToWorldNormal(a_Normal);
-    v_Tangent = ObjectToWorldNormal(a_Tangent.xyz);
-    v_Binormal = normalize(cross(v_Tangent, v_Normal));
-    v_UV = a_UV;
-    
-    Atmosphere(normalize(u_Sunlight.xyz), v_Position);
+    PNTT();
 
     return ObjectToClipPos(a_Position.xyz);
 }
         `,
-    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
+    fs_src: BRDF + `
 vec4 fs()
 {
-    vec4 mColor = Tex2D(u_MainTex, v_UV);
+    vec4 mColor = Tex2D(u_MainTex, v_UV.xy);
     
-    // 当前切线计算有漏洞，会导致插值出0
-    if(0.3 < length(v_Tangent))
-    {
-        vec3 _ViewDir = normalize(u_EyePos.xyz - v_Position);
-        vec3 _Light = normalize(u_Sunlight.xyz);
-        mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, v_Tangent, v_Binormal) * 0.4;
-    }
-
-    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
-    //mColor.rgb = v_Normal;
-    mColor.a = 1.0;
+    mColor.rgb += BRDF_LIGHT();
     
     return mColor;
 }
         `
 };
 MiaokitJS.ShaderLab.Shader["Wall"] = {
+    name: "Wall",
+    type: "Render",
+    mark: ["Transparent"],
+    vs_src: PNTT + `
+vec4 vs()
+{
+    PNTT();
+
+    return ObjectToClipPos(a_Position.xyz);
+}
+        `,
+    fs_src: BRDF + `
+vec4 fs()
+{
+    vec4 mColor = vec4(0.3, 0.3, 0.3, 1.0);
+
+    mColor.rgb += BRDF_LIGHT();
+    
+    return mColor;
+}
+        `
+};
+MiaokitJS.ShaderLab.Shader["Corner"] = {
+    name: "Corner",
     type: "Render",
     mark: ["Transparent"],
     vs_src: `
 vec4 vs()
 {
-    v_Normal = ObjectToWorldNormal(a_Normal);
-    v_Tangent = ObjectToWorldNormal(a_Tangent.xyz);
-    v_Binormal = normalize(cross(v_Tangent, v_Normal));
-    v_UV = a_UV;
-    
-    return ObjectToClipPos(a_Position);
+    return ObjectToClipPos(a_Position.xyz);
 }
         `,
-    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + `
+    fs_src: `
 vec4 fs()
 {
-    vec4 mColor = vec4(0.3, 0.3, 0.3, 1.0);
-    // 当前切线计算有漏洞，会导致插值出0
-    if(0.3 < length(v_Tangent))
-    {
-        vec3 _ViewDir = normalize(u_EyePos.xyz - v_Position);
-        vec3 _Light = normalize(u_Sunlight.xyz);
-        mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, v_Tangent, v_Binormal) * 0.7;
-    }
+    vec4 mColor = vec4(1.98, 3.23, 5.61, 1.0);
+
+    return mColor;
+}
+        `
+};
+MiaokitJS.ShaderLab.Shader["Mapbox"] = {
+    name: "Mapbox",
+    type: "Render",
+    mark: ["Opaque"],
+    vs_src: PNTT_P + ATMOS_VS + `
+vec4 vs()
+{
+    PNTT();
+    
+    Atmosphere(normalize(u_Sunlight.xyz), v_Position.xyz);
+    
+    return ObjectToClipPos(a_Position.xyz);
+}
+        `,
+    fs_src: BRDF + ATMOS_FS + `
+vec4 fs()
+{
+    vec4 mColor = vec4(0.6019608, 0.7862745, 0.8254902, 1.0);
+    
+    mColor.rgb += BRDF_LIGHT();
+
+    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
+    mColor.a = 1.0;
+
+    return mColor;
+}
+        `
+};
+MiaokitJS.ShaderLab.Shader["Mapbox2"] = {
+    name: "Mapbox2",
+    type: "Render",
+    mark: ["Opaque"],
+    vs_src: PNTT_P + ATMOS_VS + `
+vec4 vs()
+{
+    PNTT();
+    
+    Atmosphere(normalize(u_Sunlight.xyz), v_Position.xyz);
+    
+    return ObjectToClipPos(a_Position.xyz);
+}
+        `,
+    fs_src: BRDF + ATMOS_FS + `
+vec4 fs()
+{
+    vec4 mColor = vec4(0.6019608, 0.7862745, 0.8254902, 1.0);
+    
+    mColor.rgb += BRDF_LIGHT();
+
+    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
+    mColor.a = 1.0;
+
+    return mColor;
+}
+        `
+};
+MiaokitJS.ShaderLab.Shader["Dioramas"] = {
+    name: "Dioramas",
+    type: "Render",
+    mark: ["Opaque"],
+    vs_src: PNTT_P + ATMOS_VS + `
+vec4 vs()
+{
+    float n = a_Normal.x; 
+    float nx = n / 8.0;  n = floor(nx); nx = (nx - n) * 4.0 - 1.0;
+    float ny = n / 8.0;  n = floor(ny); ny = (ny - n) * 4.0 - 1.0;
+    float nz = (n - 2.0) * 0.5;
+
+    PNTT(a_Position.xyz, vec3(nx, ny, nz), a_Tangent.xyz);
+    
+    Atmosphere(normalize(u_Sunlight.xyz), v_Position.xyz);
+
+    return ObjectToClipPos(a_Position.xyz);
+}
+        `,
+    fs_src: BRDF + ATMOS_FS + `
+vec4 fs()
+{
+    vec4 mColor = Tex2D(u_MainTex, v_UV.xy);
+    
+    mColor.rgb += BRDF_LIGHT();
+    mColor.rgb = clamp(mColor.rgb, 0.0, 1.0);
+    
+    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
+    mColor.a = 1.0;
     
     return mColor;
 }
         `
 };
 MiaokitJS.ShaderLab.Shader["GIS"] = {
+    name: "GIS",
     type: "Render",
     mark: ["Opaque"],
     vs_src: MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereVS"] + `
@@ -1396,6 +1288,9 @@ uniform vec4 u_LngLat;
 uniform vec4 u_Tile;
 // 地学高度图
 uniform sampler2D _HeightTex;
+
+varying vec3 v_Normal;
+varying vec2 v_UV;
 
 vec4 CalNormal(float nTexU, float nTexV)
 {
@@ -1487,11 +1382,14 @@ vec4 vs()
 }
         `,
     fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
+varying vec3 v_Normal;
+varying vec2 v_UV;
+
 vec4 fs()
 {
     vec4 mColor = Tex2D(u_MainTex, v_UV);
     
-    vec3 _ViewDir = normalize(v_ViewDir);
+    vec3 _ViewDir = normalize(v_ViewDir.xyz);
     vec3 _Light = normalize(u_Sunlight.xyz);
     mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, vec3(1.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0)) * 0.4;
     
@@ -1502,103 +1400,85 @@ vec4 fs()
 }
         `
 };
-MiaokitJS.ShaderLab.Shader["Mapbox"] = {
-    type: "Render",
+MiaokitJS.ShaderLab.Shader["Cosmos"] = {
+    name: "Cosmos",
+    type: "Clear",
     mark: ["Opaque"],
-    vs_src: MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereVS"] + `
+    uniform_values: [["u_MainTex", 1]],
+    vs_src: PNT_SPHERE + `
 vec4 vs()
 {
-    v_Position = ObjectToWorldPos(a_Position.xyz);
-    v_Normal = ObjectToWorldNormal(a_Normal);
-    v_Tangent = ObjectToWorldNormal(a_Tangent.xyz);
-    v_Binormal = normalize(cross(v_Tangent, v_Normal));
-    
-    vec3 mLightDir = normalize(u_Sunlight.xyz);
-    Atmosphere(mLightDir, v_Position);
-    
-    return ObjectToClipPos(a_Position.xyz);
+    return SPHERE(64.0);
 }
         `,
-    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
+    fs_src: `
+varying vec4 v_UV;
+
 vec4 fs()
 {
-    vec4 mColor = vec4(0.6019608, 0.7862745, 0.8254902, 1.0);
-    
-    // 当前切线计算有漏洞，会导致插值出0
-    if(0.3 < length(v_Tangent))
-    {
-        vec3 _ViewDir = normalize(u_EyePos.xyz - v_Position);
-        vec3 _Light = normalize(u_Sunlight.xyz);
-        mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, v_Tangent, v_Binormal) * 0.4;
-    }
-
-    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
+    vec4 mColor = Tex2D(u_MainTex, v_UV.xy);
     mColor.a = 1.0;
-
+    
     return mColor;
 }
         `
 };
-MiaokitJS.ShaderLab.Shader["Mapbox2"] = {
-    type: "Render",
+MiaokitJS.ShaderLab.Shader["Sky"] = {
+    name: "Sky",
+    type: "Clear",
     mark: ["Opaque"],
-    vs_src: MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereVS"] + `
+    vs_src: PNT_SPHERE + ATMOS_VS + `
 vec4 vs()
 {
-    v_Position = ObjectToWorldPos(a_Position.xyz);
-    v_Normal = vec3(0.0, 1.0, 0.0);
-    v_Tangent = vec3(0.0, 0.0, 1.0);
-    v_Binormal = vec3(1.0, 0.0, 0.0);
+    vec4 mClip = SPHERE(64.0);
+
+    Atmosphere(normalize(u_Sunlight.xyz), v_Position.xyz);
     
-    vec3 mLightDir = normalize(u_Sunlight.xyz);
-    Atmosphere(mLightDir, v_Position);
-    
-    return ObjectToClipPos(a_Position.xyz);
+    return mClip;
 }
         `,
-    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
+    fs_src: ATMOS_FS + `
 vec4 fs()
 {
-    vec4 mColor = vec4(0.6019608, 0.7862745, 0.8254902, 1.0);
-    
-    // 当前切线计算有漏洞，会导致插值出0
-    if(0.3 < length(v_Tangent))
-    {
-        vec3 _ViewDir = normalize(u_EyePos.xyz - v_Position);
-        vec3 _Light = normalize(u_Sunlight.xyz);
-        mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, v_Tangent, v_Binormal) * 0.4;
-    }
-
-    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
-    //mColor = v_Normal;
-    mColor.a = 1.0;
-
-    return mColor;
+    return AtmosphereColor(vec4(1.0, 1.0, 1.0, 1.0), normalize(u_Sunlight.xyz));
 }
         `
 };
-MiaokitJS.ShaderLab.Shader["Corner"] = {
-    type: "Render",
-    mark: ["Transparent"],
-    vs_src: `
+MiaokitJS.ShaderLab.Shader["Ground"] = {
+    name: "Ground",
+    type: "Clear",
+    mark: ["Opaque"],
+    vs_src: PNT_SPHERE + ATMOS_VS + `
 vec4 vs()
 {
-    return ObjectToClipPos(a_Position);
+    vec4 mClip = SPHERE(64.0);
+
+    Atmosphere(normalize(u_Sunlight.xyz), v_Position.xyz);
+    
+    return mClip;
 }
         `,
-    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + `
+    fs_src: BRDF_P + ATMOS_FS + `
 vec4 fs()
 {
-    vec4 mColor = vec4(1.98, 3.23, 5.61, 1.0);
+    vec4 mColor = vec4(0.1019608, 0.2862745, 0.3254902, 1.0);
+    
+    mColor.rgb += BRDF_LIGHT(vec3(1.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0));
 
+    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
+    mColor.a = 1.0;
+    
     return mColor;
 }
         `
 };
 MiaokitJS.ShaderLab.Shader["EdgeDetection"] = {
+    name: "EdgeDetection",
     type: "Postprocess",
     mark: ["Opaque"],
     vs_src: `
+varying vec2 v_UV;
+
 vec4 vs()
 {
     v_UV = a_UV;
@@ -1608,6 +1488,7 @@ vec4 vs()
         `,
     fs_src: `
 uniform vec4 u_InvTexSize;
+varying vec2 v_UV;
 
 #define FXAA_REDUCE_MIN   (1.0/ 128.0)
 #define FXAA_REDUCE_MUL   (1.0 / 8.0)
@@ -1689,16 +1570,19 @@ vec4 fs()
     ///计算素描线条==================================================
     _Color0.a = _LumaM / (_LumaMax - _LumaMin);
     ///叠加选中对象轮廓==============================================
-    //_Color0.rgb += vec3(5.0, 0.7, 0.0) * _Diff;
+    _Color0.rgb += vec3(5.0, 0.7, 0.0) * _Diff;
     
     return _Color0;
 }
         `
 };
 MiaokitJS.ShaderLab.Shader["HDR"] = {
+    name: "HDR",
     type: "Postprocess",
     mark: ["Opaque"],
     vs_src: `
+varying vec2 v_UV;
+
 vec4 vs()
 {
     v_UV = a_UV;
@@ -1708,6 +1592,7 @@ vec4 vs()
         `,
     fs_src: `
 uniform vec4 u_InvTexSize;
+varying vec2 v_UV;
 
 vec4 fs()
 {
@@ -1716,21 +1601,18 @@ vec4 fs()
     mColor.r = 1.0 < mColor.r ? mColor.r - 1.0: 0.0;
     mColor.g = 1.0 < mColor.g ? mColor.g - 1.0: 0.0;
     mColor.b = 1.0 < mColor.b ? mColor.b - 1.0: 0.0;
-
-    //float nBrightness = dot(mColor.rgb, vec3(0.2126, 0.7152, 0.0722));
-    //if(nBrightness < 1.0)
-    //{
-    //    mColor.rgb = vec3(0.0, 0.0, 0.0);
-    //}
     
     return mColor;
 }
         `
 };
 MiaokitJS.ShaderLab.Shader["GaussianBlur"] = {
+    name: "GaussianBlur",
     type: "Postprocess",
     mark: ["Opaque"],
     vs_src: `
+varying vec2 v_UV;
+
 vec4 vs()
 {
     v_UV = a_UV;
@@ -1740,6 +1622,7 @@ vec4 vs()
         `,
     fs_src: `
 uniform vec4 u_InvTexSize;
+varying vec2 v_UV;
 
 vec4 fs()
 {
@@ -1784,9 +1667,12 @@ vec4 fs()
         `
 };
 MiaokitJS.ShaderLab.Shader["Present"] = {
+    name: "Present",
     type: "Postprocess",
     mark: ["Opaque"],
     vs_src: `
+varying vec2 v_UV;
+
 vec4 vs()
 {
     v_UV = a_UV;
@@ -1795,120 +1681,14 @@ vec4 vs()
 }
         `,
     fs_src: `
-uniform vec4 u_InvTexSize;
 uniform sampler2D u_MinorTex;
+uniform vec4 u_InvTexSize;
+varying vec2 v_UV;
 
 vec4 fs()
 {
     vec4 mColor = Tex2D(u_MainTex, v_UV);
     mColor += Tex2D(u_MinorTex, v_UV);
-    
-    return mColor;
-}
-        `
-};
-MiaokitJS.ShaderLab.Shader["Cosmos"] = {
-    type: "Clear",
-    mark: ["Opaque"],
-    uniform_values: [["u_MainTex", 1]],
-    vs_src: `
-// 左上角经度、左上角纬度、经纬度宽度、经纬度跨距
-uniform vec4 u_LngLat;
-
-vec4 vs()
-{
-    float nLng = u_LngLat.x + u_LngLat.z * a_Position.x;
-    float nLat = u_LngLat.y - u_LngLat.w * a_Position.y;
-    
-    float nY = sin(nLat);
-    float nX = cos(nLat) * cos(nLng);
-    float nZ = cos(nLat) * sin(nLng);
-    
-    v_Normal = vec3(nX, nY, nZ);
-    v_UV = a_Position.xy / 64.0;
-    
-    return ObjectToClipPos(v_Normal);
-}
-        `,
-    fs_src: `
-vec4 fs()
-{
-    vec4 mColor = Tex2D(u_MainTex, v_UV);
-    mColor.a = 1.0;
-
-    return mColor;
-}
-        `
-};
-MiaokitJS.ShaderLab.Shader["Sky"] = {
-    type: "Clear",
-    mark: ["Opaque"],
-    vs_src: MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereVS"] + `
-// 左上角经度、左上角纬度、经纬度宽度、经纬度跨距
-uniform vec4 u_LngLat;
-
-vec4 vs()
-{
-    float nLng = u_LngLat.x + u_LngLat.z * a_Position.x;
-    float nLat = u_LngLat.y - u_LngLat.w * a_Position.y;
-    
-    float nY = sin(nLat);
-    float nX = cos(nLat) * cos(nLng);
-    float nZ = cos(nLat) * sin(nLng);
-    
-    v_Normal = vec3(nX, nY, nZ);
-    
-    vec3 mLightDir = normalize(u_Sunlight.xyz);
-    vec3 mWorldPos = ObjectToWorldPos(v_Normal);
-    
-    Atmosphere(mLightDir, mWorldPos);
-    
-    return ObjectToClipPos(v_Normal);
-}
-        `,
-    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
-vec4 fs()
-{
-    return AtmosphereColor(normalize(u_Sunlight.xyz));
-}
-        `
-};
-MiaokitJS.ShaderLab.Shader["Ground"] = {
-    type: "Clear",
-    mark: ["Opaque"],
-    vs_src: MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereVS"] + `
-// 左上角经度、左上角纬度、经纬度宽度、经纬度跨距
-uniform vec4 u_LngLat;
-
-vec4 vs()
-{
-    float nLng = u_LngLat.x + u_LngLat.z * a_Position.x;
-    float nLat = u_LngLat.y - u_LngLat.w * a_Position.y;
-    
-    float nY = sin(nLat);
-    float nX = cos(nLat) * cos(nLng);
-    float nZ = cos(nLat) * sin(nLng);
-    
-    v_Normal = vec3(nX, nY, nZ);
-    
-    vec3 mLightDir = normalize(u_Sunlight.xyz);
-    vec3 mWorldPos = ObjectToWorldPos(v_Normal);
-    
-    Atmosphere(mLightDir, mWorldPos);
-    
-    return ObjectToClipPos(v_Normal);
-}
-        `,
-    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
-vec4 fs()
-{
-    vec4 mColor = vec4(0.1019608, 0.2862745, 0.3254902, 1.0);
-    vec3 _ViewDir = normalize(v_ViewDir);
-    vec3 _Light = normalize(u_Sunlight.xyz);
-    mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, vec3(1.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0)) * 0.4;
-
-    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
-    mColor.a = 1.0;
     
     return mColor;
 }
