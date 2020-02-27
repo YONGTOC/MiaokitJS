@@ -1,12 +1,13 @@
 import * as React from "react";
-import "css!./styles/listArea.css";
-import "css!./styles/iconfont.css";
-import "css!./styles/leftNav.css";
-import "css!./styles/listArea.css";
+import GlobalAction from "compat";
+import DataService from "dataService";
+
+import "css!./styles/view.css";
 
 import { Tree, Icon } from 'antd';
 const { TreeNode } = Tree;
 
+// 园区概况 内容区域
 class IntroduceArea extends React.Component {
     public constructor(props) {
         super(props);
@@ -53,6 +54,7 @@ class IntroduceArea extends React.Component {
     }
 }
 
+//区位优势 内容区域
 class SuperiorityArea extends React.Component {
     public constructor(props) {
         super(props);
@@ -88,32 +90,260 @@ class SuperiorityArea extends React.Component {
     }
 }
 
-class ListArea extends React.Component<{ index: any, onRef: any, indexC, getValuefromChild:any }> {
+// 招商列表 内容区域
+class BusinessArea extends React.Component {
     public constructor(props) {
-        super(props)
+        super(props);
 
         this.getRoom = this.getRoom.bind(this);
-        this.getCompany = this.getCompany.bind(this);
-    }
+        BusinessArea.updateList = this.updateList.bind(this);
+    };
 
+    public dataService: DataService = new DataService();
 
-    // 组件更新结束之后执行，在初始化render时不执行
-    public componentDidupdate() {
-        //console.log("xxxxx", this.state);
-    }
-
-    //  在第一次渲染后调用
     public componentDidMount() {
-        //console.log("xxsssxxx", this.state);
-        this.props.onRef(this);     //将child传递给this.props.onRef()方法
+        this.dataService.areaType(this.initAreatype);
+        this.dataService.getRoomdata(this.initRoomdata);
     }
 
-  
+    // 点击房间列表，获取房间id
+    public getRoom(event) {
+        const id = event.target.getAttribute("data-id");
+        this.setState({
+            id: id
+        })
+        console.log("getRoom", this.state);
+        GlobalAction.prototype.switchRoom(id);
+    }
+
+    static updateList(data) { }
+    public updateList(data) {
+      //  const id = this.state.roomList[a].roomID;
+        this.setState({
+            roomList: data.roomList
+        })
+        console.log('outRoomdata', this.state.id);
+    }
+
+    public initRoomdata(data) {
+        console.log("callback-Roomdata", data)
+    }
+
+    public initAreatype(data) {
+        console.log("callback-areatype", data)
+    }
+
+    public render() {
+        return (
+            <div>
+                <div className={"areaScope"}>
+                    <p className={"areaScopeP"} >筛选（面积）</p>
+                    <ul>
+                        <li>全部</li>
+                        <li>100m以下</li>
+                        <li>100-200m</li>
+                        <li>200-300m</li>
+                        <li>300-500m</li>
+                        <li>500-1000m</li>
+                        <li>1000-2000m</li>
+                        <li>2000m以下</li>
+                    </ul>
+                </div>
+
+                <div className={"roomList"} >
+                    <ul>
+                        {this.state.roomList.map((i, index) => {
+                            return (
+                                <li className={"roomP"}>
+                                    <p onClick={this.getRoom} data-id={i.roomID}>{i.roomName}</p>
+                                    <p onClick={this.getRoom} data-id={i.roomID}>
+                                        <span className={"icontop3"}>
+                                            <span className="iconfont">&#xe805;</span>
+                                        </span>
+                                        &nbsp; 房间面积：<span onClick={this.getRoom} data-id={i.roomID}>{i.roomArea} m²</span></p>
+                                    <p onClick={this.getRoom} data-id={i.roomID}>
+                                        <span className={"icontop3"}>
+                                            <span className="iconfont">&#xe806;</span>
+                                        </span>
+                                        &nbsp; 发布时间：<span>{i.addTime} </span></p>
+                                </li>
+                            )
+                        })}
+                    </ul>
+                </div>
+            </div>
+        )
+    };
+
+    public state = {
+        id: null,
+        roomList: [
+            {
+                "roomID": "id-A座-4F-B411",
+                "roomName": "A座-4F-B411",
+                "roomArea": "51",
+                "addTime": "2019-7-11",
+            },
+            {
+                "roomID": "id-A座-4F-B412",
+                "roomName": "A座-4F-B412",
+                "roomArea": "52",
+                "addTime": "2019-7-15",
+            },
+        ],
+    };
+}
+
+//招商企业 内容区域
+class CompanyArea extends React.Component {
+    public constructor(props) {
+        super(props);
+
+        this.getCompany = this.getCompany.bind(this);
+        CompanyArea.updateList = this.updateList.bind(this);
+    };
+    public dataService: DataService = new DataService();
+
+    public componentDidMount() {
+        this.dataService.companyType(this.initCompanytype);
+        this.dataService.getCompanydata(this.initCompanydata);
+    }
+
+    // 点击公司列表，获取公司id
+    public getCompany(event) {
+        const id = event.target.getAttribute("data-id");
+        console.log('getCompany', id);
+        GlobalAction.prototype.switchRoom(id);
+    }
+
+    static updateList(data) { }
+    public updateList(data) {
+        //const id = this.state.companyList[a].companyID;
+        this.setState({
+            companyList: data.companyList
+        })
+        console.log('outRoomdata2', this.state.id);
+    }
+
+    public initCompanytype(data) {
+        //public pBackajax(data) {
+        console.log("callback-companyType", data)
+    }
+
+    public initCompanydata(data) {
+    //public pBackajax(data) {
+        console.log("callback-Companydata",data)
+    }
+
+    public render() {
+        return (
+            <div>
+                <div className={"areaScopeqy"}>
+                    <p className={"areaScopeP"}>企业分类</p>
+                    <ul>
+                        <li>全部</li>
+                        {this.state.companyTypes.map((i, index) => {
+                            return (
+                                <li >{i.typeName}</li>
+                            )
+                        })}
+
+                    </ul>
+                </div>
+                <div className={"roomList"}>
+                    <ul>
+                        {this.state.companyList.map((i, index) => {
+                            return (
+                                <li className={"roomP"}  >
+                                    <p onClick={this.getCompany} data-id={i.companyID} >{i.companyName}</p>
+                                    <p onClick={this.getCompany} data-id={i.companyID} >
+                                        <span className={"icontop3"}>
+                                            <span className="iconfont">&#xe807;</span>
+                                        </span>
+                                        &nbsp;公司位置：<span onClick={this.getCompany} data-id={i.companyID}>{i.address}</span></p>
+                                    <p onClick={this.getCompany} data-id={i.companyID} >
+                                        <span className={"icontop3"}>
+                                            <span className="iconfont">&#xe808;</span>
+                                        </span>
+                                        &nbsp;所属行业：<span>{i.type}</span></p>
+                                </li>
+                            )
+                        })}
+                    </ul>
+                </div>
+            </div>
+        )
+    }
+
+    public state = {
+        id: null,
+        companyTypes: [
+            {
+                "typeName": "文化创意",
+                "typeID": "1",
+            },
+            {
+                "typeName": "金融保险",
+                "typeID": "2",
+            },
+            {
+                "typeName": "科技服务",
+                "typeID": "3",
+            },
+            {
+                "typeName": "高新技术",
+                "typeID": "4",
+            },
+            {
+                "typeName": "电子产业",
+                "typeID": "5",
+            },
+            {
+                "typeName": "电子商务",
+                "typeID": "6",
+            }
+        ],
+        companyList: [
+            {
+                "companyID": "id-浙江永拓信息科技有限公司",
+                "companyName": "浙江永拓信息科技有限公司",
+                "address": "E座B区-3F-301",
+                "type": "科技服务"
+
+            },
+            {
+                "companyID": "id-桂林银行",
+                "companyName": "桂林银行",
+                "address": "A座A区-1F-101",
+                "type": "金融保险"
+            },
+        ],
+    };
+}
+
+
+class TreeArea extends React.Component {
+    constructor(props) {
+        super(props);
+
+        TreeArea.setTreedata = this.setTreedata.bind(this);
+    };
+
+    public componentDidMount() {
+    }
+
+    static setTreedata(data) { }
+    public setTreedata(data) {
+        console.log("setTreedata2", data);
+        this.setState({
+            treeData: data
+        })
+        console.log("this2", this.state.treeData);
+    }
 
     // Tree控件，选中
     public onSelect(selectedKeys, info) {
         console.log('selected', selectedKeys[0]);
-        // console.log('selected', selectedKeys, info);
     };
 
     // Tree控件，折叠展开
@@ -121,10 +351,117 @@ class ListArea extends React.Component<{ index: any, onRef: any, indexC, getValu
         console.log('Trigger Expand');
     };
 
+    public render() {
+        return (
+            <div>
+                <div className={"treenode"} >
+                    <Tree
+                        showLine
+                        switcherIcon={<Icon type="down" />}
+                        defaultExpandedKeys={['0-0-0']}
+                        onSelect={this.onSelect}
+                    >
+                        {this.state.treeData.equipmentList.map((i, index) => {
+                            return (
+                                <TreeNode title={i.equipmentType} key={i.equipmentType} >
+                                    {i.buildList.map((it, index) => {
+                                        return (
+                                            <TreeNode title={it.buildname} key={it.buildname}>
+                                                {it.areaList.map((ite, index) => {
+                                                    return (
+                                                        <TreeNode title={ite.areaName} key={ite.areaName} >
+                                                            {ite.floorList.map((ites, index) => {
+                                                                return (
+                                                                    <TreeNode title={ites.floorName} key={ites.floorName} >
+                                                                        {ites.equipments.map((iteg, index) => {
+                                                                            return (
+                                                                                <TreeNode title={iteg.equipmentName} key={iteg.equipmentName} />
+                                                                            )
+                                                                        })}
+                                                                    </TreeNode>
+                                                                )
+                                                            })}
+                                                        </TreeNode>
+                                                    )
+                                                })}
+                                            </TreeNode>
+                                        )
+                                    })}
+                                </TreeNode>
+                            )
+                        })}
+                    </Tree>
+                </div>
+            </div>
+        )
+    }
+
+    public state = {
+        // 设备列表-树形图
+        treeData: {
+            equipmentList: [
+                {
+                    "equipmentType": "IDC可视化监控系统",
+                    "equipmentID": "1",
+                    "buildList": [
+                        {
+                            "buildname": "A座",
+                            "areaList": [
+                                {
+                                    "areaName": "A区",
+                                    "floorList": [
+                                        {
+                                            "floorName": "A-1F",
+                                            "equipments": [
+                                                { "equipmentName": "机房1-A组列头柜" },
+                                                { "equipmentName": "机房1-B组列头柜" },
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "areaName": "B区",
+                                    "floorList": [
+                                        {
+                                            "floorName": "B-1F",
+                                            "equipments": [
+                                                { "equipmentName": "机房1-A组列头柜" },
+                                                { "equipmentName": "机房1-B组列头柜" },
+                                            ]
+                                        }
+                                    ]
+                                },
+                            ]
+                        }
+                    ]
+                }
+            ],
+        }
+
+    }
+}
+
+// 左侧按钮控制，显示内容区域
+class ListArea extends React.Component {
+    public constructor(props) {
+        super(props)
+
+        ListArea.showList = this.showList.bind(this);
+    }
+
+    // 组件更新结束之后执行，在初始化render时不执行
+    public componentDidupdate() {
+    }
+
+    //  在第一次渲染后调用
+    public componentDidMount() {
+        console.log("xxsssxxx", this.state);
+    }
+
+    static showList(data) { }
     // 通过点击左侧按钮，控制右侧详情区域显示
-    public myindex(index) {
-        console.log('child', index);
-        // let index = index;
+    public showList(index) {
+        console.log('showList-List', index);
         // 1-园区介绍
         if (index == 1) {
             this.setState({
@@ -147,9 +484,8 @@ class ListArea extends React.Component<{ index: any, onRef: any, indexC, getValu
                 showCompany: false,
                 treeList: false,
             })
-        }
-        // 3-招商列表
-        else if (index == 3) {
+            // 3-招商列表
+        } else if (index == 3) {
             this.setState({
                 show: "three",
                 introduce: false,
@@ -194,7 +530,6 @@ class ListArea extends React.Component<{ index: any, onRef: any, indexC, getValu
 
     // 点击列表/详情页 关闭，隐藏页面，并取消父组件高亮
     public clickFun(a) {
-        this.props.indexC(a)//这个地方把值传递给了props的事件当中，调用父组件方法，修改父组件state;
         // console.log(this.state.index);
         this.setState({
             index: 99,
@@ -203,25 +538,25 @@ class ListArea extends React.Component<{ index: any, onRef: any, indexC, getValu
             listArea: false,
             treeList: false,
         })
+        LeftNav.indexCh(99);
     }
 
-    // 点击房间列表，获取房间id
-    public getRoom(event) {
-        const id = event.target.getAttribute("data-id");
-        console.log('getRoom', id)
-    }
+    //// 点击房间列表，获取房间id
+    //public getRoom(event) {
+    //    const id = event.target.getAttribute("data-id");
+    //    console.log('getRoom', id)
+    //}
 
-    // 点击公司列表，获取公司id
-    public getCompany(event) {
-        const id = event.target.getAttribute("data-id");
-        console.log('getCompany', id)
-    }
+    //// 点击公司列表，获取公司id
+    //public getCompany(event) {
+    //    const id = event.target.getAttribute("data-id");
+    //    console.log('getCompany', id)
+    //}
 
-  
     render() {
-
         return (
             <div>
+                {/* 园区介绍 */}
                 <div className={this.state.introduce == true ? "introduce" : "hide"}>
                     <div className={"topTit"} >
                         <img src={"./park/image/banner1.png"} className={"banner1"} />
@@ -236,6 +571,7 @@ class ListArea extends React.Component<{ index: any, onRef: any, indexC, getValu
                     <IntroduceArea />
                 </div>
 
+                {/* 区位优势 */}
                 <div className={this.state.superiority == true ? "introduce" : "hide"}>
                     <div className={"topTit"} >
                         <img src={"./park/image/banner1.png"} className={"banner1"} />
@@ -251,9 +587,7 @@ class ListArea extends React.Component<{ index: any, onRef: any, indexC, getValu
                 </div>
 
                 <div className={this.state.listArea == true ? "listArea" : "hide"}>
-                    {/* <p>{this.props.index}</p>
-                <p>{this.state.show}</p> */}
-                    {/* 招商列表 */}
+                    {/* <p>{this.props.index}</p>  <p>{this.state.show}</p> */}
                     <div className={this.state.showBusiness == true ? "show" : "hide"}>
                         <div className={"topTit"}>
                             <span className={"topTT"}>招商列表</span>
@@ -262,40 +596,7 @@ class ListArea extends React.Component<{ index: any, onRef: any, indexC, getValu
                             </span>
                         </div>
                         {/* 招商列表--右侧信息页 */}
-                        <div className={"areaScope"}>
-                            <p className={"areaScopeP"} >筛选（面积）</p>
-                            <ul>
-                                <li>全部</li>
-                                <li>100m以下</li>
-                                <li>100-200m</li>
-                                <li>200-300m</li>
-                                <li>300-500m</li>
-                                <li>500-1000m</li>
-                                <li>1000-2000m</li>
-                                <li>2000m以下</li>
-                            </ul>
-                        </div>
-                        <div className={"roomList"} >
-                            <ul>
-                                {this.state.roomList.map((i, index) => {
-                                    return (
-                                        <li className={"roomP"}>
-                                            <p onClick={this.getRoom} data-id={i.roomID}>{i.roomName}</p>
-                                            <p onClick={this.getRoom} data-id={i.roomID}>
-                                                <span className={"icontop3"}>
-                                                    <span className="iconfont">&#xe805;</span>
-                                                </span>
-                                                &nbsp; 房间面积：<span onClick={this.getRoom} data-id={i.roomID}>{i.roomArea} m²</span></p>
-                                            <p onClick={this.getRoom} data-id={i.roomID}>
-                                                <span className={"icontop3"}>
-                                                    <span className="iconfont">&#xe806;</span>
-                                                </span>
-                                                &nbsp; 发布时间：<span>{i.addTime} </span></p>
-                                        </li>
-                                    )
-                                })}
-                            </ul>
-                        </div>
+                        <BusinessArea />
                     </div>
 
                     {/* 入驻企业 */}
@@ -308,39 +609,7 @@ class ListArea extends React.Component<{ index: any, onRef: any, indexC, getValu
                             </span>
                         </div>
                         {/* 入驻企业--右侧信息页 */}
-                        <div className={"areaScopeqy"}>
-                            <p className={"areaScopeP"}>企业分类</p>
-                            <ul>
-                                <li>全部</li>
-                                {this.state.industryTypes.map((i, index) => {
-                                    return (
-                                        <li >{i.typeName}</li>
-                                    )
-                                })}
-
-                            </ul>
-                        </div>
-                        <div className={"roomList"}>
-                            <ul>
-                                {this.state.companyList.map((i, index) => {
-                                    return (
-                                        <li className={"roomP"}  >
-                                            <p onClick={this.getCompany} data-id={i.companyID} >{i.companyName}</p>
-                                            <p onClick={this.getCompany} data-id={i.companyID} >
-                                                <span className={"icontop3"}>
-                                                    <span className="iconfont">&#xe807;</span>
-                                                </span>
-                                                &nbsp;公司位置：<span onClick={this.getCompany} data-id={i.companyID}>{i.address}</span></p>
-                                            <p onClick={this.getCompany} data-id={i.companyID} >
-                                                <span className={"icontop3"}>
-                                                    <span className="iconfont">&#xe808;</span>
-                                                </span>
-                                                &nbsp;所属行业：<span>{i.type}</span></p>
-                                        </li>
-                                    )
-                                })}
-                            </ul>
-                        </div>
+                        < CompanyArea />
                     </div>
                 </div>
 
@@ -353,49 +622,9 @@ class ListArea extends React.Component<{ index: any, onRef: any, indexC, getValu
                             <span className="iconfont" style={{ "fontSize": "12px" }}>&#xe803;</span>
                         </span>
                     </div>
-                    <div className={"treenode"} >
-                        <Tree
-                            showLine
-                            switcherIcon={<Icon type="down" />}
-                            defaultExpandedKeys={['0-0-0']}
-                            onSelect={this.onSelect}
-                        >
-                            {this.state.equipmentList.map((i, index) => {
-                                return (
-                                    <TreeNode title={i.equipmentType} key={i.equipmentType} >
-                                        {i.buildList.map((it, index) => {
-                                            return (
-                                                <TreeNode title={it.buildname} key={it.buildname}>
-                                                    {it.areaList.map((ite, index) => {
-                                                        return (
-                                                            <TreeNode title={ite.areaName} key={ite.areaName} >
-                                                                {ite.floorList.map((ites, index) => {
-                                                                    return (
-                                                                        <TreeNode title={ites.floorName} key={ites.floorName} >
-                                                                            {ites.equipments.map((iteg, index) => {
-                                                                                return (
-                                                                                    <TreeNode title={iteg.equipmentName} key={iteg.equipmentName} />
-                                                                                )
-                                                                            })}
-                                                                        </TreeNode>
-                                                                    )
-                                                                })}
-                                                            </TreeNode>
-                                                        )
-                                                    })}
-                                                </TreeNode>
-                                            )
-                                        })}
-                                    </TreeNode>
-                                )
-                            })}
-                        </Tree>
-                    </div>
-
+                    <TreeArea />
                 </div>
-
             </div>
-
         )
     }
 
@@ -408,129 +637,52 @@ class ListArea extends React.Component<{ index: any, onRef: any, indexC, getValu
         showBusiness: false,          // 招商列表
         showCompany: false,           // 入驻企业
         treeList: false,              //树形图
-        // 设备列表-树形图
-        equipmentList: [
-            {
-                "equipmentType": "IDC可视化监控系统",
-                "equipmentID": "1",
-                "buildList": [
-                    {
-                        "buildname": "A座",
-                        "areaList": [
-                            {
-                                "areaName": "A区",
-                                "floorList": [
-                                    {
-                                        "floorName": "A-1F",
-                                        "equipments": [
-                                            { "equipmentName": "机房1-A组列头柜" },
-                                            { "equipmentName": "机房1-B组列头柜" },
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "areaName": "B区",
-                                "floorList": [
-                                    {
-                                        "floorName": "B-1F",
-                                        "equipments": [
-                                            { "equipmentName": "机房1-A组列头柜" },
-                                            { "equipmentName": "机房1-B组列头柜" },
-                                        ]
-                                    }
-                                ]
-                            },
-                        ]
-                    }
-                ]
-            }
-        ],
-        // 企业分类，行业类型
-        industryTypes: [
-            {
-                "typeName": "文化创意",
-                "typeID": "1",
-            },
-            {
-                "typeName": "金融保险",
-                "typeID": "2",
-            },
-            {
-                "typeName": "科技服务",
-                "typeID": "3",
-            },
-            {
-                "typeName": "高新技术",
-                "typeID": "4",
-            },
-            {
-                "typeName": "电子产业",
-                "typeID": "5",
-            },
-            {
-                "typeName": "电子商务",
-                "typeID": "6",
-            }
-        ],
-        // roomList: 招商列表（房间信息）,
-        roomList: [
-            {
-                "roomID": "id-A座-4F-B411",
-                "roomName": "A座-4F-B411",
-                "roomArea": "51",
-                "addTime": "2019-7-11",
-            },
-            {
-                "roomID": "id-A座-4F-B412",
-                "roomName": "A座-4F-B412",
-                "roomArea": "52",
-                "addTime": "2019-7-15",
-            },
-        ],
-        //  companyList: 入驻企业信息,
-        companyList: [
-            {
-                "companyID": "id-浙江永拓信息科技有限公司",
-                "companyName": "浙江永拓信息科技有限公司",
-                "address": "E座B区-3F-301",
-                "type": "科技服务"
-
-            },
-            {
-                "companyID": "id-桂林银行",
-                "companyName": "桂林银行",
-                "address": "A座A区-1F-101",
-                "type": "金融保险"
-            },
-        ],
+        treeData: [],
     }
 }
 
+
+// 左侧按钮区域
 class LeftNav extends React.Component {
     public constructor(props) {
         super(props)
 
         this.indexC = this.indexC.bind(this);
+        LeftNav.refreshTree = this.refreshTree.bind(this);
+        LeftNav.showList = this.showList.bind(this);
+        LeftNav.updateBusiness = this.updateBusiness.bind(this);
+        LeftNav.indexCh = this.indexCh.bind(this);
+        LeftNav.updateCompany = this.updateCompany.bind(this);
+
     }
 
     //  在第一次渲染后调用
     public componentDidMount() {
-        // Index父组件调用子组件的方法；
-        this.props.leftNavFather(this);
-        
     }
 
-    //这是子组件的方法
-    public getValuefromChild(a) {
-        console.log("leftnav", a);
-    };
+    // 定义静态类，需要绑定到this的方法上，供外部调用
+    static refreshTree(a) { }
+    public refreshTree(data) {
+        TreeArea.setTreedata(data);
+    }
+
+    static updateBusiness(a) { }
+    public updateBusiness(a) {
+        console.log("Businessnav");
+        BusinessArea.updateList(a);
+    }
+
+    static updateCompany(a) { }
+    public updateCompany(a) {
+        console.log("Companynav");
+        CompanyArea.updateList(a);
+    }
 
     // 点击左侧图标，切换高亮
+    static showList(index) { }
     public showList(index) {
-
-        console.log('father2', index);
-         
+        console.log('showList-LeftNav', index);
+        // 调用子组件显示相应区域
         if (index == 1) {
             this.setState({
                 index: index,
@@ -539,8 +691,6 @@ class LeftNav extends React.Component {
                 iconthree: false,
                 iconfour: false,
             });
-            // 调用子组件显示相应区域
-            this.child.myindex(index);
         } else if (index == 2) {
             this.setState({
                 index: index,
@@ -549,7 +699,6 @@ class LeftNav extends React.Component {
                 iconthree: false,
                 iconfour: false,
             });
-            this.child.myindex(index);
         } else if (index == 3) {
             this.setState({
                 index: index,
@@ -558,7 +707,6 @@ class LeftNav extends React.Component {
                 iconthree: true,
                 iconfour: false,
             });
-            this.child.myindex(index);
         } else if (index == 4) {
             this.setState({
                 index: index,
@@ -567,7 +715,6 @@ class LeftNav extends React.Component {
                 iconthree: false,
                 iconfour: true,
             });
-            this.child.myindex(index);
         } else if (index == 10) {
             this.setState({
                 index: index,
@@ -576,9 +723,8 @@ class LeftNav extends React.Component {
                 iconthree: false,
                 iconfour: false,
             });
-            this.child.myindex(index);
         }
-
+        ListArea.showList(index);
     }
 
     // 提供方法，供子组件调用；
@@ -590,6 +736,7 @@ class LeftNav extends React.Component {
     }
 
     // 点击详情页X关闭按钮，还原icon初始状态
+    static indexCh(a) { }
     public indexCh(a) {
         console.log("indexCh", a);
         if (a == 99) {
@@ -607,20 +754,7 @@ class LeftNav extends React.Component {
         }
     }
 
-    // 获取子组件全部信息，包括状态和方法;并且可以调用子组件函数
-    public onRef = (ref) => {
-        console.log("onRefref", ref)
-        this.child = ref
-    }
-
-    //public treeRef = (ref) => {
-    //    console.log("treeRef", ref)
-    //    console.log(ref)
-    //    this.child = ref
-    //}
-
     render() {
-        console.log(this.state);
         return (
             <div>
                 <div className={"tree"} onClick={this.showList.bind(this, 10)}>
@@ -651,13 +785,10 @@ class LeftNav extends React.Component {
                     </ul>
                 </div>
 
-                <ListArea index={this.state.index} indexC={this.indexCh.bind(this)} onRef={this.onRef} />
+                <ListArea />
             </div >
         )
     }
-
-
-    public child = null;
 
     public state = {
         index: 99,
@@ -670,8 +801,11 @@ class LeftNav extends React.Component {
             { "icontwo": false },
             { "iconthree": false },
             { "iconfour": false },
-        ]
+        ],
+        treeData: {}
     }
+
+
 
 }
 
