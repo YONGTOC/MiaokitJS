@@ -16,7 +16,7 @@ import Parking from "parking";
 import InfoArea from "infoArea";
 import Message from "message";
 import AboutMe from "aboutMe";
-import Vr from "vr";
+import Narrate from "narrate";
 
 import "css!./styles/view.css"
 import { HashRouter, Route, Redirect, Switch } from 'react-router-dom';
@@ -71,7 +71,7 @@ ReactDOM.render(
       <Route exact path="/infoArea" component={InfoArea} />
       <Route exact path="/message" component={Message} />
       <Route exact path="/aboutMe" component={AboutMe} />
-      <Route exact path="/vr" component={Vr} />
+      <Route exact path="/narrate" component={Narrate} />
 
 
     </Switch>

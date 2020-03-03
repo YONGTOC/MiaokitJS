@@ -198,7 +198,7 @@ class TopBtn extends React.Component {
           </div>
         </div>
 
-        <RouterDOM.Link to="/vr" >
+        <RouterDOM.Link to="/narrate" >
           <div className="playIconbox">
             <div className={this.state.playIcon}>
               <span className="iconfont" style={{ "fontSize": "5rem" }}>&#xe7fa;</span>
