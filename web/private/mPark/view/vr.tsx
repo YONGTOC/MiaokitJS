@@ -1,6 +1,6 @@
 import * as React from "react";
+import * as RouterDOM from 'react-router-dom';
 
-import BottomBtn from "bottomBtn";
 import "css!./styles/view.css"
 
 class AboutMe extends React.Component {
@@ -10,16 +10,23 @@ class AboutMe extends React.Component {
   }
 
   public componentDidMount() {
-    BottomBtn.toggleIcon(4);
+
+  }
+
+  public retunHome() {
+    console.log("retunHome");
+
   }
 
   public render() {
     return (
       <div>
-        <div className={"aboutMebox"}>
-          AboutMeAboutMe浙江永拓信息科技有限公司
-                </div>
-        <BottomBtn />
+        <div className={"vrBox"}>
+          vr
+           <RouterDOM.Link to="/" >
+            <span onClick={this.retunHome.bind(this)}>返回</span>
+          </RouterDOM.Link>
+        </div>
       </div>
     )
   }

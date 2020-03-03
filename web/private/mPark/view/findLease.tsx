@@ -1,25 +1,24 @@
 import * as React from "react";
 
-import BottomBtn from "bottomBtn";
 import "css!./styles/view.css"
 
-class AboutMe extends React.Component {
+class FindLease extends React.Component {
   public constructor(props) {
     super(props);
 
   }
 
   public componentDidMount() {
-    BottomBtn.toggleIcon(4);
+    
   }
 
   public render() {
     return (
       <div>
         <div className={"aboutMebox"}>
-          AboutMeAboutMe浙江永拓信息科技有限公司
+          FindLeaseFindLeaseFindLease
                 </div>
-        <BottomBtn />
+
       </div>
     )
   }
@@ -31,4 +30,4 @@ class AboutMe extends React.Component {
   //over
 }
 
-export default AboutMe;
+export default FindLease;
