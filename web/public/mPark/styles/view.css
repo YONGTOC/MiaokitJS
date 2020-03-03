@@ -98,56 +98,159 @@
     content: "\e80d";
 }
 
- 
+.hide {
+    display: none;
+}
 
 p {
     font-size: 2rem;
 }
- 
+
 /*index*/
 .web {
-    /*position: fixed;
+    position: fixed;
     width: 100%;
     z-index: 100;
     top: 0px;
-    border:1rem solid red;*/
+    /*border:1rem solid red;*/
 }
 
 .topView {
     position: fixed;
-    width: 10rem;
+    width: 7rem;
     height: 28rem;
     z-index: 100;
-    top: 0;
-    right: 0;
-    /*border: 0.1rem solid red;*/
-    background: #fff;
+    top: 3.2rem;
+    right: 2.4rem;
+    background: rgba(247,247,247,1);
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .iconBox {
-    width: 8rem;
+    width: 6rem;
     height: 9rem;
-    border-bottom: 0.1rem solid #646464;
+    border-top: 0.1rem solid #646464;
     text-align: center;
-    margin: 1rem;
+    margin: 0 0.5rem;
     cursor: pointer;
     float: left;
+}
+
+.iconBoxIn {
+    width: 6rem;
+    height: 9rem;
+    border-top: 0.1rem solid #646464;
+    text-align: center;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    float: left;
+    color: red;
 }
 
 .iconBox p {
     margin-top: -2rem;
 }
+
+.iconBoxIn p {
+    margin-top: -2rem;
+}
+
 .topView-big {
     position: fixed;
-    width: 30rem;
-    height: 30rem;
+    width: 38rem;
+    height: 41rem;
     z-index: 100;
     top: 0;
     right: 0;
-    /*border: 0.1rem solid red;*/
-    background: #fff;
+    background: rgba(247,247,247,1);
+    border-radius: 8px;
+    margin: 2.4rem;
 }
 
+.iconBox-big {
+    width: 7.2rem;
+    height: 7.2rem;
+    background: rgba(255,255,255,1);
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+    opacity: 1;
+    border-radius: 6px;
+    margin: 4rem 0 1rem 4rem;
+    text-align: center;
+    float: left;
+    cursor: pointer;
+}
+.iconBox-bigIn {
+    width: 7.2rem;
+    height: 7.2rem;
+    background: rgba(255,255,255,1);
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+    opacity: 1;
+    border-radius: 6px;
+    margin: 4rem 0 1rem 4rem;
+    text-align: center;
+    float: left;
+    cursor: pointer;
+    color:red;
+}
+.topClose {
+    width: 7.2rem;
+    height: 7.2rem;
+    position: absolute;
+    bottom: -2rem;
+    right: -2rem;
+    cursor: pointer;
+}
+
+.playIconbox {
+    position: fixed;
+    width: 7rem;
+    height: 9rem;
+    z-index: 99;
+    top: 33rem;
+    right: 2.4rem;
+    background: rgba(247,247,247,1);
+    border-radius: 8px;
+}
+
+/*foldView*/
+.foldView {
+    position: fixed;
+    width: 100%;
+    height: 43rem;
+    z-index: 100;
+    bottom: 9rem;
+    background: #fff;
+}
+.foleBtn {
+    width:100%;
+    height: 5rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+.foleIconbox {
+    width: 56rem;
+    height: 38rem;
+    margin: auto;
+}
+.foleIcon {
+    width: 11rem;
+    height: 11rem;
+    text-align: center;
+    cursor: pointer;
+    float: left;
+    margin: 3rem 1.5rem;
+}
+.foldView-part {
+    position: fixed;
+    width: 100%;
+    height: 22rem;
+    z-index: 100;
+    bottom: 9rem;
+    background: #fff;
+}
 /*bottomView*/
 .bottomView {
     position: fixed;
@@ -155,10 +258,11 @@ p {
     height: 9rem;
     z-index: 100;
     bottom: 0;
- 
     /*border: 0.1rem solid red;*/
     background: #fff;
+    border-top: 0.2rem solid #ccc;
 }
+
 .iconBox-bottom {
     width: 7rem;
     height: 10rem;
@@ -169,9 +273,10 @@ p {
     margin: 0 4rem;
     text-align: center;
 }
-.iconBox-bottom p {
-    margin-top: -2rem;
-}
+
+    .iconBox-bottom p {
+        margin-top: -2rem;
+    }
 
 .iconBox-bottomIn {
     width: 7rem;
@@ -184,9 +289,10 @@ p {
     text-align: center;
     color: red;
 }
-.iconBox-bottomIn p {
-    margin-top: -2rem;
-}
+
+    .iconBox-bottomIn p {
+        margin-top: -2rem;
+    }
 
 
 
@@ -225,4 +331,14 @@ p {
     background: #fff;
     font-size: 3rem;
 }
-
+/*vrBox -- ½²½â*/
+.vrBox {
+    position: fixed;
+    width: 100%;
+    height: 12.8rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+}
