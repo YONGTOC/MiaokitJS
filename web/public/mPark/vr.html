@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vr</title>
+    <link rel="stylesheet" href="./styles/photo-sphere-viewer.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            letter-spacing: 140%;
+            font-family: "Microsoft YaHei";
+        }
+
+        #container2 {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            -webkit-animation: null;
+            animation: null;
+        }
+
+        #container {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            -webkit-animation: null;
+            animation: null;
+        }
+
+        .back3D {
+            position: fixed;
+            top: 0px;
+            z-index: 99;
+        }
+
+        @keyframes sShow {
+
+            /*设置内容逐渐显示*/
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes sHide {
+            /*设置内容逐渐隐藏*/
+
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <input type="button" value="back3D" class="back3D" />
+
+    <div id="container2"></div>
+    <div id="container"></div>
+
+    <script src="../common/jquery.js"></script>
+
+    <script src="../common/threejs/three.min.js"></script>
+    <script src="../common/threejs/doT.min.js"></script>
+    <script src="../common/threejs/uevent.min.js"></script>
+    <script src="../common/threejs/D.min.js"></script>
+    <script src="../common/threejs/DeviceOrientationControls.js"></script>
+    <script src="../common/threejs/photo-sphere-viewer.min.js"></script>
+
+    <script>
+        Window.onload = function () {
+
+            console.log(3333);
+            $('.back3D').click(function () {
+                // console.log(3333);
+                window.close()          　　　　  //关闭当前页面
+            })
+
+            var PSV2 = new PhotoSphereViewer({
+                panorama: './image/vr/2.jpg',
+                container: 'container2',
+                time_anim: false,//�ر��Զ���ת
+                navbar: false,//�رյ�����
+                //loading_img: '',
+                move_speed: 0.8,//�������ٶ�
+                default_fov: 100,//������Ұ
+                latitude_range: [Math.PI / 4, -Math.PI / 4],//���¿ɻ�����Χ
+                markers: [{
+                    id: 'y',
+                    longitude: 2.8955010404014563,
+                    latitude: 0,
+                    html: '返回主房间',
+                    anchor: 'center center',
+                    scale: [0.5, 1.5],
+                    style: {
+                        maxWidth: '100px',
+                        color: 'white',
+                        fontSize: '20px',
+                        fontFamily: 'Helvetica, sans-serif',
+                        textAlign: 'center'
+                    },
+                    tooltip: {
+                        content: 'An HTML marker',
+                        position: 'right'
+                    }
+                }
+                ]
+            });
+
+            var PSV = new PhotoSphereViewer({
+                panorama: './image/vr/1.jpg',
+                container: 'container',
+                time_anim: false,//�ر��Զ���ת
+                navbar: false,//�رյ�����
+                //loading_img: '',
+                move_speed: 0.8,//�������ٶ�
+                default_fov: 100,//������Ұ
+                latitude_range: [Math.PI / 4, -Math.PI / 4],//���¿ɻ�����Χ
+                markers: [{
+                    id: 'circle',
+                    longitude: 2.8955010404014563,
+                    latitude: 0,
+                    html: '主房间',
+                    anchor: 'center center',
+                    scale: [0.5, 1.5],
+                    style: {
+                        maxWidth: '100px',
+                        color: 'white',
+                        fontSize: '20px',
+                        fontFamily: 'Helvetica, sans-serif',
+                        textAlign: 'center'
+                    },
+                    tooltip: {
+                        content: '主房间',
+                        position: 'right'
+                    }
+                },
+                //{
+                //    id: 'circle2',
+                //    longitude: 3.8955010404014563,
+                //    latitude:0.5,
+                //    html: '222222222',
+                //    anchor: 'center center',
+                //    scale: [0.5, 1.5],
+                //    style: {
+                //        maxWidth: '100px',
+                //        color: 'white',
+                //        fontSize: '20px',
+                //        fontFamily: 'Helvetica, sans-serif',
+                //        textAlign: 'center'
+                //    },
+                //    tooltip: {
+                //        content: 'An HTML marker',
+                //        position: 'right'
+                //    }
+                //},
+                {
+                    id: 'image',
+                    longitude: 3.8955010404014563,
+                    latitude: 0.5,
+                    // image: 'http://photo-sphere-viewer.js.org/assets/pin-blue.png',
+                    image: './image/pin-blue.png',
+                    width: 32,
+                    height: 32,
+                    anchor: 'bottom center',
+                    tooltip: '前去阳台查看',
+                    anchor: 'center center',
+                    scale: [0.5, 1.5],
+                    style: {
+                        maxWidth: '100px',
+                        color: 'white',
+                        fontSize: '20px',
+                        fontFamily: 'Helvetica, sans-serif',
+                        textAlign: 'center'
+                    },
+                }]
+            });
+
+
+
+
+
+            PSV.on('ready', function () {
+                console.log(PSV.isGyroscopeEnabled());
+                PSV.startGyroscopeControl();
+            });
+
+            PSV.on('select-marker', function (marker) {
+                console.log(marker.id);
+                if (marker.id == "image") {
+                    $('#container2').css({ 'animation': 'sShow 4s ease', 'opacity': 1, 'z-index': 1 })
+                        .siblings("div").css({ 'animation': 'sHide 4s ease', 'opacity': 0, 'z-index': 0 });
+                }
+                console.log(this);
+            });
+
+
+
+            PSV2.on('select-marker', function (marker) {
+                console.log(marker.id);
+                if (marker.id == "y") {
+                    $('#container').css({ 'animation': 'sShow 4s ease', 'opacity': 1, 'z-index': 1 })
+                        .siblings("div").css({ 'animation': 'sHide 4s ease', 'opacity': 0, 'z-index': 0 });
+                }
+
+            });
+
+
+            PSV.on('position-updated', function (e) {
+                // console.log('经度:'+e.longitude+',纬度:'+e.latitude);
+            });
+
+
+            // over
+        } 
+    </script>
+
+</body>
+
+</html>

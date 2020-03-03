@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+/** 所有统计图形 */
+var GLOBAL_PLOT_MAP = {};
+function registerPlotType(name, ctr) {
+    GLOBAL_PLOT_MAP[name.toLowerCase()] = ctr;
+}
+exports.registerPlotType = registerPlotType;
+function getPlotType(name) {
+    return GLOBAL_PLOT_MAP[name.toLowerCase()];
+}
+exports.getPlotType = getPlotType;
+//# sourceMappingURL=global.js.map

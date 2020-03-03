@@ -1,0 +1,13 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "system",
+    "outDir": "../examples",
+    "outFile": "../examples/miaokit.js",
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": true,
+    "sourceMap": false,
+    "target": "es6"
+  }
+}

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d9325ef48e5711458c95a93b98434ef, type: 3}
+  m_Name: MKGlowResources
+  m_EditorClassIdentifier: 
+  _lensSurfaceDirtTextureDefault: {fileID: 2800000, guid: 017c691ca908e4e4d9ebd9059fd9ac9e,
+    type: 3}
+  _lensSurfaceDiffractionTextureDefault: {fileID: 2800000, guid: 009fda98a81cd3845aeb64a69c874670,
+    type: 3}
+  _lensFlareColorTextureDefault: {fileID: 2800000, guid: 975a8774634d74641a77ba2896b05d69,
+    type: 3}
+  _selectiveRenderShader: {fileID: 4800000, guid: c04b7cae8accdfb4e9c2648823ff39d7,
+    type: 3}
+  _sm20Shader: {fileID: 4800000, guid: 4a0f69365db105c4c9683ec58315366b, type: 3}
+  _sm25Shader: {fileID: 4800000, guid: 2f2fbf70d6fce684f8b087b2b8d0a1ac, type: 3}
+  _sm30Shader: {fileID: 4800000, guid: 47845203cec7723419c09c484cc3c17d, type: 3}
+  _sm35Shader: {fileID: 4800000, guid: 5d1e83c3c2b92e04baff8124121698d1, type: 3}
+  _sm40Shader: {fileID: 4800000, guid: 843dd593cf89f884ca1c2d527bf69102, type: 3}
+  _sm40GeometryShader: {fileID: 4800000, guid: 5b3ce81bdbf7fad44b2598d01538c48b, type: 3}
+  _computeShader: {fileID: 7200000, guid: 93cd110ea461a7743816c47df609418e, type: 3}
+  _computeShaderGles: {fileID: 7200000, guid: 701f14f4f6f91f04a8147279ac23d364, type: 3}

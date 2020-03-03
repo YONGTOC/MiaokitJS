@@ -1,0 +1,31 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var StyleParser = tslib_1.__importStar(require("../util/style-parser"));
+function extractAxis(desAxis, axis) {
+    if (!axis) {
+        return desAxis;
+    }
+    StyleParser.AxisStyleParser(desAxis, axis);
+    return desAxis;
+}
+exports.extractAxis = extractAxis;
+function processAxisVisible(axisCfg) {
+    if (axisCfg.line && axisCfg.line.visible === false) {
+        axisCfg.line = null;
+    }
+    if (axisCfg.grid && axisCfg.grid.visible === false) {
+        axisCfg.grid = null;
+    }
+    if (axisCfg.tickLine && axisCfg.tickLine.visible === false) {
+        axisCfg.tickLine = null;
+    }
+    if (axisCfg.title && axisCfg.title.visible === false) {
+        axisCfg.title = null;
+    }
+    if (axisCfg.label && axisCfg.label.visible === false) {
+        axisCfg.label = null;
+    }
+}
+exports.processAxisVisible = processAxisVisible;
+//# sourceMappingURL=axis.js.map

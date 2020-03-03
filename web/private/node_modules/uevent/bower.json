@@ -1,0 +1,38 @@
+{
+  "name": "uevent",
+  "version": "1.0.0",
+  "description": "Event emitter micro library",
+  "main": "uevent.js",
+  "author": [
+    {
+      "name": "Jerome Etienne",
+      "homepage": "http://jetienne.com"
+    },
+    {
+      "name": "Damien \"Mistic\" Sorel",
+      "email": "contact@git.strangeplanet.fr",
+      "homepage": "http://www.strangeplanet.fr"
+    }
+  ],
+  "keywords": [
+    "events",
+    "emitter"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/mistic100/uEvent",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mistic100/uEvent.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mistic100/uEvent/issues"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "tests",
+    "package.json",
+    "Gruntfile.js"
+  ]
+}

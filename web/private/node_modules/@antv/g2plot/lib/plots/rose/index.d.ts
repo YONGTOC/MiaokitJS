@@ -1,0 +1,8 @@
+import BasePlot, { PlotConfig } from '../../base/plot';
+import RoseLayer, { RoseViewConfig } from './layer';
+export interface RoseConfig extends RoseViewConfig, PlotConfig {
+}
+export default class Rose extends BasePlot<RoseConfig> {
+    static getDefaultOptions: typeof RoseLayer.getDefaultOptions;
+    createLayers(props: any): void;
+}

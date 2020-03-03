@@ -1,0 +1,289 @@
+.show {
+    display: inline;
+}
+
+.hide {
+    display: none;
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+/*introduce--园区介绍*/
+.introduce {
+    position: fixed;
+    top: 0px;
+    width: 95vw;
+    height: 95vh;
+    left: 88px;
+    margin-top: 50px;
+    background-color: #fff;
+    /* padding: 22px 20px; */
+}
+
+.introduceClose {
+    float: right;
+    cursor: pointer;
+    line-height: 17px;
+    color: #fff;
+    position: relative;
+    top: -41px;
+    right: 11px;
+}
+
+.introduceBG {
+    width: 101%;
+    background-color: #000;
+    height: 36px;
+    opacity: .4;
+}
+
+.listArea {
+    position: fixed;
+    top: 0px;
+    width: 300px;
+    height: 95vh;
+    left: 88px;
+    margin-top: 50px;
+    width: 300px;
+    background-color: #fff;
+    padding: 22px 20px;
+}
+
+.topSpan {
+    position: relative;
+    top: -200px;
+}
+
+.topTT {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 24px;
+    color: rgba(51, 51, 51, 1);
+}
+
+.topTTW {
+    font-size: 16px;
+    line-height: 24px;
+    color: #ffff;
+    padding: 8px 0px 0px 20px;
+    opacity: 1;
+    position: relative;
+    top: -46px;
+}
+
+.iconguanbi {
+    float: right;
+    cursor: pointer;
+    line-height: 17px;
+}
+
+.introduceContent {
+    width: 1200px;
+    position: relative;
+    top: -197px;
+    margin: auto;
+}
+
+.intrTit {
+    font-size: 36px;
+    line-height: 47px;
+    color: rgba(255, 255, 255, 1);
+    opacity: 1;
+}
+
+.contentOne {
+    margin-top: 97px;
+}
+
+.rowOne {
+  width: 100%;
+    border-bottom: 1px solid rgba(229, 229, 229, 1);
+    padding-bottom: 5px;
+    margin: 0;
+}
+
+.rowOnetit {
+    font-size: 22px;
+    color: rgba(51, 51, 51, 1);
+    border-bottom: 3px solid rgba(213, 0, 0, 1);
+    padding-bottom: 5px;
+}
+
+.pContent {
+    font-size: 14px;
+    color: rgba(51, 51, 51, 1);
+    padding-top: 26px;
+    line-height: 2;
+    text-indent: 30px;
+}
+
+.contentTwo {
+    margin-top: 26px;
+}
+
+.imgBox {
+    padding-top: 26px;
+}
+/*-----*/
+.listAreaClose {
+    float: right;
+    cursor: pointer;
+    line-height: 17px;
+}
+
+
+.areaScope,
+.areaScopeqy {
+    /* width: 260px;
+    height: 160px; */
+    background: rgba(251, 251, 251, 1);
+    opacity: 1;
+    margin: 11px 0 15px 0;
+    padding: 15px 0 5px 10px;
+    display: flow-root;
+}
+
+.areaScopeP {
+    height: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 15px;
+    color: rgba(51, 51, 51, 1);
+    opacity: 1;
+    border-left: 4px solid #D50000;
+    padding-left: 8px;
+    margin-bottom: 7px;
+}
+
+.areaScope ul,
+.areaScopeqy ul {
+    margin-left: -40px;
+}
+
+    .areaScope ul li:first-child {
+        color: #D50000;
+    }
+
+.areaScope li {
+    float: left;
+    width: 50%;
+    height: 26px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #333333;
+    opacity: 1;
+    cursor: pointer;
+    padding-left: 5px;
+}
+
+.areaScopeqy li {
+    float: left;
+    width: 30%;
+    height: 26px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: rgba(51, 51, 51, 1);
+    opacity: 1;
+    cursor: pointer;
+    text-align: center;
+}
+
+.areaScopeqy ul li:first-child {
+    color: #D50000;
+    padding-left: -15px;
+}
+
+.roomList {
+    height: 69vh;
+}
+
+    .roomList::-webkit-scrollbar {
+        width: 8px;
+        background-color: #FFF;
+    }
+
+    .roomList::-webkit-scrollbar-thumb {
+        background-color: rgba(251, 251, 251, 1);
+    }
+
+.roomP {
+    border-bottom: 1px solid rgb(237, 237, 237);
+    margin-left: -40px;
+    line-height: 9px;
+    /* margin-bottom: 15px; */
+    padding: 12px 0 0px 12px;
+    cursor: pointer;
+}
+
+    .roomP:hover {
+        background-color: #FBFBFB;
+    }
+
+    .roomP p {
+        font-size: 14px;
+    }
+
+    .roomP span {
+        font-size: 14px;
+    }
+
+.icontop3 {
+    position: relative;
+    top: 0px;
+}
+
+.roomP p:first-child {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333333 !important;
+}
+
+
+
+
+/*tree*/
+.treenode {
+    margin-left: 30px;
+}
+
+.treeList {
+    position: fixed;
+    top: 0px;
+    width: 300px;
+    height: 95vh;
+    left: 88px;
+    margin-top: 50px;
+    width: 300px;
+    background-color: #fff;
+}
+
+.topTittree {
+    margin: 22px 20px 15px 20px;
+    border-bottom: 1px solid #EDEDED;
+    padding-bottom: 15px;
+}
+
+.treeClose {
+    float: right;
+    color: #6E6E6E;
+    font-size: 12px !important;
+    cursor: pointer;
+    line-height: 13px;
+    margin-top: 5px;
+}
+
+.treenode span {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 19px;
+    color: rgba(51, 51, 51, 1);
+}

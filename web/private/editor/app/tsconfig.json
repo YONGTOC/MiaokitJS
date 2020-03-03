@@ -1,0 +1,13 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "system",
+    "outDir": "../../../public/editor/js",
+    "outFile": "../../../public/editor/js/app.js",
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": true,
+    "sourceMap": false,
+    "target": "es6"
+  }
+}
