@@ -71,7 +71,39 @@ define("bottomBtn", ["require", "exports", "react", "react-router-dom", "css!./s
     }
     exports.default = BottomBtn;
 });
-define("home", ["require", "exports", "react", "bottomBtn", "css!./styles/view.css"], function (require, exports, React, bottomBtn_1) {
+define("aboutMe", ["require", "exports", "react", "bottomBtn", "css!./styles/view.css"], function (require, exports, React, bottomBtn_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class AboutMe extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {};
+        }
+        componentDidMount() {
+            bottomBtn_1.default.toggleIcon(4);
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "AboutMeAboutMe\uFFFD\u3F6D\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u03E2\uFFFD\u01BC\uFFFD\uFFFD\uFFFD\uFFFD\u07B9\uFFFD\u02FE"),
+                React.createElement(bottomBtn_1.default, null)));
+        }
+    }
+    exports.default = AboutMe;
+});
+define("compat", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class GlobalAction {
+        switchRoom(pName) {
+            console.log("SwitchLayer", pName);
+        }
+        switchMark(pName) {
+            console.log("switchMark", pName);
+        }
+    }
+    exports.default = GlobalAction;
+});
+define("home", ["require", "exports", "react", "bottomBtn", "compat", "css!./styles/view.css"], function (require, exports, React, bottomBtn_2, compat_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Home extends React.Component {
@@ -80,38 +112,149 @@ define("home", ["require", "exports", "react", "bottomBtn", "css!./styles/view.c
             this.state = {};
         }
         componentDidMount() {
-            bottomBtn_1.default.toggleIcon(1);
+            bottomBtn_2.default.toggleIcon(1);
         }
         render() {
             return (React.createElement("div", null,
                 React.createElement(TopBtn, null),
-                React.createElement(bottomBtn_1.default, null)));
+                React.createElement(bottomBtn_2.default, null)));
         }
     }
     class TopBtn extends React.Component {
         constructor(props) {
             super(props);
             this.state = {
-                topView: "topView"
+                topView: "topView",
+                topIcon1: "iconBox",
+                topIcon2: "iconBox",
+                topIcon3: "iconBox",
+                topIcon4: "iconBox",
+                topIcon5: "iconBox",
+                topIcon: "iconBox",
+                playIcon: "iconBox",
+                moreIcon: "iconBox",
+                topClose: "hide",
             };
+            this.globalAction = new compat_1.default();
         }
-        toggleIconbox(a) {
+        moreIcon(a) {
             console.log('toggleIconbox', a);
             this.setState({
-                topView: "topView-big"
+                topView: "topView-big",
+                topIcon1: "iconBox-big",
+                topIcon2: "iconBox-big",
+                topIcon3: "iconBox-big",
+                topIcon4: "iconBox-big",
+                topIcon5: "iconBox-big",
+                moreIcon: "hide",
+                topClose: "topClose",
             });
         }
+        topClose(a) {
+            console.log('topClose', a);
+            this.setState({
+                topView: "topView",
+                topIcon1: "iconBox",
+                topIcon2: "iconBox",
+                topIcon3: "iconBox",
+                topIcon4: "iconBox",
+                topIcon5: "iconBox",
+                moreIcon: "iconBox",
+                topClose: "hide",
+            });
+        }
+        switchMark(a) {
+            this.globalAction.switchMark(a);
+            if (a == "交通") {
+                if (this.state.topClose == "topClose") {
+                    this.setState({
+                        topIcon1: "iconBox-bigIn",
+                        topIcon2: "iconBox-big",
+                        topIcon3: "iconBox-big",
+                        topIcon4: "iconBox-big",
+                        topIcon5: "iconBox-big",
+                        topIcon: "iconBox-big",
+                    });
+                }
+                else {
+                    this.setState({
+                        topIcon1: "iconBoxIn",
+                        topIcon2: "iconBox",
+                        topIcon3: "iconBox",
+                        topIcon4: "iconBox",
+                        topIcon5: "iconBox",
+                        topIcon: "iconBox",
+                    });
+                }
+            }
+            else if (a == "商圈") {
+                this.setState({
+                    topIcon1: "iconBox",
+                    topIcon2: "iconBoxIn",
+                    topIcon3: "iconBox",
+                    topIcon4: "iconBox",
+                    topIcon5: "iconBox",
+                    topIcon: "iconBox",
+                });
+            }
+            else if (a == "公交车") {
+                this.setState({
+                    topIcon1: "iconBox-big",
+                    topIcon2: "iconBox-big",
+                    topIcon3: "iconBox-bigIn",
+                    topIcon4: "iconBox-big",
+                    topIcon5: "iconBox-big",
+                    topIcon: "iconBox",
+                });
+            }
+            else if (a == "全景") {
+                this.setState({
+                    topIcon1: "iconBox-big",
+                    topIcon2: "iconBox-big",
+                    topIcon3: "iconBox-big",
+                    topIcon4: "iconBox-bigIn",
+                    topIcon5: "iconBox-big",
+                    topIcon: "iconBox",
+                });
+            }
+            else if (a == "停车场") {
+                this.setState({
+                    topIcon1: "iconBox-big",
+                    topIcon2: "iconBox-big",
+                    topIcon3: "iconBox-big",
+                    topIcon4: "iconBox-big",
+                    topIcon5: "iconBox-bigIn",
+                    topIcon: "iconBox",
+                });
+            }
+        }
         render() {
-            return (React.createElement("div", { className: this.state.topView },
-                React.createElement("div", { className: "iconBox" },
-                    React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                    React.createElement("p", null, "\u6F14\u793A\u5B57")),
-                React.createElement("div", { className: "iconBox" },
-                    React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                    React.createElement("p", null, "\u6F14\u793A\u5B57")),
-                React.createElement("div", { className: "iconBox", onClick: this.toggleIconbox.bind(this, 10) },
-                    React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                    React.createElement("p", null, "\u66F4\u591A"))));
+            return (React.createElement("div", null,
+                React.createElement("div", { className: this.state.topView },
+                    React.createElement("div", { className: this.state.topIcon1, onClick: this.switchMark.bind(this, "交通") },
+                        React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                        React.createElement("p", null, "\u4EA4\u901A")),
+                    React.createElement("div", { className: this.state.topIcon2, onClick: this.switchMark.bind(this, "商圈") },
+                        React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                        React.createElement("p", null, "\u5546\u5708")),
+                    React.createElement("div", { className: this.state.moreIcon, onClick: this.moreIcon.bind(this, 10) },
+                        React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                        React.createElement("p", null, "\u66F4\u591A")),
+                    React.createElement("div", { className: this.state.topIcon3, onClick: this.switchMark.bind(this, "公交车") },
+                        React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                        React.createElement("p", null, "\u516C\u4EA4\u8F66")),
+                    React.createElement("div", { className: this.state.topIcon4, onClick: this.switchMark.bind(this, "全景") },
+                        React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                        React.createElement("p", null, "\u5168\u666F")),
+                    React.createElement("div", { className: this.state.topIcon5, onClick: this.switchMark.bind(this, "停车场") },
+                        React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                        React.createElement("p", null, "\u505C\u8F66\u573A")),
+                    React.createElement("div", { className: this.state.topClose, onClick: this.topClose.bind(this, 10) },
+                        React.createElement("span", { className: "iconfont", style: { "fontSize": "3rem" } }, "\uE7FA"))),
+                React.createElement("div", { className: "playIconbox" },
+                    React.createElement("div", { className: this.state.playIcon },
+                        React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                        React.createElement("p", null, "\u8BB2\u89E3")))));
         }
     }
     class FoldBtn extends React.Component {
@@ -151,7 +294,7 @@ define("photograph", ["require", "exports", "react"], function (require, exports
     }
     exports.default = Photograph;
 });
-define("infoArea", ["require", "exports", "react", "bottomBtn"], function (require, exports, React, bottomBtn_2) {
+define("infoArea", ["require", "exports", "react", "bottomBtn"], function (require, exports, React, bottomBtn_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class InfoArea extends React.Component {
@@ -160,17 +303,17 @@ define("infoArea", ["require", "exports", "react", "bottomBtn"], function (requi
             this.state = {};
         }
         componentDidMount() {
-            bottomBtn_2.default.toggleIcon(2);
+            bottomBtn_3.default.toggleIcon(2);
         }
         render() {
             return (React.createElement("div", null,
                 React.createElement("div", { className: "infoAreabox" }, "InfoArea"),
-                React.createElement(bottomBtn_2.default, null)));
+                React.createElement(bottomBtn_3.default, null)));
         }
     }
     exports.default = InfoArea;
 });
-define("message", ["require", "exports", "react", "bottomBtn"], function (require, exports, React, bottomBtn_3) {
+define("message", ["require", "exports", "react", "bottomBtn"], function (require, exports, React, bottomBtn_4) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Message extends React.Component {
@@ -179,36 +322,17 @@ define("message", ["require", "exports", "react", "bottomBtn"], function (requir
             this.state = {};
         }
         componentDidMount() {
-            bottomBtn_3.default.toggleIcon(3);
+            bottomBtn_4.default.toggleIcon(3);
         }
         render() {
             return (React.createElement("div", null,
                 React.createElement("div", { className: "messageBox" }, "message"),
-                React.createElement(bottomBtn_3.default, null)));
+                React.createElement(bottomBtn_4.default, null)));
         }
     }
     exports.default = Message;
 });
-define("aboutMe", ["require", "exports", "react", "bottomBtn", "css!./styles/view.css"], function (require, exports, React, bottomBtn_4) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class AboutMe extends React.Component {
-        constructor(props) {
-            super(props);
-            this.state = {};
-        }
-        componentDidMount() {
-            bottomBtn_4.default.toggleIcon(4);
-        }
-        render() {
-            return (React.createElement("div", null,
-                React.createElement("div", { className: "aboutMebox" }, "AboutMeAboutMe\u6D59\u6C5F\u6C38\u62D3\u4FE1\u606F\u79D1\u6280\u6709\u9650\u516C\u53F8"),
-                React.createElement(bottomBtn_4.default, null)));
-        }
-    }
-    exports.default = AboutMe;
-});
-define("Index", ["require", "exports", "react", "react-dom", "home", "parkCompany", "photograph", "infoArea", "message", "aboutMe", "react-router-dom", "css!./styles/view.css"], function (require, exports, React, ReactDOM, home_1, parkCompany_1, photograph_1, infoArea_1, message_1, aboutMe_1, react_router_dom_1) {
+define("index", ["require", "exports", "react", "react-dom", "home", "parkCompany", "photograph", "infoArea", "message", "aboutMe", "react-router-dom", "css!./styles/view.css"], function (require, exports, React, ReactDOM, home_1, parkCompany_1, photograph_1, infoArea_1, message_1, aboutMe_1, react_router_dom_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
