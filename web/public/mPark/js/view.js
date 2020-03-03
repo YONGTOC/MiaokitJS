@@ -53,19 +53,19 @@ define("bottomBtn", ["require", "exports", "react", "react-router-dom", "css!./s
                 React.createElement(RouterDOM.Link, { to: "/" },
                     React.createElement("div", { className: this.state.iconBottom1 },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "3D\u6C99\u76D8"))),
+                        React.createElement("p", null, "3D\u0273\uFFFD\uFFFD"))),
                 React.createElement(RouterDOM.Link, { to: "/infoArea" },
                     React.createElement("div", { className: this.state.iconBottom2 },
                         React.createElement("span", { className: "iconfont iconActice", style: { "fontSize": "5rem" } }, " \uE7FA "),
-                        React.createElement("p", null, "\u5FAE\u5708"))),
+                        React.createElement("p", null, "\u03A2\u0226"))),
                 React.createElement(RouterDOM.Link, { to: "/message" },
                     React.createElement("div", { className: this.state.iconBottom3 },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u8D44\u8BAF"))),
+                        React.createElement("p", null, "\uFFFD\uFFFD\u0476"))),
                 React.createElement(RouterDOM.Link, { to: "/aboutMe" },
                     React.createElement("div", { className: this.state.iconBottom4 },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u6211\u7684")))));
+                        React.createElement("p", null, "\uFFFD\u04B5\uFFFD")))));
         }
         ;
     }
@@ -84,7 +84,7 @@ define("aboutMe", ["require", "exports", "react", "bottomBtn", "css!./styles/vie
         }
         render() {
             return (React.createElement("div", null,
-                React.createElement("div", { className: "aboutMebox" }, "AboutMeAboutMe\uFFFD\u3F6D\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u03E2\uFFFD\u01BC\uFFFD\uFFFD\uFFFD\uFFFD\u07B9\uFFFD\u02FE"),
+                React.createElement("div", { className: "aboutMebox" }, "AboutMeAboutMe\u6D59\u6C5F\u6C38\u62D3\u4FE1\u606F\u79D1\u6280\u6709\u9650\u516C\u53F8"),
                 React.createElement(bottomBtn_1.default, null)));
         }
     }
@@ -103,7 +103,7 @@ define("compat", ["require", "exports"], function (require, exports) {
     }
     exports.default = GlobalAction;
 });
-define("home", ["require", "exports", "react", "bottomBtn", "compat", "css!./styles/view.css"], function (require, exports, React, bottomBtn_2, compat_1) {
+define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", "compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, bottomBtn_2, compat_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Home extends React.Component {
@@ -117,6 +117,7 @@ define("home", ["require", "exports", "react", "bottomBtn", "compat", "css!./sty
         render() {
             return (React.createElement("div", null,
                 React.createElement(TopBtn, null),
+                React.createElement(FoldBtn, null),
                 React.createElement(bottomBtn_2.default, null)));
         }
     }
@@ -188,14 +189,26 @@ define("home", ["require", "exports", "react", "bottomBtn", "compat", "css!./sty
                 }
             }
             else if (a == "商圈") {
-                this.setState({
-                    topIcon1: "iconBox",
-                    topIcon2: "iconBoxIn",
-                    topIcon3: "iconBox",
-                    topIcon4: "iconBox",
-                    topIcon5: "iconBox",
-                    topIcon: "iconBox",
-                });
+                if (this.state.topClose == "topClose") {
+                    this.setState({
+                        topIcon1: "iconBox-big",
+                        topIcon2: "iconBox-bigIn",
+                        topIcon3: "iconBox-big",
+                        topIcon4: "iconBox-big",
+                        topIcon5: "iconBox-big",
+                        topIcon: "iconBox-big",
+                    });
+                }
+                else {
+                    this.setState({
+                        topIcon1: "iconBox",
+                        topIcon2: "iconBoxIn",
+                        topIcon3: "iconBox",
+                        topIcon4: "iconBox",
+                        topIcon5: "iconBox",
+                        topIcon: "iconBox",
+                    });
+                }
             }
             else if (a == "公交车") {
                 this.setState({
@@ -251,19 +264,66 @@ define("home", ["require", "exports", "react", "bottomBtn", "compat", "css!./sty
                         React.createElement("p", null, "\u505C\u8F66\u573A")),
                     React.createElement("div", { className: this.state.topClose, onClick: this.topClose.bind(this, 10) },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "3rem" } }, "\uE7FA"))),
-                React.createElement("div", { className: "playIconbox" },
-                    React.createElement("div", { className: this.state.playIcon },
-                        React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u8BB2\u89E3")))));
+                React.createElement(RouterDOM.Link, { to: "/narrate" },
+                    React.createElement("div", { className: "playIconbox" },
+                        React.createElement("div", { className: this.state.playIcon },
+                            React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                            React.createElement("p", null, "\u8BB2\u89E3"))))));
         }
     }
     class FoldBtn extends React.Component {
         constructor(props) {
             super(props);
-            this.state = {};
+            this.state = {
+                foleIcon: "foleIcon",
+                foldView: "foldView-part"
+            };
+        }
+        toggleFold() {
+            if (this.state.foldView == "foldView") {
+                this.setState({
+                    foldView: " foldView-part"
+                });
+            }
+            else {
+                this.setState({
+                    foldView: "foldView"
+                });
+            }
         }
         render() {
-            return (React.createElement("div", null, "foldBtn"));
+            return (React.createElement("div", { className: this.state.foldView },
+                React.createElement("div", { className: "foleBtn", onClick: this.toggleFold.bind(this) },
+                    React.createElement("span", { style: { "fontSize": "5rem" } }, "--")),
+                React.createElement("div", { className: "foleIconbox" },
+                    React.createElement(RouterDOM.Link, { to: "/parkCompany" },
+                        React.createElement("div", { className: this.state.foleIcon },
+                            React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                            React.createElement("p", null, "\u56ED\u533A\u4F01\u4E1A"))),
+                    React.createElement(RouterDOM.Link, { to: "/photograph" },
+                        React.createElement("div", { className: this.state.foleIcon },
+                            React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                            React.createElement("p", null, "\u968F\u624B\u62CD"))),
+                    React.createElement(RouterDOM.Link, { to: "/findLease" },
+                        React.createElement("div", { className: this.state.foleIcon },
+                            React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                            React.createElement("p", null, "\u62DB\u79DF\u67E5\u8BE2"))),
+                    React.createElement(RouterDOM.Link, { to: "/applyPut" },
+                        React.createElement("div", { className: this.state.foleIcon },
+                            React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                            React.createElement("p", null, "\u6446\u70B9\u7533\u8BF7"))),
+                    React.createElement(RouterDOM.Link, { to: "/bookSite" },
+                        React.createElement("div", { className: this.state.foleIcon },
+                            React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                            React.createElement("p", null, "\u573A\u5730\u9884\u5B9A"))),
+                    React.createElement(RouterDOM.Link, { to: "/repairsOnline" },
+                        React.createElement("div", { className: this.state.foleIcon },
+                            React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                            React.createElement("p", null, "\u5728\u7EBF\u62A5\u4FEE"))),
+                    React.createElement(RouterDOM.Link, { to: "/parking" },
+                        React.createElement("div", { className: this.state.foleIcon },
+                            React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                            React.createElement("p", null, "\u505C\u8F66\u4E1A\u52A1"))))));
         }
     }
     exports.default = Home;
@@ -276,7 +336,8 @@ define("parkCompany", ["require", "exports", "react"], function (require, export
             super(props);
         }
         render() {
-            return (React.createElement("div", null, "ParkCompany"));
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "ParkCompany")));
         }
     }
     exports.default = ParkCompany;
@@ -289,10 +350,84 @@ define("photograph", ["require", "exports", "react"], function (require, exports
             super(props);
         }
         render() {
-            return (React.createElement("div", null, "Photograph"));
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "Photograph")));
         }
     }
     exports.default = Photograph;
+});
+define("findLease", ["require", "exports", "react", "css!./styles/view.css"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class FindLease extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {};
+        }
+        componentDidMount() {
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "FindLeaseFindLeaseFindLease")));
+        }
+    }
+    exports.default = FindLease;
+});
+define("applyPut", ["require", "exports", "react"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class ApplyPut extends React.Component {
+        constructor(props) {
+            super(props);
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "ApplyPut")));
+        }
+    }
+    exports.default = ApplyPut;
+});
+define("bookSite", ["require", "exports", "react"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class BookSite extends React.Component {
+        constructor(props) {
+            super(props);
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "BookSite")));
+        }
+    }
+    exports.default = BookSite;
+});
+define("repairsOnline", ["require", "exports", "react"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class RepairsOnline extends React.Component {
+        constructor(props) {
+            super(props);
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "RepairsOnline")));
+        }
+    }
+    exports.default = RepairsOnline;
+});
+define("parking", ["require", "exports", "react"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class Parking extends React.Component {
+        constructor(props) {
+            super(props);
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "Parking")));
+        }
+    }
+    exports.default = Parking;
 });
 define("infoArea", ["require", "exports", "react", "bottomBtn"], function (require, exports, React, bottomBtn_3) {
     "use strict";
@@ -332,7 +467,30 @@ define("message", ["require", "exports", "react", "bottomBtn"], function (requir
     }
     exports.default = Message;
 });
-define("index", ["require", "exports", "react", "react-dom", "home", "parkCompany", "photograph", "infoArea", "message", "aboutMe", "react-router-dom", "css!./styles/view.css"], function (require, exports, React, ReactDOM, home_1, parkCompany_1, photograph_1, infoArea_1, message_1, aboutMe_1, react_router_dom_1) {
+define("narrate", ["require", "exports", "react", "react-router-dom", "css!./styles/view.css"], function (require, exports, React, RouterDOM) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class Narrate extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {};
+        }
+        componentDidMount() {
+        }
+        retunHome() {
+            console.log("retunHome");
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "vrBox" },
+                    "narrate",
+                    React.createElement(RouterDOM.Link, { to: "/" },
+                        React.createElement("span", { onClick: this.retunHome.bind(this) }, "\u8FD4\u56DE")))));
+        }
+    }
+    exports.default = Narrate;
+});
+define("index", ["require", "exports", "react", "react-dom", "home", "parkCompany", "photograph", "findLease", "applyPut", "bookSite", "repairsOnline", "parking", "infoArea", "message", "aboutMe", "narrate", "react-router-dom", "css!./styles/view.css"], function (require, exports, React, ReactDOM, home_1, parkCompany_1, photograph_1, findLease_1, applyPut_1, bookSite_1, repairsOnline_1, parking_1, infoArea_1, message_1, aboutMe_1, narrate_1, react_router_dom_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
@@ -350,10 +508,16 @@ define("index", ["require", "exports", "react", "react-dom", "home", "parkCompan
     exports.default = Index;
     ReactDOM.render(React.createElement(react_router_dom_1.HashRouter, null,
         React.createElement(react_router_dom_1.Switch, null,
+            React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: Index }),
             React.createElement(react_router_dom_1.Route, { exact: true, path: "/parkCompany", component: parkCompany_1.default }),
             React.createElement(react_router_dom_1.Route, { exact: true, path: "/photograph", component: photograph_1.default }),
-            React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: Index }),
+            React.createElement(react_router_dom_1.Route, { exact: true, path: "/findLease", component: findLease_1.default }),
+            React.createElement(react_router_dom_1.Route, { exact: true, path: "/applyPut", component: applyPut_1.default }),
+            React.createElement(react_router_dom_1.Route, { exact: true, path: "/bookSite", component: bookSite_1.default }),
+            React.createElement(react_router_dom_1.Route, { exact: true, path: "/repairsOnline", component: repairsOnline_1.default }),
+            React.createElement(react_router_dom_1.Route, { exact: true, path: "/parking", component: parking_1.default }),
             React.createElement(react_router_dom_1.Route, { exact: true, path: "/infoArea", component: infoArea_1.default }),
             React.createElement(react_router_dom_1.Route, { exact: true, path: "/message", component: message_1.default }),
-            React.createElement(react_router_dom_1.Route, { exact: true, path: "/aboutMe", component: aboutMe_1.default }))), document.getElementById('viewContainer'));
+            React.createElement(react_router_dom_1.Route, { exact: true, path: "/aboutMe", component: aboutMe_1.default }),
+            React.createElement(react_router_dom_1.Route, { exact: true, path: "/narrate", component: narrate_1.default }))), document.getElementById('viewContainer'));
 });
