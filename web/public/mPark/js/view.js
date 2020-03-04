@@ -53,19 +53,19 @@ define("bottomBtn", ["require", "exports", "react", "react-router-dom", "css!./s
                 React.createElement(RouterDOM.Link, { to: "/" },
                     React.createElement("div", { className: this.state.iconBottom1 },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "3D\u0273\uFFFD\uFFFD"))),
+                        React.createElement("p", null, "3D\u6C99\u76D8"))),
                 React.createElement(RouterDOM.Link, { to: "/infoArea" },
                     React.createElement("div", { className: this.state.iconBottom2 },
                         React.createElement("span", { className: "iconfont iconActice", style: { "fontSize": "5rem" } }, " \uE7FA "),
-                        React.createElement("p", null, "\u03A2\u0226"))),
+                        React.createElement("p", null, "\u5FAE\u5708"))),
                 React.createElement(RouterDOM.Link, { to: "/message" },
                     React.createElement("div", { className: this.state.iconBottom3 },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\uFFFD\uFFFD\u0476"))),
+                        React.createElement("p", null, "\u8D44\u8BAF"))),
                 React.createElement(RouterDOM.Link, { to: "/aboutMe" },
                     React.createElement("div", { className: this.state.iconBottom4 },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\uFFFD\u04B5\uFFFD")))));
+                        React.createElement("p", null, "\u6211\u7684")))));
         }
         ;
     }
@@ -84,11 +84,39 @@ define("aboutMe", ["require", "exports", "react", "bottomBtn", "css!./styles/vie
         }
         render() {
             return (React.createElement("div", null,
-                React.createElement("div", { className: "aboutMebox" }, "AboutMeAboutMe\u6D59\u6C5F\u6C38\u62D3\u4FE1\u606F\u79D1\u6280\u6709\u9650\u516C\u53F8"),
+                React.createElement("div", { className: "aboutMebox" }, "AboutMeAboutMe\uFFFD\u3F6D\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u03E2\uFFFD\u01BC\uFFFD\uFFFD\uFFFD\uFFFD\u07B9\uFFFD\u02FE"),
                 React.createElement(bottomBtn_1.default, null)));
         }
     }
     exports.default = AboutMe;
+});
+define("applyPut", ["require", "exports", "react"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class ApplyPut extends React.Component {
+        constructor(props) {
+            super(props);
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "ApplyPut")));
+        }
+    }
+    exports.default = ApplyPut;
+});
+define("bookSite", ["require", "exports", "react"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class BookSite extends React.Component {
+        constructor(props) {
+            super(props);
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "BookSite")));
+        }
+    }
+    exports.default = BookSite;
 });
 define("compat", ["require", "exports"], function (require, exports) {
     "use strict";
@@ -97,11 +125,28 @@ define("compat", ["require", "exports"], function (require, exports) {
         switchRoom(pName) {
             console.log("SwitchLayer", pName);
         }
-        switchMark(pName) {
-            console.log("switchMark", pName);
+        switchMark(pName, pInfo) {
+            console.log("switchMark", pName, pInfo);
         }
     }
     exports.default = GlobalAction;
+});
+define("findLease", ["require", "exports", "react", "css!./styles/view.css"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class FindLease extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {};
+        }
+        componentDidMount() {
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "FindLeaseFindLeaseFindLease")));
+        }
+    }
+    exports.default = FindLease;
 });
 define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", "compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, bottomBtn_2, compat_1) {
     "use strict";
@@ -135,6 +180,18 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                 playIcon: "iconBox",
                 moreIcon: "iconBox",
                 topClose: "hide",
+                topViewBack: "",
+                topIcon3info: 0,
+                topIcon4info: 0,
+                topIcon5info: 0,
+                mapIcon: [
+                    { name: "交通" },
+                    { name: "商圈" },
+                    { name: "公交站" },
+                    { name: "全景" },
+                    { name: "停车场" },
+                    { name: "交通" },
+                ]
             };
             this.globalAction = new compat_1.default();
         }
@@ -142,107 +199,195 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
             console.log('toggleIconbox', a);
             this.setState({
                 topView: "topView-big",
+                moreIcon: "hide",
+                topClose: "topClose",
                 topIcon1: "iconBox-big",
                 topIcon2: "iconBox-big",
                 topIcon3: "iconBox-big",
                 topIcon4: "iconBox-big",
                 topIcon5: "iconBox-big",
-                moreIcon: "hide",
-                topClose: "topClose",
+                topViewBack: "topViewBack",
             });
+            if (this.state.topIcon1 == "iconBoxIn" && this.state.topIcon2 == "iconBoxIn") {
+                this.setState({
+                    topIcon1: "iconBox-bigIn",
+                    topIcon2: "iconBox-bigIn",
+                });
+            }
+            else if (this.state.topIcon1 == "iconBoxIn") {
+                console.log(this.state.topIcon1);
+                this.setState({
+                    topIcon1: "iconBox-bigIn",
+                });
+            }
+            else if (this.state.topIcon2 == "iconBoxIn") {
+                console.log(this.state.topIcon1);
+                this.setState({
+                    topIcon2: "iconBox-bigIn",
+                });
+            }
+            ;
+            if (this.state.topIcon3info == 1) {
+                this.setState({
+                    topIcon3: "iconBox-bigIn",
+                });
+            }
+            if (this.state.topIcon4info == 1) {
+                this.setState({
+                    topIcon4: "iconBox-bigIn",
+                });
+            }
+            if (this.state.topIcon5info == 1) {
+                this.setState({
+                    topIcon5: "iconBox-bigIn",
+                });
+            }
         }
         topClose(a) {
             console.log('topClose', a);
             this.setState({
                 topView: "topView",
-                topIcon1: "iconBox",
-                topIcon2: "iconBox",
-                topIcon3: "iconBox",
-                topIcon4: "iconBox",
-                topIcon5: "iconBox",
                 moreIcon: "iconBox",
                 topClose: "hide",
+                topViewBack: " ",
             });
+            if (this.state.topIcon1 == "iconBox-bigIn" && this.state.topIcon2 == "iconBox-bigIn") {
+                this.setState({
+                    topIcon1: "iconBoxIn",
+                    topIcon2: "iconBoxIn",
+                });
+            }
+            else if (this.state.topIcon1 == "iconBox-bigIn") {
+                this.setState({
+                    topIcon1: "iconBoxIn",
+                    topIcon2: "iconBox",
+                });
+            }
+            else if (this.state.topIcon1 == "iconBox-bigIn") {
+                this.setState({
+                    topIcon1: "iconBox",
+                    topIcon2: "iconBoxIn",
+                });
+            }
+            else {
+                this.setState({
+                    topIcon1: "iconBox",
+                    topIcon2: "iconBox",
+                    topIcon3: "iconBox",
+                    topIcon4: "iconBox",
+                    topIcon5: "iconBox",
+                });
+            }
         }
-        switchMark(a) {
-            this.globalAction.switchMark(a);
+        switchMark(a, bInfo) {
+            console.log('switchMark', a);
             if (a == "交通") {
-                if (this.state.topClose == "topClose") {
-                    this.setState({
-                        topIcon1: "iconBox-bigIn",
-                        topIcon2: "iconBox-big",
-                        topIcon3: "iconBox-big",
-                        topIcon4: "iconBox-big",
-                        topIcon5: "iconBox-big",
-                        topIcon: "iconBox-big",
-                    });
+                if (this.state.topIcon1 == "iconBoxIn" || this.state.topIcon1 == "iconBox-bigIn") {
+                    if (this.state.topView == "topView-big") {
+                        this.setState({
+                            topIcon1: "iconBox-big",
+                        });
+                    }
+                    else {
+                        this.setState({
+                            topIcon1: "iconBox",
+                        });
+                    }
+                    this.globalAction.switchMark(a, 0);
                 }
                 else {
-                    this.setState({
-                        topIcon1: "iconBoxIn",
-                        topIcon2: "iconBox",
-                        topIcon3: "iconBox",
-                        topIcon4: "iconBox",
-                        topIcon5: "iconBox",
-                        topIcon: "iconBox",
-                    });
+                    if (this.state.topView == "topView-big") {
+                        this.setState({
+                            topIcon1: "iconBox-bigIn",
+                        });
+                    }
+                    else {
+                        this.setState({
+                            topIcon1: "iconBoxIn",
+                        });
+                    }
+                    this.globalAction.switchMark(a, 1);
                 }
             }
             else if (a == "商圈") {
-                if (this.state.topClose == "topClose") {
-                    this.setState({
-                        topIcon1: "iconBox-big",
-                        topIcon2: "iconBox-bigIn",
-                        topIcon3: "iconBox-big",
-                        topIcon4: "iconBox-big",
-                        topIcon5: "iconBox-big",
-                        topIcon: "iconBox-big",
-                    });
+                if (this.state.topIcon2 == "iconBoxIn" || this.state.topIcon2 == "iconBox-bigIn") {
+                    if (this.state.topView == "topView-big") {
+                        this.setState({
+                            topIcon2: "iconBox-big",
+                        });
+                    }
+                    else {
+                        this.setState({
+                            topIcon2: "iconBox",
+                        });
+                    }
+                    this.globalAction.switchMark(a, 0);
                 }
                 else {
-                    this.setState({
-                        topIcon1: "iconBox",
-                        topIcon2: "iconBoxIn",
-                        topIcon3: "iconBox",
-                        topIcon4: "iconBox",
-                        topIcon5: "iconBox",
-                        topIcon: "iconBox",
-                    });
+                    if (this.state.topView == "topView-big") {
+                        this.setState({
+                            topIcon2: "iconBox-bigIn",
+                        });
+                    }
+                    else {
+                        this.setState({
+                            topIcon2: "iconBoxIn",
+                        });
+                    }
+                    this.globalAction.switchMark(a, 1);
                 }
             }
             else if (a == "公交车") {
-                this.setState({
-                    topIcon1: "iconBox-big",
-                    topIcon2: "iconBox-big",
-                    topIcon3: "iconBox-bigIn",
-                    topIcon4: "iconBox-big",
-                    topIcon5: "iconBox-big",
-                    topIcon: "iconBox",
-                });
+                if (this.state.topIcon3 == "iconBox-big") {
+                    this.setState({
+                        topIcon3: "iconBox-bigIn",
+                        topIcon3info: 1,
+                    });
+                    this.globalAction.switchMark(a, 1);
+                }
+                else {
+                    this.setState({
+                        topIcon3: "iconBox-big",
+                        topIcon3info: 0,
+                    });
+                    this.globalAction.switchMark(a, 0);
+                }
             }
             else if (a == "全景") {
-                this.setState({
-                    topIcon1: "iconBox-big",
-                    topIcon2: "iconBox-big",
-                    topIcon3: "iconBox-big",
-                    topIcon4: "iconBox-bigIn",
-                    topIcon5: "iconBox-big",
-                    topIcon: "iconBox",
-                });
+                if (this.state.topIcon4 == "iconBox-big") {
+                    this.setState({
+                        topIcon4: "iconBox-bigIn",
+                        topIcon4info: 1,
+                    });
+                    this.globalAction.switchMark(a, 1);
+                }
+                else {
+                    this.setState({
+                        topIcon4: "iconBox-big",
+                        topIcon4info: 0,
+                    });
+                    this.globalAction.switchMark(a, 0);
+                }
             }
             else if (a == "停车场") {
-                this.setState({
-                    topIcon1: "iconBox-big",
-                    topIcon2: "iconBox-big",
-                    topIcon3: "iconBox-big",
-                    topIcon4: "iconBox-big",
-                    topIcon5: "iconBox-bigIn",
-                    topIcon: "iconBox",
-                });
+                if (this.state.topIcon5 == "iconBox-big") {
+                    this.setState({
+                        topIcon5: "iconBox-bigIn",
+                        topIcon5info: 1,
+                    });
+                    this.globalAction.switchMark(a, 1);
+                }
+                else {
+                    this.setState({
+                        topIcon5: "iconBox-big",
+                        topIcon5info: 0,
+                    });
+                    this.globalAction.switchMark(a, 0);
+                }
             }
         }
         render() {
-            return (React.createElement("div", null,
+            return (React.createElement("div", { className: this.state.topViewBack },
                 React.createElement("div", { className: this.state.topView },
                     React.createElement("div", { className: this.state.topIcon1, onClick: this.switchMark.bind(this, "交通") },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
@@ -356,51 +501,6 @@ define("photograph", ["require", "exports", "react"], function (require, exports
     }
     exports.default = Photograph;
 });
-define("findLease", ["require", "exports", "react", "css!./styles/view.css"], function (require, exports, React) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class FindLease extends React.Component {
-        constructor(props) {
-            super(props);
-            this.state = {};
-        }
-        componentDidMount() {
-        }
-        render() {
-            return (React.createElement("div", null,
-                React.createElement("div", { className: "aboutMebox" }, "FindLeaseFindLeaseFindLease")));
-        }
-    }
-    exports.default = FindLease;
-});
-define("applyPut", ["require", "exports", "react"], function (require, exports, React) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class ApplyPut extends React.Component {
-        constructor(props) {
-            super(props);
-        }
-        render() {
-            return (React.createElement("div", null,
-                React.createElement("div", { className: "aboutMebox" }, "ApplyPut")));
-        }
-    }
-    exports.default = ApplyPut;
-});
-define("bookSite", ["require", "exports", "react"], function (require, exports, React) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class BookSite extends React.Component {
-        constructor(props) {
-            super(props);
-        }
-        render() {
-            return (React.createElement("div", null,
-                React.createElement("div", { className: "aboutMebox" }, "BookSite")));
-        }
-    }
-    exports.default = BookSite;
-});
 define("repairsOnline", ["require", "exports", "react"], function (require, exports, React) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -473,19 +573,58 @@ define("narrate", ["require", "exports", "react", "react-router-dom", "css!./sty
     class Narrate extends React.Component {
         constructor(props) {
             super(props);
-            this.state = {};
+            this.state = {
+                activeType: 0,
+                parkAudio: [
+                    { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+                    { name: "园区配套", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
+                    { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+                    { name: "园区建筑", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
+                ]
+            };
         }
         componentDidMount() {
+            let audio = document.getElementById("audioTool");
+            audio.onended = function () {
+                console.log("音频播放完成");
+            };
         }
-        retunHome() {
-            console.log("retunHome");
+        audioClick(index, name, url) {
+            console.log("handleSiblingsClick", index, name, url);
+            this.setState({
+                activeType: index
+            });
+            console.log("activeType", this.state.activeType);
+            let audio = document.getElementById("audioTool");
+            audio.src = url;
+            audio.play();
+        }
+        togglePlay(a) {
+            var audio = document.getElementById('audioTool');
+            if (audio !== null) {
+                console.log(audio.paused);
+                if (audio.paused) {
+                    audio.play();
+                }
+                else {
+                    audio.pause();
+                }
+            }
         }
         render() {
             return (React.createElement("div", null,
-                React.createElement("div", { className: "vrBox" },
-                    "narrate",
-                    React.createElement(RouterDOM.Link, { to: "/" },
-                        React.createElement("span", { onClick: this.retunHome.bind(this) }, "\u8FD4\u56DE")))));
+                React.createElement("audio", { controls: true, id: "audioTool" },
+                    React.createElement("source", { src: "" })),
+                React.createElement(RouterDOM.Link, { to: "/" },
+                    React.createElement("div", { className: "narrareClose" },
+                        React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem", "color": "#fff" } }, "\uE7FA"))),
+                React.createElement("div", { className: "narrareTitle" }, "\u81EA\u52A8\u8BB2\u89E3"),
+                React.createElement("div", { className: "audioBox" },
+                    React.createElement("ul", { className: "flex-layout category-head" }, this.state.parkAudio.map((i, index) => {
+                        return (React.createElement("li", { className: this.state.activeType == index ? "flex-active" : "flex", onClick: this.audioClick.bind(this, index, i.name, i.url), "data-index": index }, i.name));
+                    })),
+                    React.createElement("div", { className: "playBtn", onClick: this.togglePlay.bind(this) },
+                        React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem", "color": "#fff" } }, "\uE7FA")))));
         }
     }
     exports.default = Narrate;

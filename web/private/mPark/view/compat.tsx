@@ -6,9 +6,9 @@ class GlobalAction {
     console.log("SwitchLayer", pName);
   }
 
-  //切换标识
-  public switchMark(pName) {
-    console.log("switchMark", pName);
+  //切换标识； 0--隐藏标识； 1--显示标识
+  public switchMark(pName, pInfo) {
+    console.log("switchMark", pName, pInfo);
   }
 
   //  over

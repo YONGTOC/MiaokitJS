@@ -127,7 +127,14 @@ p {
     border-radius: 8px;
     overflow: hidden;
 }
-
+.topViewBack {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index:101;
+   background: rgba(0,0,0,0.5);
+    
+}
 .iconBox {
     width: 6rem;
     height: 9rem;
@@ -331,14 +338,82 @@ p {
     background: #fff;
     font-size: 3rem;
 }
-/*vrBox -- ½²½â*/
-.vrBox {
+/*narrateBox -- ½²½â*/
+.audioBox {
     position: fixed;
     width: 100%;
-    height: 12.8rem;
+    height: 10rem;
     z-index: 100;
     bottom: 0;
     right: 0;
-    background: #fff;
-    font-size: 3rem;
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+}
+.narrareClose {
+    position: fixed;
+    width: 6rem;
+    height: 6rem;
+    top: 3rem;
+    left: 3rem;
+    z-index: 100;
+}
+.narrareTitle {
+    color: #fff;
+    font-size: 2.5rem;
+    position: fixed;
+    width: 100%;
+    top: 3rem;
+    z-index: 100;
+    text-align: center;
+}
+
+/**`````````````````*/
+.category-head {
+    width: 50rem;
+    white-space: nowrap;
+    overflow-x: scroll;
+    float: left;
+    overflow-y: hidden;
+    margin: 1.5rem 1rem;
+}
+
+.flex {
+        display: inline-block;
+        width: 16rem;
+        height: 7rem;
+        background: rgba(0,0,0,0.6);
+        border-radius: 4px;
+        margin-right: 1rem;
+        font-size: 2rem;
+        text-align: center;
+        padding-top: 1rem;
+    }
+.flex-active {
+    display: inline-block;
+    width: 16rem;
+    height: 7rem;
+    background: #0B8BF0;
+    border-radius: 4px;
+    margin-right: 1rem;
+    font-size: 2rem;
+    text-align: center;
+    padding-top: 1rem;
+}
+
+.playBtn {
+    white-space: nowrap;
+    overflow-x: scroll;
+    margin: 1.5rem 0rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+#audioTool {
+    color: #fff;
+    font-size: 2.5rem;
+    position: fixed;
+    width: 100%;
+    bottom: 10rem;
+    z-index: 100;
+    text-align: center;
 }
