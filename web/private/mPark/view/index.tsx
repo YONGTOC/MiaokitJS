@@ -13,7 +13,7 @@ import RepairsOnline from "repairsOnline";
 import Parking from "parking";
 import Narrate from "narrate";
 import "css!./styles/index.css"
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch, Link } from 'react-router-dom';
 
 interface IProps {
 }
@@ -91,7 +91,7 @@ class Index extends React.Component {
         </div>
         <div className="index-park">
           {this.state.parkArr.map((item, index) => {
-            return <div className="index-child-park" key={index}>
+            return <Link to="/home"><div className="index-child-park" key={index}>
               <div className="index-child-park-left"><img src="./mpark/image/a.jpg" className="park-img" /></div>
               <div className="index-child-park-right">
                 <div className="index-park-name">桂林国家高新区信息产业园</div>
@@ -108,7 +108,7 @@ class Index extends React.Component {
               <div className="index-child-park-end">
                 <div className="index-distance">10.5km</div>
               </div>
-            </div>
+            </div></Link>
             })
           }
         </div>
@@ -127,9 +127,9 @@ ReactDOM.render(
   <HashRouter>
     <Switch>
       <Route exact path="/" component={Index} />
+      <Route exact path="/home" component={Home} />
       <Route exact path="/parkCompany" component={ParkCompany} />
       <Route exact path="/photograph" component={Photograph} />
-      <Route exact path="/" component={Index} />
       <Route exact path="/findLease" component={FindLease} />
       <Route exact path="/applyPut" component={ApplyPut} />
       <Route exact path="/bookSite" component={BookSite} />
