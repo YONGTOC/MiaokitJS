@@ -7,3 +7,4 @@ web/.vscode/settings.json
 .vs/VSWorkspaceState.json
 .vs/mobile-park/config/applicationhost.config
 .vs/mobile-park/v16/.suo
+web/public/mPark/js/view.js

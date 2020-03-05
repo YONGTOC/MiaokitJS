@@ -90,34 +90,6 @@ define("aboutMe", ["require", "exports", "react", "bottomBtn", "css!./styles/vie
     }
     exports.default = AboutMe;
 });
-define("applyPut", ["require", "exports", "react"], function (require, exports, React) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class ApplyPut extends React.Component {
-        constructor(props) {
-            super(props);
-        }
-        render() {
-            return (React.createElement("div", null,
-                React.createElement("div", { className: "aboutMebox" }, "ApplyPut")));
-        }
-    }
-    exports.default = ApplyPut;
-});
-define("bookSite", ["require", "exports", "react"], function (require, exports, React) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class BookSite extends React.Component {
-        constructor(props) {
-            super(props);
-        }
-        render() {
-            return (React.createElement("div", null,
-                React.createElement("div", { className: "aboutMebox" }, "BookSite")));
-        }
-    }
-    exports.default = BookSite;
-});
 define("compat", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -130,23 +102,6 @@ define("compat", ["require", "exports"], function (require, exports) {
         }
     }
     exports.default = GlobalAction;
-});
-define("findLease", ["require", "exports", "react", "css!./styles/view.css"], function (require, exports, React) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class FindLease extends React.Component {
-        constructor(props) {
-            super(props);
-            this.state = {};
-        }
-        componentDidMount() {
-        }
-        render() {
-            return (React.createElement("div", null,
-                React.createElement("div", { className: "aboutMebox" }, "FindLeaseFindLeaseFindLease")));
-        }
-    }
-    exports.default = FindLease;
 });
 define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", "compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, bottomBtn_2, compat_1) {
     "use strict";
@@ -185,16 +140,17 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                 topIcon4info: 0,
                 topIcon5info: 0,
                 mapIcon: [
-                    { name: "交通" },
-                    { name: "商圈" },
-                    { name: "公交站" },
-                    { name: "全景" },
-                    { name: "停车场" },
-                    { name: "交通" },
+                    { name: "��ͨ" },
+                    { name: "��Ȧ" },
+                    { name: "����վ" },
+                    { name: "ȫ��" },
+                    { name: "ͣ����" },
+                    { name: "��ͨ" },
                 ]
             };
+            this.globalAction = new compat_1.default();
         }
-        toggleIconbox(a) {
+        moreIcon(a) {
             console.log('toggleIconbox', a);
             this.setState({
                 topView: "topView-big",
@@ -280,7 +236,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
         }
         switchMark(a, bInfo) {
             console.log('switchMark', a);
-            if (a == "交通") {
+            if (a == "��ͨ") {
                 if (this.state.topIcon1 == "iconBoxIn" || this.state.topIcon1 == "iconBox-bigIn") {
                     if (this.state.topView == "topView-big") {
                         this.setState({
@@ -308,7 +264,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                     this.globalAction.switchMark(a, 1);
                 }
             }
-            else if (a == "商圈") {
+            else if (a == "��Ȧ") {
                 if (this.state.topIcon2 == "iconBoxIn" || this.state.topIcon2 == "iconBox-bigIn") {
                     if (this.state.topView == "topView-big") {
                         this.setState({
@@ -336,7 +292,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                     this.globalAction.switchMark(a, 1);
                 }
             }
-            else if (a == "公交车") {
+            else if (a == "������") {
                 if (this.state.topIcon3 == "iconBox-big") {
                     this.setState({
                         topIcon3: "iconBox-bigIn",
@@ -352,7 +308,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                     this.globalAction.switchMark(a, 0);
                 }
             }
-            else if (a == "全景") {
+            else if (a == "ȫ��") {
                 if (this.state.topIcon4 == "iconBox-big") {
                     this.setState({
                         topIcon4: "iconBox-bigIn",
@@ -368,7 +324,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                     this.globalAction.switchMark(a, 0);
                 }
             }
-            else if (a == "停车场") {
+            else if (a == "ͣ����") {
                 if (this.state.topIcon5 == "iconBox-big") {
                     this.setState({
                         topIcon5: "iconBox-bigIn",
@@ -388,31 +344,31 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
         render() {
             return (React.createElement("div", { className: this.state.topViewBack },
                 React.createElement("div", { className: this.state.topView },
-                    React.createElement("div", { className: this.state.topIcon1, onClick: this.switchMark.bind(this, "交通") },
+                    React.createElement("div", { className: this.state.topIcon1, onClick: this.switchMark.bind(this, "��ͨ") },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u4EA4\u901A")),
-                    React.createElement("div", { className: this.state.topIcon2, onClick: this.switchMark.bind(this, "商圈") },
+                        React.createElement("p", null, "\uFFFD\uFFFD\u0368")),
+                    React.createElement("div", { className: this.state.topIcon2, onClick: this.switchMark.bind(this, "��Ȧ") },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u5546\u5708")),
+                        React.createElement("p", null, "\uFFFD\uFFFD\u0226")),
                     React.createElement("div", { className: this.state.moreIcon, onClick: this.moreIcon.bind(this, 10) },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u66F4\u591A")),
-                    React.createElement("div", { className: this.state.topIcon3, onClick: this.switchMark.bind(this, "公交车") },
+                        React.createElement("p", null, "\uFFFD\uFFFD\uFFFD\uFFFD")),
+                    React.createElement("div", { className: this.state.topIcon3, onClick: this.switchMark.bind(this, "������") },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u516C\u4EA4\u8F66")),
-                    React.createElement("div", { className: this.state.topIcon4, onClick: this.switchMark.bind(this, "全景") },
+                        React.createElement("p", null, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD")),
+                    React.createElement("div", { className: this.state.topIcon4, onClick: this.switchMark.bind(this, "ȫ��") },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u5168\u666F")),
-                    React.createElement("div", { className: this.state.topIcon5, onClick: this.switchMark.bind(this, "停车场") },
+                        React.createElement("p", null, "\u022B\uFFFD\uFFFD")),
+                    React.createElement("div", { className: this.state.topIcon5, onClick: this.switchMark.bind(this, "ͣ����") },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u505C\u8F66\u573A")),
+                        React.createElement("p", null, "\u0363\uFFFD\uFFFD\uFFFD\uFFFD")),
                     React.createElement("div", { className: this.state.topClose, onClick: this.topClose.bind(this, 10) },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "3rem" } }, "\uE7FA"))),
                 React.createElement(RouterDOM.Link, { to: "/narrate" },
                     React.createElement("div", { className: "playIconbox" },
                         React.createElement("div", { className: this.state.playIcon },
                             React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                            React.createElement("p", null, "\u8BB2\u89E3"))))));
+                            React.createElement("p", null, "\uFFFD\uFFFD\uFFFD\uFFFD"))))));
         }
     }
     class FoldBtn extends React.Component {
@@ -443,31 +399,31 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                     React.createElement(RouterDOM.Link, { to: "/parkCompany" },
                         React.createElement("div", { className: this.state.foleIcon },
                             React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                            React.createElement("p", null, "\u56ED\u533A\u4F01\u4E1A"))),
+                            React.createElement("p", null, "\u0530\uFFFD\uFFFD\uFFFD\uFFFD\u04B5"))),
                     React.createElement(RouterDOM.Link, { to: "/photograph" },
                         React.createElement("div", { className: this.state.foleIcon },
                             React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                            React.createElement("p", null, "\u968F\u624B\u62CD"))),
+                            React.createElement("p", null, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"))),
                     React.createElement(RouterDOM.Link, { to: "/findLease" },
                         React.createElement("div", { className: this.state.foleIcon },
                             React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                            React.createElement("p", null, "\u62DB\u79DF\u67E5\u8BE2"))),
+                            React.createElement("p", null, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u046F"))),
                     React.createElement(RouterDOM.Link, { to: "/applyPut" },
                         React.createElement("div", { className: this.state.foleIcon },
                             React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                            React.createElement("p", null, "\u6446\u70B9\u7533\u8BF7"))),
+                            React.createElement("p", null, "\uFFFD\u06B5\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"))),
                     React.createElement(RouterDOM.Link, { to: "/bookSite" },
                         React.createElement("div", { className: this.state.foleIcon },
                             React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                            React.createElement("p", null, "\u573A\u5730\u9884\u5B9A"))),
+                            React.createElement("p", null, "\uFFFD\uFFFD\uFFFD\uFFFD\u0524\uFFFD\uFFFD"))),
                     React.createElement(RouterDOM.Link, { to: "/repairsOnline" },
                         React.createElement("div", { className: this.state.foleIcon },
                             React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                            React.createElement("p", null, "\u5728\u7EBF\u62A5\u4FEE"))),
+                            React.createElement("p", null, "\uFFFD\uFFFD\uFFFD\u07F1\uFFFD\uFFFD\uFFFD"))),
                     React.createElement(RouterDOM.Link, { to: "/parking" },
                         React.createElement("div", { className: this.state.foleIcon },
                             React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                            React.createElement("p", null, "\u505C\u8F66\u4E1A\u52A1"))))));
+                            React.createElement("p", null, "\u0363\uFFFD\uFFFD\u04B5\uFFFD\uFFFD"))))));
         }
     }
     exports.default = Home;
@@ -499,34 +455,6 @@ define("photograph", ["require", "exports", "react"], function (require, exports
         }
     }
     exports.default = Photograph;
-});
-define("repairsOnline", ["require", "exports", "react"], function (require, exports, React) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class RepairsOnline extends React.Component {
-        constructor(props) {
-            super(props);
-        }
-        render() {
-            return (React.createElement("div", null,
-                React.createElement("div", { className: "aboutMebox" }, "RepairsOnline")));
-        }
-    }
-    exports.default = RepairsOnline;
-});
-define("parking", ["require", "exports", "react"], function (require, exports, React) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class Parking extends React.Component {
-        constructor(props) {
-            super(props);
-        }
-        render() {
-            return (React.createElement("div", null,
-                React.createElement("div", { className: "aboutMebox" }, "Parking")));
-        }
-    }
-    exports.default = Parking;
 });
 define("infoArea", ["require", "exports", "react", "bottomBtn"], function (require, exports, React, bottomBtn_3) {
     "use strict";
@@ -566,6 +494,79 @@ define("message", ["require", "exports", "react", "bottomBtn"], function (requir
     }
     exports.default = Message;
 });
+define("findLease", ["require", "exports", "react", "css!./styles/view.css"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class FindLease extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {};
+        }
+        componentDidMount() {
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "FindLeaseFindLeaseFindLease")));
+        }
+    }
+    exports.default = FindLease;
+});
+define("applyPut", ["require", "exports", "react"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class ApplyPut extends React.Component {
+        constructor(props) {
+            super(props);
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "ApplyPut")));
+        }
+    }
+    exports.default = ApplyPut;
+});
+define("bookSite", ["require", "exports", "react"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class BookSite extends React.Component {
+        constructor(props) {
+            super(props);
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "BookSite")));
+        }
+    }
+    exports.default = BookSite;
+});
+define("repairsOnline", ["require", "exports", "react"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class RepairsOnline extends React.Component {
+        constructor(props) {
+            super(props);
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "RepairsOnline")));
+        }
+    }
+    exports.default = RepairsOnline;
+});
+define("parking", ["require", "exports", "react"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class Parking extends React.Component {
+        constructor(props) {
+            super(props);
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "Parking")));
+        }
+    }
+    exports.default = Parking;
+});
 define("narrate", ["require", "exports", "react", "react-router-dom", "css!./styles/view.css"], function (require, exports, React, RouterDOM) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -575,17 +576,17 @@ define("narrate", ["require", "exports", "react", "react-router-dom", "css!./sty
             this.state = {
                 activeType: 0,
                 parkAudio: [
-                    { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-                    { name: "园区配套", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
-                    { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-                    { name: "园区建筑", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
+                    { name: "԰����ͨ", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+                    { name: "԰������", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
+                    { name: "԰����ͨ", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+                    { name: "԰������", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
                 ]
             };
         }
         componentDidMount() {
             let audio = document.getElementById("audioTool");
             audio.onended = function () {
-                console.log("音频播放完成");
+                console.log("��Ƶ�������");
             };
         }
         audioClick(index, name, url) {
@@ -617,7 +618,7 @@ define("narrate", ["require", "exports", "react", "react-router-dom", "css!./sty
                 React.createElement(RouterDOM.Link, { to: "/" },
                     React.createElement("div", { className: "narrareClose" },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem", "color": "#fff" } }, "\uE7FA"))),
-                React.createElement("div", { className: "narrareTitle" }, "\u81EA\u52A8\u8BB2\u89E3"),
+                React.createElement("div", { className: "narrareTitle" }, "\uFFFD\u0536\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"),
                 React.createElement("div", { className: "audioBox" },
                     React.createElement("ul", { className: "flex-layout category-head" }, this.state.parkAudio.map((i, index) => {
                         return (React.createElement("li", { className: this.state.activeType == index ? "flex-active" : "flex", onClick: this.audioClick.bind(this, index, i.name, i.url), "data-index": index }, i.name));
@@ -628,7 +629,7 @@ define("narrate", ["require", "exports", "react", "react-router-dom", "css!./sty
     }
     exports.default = Narrate;
 });
-define("index", ["require", "exports", "react", "react-dom", "home", "parkCompany", "photograph", "findLease", "applyPut", "bookSite", "repairsOnline", "parking", "infoArea", "message", "aboutMe", "narrate", "react-router-dom", "css!./styles/view.css"], function (require, exports, React, ReactDOM, home_1, parkCompany_1, photograph_1, findLease_1, applyPut_1, bookSite_1, repairsOnline_1, parking_1, infoArea_1, message_1, aboutMe_1, narrate_1, react_router_dom_1) {
+define("index", ["require", "exports", "react", "react-dom", "parkCompany", "photograph", "infoArea", "message", "aboutMe", "findLease", "applyPut", "bookSite", "repairsOnline", "parking", "narrate", "react-router-dom", "css!./styles/index.css"], function (require, exports, React, ReactDOM, parkCompany_1, photograph_1, infoArea_1, message_1, aboutMe_1, findLease_1, applyPut_1, bookSite_1, repairsOnline_1, parking_1, narrate_1, react_router_dom_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
@@ -710,6 +711,7 @@ define("index", ["require", "exports", "react", "react-dom", "home", "parkCompan
             React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: Index }),
             React.createElement(react_router_dom_1.Route, { exact: true, path: "/parkCompany", component: parkCompany_1.default }),
             React.createElement(react_router_dom_1.Route, { exact: true, path: "/photograph", component: photograph_1.default }),
+            React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: Index }),
             React.createElement(react_router_dom_1.Route, { exact: true, path: "/findLease", component: findLease_1.default }),
             React.createElement(react_router_dom_1.Route, { exact: true, path: "/applyPut", component: applyPut_1.default }),
             React.createElement(react_router_dom_1.Route, { exact: true, path: "/bookSite", component: bookSite_1.default }),
