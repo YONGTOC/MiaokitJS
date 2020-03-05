@@ -10,7 +10,10 @@ class Photograph extends React.Component {
     public render() {
         return (
             <div>
-                Photograph
+                
+             <div className={"aboutMebox"}>
+              Photograph
+                </div>
             </div>
             )
     }

@@ -10,7 +10,9 @@ class ParkCompany extends React.Component {
     public render() {
         return (
             <div>
-                ParkCompany
+             <div className={"aboutMebox"}>
+             ParkCompany
+                </div>
             </div>
         )
     }

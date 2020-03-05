@@ -6,11 +6,16 @@ import Photograph from "photograph";
 import InfoArea from "infoArea";
 import Message from "message";
 import AboutMe from "aboutMe";
+import FindLease from "findLease";
+import ApplyPut from "applyPut";
+import BookSite from "bookSite";
+import RepairsOnline from "repairsOnline";
+import Parking from "parking";
+import Narrate from "narrate";
 import "css!./styles/index.css"
 import { HashRouter, Route, Switch } from 'react-router-dom';
 
 interface IProps {
-
 }
 
 interface IState {
@@ -121,12 +126,21 @@ export default Index;
 ReactDOM.render(
   <HashRouter>
     <Switch>
+      <Route exact path="/" component={Index} />
       <Route exact path="/parkCompany" component={ParkCompany} />
       <Route exact path="/photograph" component={Photograph} />
       <Route exact path="/" component={Index} />
+      <Route exact path="/findLease" component={FindLease} />
+      <Route exact path="/applyPut" component={ApplyPut} />
+      <Route exact path="/bookSite" component={BookSite} />
+      <Route exact path="/repairsOnline" component={RepairsOnline} />
+      <Route exact path="/parking" component={Parking} />
       <Route exact path="/infoArea" component={InfoArea} />
       <Route exact path="/message" component={Message} />
       <Route exact path="/aboutMe" component={AboutMe} />
+      <Route exact path="/narrate" component={Narrate} />
+
+
     </Switch>
   </HashRouter>
   , document.getElementById('viewContainer'));
