@@ -53,19 +53,19 @@ define("bottomBtn", ["require", "exports", "react", "react-router-dom", "css!./s
                 React.createElement(RouterDOM.Link, { to: "/" },
                     React.createElement("div", { className: this.state.iconBottom1 },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "3D\u6C99\u76D8"))),
+                        React.createElement("p", null, "3D\u0273\uFFFD\uFFFD"))),
                 React.createElement(RouterDOM.Link, { to: "/infoArea" },
                     React.createElement("div", { className: this.state.iconBottom2 },
                         React.createElement("span", { className: "iconfont iconActice", style: { "fontSize": "5rem" } }, " \uE7FA "),
-                        React.createElement("p", null, "\u5FAE\u5708"))),
+                        React.createElement("p", null, "\u03A2\u0226"))),
                 React.createElement(RouterDOM.Link, { to: "/message" },
                     React.createElement("div", { className: this.state.iconBottom3 },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u8D44\u8BAF"))),
+                        React.createElement("p", null, "\uFFFD\uFFFD\u0476"))),
                 React.createElement(RouterDOM.Link, { to: "/aboutMe" },
                     React.createElement("div", { className: this.state.iconBottom4 },
                         React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u6211\u7684")))));
+                        React.createElement("p", null, "\uFFFD\u04B5\uFFFD")))));
         }
         ;
     }
@@ -90,20 +90,7 @@ define("aboutMe", ["require", "exports", "react", "bottomBtn", "css!./styles/vie
     }
     exports.default = AboutMe;
 });
-define("compat", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class GlobalAction {
-        switchRoom(pName) {
-            console.log("SwitchLayer", pName);
-        }
-        switchMark(pName) {
-            console.log("switchMark", pName);
-        }
-    }
-    exports.default = GlobalAction;
-});
-define("home", ["require", "exports", "react", "bottomBtn", "compat", "css!./styles/view.css"], function (require, exports, React, bottomBtn_2, compat_1) {
+define("home", ["require", "exports", "react", "bottomBtn", "css!./styles/view.css"], function (require, exports, React, bottomBtn_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Home extends React.Component {
@@ -124,137 +111,26 @@ define("home", ["require", "exports", "react", "bottomBtn", "compat", "css!./sty
         constructor(props) {
             super(props);
             this.state = {
-                topView: "topView",
-                topIcon1: "iconBox",
-                topIcon2: "iconBox",
-                topIcon3: "iconBox",
-                topIcon4: "iconBox",
-                topIcon5: "iconBox",
-                topIcon: "iconBox",
-                playIcon: "iconBox",
-                moreIcon: "iconBox",
-                topClose: "hide",
+                topView: "topView"
             };
-            this.globalAction = new compat_1.default();
         }
-        moreIcon(a) {
+        toggleIconbox(a) {
             console.log('toggleIconbox', a);
             this.setState({
-                topView: "topView-big",
-                topIcon1: "iconBox-big",
-                topIcon2: "iconBox-big",
-                topIcon3: "iconBox-big",
-                topIcon4: "iconBox-big",
-                topIcon5: "iconBox-big",
-                moreIcon: "hide",
-                topClose: "topClose",
+                topView: "topView-big"
             });
-        }
-        topClose(a) {
-            console.log('topClose', a);
-            this.setState({
-                topView: "topView",
-                topIcon1: "iconBox",
-                topIcon2: "iconBox",
-                topIcon3: "iconBox",
-                topIcon4: "iconBox",
-                topIcon5: "iconBox",
-                moreIcon: "iconBox",
-                topClose: "hide",
-            });
-        }
-        switchMark(a) {
-            this.globalAction.switchMark(a);
-            if (a == "交通") {
-                if (this.state.topClose == "topClose") {
-                    this.setState({
-                        topIcon1: "iconBox-bigIn",
-                        topIcon2: "iconBox-big",
-                        topIcon3: "iconBox-big",
-                        topIcon4: "iconBox-big",
-                        topIcon5: "iconBox-big",
-                        topIcon: "iconBox-big",
-                    });
-                }
-                else {
-                    this.setState({
-                        topIcon1: "iconBoxIn",
-                        topIcon2: "iconBox",
-                        topIcon3: "iconBox",
-                        topIcon4: "iconBox",
-                        topIcon5: "iconBox",
-                        topIcon: "iconBox",
-                    });
-                }
-            }
-            else if (a == "商圈") {
-                this.setState({
-                    topIcon1: "iconBox",
-                    topIcon2: "iconBoxIn",
-                    topIcon3: "iconBox",
-                    topIcon4: "iconBox",
-                    topIcon5: "iconBox",
-                    topIcon: "iconBox",
-                });
-            }
-            else if (a == "公交车") {
-                this.setState({
-                    topIcon1: "iconBox-big",
-                    topIcon2: "iconBox-big",
-                    topIcon3: "iconBox-bigIn",
-                    topIcon4: "iconBox-big",
-                    topIcon5: "iconBox-big",
-                    topIcon: "iconBox",
-                });
-            }
-            else if (a == "全景") {
-                this.setState({
-                    topIcon1: "iconBox-big",
-                    topIcon2: "iconBox-big",
-                    topIcon3: "iconBox-big",
-                    topIcon4: "iconBox-bigIn",
-                    topIcon5: "iconBox-big",
-                    topIcon: "iconBox",
-                });
-            }
-            else if (a == "停车场") {
-                this.setState({
-                    topIcon1: "iconBox-big",
-                    topIcon2: "iconBox-big",
-                    topIcon3: "iconBox-big",
-                    topIcon4: "iconBox-big",
-                    topIcon5: "iconBox-bigIn",
-                    topIcon: "iconBox",
-                });
-            }
         }
         render() {
-            return (React.createElement("div", null,
-                React.createElement("div", { className: this.state.topView },
-                    React.createElement("div", { className: this.state.topIcon1, onClick: this.switchMark.bind(this, "交通") },
-                        React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u4EA4\u901A")),
-                    React.createElement("div", { className: this.state.topIcon2, onClick: this.switchMark.bind(this, "商圈") },
-                        React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u5546\u5708")),
-                    React.createElement("div", { className: this.state.moreIcon, onClick: this.moreIcon.bind(this, 10) },
-                        React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u66F4\u591A")),
-                    React.createElement("div", { className: this.state.topIcon3, onClick: this.switchMark.bind(this, "公交车") },
-                        React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u516C\u4EA4\u8F66")),
-                    React.createElement("div", { className: this.state.topIcon4, onClick: this.switchMark.bind(this, "全景") },
-                        React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u5168\u666F")),
-                    React.createElement("div", { className: this.state.topIcon5, onClick: this.switchMark.bind(this, "停车场") },
-                        React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u505C\u8F66\u573A")),
-                    React.createElement("div", { className: this.state.topClose, onClick: this.topClose.bind(this, 10) },
-                        React.createElement("span", { className: "iconfont", style: { "fontSize": "3rem" } }, "\uE7FA"))),
-                React.createElement("div", { className: "playIconbox" },
-                    React.createElement("div", { className: this.state.playIcon },
-                        React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
-                        React.createElement("p", null, "\u8BB2\u89E3")))));
+            return (React.createElement("div", { className: this.state.topView },
+                React.createElement("div", { className: "iconBox" },
+                    React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                    React.createElement("p", null, "\uFFFD\uFFFD\u02BE\uFFFD\uFFFD")),
+                React.createElement("div", { className: "iconBox" },
+                    React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                    React.createElement("p", null, "\uFFFD\uFFFD\u02BE\uFFFD\uFFFD")),
+                React.createElement("div", { className: "iconBox", onClick: this.toggleIconbox.bind(this, 10) },
+                    React.createElement("span", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE7FA"),
+                    React.createElement("p", null, "\uFFFD\uFFFD\uFFFD\uFFFD"))));
         }
     }
     class FoldBtn extends React.Component {
@@ -332,19 +208,80 @@ define("message", ["require", "exports", "react", "bottomBtn"], function (requir
     }
     exports.default = Message;
 });
-define("index", ["require", "exports", "react", "react-dom", "home", "parkCompany", "photograph", "infoArea", "message", "aboutMe", "react-router-dom", "css!./styles/view.css"], function (require, exports, React, ReactDOM, home_1, parkCompany_1, photograph_1, infoArea_1, message_1, aboutMe_1, react_router_dom_1) {
+define("index", ["require", "exports", "react", "react-dom", "parkCompany", "photograph", "infoArea", "message", "aboutMe", "react-router-dom", "css!./styles/index.css"], function (require, exports, React, ReactDOM, parkCompany_1, photograph_1, infoArea_1, message_1, aboutMe_1, react_router_dom_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
-        constructor(props) {
-            super(props);
+        constructor() {
+            super(...arguments);
+            this.state = {
+                inputValue: "请输入园区名称",
+                city: "",
+                parkArr: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                tagArr: ["电子信息", "高新技术", "电商服务"]
+            };
         }
         componentDidMount() {
+            let _this = this;
+            var geolocation = new BMap.Geolocation();
+            geolocation.getCurrentPosition(function (r) {
+                if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                    console.log(r.address.city);
+                    _this.setState({ city: r.address.city });
+                }
+                else {
+                    if (this.getStatus() === 6) {
+                        alert("没有权限");
+                    }
+                    if (this.getStatus() === 8) {
+                        alert("连接超时");
+                    }
+                }
+            });
         }
-        three() { }
+        foucus() {
+            if (this.state.inputValue === "请输入园区名称") {
+                this.setState({ inputValue: "" });
+            }
+        }
+        blur() {
+            if (this.state.inputValue === "") {
+                this.setState({ inputValue: "请输入园区名称" });
+            }
+        }
+        change(event) {
+            this.setState({ inputValue: event.target.value });
+        }
         render() {
-            return (React.createElement("div", { className: "web" },
-                React.createElement(home_1.default, null)));
+            return (React.createElement("div", { className: "index" },
+                React.createElement("div", { className: "index-top" }, "\u6570\u5B57\u56ED\u533A"),
+                React.createElement("div", { className: "index-input-div" },
+                    React.createElement("div", { className: "index-child-left" },
+                        React.createElement("input", { className: "index-input", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) }),
+                        React.createElement("img", { src: "./mpark/image/search.png", className: "index-search-img" })),
+                    React.createElement("div", { className: "index-child-right" },
+                        React.createElement("span", null, this.state.city),
+                        React.createElement("img", { src: "./mpark/image/bottom.png", width: "50px", height: "50px", style: { marginTop: "-10px" } }))),
+                React.createElement("div", { className: "index-number" },
+                    React.createElement("img", { src: "./mpark/image/tower.png", className: "tower-img" }),
+                    "\u5DF2\u6709",
+                    React.createElement("span", { style: { color: "#0B8BF0", margin: "0 15px 0 15px" } }, "15"),
+                    "\u5BB6\u56ED\u533A\u4E0A\u7EBF"),
+                React.createElement("div", { className: "index-park" }, this.state.parkArr.map((item, index) => {
+                    return React.createElement("div", { className: "index-child-park", key: index },
+                        React.createElement("div", { className: "index-child-park-left" },
+                            React.createElement("img", { src: "./mpark/image/a.jpg", className: "park-img" })),
+                        React.createElement("div", { className: "index-child-park-right" },
+                            React.createElement("div", { className: "index-park-name" }, "\u6842\u6797\u56FD\u5BB6\u9AD8\u65B0\u533A\u4FE1\u606F\u4EA7\u4E1A\u56ED"),
+                            React.createElement("div", { className: "index-park-position" },
+                                React.createElement("img", { src: "./mpark/image/position.png", width: "45px", height: "40px", style: { marginTop: "-18px" } }),
+                                React.createElement("span", { className: "index-park-position-name" }, "\u6842\u6797\u9AD8\u65B0\u533A\u671D\u9633\u8DEFD-12\u53F7")),
+                            React.createElement("div", { className: "index-tag" }, this.state.tagArr.map((item, index) => {
+                                return React.createElement("div", { key: index, className: "index-tag-child" }, item);
+                            }))),
+                        React.createElement("div", { className: "index-child-park-end" },
+                            React.createElement("div", { className: "index-distance" }, "10.5km")));
+                }))));
         }
     }
     exports.default = Index;

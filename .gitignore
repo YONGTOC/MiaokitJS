@@ -3,3 +3,7 @@ web/.vs/slnx.sqlite
 web/.vs/web/config/applicationhost.config
 web/.vs/web/v16/.suo
 web/.vscode/settings.json
+.vs/slnx.sqlite
+.vs/VSWorkspaceState.json
+.vs/mobile-park/config/applicationhost.config
+.vs/mobile-park/v16/.suo
