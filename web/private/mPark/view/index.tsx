@@ -35,22 +35,22 @@ class Index extends React.Component {
   }
 
   componentDidMount() {
-    let _this = this
-    var geolocation = new BMap.Geolocation();
-    geolocation.getCurrentPosition(function (r) {
-      if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-        console.log(r.address.city)
-        _this.setState({city: r.address.city})
-      }
-      else {
-        if (this.getStatus() === 6) {
-          alert("没有权限")
-        }
-        if (this.getStatus() === 8) {
-          alert("连接超时")
-        }
-      }
-    });
+    //let _this = this
+    //var geolocation = new BMap.Geolocation();
+    //geolocation.getCurrentPosition(function (r) {
+    //  if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+    //    console.log(r.address.city)
+    //    _this.setState({city: r.address.city})
+    //  }
+    //  else {
+    //    if (this.getStatus() === 6) {
+    //      alert("没有权限")
+    //    }
+    //    if (this.getStatus() === 8) {
+    //      alert("连接超时")
+    //    }
+    //  }
+    //});
   }
 
   // 聚焦

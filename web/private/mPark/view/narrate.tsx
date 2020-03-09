@@ -10,26 +10,45 @@ class Narrate extends React.Component {
   public constructor(props) {
     super(props);
 
+
+    Narrate.selfPlay = this.selfPlay.bind(this);
   }
 
-  
+
   public componentDidMount() {
     let audio = document.getElementById("audioTool");
+    let audioN = 0
     audio.onended = function () {
-      console.log("音频播放完成");
+      console.log("当前音频，播放结束");
+      audioN = audioN + 1;
+      Narrate.selfPlay(audioN);
+    };
+
+    this.selfPlay(0);
+  }
+
+  static selfPlay(audioN) { };
+  public selfPlay(audioN) {
+    console.log("selfPlay", audioN);
+    let audio = document.getElementById("audioTool");
+    if (audioN !== this.state.parkAudio.length) {
+      let url = this.state.parkAudio[audioN].url;
+      audio.src = url;
+      audio.play();
+    } else {
+      // 列表播放结束
+      audioN = 0;
+      console.log("audioOver", audioN);
     };
   }
 
-  public audioClick(index, name , url) {
-    console.log("handleSiblingsClick",index, name , url);
-    //自动播放相应  play();
+  public audioClick(index, name, url) {
+    console.log("handleSiblingsClick", index, name, url);
     this.setState({
       activeType: index
     })
     console.log("activeType", this.state.activeType);
-
     let audio = document.getElementById("audioTool");
-
     audio.src = url;
     audio.play();
   }
@@ -45,18 +64,18 @@ class Narrate extends React.Component {
       } else {
         audio.pause();// 这个就是暂停
       }
-    } 
+    }
   }
 
   public render() {
     return (
       <div>
-       
+
         <audio controls id={"audioTool"}  >
           <source src="" />
         </audio>
 
-        <RouterDOM.Link to="/" >
+        <RouterDOM.Link to="/home" >
           <div className={"narrareClose"}>
             <span className="iconfont" style={{ "fontSize": "5rem", "color": "#fff" }}>&#xe7fa;</span>
           </div>
@@ -67,7 +86,7 @@ class Narrate extends React.Component {
             {this.state.parkAudio.map((i, index) => {
               return (
                 <li className={this.state.activeType == index ? "flex-active" : "flex"} onClick={this.audioClick.bind(this, index, i.name, i.url)} data-index={index}>{i.name}</li>
-                )
+              )
             })}
           </ul>
           <div className={"playBtn"} onClick={this.togglePlay.bind(this)}>
@@ -75,7 +94,7 @@ class Narrate extends React.Component {
           </div>
         </div>
       </div>
-      
+
     )
   }
 
@@ -86,7 +105,8 @@ class Narrate extends React.Component {
       { name: "园区配套", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
       { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
       { name: "园区建筑", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
-    ]
+    ],
+    currentAudio: 0 // 当前音频
   }
   //over
 }
