@@ -51,7 +51,7 @@ class BottomBtn extends React.Component {
   public render() {
     return (
       <div className={"bottomView"}>
-        <RouterDOM.Link to="/" >
+        <RouterDOM.Link to="/home" >
           <div className={this.state.iconBottom1}>
             <span className="iconfont" style={{ "fontSize": "5rem" }}>&#xe7fa;</span>
             <p>3D…≥≈Ã</p>

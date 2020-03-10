@@ -341,18 +341,19 @@ class FoldBtn extends React.Component {
               <p>园区企业</p>
             </div>
           </RouterDOM.Link>
-          <RouterDOM.Link to="/photograph" >
-            <div className={this.state.foleIcon} >
-              <span className="iconfont" style={{ "fontSize": "5rem" }}>&#xe7fa;</span>
-              <p>随手拍</p>
-            </div>
-          </RouterDOM.Link>
           <RouterDOM.Link to="/findLease" >
             <div className={this.state.foleIcon} >
               <span className="iconfont" style={{ "fontSize": "5rem" }}>&#xe7fa;</span>
               <p>招租查询</p>
             </div>
           </RouterDOM.Link>
+          <RouterDOM.Link to="/photograph" >
+            <div className={this.state.foleIcon} >
+              <span className="iconfont" style={{ "fontSize": "5rem" }}>&#xe7fa;</span>
+              <p>随手拍</p>
+            </div>
+          </RouterDOM.Link>
+         
           <RouterDOM.Link to="/applyPut" >
             <div className={this.state.foleIcon} >
               <span className="iconfont" style={{ "fontSize": "5rem" }}>&#xe7fa;</span>
