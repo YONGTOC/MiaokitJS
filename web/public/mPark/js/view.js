@@ -90,6 +90,34 @@ define("aboutMe", ["require", "exports", "react", "bottomBtn", "css!./styles/vie
     }
     exports.default = AboutMe;
 });
+define("applyPut", ["require", "exports", "react"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class ApplyPut extends React.Component {
+        constructor(props) {
+            super(props);
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "ApplyPut")));
+        }
+    }
+    exports.default = ApplyPut;
+});
+define("bookSite", ["require", "exports", "react"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class BookSite extends React.Component {
+        constructor(props) {
+            super(props);
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "BookSite")));
+        }
+    }
+    exports.default = BookSite;
+});
 define("compat", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -102,6 +130,23 @@ define("compat", ["require", "exports"], function (require, exports) {
         }
     }
     exports.default = GlobalAction;
+});
+define("findLease", ["require", "exports", "react", "css!./styles/view.css"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class FindLease extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {};
+        }
+        componentDidMount() {
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "aboutMebox" }, "FindLeaseFindLeaseFindLease")));
+        }
+    }
+    exports.default = FindLease;
 });
 define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", "compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, bottomBtn_2, compat_1) {
     "use strict";
@@ -456,26 +501,95 @@ define("photograph", ["require", "exports", "react"], function (require, exports
     }
     exports.default = Photograph;
 });
-define("infoArea", ["require", "exports", "react", "bottomBtn"], function (require, exports, React, bottomBtn_3) {
+define("infoArea", ["require", "exports", "react", "react-router-dom", "css!./styles/infoArea.css"], function (require, exports, React, react_router_dom_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class InfoArea extends React.Component {
-        constructor(props) {
-            super(props);
-            this.state = {};
+        constructor() {
+            super(...arguments);
+            this.state = {
+                inputValue: "请输入主题",
+                tagArr: ["咨询", "建议", "投诉", "其他"],
+                listArr: [{ spread: true }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }],
+                tagIndex: 0,
+            };
         }
-        componentDidMount() {
-            bottomBtn_3.default.toggleIcon(2);
+        foucus() {
+            if (this.state.inputValue === "请输入主题") {
+                this.setState({ inputValue: "" });
+            }
+        }
+        blur() {
+            if (this.state.inputValue === "") {
+                this.setState({ inputValue: "请输入主题" });
+            }
+        }
+        change(event) {
+            this.setState({ inputValue: event.target.value });
+        }
+        clickTag(index) {
+            this.setState({ tagIndex: index });
+        }
+        spread(index) {
+            let listArr = this.state.listArr;
+            listArr[index].spread = !listArr[index].spread;
+            this.setState({ listArr: listArr });
         }
         render() {
-            return (React.createElement("div", null,
-                React.createElement("div", { className: "infoAreabox" }, "InfoArea"),
-                React.createElement(bottomBtn_3.default, null)));
+            return (React.createElement("div", { className: "infoarea" },
+                React.createElement("div", { className: "infoarea-top" },
+                    React.createElement("div", { className: "infoarea-title" }, "\u6570\u5B57\u56ED\u533A"),
+                    React.createElement("div", { className: "infoarea-child-top" },
+                        React.createElement("input", { className: "infoarea-input", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) }),
+                        React.createElement("img", { src: "./mpark/image/search.png", className: "infoarea-search-img" }),
+                        React.createElement("span", { className: "infoarea-sreach-bt" }, "\u641C\u7D22"))),
+                React.createElement("div", { className: "infoarea-tag" }, this.state.tagArr.map((item, index) => {
+                    return React.createElement("div", { key: index, className: index !== this.state.tagIndex ? "infoarea-tag-child" : "infoarea-tag-child-add", onClick: e => this.clickTag(index) }, item);
+                })),
+                React.createElement("div", { className: "infoarea-content" },
+                    this.state.listArr.map((item, index) => {
+                        return React.createElement("div", { className: item.spread ? "infoarea-content-child-bottom" : "infoarea-content-child", key: index }, item.spread ?
+                            React.createElement("div", { style: { width: "100%", height: "100%" } },
+                                React.createElement("div", { style: { height: "50%", width: "100%" } },
+                                    React.createElement("div", { className: "infoarea-content-name" }, "\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219"),
+                                    React.createElement("div", { className: "infoarea-content-bottom", onClick: e => this.spread(index) },
+                                        React.createElement("img", { src: "./mpark/image/right.png", className: "infoarea-content-right-img" }))),
+                                React.createElement("div", { className: "infoarea-br" },
+                                    index !== 2 ?
+                                        React.createElement("div", { className: "infoarea-br-bt" }, "\u5DF2\u89E3\u51B3") :
+                                        React.createElement("div", { className: "infoarea-br-bt-add" }, "\u53D7\u7406\u4E2D"),
+                                    React.createElement("div", { className: "infoarea-br-data" }, "2020-03-06 14:38:15")),
+                                React.createElement("div", { style: { borderTop: "3px solid #F2F2F2", marginTop: "30px", marginRight: "50px" } }),
+                                React.createElement("div", { style: { fontSize: "40px", color: "#949494", marginTop: "20px" } }, "\u7559\u8A00\u5185\u5BB9:"),
+                                React.createElement("div", { style: { fontSize: "40px", color: "#333333", marginTop: "20px" } }, "\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\uFF0C\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\uFF0C\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\uFF0C\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\uFF0C\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\u3002"),
+                                React.createElement("div", { style: { fontSize: "40px", color: "#949494", marginTop: "30px" } }, "\u7559\u8A00\u56DE\u590D:"),
+                                React.createElement("div", { style: { fontSize: "40px", marginTop: "20px" } },
+                                    React.createElement("span", { style: { color: "#949494" } }, "\u7531"),
+                                    React.createElement("span", { style: { fontWeight: "600", margin: "0 25px 0 25px" } }, "xxx"),
+                                    React.createElement("span", { style: { color: "#949494" } }, "\u53D7\u7406\u4E8E"),
+                                    React.createElement("span", { style: { color: "#333333", marginLeft: "25px" } }, "2020-02-28 17:38:15")),
+                                React.createElement("div", { style: { fontSize: "40px", color: "#949494", marginTop: "20px" } }, "\u56DE\u590D\u5185\u5BB9:"),
+                                React.createElement("div", { style: { fontSize: "40px", color: "#333333", marginTop: "20px", marginBottom: "150px" } }, "\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\uFF0C\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\uFF0C\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\uFF0C\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\uFF0C\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\u3002")) :
+                            React.createElement("div", { style: { width: "100%", height: "100%" } },
+                                React.createElement("div", { style: { height: "50%", width: "100%" } },
+                                    React.createElement("div", { className: "infoarea-content-name" }, "\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219"),
+                                    React.createElement("div", { className: "infoarea-content-right", onClick: e => this.spread(index) },
+                                        React.createElement("img", { src: "./mpark/image/right.png", className: "infoarea-content-right-img" }))),
+                                React.createElement("div", { className: "infoarea-br" },
+                                    index !== 2 ?
+                                        React.createElement("div", { className: "infoarea-br-bt" }, "\u5DF2\u89E3\u51B3") :
+                                        React.createElement("div", { className: "infoarea-br-bt-add" }, "\u53D7\u7406\u4E2D"),
+                                    React.createElement("div", { className: "infoarea-br-data" }, "2020-03-06 14:38:15"))));
+                    }),
+                    React.createElement("div", { style: { width: "100%", height: "30%", textAlign: "center", fontSize: "40px", lineHeight: "60px", margin: "20px 0 0 -25px" } }, "\u5230\u5E95\u5566~")),
+                React.createElement(react_router_dom_1.Link, { to: "/isay" },
+                    React.createElement("div", { className: "infoarea-add-c" },
+                        React.createElement("img", { src: "./mpark/image/add.png", width: "60px", height: "60px" })))));
         }
     }
     exports.default = InfoArea;
 });
-define("message", ["require", "exports", "react", "bottomBtn"], function (require, exports, React, bottomBtn_4) {
+define("message", ["require", "exports", "react", "bottomBtn"], function (require, exports, React, bottomBtn_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Message extends React.Component {
@@ -484,60 +598,15 @@ define("message", ["require", "exports", "react", "bottomBtn"], function (requir
             this.state = {};
         }
         componentDidMount() {
-            bottomBtn_4.default.toggleIcon(3);
+            bottomBtn_3.default.toggleIcon(3);
         }
         render() {
             return (React.createElement("div", null,
                 React.createElement("div", { className: "messageBox" }, "message"),
-                React.createElement(bottomBtn_4.default, null)));
+                React.createElement(bottomBtn_3.default, null)));
         }
     }
     exports.default = Message;
-});
-define("findLease", ["require", "exports", "react", "css!./styles/view.css"], function (require, exports, React) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class FindLease extends React.Component {
-        constructor(props) {
-            super(props);
-            this.state = {};
-        }
-        componentDidMount() {
-        }
-        render() {
-            return (React.createElement("div", null,
-                React.createElement("div", { className: "aboutMebox" }, "FindLeaseFindLeaseFindLease")));
-        }
-    }
-    exports.default = FindLease;
-});
-define("applyPut", ["require", "exports", "react"], function (require, exports, React) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class ApplyPut extends React.Component {
-        constructor(props) {
-            super(props);
-        }
-        render() {
-            return (React.createElement("div", null,
-                React.createElement("div", { className: "aboutMebox" }, "ApplyPut")));
-        }
-    }
-    exports.default = ApplyPut;
-});
-define("bookSite", ["require", "exports", "react"], function (require, exports, React) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class BookSite extends React.Component {
-        constructor(props) {
-            super(props);
-        }
-        render() {
-            return (React.createElement("div", null,
-                React.createElement("div", { className: "aboutMebox" }, "BookSite")));
-        }
-    }
-    exports.default = BookSite;
 });
 define("repairsOnline", ["require", "exports", "react"], function (require, exports, React) {
     "use strict";
@@ -629,7 +698,80 @@ define("narrate", ["require", "exports", "react", "react-router-dom", "css!./sty
     }
     exports.default = Narrate;
 });
-define("index", ["require", "exports", "react", "react-dom", "parkCompany", "photograph", "infoArea", "message", "aboutMe", "findLease", "applyPut", "bookSite", "repairsOnline", "parking", "narrate", "react-router-dom", "css!./styles/index.css"], function (require, exports, React, ReactDOM, parkCompany_1, photograph_1, infoArea_1, message_1, aboutMe_1, findLease_1, applyPut_1, bookSite_1, repairsOnline_1, parking_1, narrate_1, react_router_dom_1) {
+define("isay", ["require", "exports", "react", "css!./styles/isay.css"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class Isay extends React.Component {
+        constructor() {
+            super(...arguments);
+            this.state = {
+                tagArray: [{ name: "咨询" }, { name: "建议" }, { name: "投诉" }, { name: "其它" }],
+                tagIndex: 0,
+                inputValue: "不能少于3个字且不能大于33个字",
+                textareaValue: "请将留言内容描述出来（200字内）"
+            };
+        }
+        inputFoucus() {
+            if (this.state.inputValue === "不能少于3个字且不能大于33个字") {
+                this.setState({ inputValue: "" });
+            }
+        }
+        inputBlur() {
+            if (this.state.inputValue === "") {
+                this.setState({ inputValue: "不能少于3个字且不能大于33个字" });
+            }
+        }
+        inputChange(event) {
+            this.setState({ inputValue: event.target.value });
+        }
+        textareaFoucus() {
+            if (this.state.textareaValue === "请将留言内容描述出来（200字内）") {
+                this.setState({ textareaValue: "" });
+            }
+        }
+        textareaBlur() {
+            if (this.state.textareaValue === "") {
+                this.setState({ textareaValue: "请将留言内容描述出来（200字内）" });
+            }
+        }
+        textareaChange(event) {
+            this.setState({ textareaValue: event.target.value });
+        }
+        goBack() {
+            this.props.history.goBack();
+        }
+        render() {
+            return (React.createElement("div", { className: "isay" },
+                React.createElement("div", { className: "isay-top" },
+                    React.createElement("div", { className: "isay-title" }, "\u6570\u5B57\u56ED\u533A")),
+                React.createElement("div", { className: "isay-back" },
+                    React.createElement("img", { src: "./mpark/image/back.png", style: { marginBottom: "25px" }, onClick: this.goBack.bind(this) }),
+                    React.createElement("span", { style: { color: "#6C6C6C", fontSize: "40px", marginLeft: "15px" } }, "\u6211\u6709\u8BDD\u8BF4")),
+                React.createElement("div", { style: { fontSize: "40px", color: "#949494", margin: "20px 0 0 35px", overflow: "hidden" } },
+                    React.createElement("div", { className: "isay-star" }),
+                    React.createElement("div", { style: { float: "left", marginLeft: "15px" } }, "\u7559\u8A00\u7C7B\u522B:")),
+                React.createElement("div", { className: "isay-tag" }, this.state.tagArray.map((item, index) => {
+                    return React.createElement("div", { className: "isay-tag-child", key: index },
+                        React.createElement("img", { src: "./mpark/image/checked.png", style: { margin: "-22px 20px 0 0" } }),
+                        React.createElement("span", { style: { fontSize: "40px", color: "#6C6C6C" } }, item.name));
+                })),
+                React.createElement("div", { style: { borderTop: "3px solid #F2F2F2", marginTop: "30px", margin: "0 30px 0 30px" } }),
+                React.createElement("div", { style: { fontSize: "40px", color: "#949494", margin: "20px 0 0 35px", overflow: "hidden" } },
+                    React.createElement("div", { className: "isay-star" }),
+                    React.createElement("div", { style: { float: "left", marginLeft: "15px" } }, "\u7559\u8A00\u4E3B\u9898:")),
+                React.createElement("div", { className: "isay-theme" },
+                    React.createElement("input", { className: "isay-theme-input", value: this.state.inputValue, onFocus: this.inputFoucus.bind(this), onBlur: this.inputBlur.bind(this), onChange: this.inputChange.bind(this) })),
+                React.createElement("div", { style: { fontSize: "40px", color: "#949494", margin: "30px 0 0 35px", overflow: "hidden" } },
+                    React.createElement("div", { className: "isay-star" }),
+                    React.createElement("div", { style: { float: "left", marginLeft: "15px" } }, "\u7559\u8A00\u5185\u5BB9:")),
+                React.createElement("div", { className: "isay-content" },
+                    React.createElement("textarea", { className: "isay-content-textarea", value: this.state.textareaValue, onFocus: this.textareaFoucus.bind(this), onBlur: this.textareaBlur.bind(this), onChange: this.textareaChange.bind(this) })),
+                React.createElement("div", { className: "isay-submit" }, "\u63D0\u4EA4")));
+        }
+    }
+    exports.default = Isay;
+});
+define("index", ["require", "exports", "react", "react-dom", "home", "parkCompany", "photograph", "infoArea", "message", "aboutMe", "findLease", "applyPut", "bookSite", "repairsOnline", "parking", "narrate", "isay", "react-router-dom", "css!./styles/index.css"], function (require, exports, React, ReactDOM, home_1, parkCompany_1, photograph_1, infoArea_1, message_1, aboutMe_1, findLease_1, applyPut_1, bookSite_1, repairsOnline_1, parking_1, narrate_1, isay_1, react_router_dom_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
@@ -652,10 +794,10 @@ define("index", ["require", "exports", "react", "react-dom", "parkCompany", "pho
                 }
                 else {
                     if (this.getStatus() === 6) {
-                        alert("没有权限");
+                        console.log("没有权限");
                     }
                     if (this.getStatus() === 8) {
-                        alert("连接超时");
+                        console.log("连接超时");
                     }
                 }
             });
@@ -688,37 +830,43 @@ define("index", ["require", "exports", "react", "react-dom", "parkCompany", "pho
                     "\u5DF2\u6709",
                     React.createElement("span", { style: { color: "#0B8BF0", margin: "0 15px 0 15px" } }, "15"),
                     "\u5BB6\u56ED\u533A\u4E0A\u7EBF"),
-                React.createElement("div", { className: "index-park" }, this.state.parkArr.map((item, index) => {
-                    return React.createElement("div", { className: "index-child-park", key: index },
-                        React.createElement("div", { className: "index-child-park-left" },
-                            React.createElement("img", { src: "./mpark/image/a.jpg", className: "park-img" })),
-                        React.createElement("div", { className: "index-child-park-right" },
-                            React.createElement("div", { className: "index-park-name" }, "\u6842\u6797\u56FD\u5BB6\u9AD8\u65B0\u533A\u4FE1\u606F\u4EA7\u4E1A\u56ED"),
-                            React.createElement("div", { className: "index-park-position" },
-                                React.createElement("img", { src: "./mpark/image/position.png", width: "45px", height: "40px", style: { marginTop: "-18px" } }),
-                                React.createElement("span", { className: "index-park-position-name" }, "\u6842\u6797\u9AD8\u65B0\u533A\u671D\u9633\u8DEFD-12\u53F7")),
-                            React.createElement("div", { className: "index-tag" }, this.state.tagArr.map((item, index) => {
-                                return React.createElement("div", { key: index, className: "index-tag-child" }, item);
-                            }))),
-                        React.createElement("div", { className: "index-child-park-end" },
-                            React.createElement("div", { className: "index-distance" }, "10.5km")));
-                }))));
+                React.createElement("div", { className: "index-park" },
+                    this.state.parkArr.map((item, index) => {
+                        return React.createElement(react_router_dom_2.Link, { to: "/home" },
+                            React.createElement("div", { className: "index-child-park", key: index },
+                                React.createElement("div", { className: "index-child-park-left" },
+                                    React.createElement("img", { src: "./mpark/image/a.jpg", className: "park-img" })),
+                                React.createElement("div", { className: "index-child-park-right" },
+                                    React.createElement("div", { className: "index-park-name" }, "\u6842\u6797\u56FD\u5BB6\u9AD8\u65B0\u533A\u4FE1\u606F\u4EA7\u4E1A\u56ED"),
+                                    React.createElement("div", { className: "index-park-position" },
+                                        React.createElement("img", { src: "./mpark/image/position.png", width: "45px", height: "40px", style: { marginTop: "-18px" } }),
+                                        React.createElement("span", { className: "index-park-position-name" }, "\u6842\u6797\u9AD8\u65B0\u533A\u671D\u9633\u8DEFD-12\u53F7")),
+                                    React.createElement("div", { className: "index-tag" }, this.state.tagArr.map((item, index) => {
+                                        return React.createElement("div", { key: index, className: "index-tag-child" }, item);
+                                    }))),
+                                React.createElement("div", { className: "index-child-park-end" },
+                                    React.createElement("div", { className: "index-distance" }, "10.5km"))));
+                    }),
+                    React.createElement("div", { style: { width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginLeft: "-25px" } }, "\u5230\u5E95\u5566~")),
+                React.createElement("div", { className: "index-bottom-logo" },
+                    React.createElement("img", { src: "./mpark/image/bottomLogo.png", className: "index-bottom-logo-img" }))));
         }
     }
     exports.default = Index;
-    ReactDOM.render(React.createElement(react_router_dom_1.HashRouter, null,
-        React.createElement(react_router_dom_1.Switch, null,
-            React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: Index }),
-            React.createElement(react_router_dom_1.Route, { exact: true, path: "/parkCompany", component: parkCompany_1.default }),
-            React.createElement(react_router_dom_1.Route, { exact: true, path: "/photograph", component: photograph_1.default }),
-            React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: Index }),
-            React.createElement(react_router_dom_1.Route, { exact: true, path: "/findLease", component: findLease_1.default }),
-            React.createElement(react_router_dom_1.Route, { exact: true, path: "/applyPut", component: applyPut_1.default }),
-            React.createElement(react_router_dom_1.Route, { exact: true, path: "/bookSite", component: bookSite_1.default }),
-            React.createElement(react_router_dom_1.Route, { exact: true, path: "/repairsOnline", component: repairsOnline_1.default }),
-            React.createElement(react_router_dom_1.Route, { exact: true, path: "/parking", component: parking_1.default }),
-            React.createElement(react_router_dom_1.Route, { exact: true, path: "/infoArea", component: infoArea_1.default }),
-            React.createElement(react_router_dom_1.Route, { exact: true, path: "/message", component: message_1.default }),
-            React.createElement(react_router_dom_1.Route, { exact: true, path: "/aboutMe", component: aboutMe_1.default }),
-            React.createElement(react_router_dom_1.Route, { exact: true, path: "/narrate", component: narrate_1.default }))), document.getElementById('viewContainer'));
+    ReactDOM.render(React.createElement(react_router_dom_2.HashRouter, null,
+        React.createElement(react_router_dom_2.Switch, null,
+            React.createElement(react_router_dom_2.Route, { exact: true, path: "/index", component: Index }),
+            React.createElement(react_router_dom_2.Route, { exact: true, path: "/home", component: home_1.default }),
+            React.createElement(react_router_dom_2.Route, { exact: true, path: "/parkCompany", component: parkCompany_1.default }),
+            React.createElement(react_router_dom_2.Route, { exact: true, path: "/photograph", component: photograph_1.default }),
+            React.createElement(react_router_dom_2.Route, { exact: true, path: "/findLease", component: findLease_1.default }),
+            React.createElement(react_router_dom_2.Route, { exact: true, path: "/applyPut", component: applyPut_1.default }),
+            React.createElement(react_router_dom_2.Route, { exact: true, path: "/bookSite", component: bookSite_1.default }),
+            React.createElement(react_router_dom_2.Route, { exact: true, path: "/repairsOnline", component: repairsOnline_1.default }),
+            React.createElement(react_router_dom_2.Route, { exact: true, path: "/parking", component: parking_1.default }),
+            React.createElement(react_router_dom_2.Route, { exact: true, path: "/", component: infoArea_1.default }),
+            React.createElement(react_router_dom_2.Route, { exact: true, path: "/message", component: message_1.default }),
+            React.createElement(react_router_dom_2.Route, { exact: true, path: "/aboutMe", component: aboutMe_1.default }),
+            React.createElement(react_router_dom_2.Route, { exact: true, path: "/narrate", component: narrate_1.default }),
+            React.createElement(react_router_dom_2.Route, { exact: true, path: "/isay", component: isay_1.default }))), document.getElementById('viewContainer'));
 });

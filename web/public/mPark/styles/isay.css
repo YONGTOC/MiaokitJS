@@ -1,0 +1,79 @@
+.isay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+  background-color: #ffffff;
+}
+.isay-top {
+  background-color: #0B8BF0;
+  width: 100%;
+  height: 150px;
+}
+.isay-title {
+  color: #FFFFFF;
+  font-size: 40px;
+  padding: 50px 0 0 50px;
+}
+.isay-back {
+  width: 100%;
+  height: 100px;
+  padding: 30px 0 0 30px;
+}
+.isay-star:before {
+  content: '*';
+  color: #E50000;
+  float: left;
+  font-size: 50px;
+}
+.isay-tag {
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+  margin: 10px 0 0 35px;
+}
+.isay-tag-child {
+  float: left;
+  margin-right: 50px;
+}
+.isay-theme {
+  height: 120px;
+  margin: 30px 30px 0 30px;
+  border: none;
+}
+.isay-theme-input {
+  height: 100%;
+  width: 100%;
+  background-color: #F2F2F2;
+  border: none;
+  outline: none;
+  font-size: 40px;
+  color: #949494;
+  padding-left: 30px;
+}
+.isay-content {
+  margin: 30px 30px 0 30px;
+}
+.isay-content-textarea {
+  height: 500px;
+  width: 100%;
+  background-color: #F2F2F2;
+  border: none;
+  outline: none;
+  font-size: 40px;
+  color: #949494;
+  padding: 30px 0 0 30px;
+}
+.isay-submit {
+  width: 100%;
+  height: 150px;
+  background-color: #0B8BF0;
+  color: #ffffff;
+  position: fixed;
+  bottom: 0;
+  font-size: 45px;
+  line-height: 150px;
+  text-align: center;
+}

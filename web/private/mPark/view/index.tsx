@@ -12,6 +12,7 @@ import BookSite from "bookSite";
 import RepairsOnline from "repairsOnline";
 import Parking from "parking";
 import Narrate from "narrate";
+import Isay from "isay";
 import "css!./styles/index.css"
 import { HashRouter, Route, Switch, Link } from 'react-router-dom';
 
@@ -44,10 +45,10 @@ class Index extends React.Component {
       }
       else {
         if (this.getStatus() === 6) {
-          alert("没有权限")
+          console.log("没有权限")
         }
         if (this.getStatus() === 8) {
-          alert("连接超时")
+          console.log("连接超时")
         }
       }
     });
@@ -111,6 +112,10 @@ class Index extends React.Component {
             </div></Link>
             })
           }
+          <div style={{width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginLeft: "-25px"}}>到底啦~</div>
+        </div>
+        <div className="index-bottom-logo">
+          <img src="./mpark/image/bottomLogo.png" className="index-bottom-logo-img" />
         </div>
       </div>
       )
@@ -126,7 +131,7 @@ export default Index;
 ReactDOM.render(
   <HashRouter>
     <Switch>
-      <Route exact path="/" component={Index} />
+      <Route exact path="/index" component={Index} />
       <Route exact path="/home" component={Home} />
       <Route exact path="/parkCompany" component={ParkCompany} />
       <Route exact path="/photograph" component={Photograph} />
@@ -135,10 +140,11 @@ ReactDOM.render(
       <Route exact path="/bookSite" component={BookSite} />
       <Route exact path="/repairsOnline" component={RepairsOnline} />
       <Route exact path="/parking" component={Parking} />
-      <Route exact path="/infoArea" component={InfoArea} />
+      <Route exact path="/" component={InfoArea} />
       <Route exact path="/message" component={Message} />
       <Route exact path="/aboutMe" component={AboutMe} />
       <Route exact path="/narrate" component={Narrate} />
+      <Route exact path="/isay" component={Isay} />
 
 
     </Switch>
