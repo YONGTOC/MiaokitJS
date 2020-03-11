@@ -1,5 +1,9 @@
 // TODO
 class GlobalAction {
+  //切换公司
+  public switchCompany(pName) {
+    console.log("switchCompany", pName);
+  }
 
   // 切换房间
   public switchRoom(pName) {

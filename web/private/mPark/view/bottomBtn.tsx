@@ -10,40 +10,12 @@ class BottomBtn extends React.Component {
     BottomBtn.toggleIcon = this.toggleIcon.bind(this);
   }
 
-  static toggleIcon(a) { }
+  static toggleIcon(data) { }
   public toggleIcon(data) {
     console.log(data);
-    if (data == 1) {
-      this.setState({
-        iconBottom1: "iconBox-bottomIn",
-        iconBottom2: "iconBox-bottom",
-        iconBottom3: "iconBox-bottom",
-        iconBottom4: "iconBox-bottom",
-      })
-    } else if (data == 2) {
-      this.setState({
-        iconBottom1: "iconBox-bottom",
-        iconBottom2: "iconBox-bottomIn",
-        iconBottom3: "iconBox-bottom",
-        iconBottom4: "iconBox-bottom",
-      })
-    } else if (data == 3) {
-      this.setState({
-        iconBottom1: "iconBox-bottom",
-        iconBottom2: "iconBox-bottom",
-        iconBottom3: "iconBox-bottomIn",
-        iconBottom4: "iconBox-bottom",
-      })
-    } else if (data == 4) {
-      this.setState({
-        iconBottom1: "iconBox-bottom",
-        iconBottom2: "iconBox-bottom",
-        iconBottom3: "iconBox-bottom",
-        iconBottom4: "iconBox-bottomIn",
-      })
-    }
-
-    //  console.log(this.state);
+    this.setState({
+      index:data
+    })
   }
 
 
@@ -52,26 +24,26 @@ class BottomBtn extends React.Component {
     return (
       <div className={"bottomView"}>
         <RouterDOM.Link to="/home" >
-          <div className={this.state.iconBottom1}>
-            <span className="iconfont" style={{ "fontSize": "5rem" }}>&#xe7fa;</span>
+          <div className={this.state.index == 1 ? "iconBox-bottomIn" : "iconBox-bottom" } onClick={this.toggleIcon.bind(this, 1)}>
+            <img src={this.state.index == 1 ? this.state.iconImg1In : this.state.iconImg1Un } />
             <p>3D沙盘</p>
           </div>
         </RouterDOM.Link  >
         <RouterDOM.Link to="/infoArea" >
-          <div className={this.state.iconBottom2}>
-            <span className="iconfont iconActice" style={{ "fontSize": "5rem" }}> &#xe7fa; </span>
+          <div className={this.state.index == 2 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 2)}>
+            <img src={this.state.index == 2 ? this.state.iconImg2In : this.state.iconImg2Un} />
             <p>微圈</p>
           </div>
-        </RouterDOM.Link>
+        </RouterDOM.Link> 
         <RouterDOM.Link to="/message" >
-          <div className={this.state.iconBottom3}>
-            <span className="iconfont" style={{ "fontSize": "5rem" }}>&#xe7fa;</span>
+          <div className={this.state.index == 3 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 3)}>
+            <img src={this.state.index == 3 ? this.state.iconImg3In : this.state.iconImg3Un} />
             <p>资讯</p>
           </div>
         </RouterDOM.Link>
         <RouterDOM.Link to="/aboutMe" >
-          <div className={this.state.iconBottom4}>
-            <span className="iconfont" style={{ "fontSize": "5rem" }}>&#xe7fa;</span>
+          <div className={this.state.index == 4 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 4)}>
+            <img src={this.state.index == 4 ? this.state.iconImg4In : this.state.iconImg4Un } />
             <p>我的</p>
           </div>
         </RouterDOM.Link>
@@ -80,10 +52,15 @@ class BottomBtn extends React.Component {
   };
 
   public state = {
-    iconBottom1: "iconBox-bottomIn",
-    iconBottom2: "iconBox-bottom",
-    iconBottom3: "iconBox-bottom",
-    iconBottom4: "iconBox-bottom"
+    index: 1,
+    iconImg1In: "./mPark/image/bottomBtn/3d-in.png",
+    iconImg1Un: "./mPark/image/bottomBtn/3d-un.png",
+    iconImg2In: "./mPark/image/bottomBtn/wq-in.png",
+    iconImg2Un: "./mPark/image/bottomBtn/wq-un.png",
+    iconImg3In: "./mPark/image/bottomBtn/zx-in.png",
+    iconImg3Un: "./mPark/image/bottomBtn/zx-un.png",
+    iconImg4In: "./mPark/image/bottomBtn/my-in.png",
+    iconImg4Un: "./mPark/image/bottomBtn/my-un.png",
   }
   //over
 }

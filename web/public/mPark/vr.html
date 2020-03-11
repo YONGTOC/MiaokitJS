@@ -1,241 +1,293 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>vr</title>
-    <link rel="stylesheet" href="./styles/photo-sphere-viewer.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            outline: 0;
-            letter-spacing: 140%;
-            font-family: "Microsoft YaHei";
-        }
-
-        #container2 {
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            -webkit-animation: null;
-            animation: null;
-        }
-
-        #container {
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            -webkit-animation: null;
-            animation: null;
-        }
-
-        .back3D {
-            position: fixed;
-            top: 0px;
-            z-index: 99;
-        }
-
-        @keyframes sShow {
-
-            /*设置内容逐渐显示*/
-            0% {
-                opacity: 0;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
-        @keyframes sHide {
-            /*设置内容逐渐隐藏*/
-
-            0% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" >
+<title>Title</title>
+<link href="./styles/watch3D.min.css" type="text/css" rel="stylesheet">
+<style type="text/css">
+.layer{
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 90%;
+    background: rgba(0,0,0,0.8);
+    z-index: 10;
+}
+.layer-text{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 300px;
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+}
+li {display:inline-block;}
+.imgListbox {
+    position: fixed;
+    bottom: 0;
+    height: 6.5rem;
+    background: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    z-index: 11;
+}
+.imgListbox ul {
+ line-height: 11.2rem;
+}
+.imgListbox li{
+    margin: 0 0.2rem;
+}
+.imgListbox img{
+     width: 7rem;
+    height: 5rem;
+    border: 0.2rem solid #fff;
+}
+</style>
 </head>
-
 <body>
-    <input type="button" value="back3D" class="back3D" />
 
-    <div id="container2"></div>
-    <div id="container"></div>
+    <div class="layer">
+        <div class="layer-text">
+            图片加载中.......
+        </div>
+    </div>
+    <div class="wrapper"></div>
 
+    <div class="imgListbox">
+        <ul>
+            <!--<li onclick="change('./image/sources/1.jpg')">
+                <img src="./image/sources/1.jpg" />
+            </li>
+            <li onclick="change('./image/sources/2.jpg')">
+                <img src="./image/sources/2.jpg" />
+            </li>-->
+        </ul>
+    </div>
+    <!--<input type="button" value="111" onclick="change('./image/sources/1.jpg')" />-->
+    <!--<input type="button" value="2222" onclick="change('./image/sources/2.jpg')" />-->
     <script src="../common/jquery.js"></script>
+    <script type="text/javascript" src="../common/dist/watch3D.min.js"></script>
+    <script type="text/javascript">
 
-    <script src="../common/threejs/three.min.js"></script>
-    <script src="../common/threejs/doT.min.js"></script>
-    <script src="../common/threejs/uevent.min.js"></script>
-    <script src="../common/threejs/D.min.js"></script>
-    <script src="../common/threejs/DeviceOrientationControls.js"></script>
-    <script src="../common/threejs/photo-sphere-viewer.min.js"></script>
-
-    <script>
-        Window.onload = function () {
-
-            console.log(3333);
-            $('.back3D').click(function () {
-                // console.log(3333);
-                window.close()          　　　　  //关闭当前页面
-            })
-
-            var PSV2 = new PhotoSphereViewer({
-                panorama: './image/vr/2.jpg',
-                container: 'container2',
-                time_anim: false,//�ر��Զ���ת
-                navbar: false,//�رյ�����
-                //loading_img: '',
-                move_speed: 0.8,//�������ٶ�
-                default_fov: 100,//������Ұ
-                latitude_range: [Math.PI / 4, -Math.PI / 4],//���¿ɻ�����Χ
-                markers: [{
-                    id: 'y',
-                    longitude: 2.8955010404014563,
-                    latitude: 0,
-                    html: '返回主房间',
-                    anchor: 'center center',
-                    scale: [0.5, 1.5],
-                    style: {
-                        maxWidth: '100px',
-                        color: 'white',
-                        fontSize: '20px',
-                        fontFamily: 'Helvetica, sans-serif',
-                        textAlign: 'center'
-                    },
-                    tooltip: {
-                        content: 'An HTML marker',
-                        position: 'right'
-                    }
-                }
-                ]
-            });
-
-            var PSV = new PhotoSphereViewer({
-                panorama: './image/vr/1.jpg',
-                container: 'container',
-                time_anim: false,//�ر��Զ���ת
-                navbar: false,//�رյ�����
-                //loading_img: '',
-                move_speed: 0.8,//�������ٶ�
-                default_fov: 100,//������Ұ
-                latitude_range: [Math.PI / 4, -Math.PI / 4],//���¿ɻ�����Χ
-                markers: [{
-                    id: 'circle',
-                    longitude: 2.8955010404014563,
-                    latitude: 0,
-                    html: '主房间',
-                    anchor: 'center center',
-                    scale: [0.5, 1.5],
-                    style: {
-                        maxWidth: '100px',
-                        color: 'white',
-                        fontSize: '20px',
-                        fontFamily: 'Helvetica, sans-serif',
-                        textAlign: 'center'
-                    },
-                    tooltip: {
-                        content: '主房间',
-                        position: 'right'
-                    }
-                },
-                //{
-                //    id: 'circle2',
-                //    longitude: 3.8955010404014563,
-                //    latitude:0.5,
-                //    html: '222222222',
-                //    anchor: 'center center',
-                //    scale: [0.5, 1.5],
-                //    style: {
-                //        maxWidth: '100px',
-                //        color: 'white',
-                //        fontSize: '20px',
-                //        fontFamily: 'Helvetica, sans-serif',
-                //        textAlign: 'center'
-                //    },
-                //    tooltip: {
-                //        content: 'An HTML marker',
-                //        position: 'right'
-                //    }
-                //},
+        var imgaArray = {
+            "panorama": [
                 {
-                    id: 'image',
-                    longitude: 3.8955010404014563,
-                    latitude: 0.5,
-                    // image: 'http://photo-sphere-viewer.js.org/assets/pin-blue.png',
-                    image: './image/pin-blue.png',
-                    width: 32,
-                    height: 32,
-                    anchor: 'bottom center',
-                    tooltip: '前去阳台查看',
-                    anchor: 'center center',
-                    scale: [0.5, 1.5],
-                    style: {
-                        maxWidth: '100px',
-                        color: 'white',
-                        fontSize: '20px',
-                        fontFamily: 'Helvetica, sans-serif',
-                        textAlign: 'center'
-                    },
-                }]
-            });
-
-
-
-
-
-            PSV.on('ready', function () {
-                console.log(PSV.isGyroscopeEnabled());
-                PSV.startGyroscopeControl();
-            });
-
-            PSV.on('select-marker', function (marker) {
-                console.log(marker.id);
-                if (marker.id == "image") {
-                    $('#container2').css({ 'animation': 'sShow 4s ease', 'opacity': 1, 'z-index': 1 })
-                        .siblings("div").css({ 'animation': 'sHide 4s ease', 'opacity': 0, 'z-index': 0 });
+                    //id
+                    "id": "10091",
+                    //图片名字
+                    "name": "A图片",
+                    //图片地址
+                    "url": './image/sources/1.jpg',
+                    //位置信息待定为string类型
+                    "position": "",
+                }, {
+                    //id
+                    "id": "10092",
+                    //图片名字
+                    "name": "B图片",
+                    //图片地址
+                    "url": './image/sources/2.jpg',
+                    //位置信息待定为string类型
+                    "position": "",
+                }, {
+                    //id
+                    "id": "10092",
+                    //图片名字
+                    "name": "B图片",
+                    //图片地址
+                    "url": './image/sources/3.jpg',
+                    //位置信息待定为string类型
+                    "position": "",
+                }, {
+                    //id
+                    "id": "10092",
+                    //图片名字
+                    "name": "B图片",
+                    //图片地址
+                    "url": './image/sources/4.jpg',
+                    //位置信息待定为string类型
+                    "position": "",
+                }, {
+                    //id
+                    "id": "10092",
+                    //图片名字
+                    "name": "B图片",
+                    //图片地址
+                    "url": './image/sources/5.jpg',
+                    //位置信息待定为string类型
+                    "position": "",
                 }
-                console.log(this);
-            });
+            ],
+        }
+
+        $(function () {
 
 
+            var getid = window.location.search.substring(1);
+            if (getid.indexOf("roomId") != -1) {
+                console.log("roovr");
+               // change("./image/sources/1.jpg");
+                //console.log(GetQueryString("roomId"));
+                var imgList = $(".imgListbox ul");
+                var imgHtml = '';
+                $.each(imgaArray.panorama, function (i, val) {
+                    console.log(i + "-- --" + val.url);
+                    //imgHtml += '<li onclick="change( ' + val.url + ')"> <img src= " ' + val.url + '" />  </li >';
+                    imgHtml += '<li data-url="' + val.url  +'">' + '<img src="' + val.url + '" /> '+'</li>';
+        
+                });
+                imgList.html(imgHtml);
+                var initImg = imgaArray.panorama[0].url;
+                change(initImg);
+                $('.imgListbox ul li').click(function () {
+                    console.log($(this).attr("data-url"));
+                    change($(this).attr("data-url"));
+                });
+            } else {
+                console.log("companyvr");
+                console.log(GetQueryString("companyId"));
+            }
+        })
 
-            PSV2.on('select-marker', function (marker) {
-                console.log(marker.id);
-                if (marker.id == "y") {
-                    $('#container').css({ 'animation': 'sShow 4s ease', 'opacity': 1, 'z-index': 1 })
-                        .siblings("div").css({ 'animation': 'sHide 4s ease', 'opacity': 0, 'z-index': 0 });
+
+        let layer = document.querySelector(".layer");
+        function change(a) {
+            console.log("ccc", a);
+            loadPredefinedPanorama(a)
+        }
+
+        function loadPredefinedPanorama(a) {
+            let w3d = new watch3D({
+                wrapper: ".wrapper",
+                autoplay: false, //自动播放
+                width: 5000,
+                height: 2500,
+                num: 12,
+                maxY: 25,
+                tips: {
+                    //0 : {
+                    //    styles : {
+                    //        "height" : "100px",
+                    //        "width" : "100px",
+                    //        "background-color" : "#6cf",
+                    //        "text-align" : "center",
+                    //        "margin-right" : "10px",
+                    //        "color" : "#fff",
+                    //        "cursor" : "pointer"
+                    //    },
+                    //    content : "风景1",
+                    //    callback : function(e){
+                    //        w3d.pause();
+                    //        w3d.changeData({
+                    //            num : 10,
+                    //            resource : "./image/sources/4.jpg"
+                    //        },true);
+                    //    }
+                    //},
+                    //1 : {
+                    //    styles : {
+                    //        "height" : "100px",
+                    //        "width" : "100px",
+                    //        "background-color" : "#6cf",
+                    //        "text-align" : "center",
+                    //        "margin-right" : "10px",
+                    //        "color" : "#fff"
+                    //    },
+                    //    content : "风景2",
+                    //    callback : function(e){
+                    //        w3d.pause();
+                    //        w3d.changeData({
+                    //            num : 15,
+                    //            resource : "./image/sources/1.jpg"
+                    //        },true);
+                    //    }
+                    //},
+                    //2 : {
+                    //    styles : {
+                    //        "height" : "100px",
+                    //        "width" : "100px",
+                    //        "background-color" : "#6cf",
+                    //        "text-align" : "center",
+                    //        "margin-right" : "10px",
+                    //        "color" : "#fff"
+                    //    },
+                    //    content : "风景3",
+                    //    callback : function(e){
+                    //        w3d.pause();
+                    //        w3d.changeData({
+                    //            num : 14,
+                    //            resource : "./image/sources/6.jpg"
+                    //        },true);
+                    //    }
+                    //},
+                    //3 : {
+                    //    styles : {
+                    //        "height" : "100px",
+                    //        "width" : "100px",
+                    //        "background-color" : "#6cf",
+                    //        "text-align" : "center",
+                    //        "margin-right" : "10px",
+                    //        "color" : "#fff",
+                    //        "font-size": "24px"
+                    //    },
+                    //    content : "自动播放",
+                    //    callback : function(e){
+                    //        w3d.play();
+                    //    }
+                    //},
+                    //4 : {
+                    //    styles : {
+                    //        "height" : "100px",
+                    //        "width" : "100px",
+                    //        "background-color" : "#6cf",
+                    //        "text-align" : "center",
+                    //        "margin-right" : "10px",
+                    //        "color" : "#fff"
+                    //    },
+                    //    content : "风景4",
+                    //    callback : function(e){
+                    //        w3d.pause();
+                    //        w3d.changeData({
+                    //            num : 16,
+                    //            resource : "./image/sources/8.jpg"
+                    //        },true);
+                    //    }
+                    //},
+                    //5 : {
+                    //    styles : {
+                    //        "height" : "100px",
+                    //        "width" : "100px",
+                    //        "background-color" : "#6cf",
+                    //        "text-align" : "center",
+                    //        "margin-right" : "10px",
+                    //        "color" : "#fff",
+                    //        "font-size": "24px"
+                    //    },
+                    //    content : "暂停",
+                    //    callback : function(e){
+                    //        w3d.pause();
+                    //    }
+                    //}
+                },
+                resource: a,
+                loadstart: function () {
+                    layer.style.display = "block";
+                },
+                loadend: function (data) {
+                    layer.style.display = "none";
                 }
-
             });
+        }
 
-
-            PSV.on('position-updated', function (e) {
-                // console.log('经度:'+e.longitude+',纬度:'+e.latitude);
-            });
-
-
-            // over
-        } 
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
+            if (r != null) return unescape(r[2]); return null;
+        }
     </script>
-
 </body>
-
 </html>

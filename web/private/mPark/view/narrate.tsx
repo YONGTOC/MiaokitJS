@@ -12,6 +12,7 @@ class Narrate extends React.Component {
 
 
     Narrate.selfPlay = this.selfPlay.bind(this);
+    this.playerOver = this.playerOver.bind(this);
   }
 
 
@@ -19,7 +20,7 @@ class Narrate extends React.Component {
     let audio = document.getElementById("audioTool");
     let audioN = 0
     audio.onended = function () {
-      console.log("当前音频，播放结束");
+      console.log("当前音频，播放结束", audio.paused);
       audioN = audioN + 1;
       Narrate.selfPlay(audioN);
     };
@@ -38,8 +39,15 @@ class Narrate extends React.Component {
     } else {
       // 列表播放结束
       audioN = 0;
-      console.log("audioOver", audioN);
+      console.log("audioOver", audioN, audio.paused);
+      this.playerOver(false);
     };
+  }
+
+  public playerOver(a) {
+    this.setState({
+      paused: a,
+    })
   }
 
   public audioClick(index, name, url) {
@@ -61,8 +69,14 @@ class Narrate extends React.Component {
       console.log(audio.paused);
       if (audio.paused) {
         audio.play();//audio.play();// 这个就是播放  
+        this.setState({
+          paused: true,
+        })
       } else {
         audio.pause();// 这个就是暂停
+        this.setState({
+          paused: false,
+        })
       }
     }
   }
@@ -70,17 +84,15 @@ class Narrate extends React.Component {
   public render() {
     return (
       <div>
-
         <audio controls id={"audioTool"}  >
           <source src="" />
         </audio>
-
-        <RouterDOM.Link to="/home" >
-          <div className={"narrareClose"}>
-            <span className="iconfont" style={{ "fontSize": "5rem", "color": "#fff" }}>&#xe7fa;</span>
-          </div>
-        </RouterDOM.Link>
-        <div className={"narrareTitle"}>自动讲解</div>
+        <p className="companyInfotit">
+          <RouterDOM.Link to="/home" >
+            <i className="iconfont companyInfoicon">&#xe83b;</i>
+          </RouterDOM.Link>
+          <span>自动讲解</span>
+        </p>
         <div className={"audioBox"}>
           <ul className={"flex-layout category-head"}>
             {this.state.parkAudio.map((i, index) => {
@@ -90,7 +102,12 @@ class Narrate extends React.Component {
             })}
           </ul>
           <div className={"playBtn"} onClick={this.togglePlay.bind(this)}>
-            <span className="iconfont" style={{ "fontSize": "5rem", "color": "#fff" }}>&#xe7fa;</span>
+            {this.state.paused ?
+              <span className="iconfont" style={{ "fontSize": "5rem", "color": "#fff" }}>&#xe84a;</span>
+              :
+            <span className="iconfont" style={{ "fontSize": "5rem", "color": "#fff" }}>&#xe84b;</span>
+
+              }
           </div>
         </div>
       </div>
@@ -99,6 +116,7 @@ class Narrate extends React.Component {
   }
 
   public state = {
+    paused:true,
     activeType: 0,
     parkAudio: [
       { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },

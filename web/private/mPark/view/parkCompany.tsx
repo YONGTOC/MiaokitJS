@@ -2,20 +2,35 @@ import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
 
 import GlobalAction from "compat";
+import DataService from "dataService";
 
 class ParkCompany extends React.Component {
   public constructor(props) {
     super(props);
 
     ParkCompany.toggleView = this.toggleView.bind(this);
+    ParkCompany.getCompanyinfo = this.getCompanyinfo.bind(this);
   }
 
-  static toggleView(a, e, n) { };
-  public toggleView(a, e, n) {
-    console.log("ff", a);
-    console.log("ff", e);
-    console.log("ff", n);
+  public componentDidMount() {
+    console.log(12313123);
+  }
 
+  // 定义静态类，需要绑定到this的方法上，供外部调用;
+  // 外部传入的企业id，传给企业详情组件，刷新企业详情数据；
+  static getCompanyinfo(id) { }
+  public getCompanyinfo(id) {
+    console.log("getCompanyinfo", id);
+
+    this.toggleView("Info", id);
+    CompanyInfo.getCompanyinfo(id);
+  }
+
+  static toggleView(a, id) { };
+  public toggleView(a, id) {
+    console.log("ff", a);
+    //企业id
+    console.log("ff", id);
     if (a == "Info") {
       this.setState({
         showList: false,
@@ -27,21 +42,19 @@ class ParkCompany extends React.Component {
         showInfo: false,
       })
     }
-
+    //over
   }
-
-
 
   public render() {
     return (
       <div className={this.state.parkCompanycss}>
         <p className="companyInfotit">
           <RouterDOM.Link to="/home" >
-            <span className="iconfont companyInfoicon">&#xe7fa;</span>
+            <i className="iconfont companyInfoicon">&#xe83b;</i>
           </RouterDOM.Link>
           <span>园区企业</span>
         </p>
-          <div className={this.state.showList == true ? "show" : "hide"}>
+        <div className={this.state.showList == true ? "show" : "hide"}>
           <CompanyList />
         </div>
 
@@ -70,13 +83,40 @@ class CompanyList extends React.Component {
     super(props);
 
     this.showInfo = this.showInfo.bind(this);
+    this.setCompany = this.setCompany.bind(this);
+    this.setCompanys = this.setCompanys.bind(this);
   }
 
+  public componentDidMount() {
+    //获取园区下面企业类型列表
+    this.dataService.getCompanys(this.setCompanys, this.state.park_id);
+    //通过园区id搜索园区下面企业列表
+    this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.typeName);
+
+  }
+
+  public dataService: DataService = new DataService();
+  // set企业类型列表
+  public setCompanys(data) {
+    this.setState({
+      companyType: data.response,
+    })
+  }
+
+  // set企业列表
+  public setCompany(data) {
+    console.log("setCompany", data)
+    this.setState({
+      companyData: data.response,
+    })
+  }
 
   // 点击更多，显示info;隐藏list；这里需要调用ParkCompany 的方法；
-  public showInfo(a, e, n) {
-    ParkCompany.toggleView(a, e, n);
-    CompanyInfo.companyInfo(e);
+  // 通过 公司id，获取详情内容
+  public showInfo(a, id, name, e) {
+    ParkCompany.toggleView(a, id);
+    CompanyInfo.getCompanyinfo(id);
+    console.log("more", a, id, name, e);
   }
 
   public toggleFold() {
@@ -84,12 +124,21 @@ class CompanyList extends React.Component {
     if (this.state.companyListcss == "companyList-all") {
       this.setState({
         companyListcss: "companyList-part",
-        companyul:"companyul"
+        companyul: "companyul"
       })
     } else {
       this.setState({
         companyListcss: "companyList-all",
-        companyul:"companyul-all"
+        companyul: "companyul-all"
+      })
+    }
+    if (this.state.iconfont == "iconfont iconfont-unturn") {
+      this.setState({
+        iconfont: "iconfont iconfont-turn",
+      })
+    } else {
+      this.setState({
+        iconfont: "iconfont iconfont-unturn",
       })
     }
   }
@@ -105,16 +154,19 @@ class CompanyList extends React.Component {
         companyBtn: "companyBtn-part"
       })
     }
+
   }
 
   public globalAction: GlobalAction = new GlobalAction();
-
+  // 选中某企业
   public companyActive(data, id) {
     console.log("active", data);
     this.setState({
       indexOf: data,
     });
-    this.globalAction.switchRoom(id);
+    // 通知3d，切换公司定位（web获取的是 公司id）
+    this.globalAction.switchCompany(id);
+    // 
   }
 
   public typeActive(indexof, name, id) {
@@ -125,122 +177,121 @@ class CompanyList extends React.Component {
     this.setState({
       typeIndexof: indexof,
       typeName: name,
+      company_type_id: id,
     })
   }
 
+  // 聚焦
+  public foucus() {
+    if (this.state.inputValue == "请输入企业名称") {
+      this.setState({ inputValue: "" })
+    }
+  }
+
+  // 失焦
+  public blur(event) {
+    if (this.state.inputValue == "") {
+      this.setState({ inputValue: "请输入企业名称" })
+    }
+  }
+
+  // 输入
+  public change(event) {
+    this.setState({ inputValue: event.target.value })
+  }
+
+
   //软键盘搜索，获取数据，呈现列表效果；（3.5-未写）；1提交搜索条件。；2-css； 
+  public searchCompany() {
+
+    if (this.state.inputValue == "请输入企业名称") {
+      this.setState({ inputValue: "" })
+    };
+    console.log("searchBtn", this.state.inputValue, this.state.company_type_id);
+    this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.inputValue);
+  }
 
   public render() {
     return (
       <div className={this.state.companyListcss}>
         <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-          <span style={{ "fontSize": "5rem" }}>--</span>
+          <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
         </div>
         <ul className={this.state.companyul}>
           {this.state.companyData.map((i, index) => {
             return (
               <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyli-active" : "companyli"} >
                 <div className="companyImgback">
-                  <img src={i.url} />
+                  <img src={i.headimgurl} />
                 </div>
                 <div className="companyul-middle">
                   <p className={this.state.indexOf == index ? "companyName-active" : "companyName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.name}</p>
-                  <p style={{ "font-size": "2.5rem" }}><span className="iconfont" style={{ "fontSize": "3rem" }}>&#xe7fa;</span>{i.address}</p>
+                  <p style={{ "font-size": "2.5rem" }}>
+                    <i className="iconfont" style={{ "fontSize": "2.5rem" }}>&#xe815;</i>
+                    {i.address}</p>
                 </div>
                 <div className="companyul-right">
-                  <p  onClick={this.showInfo.bind(this, "Info", i.id)}>更多 ></p>
-                  <p className={this.state.indexOf == index ? "companyType-active" : "companyType"} >{i.type}</p>
+                  <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)}>更多
+                    <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
+                  </p>
+                  <p className={this.state.indexOf == index ? "companyType-active" : "companyType"} >{i.service[0].name}</p>
                 </div>
               </li>
             )
           })}
         </ul>
         <form>
-        <div className={this.state.companyBtn}>
-          <div className="searchBox">
-            <span className="searchBox-text">
-              <span className="iconfont" style={{ "fontSize": "3rem" }}>&#xe7fa;</span>
-              <input className="companySearch" type="text" placeholder="请输入企业名称" />
-            </span>
-            <span onClick={this.foldBtn.bind(this)} className="searchBox-type">
-              {this.state.typeName} <span className="iconfont" style={{ "fontSize": "3rem" }}>&#xe7fa;</span>
-            </span>
-          </div>
-          <ul className="companyTypeul">
-            <li className={this.state.typeIndexof == 100 ? "companyTypeli-active" : "companyTypeli"}
-              onClick={this.typeActive.bind(this, 100, "全部", "id-全部")} style={{ "width":"12rem"}}>全部</li>
-            {this.state.companyType.map((i, index) => { 
-              return (
-                <li onClick={this.typeActive.bind(this, index, i.name, i.id)} className={this.state.typeIndexof == index ? "companyTypeli-active" : "companyTypeli"}>{i.name}</li>
+          <div className={this.state.companyBtn}>
+            <div className="searchBox">
+              <span className="searchBox-text">
+                <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe810;</i>
+                <input className="companySearch" type="text" placeholder="请输入企业名称"
+                  value={this.state.inputValue} onFocus={this.foucus.bind(this)}
+                  onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
+              </span>
+              <span onClick={this.foldBtn.bind(this)} className="searchBox-type">
+                {this.state.typeName} <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe828;</i>
+              </span>
+            </div>
+            <ul className="companyTypeul">
+              <li className={this.state.typeIndexof == 100 ? "companyTypeli-active" : "companyTypeli"}
+                onClick={this.typeActive.bind(this, 100, "全部", "")} style={{ "width": "12rem" }}>全部</li>
+              {this.state.companyType.map((i, index) => {
+                return (
+                  <li onClick={this.typeActive.bind(this, index, i.name, i.id)} className={this.state.typeIndexof == index ? "companyTypeli-active" : "companyTypeli"}>{i.name}</li>
                 )
-            })}
+              })}
             </ul>
 
-            <span className="searchBtn">搜索</span>
-        </div>
+            <span className="searchBtn" onClick={this.searchCompany.bind(this)}>搜索</span>
+          </div>
         </form>
       </div>
     )
   }
 
   public state = {
+    // 园区id
+    park_id: 1001,
     companyListcss: "companyList-part",
     foleBtn: "foleBtn",
-    indexOf: 0,
     companyBtn: "companyBtn-part",
-    companyul:"companyul",
-    companyData: [
-      {
-        name: "浙江永拓信息科技有限公司1", address: "E座B区-3F-301",
-        id: "id-01",  url: "./mPark/image/pin-blue.png", type: "科技服务"
-      },
-      {
-        name: "浙江永拓信息科技有限公司2", address: "E座B区-3F-302",
-        id: "id-02", url: "./mPark/image/pin-blue.png", type: "科技服务"
-      },
-      {
-        name: "浙江永拓信息科技有限公司3", address: "E座B区-3F-303",
-        id: "id-03", url: "./mPark/image/pin-blue.png",  type: "科技服务"
-      },
-      {
-        name: "浙江永拓信息科技有限公司1", address: "E座B区-3F-301",
-        id: "id-01", url: "./mPark/image/pin-blue.png", type: "科技服务"
-      },
-      {
-        name: "浙江永拓信息科技有限公司1", address: "E座B区-3F-301",
-        id: "id-01",  url: "./mPark/image/pin-blue.png",  type: "科技服务"
-      }, ,
-      {
-        name: "浙江永拓信息科技有限公司1", address: "E座B区-3F-301",
-        id: "id-01", url: "./mPark/image/pin-blue.png", type: "科技服务"
-      }, ,
-      {
-        name: "浙江永拓信息科技有限公司1", address: "E座B区-3F-301",
-        id: "id-01", url: "./mPark/image/pin-blue.png", type: "科技服务"
-      }, ,
-      {
-        name: "浙江永拓信息科技有限公司1", address: "E座B区-3F-301",
-        id: "id-01", url: "./mPark/image/pin-blue.png", type: "科技服务"
-      }, ,
-      {
-        name: "浙江永拓信息科技有限公司1", address: "E座B区-3F-301",
-        id: "id-01", url: "./mPark/image/pin-blue.png", type: "科技服务"
-      },
-
-    ],
-    companyType: [
-      { name: "高新技术", id: "id-高新技术" },
-      { name: "科技服务", id: "id-科技服务" },
-      { name: "文化创意", id: "id-文化创意" },
-      { name: "金融保险", id: "id-金融保险" },
-      { name: "电子商务", id: "id-电子商务" },
-      { name: "贸易销售", id: "id-贸易销售" },
-      { name: "机械设备", id: "id-机械设备" },
-      { name: "休闲娱乐", id: "id-休闲娱乐" },
-      { name: "生物医药", id: "id-生物医药" },
-    ],
+    companyul: "companyul",
+    //企业列表
+    companyData: [],
+    // 企业类型
+    companyType: [],
+    // 当前选中企业li的序列号
+    indexOf: 0,
+    //当前选中类型序列号
     typeIndexof: 100,
-    typeName:"全部"
+    //搜索关键词
+    typeName: "全部",
+    //搜索企业类型id
+    company_type_id: "",
+    // 输入框默认值
+    inputValue: "",
+    iconfont: "iconfont iconfont-unturn",
   }
 
 
@@ -253,18 +304,34 @@ class CompanyInfo extends React.Component {
     super(props);
 
     this.showList = this.showList.bind(this);
-    CompanyInfo.companyInfo = this.companyInfo.bind(this);
+    CompanyInfo.getCompanyinfo = this.getCompanyinfo.bind(this);
+    this.setCompanyinfo = this.setCompanyinfo.bind(this);
   }
 
-  static companyInfo(data) { }
-  public companyInfo(data) {
+  public dataService: DataService = new DataService();
+  static getCompanyinfo(id) { }
+  public getCompanyinfo(id) {
+    // 通过企业id，set企业详情；
+    this.dataService.getCompanyInfo(this.setCompanyinfo, id);
+  }
+
+  // 获取企业详情，给子组件显示；
+  //  传递企业详情，到 CompanyInfos(企业信息) 、Mien（企业风采）、Details（企业简介）、 Product(产品展示)组件中
+  public setCompanyinfo(data) {
+    console.log("getCompanyinfo", data);
+    // set公司name
     this.setState({
-      companyId: data
+      companyName: data.response.name,
     });
+
+    CompanyInfos.setCompanyinfos(data);
+    Mien.setCompanymien(data);
+    Details.setCompanydetails(data);
+    Product.setCompanyproduct(data);
   }
 
-  public showList(a, e, n) {
-    ParkCompany.toggleView(a, e, n);
+  public showList(a, id) {
+    ParkCompany.toggleView(a, id);
   }
 
   public toggleFold() {
@@ -272,13 +339,19 @@ class CompanyInfo extends React.Component {
     if (this.state.companyInfocss == "companyInfo") {
       this.setState({
         companyInfocss: "companyInfo-part",
-       // companyul: "companyul"
       })
     } else {
       this.setState({
         companyInfocss: "companyInfo",
-       // companyul: "companyul-all"
-        //fdsfsdfd
+      })
+    }
+    if (this.state.iconfont == "iconfont iconfont-unturn") {
+      this.setState({
+        iconfont: "iconfont iconfont-turn",
+      })
+    } else {
+      this.setState({
+        iconfont: "iconfont iconfont-unturn",
       })
     }
   }
@@ -291,22 +364,19 @@ class CompanyInfo extends React.Component {
   }
 
   public render() {
-    //companyInfo
-    //  < p > { this.state.companyId }</p >
-    //    <p onClick={this.showList.bind(this, "List", "id-01")}>返回 list</p>
     return (
       <div>
         <p className="companyInfotit">
-          <span className="iconfont companyInfoicon" onClick={this.showList.bind(this, "List", "id-01")}>&#xe7fa;</span>
+          <i className="iconfont companyInfoicon" onClick={this.showList.bind(this, "List", "id-01")}>&#xe83b;</i>
           <span>{this.state.companyName}</span>
         </p>
         <div className={this.state.companyInfocss}>
           <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-            <span style={{ "fontSize": "5rem" }}>--</span>
+            <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
           </div>
           <ul className={this.state.companyInfoul}>
             <li className={this.state.infoli == 0 ? "companyInfoli-active" : "companyInfoli"}
-              onClick={this.infoClick.bind(this,0)} 
+              onClick={this.infoClick.bind(this, 0)}
             >企业信息</li>
             <li className={this.state.infoli == 1 ? "companyInfoli-active" : "companyInfoli"}
               onClick={this.infoClick.bind(this, 1)} >企业风采</li>
@@ -328,20 +398,21 @@ class CompanyInfo extends React.Component {
             <div className={this.state.infoli == 3 ? "show" : "hide"}>
               <Product />
             </div>
-          
+
           </div>
         </div>
       </div>
-     
+
     )
   }
 
   public state = {
     companyInfocss: "companyInfo",
-   // companyId: null,
-    companyName:"浙江永拓信息科技有限公司",
+    //  companyId:"",
+    companyName: "浙江永拓信息科技有限公司",
     companyInfoul: "companyInfoul",
-    infoli:0,
+    infoli: 0,
+    iconfont: "iconfont iconfont-unturn",
   }
 
   //over
@@ -352,10 +423,25 @@ class CompanyInfos extends React.Component {
   public constructor(props) {
     super(props);
 
+
+    CompanyInfos.setCompanyinfos = this.setCompanyinfos.bind(this);
   }
 
-  public componentDidMount() {
-    
+  public componentDidMount() { }
+
+  // 显示获取的企业详情
+  static setCompanyinfos(data) { }
+  public setCompanyinfos(data) {
+    console.log("setCompanyinfoCCCCCCCCCCC", data);
+    this.setState({
+      imgurl: data.response.headimgurl,
+      name: data.response.name,
+      address: data.response.address,
+      type: data.response.service[0].name,
+      man: data.response.Contacts,
+      tel: data.response.phone,
+      http: data.response.website,
+    })
   }
 
   public render() {
@@ -365,7 +451,7 @@ class CompanyInfos extends React.Component {
         <div className={"ifosRight"}>
           <h4 className={"infos-1"}>{this.state.name} </h4>
           <h5 className={"infos-2"}>
-            <span className="iconfont" style={{ "fontSize": "3rem" }}>&#xe7fa;</span>
+            <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe815;</i>
             {this.state.address}
           </h5>
           <p className={"infos-3"} >{this.state.type}</p>
@@ -382,18 +468,18 @@ class CompanyInfos extends React.Component {
             <span >{this.state.http}</span>
           </p>
         </div>
-        </div>
+      </div>
     )
   }
 
   public state = {
-    imgurl: "./mPark/image/pin-blue.png",
-    name:"浙江永拓信息科技有限公司",
-    address: "桂林市信息产业园E座B区3F",
-    type: "科技服务",
-    man: "XXX",
-    tel: "155578383040",
-    http:"www.yongtoc.com"
+    imgurl: "",
+    name: "",
+    address: "",
+    type: "",
+    man: "",
+    tel: "",
+    http: ""
   }
 
   //over
@@ -404,10 +490,18 @@ class Mien extends React.Component {
   public constructor(props) {
     super(props);
 
+    Mien.setCompanymien = this.setCompanymien.bind(this);
   }
 
-  public componentDidMount() {
-   
+  public componentDidMount() { }
+
+  // 显示获取的企业详情
+  static setCompanymien(data) { }
+  public setCompanymien(data) {
+    console.log("setCompanyMienMMMMM", data);
+    this.setState({
+      mienImg: data.response.elegant,
+    })
   }
 
   public render() {
@@ -417,7 +511,7 @@ class Mien extends React.Component {
           {this.state.mienImg.map((i, index) => {
             return (
               <li>
-                <img src={i.url} />
+                <img src={i.pic_url} />
               </li>
             )
           })}
@@ -427,14 +521,7 @@ class Mien extends React.Component {
   }
 
   public state = {
-    mienImg: [
-      { url: "./mPark/image/i.png" },
-      { url: "./mPark/image/i.png" },
-      { url: "./mPark/image/i.png" },
-      { url: "./mPark/image/i.png" },
-      { url: "./mPark/image/i.png" },
-      { url: "./mPark/image/i.png" },
-    ]
+    mienImg: []
   }
 
   //over
@@ -445,26 +532,31 @@ class Details extends React.Component {
   public constructor(props) {
     super(props);
 
+    Details.setCompanydetails = this.setCompanydetails.bind(this);
   }
 
-  public componentDidMount() {
-     
+  public componentDidMount() { }
+
+  // 显示获取的企业详情
+  static setCompanydetails(data) { }
+  public setCompanydetails(data) {
+    console.log("setCompanyDetailsDDDDD", data);
+    this.setState({
+      text: data.response.descript,
+    })
   }
 
   public render() {
     return (
       <div className={"details"}>
-        <p> 
+        <p>
           {this.state.text}
-        </p> 
+        </p>
       </div>
     )
   }
 
-  public state = {
-    text: "浙江永拓信息科技有限公司是浙江永拓实业有限公司旗下的控股子公司。    公司由计算机图形学、计算机应用学、物联网技术等三方面专家组成，是一家专注于以3D为展现方式， 解决物理空间关系的技术提供商，致力于成为全球领先3D可视化企业，为客户和合作伙伴全面提供3D可视化技术的服务，实现其业务的差异化竞争优势。   "
-  }
-
+  public state = { text: "" }
   //over
 }
 
@@ -473,13 +565,20 @@ class Product extends React.Component {
   public constructor(props) {
     super(props);
 
-
-// ffdssdfds
+    Product.setCompanyproduct = this.setCompanyproduct.bind(this);
   }
 
-  public componentDidMount() {
-    
+  public componentDidMount() { }
+
+  // 显示获取的企业详情
+  static setCompanyproduct(data) { }
+  public setCompanyproduct(data) {
+    console.log("setCompanyproductPPPP", data);
+    this.setState({
+      productImg: data.response.product,
+    })
   }
+
 
   public render() {
     return (
@@ -488,25 +587,18 @@ class Product extends React.Component {
           {this.state.productImg.map((i, index) => {
             return (
               <li>
-                <img src={i.url} />
+                <img src={i.pic_url} />
               </li>
             )
           })}
         </ul>
       </div>
- 
+
     )
   }
 
   public state = {
-    productImg: [
-      { url: "./mPark/image/i.png" },
-      { url: "./mPark/image/i.png" },
-      { url: "./mPark/image/i.png" },
-      { url: "./mPark/image/i.png" },
-      { url: "./mPark/image/i.png" },
-      { url: "./mPark/image/i.png" },
-    ]
+    productImg: []
   }
   //over
 }

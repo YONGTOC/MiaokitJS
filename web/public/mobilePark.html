@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <title>移动园区 2020.1</title>
     <script src="./common/miaokit/MiaokitLoader.min.js"></script>
+    <script src="./common/jquery.js"></script>
     <script src="./common/requirejs/require.js"></script>
     <script src="http://api.map.baidu.com/api?v=3.0&ak=d8tFfHggZfPGG3MHq3AavDVxpjE1bC1Y"></script>
 
@@ -80,18 +81,43 @@
     <div id="VRcontainer"></div>
 
     <!--<p   id="go">调用预定义的全景图</p>-->
-    <!--<ul style="position: absolute;bottom: 40px;right:100px;z-index: 101;">
+    <ul style="position: absolute;top: 130px;left:0px;z-index: 101;">
         <li>
-            <button onclick="roomScene(1)">激活房间全景</button>
+            <button onclick="roomScene(1)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活房间全景</button>
         </li>
-    </ul>-->
-        <script>
-            // 激活房间全景
-            function roomScene(a) {
-                window.open('./mPark/vr.html');
-            }
+        <li>
+            <button onclick="companyScene(2)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业全景</button>
+        </li>
+        <li>
+            <button onclick="refreshCompanyinfo(10086)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业显示</button>
+        </li>
+        <li>
+            <button onclick="refreshLeaseinfo(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活招租显示</button>
+        </li>
+    </ul>
+    <script>
+        // 激活房间全景
+        function roomScene(a) {
+            window.open('./mPark/vr.html?roomId='+ a);  
+        }
+        // 激活企业全景
+        function companyScene(a) {
+            window.open('./mPark/vr.html?companyId=' + a);
+        }
 
-        </script>
+        // 激活企业显示
+        function refreshCompanyinfo(id) {
+            console.log(MiaokitJS.App.UI.refreshCompanyinfo);
+            MiaokitJS.App.UI.refreshCompanyinfo(id)
+        }
+
+        // 激活招租显示
+        function refreshLeaseinfo(id) {
+            console.log(MiaokitJS.App.UI.refreshCompanyinfo);
+            MiaokitJS.App.UI.refreshLeaseinfo(id)
+        }
+
+    </script>
 </body>
 
 </html>
