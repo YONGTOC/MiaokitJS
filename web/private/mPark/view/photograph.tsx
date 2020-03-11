@@ -46,7 +46,7 @@ class Photograph extends React.Component {
       <div className={this.state.Photographcss}>
         <p className="companyInfotit">
           <RouterDOM.Link to="/home" >
-            <span className="iconfont companyInfoicon">&#xe7fa;</span>
+            <span className="iconfont companyInfoicon">&#xe83b;</span>
           </RouterDOM.Link>
           <span>随手拍</span>
         </p>
@@ -104,6 +104,15 @@ class IllegalList extends React.Component {
         //fdsfsdfd
       })
     }
+    if (this.state.iconfont == "iconfont iconfont-unturn") {
+      this.setState({
+        iconfont: "iconfont iconfont-turn",
+      })
+    } else {
+      this.setState({
+        iconfont: "iconfont iconfont-unturn",
+      })
+    }
   }
 
   public illegalActive(indexof, name, id) {
@@ -118,18 +127,11 @@ class IllegalList extends React.Component {
   }
 
   public render() {
-    //  <p onClick={this.showInfo.bind(this, "Info", "i.id")}>更多 ></p>
-    //<div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-    //  <span style={{ "fontSize": "5rem" }}>--</span>
-    //</div>
-    //<p>list</p>
-    //<p onClick={this.showInfo.bind(this, "Info", "i.id")}>更多 ></p>
     return (
       <div >
-
         <div className={this.state.illegalListcss}>
           <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-            <span style={{ "fontSize": "5rem" }}>--</span>
+            <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
           </div>
           <ul className={this.state.illegalul} >
             {this.state.illegalList.map((i, index) => {
@@ -141,9 +143,11 @@ class IllegalList extends React.Component {
                   <div className="illegalul-middle ">
                     <p className={this.state.indexOf == index ? "illegalType-active" : "illegalType"} style={{ "font-size": "2.4rem" }}>{i.type}</p>
                     <p style={{ "font-size": "2.3rem" }}>{i.time}</p>
-                    <p style={{ "font-size": "2.3rem" }}><span className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe7fa;</span>{i.name}</p>
-                    <p style={{ "font-size": "2.3rem" }}><span className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe7fa;</span>{i.address}</p>
-                    <p onClick={this.showPart.bind(this, "Info", "i.id")} style={{ "font-size": "2.3rem", "float": "right", "color": "#fff" }}>更多 ></p>
+                    <p style={{ "font-size": "2.3rem" }}><i className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe82b;</i>{i.name}</p>
+                    <p style={{ "font-size": "2.3rem" }}><i className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe82c;</i>{i.address}</p>
+                    <p onClick={this.showPart.bind(this, "Info", "i.id")} style={{ "font-size": "2.3rem", "float": "right", "color": "#fff" }}>更多
+                         <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
+                      </p>
                   </div>
                 </li>
               )
@@ -151,9 +155,9 @@ class IllegalList extends React.Component {
           </ul>
 
           <div className="illBottombox">
-            <div className="illsearchBox">
+            <div className="searchBox">
               <span className="searchBox-text">
-                <span className="iconfont" style={{ "fontSize": "3rem" }}>&#xe7fa;</span>
+                <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe810;</i>
                 <input className="companySearch" type="text" placeholder="请输入车牌号" />
               </span>
             </div>
@@ -167,6 +171,7 @@ class IllegalList extends React.Component {
 
 
   public state = {
+    iconfont: "iconfont iconfont-unturn",
     illegalListcss: "illegalList-part",
     indexOf: 0,
     illegalul: "illegalul",
@@ -271,6 +276,7 @@ class IllegalUpload extends React.Component {
         illfrom: "illfrom-all illfrom"
       })
     }
+   
   }
 
   public illimginputClick(this) {

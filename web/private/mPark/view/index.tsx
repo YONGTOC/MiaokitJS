@@ -27,7 +27,14 @@ interface IState {
 }
 
 
-class Index extends React.Component {
+class Index extends React.Component<{ history: any }>{
+  constructor(props) {
+    super(props);
+
+    Index.g_pIns = this;
+  }
+  public static g_pIns: Index = null;
+
   public readonly state: Readonly<IState> = {
     inputValue: "请输入园区名称", // 输入框默认值
     city: "", // 城市
@@ -120,6 +127,17 @@ class Index extends React.Component {
       </div>
       )
   }
+
+  //供外部调用 -- 传入企业id，刷新树企业信息数据；
+  public refreshCompanyinfo(id) {
+    this.props.history.push('/parkCompany');
+    ParkCompany.getCompanyinfo(id);
+  }
+
+  public refreshLeaseinfo(id) {
+    this.props.history.push('/findLease');
+    FindLease.getLeaseinfoByroomid(id);
+  }
 }
 
 export default Index;
@@ -131,7 +149,7 @@ export default Index;
 ReactDOM.render(
   <HashRouter>
     <Switch>
-      <Route exact path="/index" component={Index} />
+      <Route exact path="/" component={Index} />
       <Route exact path="/home" component={Home} />
       <Route exact path="/parkCompany" component={ParkCompany} />
       <Route exact path="/photograph" component={Photograph} />
