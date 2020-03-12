@@ -5,7 +5,7 @@ import ParkCompany from "parkCompany";
 import Photograph from "photograph";
 import InfoArea from "infoArea";
 import Message from "message";
-import AboutMe from "aboutMe";
+import PersonalCenter from "personalCenter";
 import FindLease from "findLease";
 import ApplyPut from "applyPut";
 import BookSite from "bookSite";
@@ -160,11 +160,9 @@ ReactDOM.render(
       <Route exact path="/parking" component={Parking} />
       <Route exact path="/infoArea" component={InfoArea} />
       <Route exact path="/message" component={Message} />
-      <Route exact path="/aboutMe" component={AboutMe} />
+      <Route exact path="/" component={PersonalCenter} />
       <Route exact path="/narrate" component={Narrate} />
       <Route exact path="/isay" component={Isay} />
-
-
     </Switch>
   </HashRouter>
   , document.getElementById('viewContainer'));
