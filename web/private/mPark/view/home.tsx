@@ -15,6 +15,8 @@ class Home extends React.Component {
 
   public componentDidMount() {
     BottomBtn.toggleIcon(1);
+
+    localStorage.setItem("token","666666");
   }
 
   public render() {

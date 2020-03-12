@@ -1,55 +1,110 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" >
-<title>Title</title>
-<link href="./styles/watch3D.min.css" type="text/css" rel="stylesheet">
-<style type="text/css">
-.layer{
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 90%;
-    background: rgba(0,0,0,0.8);
-    z-index: 10;
-}
-.layer-text{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 300px;
-    text-align: center;
-    font-size: 16px;
-    color: #fff;
-    -webkit-transform: translate(-50%,-50%);
-    transform: translate(-50%,-50%);
-}
-li {display:inline-block;}
-.imgListbox {
-    position: fixed;
-    bottom: 0;
-    height: 6.5rem;
-    background: rgba(0, 0, 0, 0.6);
-    width: 100%;
-    z-index: 11;
-}
-.imgListbox ul {
- line-height: 11.2rem;
-}
-.imgListbox li{
-    margin: 0 0.2rem;
-}
-.imgListbox img{
-     width: 7rem;
-    height: 5rem;
-    border: 0.2rem solid #fff;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>Title</title>
+    <link href="./styles/watch3D.min.css" type="text/css" rel="stylesheet">
+    <style type="text/css">
+
+        .layer {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 90%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10;
+        }
+
+        .layer-text {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 300px;
+            text-align: center;
+            font-size: 16px;
+            color: #fff;
+            -webkit-transform: translate(-50%,-50%);
+            transform: translate(-50%,-50%);
+        }
+
+        .topBox {
+            position: fixed;
+            width: 100%;
+            height: 3rem;
+            z-index: 100;
+            top: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            font-size: 1.5rem;
+            text-align: center;
+            color: #fff;
+            line-height: 2.5rem;
+        }
+
+            .topBox img {
+                float: left;
+                width: 1.35rem;
+                position: relative;
+                left: 1rem;
+                top: 0.5rem;
+            }
+
+        li {
+            display: inline-block;
+        }
+
+        .imgListbox {
+            position: fixed;
+            bottom: 0;
+            height: 6.5rem;
+            background: rgba(0, 0, 0, 0.6);
+            width: 100%;
+            z-index: 11;
+        }
+
+            .imgListbox ul {
+                width: 100%;
+                white-space: nowrap;
+                overflow-x: scroll;
+                float: left;
+                overflow-y: hidden;
+            }
+
+            .imgListbox li {
+                height: 33rem;
+                margin-right: 0.5rem;
+                display: inline-block;
+                margin-top: 0.5rem;
+            }
+
+        .imgLi img {
+            width: 7rem;
+            height: 5rem;
+            border: 0.2rem solid #fff;
+        }
+
+        .imgLi-active img {
+            width: 7rem;
+            height: 5rem;
+            border: 0.2rem solid #F9BC68;
+        }
+    </style>
 </head>
 <body>
+    <p class="topBox">
+        <!--<a href="javascript:window.opener=null;window.open('','_self');window.close();">
+            <img class="closeVr" src="./image/back-w.png" />
+        </a>-->
+        <a href="javascript:window.opener=null;window.open('','_self');window.close();">
+            <img class="closeVr" src="./image/back-w.png" onclick="closeWx()" />
+        </a>
 
+        <span class="roomName">
+
+        </span>
+    </p>
     <div class="layer">
         <div class="layer-text">
             图片加载中.......
@@ -73,86 +128,182 @@ li {display:inline-block;}
     <script type="text/javascript" src="../common/dist/watch3D.min.js"></script>
     <script type="text/javascript">
 
-        var imgaArray = {
-            "panorama": [
-                {
-                    //id
-                    "id": "10091",
-                    //图片名字
-                    "name": "A图片",
-                    //图片地址
-                    "url": './image/sources/1.jpg',
-                    //位置信息待定为string类型
-                    "position": "",
-                }, {
-                    //id
-                    "id": "10092",
-                    //图片名字
-                    "name": "B图片",
-                    //图片地址
-                    "url": './image/sources/2.jpg',
-                    //位置信息待定为string类型
-                    "position": "",
-                }, {
-                    //id
-                    "id": "10092",
-                    //图片名字
-                    "name": "B图片",
-                    //图片地址
-                    "url": './image/sources/3.jpg',
-                    //位置信息待定为string类型
-                    "position": "",
-                }, {
-                    //id
-                    "id": "10092",
-                    //图片名字
-                    "name": "B图片",
-                    //图片地址
-                    "url": './image/sources/4.jpg',
-                    //位置信息待定为string类型
-                    "position": "",
-                }, {
-                    //id
-                    "id": "10092",
-                    //图片名字
-                    "name": "B图片",
-                    //图片地址
-                    "url": './image/sources/5.jpg',
-                    //位置信息待定为string类型
-                    "position": "",
-                }
-            ],
+        function closeWx() {
+          // window.close(); 此方法在微信浏览器中无效
+           //  WeixinJSBridge.call('closeWindow');  //此方法会关闭浏览器
+            window.history.back(); //方法不可用，原页面会刷新
+        }
+
+        $('.closeVr').click(function () {
+            console.log(3333);
+         // window.close()          　　　　  //关闭当前页面
+           // eixinJSBridge.call('closeWindow');//微信 
+        })
+
+        var companyInfo = {
+            //错误码
+            "return_code": "100",
+            "response": {
+                //id
+                "id": "1009",
+                //公司名字
+                "name": "桂林国家高新",
+                //企业图像url
+                "headimgurl": "http://xxx.jpg",
+                //场地对应大楼id(用于匹配对应3d大楼)
+                "building_id": "a座",
+                //场地对应大楼id(用于匹配对应3d大楼)
+                "floor_id": "1F",
+                //场地(用于匹配对应3d房间)
+                "room_id": "201-2",
+                //地址
+                "address": "桂林市七星区信息产业园E座B区三楼",
+                //联系人
+                "Contacts": "莫xxx",
+                //电话
+                "phone": "15266666666",
+                //企业官网
+                "website": "www.yongtoc.com",
+                //企业详情详情文字
+                "descript": "xxx公司是由计算机图形学，计算机应用学组方面专家成。",
+                //企业类型
+                "company_type": "科技服务",
+                //企业风采
+                "elegant": [
+                    {
+                        //id
+                        "id": "1009",
+                        //图片名字
+                        "name": "xxx图片",
+                        //图片地址
+                        "pic_url": "http://xxx.pic",
+                    }
+                ],
+                //产品展示
+                "product": [
+                    {
+                        //id
+                        "id": "1009",
+                        //图片名字
+                        "name": "xxx图片",
+                        //图片地址
+                        "pic_url": "http://xxx.pic",
+                    }
+                ],
+                //全景图
+                "panorama": [
+                    {
+                        //id
+                        "id": "10091",
+                        //图片名字
+                        "name": "A图片",
+                        //图片地址
+                        "url": './image/sources/1.jpg',
+                        //位置信息待定为string类型
+                        "position": "",
+                    }, {
+                        //id
+                        "id": "10092",
+                        //图片名字
+                        "name": "B图片",
+                        //图片地址
+                        "url": './image/sources/2.jpg',
+                        //位置信息待定为string类型
+                        "position": "",
+                    }, {
+                        //id
+                        "id": "10092",
+                        //图片名字
+                        "name": "B图片",
+                        //图片地址
+                        "url": './image/sources/3.jpg',
+                        //位置信息待定为string类型
+                        "position": "",
+                    }, {
+                        //id
+                        "id": "10092",
+                        //图片名字
+                        "name": "B图片",
+                        //图片地址
+                        "url": './image/sources/4.jpg',
+                        //位置信息待定为string类型
+                        "position": "",
+                    }, {
+                        //id
+                        "id": "10092",
+                        //图片名字
+                        "name": "B图片",
+                        //图片地址
+                        "url": './image/sources/5.jpg',
+                        //位置信息待定为string类型
+                        "position": "",
+                    }
+                ],
+            },
+            //错误代码信息
+            "err_msg": ""
+
         }
 
         $(function () {
 
 
             var getid = window.location.search.substring(1);
+            // 判断显示 -- 招租房间全景
             if (getid.indexOf("roomId") != -1) {
                 console.log("roovr");
-               // change("./image/sources/1.jpg");
-                //console.log(GetQueryString("roomId"));
                 var imgList = $(".imgListbox ul");
                 var imgHtml = '';
-                $.each(imgaArray.panorama, function (i, val) {
+                $.each(companyInfo.response.panorama, function (i, val) {
                     console.log(i + "-- --" + val.url);
-                    //imgHtml += '<li onclick="change( ' + val.url + ')"> <img src= " ' + val.url + '" />  </li >';
-                    imgHtml += '<li data-url="' + val.url  +'">' + '<img src="' + val.url + '" /> '+'</li>';
-        
+                    imgHtml += '<li class="imgLi" data-url="' + val.url + '">' + '<img src="' + val.url + '" /> ' + '</li>';
                 });
                 imgList.html(imgHtml);
-                var initImg = imgaArray.panorama[0].url;
+
+                var initImg = companyInfo.response.panorama[0].url;
                 change(initImg);
+
                 $('.imgListbox ul li').click(function () {
                     console.log($(this).attr("data-url"));
+                    $(this).attr("class", "imgLi-active").siblings().attr("class", "imgLi");
                     change($(this).attr("data-url"));
                 });
             } else {
+                // 判断显示 -- 企业全景
                 console.log("companyvr");
                 console.log(GetQueryString("companyId"));
+                 // 通过 企业id，请求data；
+                //roomName
+                var roomName = $(".roomName");
+                var titleHtml = '<span>' + companyInfo.response.building_id + '-' + companyInfo.response.floor_id + '-' + companyInfo.response.room_id + '室</span>';
+                roomName.html(titleHtml);
+
+
+                var imgList = $(".imgListbox ul");
+                var imgHtml = '';
+
+                $.each(companyInfo.response.panorama, function (i, val) {
+                    console.log(i + "-- --" + val.url);
+                    imgHtml += '<li class="imgLi" data-url="' + val.url + '">' + '<img src="' + val.url + '" /> ' + '</li>';
+                });
+                imgList.html(imgHtml);
+
+                var initImg = companyInfo.response.panorama[0].url;
+                change(initImg);
+
+                $('.imgListbox ul li').click(function () {
+                    console.log($(this).attr("data-url"));
+                    $(this).attr("class", "imgLi-active").siblings().attr("class", "imgLi");
+                    change($(this).attr("data-url"));
+                });
             }
+
+
+            
+           
         })
 
+        
 
         let layer = document.querySelector(".layer");
         function change(a) {

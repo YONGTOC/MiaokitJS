@@ -56,73 +56,89 @@
     pBackajax(data);
   }
 
-  // (企业园区模块-搜索类型)获取园区下面企业类型列表
+  //6 (企业园区模块-搜索类型)获取园区下面企业类型列表
   public findCompany(pBackajax, park_id, company_type_id, name) {
-    console.log("initCompanydata", pBackajax, park_id, company_type_id, name);
-    var data = {
-      //错误码
-      "return_code": "100",
-      "response": [
-        {
-          //id
-          "id": "1009",
-          //公司名字
-          "name": "浙江永拓信息科技有限公司1s",
-          //园区图像url
-          "headimgurl": "./mPark/image/pin-blue.png",
-          //使用场地对应大楼id(用于匹配对应3d大楼)
-          "building_id": "a座",
-          //使用场地对应大楼id(用于匹配对应3d大楼)
-          "floor_id": "3F",
-          //使用场地(用于匹配对应3d房间)
-          "room_id": "201-2",
-          //地址
-          "address": "E座B区-3F-301",
-          //企业服务内容
-          "service": [
-            {
-              //id
-              "id": "1009",
-              //服务内容名字
-              "name": "科技服务",
-            }
-          ]
-        },
-        {
-          //id
-          "id": "1009-2",
-          //公司名字
-          "name": "浙江永拓信息科技有限公司2s",
-          //园区图像url
-          "headimgurl": "./mPark/image/pin-blue.png",
-          //使用场地对应大楼id(用于匹配对应3d大楼)
-          "building_id": "a座",
-          //使用场地对应大楼id(用于匹配对应3d大楼)
-          "floor_id": "3F",
-          //使用场地(用于匹配对应3d房间)
-          "room_id": "201-2",
-          //地址
-          "address": "E座B区-3F-302",
-          //企业服务内容
-          "service": [
-            {
-              //id
-              "id": "1009",
-              //服务内容名字
-              "name": "科技服务",
-            }
-          ]
-        },
+    console.log("findCompany", pBackajax, park_id, company_type_id, name);
 
-      ],
-      //错误代码信息
-      "err_msg": ""
-    }
+    $.ajax({
+      url: this.state.rooturl + '/api/findCompany',
+      data: {
+        "park_id": 1,
+        "token": this.state.token
+      },
+      type: "get",
+      success: function (data) {
+        console.log("findCompanyJJJJJJJ", data);
+      
+          pBackajax(data);
+        
+      }
+    })
 
-    pBackajax(data);
+    //var data = {
+    //  //错误码
+    //  "return_code": "100",
+    //  "response": [
+    //    {
+    //      //id
+    //      "id": "1009",
+    //      //公司名字
+    //      "name": "浙江永拓信息科技有限公司1s",
+    //      //园区图像url
+    //      "headimgurl": "./mPark/image/pin-blue.png",
+    //      //使用场地对应大楼id(用于匹配对应3d大楼)
+    //      "building_id": "a座",
+    //      //使用场地对应大楼id(用于匹配对应3d大楼)
+    //      "floor_id": "3F",
+    //      //使用场地(用于匹配对应3d房间)
+    //      "room_id": "201-2",
+    //      //地址
+    //      "address": "E座B区-3F-301",
+    //      //企业服务内容
+    //      "service": [
+    //        {
+    //          //id
+    //          "id": "1009",
+    //          //服务内容名字
+    //          "name": "科技服务",
+    //        }
+    //      ]
+    //    },
+    //    {
+    //      //id
+    //      "id": "1009-2",
+    //      //公司名字
+    //      "name": "浙江永拓信息科技有限公司2s",
+    //      //园区图像url
+    //      "headimgurl": "./mPark/image/pin-blue.png",
+    //      //使用场地对应大楼id(用于匹配对应3d大楼)
+    //      "building_id": "a座",
+    //      //使用场地对应大楼id(用于匹配对应3d大楼)
+    //      "floor_id": "3F",
+    //      //使用场地(用于匹配对应3d房间)
+    //      "room_id": "201-2",
+    //      //地址
+    //      "address": "E座B区-3F-302",
+    //      //企业服务内容
+    //      "service": [
+    //        {
+    //          //id
+    //          "id": "1009",
+    //          //服务内容名字
+    //          "name": "科技服务",
+    //        }
+    //      ]
+    //    },
+
+    //  ],
+    //  //错误代码信息
+    //  "err_msg": ""
+    //}
+
+    // pBackajax(data);
   }
 
-  // 通过企业id, 获企业详细信息
+  //7 通过企业id, 获企业详细信息
   public getCompanyInfo(pBackajax, id) {
     console.log("getCompanyInfo", pBackajax, id);
     var data = {
@@ -217,7 +233,7 @@
     pBackajax(data);
   }
 
-  //通过园区id, 获取面积分类
+  //8 通过园区id, 获取面积分类
   public getRoomRentSquareType(pBackajax, park_id) {
     console.log("init-AllareaType", pBackajax, park_id);
     var data = {
@@ -239,7 +255,7 @@
     pBackajax(data);
   }
 
-  //通过园区id, 获取招租的场地列表接口
+  //9 通过园区id, 获取招租的场地列表接口(findRoomRent);
   public findRoomRentByparkid(pBackajax, park_id, square) {
     console.log("findRoomRentByparkid", pBackajax, park_id, square);
     var data = {
@@ -288,6 +304,7 @@
     pBackajax(data);
   }
 
+  //10 通过招租id,获取租房信息列表接口(getRoomRentInfo)
   public findRoomRentByroomid(pBackajax, id) {
     console.log("findRoomRentByroomid", pBackajax, id);
     var data = {
@@ -332,6 +349,20 @@
             "name": "xxx图片",
             //图片地址
             "url": "./mPark/image/i.png",
+          }, {
+            //id
+            "id": "1009",
+            //图片名字
+            "name": "xxx图片",
+            //图片地址
+            "url": "./mPark/image/i.png",
+          }, {
+            //id
+            "id": "1009",
+            //图片名字
+            "name": "xxx图片",
+            //图片地址
+            "url": "./mPark/image/i.png",
           }
         ],
         //全景图
@@ -355,7 +386,7 @@
             //图片名字
             "name": "xxx图片",
             //地址
-            "url": "http://xxx.pic",
+            "url": "https://www.yongtoc.com/themes/ytyc.mp4",
             //位置信息待定为string类型
             "position": "",
           }
@@ -374,7 +405,8 @@
   }
 
   public state = {
-    rooturl:"http://192.168.1.15:86",
+    rooturl: "http://192.168.1.13:90",
+    token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xOTIuMTY4LjEuMTM6OTBcL2FwaVwvbG9naW4iLCJpYXQiOjE1ODQwMDM4MzMsImV4cCI6MTU4NDAwNzQzMywibmJmIjoxNTg0MDAzODMzLCJqdGkiOiJ1azFacEdiVjJ0TURRVGFFIiwic3ViIjoxLCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.A39kqiUJYPG-dYMyIy4wfcKMWGPUDGZrQSWUWNHo-fQ"
   }
 }
 

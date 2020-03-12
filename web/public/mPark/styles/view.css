@@ -15,11 +15,11 @@ i{
 }
 .iconfont-turn {
     transform: rotate(180deg);
-    transition: 0.8s;
+    transition: 0.5s;
     color: #C0C0C0;
 }
 .iconfont-unturn {
-    transition: 0.8s;
+    transition: 0.5s;
     color: #C0C0C0;
 }
 /*index*/
@@ -531,6 +531,8 @@ i{
     height: 4rem;
     line-height: 4rem;
     width: 10rem;
+    position: relative;
+    top: 6rem;
 }
 
 .companyType-active {
@@ -1094,7 +1096,7 @@ i{
 
 .leaseInfoul {
     background: #fff;
-    width: 45rem;
+    width: 60rem;
     height: 7rem;
     /*border-bottom: 0.2rem solid #f2f2f2;*/
     margin: auto;
@@ -1104,7 +1106,7 @@ i{
     list-style: none;
     float: left;
     color: #6C6C6C;
-    margin: 2rem 5rem;
+    margin: 2rem 4.5rem;
     padding-bottom: 1rem;
     font-size: 2.5rem;
 }
@@ -1114,7 +1116,7 @@ i{
     float: left;
     color: #333333;
     font-weight: bold;
-    margin: 2rem 5rem;
+    margin: 2rem 4.5rem;
     border-bottom: 0.5rem solid #0B8BF0;
     padding-bottom: 1rem;
     font-size: 2.5rem;

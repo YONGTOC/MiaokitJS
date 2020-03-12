@@ -92,7 +92,7 @@ class CompanyList extends React.Component {
     this.dataService.getCompanys(this.setCompanys, this.state.park_id);
     //通过园区id搜索园区下面企业列表
     this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.typeName);
-
+    console.log(localStorage.getItem("token"));
   }
 
   public dataService: DataService = new DataService();
@@ -105,7 +105,8 @@ class CompanyList extends React.Component {
 
   // set企业列表
   public setCompany(data) {
-    console.log("setCompany", data)
+    console.log("setCompany", data.response)
+    console.log("setCompany", data.response[0].name)
     this.setState({
       companyData: data.response,
     })
@@ -231,10 +232,10 @@ class CompanyList extends React.Component {
                     {i.address}</p>
                 </div>
                 <div className="companyul-right">
-                  <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)}>更多
+                  <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)} className={this.state.indexOf == index ? "show" : "hide"} >更多
                     <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
                   </p>
-                  <p className={this.state.indexOf == index ? "companyType-active" : "companyType"} >{i.service[0].name}</p>
+                  <p className={this.state.indexOf == index ? "companyType-active" : "companyType"} >{i.company_type}</p>
                 </div>
               </li>
             )
@@ -437,7 +438,8 @@ class CompanyInfos extends React.Component {
       imgurl: data.response.headimgurl,
       name: data.response.name,
       address: data.response.address,
-      type: data.response.service[0].name,
+     // type: data.response.service[0].name,
+      type: data.response.company_type,
       man: data.response.Contacts,
       tel: data.response.phone,
       http: data.response.website,
