@@ -16,8 +16,8 @@ class FindLease extends React.Component {
 
   }
 
-  // 定义静态类，需要绑定到this的方法上，供外部调用;
   // 外部传入的企业id，传给企业详情组件，刷新企业详情数据；
+   //(招租查询模块-查询)通过roomid获取招租的场地列表接口
   static getLeaseinfoByroomid(id) { }
   public getLeaseinfoByroomid(id) {
     console.log("getCompanyinfo", id);
@@ -96,8 +96,6 @@ class LeaseList extends React.Component {
     this.dataService.getRoomRentSquareType(this.getRoomRentSquareType, this.state.park_id);
     //(招租查询模块-查询)通过园区id获取招租的场地列表接口
     this.dataService.findRoomRentByparkid(this.setRoomRent, this.state.park_id, this.state.square);
-    //(招租查询模块-查询)通过roomid获取招租的场地列表接口
-    // this.dataService.findRoomRentByroomid(this.setRoomRent, this.state.square);
   }
 
   public dataService: DataService = new DataService();

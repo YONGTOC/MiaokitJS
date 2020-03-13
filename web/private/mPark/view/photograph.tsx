@@ -276,7 +276,15 @@ class IllegalUpload extends React.Component {
         illfrom: "illfrom-all illfrom"
       })
     }
-   
+    if (this.state.iconfont == "iconfont iconfont-unturn") {
+      this.setState({
+        iconfont: "iconfont iconfont-turn",
+      })
+    } else {
+      this.setState({
+        iconfont: "iconfont iconfont-unturn",
+      })
+    }
   }
 
   public illimginputClick(this) {
@@ -325,16 +333,17 @@ class IllegalUpload extends React.Component {
   }
 
   public render() {
+    //<div className="illTxt">
     return (
       <div>
         <p className="companyInfotit">
-          <span className="iconfont companyInfoicon" onClick={this.showList.bind(this, "List", "i.id")}>&#xe7fa;</span>
+          <span className="iconfont companyInfoicon" onClick={this.showList.bind(this, "List", "i.id")}>&#xe83b;</span>
           <span>随手拍</span>
         </p>
 
         <div className={this.state.illegalLoadcss}>
           <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-            <span style={{ "fontSize": "5rem" }}>--</span>
+            <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
           </div>
           <form className={this.state.illfrom}>
             <p><span className="redStar">*</span> 违规照片
@@ -344,11 +353,11 @@ class IllegalUpload extends React.Component {
             <p><span className="redStar">*</span> 曝光类型
               <input type="text" className="getillType" value={this.state.illcauseInname} placeholder="请选择曝光类型" />
               <span className="iconfont" style={{ "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" }}
-                onClick={this.showillcauseUL.bind(this)}>&#xe7fa;</span>
+                onClick={this.showillcauseUL.bind(this)}>&#xe827;</span>
             </p>
             <p><span className="redStar">*</span>  地址
                <input type="text" value="" className="getillAdd" placeholder="请点击地图选择违章点" />
-              <span className="iconfont" style={{ "fontSize": "3rem", "color": "#0B8BF0", "float": "right", "padding": " 0 0 0 4rem"  }}>&#xe7fa;</span>
+              <span className="iconfont" style={{ "fontSize": "3rem", "color": "#0B8BF0", "float": "right", "padding": " 0 0 0 4rem" }}>&#xe82c;</span>
             </p>
             <p><span className="redStar">*</span> 车牌
                 <input type="text" value="" className="getillNum" placeholder="请输入违规车牌号" />
@@ -356,8 +365,9 @@ class IllegalUpload extends React.Component {
             <p><span className="redStar">*</span> 曝光时间
               <input type="datetime" className="getillTime" value="" placeholder="请输入违规时间" />
             </p>
-            <div className="illTxt">
-              <p><span className="redStar">*</span> 违规描述</p>
+           
+            <p><span className="redStar">*</span> 违规描述</p>
+            <div>
               <textarea className="getilltextarea" value="" placeholder="请将违规问题描述出来。（120字内）"></textarea>
             </div>
             <div className="illSumbit" onClick={this.sumbitIllfrom.bind(this)}>提交</div>
@@ -404,6 +414,7 @@ class IllegalUpload extends React.Component {
     indexOf: 0,
     illcauseInname: "",
     illcauseInid: "",
+    iconfont: "iconfont iconfont-unturn",
   }
 
   //over
@@ -451,10 +462,10 @@ class IllegalInfos extends React.Component {
         <p>非停车位路侧停车</p>
         <p>2020-01-21 10:59:15</p>
         <p>
-          <span className="iconfont" style={{ "fontSize": "3rem" }}>&#xe7fa;</span>
+          <span className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe82b;</span>
           车牌：<span>桂C123456</span></p>
         <p>
-          <span className="iconfont" style={{ "fontSize": "3rem" }}>&#xe7fa;</span>
+          <span className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe815;</span>
           位置：<span>A座大门旁</span></p>
         <p>横跨斑马线上</p>
       </div>
@@ -561,7 +572,7 @@ class IllegalInfo extends React.Component {
     return (
       <div>
         <p className="companyInfotit">
-          <span className="iconfont companyInfoicon" onClick={this.showList.bind(this, "List", "id-01")}>&#xe7fa;</span>
+          <span className="iconfont companyInfoicon" onClick={this.showList.bind(this, "List", "id-01")}>&#xe83b;</span>
           <span>{this.state.name}违规</span>
         </p>
         <div className={this.state.illegalInfocss}>
@@ -569,7 +580,7 @@ class IllegalInfo extends React.Component {
             <span style={{ "fontSize": "5rem" }}>--</span>
           </div>
           <div className="leaseInfoul_br">
-            <ul className={"leaseInfoul"}>
+            <ul className={"leaseInfoul"} style={{"width":"44rem"}}>
               <li className={this.state.infoli == 0 ? "leaseInfoli-active" : "leaseInfoli"}
                 onClick={this.infoClick.bind(this, 0)}
               >违规信息</li>

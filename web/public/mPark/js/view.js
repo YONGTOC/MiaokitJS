@@ -1,13 +1,105 @@
-define("applyPut", ["require", "exports", "react"], function (require, exports, React) {
+define("applyPut", ["require", "exports", "react", "react-router-dom"], function (require, exports, React, RouterDOM) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ApplyPut extends React.Component {
         constructor(props) {
             super(props);
+            this.state = {
+                applyPutcss: "applyPut-part ",
+                iconfont: "iconfont iconfont-unturn",
+                applyPutfrom: "applyPutfrom-part applyPutfrom",
+                applyList: [
+                    { address: "请输入申请摆放地点", startTime: "2020-03-14", endTime: "2020-03-17" }
+                ]
+            };
+            ApplyPut.addapplyPut = this.addapplyPut.bind(this);
+        }
+        toggleFold() {
+            console.log("tftft");
+            if (this.state.applyPutcss == "applyPut-all") {
+                this.setState({
+                    applyPutcss: "applyPut-part",
+                    applyPutfrom: "applyPutfrom-part applyPutfrom"
+                });
+            }
+            else {
+                this.setState({
+                    applyPutcss: "applyPut-all",
+                    applyPutfrom: "applyPutfrom-all applyPutfrom"
+                });
+            }
+            if (this.state.iconfont == "iconfont iconfont-unturn") {
+                this.setState({
+                    iconfont: "iconfont iconfont-turn",
+                });
+            }
+            else {
+                this.setState({
+                    iconfont: "iconfont iconfont-unturn",
+                });
+            }
+        }
+        sumbitApplyputfrom() {
+        }
+        static addapplyPut(a) { }
+        ;
+        addapplyPut(a) {
+            let arr = this.state.applyList;
+            arr.push({ address: "请输入申请摆放地点", startTime: "2020-03-14", endTime: "2020-03-17" });
+            this.setState({
+                applyList: arr
+            });
+            console.log(this.state);
         }
         render() {
             return (React.createElement("div", null,
-                React.createElement("div", { className: "aboutMebox" }, "ApplyPut")));
+                React.createElement("p", { className: "companyInfotit" },
+                    React.createElement(RouterDOM.Link, { to: "/home" },
+                        React.createElement("span", { className: "iconfont companyInfoicon" }, "\uE83B")),
+                    React.createElement("span", null, "\u7533\u8BF7\u6446\u70B9")),
+                React.createElement("div", { className: this.state.applyPutcss },
+                    React.createElement("div", { className: "foleBtn", onClick: this.toggleFold.bind(this) },
+                        React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem" } }, "\uE849")),
+                    React.createElement("form", { className: this.state.applyPutfrom },
+                        React.createElement("p", null,
+                            React.createElement("span", { className: "redStar" }, "*"),
+                            "  \u7533\u8BF7\u4EBA",
+                            React.createElement("input", { type: "text", value: "", className: "getillNum", placeholder: "\u8BF7\u8F93\u5165\u7533\u8BF7\u5355\u4F4D" })),
+                        React.createElement("p", null,
+                            React.createElement("span", { className: "redStar" }, "*"),
+                            " \u624B\u673A\u53F7\u7801",
+                            React.createElement("input", { type: "number", value: "", className: "getillNum", placeholder: "\u8BF7\u8F93\u5165\u624B\u673A\u53F7\u7801" })),
+                        React.createElement("p", null,
+                            React.createElement("span", { className: "redStar" }, "*"),
+                            " \u7533\u8BF7\u5355\u4F4D",
+                            React.createElement("input", { type: "text", value: "", className: "getillNum", placeholder: "\u8BF7\u8F93\u5165\u7533\u8BF7\u5355\u4F4D" })),
+                        React.createElement("p", null,
+                            React.createElement("span", { className: "redStar" }, "*"),
+                            " \u5177\u4F53\u5185\u5BB9\uFF1A"),
+                        React.createElement("div", null,
+                            React.createElement("textarea", { className: "getapplyPuttextarea", value: "", placeholder: "\u8BF7\u5C06\u5177\u4F53\u5185\u5BB9\u63CF\u8FF0\u51FA\u6765\u3002\uFF08200\u5B57\u5185\uFF09" })),
+                        React.createElement("div", { className: "applyList" },
+                            React.createElement("p", { className: "theapplyP" }, "\u8BF7\u5728\u6240\u9700\u6295\u653E\u5730\u70B9\u540E\u8BBE\u7F6E\u6295\u653E\u5F00\u59CB\u53CA\u7ED3\u675F\u65F6\u95F4"),
+                            React.createElement("ul", { style: { "margin": "0" } },
+                                React.createElement("li", null,
+                                    React.createElement("div", { className: "applyAddress" }, "\u5E7F\u544A\u653E\u7F6E\u5730\u70B9"),
+                                    React.createElement("div", { className: "applytime" }, "\u5F00\u59CB\u65F6\u95F4"),
+                                    React.createElement("div", { className: "applytime" }, "\u7ED3\u675F\u65F6\u95F4"),
+                                    React.createElement("div", { className: "applyicom" },
+                                        " ",
+                                        React.createElement("i", { className: "iconfont", style: { "color": "#fff" } }, "\uE82D"))),
+                                this.state.applyList.map((i, index) => {
+                                    return (React.createElement("li", { key: index },
+                                        React.createElement("div", { className: "applyAddress" },
+                                            React.createElement("span", { className: "applyIndexof" }, index + 1),
+                                            React.createElement("input", { className: "applyAddressInput", type: "text", value: i.address, placeholder: "\u8BF7\u8F93\u5165\u7533\u8BF7\u6446\u653E\u5730\u70B9" })),
+                                        React.createElement("div", { className: "applytime", style: { "color": "#158CE8" } }, i.startTime),
+                                        React.createElement("div", { className: "applytime", style: { "color": "#158CE8" } }, i.endTime),
+                                        React.createElement("div", { className: "applyicom" },
+                                            " ",
+                                            React.createElement("i", { className: "iconfont", style: { "color": "#158CE8" } }, "\uE82D"))));
+                                }))),
+                        React.createElement("div", { className: "applyPutSumbit", onClick: this.sumbitApplyputfrom.bind(this) }, "\u63D0\u4EA4")))));
         }
     }
     exports.default = ApplyPut;
@@ -57,19 +149,19 @@ define("bottomBtn", ["require", "exports", "react", "react-router-dom", "css!./s
                 React.createElement(RouterDOM.Link, { to: "/home" },
                     React.createElement("div", { className: this.state.index == 1 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 1) },
                         React.createElement("img", { src: this.state.index == 1 ? this.state.iconImg1In : this.state.iconImg1Un }),
-                        React.createElement("p", null, "3D\u6C99\u76D8"))),
+                        React.createElement("p", null, "3D\u0273\uFFFD\uFFFD"))),
                 React.createElement(RouterDOM.Link, { to: "/infoArea" },
                     React.createElement("div", { className: this.state.index == 2 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 2) },
                         React.createElement("img", { src: this.state.index == 2 ? this.state.iconImg2In : this.state.iconImg2Un }),
-                        React.createElement("p", null, "\u5FAE\u5708"))),
+                        React.createElement("p", null, "\u03A2\u0226"))),
                 React.createElement(RouterDOM.Link, { to: "/message" },
                     React.createElement("div", { className: this.state.index == 3 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 3) },
                         React.createElement("img", { src: this.state.index == 3 ? this.state.iconImg3In : this.state.iconImg3Un }),
-                        React.createElement("p", null, "\u8D44\u8BAF"))),
+                        React.createElement("p", null, "\uFFFD\uFFFD\u0476"))),
                 React.createElement(RouterDOM.Link, { to: "/aboutMe" },
                     React.createElement("div", { className: this.state.index == 4 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 4) },
                         React.createElement("img", { src: this.state.index == 4 ? this.state.iconImg4In : this.state.iconImg4Un }),
-                        React.createElement("p", null, "\u6211\u7684")))));
+                        React.createElement("p", null, "\uFFFD\u04B5\uFFFD")))));
         }
         ;
     }
@@ -90,218 +182,6 @@ define("compat", ["require", "exports"], function (require, exports) {
         }
     }
     exports.default = GlobalAction;
-});
-define("dataService", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class DataService {
-        constructor() {
-            this.state = {
-                rooturl: "http://192.168.1.13:90",
-                token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xOTIuMTY4LjEuMTM6OTBcL2FwaVwvbG9naW4iLCJpYXQiOjE1ODQwMDM4MzMsImV4cCI6MTU4NDAwNzQzMywibmJmIjoxNTg0MDAzODMzLCJqdGkiOiJ1azFacEdiVjJ0TURRVGFFIiwic3ViIjoxLCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.A39kqiUJYPG-dYMyIy4wfcKMWGPUDGZrQSWUWNHo-fQ"
-            };
-        }
-        callback(a, pBack) {
-            console.log("callback1", a);
-            pBack("callback");
-        }
-        getCompanys(pBackajax, park_id) {
-            console.log("init-companyType", pBackajax, park_id);
-            var data = {
-                "return_code": "100",
-                "response": [
-                    {
-                        "id": "1009",
-                        "name": "科技服务",
-                    },
-                    {
-                        "id": "1019",
-                        "name": "文化创意",
-                    }
-                ],
-                "err_msg": ""
-            };
-            pBackajax(data);
-        }
-        findCompany(pBackajax, park_id, company_type_id, name) {
-            console.log("findCompany", pBackajax, park_id, company_type_id, name);
-            $.ajax({
-                url: this.state.rooturl + '/api/findCompany',
-                data: {
-                    "park_id": 1,
-                    "token": this.state.token
-                },
-                type: "get",
-                success: function (data) {
-                    console.log("findCompanyJJJJJJJ", data);
-                    pBackajax(data);
-                }
-            });
-        }
-        getCompanyInfo(pBackajax, id) {
-            console.log("getCompanyInfo", pBackajax, id);
-            var data = {
-                "return_code": "100",
-                "response": {
-                    "id": "1009",
-                    "name": "桂林国家高新",
-                    "headimgurl": "./mPark/image/i.png",
-                    "building_id": "a座",
-                    "floor_id": "1F",
-                    "room_id": "201-2",
-                    "address": "桂林市七星区信息产业园E座B区三楼",
-                    "Contacts": "莫xxx",
-                    "phone": "15266666666",
-                    "website": "www.yongtoc.com",
-                    "descript": "xxx公司是由计算机图形学，计算机应用学组方面专家成。",
-                    "service": [
-                        {
-                            "id": "1009",
-                            "name": "科技服务",
-                        }
-                    ],
-                    "elegant": [
-                        {
-                            "id": "1009",
-                            "name": "xxx图片",
-                            "pic_url": "./mPark/image/i.png",
-                        }, {
-                            "id": "1009",
-                            "name": "xxx图片",
-                            "pic_url": "./mPark/image/i.png",
-                        }
-                    ],
-                    "product": [
-                        {
-                            "id": "1009",
-                            "name": "xxx图片",
-                            "pic_url": "./mPark/image/i.png",
-                        }, {
-                            "id": "1009",
-                            "name": "xxx图片",
-                            "pic_url": "./mPark/image/i.png",
-                        }
-                    ],
-                    "panorama": [
-                        {
-                            "id": "1009",
-                            "name": "xxx图片",
-                            "pic_url": "http://xxx.pic",
-                            "position": "",
-                        }
-                    ]
-                },
-                "err_msg": ""
-            };
-            pBackajax(data);
-        }
-        getRoomRentSquareType(pBackajax, park_id) {
-            console.log("init-AllareaType", pBackajax, park_id);
-            var data = {
-                "return_code": "100",
-                "response": [
-                    {
-                        "Section": "0-100",
-                    },
-                    {
-                        "Section": "100-200",
-                    }
-                ],
-                "err_msg": ""
-            };
-            pBackajax(data);
-        }
-        findRoomRentByparkid(pBackajax, park_id, square) {
-            console.log("findRoomRentByparkid", pBackajax, park_id, square);
-            var data = {
-                "return_code": "100",
-                "response": [
-                    {
-                        "id": "10091",
-                        "headimgurl": "./mPark/image/i.png",
-                        "building_id": "a座",
-                        "floor_id": "1F",
-                        "room_id": "201-1",
-                        "date": "2019-07-05",
-                        "square": "45m²",
-                        "price": "2.8元/m²/天"
-                    }, {
-                        "id": "10092",
-                        "headimgurl": "./mPark/image/i.png",
-                        "building_id": "a座",
-                        "floor_id": "1F",
-                        "room_id": "201-2",
-                        "date": "2019-07-05",
-                        "square": "45m²",
-                        "price": "2.8元/m²/天"
-                    }
-                ],
-                "err_msg": ""
-            };
-            pBackajax(data);
-        }
-        findRoomRentByroomid(pBackajax, id) {
-            console.log("findRoomRentByroomid", pBackajax, id);
-            var data = {
-                "return_code": "100",
-                "response": {
-                    "id": "1009",
-                    "headimgurl": "./mPark/image/i.png",
-                    "building_id": "a座",
-                    "floor_id": "1F",
-                    "room_id": "201-2",
-                    "date": "2019-07-05",
-                    "square": "45m²",
-                    "price": "2.8元/m²/天",
-                    "squre": "150",
-                    "floor": "4楼",
-                    "lift": "有",
-                    "Contacts": "莫xxx",
-                    "phone": "135000000",
-                    "inspection_time": "80:30-12:00",
-                    "require": "一年起租",
-                    "pic": [
-                        {
-                            "id": "1009",
-                            "name": "xxx图片",
-                            "url": "./mPark/image/i.png",
-                        }, {
-                            "id": "1009",
-                            "name": "xxx图片",
-                            "url": "./mPark/image/i.png",
-                        }, {
-                            "id": "1009",
-                            "name": "xxx图片",
-                            "url": "./mPark/image/i.png",
-                        }
-                    ],
-                    "panorama": [
-                        {
-                            "id": "1009",
-                            "name": "xxx图片",
-                            "url": "http://xxx.pic",
-                            "position": "",
-                        }
-                    ],
-                    "video": [
-                        {
-                            "id": "1009",
-                            "name": "xxx图片",
-                            "url": "https://www.yongtoc.com/themes/ytyc.mp4",
-                            "position": "",
-                        }
-                    ]
-                },
-                "err_msg": ""
-            };
-            pBackajax(data);
-        }
-        getRoomdata(pBackajax) {
-            console.log("initRoomdata");
-            pBackajax(111);
-        }
-    }
-    exports.default = DataService;
 });
 define("findLease", ["require", "exports", "react", "react-router-dom", "dataService"], function (require, exports, React, RouterDOM, dataService_1) {
     "use strict";
@@ -737,16 +617,269 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "dataSer
         }
     }
 });
-define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", "compat", "css!./styles/iconfont.css", "css!./styles/view.css"], function (require, exports, React, RouterDOM, bottomBtn_1, compat_1) {
+define("dataService", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class DataService {
+        constructor() {
+            this.state = {
+                rooturl: "http://192.168.1.13:90",
+            };
+        }
+        componentDidMount() {
+            console.log(localStorage.getItem("token"));
+        }
+        callback(a, pBack) {
+            console.log("callback1", a);
+            pBack("callback");
+        }
+        login(pBackajax) {
+            console.log("login");
+            $.ajax({
+                url: this.state.rooturl + '/api/login',
+                data: {
+                    "email": "test@test.com",
+                    "password": 123456
+                },
+                type: "post",
+                success: function (data) {
+                    console.log("login-getToken", data);
+                    localStorage.setItem("token", data.token);
+                }
+            });
+        }
+        refreshToken(ytoken) {
+            $.ajax({
+                url: this.state.rooturl + '/api/refresh',
+                data: {
+                    "token": ytoken,
+                },
+                type: "post",
+                success: function (data) {
+                    console.log("login-getToken", data);
+                }
+            });
+        }
+        getCompanys(pBackajax, park_id) {
+            console.log("init-companyType", pBackajax, park_id);
+            var data = {
+                "return_code": "100",
+                "response": [
+                    {
+                        "id": "1009",
+                        "name": "科技服务",
+                    },
+                    {
+                        "id": "1019",
+                        "name": "文化创意",
+                    }
+                ],
+                "err_msg": ""
+            };
+            pBackajax(data);
+        }
+        findCompany(pBackajax, park_id, company_type_id, name, token) {
+            console.log("findCompany", park_id, company_type_id, name, token);
+            let thetoken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xOTIuMTY4LjEuMTM6OTBcL2FwaVwvbG9naW4iLCJpYXQiOjE1ODQwMDM4MzMsImV4cCI6MTU4NDAwNzQzMywibmJmIjoxNTg0MDAzODMzLCJqdGkiOiJ1azFacEdiVjJ0TURRVGFFIiwic3ViIjoxLCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.A39kqiUJYPG-dYMyIy4wfcKMWGPUDGZrQSWUWNHo-fQ";
+            $.ajax({
+                url: this.state.rooturl + '/api/findCompany',
+                data: {
+                    "park_id": 1,
+                    "company_type_id": 1,
+                    "token": thetoken
+                },
+                type: "get",
+                success: function (data) {
+                    console.log("findCompanyJJJJJJJ", data);
+                    if (data.status == 113) {
+                    }
+                    else {
+                        pBackajax(data);
+                        console.log("finJJJ", data);
+                    }
+                }
+            });
+        }
+        getCompanyInfo(pBackajax, id) {
+            console.log("getCompanyInfo", pBackajax, id);
+            var data = {
+                "return_code": "100",
+                "response": {
+                    "id": "1009",
+                    "name": "桂林国家高新",
+                    "headimgurl": "./mPark/image/i.png",
+                    "building_id": "a座",
+                    "floor_id": "1F",
+                    "room_id": "201-2",
+                    "address": "桂林市七星区信息产业园E座B区三楼",
+                    "Contacts": "莫xxx",
+                    "phone": "15266666666",
+                    "website": "www.yongtoc.com",
+                    "descript": "xxx公司是由计算机图形学，计算机应用学组方面专家成。",
+                    "service": [
+                        {
+                            "id": "1009",
+                            "name": "科技服务",
+                        }
+                    ],
+                    "elegant": [
+                        {
+                            "id": "1009",
+                            "name": "xxx图片",
+                            "pic_url": "./mPark/image/i.png",
+                        }, {
+                            "id": "1009",
+                            "name": "xxx图片",
+                            "pic_url": "./mPark/image/i.png",
+                        }
+                    ],
+                    "product": [
+                        {
+                            "id": "1009",
+                            "name": "xxx图片",
+                            "pic_url": "./mPark/image/i.png",
+                        }, {
+                            "id": "1009",
+                            "name": "xxx图片",
+                            "pic_url": "./mPark/image/i.png",
+                        }
+                    ],
+                    "panorama": [
+                        {
+                            "id": "1009",
+                            "name": "xxx图片",
+                            "pic_url": "http://xxx.pic",
+                            "position": "",
+                        }
+                    ]
+                },
+                "err_msg": ""
+            };
+            pBackajax(data);
+        }
+        getRoomRentSquareType(pBackajax, park_id) {
+            console.log("init-AllareaType", pBackajax, park_id);
+            var data = {
+                "return_code": "100",
+                "response": [
+                    {
+                        "Section": "0-100",
+                    },
+                    {
+                        "Section": "100-200",
+                    }
+                ],
+                "err_msg": ""
+            };
+            pBackajax(data);
+        }
+        findRoomRentByparkid(pBackajax, park_id, square) {
+            console.log("findRoomRentByparkid", pBackajax, park_id, square);
+            var data = {
+                "return_code": "100",
+                "response": [
+                    {
+                        "id": "10091",
+                        "headimgurl": "./mPark/image/i.png",
+                        "building_id": "a座",
+                        "floor_id": "1F",
+                        "room_id": "201-1",
+                        "date": "2019-07-05",
+                        "square": "45m²",
+                        "price": "2.8元/m²/天"
+                    }, {
+                        "id": "10092",
+                        "headimgurl": "./mPark/image/i.png",
+                        "building_id": "a座",
+                        "floor_id": "1F",
+                        "room_id": "201-2",
+                        "date": "2019-07-05",
+                        "square": "45m²",
+                        "price": "2.8元/m²/天"
+                    }
+                ],
+                "err_msg": ""
+            };
+            pBackajax(data);
+        }
+        findRoomRentByroomid(pBackajax, id) {
+            console.log("findRoomRentByroomid", pBackajax, id);
+            var data = {
+                "return_code": "100",
+                "response": {
+                    "id": "1009",
+                    "headimgurl": "./mPark/image/i.png",
+                    "building_id": "a座",
+                    "floor_id": "1F",
+                    "room_id": "201-2",
+                    "date": "2019-07-05",
+                    "square": "45m²",
+                    "price": "2.8元/m²/天",
+                    "squre": "150",
+                    "floor": "4楼",
+                    "lift": "有",
+                    "Contacts": "莫xxx",
+                    "phone": "135000000",
+                    "inspection_time": "80:30-12:00",
+                    "require": "一年起租",
+                    "pic": [
+                        {
+                            "id": "1009",
+                            "name": "xxx图片",
+                            "url": "./mPark/image/i.png",
+                        }, {
+                            "id": "1009",
+                            "name": "xxx图片",
+                            "url": "./mPark/image/i.png",
+                        }, {
+                            "id": "1009",
+                            "name": "xxx图片",
+                            "url": "./mPark/image/i.png",
+                        }
+                    ],
+                    "panorama": [
+                        {
+                            "id": "1009",
+                            "name": "xxx图片",
+                            "url": "http://xxx.pic",
+                            "position": "",
+                        }
+                    ],
+                    "video": [
+                        {
+                            "id": "1009",
+                            "name": "xxx图片",
+                            "url": "https://www.yongtoc.com/themes/ytyc.mp4",
+                            "position": "",
+                        }
+                    ]
+                },
+                "err_msg": ""
+            };
+            pBackajax(data);
+        }
+        getRoomdata(pBackajax) {
+            console.log("initRoomdata");
+            pBackajax(111);
+        }
+    }
+    exports.default = DataService;
+});
+define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", "dataService", "compat", "css!./styles/iconfont.css", "css!./styles/view.css"], function (require, exports, React, RouterDOM, bottomBtn_1, dataService_2, compat_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Home extends React.Component {
         constructor(props) {
             super(props);
+            this.dataService = new dataService_2.default();
+            this.setToken = this.setToken.bind(this);
         }
         componentDidMount() {
             bottomBtn_1.default.toggleIcon(1);
-            localStorage.setItem("token", "666666");
+        }
+        setToken(data) {
+            console.log("setToken", data);
+            localStorage.setItem("token", data.token);
         }
         render() {
             return (React.createElement("div", null,
@@ -1073,7 +1206,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
     }
     exports.default = Home;
 });
-define("parkCompany", ["require", "exports", "react", "react-router-dom", "compat", "dataService"], function (require, exports, React, RouterDOM, compat_2, dataService_2) {
+define("parkCompany", ["require", "exports", "react", "react-router-dom", "compat", "dataService"], function (require, exports, React, RouterDOM, compat_2, dataService_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParkCompany extends React.Component {
@@ -1083,6 +1216,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                 parkCompanycss: "parkCompany",
                 showList: true,
                 showInfo: false,
+                token: "",
             };
             ParkCompany.toggleView = this.toggleView.bind(this);
             ParkCompany.getCompanyinfo = this.getCompanyinfo.bind(this);
@@ -1119,7 +1253,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                 React.createElement("p", { className: "companyInfotit" },
                     React.createElement(RouterDOM.Link, { to: "/home" },
                         React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B")),
-                    React.createElement("span", null, "\u56ED\u533A\u4F01\u4E1A")),
+                    React.createElement("span", null, "\u0530\uFFFD\uFFFD\uFFFD\uFFFD\u04B5")),
                 React.createElement("div", { className: this.state.showList == true ? "show" : "hide" },
                     React.createElement(CompanyList, null)),
                 React.createElement("div", { className: this.state.showInfo == true ? "show" : "hide" },
@@ -1129,7 +1263,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
     class CompanyList extends React.Component {
         constructor(props) {
             super(props);
-            this.dataService = new dataService_2.default();
+            this.dataService = new dataService_3.default();
             this.globalAction = new compat_2.default();
             this.state = {
                 park_id: 1001,
@@ -1141,19 +1275,26 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                 companyType: [],
                 indexOf: 0,
                 typeIndexof: 100,
-                typeName: "全部",
+                typeName: "ȫ��",
                 company_type_id: "",
                 inputValue: "",
                 iconfont: "iconfont iconfont-unturn",
+                token: "",
             };
             this.showInfo = this.showInfo.bind(this);
             this.setCompany = this.setCompany.bind(this);
             this.setCompanys = this.setCompanys.bind(this);
         }
+        componentWillMount() {
+            const token = localStorage.getItem('token');
+            this.setState({
+                token: token,
+            });
+            console.log("token", this.state);
+        }
         componentDidMount() {
             this.dataService.getCompanys(this.setCompanys, this.state.park_id);
-            this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.typeName);
-            console.log(localStorage.getItem("token"));
+            this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.typeName, this.state.token);
         }
         setCompanys(data) {
             this.setState({
@@ -1162,7 +1303,6 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
         }
         setCompany(data) {
             console.log("setCompany", data.response);
-            console.log("setCompany", data.response[0].name);
             this.setState({
                 companyData: data.response,
             });
@@ -1228,25 +1368,25 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
             });
         }
         foucus() {
-            if (this.state.inputValue == "请输入企业名称") {
+            if (this.state.inputValue == "��������ҵ����") {
                 this.setState({ inputValue: "" });
             }
         }
         blur(event) {
             if (this.state.inputValue == "") {
-                this.setState({ inputValue: "请输入企业名称" });
+                this.setState({ inputValue: "��������ҵ����" });
             }
         }
         change(event) {
             this.setState({ inputValue: event.target.value });
         }
         searchCompany() {
-            if (this.state.inputValue == "请输入企业名称") {
+            if (this.state.inputValue == "��������ҵ����") {
                 this.setState({ inputValue: "" });
             }
             ;
             console.log("searchBtn", this.state.inputValue, this.state.company_type_id);
-            this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.inputValue);
+            this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.inputValue, this.state.token);
         }
         render() {
             return (React.createElement("div", { className: this.state.companyListcss },
@@ -1263,7 +1403,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                                 i.address)),
                         React.createElement("div", { className: "companyul-right" },
                             React.createElement("p", { onClick: this.showInfo.bind(this, "Info", i.id, i.name), className: this.state.indexOf == index ? "show" : "hide" },
-                                "\u66F4\u591A",
+                                "\uFFFD\uFFFD\uFFFD\uFFFD",
                                 React.createElement("i", { className: "iconfont", style: { "fontSize": "2rem" } }, "\uE827")),
                             React.createElement("p", { className: this.state.indexOf == index ? "companyType-active" : "companyType" }, i.company_type))));
                 })),
@@ -1272,26 +1412,26 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                         React.createElement("div", { className: "searchBox" },
                             React.createElement("span", { className: "searchBox-text" },
                                 React.createElement("i", { className: "iconfont", style: { "fontSize": "3rem" } }, "\uE810"),
-                                React.createElement("input", { className: "companySearch", type: "text", placeholder: "\u8BF7\u8F93\u5165\u4F01\u4E1A\u540D\u79F0", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) })),
+                                React.createElement("input", { className: "companySearch", type: "text", placeholder: "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\uFFFD\uFFFD", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) })),
                             React.createElement("span", { onClick: this.foldBtn.bind(this), className: "searchBox-type" },
                                 this.state.typeName,
                                 " ",
                                 React.createElement("i", { className: "iconfont", style: { "fontSize": "3rem" } }, "\uE828"))),
                         React.createElement("ul", { className: "companyTypeul" },
-                            React.createElement("li", { className: this.state.typeIndexof == 100 ? "companyTypeli-active" : "companyTypeli", onClick: this.typeActive.bind(this, 100, "全部", ""), style: { "width": "12rem" } }, "\u5168\u90E8"),
+                            React.createElement("li", { className: this.state.typeIndexof == 100 ? "companyTypeli-active" : "companyTypeli", onClick: this.typeActive.bind(this, 100, "ȫ��", ""), style: { "width": "12rem" } }, "\u022B\uFFFD\uFFFD"),
                             this.state.companyType.map((i, index) => {
                                 return (React.createElement("li", { onClick: this.typeActive.bind(this, index, i.name, i.id), className: this.state.typeIndexof == index ? "companyTypeli-active" : "companyTypeli" }, i.name));
                             })),
-                        React.createElement("span", { className: "searchBtn", onClick: this.searchCompany.bind(this) }, "\u641C\u7D22")))));
+                        React.createElement("span", { className: "searchBtn", onClick: this.searchCompany.bind(this) }, "\uFFFD\uFFFD\uFFFD\uFFFD")))));
         }
     }
     class CompanyInfo extends React.Component {
         constructor(props) {
             super(props);
-            this.dataService = new dataService_2.default();
+            this.dataService = new dataService_3.default();
             this.state = {
                 companyInfocss: "companyInfo",
-                companyName: "浙江永拓信息科技有限公司",
+                companyName: "�㽭������Ϣ�Ƽ����޹�˾",
                 companyInfoul: "companyInfoul",
                 infoli: 0,
                 iconfont: "iconfont iconfont-unturn",
@@ -1355,10 +1495,10 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                     React.createElement("div", { className: "foleBtn", onClick: this.toggleFold.bind(this) },
                         React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem" } }, "\uE849")),
                     React.createElement("ul", { className: this.state.companyInfoul },
-                        React.createElement("li", { className: this.state.infoli == 0 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 0) }, "\u4F01\u4E1A\u4FE1\u606F"),
-                        React.createElement("li", { className: this.state.infoli == 1 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 1) }, "\u4F01\u4E1A\u98CE\u91C7"),
-                        React.createElement("li", { className: this.state.infoli == 2 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 2) }, "\u4F01\u4E1A\u8BE6\u60C5"),
-                        React.createElement("li", { className: this.state.infoli == 3 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 3) }, "\u4EA7\u54C1\u5C55\u793A")),
+                        React.createElement("li", { className: this.state.infoli == 0 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 0) }, "\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\u03E2"),
+                        React.createElement("li", { className: this.state.infoli == 1 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 1) }, "\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\uFFFD"),
+                        React.createElement("li", { className: this.state.infoli == 2 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 2) }, "\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\uFFFD\uFFFD"),
+                        React.createElement("li", { className: this.state.infoli == 3 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 3) }, "\uFFFD\uFFFD\u01B7\u0579\u02BE")),
                     React.createElement("div", { className: "infoContain" },
                         React.createElement("div", { className: this.state.infoli == 0 ? "show" : "hide" },
                             React.createElement(CompanyInfos, null)),
@@ -1410,13 +1550,13 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                         this.state.address),
                     React.createElement("p", { className: "infos-3" }, this.state.type),
                     React.createElement("p", { className: "infos-4" },
-                        React.createElement("span", null, "\u8054\u7CFB\u4EBA"),
+                        React.createElement("span", null, "\uFFFD\uFFFD\u03F5\uFFFD\uFFFD"),
                         React.createElement("span", null, this.state.man)),
                     React.createElement("p", { className: "infos-5" },
-                        React.createElement("span", null, "\u8054\u7CFB\u7535\u8BDD"),
+                        React.createElement("span", null, "\uFFFD\uFFFD\u03F5\uFFFD\u7EF0"),
                         React.createElement("span", null, this.state.tel)),
                     React.createElement("p", { className: "infos-6" },
-                        React.createElement("span", null, "\u4F01\u4E1A\u5B98\u7F51"),
+                        React.createElement("span", null, "\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\uFFFD\uFFFD"),
                         React.createElement("span", null, this.state.http)))));
         }
     }
@@ -1709,6 +1849,7 @@ define("photograph", ["require", "exports", "react", "react-router-dom"], functi
                 indexOf: 0,
                 illcauseInname: "",
                 illcauseInid: "",
+                iconfont: "iconfont iconfont-unturn",
             };
         }
         componentDidMount() {
@@ -1729,6 +1870,16 @@ define("photograph", ["require", "exports", "react", "react-router-dom"], functi
                 this.setState({
                     illegalLoadcss: "illegalLoad-all",
                     illfrom: "illfrom-all illfrom"
+                });
+            }
+            if (this.state.iconfont == "iconfont iconfont-unturn") {
+                this.setState({
+                    iconfont: "iconfont iconfont-turn",
+                });
+            }
+            else {
+                this.setState({
+                    iconfont: "iconfont iconfont-unturn",
                 });
             }
         }
@@ -1769,11 +1920,11 @@ define("photograph", ["require", "exports", "react", "react-router-dom"], functi
         render() {
             return (React.createElement("div", null,
                 React.createElement("p", { className: "companyInfotit" },
-                    React.createElement("span", { className: "iconfont companyInfoicon", onClick: this.showList.bind(this, "List", "i.id") }, "\uE7FA"),
+                    React.createElement("span", { className: "iconfont companyInfoicon", onClick: this.showList.bind(this, "List", "i.id") }, "\uE83B"),
                     React.createElement("span", null, "\u968F\u624B\u62CD")),
                 React.createElement("div", { className: this.state.illegalLoadcss },
                     React.createElement("div", { className: "foleBtn", onClick: this.toggleFold.bind(this) },
-                        React.createElement("span", { style: { "fontSize": "5rem" } }, "--")),
+                        React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem" } }, "\uE849")),
                     React.createElement("form", { className: this.state.illfrom },
                         React.createElement("p", null,
                             React.createElement("span", { className: "redStar" }, "*"),
@@ -1784,12 +1935,12 @@ define("photograph", ["require", "exports", "react", "react-router-dom"], functi
                             React.createElement("span", { className: "redStar" }, "*"),
                             " \u66DD\u5149\u7C7B\u578B",
                             React.createElement("input", { type: "text", className: "getillType", value: this.state.illcauseInname, placeholder: "\u8BF7\u9009\u62E9\u66DD\u5149\u7C7B\u578B" }),
-                            React.createElement("span", { className: "iconfont", style: { "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" }, onClick: this.showillcauseUL.bind(this) }, "\uE7FA")),
+                            React.createElement("span", { className: "iconfont", style: { "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" }, onClick: this.showillcauseUL.bind(this) }, "\uE827")),
                         React.createElement("p", null,
                             React.createElement("span", { className: "redStar" }, "*"),
                             "  \u5730\u5740",
                             React.createElement("input", { type: "text", value: "", className: "getillAdd", placeholder: "\u8BF7\u70B9\u51FB\u5730\u56FE\u9009\u62E9\u8FDD\u7AE0\u70B9" }),
-                            React.createElement("span", { className: "iconfont", style: { "fontSize": "3rem", "color": "#0B8BF0", "float": "right", "padding": " 0 0 0 4rem" } }, "\uE7FA")),
+                            React.createElement("span", { className: "iconfont", style: { "fontSize": "3rem", "color": "#0B8BF0", "float": "right", "padding": " 0 0 0 4rem" } }, "\uE82C")),
                         React.createElement("p", null,
                             React.createElement("span", { className: "redStar" }, "*"),
                             " \u8F66\u724C",
@@ -1798,10 +1949,10 @@ define("photograph", ["require", "exports", "react", "react-router-dom"], functi
                             React.createElement("span", { className: "redStar" }, "*"),
                             " \u66DD\u5149\u65F6\u95F4",
                             React.createElement("input", { type: "datetime", className: "getillTime", value: "", placeholder: "\u8BF7\u8F93\u5165\u8FDD\u89C4\u65F6\u95F4" })),
-                        React.createElement("div", { className: "illTxt" },
-                            React.createElement("p", null,
-                                React.createElement("span", { className: "redStar" }, "*"),
-                                " \u8FDD\u89C4\u63CF\u8FF0"),
+                        React.createElement("p", null,
+                            React.createElement("span", { className: "redStar" }, "*"),
+                            " \u8FDD\u89C4\u63CF\u8FF0"),
+                        React.createElement("div", null,
                             React.createElement("textarea", { className: "getilltextarea", value: "", placeholder: "\u8BF7\u5C06\u8FDD\u89C4\u95EE\u9898\u63CF\u8FF0\u51FA\u6765\u3002\uFF08120\u5B57\u5185\uFF09" })),
                         React.createElement("div", { className: "illSumbit", onClick: this.sumbitIllfrom.bind(this) }, "\u63D0\u4EA4"))),
                 React.createElement("div", { className: this.state.illcauseBox },
@@ -1847,11 +1998,11 @@ define("photograph", ["require", "exports", "react", "react-router-dom"], functi
                 React.createElement("p", null, "\u975E\u505C\u8F66\u4F4D\u8DEF\u4FA7\u505C\u8F66"),
                 React.createElement("p", null, "2020-01-21 10:59:15"),
                 React.createElement("p", null,
-                    React.createElement("span", { className: "iconfont", style: { "fontSize": "3rem" } }, "\uE7FA"),
+                    React.createElement("span", { className: "iconfont", style: { "fontSize": "3rem", "margin-right": "1rem" } }, "\uE82B"),
                     "\u8F66\u724C\uFF1A",
                     React.createElement("span", null, "\u6842C123456")),
                 React.createElement("p", null,
-                    React.createElement("span", { className: "iconfont", style: { "fontSize": "3rem" } }, "\uE7FA"),
+                    React.createElement("span", { className: "iconfont", style: { "fontSize": "3rem", "margin-right": "1rem" } }, "\uE815"),
                     "\u4F4D\u7F6E\uFF1A",
                     React.createElement("span", null, "A\u5EA7\u5927\u95E8\u65C1")),
                 React.createElement("p", null, "\u6A2A\u8DE8\u6591\u9A6C\u7EBF\u4E0A")));
@@ -1917,7 +2068,7 @@ define("photograph", ["require", "exports", "react", "react-router-dom"], functi
         render() {
             return (React.createElement("div", null,
                 React.createElement("p", { className: "companyInfotit" },
-                    React.createElement("span", { className: "iconfont companyInfoicon", onClick: this.showList.bind(this, "List", "id-01") }, "\uE7FA"),
+                    React.createElement("span", { className: "iconfont companyInfoicon", onClick: this.showList.bind(this, "List", "id-01") }, "\uE83B"),
                     React.createElement("span", null,
                         this.state.name,
                         "\u8FDD\u89C4")),
@@ -1925,7 +2076,7 @@ define("photograph", ["require", "exports", "react", "react-router-dom"], functi
                     React.createElement("div", { className: "foleBtn", onClick: this.toggleFold.bind(this) },
                         React.createElement("span", { style: { "fontSize": "5rem" } }, "--")),
                     React.createElement("div", { className: "leaseInfoul_br" },
-                        React.createElement("ul", { className: "leaseInfoul" },
+                        React.createElement("ul", { className: "leaseInfoul", style: { "width": "44rem" } },
                             React.createElement("li", { className: this.state.infoli == 0 ? "leaseInfoli-active" : "leaseInfoli", onClick: this.infoClick.bind(this, 0) }, "\u8FDD\u89C4\u4FE1\u606F"),
                             React.createElement("li", { className: this.state.infoli == 1 ? "leaseInfoli-active" : "leaseInfoli", onClick: this.infoClick.bind(this, 1) }, "\u8FDD\u89C4\u7167\u7247"))),
                     React.createElement("div", { className: "leaseContain" },
@@ -2081,10 +2232,10 @@ define("narrate", ["require", "exports", "react", "react-router-dom", "css!./sty
                 paused: true,
                 activeType: 0,
                 parkAudio: [
-                    { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-                    { name: "园区配套", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
-                    { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-                    { name: "园区建筑", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
+                    { name: "԰����ͨ", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+                    { name: "԰������", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
+                    { name: "԰����ͨ", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+                    { name: "԰������", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
                 ],
                 currentAudio: 0
             };
@@ -2095,7 +2246,7 @@ define("narrate", ["require", "exports", "react", "react-router-dom", "css!./sty
             let audio = document.getElementById("audioTool");
             let audioN = 0;
             audio.onended = function () {
-                console.log("当前音频，播放结束", audio.paused);
+                console.log("��ǰ��Ƶ�����Ž���", audio.paused);
                 audioN = audioN + 1;
                 Narrate.selfPlay(audioN);
             };
@@ -2158,7 +2309,7 @@ define("narrate", ["require", "exports", "react", "react-router-dom", "css!./sty
                 React.createElement("p", { className: "companyInfotit" },
                     React.createElement(RouterDOM.Link, { to: "/home" },
                         React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B")),
-                    React.createElement("span", null, "\u81EA\u52A8\u8BB2\u89E3")),
+                    React.createElement("span", null, "\uFFFD\u0536\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD")),
                 React.createElement("div", { className: "audioBox" },
                     React.createElement("ul", { className: "flex-layout category-head" }, this.state.parkAudio.map((i, index) => {
                         return (React.createElement("li", { className: this.state.activeType == index ? "flex-active" : "flex", onClick: this.audioClick.bind(this, index, i.name, i.url), "data-index": index }, i.name));
@@ -2448,6 +2599,10 @@ define("index", ["require", "exports", "react", "react-dom", "home", "parkCompan
         refreshLeaseinfo(id) {
             this.props.history.push('/findLease');
             findLease_2.default.getLeaseinfoByroomid(id);
+        }
+        addapplyPut(a) {
+            this.props.history.push('/applyPut');
+            applyPut_2.default.addapplyPut(a);
         }
     }
     Index.g_pIns = null;

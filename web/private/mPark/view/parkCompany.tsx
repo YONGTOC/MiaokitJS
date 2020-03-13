@@ -14,6 +14,7 @@ class ParkCompany extends React.Component {
 
   public componentDidMount() {
     console.log(12313123);
+   
   }
 
   // 定义静态类，需要绑定到this的方法上，供外部调用;
@@ -70,7 +71,7 @@ class ParkCompany extends React.Component {
     parkCompanycss: "parkCompany",
     showList: true,
     showInfo: false,
-
+    token:"",
   }
 
 
@@ -78,7 +79,7 @@ class ParkCompany extends React.Component {
 }
 
 // 公司列表页
-class CompanyList extends React.Component {
+class CompanyList extends React.Component{
   public constructor(props) {
     super(props);
 
@@ -87,12 +88,19 @@ class CompanyList extends React.Component {
     this.setCompanys = this.setCompanys.bind(this);
   }
 
+  public componentWillMount() {
+    const token = localStorage.getItem('token');
+    this.setState({
+      token: token,
+    });
+    console.log("token",this.state)
+  }
+
   public componentDidMount() {
     //获取园区下面企业类型列表
     this.dataService.getCompanys(this.setCompanys, this.state.park_id);
     //通过园区id搜索园区下面企业列表
-    this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.typeName);
-    console.log(localStorage.getItem("token"));
+    this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.typeName, this.state.token);
   }
 
   public dataService: DataService = new DataService();
@@ -100,13 +108,13 @@ class CompanyList extends React.Component {
   public setCompanys(data) {
     this.setState({
       companyType: data.response,
-    })
+    });
   }
 
   // set企业列表
   public setCompany(data) {
     console.log("setCompany", data.response)
-    console.log("setCompany", data.response[0].name)
+  //  console.log("setCompany", data.response[0].name)
     this.setState({
       companyData: data.response,
     })
@@ -209,7 +217,7 @@ class CompanyList extends React.Component {
       this.setState({ inputValue: "" })
     };
     console.log("searchBtn", this.state.inputValue, this.state.company_type_id);
-    this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.inputValue);
+    this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.inputValue,this.state.token);
   }
 
   public render() {
@@ -293,6 +301,7 @@ class CompanyList extends React.Component {
     // 输入框默认值
     inputValue: "",
     iconfont: "iconfont iconfont-unturn",
+    token:"",
   }
 
 

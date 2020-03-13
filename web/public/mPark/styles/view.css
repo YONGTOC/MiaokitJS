@@ -1489,6 +1489,9 @@ i{
     width: 10rem;
     float:right;
 }
+.illfrom p:nth-child(6) {
+    border:none;
+}
 .redStar {
     color: #E50000;
 }
@@ -1518,6 +1521,7 @@ i{
     width: 100%;
     height: 31rem;
     border: 0;
+    font-size:2rem;
 }
 
 /**/
@@ -1574,4 +1578,117 @@ i{
     font-size: 2.3rem;
     color: rgb(242,242,242);
     border-radius: 0.5rem;
+}
+/*applyPut -- ∞⁄µ„…Í«Î*/
+.applyPut-part {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+.applyPut-all {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem;
+}
+.applyPutSumbit {
+    width: 100%;
+    height: 7rem;
+    background: #0B8BF0;
+    color: #fff;
+    text-align: center;
+    font-size: 3rem;
+    line-height: 6.5rem;
+    position: absolute;
+    bottom: 0;
+    clear: both;
+    left: 0;
+}
+ 
+.applyPutfrom-part {
+    width: 100%;
+    height: 43rem;
+}
+.applyPutfrom-all {
+    height: 100%;
+}
+.applyPutfrom {
+    width: 100%;
+    overflow-y: scroll;
+    padding: 0 2rem;
+}
+
+.applyPutfrom p{
+    border-bottom: 0.2rem solid #ccc;
+    padding: 2rem 0rem;
+}
+.applyPutfrom ul {
+    padding-left:0;
+}
+.applyList ul li {
+    display: flex;
+    border-bottom: 0.2rem solid #F2F2F2;
+    padding: 1rem 0;
+}
+.getapplyPuttextarea {
+    background: #F2F2F2;
+    width: 100%;
+    height: 31rem;
+    border: 0;
+    font-size: 2rem;
+}
+.applyAddress {
+    float: left;
+    width: 22rem;
+    overflow: hidden;
+    white-space: nowrap;
+    /*text-overflow: ellipsis;*/
+    font-size: 2rem;
+    height: 5rem;
+    line-height: 4rem;
+}
+.applytime {
+    display: inline-block;
+    width: 13rem;
+    margin: 0 2rem;
+    font-size: 2rem;
+    line-height: 4rem;
+}
+
+.applyicom {
+    float: right;
+}
+.applyicom i{
+    font-size: 3rem;
+    line-height: 3rem;
+}
+.applyAddressInput {
+    border: 0;
+}
+.applyIndexof {
+    border: 0.2rem solid #333;
+    border-radius: 5rem;
+    padding: 0 0.8rem;
+}
+.theapplyP {
+    background: #F2F2F2;
+    width: 107%;
+    margin-left: -2rem;
+    padding-left: 2rem !important;
+    margin-top: 2rem;
+    color: #949494;
+    border: 0 !important;
+    margin-bottom: 2rem;
 }

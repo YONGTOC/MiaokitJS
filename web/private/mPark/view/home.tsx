@@ -3,6 +3,7 @@ import * as RouterDOM from 'react-router-dom';
 
 import BottomBtn from "bottomBtn";
 
+import DataService from "dataService";
 import GlobalAction from "compat";
 import "css!./styles/iconfont.css";
 import "css!./styles/view.css";
@@ -11,12 +12,21 @@ class Home extends React.Component {
   public constructor(props) {
     super(props)
 
+    this.setToken = this.setToken.bind(this);
   }
 
   public componentDidMount() {
     BottomBtn.toggleIcon(1);
 
-    localStorage.setItem("token","666666");
+   //2 µÇÂ¼»ñÈ¡ token
+   // this.dataService.login(this.setToken);
+  }
+
+  public dataService: DataService = new DataService();
+  //set token
+  public setToken(data) {
+    console.log("setToken", data);
+    localStorage.setItem("token", data.token);
   }
 
   public render() {
