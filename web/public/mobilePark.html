@@ -2,7 +2,7 @@
 <html lang="zh-cn" style="height: 100%; margin: 0; padding: 0;">
 <head>
     <meta charset="utf-8" />
-    <title>移动园区 2020.1</title>
+    <title>移动园区  2020.1</title>
     <script src="./common/miaokit/MiaokitLoader.min.js"></script>
     <script src="./common/jquery.js"></script>
     <script src="./common/requirejs/require.js"></script>
@@ -82,11 +82,14 @@
 
     <!--<p   id="go">调用预定义的全景图</p>-->
     <ul style="position: absolute;top: 130px;left:0px;z-index: 101;">
-        <li>
+        <!--<li>
             <button onclick="roomScene(1)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活房间全景</button>
         </li>
         <li>
             <button onclick="companyScene(2)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业全景</button>
+        </li>-->
+        <li>
+            <button onclick="addapplyPut(10001)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">添加摆点位置</button>
         </li>
         <li>
             <button onclick="refreshCompanyinfo(10086)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业显示</button>
@@ -96,9 +99,16 @@
         </li>
     </ul>
     <script>
+        // 添加摆点信息
+        function addapplyPut(a) {
+            MiaokitJS.App.UI.addapplyPut(a);
+        }
+
         // 激活房间全景
         function roomScene(a) {
-            window.open('./mPark/vr.html?roomId='+ a);  
+           // window.open('./mPark/vr-y.html?roomId='+ a);  
+           // location.href = './mPark/vr-y.html?roomId=' + a;
+            window.open('./mPark/vr-y.html?roomId=' + a, '_blank');
         }
         // 激活企业全景
         function companyScene(a) {
@@ -118,6 +128,7 @@
         }
 
     </script>
+
 </body>
 
 </html>

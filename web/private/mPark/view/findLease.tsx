@@ -16,23 +16,21 @@ class FindLease extends React.Component {
 
   }
 
-  // 定义静态类，需要绑定到this的方法上，供外部调用;
   // 外部传入的企业id，传给企业详情组件，刷新企业详情数据；
+   //(招租查询模块-查询)通过roomid获取招租的场地列表接口
   static getLeaseinfoByroomid(id) { }
   public getLeaseinfoByroomid(id) {
     console.log("getCompanyinfo", id);
 
     this.toggleView("Info", id);
-   LeaseInfo.getLeaseInfo(id);
+    LeaseInfo.getLeaseInfo(id);
   }
-
-  
 
   static toggleView(a, id) { };
   public toggleView(a, id) {
     console.log("fl", a);
     console.log("fl", id);
-   // console.log("fl", n);
+    // console.log("fl", n);
     //roomid
     if (a == "Info") {
       this.setState({
@@ -98,8 +96,6 @@ class LeaseList extends React.Component {
     this.dataService.getRoomRentSquareType(this.getRoomRentSquareType, this.state.park_id);
     //(招租查询模块-查询)通过园区id获取招租的场地列表接口
     this.dataService.findRoomRentByparkid(this.setRoomRent, this.state.park_id, this.state.square);
-    //(招租查询模块-查询)通过roomid获取招租的场地列表接口
-   // this.dataService.findRoomRentByroomid(this.setRoomRent, this.state.square);
   }
 
   public dataService: DataService = new DataService();
@@ -119,9 +115,8 @@ class LeaseList extends React.Component {
     })
   }
 
-
   // 点击更多，显示info;隐藏list；这里需要调用FindLease 的方法；
-  public showInfo(a, id, name, e){
+  public showInfo(a, id, name, e) {
     FindLease.toggleView(a, id);
     LeaseInfo.getLeaseInfo(id);
     console.log("more", a, id, name, e);
@@ -219,7 +214,6 @@ class LeaseList extends React.Component {
 
   public render() {
     return (
-      <div>
         <div className={this.state.leaseListcss}>
           <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
             <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
@@ -237,9 +231,9 @@ class LeaseList extends React.Component {
                     <p style={{ "font-size": "2.5rem" }}><span className="iconfont" style={{ "fontSize": "2.5rem", "margin-right": "1rem" }}>&#xe829;</span>{i.date}</p>
                   </div>
                   <div className="leaseul-right">
-                    <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)}>更多
+                    <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)} className={this.state.indexOf == index ? "show" : "hide"}>更多
                         <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
-                     </p>
+                    </p>
                     <p className={this.state.indexOf == index ? "leaseType-active" : "leaseType"} >
                       <span className={this.state.indexOf == index ? "leasePrice-active" : "leasePrice"}>{i.price}</span></p>
                   </div>
@@ -273,7 +267,6 @@ class LeaseList extends React.Component {
             </div>
           </form>
         </div>
-      </div>
     )
   }
 
@@ -329,16 +322,12 @@ class LeaseInfo extends React.Component {
 
     LeaseInfos.setLeaseInfos(data);
     Picshow.setPicshow(data);
+    Videoshow.setVideoshow(data);
   }
-
- 
-
 
   public componentDidMount() {
     console.log("MMMMM")
   }
-
-
 
   public showList(a, id) {
     FindLease.toggleView(a, id);
@@ -376,7 +365,6 @@ class LeaseInfo extends React.Component {
     })
   }
 
-
   public render() {
     return (
       <div>
@@ -390,11 +378,9 @@ class LeaseInfo extends React.Component {
           </div>
           <div className="leaseInfoul_br">
             <ul className={"leaseInfoul"}>
-              <li className={this.state.infoli == 0 ? "leaseInfoli-active" : "leaseInfoli"}
-                onClick={this.infoClick.bind(this, 0)}
-              >租房信息</li>
-              <li className={this.state.infoli == 1 ? "leaseInfoli-active" : "leaseInfoli"}
-                onClick={this.infoClick.bind(this, 1)} >照片展示</li>
+              <li className={this.state.infoli == 0 ? "leaseInfoli-active" : "leaseInfoli"}  onClick={this.infoClick.bind(this, 0)} >租房信息</li>
+              <li className={this.state.infoli == 2 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 2)}>视频讲解</li>
+              <li className={this.state.infoli == 1 ? "leaseInfoli-active" : "leaseInfoli"}onClick={this.infoClick.bind(this, 1)} >照片展示</li>
             </ul>
           </div>
           <div className="leaseContain">
@@ -403,6 +389,9 @@ class LeaseInfo extends React.Component {
             </div>
             <div className={this.state.infoli == 1 ? "show" : "hide"}>
               <Picshow />
+            </div>
+            <div className={this.state.infoli == 2 ? "show" : "hide"}>
+              <Videoshow />
             </div>
           </div>
         </div>
@@ -413,9 +402,9 @@ class LeaseInfo extends React.Component {
   public state = {
     leaseInfocss: "leaseInfo",
     roomName: "",
-    building:"",
-    floor:"",
-    room:"",
+    building: "",
+    floor: "",
+    room: "",
     infoli: 0,
     iconfont: "iconfont iconfont-unturn",
   }
@@ -429,7 +418,7 @@ class LeaseInfos extends React.Component {
     LeaseInfos.setLeaseInfos = this.setLeaseInfos.bind(this);
   }
 
-  public componentDidMount() {}
+  public componentDidMount() { }
 
   // 显示获取的企业详情
   static setLeaseInfos(data) { }
@@ -437,13 +426,13 @@ class LeaseInfos extends React.Component {
     console.log("setLeaseInfosIIII", data);
     this.setState({
       area: data.response.squre,
-      time: data.response.inspection_time ,
-      floor: data.response.floor_id ,
-      limit: data.response.require ,
-      elevator: data.response.lift ,
-      price: data.response.price ,
-      man: data.response.Contacts ,
-      tel: data.response.phone  
+      time: data.response.inspection_time,
+      floor: data.response.floor_id,
+      limit: data.response.require,
+      elevator: data.response.lift,
+      price: data.response.price,
+      man: data.response.Contacts,
+      tel: data.response.phone
     })
   }
 
@@ -504,8 +493,8 @@ class Picshow extends React.Component {
     this.setState({
       roomImg: data.response.pic,
     })
+    console.log("setPicshowSSSSSSSSSSS", this.state.roomImg);
   }
-
 
   public render() {
     return (
@@ -531,6 +520,50 @@ class Picshow extends React.Component {
       //{ url: "./mPark/image/i.png" },
       //{ url: "./mPark/image/i.png" },
       //{ url: "./mPark/image/i.png" },
+    ]
+  }
+}
+
+// 中-》视频讲解 --Videoshow
+class Videoshow extends React.Component{
+  public constructor(props) {
+    super(props);
+
+    Videoshow.setVideoshow = this.setVideoshow.bind(this);
+  }
+
+  public componentDidMount() { }
+
+  // 显示获取的企业视频
+  static setVideoshow(data) { }
+  public setVideoshow(data) {
+    console.log("setsetVideoshowVVVVVVV", data);
+    this.setState({
+      roomVideo: data.response.video,
+    })
+  }
+
+  public render() {
+    return (
+      <div className={"picshow"}>
+        <ul>
+          {this.state.roomVideo.map((i, index) => {
+            return (
+              <li style={{  "width": "56rem"," height": "36rem"}}>
+                <video src={i.url} style={{ "width": "100%", "height": "100%"}} controls >
+                  当前浏览器不支持video播放     
+                </video>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    )
+  }
+
+  public state = {
+    roomVideo: [
+      //{ url: "https://www.yongtoc.com/themes/ytyc.mp4" },
     ]
   }
 }

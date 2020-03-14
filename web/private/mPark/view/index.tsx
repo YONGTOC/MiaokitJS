@@ -128,7 +128,14 @@ class Index extends React.Component<{ history: any }>{
     this.props.history.push('/findLease');
     FindLease.getLeaseinfoByroomid(id);
   }
+
+  public addapplyPut(a) {
+    this.props.history.push('/applyPut');
+    ApplyPut.addapplyPut(a);
+  }
 }
+
+
 
 export default Index;
 
