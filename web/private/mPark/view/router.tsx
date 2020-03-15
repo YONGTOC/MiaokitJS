@@ -24,10 +24,9 @@ class Router extends React.Component {
     return(
       <HashRouter>
         <Switch>
-            <Route exact path="/" component={Index} />
-            <Route path="/home" component={Home}>
-              <Route path="/infoArea" component={InfoArea} />
-            </Route>
+            <Route exact path="/index" component={Index} />
+            <Route path="/home" component={Home} />
+            <Route path="/infoArea" component={InfoArea} />
             <Route path="/parkCompany" component={ParkCompany} />
             <Route path="/photograph" component={Photograph} />
             <Route path="/findLease" component={FindLease} />
@@ -36,7 +35,7 @@ class Router extends React.Component {
             <Route path="/repairsOnline" component={RepairsOnline} />
             <Route path="/parking" component={Parking} />
             <Route path="/message" component={Message} />
-            <Route path="/personalCenter" component={PersonalCenter} />
+            <Route path="/" component={PersonalCenter} />
             <Route path="/narrate" component={Narrate} />
             <Route path="/isay" component={Isay} />
           </Switch>
