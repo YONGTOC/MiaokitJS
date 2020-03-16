@@ -11,6 +11,11 @@ class PersonalCenter extends React.Component {
   public readonly state: Readonly<IState> = {
   }
 
+  componentDidMount() {
+    sessionStorage.setItem("userInfo", "3")
+  }
+  
+
   render() {
     return (
       <div className="personal-center">
@@ -53,6 +58,31 @@ class PersonalCenter extends React.Component {
             <div style={{ fontSize: "40px", marginTop: "5px", color: "#6C6C6C" }}>我的消息</div>
           </div>
         </div>
+        {sessionStorage.getItem("userInfo") === "2" ?
+          <div className="personal-center-enterprise">
+            <div className="personal-center-enterprise-child">
+              <img src="./mpark/image/enterprise.png" width="70px" height="70px" />
+              <span style={{ fontSize: "40px", color: "#333333", marginLeft: "30px" }}>企业信息管理</span>
+              <div style={{ float: "right", height: "100%", width: "120px", textAlign: "center" }}>
+                <img src="./mpark/image/right.png" />
+              </div>
+            </div>
+            <div className="personal-center-enterprise-child">
+              <img src="./mpark/image/let.png" width="70px" height="70px" />
+              <span style={{ fontSize: "40px", color: "#333333", marginLeft: "30px" }}>租用房间管理</span>
+              <div style={{ float: "right", height: "100%", width: "120px", textAlign: "center" }}>
+                <img src="./mpark/image/right.png" />
+              </div>
+            </div>
+          </div> : null
+        }
+
+        {sessionStorage.getItem("userInfo") === "3" ?
+          <div className="personal-center-park">
+
+          </div> : null
+        }
+
       </div>
     )
   }

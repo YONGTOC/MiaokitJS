@@ -35,13 +35,13 @@ class BottomBtn extends React.Component {
             <p>微圈</p>
           </div>
         </RouterDOM.Link> 
-        <RouterDOM.Link to="/message" >
+        <RouterDOM.Link to="/information" >
           <div className={this.state.index == 3 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 3)}>
             <img src={this.state.index == 3 ? this.state.iconImg3In : this.state.iconImg3Un} />
             <p>资讯</p>
           </div>
         </RouterDOM.Link>
-        <RouterDOM.Link to="/aboutMe" >
+        <RouterDOM.Link to="/personalCenter" >
           <div className={this.state.index == 4 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 4)}>
             <img src={this.state.index == 4 ? this.state.iconImg4In : this.state.iconImg4Un } />
             <p>我的</p>

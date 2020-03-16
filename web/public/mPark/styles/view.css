@@ -188,7 +188,7 @@ i{
     position: fixed;
     width: 100%;
     height: 9rem;
-    z-index: 100;
+    z-index: 999;
     bottom: 0;
     /*border: 0.1rem solid red;*/
     background: #fff;

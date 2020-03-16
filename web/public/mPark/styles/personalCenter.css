@@ -4,7 +4,7 @@
   left: 0;
   height: 100%;
   width: 100%;
-  z-index: 100;
+  z-index: 101;
   background-color: #F2F2F2;
 }
 .personal-center-top {
@@ -65,5 +65,18 @@
   height: 100%;
   text-align: center;
   float: left;
+}
+.personal-center-enterprise {
+  margin-top: 10px;
+  overflow: hidden;
+}
+.personal-center-enterprise-child {
+  width: 100%;
+  height: 120px;
+  border-bottom: 2px solid #F2F2F2;
+  font-size: 40px;
+  line-height: 120px;
+  background-color: #ffffff;
+  padding-left: 50px;
 }
 

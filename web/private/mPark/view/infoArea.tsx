@@ -54,7 +54,6 @@ class InfoArea extends React.Component {
   render() {
     return (
       <div className="infoarea">
-        {this.props.children}
         <div className="infoarea-top">
           <div className="infoarea-title">Êý×ÖÔ°Çø</div>
           <div className="infoarea-child-top">

@@ -34,7 +34,8 @@ class Home extends React.Component {
       <div >
         <TopBtn />
         <FoldBtn />
-        <BottomBtn />
+        {this.props.children}
+        <BottomBtn history={this.props.history} />
       </div>
     )
   }
