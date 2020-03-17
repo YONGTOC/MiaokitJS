@@ -2,22 +2,47 @@ import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
 
 import "css!./styles/view.css";
+
+interface IProps {
+  history: any
+}
+
 //底部按钮区
 class BottomBtn extends React.Component {
   public constructor(props) {
     super(props)
-
-    BottomBtn.toggleIcon = this.toggleIcon.bind(this);
+    this.toggleIcon = this.toggleIcon.bind(this);
   }
 
-  static toggleIcon(data) { }
-  public toggleIcon(data) {
-    console.log(data);
+  public readonly props: Readonly<IProps> = {
+    history: this.props.history
+  }
+
+  componentDidMount() {
+
+    if (this.props.history.location.pathname === "/home") {
+      this.setState({ index: 1 }, () => {
+        this.toggleIcon(this.state.index)
+      })
+    } else if (this.props.history.location.pathname === "/home/infoArea") {
+      this.setState({ index: 2 }, () => {
+        this.toggleIcon(this.state.index)
+      })
+    } else if (this.props.history.location.pathname === "/home/information") {
+      this.setState({ index: 3 }, () => {
+        this.toggleIcon(this.state.index)
+      })
+    } else {
+      this.setState({ index: 4 }, () => {
+        this.toggleIcon(this.state.index)
+      })
+    }
+  }
+  toggleIcon(data) {
     this.setState({
       index:data
     })
   }
-
 
 
   public render() {
@@ -29,19 +54,19 @@ class BottomBtn extends React.Component {
             <p>3D沙盘</p>
           </div>
         </RouterDOM.Link  >
-        <RouterDOM.Link to="/infoArea" >
+        <RouterDOM.Link to="/home/infoArea" >
           <div className={this.state.index == 2 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 2)}>
             <img src={this.state.index == 2 ? this.state.iconImg2In : this.state.iconImg2Un} />
             <p>微圈</p>
           </div>
         </RouterDOM.Link> 
-        <RouterDOM.Link to="/information" >
+        <RouterDOM.Link to="/home/information" >
           <div className={this.state.index == 3 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 3)}>
             <img src={this.state.index == 3 ? this.state.iconImg3In : this.state.iconImg3Un} />
             <p>资讯</p>
           </div>
         </RouterDOM.Link>
-        <RouterDOM.Link to="/personalCenter" >
+        <RouterDOM.Link to="/home/personalCenter" >
           <div className={this.state.index == 4 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 4)}>
             <img src={this.state.index == 4 ? this.state.iconImg4In : this.state.iconImg4Un } />
             <p>我的</p>

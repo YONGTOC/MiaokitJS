@@ -8,6 +8,11 @@ import GlobalAction from "compat";
 import "css!./styles/iconfont.css";
 import "css!./styles/view.css";
 
+interface IProps {
+  history: any,
+  children: any
+}
+
 class Home extends React.Component {
   public constructor(props) {
     super(props)
@@ -15,8 +20,12 @@ class Home extends React.Component {
     this.setToken = this.setToken.bind(this);
   }
 
+  public readonly props: Readonly<IProps> = {
+    history: this.props.history,
+    children: this.props.children
+  }
+
   public componentDidMount() {
-    BottomBtn.toggleIcon(1);
 
    //2 µÇÂ¼»ñÈ¡ token
    // this.dataService.login(this.setToken);

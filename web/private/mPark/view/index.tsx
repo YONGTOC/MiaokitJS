@@ -7,6 +7,7 @@ import ParkCompany from "parkCompany";
 import FindLease from "findLease";
 
 interface IProps {
+  history: any
 }
 
 interface IState {
@@ -17,7 +18,7 @@ interface IState {
 }
 
 
-class Index extends React.Component<{ history: any }>{
+class Index extends React.Component {
   constructor(props) {
     super(props);
 
@@ -31,6 +32,11 @@ class Index extends React.Component<{ history: any }>{
     parkArr: [1, 2, 3, 4, 5, 6, 7, 8, 9], // 园区
     tagArr: ["电子信息", "高新技术", "电商服务"] // 标签
   }
+
+  public readonly props: Readonly<IProps> = {
+    history: this.props.history
+  }
+
 
   componentDidMount() {
     let _this = this
