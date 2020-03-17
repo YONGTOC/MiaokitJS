@@ -79,4 +79,28 @@
   background-color: #ffffff;
   padding-left: 50px;
 }
+.personal-center-park {
+  margin-top: 10px;
+  overflow: hidden;
+}
+.personal-center-park-child {
+  float: left;
+  width: 25%;
+  height: 220px;
+  text-align: center;
+  color: #333333;
+  font-size: 40px;
+}
+.personal-center-bottom-img {
+  transform: rotate(90deg);
+}
+.personal-center-right {
+  overflow: hidden;
+  height: 100px;
+  width: 100px;
+  float: right;
+  text-align: center;
+  line-height: 100px;
+  margin-top: 25px;
+}
 

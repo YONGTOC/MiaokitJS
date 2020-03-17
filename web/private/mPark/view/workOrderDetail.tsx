@@ -13,6 +13,11 @@ class workOrderDetail extends React.Component {
 
   }
 
+  // 返回
+  goBack() {
+    this.props.history.goBack()
+  }
+
 
   render() {
     return (
@@ -20,7 +25,7 @@ class workOrderDetail extends React.Component {
         <div className="work-order-detail-top">
           <div className="work-order-detail-title">数字园区</div>
         </div>
-        <div className="work-order-detail-back">
+        <div className="work-order-detail-back" onClick={this.goBack.bind(this)}>
           <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
           <span>我的工单</span>
         </div>

@@ -16,6 +16,8 @@ import Narrate from "narrate";
 import Isay from "isay";
 import WorkOrder from "workOrder";
 import WorkOrderDetail from "workOrderDetail";
+import ModificationAuthentication from "modificationAuthentication";
+import Message from "message";
 
 //园区企业--parkCompany; 随手拍 -- photograph；招租查询--findLease； 摆点申请-- applyPut； 
 //场地预定-- bookSite；在线报修-- repairsOnline；停车服务-- parking
@@ -45,7 +47,9 @@ class Router extends React.Component {
                 <Route path="/home/personalCenter" component={PersonalCenter} />
               </Home>
             )}>
-            </Route>
+          </Route>
+          <Route path="/modificationAuthentication" component={ModificationAuthentication} />
+          <Route path="/message" component={Message} />
 
         </Switch>
       </HashRouter>
