@@ -18,6 +18,10 @@ import WorkOrder from "workOrder";
 import WorkOrderDetail from "workOrderDetail";
 import ModificationAuthentication from "modificationAuthentication";
 import Message from "message";
+import EnterpriseInformation from "enterpriseInformation";
+import RentRoom from "rentRoom";
+import RentRoomDetail from "rentRoomDetail";
+import DefaultRentRoom from "defaultRentRoom";
 
 //园区企业--parkCompany; 随手拍 -- photograph；招租查询--findLease； 摆点申请-- applyPut； 
 //场地预定-- bookSite；在线报修-- repairsOnline；停车服务-- parking
@@ -47,10 +51,13 @@ class Router extends React.Component {
                 <Route path="/home/personalCenter" component={PersonalCenter} />
               </Home>
             )}>
-          </Route>
-          <Route path="/modificationAuthentication" component={ModificationAuthentication} />
-          <Route path="/message" component={Message} />
-
+            </Route>
+            <Route path="/modificationAuthentication" component={ModificationAuthentication} />
+            <Route path="/message" component={Message} />
+            <Route path="/enterpriseInformation" component={EnterpriseInformation} />
+            <Route path="/rentRoom" component={RentRoom} />
+          <Route path="/rentRoomDetail" component={RentRoomDetail} />
+          <Route path="/defaultRentRoom" component={DefaultRentRoom} />
         </Switch>
       </HashRouter>
   )}

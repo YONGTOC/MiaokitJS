@@ -1,0 +1,45 @@
+.rent-room {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+  background-color: #F2F2F2;
+  overflow-y: auto;
+}
+.rent-room-top {
+  background-color: #0B8BF0;
+  width: 100%;
+  height: 150px;
+  padding: 50px 0 0 50px;
+}
+.rent-room-title {
+  color: #FFFFFF;
+  font-size: 40px;
+}
+.rent-room-back {
+  font-size: 40px;
+  color: #6C6C6C;
+  overflow: hidden;
+  background-color: #ffffff;
+  height: 120px;
+  width: 100%;
+  line-height: 120px;
+  padding-left: 40px;
+}
+.rent-room-list {
+  width: 100%;
+  height: 100%;
+  white-space: pre-line;
+  overflow-y: auto;
+  padding-bottom: 500px;
+  margin-top: 15px;
+}
+.rent-room-list-child {
+  width: 100%;
+  height: 286px;
+  border-bottom: 5px solid #F2F2F2;
+  background-color: #ffffff;
+  overflow: hidden;
+}
