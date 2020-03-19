@@ -1,0 +1,18 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "AMD",
+    "jsx": "react",
+    "outDir": "../../../public/mPark/js",
+    "outFile": "../../../public/mPark/js/view.js",
+    "noImplicitAny": false,
+    "noEmitOnError": false,
+    "removeComments": true,
+    "sourceMap": false,
+    "baseUrl": "../../../public",
+    "paths": {
+      "antd": [ "common/antd/lib/index" ]
+    }
+  }
+}
