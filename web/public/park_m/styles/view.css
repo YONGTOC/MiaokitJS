@@ -1,0 +1,2157 @@
+.hide {
+    display: none;
+}
+
+li {
+    list-style: none;
+}
+
+p {
+    font-size: 2rem;
+    margin: 0;
+}
+i{
+    display:inline-block;
+}
+.iconfont-turn {
+    transform: rotate(180deg);
+    transition: 0.5s;
+    color: #C0C0C0;
+}
+.iconfont-unturn {
+    transition: 0.5s;
+    color: #C0C0C0;
+}
+/*index*/
+.web {
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+    top: 0px;
+    /*border:1rem solid red;*/
+}
+
+.topView {
+    position: fixed;
+    width: 7rem;
+    height: 28rem;
+    z-index: 100;
+    top: 3.2rem;
+    right: 2.4rem;
+    background: rgba(247,247,247,1);
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.topViewBack {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 101;
+    background: rgba(0,0,0,0.5);
+}
+
+.iconBox {
+    width: 6rem;
+    height: 9rem;
+    border-top: 0.1rem solid #646464;
+    text-align: center;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    float: left;
+}
+
+.iconBoxIn {
+    width: 6rem;
+    height: 9rem;
+    border-top: 0.1rem solid #646464;
+    text-align: center;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    float: left;
+    color: #0B8BF0;
+}
+
+.iconBox p {
+    margin-top: -2rem;
+}
+
+.iconBoxIn p {
+    margin-top: -2rem;
+}
+
+.topView-big {
+    position: fixed;
+    width: 38rem;
+    height: 41rem;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    background: rgba(247,247,247,1);
+    border-radius: 8px;
+    margin: 2.4rem;
+}
+
+.iconBox-big {
+    width: 7.2rem;
+    height: 7.2rem;
+    background: rgba(255,255,255,1);
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+    opacity: 1;
+    border-radius: 6px;
+    margin: 4rem 0 1rem 4rem;
+    text-align: center;
+    float: left;
+    cursor: pointer;
+}
+
+.iconBox-bigIn {
+    width: 7.2rem;
+    height: 7.2rem;
+    background: rgba(255,255,255,1);
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+    opacity: 1;
+    border-radius: 6px;
+    margin: 4rem 0 1rem 4rem;
+    text-align: center;
+    float: left;
+    cursor: pointer;
+    color: #0B8BF0;
+}
+
+.topClose {
+    width: 7.2rem;
+    height: 7.2rem;
+    position: absolute;
+    bottom: -2rem;
+    right: -2rem;
+    cursor: pointer;
+}
+
+.playIconbox {
+    position: fixed;
+    width: 7rem;
+    height: 9rem;
+    z-index: 99;
+    top: 33rem;
+    right: 2.4rem;
+    background: rgba(247,247,247,1);
+    border-radius: 8px;
+}
+
+/*foldView*/
+.foldView {
+    position: fixed;
+    width: 100%;
+    height: 43rem;
+    z-index: 100;
+    bottom: 9rem;
+    background: #fff;
+    border-radius: 2rem 2rem 0 0;
+}
+
+.foleBtn {
+    width: 100%;
+    height: 5rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+.foleIconbox {
+    width: 56rem;
+    height: 38rem;
+    margin: auto;
+}
+
+.foleIcon {
+    width: 11rem;
+    height: 11rem;
+    text-align: center;
+    cursor: pointer;
+    float: left;
+    margin: 3rem 1.5rem;
+    color: #646464;
+}
+
+.foldView-part {
+    position: fixed;
+    width: 100%;
+    height: 22rem;
+    z-index: 100;
+    bottom: 9rem;
+    background: #fff;
+    border-radius: 2rem 2rem 0 0;
+}
+/*bottomView*/
+.bottomView {
+    position: fixed;
+    width: 100%;
+    height: 9rem;
+    z-index: 999;
+    bottom: 0;
+    /*border: 0.1rem solid red;*/
+    background: #fff;
+    border-top: 0.2rem solid #ccc;
+}
+
+.iconBox-bottom {
+    width: 7rem;
+    height: 10rem;
+    margin: 0 5rem 0 5rem;
+    cursor: pointer;
+    float: left;
+    margin-top: 0rem;
+    margin: 0 4rem;
+    text-align: center;
+    color: #6C6C6C;
+}
+.iconBox-bottom img {
+    width: 4rem;
+    height: 4rem;
+    display: inline-flex;
+    margin-top: 1rem;
+}
+    .iconBox-bottom p {
+      
+    }
+
+.iconBox-bottomIn {
+    width: 7rem;
+    height: 10rem;
+    margin: 0 5rem 0 5rem;
+    cursor: pointer;
+    float: left;
+    margin-top: 0rem;
+    margin: 0 4rem;
+    text-align: center;
+    color: #0B8BF0;
+}
+.iconBox-bottomIn img{
+    width: 4rem;
+    height: 4rem;
+    display: inline-flex;
+    margin-top: 1rem;
+}
+    .iconBox-bottomIn p {
+        /*margin-top: -0.5rem;*/
+    }
+
+
+
+/*infoAreabox -- 微圈*/
+.infoAreabox {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+}
+
+/*message -- 资讯*/
+.messageBox {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+}
+
+/**AboutMeBox--个人中心*/
+.aboutMebox {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+}
+/*narrateBox -- 讲解*/
+.audioBox {
+    position: fixed;
+    width: 100%;
+    height: 10rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+}
+
+.narrareClose {
+    position: fixed;
+    width: 6rem;
+    height: 6rem;
+    top: 3rem;
+    left: 3rem;
+    z-index: 100;
+}
+
+.narrareTitle {
+    color: #fff;
+    font-size: 2.5rem;
+    position: fixed;
+    width: 100%;
+    top: 3rem;
+    z-index: 100;
+    text-align: center;
+}
+
+/**`````````````````*/
+.category-head {
+    width: 50rem;
+    white-space: nowrap;
+    overflow-x: scroll;
+    float: left;
+    overflow-y: hidden;
+    margin: 1.5rem 1rem;
+}
+
+.flex {
+    display: inline-block;
+    width: 16rem;
+    height: 7rem;
+    background: rgba(0,0,0,0.6);
+    border-radius: 4px;
+    margin-right: 1rem;
+    font-size: 2rem;
+    text-align: center;
+    padding-top: 1rem;
+}
+
+.flex-active {
+    display: inline-block;
+    width: 16rem;
+    height: 7rem;
+    background: #0B8BF0;
+    border-radius: 4px;
+    margin-right: 1rem;
+    font-size: 2rem;
+    text-align: center;
+    padding-top: 1rem;
+}
+
+.playBtn {
+    white-space: nowrap;
+    overflow-x: scroll;
+    margin: 1.5rem 0rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+#audioTool {
+    color: #fff;
+    font-size: 2.5rem;
+    position: fixed;
+    width: 111%;
+    bottom: 10rem;
+    z-index: 100;
+    text-align: center;
+}
+
+
+/**ParkCompany  -- 园区企业*/
+.parkCompany {
+    position: fixed;
+    width: 100%;
+    height: 1rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #ccc;
+    font-size: 3rem;
+}
+
+/*companyList/*/
+.companyList-part {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+
+.companyList-all {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem;
+}
+
+.companyBtn-part {
+    position: fixed;
+    width: 100%;
+    height: 10rem;
+    z-index: 101;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+}
+
+.companyBtn-all {
+    position: fixed;
+    width: 100%;
+    height: 35rem;
+    z-index: 101;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    border-top: 0.2rem solid #ccc;
+}
+
+.searchBox {
+    background: #F3F3F3;
+    width: 55rem;
+    height: 6.5rem;
+    border-radius: 3.8rem;
+    position: absolute;
+    text-align: center;
+    margin: 2rem 3rem auto;
+    line-height: 6rem;
+}
+
+.searchBox-text {
+    color: #949494;
+    float: left;
+    margin-left: 3rem;
+}
+
+.searchBox-btn {
+    color: #333333;
+    float: right;
+    margin-right: 2rem;
+}
+
+.companySearch {
+    background: #F3F3F3;
+    border: none;
+    outline: none;
+    color: #333333;
+    width: 25rem;
+}
+/**companyul*/
+.companyul {
+    height: 40rem;
+    overflow: scroll;
+}
+
+.companyul-all {
+    height: 100%;
+    overflow: scroll;
+}
+
+.companyli {
+    height: 13rem;
+    border-bottom: 0.2rem solid #ccc;
+    margin: 0 3rem 0rem 0;
+    background: #fff;
+    color: #949494;
+}
+
+.companyli-active {
+    height: 13rem;
+    border-bottom: 0.2rem solid #ccc;
+    margin: 0 3rem 1rem 0;
+    border-radius: 1.6rem;
+    background: #0B8BF0;
+    box-shadow: 0rem 0.3rem 0.6rem rgba(0,0,0,0.3);
+    color: #fff;
+}
+
+.companyImgback {
+    background: #fff;
+    width: 9.8rem;
+    height: 9.8rem;
+    border-radius: 5rem;
+    margin: 1.5rem;
+    float: left;
+}
+
+    .companyImgback img {
+        width: 9.8rem;
+        height: 9.8rem;
+    }
+
+.companyul-middle {
+    float: left;
+    width: 31rem;
+    margin-top: 2rem;
+    line-height: 4.5rem;
+}
+
+.companyName {
+    color: #949494;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.companyName-active {
+    color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.companyul-right {
+    float: left;
+    margin-top: 2rem;
+    line-height: 5rem;
+    text-align: center;
+}
+
+    .companyul-right p:nth-child(1) {
+        color: #fff;
+        margin-left: 4rem;
+    }
+
+.companyType {
+    background: #F5F5F5;
+    color: #6C6C6C;
+    border-radius: 0.4rem;
+    height: 4rem;
+    line-height: 4rem;
+    width: 10rem;
+    position: relative;
+    top: 6rem;
+}
+
+.companyType-active {
+    background: #086EBF;
+    color: #E4F3FF;
+    border-radius: 0.4rem;
+    height: 4rem;
+    line-height: 4rem;
+    width: 10rem;
+}
+
+/*companyType*/
+.companyTypeul {
+    position: absolute;
+    top: 10rem;
+}
+
+.companyTypeli {
+    float: left;
+    background: #F2F2F2;
+    margin: 1rem;
+    text-align: center;
+    font-size: 2.3rem;
+    padding: 0.6rem 1.6rem 0.6rem 1.6rem;
+    border-radius: 0.8rem;
+    color: #707589;
+}
+
+.companyTypeli-active {
+    float: left;
+    margin: 1rem;
+    text-align: center;
+    font-size: 2.3rem;
+    padding: 0.6rem 1.6rem 0.6rem 1.6rem;
+    border-radius: 0.8rem;
+    background: #E5F3FC;
+    color: #0B8BF0;
+}
+/*companyInfo/*/
+.companyInfo {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+
+.companyInfo-part {
+    position: fixed;
+    width: 100%;
+    height: 12rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+
+.companyInfotit {
+    position: fixed;
+    width: 100%;
+    height: 5rem;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    font-size: 2.8rem;
+    background: rgba(0, 0, 0, 0.6);
+    text-align: center;
+    color: #fff;
+}
+
+.companyInfoicon {
+    font-size: 3rem !important;
+    color: rgb(255, 255, 255);
+    position: absolute;
+    /*top: -1rem;*/
+    left: 3rem;
+}
+
+.companyInfoul {
+    background: #fff;
+    width: 100%;
+    height: 7rem;
+    border-bottom: 0.2rem solid #f2f2f2;
+}
+
+.companyInfoli {
+    list-style: none;
+    float: left;
+    color: #6C6C6C;
+    margin: 2rem;
+    padding-bottom: 1rem;
+    font-size: 2.5rem;
+}
+
+.companyInfoli-active {
+    list-style: none;
+    float: left;
+    color: #333333;
+    font-weight: bold;
+    margin: 2rem;
+    border-bottom: 0.5rem solid #0B8BF0;
+    padding-bottom: 1rem;
+    font-size: 2.5rem;
+}
+
+/*infos /-- 企业信息*/
+.infos {
+}
+
+    .infos img {
+        background: #fff;
+        width: 14rem;
+        height: 14rem;
+        margin-left: 2rem;
+    }
+
+.ifosRight {
+    float: right;
+    width: 40rem;
+    /*border: 0.2rem solid red;*/
+    margin: 0 3rem 0 2rem;
+    height: 31rem;
+}
+
+.infos-1 {
+    margin-bottom: 0rem;
+    font-weight: bold;
+}
+
+.infos-2 {
+    margin-bottom: 0rem;
+    color: #6C6C6C;
+}
+
+.infos-3 {
+    background: #F5F5F5;
+    width: 9rem;
+    padding: 0.1rem;
+    text-align: center;
+    color: #949494;
+    margin: 1rem 0 4rem;
+}
+
+.infos-4 {
+    font-size: 2.5rem;
+    color: #949494;
+}
+
+    .infos-4 span:nth-child(1) {
+        margin-right: 5.5rem
+    }
+
+    .infos-4 span:nth-child(2) {
+        color: #000;
+    }
+
+.infos-5 {
+    font-size: 2.5rem;
+    line-height: 6rem;
+}
+
+    .infos-5 span:nth-child(1) {
+        font-size: 2.5rem;
+        color: #949494;
+        margin-right: 3rem;
+    }
+
+    .infos-5 span:nth-child(2) {
+        color: #000;
+    }
+
+.infos-6 {
+    font-size: 2.5rem;
+    color: #949494;
+}
+
+    .infos-6 span:nth-child(1) {
+        margin-right: 3rem;
+    }
+
+    .infos-6 span:nth-child(2) {
+        color: #0B8BF0;
+    }
+
+/*企业详情 --details*/
+.details {
+}
+
+    .details p {
+        font-size: 2.5rem;
+        width: 54rem;
+        height: 35rem;
+        font-weight: 400;
+        color: rgba(51,51,51,1);
+        margin: auto;
+        line-height: 4.5rem;
+        overflow-y: scroll;
+    }
+/*mien -- 风采*/
+.mien {
+    width: 100%;
+    height: 33rem;
+    z-index: 100;
+    color: #fff;
+}
+
+    .mien ul {
+        width: 100%;
+        white-space: nowrap;
+        overflow-x: scroll;
+        float: left;
+        overflow-y: hidden;
+    }
+
+    .mien li {
+        display: inline-block;
+        width: 43rem;
+        height: 33rem;
+        margin-right: 2rem;
+    }
+
+    .mien img {
+        width: 44rem;
+        height: 33rem;
+    }
+
+/*product -- */
+.product {
+    width: 100%;
+    height: 33rem;
+    z-index: 100;
+    color: #fff;
+}
+
+    .product ul {
+        width: 100%;
+        white-space: nowrap;
+        overflow-x: scroll;
+        float: left;
+        overflow-y: hidden;
+    }
+
+    .product li {
+        display: inline-block;
+        width: 43rem;
+        height: 33rem;
+        margin-right: 2rem;
+    }
+
+    .product img {
+        width: 44rem;
+        height: 33rem;
+    }
+
+/*招租查询*/
+.findLease {
+    position: fixed;
+    width: 100%;
+    height: 1rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #ccc;
+    font-size: 3rem;
+}
+/*companyList/*/
+.leaseList-part {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+
+.leaseList-all {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem;
+}
+
+.leaseBtn-part {
+    position: fixed;
+    width: 100%;
+    height: 10rem;
+    z-index: 101;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+}
+
+.leaseBtn-all {
+    position: fixed;
+    width: 100%;
+    height: 23rem;
+    z-index: 101;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    border-top: 0.2rem solid #ccc;
+}
+
+.searchBox {
+    background: #F3F3F3;
+    width: 45rem;
+    height: 6.5rem;
+    border-radius: 3.8rem;
+    position: absolute;
+    text-align: center;
+    margin: 2rem 3rem auto;
+    line-height: 6rem;
+}
+
+.searchBox-text {
+    color: #949494;
+    float: left;
+    margin-left: 2rem;
+    font-size: 2.3rem;
+}
+
+.searchBox-type {
+    color: #333333;
+    float: right;
+    margin-right: 2rem;
+    font-size: 2.3rem;
+    line-height: 6rem;
+}
+.searchBtn {
+    float: right;
+    padding: 1rem 2rem;
+    background: #0B8BF0;
+    margin: 2.4rem 3rem 2rem 2rem;
+    font-size: 2.3rem;
+    color: #fff;
+    border-radius: 1rem;
+}
+.leaseSearch {
+    background: #F3F3F3;
+    border: none;
+    outline: none;
+    color: #333333;
+    width: 25rem;
+}
+/**companyul*/
+.leaseul {
+    height: 45rem;
+    overflow: scroll;
+}
+
+.leaseul-all {
+    height: 100%;
+    overflow: scroll;
+}
+
+.leaseli {
+    height: 17rem;
+    border-bottom: 0.2rem solid #ccc;
+    margin: 0 3rem 0rem 0;
+    background: #fff;
+    color: #949494;
+}
+
+.leaseli-active {
+    height: 17rem;
+    border-bottom: 0.2rem solid #ccc;
+    margin: 0 3rem 1rem 0;
+    border-radius: 1.6rem;
+    background: #0B8BF0;
+    box-shadow: 0rem 0.3rem 0.6rem rgba(0,0,0,0.3);
+    color: #fff;
+    clear: both;
+}
+
+.leaseImgback {
+    margin: 1.5rem;
+    float: left;
+}
+
+    .leaseImgback img {
+        width: 14rem;
+        height: 14rem;
+        border-radius: 1rem;
+    }
+
+.leaseul-middle {
+    float: left;
+    width: 21rem;
+    margin-top: 2rem;
+    line-height: 4.5rem;
+}
+
+.leaseName {
+    color: #949494;
+}
+
+.leaseName-active {
+    color: #fff;
+}
+
+.leaseul-right {
+    float: left;
+    margin-top: 2rem;
+    line-height: 5rem;
+    text-align: center;
+}
+
+    .leaseul-right p:nth-child(1) {
+        color: #fff;
+        float: right;
+    }
+
+.leaseType {
+    color: #949494;
+    border-radius: 0.4rem;
+    height: 4rem;
+    line-height: 4rem;
+    width: 16rem;
+    margin-top: 9.5rem;
+    clear: both;
+}
+
+.leaseType-active {
+    color: #E4F3FF;
+    border-radius: 0.4rem;
+    height: 4rem;
+    line-height: 4rem;
+    width: 16rem;
+    margin-top: 9.5rem;
+}
+
+.leasePrice {
+    /*width: 56px;
+    height: 53px;
+    font-size: 3.5rem;
+    font-weight: 600;
+    line-height: 53px;
+    color: rgba(245,54,54,1);
+    margin-right: 0.6rem;*/
+    width: 56px;
+    height: 53px;
+    font-size: 2.4rem;
+    font-weight: 600;
+    line-height: 53px;
+}
+
+.leasePrice-active {
+    /*width: 56px;
+    height: 53px;
+    font-size: 3.5rem;
+    font-weight: 600;
+    line-height: 53px;
+    color: rgb(255, 255, 255);
+    margin-right: 0.6rem;*/
+    font-size: 2.4rem;
+    font-weight: bold;
+    line-height: 53px;
+    color: rgb(255, 255, 255);
+}
+
+
+/*leaseType*/
+.areaTypeul {
+    position: absolute;
+    top: 10rem;
+}
+
+.areaTypeli {
+    float: left;
+    background: #F2F2F2;
+    margin: 1rem;
+    text-align: center;
+    font-size: 2.2rem;
+    border-radius: 0.8rem;
+    color: #707589;
+    width: 12rem;
+    height: 4rem;
+    line-height: 4rem;
+}
+
+.areaTypeli-active {
+    float: left;
+    background: #E5F3FC;
+    margin: 1rem;
+    text-align: center;
+    font-size: 2.2rem;
+    border-radius: 0.8rem;
+    color: #0B8BF0;
+    width: 12rem;
+    height: 4rem;
+    line-height: 4rem;
+}
+
+/*leaseInfo */
+.leaseInfo {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+
+.leaseInfo-part {
+    position: fixed;
+    width: 100%;
+    height: 12rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+
+.leaseInfotit {
+    position: fixed;
+    width: 100%;
+    height: 5rem;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    font-size: 2.8rem;
+    background: rgba(0, 0, 0, 0.6);
+    text-align: center;
+    color: #fff;
+}
+
+.leaseInfoicon {
+    font-size: 5rem;
+    color: rgb(255, 255, 255);
+    position: absolute;
+    top: -1rem;
+    left: 3rem;
+}
+
+.leaseInfoul_br {
+    width: 100%;
+    border-bottom: 0.2rem solid #f2f2f2;
+}
+
+.leaseInfoul {
+    background: #fff;
+    width: 60rem;
+    height: 7rem;
+    /*border-bottom: 0.2rem solid #f2f2f2;*/
+    margin: auto;
+}
+
+.leaseInfoli {
+    list-style: none;
+    float: left;
+    color: #6C6C6C;
+    margin: 2rem 4.5rem;
+    padding-bottom: 1rem;
+    font-size: 2.5rem;
+}
+
+.leaseInfoli-active {
+    list-style: none;
+    float: left;
+    color: #333333;
+    font-weight: bold;
+    margin: 2rem 4.5rem;
+    border-bottom: 0.5rem solid #0B8BF0;
+    padding-bottom: 1rem;
+    font-size: 2.5rem;
+}
+/*leaseInfos*/
+.leaseInfos {
+    height: 90rem;
+    width: 75rem;
+}
+
+.leaseInfosul {
+    clear: both;
+    font-size: 2.5rem;
+}
+.leaseInfosul li {
+    line-height: 5rem;
+}
+    .leaseInfosul li:nth-child(1) {
+        width: 30rem;
+        display: inline-block;
+        border-left: 0.7rem solid #0B8BF0;
+        line-height: 2.1rem;
+        height: 3rem;
+        padding-left: 1rem;
+        font-weight: bold;
+    }
+
+        .leaseInfosul li:nth-child(1) span {
+        }
+
+    .leaseInfosul li:nth-child(2) {
+        width: 30rem;
+        display: inline-block;
+        border-left: 0.7rem solid #0B8BF0;
+        line-height: 2.1rem;
+        height: 3rem;
+        padding-left: 1rem;
+        font-weight: bold;
+    }
+
+
+        .leaseInfosul li:nth-child(2) span {
+        }
+
+
+    .leaseInfosul li:nth-child(3) {
+        width: 30rem;
+        display: inline-block;
+    }
+
+        .leaseInfosul li:nth-child(3) span {
+            font-weight: 600;
+            padding-left: 2rem;
+        }
+
+    .leaseInfosul li:nth-child(4) {
+        width: 30rem;
+        display: inline-block;
+    }
+
+        .leaseInfosul li:nth-child(4) span {
+            font-weight: 600;
+            padding-left: 2rem;
+        }
+
+    .leaseInfosul li:nth-child(5) {
+        width: 30rem;
+        display: inline-block;
+    }
+
+        .leaseInfosul li:nth-child(5) span {
+            font-weight: 600;
+            padding-left: 2rem;
+        }
+
+    .leaseInfosul li:nth-child(6) {
+        width: 30rem;
+        display: inline-block;
+    }
+
+        .leaseInfosul li:nth-child(6) span {
+            font-weight: 600;
+            padding-left: 2rem;
+        }
+
+    .leaseInfosul li {
+    }
+
+        .leaseInfosul li span {
+        }
+
+/*roomImg -- 照片展示*/
+.picshow {
+    width: 100%;
+    height: 33rem;
+    z-index: 100;
+    color: #fff;
+}
+
+    .picshow ul {
+        width: 100%;
+        white-space: nowrap;
+        overflow-x: scroll;
+        float: left;
+        overflow-y: hidden;
+    }
+
+    .picshow li {
+        display: inline-block;
+        width: 43rem;
+        height: 33rem;
+        margin-right: 2rem;
+    }
+
+    .picshow img {
+        width: 44rem;
+        height: 33rem;
+    }
+
+/*Photograph -- 随手拍*/
+.photograph {
+    position: fixed;
+    width: 100%;
+    height: 1rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #ccc;
+    font-size: 3rem;
+}
+.illegalList-part{
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+.illegalList-all {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem;
+}
+
+
+
+.illegalInfo-part {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+.illegalInfo-bottom {
+    position: fixed;
+    width: 100%;
+    height: 7rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 12rem;
+    border-radius: 2rem;
+}
+.illegalInfo-all {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem;
+}
+.illegalInfos {
+    clear: both;
+    padding: 0 3rem;
+    line-height: 5rem;
+}
+
+.illegalInfos p{
+    color:#333333;
+    font-size:2.5rem;
+}
+
+.illegalInfos p:nth-child(1){
+    font-weight:bold;
+}
+.illegalInfos p:nth-child(4){
+    margin-bottom:1rem;
+}
+.illegalInfos p:nth-child(5){
+    color:#F53636;
+    border-top: 0.3rem solid #F2F2F2;
+    height: 22rem;
+    overflow-y: scroll;
+}
+.illegalImg{
+    clear:both;
+}
+.illegalImg img{
+    width: 56rem;
+    height: 39rem;
+    margin: 0 2.5rem;
+}
+.illBottombox {
+    position: fixed;
+    width: 100%;
+    height: 10rem;
+    z-index: 101;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+}
+.illsearchBox {
+    background: #F3F3F3;
+    width: 43rem;
+    height: 6.5rem;
+    border-radius: 3.8rem;
+    position: absolute;
+    text-align: center;
+    margin: 2rem 3rem auto;
+    line-height: 6rem;
+}
+
+.illegalLoadBtn {
+    right: 0;
+    background: #0B8BF0;
+    color: #fff;
+    padding: 1rem 2rem;
+    margin: 1rem 2rem 2rem 1rem;
+    border-radius: 1rem;
+    position: fixed;
+    font-size: 2.3rem;
+    bottom: 0rem;
+    z-index: 101;
+}
+
+.illegalul {
+    width:100%;
+    height: 40rem;
+    overflow-y: scroll;
+    margin-bottom:0;
+}
+
+.illegalul-all {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+
+.illegalli {
+    height: 23rem;
+    border-bottom: 0.2rem solid #ccc;
+    margin: 0 3rem 0rem 0;
+    background: #fff;
+    color: #949494;
+}
+.illegalli-active {
+    height: 23rem;
+    border-bottom: 0.2rem solid #ccc;
+    margin: 0 3rem 1rem 0;
+    border-radius: 1.6rem;
+    background: #0B8BF0;
+    box-shadow: 0rem 0.3rem 0.6rem rgba(0,0,0,0.3);
+    color: #fff;
+    /*clear: both;*/
+}
+.illegamgback {
+    margin: 1.5rem;
+    float: left;
+}
+.illegamgback img {
+    width: 24rem;
+    height: 20rem;
+    border-radius: 1.5rem;
+}
+.illegalul-middle {
+    float: left;
+    margin-top: 1.5rem;
+    width: 27rem;
+}
+.illegalType {
+    font-weight: bold;
+    color: #605f5f;
+}
+/*illLoad**/
+.illegalLoad-part {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem;
+}
+
+.illegalLoad-all {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem;
+}
+.illfrom-part {
+    width: 100%;
+    height: 43rem;
+    overflow-y: scroll;
+    padding: 0 2rem;
+}
+.illfrom-all {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    padding: 0 2rem;
+}
+.illSumbit {
+    width: 100%;
+    height: 7rem;
+    background: #0B8BF0;
+    color: #fff;
+    text-align: center;
+    font-size: 3rem;
+    line-height: 6.5rem;
+    position: absolute;
+    bottom: 0;
+    clear: both;
+    left: 0;
+}
+.getillImg {
+    opacity: 0.1;
+}
+.illfrom li {
+    border-bottom: 0.2rem solid #ccc;
+    padding: 1.5rem 1rem;
+    font-size: 2.3rem;
+}
+.illfrom li:nth-child(1) {
+    height: 14rem;
+    line-height: 10rem;
+}
+.illfrom li:nth-child(1) img{
+    height: 10rem;
+    width: 10rem;
+    float:right;
+}
+.illfrom li:nth-child(6),.illfrom li:nth-child(7) {
+    border:none;
+}
+.redStar {
+    color: #E50000;
+    margin-right:1rem;
+}
+.getillType {
+    margin-left: 4rem;
+    border: 0;
+}
+.getillAdd {
+    margin-left: 8rem;
+    border: 0;
+}
+.getillNum {
+    margin-left: 8rem;
+    border: 0;
+}
+.getillTime {
+    margin-left: 4rem;
+    border: 0;
+}
+.illTxt {
+}
+.illTxt p{
+    border :0;
+}
+.getilltextarea {
+    background: #F2F2F2;
+    width: 100%;
+    height: 31rem;
+    border: 0;
+    font-size:2rem;
+}
+.illAdd {
+    z-index: 100;
+    color: #fff;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    background-color: #0B8BF0;
+    position: fixed;
+    bottom: 12rem;
+    right: 3.5rem;
+    text-align: center;
+    line-height: 5.5rem;
+    font-size: 5rem;
+}
+/**/
+
+.illcauseBox {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem 2rem 0 0;
+}
+.illcauseULcss {
+    width: 96%;
+    height: 27rem;
+    margin-top: 5rem;
+    overflow-y: scroll;
+    height: 37rem;
+}
+.illcauseULcss li {
+    text-align:center;
+    line-height: 7rem;
+}
+.illcauseli {
+    color: #ccc;
+}
+
+.illcauseli-active {
+    text-align: center;
+    border-top: 0.2rem solid #ccc;
+    border-bottom: 0.2rem solid #ccc;
+    color:#333;
+}
+.illCuasedBtn {
+    width: 52%;
+    margin: auto;
+}
+.illCancel {
+    background: rgb(242,242,242);
+    padding: 1rem 5rem;
+    float: left;
+    font-size: 2.3rem;
+    color: rgb(7,193,96);
+    border-radius: 0.5rem;
+}
+.illConfirm {
+    background: rgb(7,193,96);
+    padding: 1rem 5rem;
+    float: right;
+    font-size: 2.3rem;
+    color: rgb(242,242,242);
+    border-radius: 0.5rem;
+}
+/*applyPut -- 摆点申请*/
+.applyPut-part {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+.applyPut-all {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem;
+}
+.applyPutSumbit {
+    width: 100%;
+    height: 7rem;
+    background: #0B8BF0;
+    color: #fff;
+    text-align: center;
+    font-size: 3rem;
+    line-height: 6.5rem;
+    position: absolute;
+    bottom: 0;
+    clear: both;
+    left: 0;
+}
+
+.applyPutul-part {
+    width: 100%;
+    height: 43rem;
+}
+.applyPutul-all {
+    height: 100%;
+}
+.applyPutul {
+    width: 100%;
+    overflow-y: scroll;
+    padding: 0 2rem;
+    font-size: 2.3rem;
+}
+.applyPutul li {
+    line-height: 7rem;
+    border-bottom: 0.2rem solid #f2f2f2;
+}
+.applyList ul li {
+    display: flex;
+    border-bottom: 0.2rem solid #F2F2F2;
+    padding: 1rem 0;
+}
+.getapplyPuttextarea {
+    background: #F2F2F2;
+    width: 100%;
+    height: 31rem;
+    border: 0;
+    font-size: 2rem;
+}
+.applyRight {
+    float: right;
+    width: 44rem;
+}
+.applyAddress {
+    float: left;
+    width: 22rem;
+    overflow: hidden;
+    white-space: nowrap;
+    /*text-overflow: ellipsis;*/
+    font-size: 2rem;
+    height: 5rem;
+    line-height: 4rem;
+}
+.applytime {
+    display: inline-block;
+    width: 13rem;
+    margin: 0 2rem;
+    font-size: 2rem;
+    line-height: 4rem;
+}
+
+.applyicom {
+    float: right;
+}
+.applyicom i{
+    font-size: 3rem;
+    line-height: 3rem;
+}
+.applyAddressInput {
+    border: 0;
+}
+.applyIndexof {
+    border: 0.2rem solid #333;
+    border-radius: 5rem;
+    padding: 0 0.8rem;
+}
+.theapplyP {
+    background: #F2F2F2;
+    margin: 2rem 0 2rem 0;
+    color: #949494;
+    border: 0 !important;
+    padding: 2rem;
+}
+.site-calendar-demo-card {
+    width: 15rem;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+}
+.applySpanright{
+
+}
+/*BookSite 场地预约*/
+.bookSite {
+    position: fixed;
+    width: 100%;
+    height: 1rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #ccc;
+    font-size: 3rem;
+}
+
+.bookList-part, .bookInfo-part {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+
+.bookList-all, .bookInfo-all {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem;
+}
+
+.bookul {
+    height: 45rem;
+    overflow: scroll;
+}
+
+.bookul-all {
+    height: 100%;
+    overflow: scroll;
+}
+
+.bookli {
+    height: 17rem;
+    border-bottom: 0.2rem solid #ccc;
+    margin: 0 3rem 0rem 0;
+    background: #fff;
+    color: #949494;
+}
+
+.bookli-active {
+    height: 17rem;
+    border-bottom: 0.2rem solid #ccc;
+    margin: 0 3rem 1rem 0;
+    border-radius: 1.6rem;
+    background: #0B8BF0;
+    box-shadow: 0rem 0.3rem 0.6rem rgba(0,0,0,0.3);
+    color: #fff;
+    clear: both;
+}
+
+.bookImgback img {
+    width: 15rem;
+    height: 15rem;
+    margin: 1rem;
+    border-radius: 1.5rem;
+    float: left;
+}
+
+.bookul-middle {
+    float: left;
+    width: 25rem;
+    margin-top: 1rem;
+    line-height: 4.5rem;
+}
+
+.bookul-right {
+    float: right;
+    margin-top: 1rem;
+    line-height: 5rem;
+    text-align: center;
+    margin-right: 2rem;
+}
+
+.bookPrice-active {
+    color: #F53636;
+    font-weight: bold;
+    font-size: 3.5rem;
+}
+
+.bookBtn {
+    position: fixed;
+    width: 100%;
+    height: 10rem;
+    z-index: 101;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+}
+
+.bookInfoul {
+    background: #fff;
+    width: 54rem;
+    height: 7rem;
+    border-bottom: 0.2rem solid #f2f2f2;
+    margin: auto;
+}
+
+.bookInfoli {
+    list-style: none;
+    float: left;
+    color: #6C6C6C;
+    margin: 2rem 7rem;
+    padding-bottom: 1rem;
+    font-size: 2.5rem
+}
+
+.bookInfoli-active {
+    font-weight: bold;
+    border-bottom: 0.5rem solid #0B8BF0;
+    list-style: none;
+    float: left;
+    color: #6C6C6C;
+    margin: 2rem 7rem;
+    padding-bottom: 1rem;
+    font-size: 2.5rem;
+}
+
+.bookInfos-part {
+    position: fixed;
+    width: 100%;
+    height: 12rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+
+.bookInfos {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+
+.bookInfos-all {
+    position: fixed;
+    width: 100%;
+    height: 103rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem;
+}
+
+.siteInfosbox {
+    clear: both;
+    font-size: 2.5rem;
+    line-height: 5rem;
+    font-weight: 400;
+    letter-spacing: 0.3rem;
+    padding-right: 1rem;
+}
+
+.notesBox {
+    clear: both;
+    font-size: 2.5rem;
+    line-height: 5rem;
+    font-weight: 400;
+    letter-spacing: 0.2rem;
+    width: 57rem;
+    margin: auto;
+}
+
+.bookSumbit {
+    width: 100%;
+    height: 7rem;
+    background: #0B8BF0;
+    color: #fff;
+    text-align: center;
+    font-size: 3rem;
+    line-height: 6.5rem;
+    position: absolute;
+    bottom: 0;
+    clear: both;
+    left: 0;
+}
+
+.bookRoom-all {
+    position: fixed;
+    top: 79px;
+    background: #fff;
+    width: 100%;
+    height: 104rem;
+    border-radius: 2rem 2rem 0 0;
+}
+
+.bookRoom-part {
+    position: absolute;
+    top: 0;
+    background: #fff;
+    width: 100%;
+    height: 55rem;
+    border-radius: 2rem 2rem 0 0;
+}
+
+.bookform-part {
+    height: 42rem;
+    overflow-y: scroll;
+}
+
+.bookform-all {
+    height: 100%;
+    overflow-y: scroll;
+}
+.bookfromul {
+    font-size: 2.3rem;
+    margin-top: 1rem;
+    color: #949494;
+}
+.bookfromliRight {
+    float: right;
+    width: 43rem;
+    color: #333;
+}
+.bookfromliRight input{
+    border:0;
+    height:5rem;
+}
+.bookfromul li {
+    border-bottom: 0.2rem solid #F2F2F2;
+    padding: 1.5rem 0rem;
+    width: 56rem;
+}
+.bookActive {
+    background-color: #F2F2F2;
+}
+.bookTheme {
+    width: 100%;
+    background-color: #F2F2F2;
+    border: 0 none;
+    height: 6rem;
+    overflow-y: scroll;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+.bookContent {
+    width: 100%;
+    background-color: #F2F2F2;
+    border: 0 none;
+    height: 15rem;
+    overflow-y: scroll;
+    padding: 1rem;
+    margin: 1rem 0
+}
+
+/*在线报修 -- RepairsOnline*/
+.repairsOnline {
+    position: fixed;
+    width: 100%;
+    height: 1rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #ccc;
+    font-size: 3rem;
+}
+.reqairs-all {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem;
+}
+.reqairs-part {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+.reqairsul-part {
+    height: 43rem;
+}
+.reqairsul-all {
+    height: 100%;
+}
+.reqairsul{
+    width: 100%;
+    overflow-y: scroll;
+    padding: 0 2rem;
+    font-size: 2.3rem;
+}
+.reqairsul{
+
+}
+.reqairsul li{
+    line-height: 7rem;
+border-bottom: 0.2rem solid #f2f2f2;
+}
+.reqairsSumbit {
+    width: 100%;
+    height: 7rem;
+    background: #0B8BF0;
+    color: #fff;
+    text-align: center;
+    font-size: 3rem;
+    line-height: 6.5rem;
+    position: absolute;
+    bottom: 0;
+    clear: both;
+    left: 0;
+}
+.typeULcss li{
+
+}
+.typeULBox {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem 2rem 0 0;
+}
+.reqairsul li:nth-child(1) {
+    line-height: 11rem;
+}
+.reqairsul li:nth-child(1) img {
+    height: 10rem;
+    width: 10rem;
+    float: right;
+}
+
+/**停车服务 parking/*/
+.parkingBox {}
+.parking {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+.parking-part {
+    position: fixed;
+    width: 100%;
+    height: 6rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+.parkingul {
+    margin-top: 2rem;
+}
+.parkingul li{
+    margin-right: 3rem;
+}
+.parkingul p{
+    float: right;
+    text-align: left;
+    border-bottom: 0.2rem solid #F2F2F2;
+    width: 49rem;
+    line-height: 7rem;
+}
+.componentBox {
+    position: fixed;
+    width: 100%;
+    height: 1rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #ccc;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+.componentBox-part {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 102;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+.contentBox-all {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 102;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;
+}
+.contentUL ul {
+
+}
+.contentUL li {
+    font-size: 2.3rem;
+    border-bottom: 0.2rem solid #f2f2f2;
+    margin-right: 2rem;
+    line-height: 7rem;
+}
+.contentUL p{
+
+}

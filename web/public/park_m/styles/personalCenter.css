@@ -1,0 +1,106 @@
+.personal-center {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 101;
+  background-color: #F2F2F2;
+}
+.personal-center-top {
+  background-color: #0B8BF0;
+  width: 100%;
+  height: 20%;
+  padding: 50px 0 0 50px;
+}
+.personal-center-title {
+  color: #FFFFFF;
+  font-size: 40px;
+}
+.personal-center-info {
+  margin-top: 30px;
+  width: 100%;
+  height: 150px;
+}
+.personal-center-tx {
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  float: left;
+}
+.personal-center-tx-img {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+.personal-center-tag {
+  width: 100%;
+  height: 120px;
+  border-bottom: 2px solid #F2F2F2;
+  font-size: 40px;
+  line-height: 120px;
+  background-color: #ffffff;
+}
+.personal-center-my {
+  height: 200px;
+  width: 100%;
+  border-top: 10px solid #F2F2F2;
+  background-color: #ffffff;
+}
+.personal-center-my-left {
+  width: 50%;
+  height: 100%;
+  text-align: center;
+  float: left;
+}
+.personal-center-my-middle {
+  height: 150px;
+  width: 4px;
+  margin-top: 20px;
+  background-color: #F2F2F2;
+  float: left;
+}
+.personal-center-my-right {
+  width: 49%;
+  height: 100%;
+  text-align: center;
+  float: left;
+}
+.personal-center-enterprise {
+  margin-top: 10px;
+  overflow: hidden;
+}
+.personal-center-enterprise-child {
+  width: 100%;
+  height: 120px;
+  border-bottom: 2px solid #F2F2F2;
+  font-size: 40px;
+  line-height: 120px;
+  background-color: #ffffff;
+  padding-left: 50px;
+}
+.personal-center-park {
+  margin-top: 10px;
+  overflow: hidden;
+}
+.personal-center-park-child {
+  float: left;
+  width: 25%;
+  height: 220px;
+  text-align: center;
+  color: #333333;
+  font-size: 40px;
+}
+.personal-center-bottom-img {
+  transform: rotate(90deg);
+}
+.personal-center-right {
+  overflow: hidden;
+  height: 100px;
+  width: 100px;
+  float: right;
+  text-align: center;
+  line-height: 100px;
+  margin-top: 25px;
+}
+
