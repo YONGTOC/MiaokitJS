@@ -1,4 +1,4 @@
-define("baseData", ["require", "exports", "react", "g2plot", "css!./styles/baseData.css"], function (require, exports, React, g2plot_1) {
+define("baseData", ["require", "exports", "react", "g2plot", "css!./styles/view.css"], function (require, exports, React, g2plot_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     const data = [
@@ -139,106 +139,119 @@ define("baseData", ["require", "exports", "react", "g2plot", "css!./styles/baseD
     }
     exports.default = BaseData;
 });
-define("monitorData", ["require", "exports", "react", "g2plot", "css!./styles/monitorData.css"], function (require, exports, React, g2plot_2) {
+define("compat", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class GlobalAction {
+        switchRoom(pName) {
+            console.log("SwitchLayer", pName);
+        }
+        switchMark(pName) {
+            console.log("switchMark", pName);
+        }
+    }
+    exports.default = GlobalAction;
+});
+define("monitorData", ["require", "exports", "react", "g2plot", "css!./styles/view.css"], function (require, exports, React, g2plot_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     const data = [
         {
-            type: '����һ',
+            type: '分类一',
             value: 27,
         },
         {
-            type: '�����',
+            type: '分类二',
             value: 25,
         },
         {
-            type: '������',
+            type: '分类三',
             value: 18,
         },
         {
-            type: '������',
+            type: '分类四',
             value: 15,
         },
         {
-            type: '������',
+            type: '分类五',
             value: 10,
         },
         {
-            type: '����',
+            type: '其它',
             value: 10,
         },
     ];
     const brokenLineData = [
         {
-            month: '1��',
+            month: '1月',
             value: 30,
         },
         {
-            month: '2��',
+            month: '2月',
             value: 50,
         },
         {
-            month: '3��',
+            month: '3月',
             value: 80,
         },
         {
-            month: '4��',
+            month: '4月',
             value: 100,
         },
         {
-            month: '5��',
+            month: '5月',
             value: 80,
         },
         {
-            month: '6��',
+            month: '6月',
             value: 50,
         },
         {
-            month: '7��',
+            month: '7月',
             value: 30,
         },
         {
-            month: '1��',
+            month: '1月',
             value: 20,
         },
         {
-            month: '2��',
+            month: '2月',
             value: 60,
         },
         {
-            month: '3��',
+            month: '3月',
             value: 120,
         },
         {
-            month: '4��',
+            month: '4月',
             value: 70,
         },
         {
-            month: '5��',
+            month: '5月',
             value: 50,
         },
         {
-            month: '6��',
+            month: '6月',
             value: 30,
         },
         {
-            month: '7��',
+            month: '7月',
             value: 20,
         },
     ];
-    const htmlcontent = { name: "����", value: "100 %" };
+    const htmlcontent = { name: "总量", value: "100 %" };
     class MonitorData extends React.Component {
         constructor() {
             super(...arguments);
             this.state = {
                 monitorData: [
-                    { name: "�������", allTag: "�����", allNumber: "20,000", usingTag: "��ʹ��", usingNumber: "5,000", remainTag: "ʣ��", remainNumber: "15,000", unit: "(�O)" },
-                    { name: "����ͳ��", allTag: "�ܹ���", allNumber: "2,600", usingTag: "��ʹ��", usingNumber: "2,000", remainTag: "ʣ��", remainNumber: "600", unit: "(kw)" },
-                    { name: "��λ", allTag: "�ܳ�λ", allNumber: "600", usingTag: "��ʹ��", usingNumber: "300", remainTag: "ʣ��", remainNumber: "300", unit: "(��)" }
+                    { name: "房间面积", allTag: "总面积", allNumber: "20,000", usingTag: "已使用", usingNumber: "5,000", remainTag: "剩余", remainNumber: "15,000", unit: "(㎡)" },
+                    { name: "功耗统计", allTag: "总功耗", allNumber: "2,600", usingTag: "已使用", usingNumber: "2,000", remainTag: "剩余", remainNumber: "600", unit: "(kw)" },
+                    { name: "车位", allTag: "总车位", allNumber: "600", usingTag: "已使用", usingNumber: "300", remainTag: "剩余", remainNumber: "300", unit: "(个)" }
                 ],
                 infoData: [
-                    { name: "������ˮ��", number: "200", unit: "��", img: "./park/image/monitorData/water.png" },
-                    { name: "�����õ���", number: "1200", unit: "��", img: "./park/image/monitorData/electricity.png" }
+                    { name: "今日用水量", number: "200", unit: "吨", img: "./park/image/monitorData/water.png" },
+                    { name: "今日用电量", number: "1200", unit: "度", img: "./park/image/monitorData/electricity.png" }
                 ]
             };
         }
@@ -323,7 +336,7 @@ define("monitorData", ["require", "exports", "react", "g2plot", "css!./styles/mo
                             borderLeft: "2px solid #07D1D3", height: "16px", width: "2px",
                             float: "left", marginTop: "4px", marginRight: "5px"
                         } }),
-                    React.createElement("span", { style: { color: "#FFFFFF", fontSize: "16px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u077C\uFFFD\uFFFD")),
+                    React.createElement("span", { style: { color: "#FFFFFF", fontSize: "16px" } }, "\u667A\u80FD\u6570\u636E\u76D1\u63A7")),
                 this.state.monitorData.map((item, index) => {
                     return React.createElement("div", { style: { width: "80%", height: "120px", marginLeft: "35px", marginTop: "15px" }, key: index },
                         React.createElement("div", { style: { width: "53%", height: "100%", float: "left" } },
@@ -348,7 +361,7 @@ define("monitorData", ["require", "exports", "react", "g2plot", "css!./styles/mo
                             borderLeft: "2px solid #07D1D3", height: "16px", width: "2px",
                             float: "left", marginTop: "4px", marginRight: "5px"
                         } }),
-                    React.createElement("span", { style: { color: "#FFFFFF", fontSize: "16px" } }, "\u02EE\uFFFD\uFFFD\uFFFD\uFFFD\u03E2\u0373\uFFFD\uFFFD")),
+                    React.createElement("span", { style: { color: "#FFFFFF", fontSize: "16px" } }, "\u6C34\u7535\u4FE1\u606F\u7EDF\u8BA1")),
                 this.state.infoData.map((item, index) => {
                     return React.createElement("div", { className: index === 0 ? "add-option" : "option", key: index },
                         React.createElement("img", { src: item.img, width: "45px", height: "45px", style: { float: "left", marginTop: "3px" } }),
@@ -361,16 +374,16 @@ define("monitorData", ["require", "exports", "react", "g2plot", "css!./styles/mo
                 React.createElement("div", { id: "container" }),
                 React.createElement("div", { id: "brokenLine", style: { width: "300px", height: "120px", overflow: "hidden", marginLeft: "35px" } }),
                 React.createElement("div", { className: "electricity-view" },
-                    React.createElement("div", { className: "span-g" }, "\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\uFFFD\uFFFD\u01BD\uFFFD\uFFFD\uFFFD\uFFFD\u02EE\uFFFD\uFFFD"),
+                    React.createElement("div", { className: "span-g" }, "\u4F01\u4E1A\u4ECA\u65E5\u5E73\u5747\u7528\u6C34\u91CF"),
                     React.createElement("div", { className: "span-h" }, "6")),
                 React.createElement("div", { className: "water-view" },
-                    React.createElement("div", { className: "span-g" }, "\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\uFFFD\uFFFD\u01BD\uFFFD\uFFFD\uFFFD\u00F5\uFFFD\uFFFD\uFFFD"),
+                    React.createElement("div", { className: "span-g" }, "\u4F01\u4E1A\u4ECA\u65E5\u5E73\u5747\u7528\u7535\u91CF"),
                     React.createElement("div", { className: "span-h" }, "2"))));
         }
     }
     exports.default = MonitorData;
 });
-define("data", ["require", "exports", "react", "baseData", "monitorData", "react-router-dom", "css!./styles/data.css"], function (require, exports, React, baseData_1, monitorData_1, react_router_dom_1) {
+define("data", ["require", "exports", "react", "baseData", "monitorData", "react-router-dom", "css!./styles/view.css"], function (require, exports, React, baseData_1, monitorData_1, react_router_dom_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Data extends React.Component {
@@ -383,14 +396,14 @@ define("data", ["require", "exports", "react", "baseData", "monitorData", "react
         render() {
             return (React.createElement("div", { className: "data" },
                 React.createElement("div", { className: "data-top" },
-                    React.createElement("div", { className: "data-title", style: { float: "left", marginLeft: "3%", marginTop: "-5px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u03E2\uFFFD\uFFFD\u04B5\u0530\uFFFD\uFFFD\uFFFD\u0777\uFFFD\uFFFD\uFFFD"),
+                    React.createElement("div", { className: "data-title", style: { float: "left", marginLeft: "3%", marginTop: "-5px" } }, "\u6842\u6797\u4FE1\u606F\u4EA7\u4E1A\u56ED\u6570\u636E\u5206\u6790"),
                     React.createElement(react_router_dom_1.Link, { to: "/" },
                         React.createElement("div", { style: { float: "right", marginRight: "15px", color: "#FFFFFF" } },
                             React.createElement(Industry, null))),
                     React.createElement("div", { style: { border: "1px solid #A1D4CF", float: "right", height: "10px", marginTop: "50px", marginRight: "12px" } }),
                     React.createElement("div", { style: { fontSize: "15px", color: "#FFFFFF", float: "right", marginRight: "12px" } }, "12:10:20"),
                     React.createElement("div", { style: { border: "1px solid #A1D4CF", float: "right", height: "10px", marginTop: "50px", marginRight: "12px" } }),
-                    React.createElement("div", { style: { color: "#FFFFFF", fontSize: "15px", float: "right", marginRight: "12px" } }, "20 \uFFFD\uFFFDC"),
+                    React.createElement("div", { style: { color: "#FFFFFF", fontSize: "15px", float: "right", marginRight: "12px" } }, "20 \u00B0C"),
                     React.createElement("div", { style: { float: "right", marginRight: "3px" } },
                         React.createElement(Sun, null))),
                 React.createElement("div", { className: "base-data" },
@@ -405,7 +418,78 @@ define("data", ["require", "exports", "react", "baseData", "monitorData", "react
         React.createElement("use", { xlinkHref: "#iconhangye" }));
     exports.default = Data;
 });
-define("leftNav", ["require", "exports", "react", "antd", "css!./styles/listArea.css", "css!./styles/iconfont.css", "css!./styles/leftNav.css", "css!./styles/listArea.css"], function (require, exports, React, antd_1) {
+define("topNav", ["require", "exports", "react", "compat", "css!./styles/view.css"], function (require, exports, React, compat_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class TopNav extends React.Component {
+        constructor(props) {
+            super(props);
+            this.globalAction = new compat_1.default();
+            this.state = {};
+            TopNav.getValuefromChild = this.getValuefromChild.bind(this);
+        }
+        componentDidMount() { }
+        static getValuefromChild(a) { }
+        getValuefromChild(a) {
+            console.log("topnav", a);
+        }
+        ;
+        switchMark(a) {
+            this.globalAction.switchMark(a);
+        }
+        render() {
+            return (React.createElement("div", { className: "topNav" },
+                React.createElement("div", { className: "topLogo" },
+                    React.createElement("img", { src: "./park/image/logo.png" })),
+                React.createElement("div", { className: "topM" },
+                    React.createElement("ul", null,
+                        React.createElement("li", { onClick: this.switchMark.bind(this, "首页") }, "\u8C03\u75283d\u65B9\u6CD5"),
+                        React.createElement("li", { onClick: this.switchMark.bind(this, "园区") }, "\u56ED\u533A"),
+                        React.createElement("li", { onClick: this.switchMark.bind(this, "土地") }, "\u571F\u5730"),
+                        React.createElement("li", { onClick: this.switchMark.bind(this, "厂房") }, "\u5382\u623F"),
+                        React.createElement("li", { onClick: this.switchMark.bind(this, "写字楼") }, "\u5199\u5B57\u697C"),
+                        React.createElement("li", { onClick: this.switchMark.bind(this, "商业") }, "\u5546\u4E1A"),
+                        React.createElement("li", null,
+                            "\u5176\u4ED6",
+                            React.createElement("span", { className: "iconfont", style: { "fontSize": "10px" } }, "\uE804")))),
+                React.createElement("div", { className: "topRight" },
+                    React.createElement("span", { style: { "marginRight": "5px" } }, "\u6D59\u6C5F\u6C38\u62D3\u4FE1\u606F\u79D1\u6280"),
+                    React.createElement("span", null, "\u767B\u5F55 "),
+                    " | ",
+                    React.createElement("span", null, " \u6CE8\u518C")),
+                React.createElement("div", { className: "bottomNav" })));
+        }
+    }
+    exports.default = TopNav;
+});
+define("dataService", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class DataServices {
+        callback(a, pBack) {
+            console.log("callback1", a);
+            pBack("callback");
+        }
+        areaType(pBackajax) {
+            console.log("init-AllareaType");
+            pBackajax(3333);
+        }
+        companyType(pBackajax) {
+            console.log("init-companyType");
+            pBackajax(4444);
+        }
+        getRoomdata(pBackajax) {
+            console.log("initRoomdata");
+            pBackajax(111);
+        }
+        getCompanydata(pBackajax) {
+            console.log("initCompanydata");
+            pBackajax(2222);
+        }
+    }
+    exports.default = DataServices;
+});
+define("leftNav", ["require", "exports", "react", "compat", "dataService", "antd", "css!./styles/view.css"], function (require, exports, React, compat_2, dataService_1, antd_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     const { TreeNode } = antd_1.Tree;
@@ -455,56 +539,98 @@ define("leftNav", ["require", "exports", "react", "antd", "css!./styles/listArea
                         React.createElement("img", { src: "./park/image/imgmap1.png", style: { "paddingTop": "13px" } })))));
         }
     }
-    class ListArea extends React.Component {
+    class BusinessArea extends React.Component {
         constructor(props) {
             super(props);
+            this.dataService = new dataService_1.default();
             this.state = {
-                index: 99,
-                show: null,
-                introduce: false,
-                superiority: false,
-                listArea: false,
-                showBusiness: false,
-                showCompany: false,
-                treeList: false,
-                equipmentList: [
+                id: null,
+                roomList: [
                     {
-                        "equipmentType": "IDC可视化监控系统",
-                        "equipmentID": "1",
-                        "buildList": [
-                            {
-                                "buildname": "A座",
-                                "areaList": [
-                                    {
-                                        "areaName": "A区",
-                                        "floorList": [
-                                            {
-                                                "floorName": "A-1F",
-                                                "equipments": [
-                                                    { "equipmentName": "机房1-A组列头柜" },
-                                                    { "equipmentName": "机房1-B组列头柜" },
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "areaName": "B区",
-                                        "floorList": [
-                                            {
-                                                "floorName": "B-1F",
-                                                "equipments": [
-                                                    { "equipmentName": "机房1-A组列头柜" },
-                                                    { "equipmentName": "机房1-B组列头柜" },
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                ]
-                            }
-                        ]
-                    }
+                        "roomID": "id-A座-4F-B411",
+                        "roomName": "A座-4F-B411",
+                        "roomArea": "51",
+                        "addTime": "2019-7-11",
+                    },
+                    {
+                        "roomID": "id-A座-4F-B412",
+                        "roomName": "A座-4F-B412",
+                        "roomArea": "52",
+                        "addTime": "2019-7-15",
+                    },
                 ],
-                industryTypes: [
+            };
+            this.getRoom = this.getRoom.bind(this);
+            BusinessArea.updateList = this.updateList.bind(this);
+        }
+        ;
+        componentDidMount() {
+            this.dataService.areaType(this.initAreatype);
+            this.dataService.getRoomdata(this.initRoomdata);
+        }
+        getRoom(event) {
+            const id = event.target.getAttribute("data-id");
+            this.setState({
+                id: id
+            });
+            console.log("getRoom", this.state);
+            compat_2.default.prototype.switchRoom(id);
+        }
+        static updateList(data) { }
+        updateList(data) {
+            this.setState({
+                roomList: data.roomList
+            });
+            console.log('outRoomdata', this.state.id);
+        }
+        initRoomdata(data) {
+            console.log("callback-Roomdata", data);
+        }
+        initAreatype(data) {
+            console.log("callback-areatype", data);
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "areaScope" },
+                    React.createElement("p", { className: "areaScopeP" }, "\u7B5B\u9009\uFF08\u9762\u79EF\uFF09"),
+                    React.createElement("ul", null,
+                        React.createElement("li", null, "\u5168\u90E8"),
+                        React.createElement("li", null, "100m\u4EE5\u4E0B"),
+                        React.createElement("li", null, "100-200m"),
+                        React.createElement("li", null, "200-300m"),
+                        React.createElement("li", null, "300-500m"),
+                        React.createElement("li", null, "500-1000m"),
+                        React.createElement("li", null, "1000-2000m"),
+                        React.createElement("li", null, "2000m\u4EE5\u4E0B"))),
+                React.createElement("div", { className: "roomList" },
+                    React.createElement("ul", null, this.state.roomList.map((i, index) => {
+                        return (React.createElement("li", { className: "roomP" },
+                            React.createElement("p", { onClick: this.getRoom, "data-id": i.roomID }, i.roomName),
+                            React.createElement("p", { onClick: this.getRoom, "data-id": i.roomID },
+                                React.createElement("span", { className: "icontop3" },
+                                    React.createElement("span", { className: "iconfont" }, "\uE805")),
+                                "\u00A0 \u623F\u95F4\u9762\u79EF\uFF1A",
+                                React.createElement("span", { onClick: this.getRoom, "data-id": i.roomID },
+                                    i.roomArea,
+                                    " m\u00B2")),
+                            React.createElement("p", { onClick: this.getRoom, "data-id": i.roomID },
+                                React.createElement("span", { className: "icontop3" },
+                                    React.createElement("span", { className: "iconfont" }, "\uE806")),
+                                "\u00A0 \u53D1\u5E03\u65F6\u95F4\uFF1A",
+                                React.createElement("span", null,
+                                    i.addTime,
+                                    " "))));
+                    })))));
+        }
+        ;
+    }
+    class CompanyArea extends React.Component {
+        constructor(props) {
+            super(props);
+            this.dataService = new dataService_1.default();
+            this.state = {
+                id: null,
+                companyTypes: [
                     {
                         "typeName": "文化创意",
                         "typeID": "1",
@@ -530,20 +656,6 @@ define("leftNav", ["require", "exports", "react", "antd", "css!./styles/listArea
                         "typeID": "6",
                     }
                 ],
-                roomList: [
-                    {
-                        "roomID": "id-A座-4F-B411",
-                        "roomName": "A座-4F-B411",
-                        "roomArea": "51",
-                        "addTime": "2019-7-11",
-                    },
-                    {
-                        "roomID": "id-A座-4F-B412",
-                        "roomName": "A座-4F-B412",
-                        "roomArea": "52",
-                        "addTime": "2019-7-15",
-                    },
-                ],
                 companyList: [
                     {
                         "companyID": "id-浙江永拓信息科技有限公司",
@@ -559,13 +671,114 @@ define("leftNav", ["require", "exports", "react", "antd", "css!./styles/listArea
                     },
                 ],
             };
-            this.getRoom = this.getRoom.bind(this);
             this.getCompany = this.getCompany.bind(this);
+            CompanyArea.updateList = this.updateList.bind(this);
         }
-        componentDidupdate() {
-        }
+        ;
         componentDidMount() {
-            this.props.onRef(this);
+            this.dataService.companyType(this.initCompanytype);
+            this.dataService.getCompanydata(this.initCompanydata);
+        }
+        getCompany(event) {
+            const id = event.target.getAttribute("data-id");
+            console.log('getCompany', id);
+            compat_2.default.prototype.switchRoom(id);
+        }
+        static updateList(data) { }
+        updateList(data) {
+            this.setState({
+                companyList: data.companyList
+            });
+            console.log('outRoomdata2', this.state.id);
+        }
+        initCompanytype(data) {
+            console.log("callback-companyType", data);
+        }
+        initCompanydata(data) {
+            console.log("callback-Companydata", data);
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "areaScopeqy" },
+                    React.createElement("p", { className: "areaScopeP" }, "\u4F01\u4E1A\u5206\u7C7B"),
+                    React.createElement("ul", null,
+                        React.createElement("li", null, "\u5168\u90E8"),
+                        this.state.companyTypes.map((i, index) => {
+                            return (React.createElement("li", null, i.typeName));
+                        }))),
+                React.createElement("div", { className: "roomList" },
+                    React.createElement("ul", null, this.state.companyList.map((i, index) => {
+                        return (React.createElement("li", { className: "roomP" },
+                            React.createElement("p", { onClick: this.getCompany, "data-id": i.companyID }, i.companyName),
+                            React.createElement("p", { onClick: this.getCompany, "data-id": i.companyID },
+                                React.createElement("span", { className: "icontop3" },
+                                    React.createElement("span", { className: "iconfont" }, "\uE807")),
+                                "\u00A0\u516C\u53F8\u4F4D\u7F6E\uFF1A",
+                                React.createElement("span", { onClick: this.getCompany, "data-id": i.companyID }, i.address)),
+                            React.createElement("p", { onClick: this.getCompany, "data-id": i.companyID },
+                                React.createElement("span", { className: "icontop3" },
+                                    React.createElement("span", { className: "iconfont" }, "\uE808")),
+                                "\u00A0\u6240\u5C5E\u884C\u4E1A\uFF1A",
+                                React.createElement("span", null, i.type))));
+                    })))));
+        }
+    }
+    class TreeArea extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                treeData: {
+                    equipmentList: [
+                        {
+                            "equipmentType": "IDC可视化监控系统",
+                            "equipmentID": "1",
+                            "buildList": [
+                                {
+                                    "buildname": "A座",
+                                    "areaList": [
+                                        {
+                                            "areaName": "A区",
+                                            "floorList": [
+                                                {
+                                                    "floorName": "A-1F",
+                                                    "equipments": [
+                                                        { "equipmentName": "机房1-A组列头柜" },
+                                                        { "equipmentName": "机房1-B组列头柜" },
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "areaName": "B区",
+                                            "floorList": [
+                                                {
+                                                    "floorName": "B-1F",
+                                                    "equipments": [
+                                                        { "equipmentName": "机房1-A组列头柜" },
+                                                        { "equipmentName": "机房1-B组列头柜" },
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                }
+            };
+            TreeArea.setTreedata = this.setTreedata.bind(this);
+        }
+        ;
+        componentDidMount() {
+        }
+        static setTreedata(data) { }
+        setTreedata(data) {
+            console.log("setTreedata2", data);
+            this.setState({
+                treeData: data
+            });
+            console.log("this2", this.state.treeData);
         }
         onSelect(selectedKeys, info) {
             console.log('selected', selectedKeys[0]);
@@ -575,8 +788,46 @@ define("leftNav", ["require", "exports", "react", "antd", "css!./styles/listArea
             console.log('Trigger Expand');
         }
         ;
-        myindex(index) {
-            console.log('child', index);
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "treenode" },
+                    React.createElement(antd_1.Tree, { showLine: true, switcherIcon: React.createElement(antd_1.Icon, { type: "down" }), defaultExpandedKeys: ['0-0-0'], onSelect: this.onSelect }, this.state.treeData.equipmentList.map((i, index) => {
+                        return (React.createElement(TreeNode, { title: i.equipmentType, key: i.equipmentType }, i.buildList.map((it, index) => {
+                            return (React.createElement(TreeNode, { title: it.buildname, key: it.buildname }, it.areaList.map((ite, index) => {
+                                return (React.createElement(TreeNode, { title: ite.areaName, key: ite.areaName }, ite.floorList.map((ites, index) => {
+                                    return (React.createElement(TreeNode, { title: ites.floorName, key: ites.floorName }, ites.equipments.map((iteg, index) => {
+                                        return (React.createElement(TreeNode, { title: iteg.equipmentName, key: iteg.equipmentName }));
+                                    })));
+                                })));
+                            })));
+                        })));
+                    })))));
+        }
+    }
+    class ListArea extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                index: 99,
+                show: null,
+                introduce: false,
+                superiority: false,
+                listArea: false,
+                showBusiness: false,
+                showCompany: false,
+                treeList: false,
+                treeData: [],
+            };
+            ListArea.showList = this.showList.bind(this);
+        }
+        componentDidupdate() {
+        }
+        componentDidMount() {
+            console.log("xxsssxxx", this.state);
+        }
+        static showList(data) { }
+        showList(index) {
+            console.log('showList-List', index);
             if (index == 1) {
                 this.setState({
                     show: "one",
@@ -643,7 +894,6 @@ define("leftNav", ["require", "exports", "react", "antd", "css!./styles/listArea
             }
         }
         clickFun(a) {
-            this.props.indexC(a);
             this.setState({
                 index: 99,
                 introduce: false,
@@ -651,14 +901,7 @@ define("leftNav", ["require", "exports", "react", "antd", "css!./styles/listArea
                 listArea: false,
                 treeList: false,
             });
-        }
-        getRoom(event) {
-            const id = event.target.getAttribute("data-id");
-            console.log('getRoom', id);
-        }
-        getCompany(event) {
-            const id = event.target.getAttribute("data-id");
-            console.log('getCompany', id);
+            LeftNav.indexCh(99);
         }
         render() {
             return (React.createElement("div", null,
@@ -686,90 +929,24 @@ define("leftNav", ["require", "exports", "react", "antd", "css!./styles/listArea
                             React.createElement("span", { className: "topTT" }, "\u62DB\u5546\u5217\u8868"),
                             React.createElement("span", { className: "listAreaClose", onClick: this.clickFun.bind(this, this.state.index) },
                                 React.createElement("span", { className: "iconfont", style: { "fontSize": "12px" } }, "\uE803"))),
-                        React.createElement("div", { className: "areaScope" },
-                            React.createElement("p", { className: "areaScopeP" }, "\u7B5B\u9009\uFF08\u9762\u79EF\uFF09"),
-                            React.createElement("ul", null,
-                                React.createElement("li", null, "\u5168\u90E8"),
-                                React.createElement("li", null, "100m\u4EE5\u4E0B"),
-                                React.createElement("li", null, "100-200m"),
-                                React.createElement("li", null, "200-300m"),
-                                React.createElement("li", null, "300-500m"),
-                                React.createElement("li", null, "500-1000m"),
-                                React.createElement("li", null, "1000-2000m"),
-                                React.createElement("li", null, "2000m\u4EE5\u4E0B"))),
-                        React.createElement("div", { className: "roomList" },
-                            React.createElement("ul", null, this.state.roomList.map((i, index) => {
-                                return (React.createElement("li", { className: "roomP" },
-                                    React.createElement("p", { onClick: this.getRoom, "data-id": i.roomID }, i.roomName),
-                                    React.createElement("p", { onClick: this.getRoom, "data-id": i.roomID },
-                                        React.createElement("span", { className: "icontop3" },
-                                            React.createElement("span", { className: "iconfont" }, "\uE805")),
-                                        "\u00A0 \u623F\u95F4\u9762\u79EF\uFF1A",
-                                        React.createElement("span", { onClick: this.getRoom, "data-id": i.roomID },
-                                            i.roomArea,
-                                            " m\u00B2")),
-                                    React.createElement("p", { onClick: this.getRoom, "data-id": i.roomID },
-                                        React.createElement("span", { className: "icontop3" },
-                                            React.createElement("span", { className: "iconfont" }, "\uE806")),
-                                        "\u00A0 \u53D1\u5E03\u65F6\u95F4\uFF1A",
-                                        React.createElement("span", null,
-                                            i.addTime,
-                                            " "))));
-                            })))),
+                        React.createElement(BusinessArea, null)),
                     React.createElement("div", { className: this.state.showCompany == true ? "show" : "hide" },
                         React.createElement("div", { className: "topTit" },
                             React.createElement("span", { className: "topTT" }, "\u5165\u9A7B\u4F01\u4E1A"),
                             React.createElement("span", { className: "listAreaClose", onClick: this.clickFun.bind(this, this.state.index) },
                                 React.createElement("span", { className: "iconfont", style: { "fontSize": "12px" } }, "\uE803"))),
-                        React.createElement("div", { className: "areaScopeqy" },
-                            React.createElement("p", { className: "areaScopeP" }, "\u4F01\u4E1A\u5206\u7C7B"),
-                            React.createElement("ul", null,
-                                React.createElement("li", null, "\u5168\u90E8"),
-                                this.state.industryTypes.map((i, index) => {
-                                    return (React.createElement("li", null, i.typeName));
-                                }))),
-                        React.createElement("div", { className: "roomList" },
-                            React.createElement("ul", null, this.state.companyList.map((i, index) => {
-                                return (React.createElement("li", { className: "roomP" },
-                                    React.createElement("p", { onClick: this.getCompany, "data-id": i.companyID }, i.companyName),
-                                    React.createElement("p", { onClick: this.getCompany, "data-id": i.companyID },
-                                        React.createElement("span", { className: "icontop3" },
-                                            React.createElement("span", { className: "iconfont" }, "\uE807")),
-                                        "\u00A0\u516C\u53F8\u4F4D\u7F6E\uFF1A",
-                                        React.createElement("span", { onClick: this.getCompany, "data-id": i.companyID }, i.address)),
-                                    React.createElement("p", { onClick: this.getCompany, "data-id": i.companyID },
-                                        React.createElement("span", { className: "icontop3" },
-                                            React.createElement("span", { className: "iconfont" }, "\uE808")),
-                                        "\u00A0\u6240\u5C5E\u884C\u4E1A\uFF1A",
-                                        React.createElement("span", null, i.type))));
-                            }))))),
+                        React.createElement(CompanyArea, null))),
                 React.createElement("div", { className: this.state.treeList == true ? "treeList" : "hide" },
                     React.createElement("div", { className: "topTittree" },
                         React.createElement("span", { className: "topTT" }, "\u6842\u6797\u4FE1\u606F\u4EA7\u4E1A\u56ED"),
                         React.createElement("span", { className: "treeClose", onClick: this.clickFun.bind(this, this.state.index) },
                             React.createElement("span", { className: "iconfont", style: { "fontSize": "12px" } }, "\uE803"))),
-                    React.createElement("div", { className: "treenode" },
-                        React.createElement(antd_1.Tree, { showLine: true, switcherIcon: React.createElement(antd_1.Icon, { type: "down" }), defaultExpandedKeys: ['0-0-0'], onSelect: this.onSelect }, this.state.equipmentList.map((i, index) => {
-                            return (React.createElement(TreeNode, { title: i.equipmentType, key: i.equipmentType }, i.buildList.map((it, index) => {
-                                return (React.createElement(TreeNode, { title: it.buildname, key: it.buildname }, it.areaList.map((ite, index) => {
-                                    return (React.createElement(TreeNode, { title: ite.areaName, key: ite.areaName }, ite.floorList.map((ites, index) => {
-                                        return (React.createElement(TreeNode, { title: ites.floorName, key: ites.floorName }, ites.equipments.map((iteg, index) => {
-                                            return (React.createElement(TreeNode, { title: iteg.equipmentName, key: iteg.equipmentName }));
-                                        })));
-                                    })));
-                                })));
-                            })));
-                        }))))));
+                    React.createElement(TreeArea, null))));
         }
     }
     class LeftNav extends React.Component {
         constructor(props) {
             super(props);
-            this.onRef = (ref) => {
-                console.log("onRefref", ref);
-                this.child = ref;
-            };
-            this.child = null;
             this.state = {
                 index: 99,
                 iconone: false,
@@ -781,19 +958,35 @@ define("leftNav", ["require", "exports", "react", "antd", "css!./styles/listArea
                     { "icontwo": false },
                     { "iconthree": false },
                     { "iconfour": false },
-                ]
+                ],
+                treeData: {}
             };
             this.indexC = this.indexC.bind(this);
+            LeftNav.refreshTree = this.refreshTree.bind(this);
+            LeftNav.showList = this.showList.bind(this);
+            LeftNav.updateBusiness = this.updateBusiness.bind(this);
+            LeftNav.indexCh = this.indexCh.bind(this);
+            LeftNav.updateCompany = this.updateCompany.bind(this);
         }
         componentDidMount() {
-            this.props.leftNavFather(this);
         }
-        getValuefromChild(a) {
-            console.log("leftnav", a);
+        static refreshTree(a) { }
+        refreshTree(data) {
+            TreeArea.setTreedata(data);
         }
-        ;
+        static updateBusiness(a) { }
+        updateBusiness(a) {
+            console.log("Businessnav");
+            BusinessArea.updateList(a);
+        }
+        static updateCompany(a) { }
+        updateCompany(a) {
+            console.log("Companynav");
+            CompanyArea.updateList(a);
+        }
+        static showList(index) { }
         showList(index) {
-            console.log('father2', index);
+            console.log('showList-LeftNav', index);
             if (index == 1) {
                 this.setState({
                     index: index,
@@ -802,7 +995,6 @@ define("leftNav", ["require", "exports", "react", "antd", "css!./styles/listArea
                     iconthree: false,
                     iconfour: false,
                 });
-                this.child.myindex(index);
             }
             else if (index == 2) {
                 this.setState({
@@ -812,7 +1004,6 @@ define("leftNav", ["require", "exports", "react", "antd", "css!./styles/listArea
                     iconthree: false,
                     iconfour: false,
                 });
-                this.child.myindex(index);
             }
             else if (index == 3) {
                 this.setState({
@@ -822,7 +1013,6 @@ define("leftNav", ["require", "exports", "react", "antd", "css!./styles/listArea
                     iconthree: true,
                     iconfour: false,
                 });
-                this.child.myindex(index);
             }
             else if (index == 4) {
                 this.setState({
@@ -832,7 +1022,6 @@ define("leftNav", ["require", "exports", "react", "antd", "css!./styles/listArea
                     iconthree: false,
                     iconfour: true,
                 });
-                this.child.myindex(index);
             }
             else if (index == 10) {
                 this.setState({
@@ -842,8 +1031,8 @@ define("leftNav", ["require", "exports", "react", "antd", "css!./styles/listArea
                     iconthree: false,
                     iconfour: false,
                 });
-                this.child.myindex(index);
             }
+            ListArea.showList(index);
         }
         indexC(index) {
             console.log("indexC", index);
@@ -851,6 +1040,7 @@ define("leftNav", ["require", "exports", "react", "antd", "css!./styles/listArea
                 index: index
             });
         }
+        static indexCh(a) { }
         indexCh(a) {
             console.log("indexCh", a);
             if (a == 99) {
@@ -869,7 +1059,6 @@ define("leftNav", ["require", "exports", "react", "antd", "css!./styles/listArea
             }
         }
         render() {
-            console.log(this.state);
             return (React.createElement("div", null,
                 React.createElement("div", { className: "tree", onClick: this.showList.bind(this, 10) },
                     React.createElement("div", { className: "stree" },
@@ -890,52 +1079,12 @@ define("leftNav", ["require", "exports", "react", "antd", "css!./styles/listArea
                         React.createElement("li", { onClick: this.showList.bind(this, 4), className: this.state.iconfour == true ? "iconit" : "iconun" },
                             React.createElement("span", { className: "iconfont", style: { "fontSize": "25px" } }, "\uE7FD"),
                             React.createElement("p", null, "\u5165\u9A7B\u4F01\u4E1A")))),
-                React.createElement(ListArea, { index: this.state.index, indexC: this.indexCh.bind(this), onRef: this.onRef })));
+                React.createElement(ListArea, null)));
         }
     }
     exports.default = LeftNav;
 });
-define("topNav", ["require", "exports", "react", "css!./styles/topnav.css"], function (require, exports, React) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class TopNav extends React.Component {
-        constructor(props) {
-            super(props);
-            this.state = {};
-        }
-        componentDidMount() {
-            this.props.topNavFather(this);
-        }
-        getValuefromChild(a) {
-            console.log("topnav", a);
-        }
-        ;
-        render() {
-            return (React.createElement("div", { className: "topNav" },
-                React.createElement("div", { className: "topLogo" },
-                    React.createElement("img", { src: "./park/image/logo.png" })),
-                React.createElement("div", { className: "topM" },
-                    React.createElement("ul", null,
-                        React.createElement("li", null, "\u9996\u9875"),
-                        React.createElement("li", null, "\u56ED\u533A"),
-                        React.createElement("li", null, "\u571F\u5730"),
-                        React.createElement("li", null, "\u5382\u623F"),
-                        React.createElement("li", null, "\u5199\u5B57\u697C"),
-                        React.createElement("li", null, "\u5546\u4E1A"),
-                        React.createElement("li", null,
-                            "\u5176\u4ED6",
-                            React.createElement("span", { className: "iconfont", style: { "fontSize": "10px" } }, "\uE804")))),
-                React.createElement("div", { className: "topRight" },
-                    React.createElement("span", { style: { "marginRight": "5px" } }, "\u6D59\u6C5F\u6C38\u62D3\u4FE1\u606F\u79D1\u6280"),
-                    React.createElement("span", null, "\u767B\u5F55 "),
-                    " | ",
-                    React.createElement("span", null, " \u6CE8\u518C")),
-                React.createElement("div", { className: "bottomNav" })));
-        }
-    }
-    exports.default = TopNav;
-});
-define("share", ["require", "exports", "antd", "react", "css!./styles/share.css"], function (require, exports, antd_2, React) {
+define("share", ["require", "exports", "antd", "react", "css!./styles/view.css"], function (require, exports, antd_2, React) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Share extends React.Component {
@@ -958,7 +1107,7 @@ define("share", ["require", "exports", "antd", "react", "css!./styles/share.css"
             document.execCommand("Copy");
             oInput.className = 'oInput';
             oInput.style.display = 'none';
-            antd_2.message.success('���Ƴɹ�!', 1);
+            antd_2.message.success('复制成功!', 1);
             this.props.toggleShare();
         }
         cancel() {
@@ -966,18 +1115,18 @@ define("share", ["require", "exports", "antd", "react", "css!./styles/share.css"
         }
         render() {
             return (React.createElement("div", { className: "share" },
-                React.createElement("div", { className: "share-title" }, "\u0530\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"),
+                React.createElement("div", { className: "share-title" }, "\u56ED\u533A\u5206\u4EAB"),
                 React.createElement("div", { className: "url" },
-                    React.createElement("span", { className: "share-span-a" }, "\uFFFD\uFFFD\uFFFD\uFFFD"),
+                    React.createElement("span", { className: "share-span-a" }, "\u94FE\u63A5"),
                     React.createElement("span", { className: "share-span-b", id: "copy" }, this.state.value)),
                 React.createElement("div", { className: "share-bt" },
-                    React.createElement("div", { className: "share-span-c", onClick: this.cancel }, "\u0221\uFFFD\uFFFD"),
-                    React.createElement("div", { className: "share-span-d", onClick: this.copy }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"))));
+                    React.createElement("div", { className: "share-span-c", onClick: this.cancel }, "\u53D6\u6D88"),
+                    React.createElement("div", { className: "share-span-d", onClick: this.copy }, "\u590D\u5236\u94FE\u63A5"))));
         }
     }
     exports.default = Share;
 });
-define("Index", ["require", "exports", "react", "react-dom", "topNav", "leftNav", "iconView", "data", "share", "react-router-dom", "css!./styles/index.css"], function (require, exports, React, ReactDOM, topNav_1, leftNav_1, iconView_1, data_1, share_1, react_router_dom_2) {
+define("Index", ["require", "exports", "react", "react-dom", "topNav", "leftNav", "iconView", "data", "share", "dataService", "react-router-dom", "css!./styles/view.css"], function (require, exports, React, ReactDOM, topNav_1, leftNav_1, iconView_1, data_1, share_1, dataService_2, react_router_dom_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
@@ -993,57 +1142,63 @@ define("Index", ["require", "exports", "react", "react-dom", "topNav", "leftNav"
             this.fullScreen = (e) => {
                 this.setState({ isFullScreen: !this.state.isFullScreen });
             };
-            this.deo = new Deo();
-            this.topNavSon = ref => { this.topNavChild = ref; };
-            this.leftNavSon = ref => { this.leftNavChild = ref; };
+            this.iconChild = null;
             this.iconSon = ref => { this.iconChild = ref; };
-            this.btnClick = (a) => {
-                this.topNavChild.getValuefromChild(a);
-            };
-            this.btnPlay = (a) => {
-                console.log(a);
-                this.iconChild.play(a);
-            };
+            this.dataService = new dataService_2.default();
             this.toggleShare = this.toggleShare.bind(this);
             Index.g_pIns = this;
         }
-        sw(a) {
-            console.log(this);
-            this.deo.sdeo(a);
-            this.btnClick(a);
-        }
-        doPlay(a) {
-            this.btnPlay(a);
-        }
+        componentDidMount() { }
         render() {
             return (React.createElement("div", { className: "web" },
                 this.state.isFullScreen ? null :
                     React.createElement("span", null,
-                        React.createElement(topNav_1.default, { topNavFather: this.topNavSon }),
-                        React.createElement(leftNav_1.default, { leftNavFather: this.leftNavSon })),
+                        React.createElement(topNav_1.default, null),
+                        React.createElement(leftNav_1.default, null)),
                 this.state.isShare ?
                     React.createElement("div", { className: "share" },
                         React.createElement(share_1.default, { toggleShare: this.toggleShare }))
                     : null,
                 React.createElement("div", { className: "iconView" },
-                    React.createElement(iconView_1.default, { toggleShare: this.toggleShare, fullScreen: this.fullScreen, iconFather: this.iconSon }))));
+                    React.createElement(iconView_1.default, { toggleShare: this.toggleShare, fullScreen: this.fullScreen })),
+                React.createElement("div", { id: "webgl-output" })));
+        }
+        showLeftview(a) {
+            leftNav_1.default.showList(a);
+        }
+        hideLeftview(a) {
+            leftNav_1.default.indexCh(a);
+            leftNav_1.default.showList(a);
+        }
+        updateTree(data) {
+            leftNav_1.default.refreshTree(data);
+        }
+        updateBusiness(a) {
+            console.log("flushRoom", a);
+            leftNav_1.default.updateBusiness(a);
+        }
+        updateCompany(a) {
+            console.log("flushRoom", a);
+            leftNav_1.default.updateCompany(a);
+        }
+        roomScene(a) {
+            console.log("roomScene", a);
+        }
+        roomAduio(a) {
+            iconView_1.default.play(a);
+        }
+        callback(a, pBack) {
+            this.dataService.callback(a, pBack);
         }
     }
     Index.g_pIns = null;
-    class Deo {
-        sdeo(e) {
-            console.log("Deo", e);
-        }
-        ;
-    }
     ReactDOM.render(React.createElement(react_router_dom_2.HashRouter, null,
-        React.createElement(React.Fragment, null,
-            React.createElement(react_router_dom_2.Switch, null,
-                React.createElement(react_router_dom_2.Route, { path: "/data", component: data_1.default }),
-                React.createElement(react_router_dom_2.Route, { exact: true, path: "/", component: Index })))), document.getElementById('viewContainer'));
+        React.createElement(react_router_dom_2.Switch, null,
+            React.createElement(react_router_dom_2.Route, { path: "/data", component: data_1.default }),
+            React.createElement(react_router_dom_2.Route, { exact: true, path: "/", component: Index }))), document.getElementById('viewContainer'));
     exports.default = Index;
 });
-define("iconView", ["require", "exports", "react", "react-router-dom", "css!./styles/iconView.css"], function (require, exports, React, RouterDOM) {
+define("iconView", ["require", "exports", "react", "react-router-dom", "css!./styles/view.css"], function (require, exports, React, RouterDOM) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class IconView extends React.Component {
@@ -1060,8 +1215,10 @@ define("iconView", ["require", "exports", "react", "react-router-dom", "css!./st
                 currentAudio: 0
             };
             this.play = this.play.bind(this);
-            this.plays = this.plays.bind(this);
             this.endedAudio = this.endedAudio.bind(this);
+            IconView.play = this.play;
+        }
+        componentDidMount() {
         }
         endedAudio() {
             let currentAudio = this.state.currentAudio;
@@ -1078,6 +1235,7 @@ define("iconView", ["require", "exports", "react", "react-router-dom", "css!./st
                 this.setState({ isPlaying: true });
             });
         }
+        static play(a) { }
         play(a) {
             console.log("play");
             this.setState({ isPlaying: !this.state.isPlaying });
@@ -1085,11 +1243,12 @@ define("iconView", ["require", "exports", "react", "react-router-dom", "css!./st
             audio.src = a;
             audio.play();
         }
-        plays(a) {
-            console.log("playplay", a);
-        }
-        componentDidMount() {
-            this.props.iconFather(this);
+        playPark() {
+            console.log("playPark");
+            var voice = " http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3";
+            var audio = document.getElementById("bgMusic");
+            audio.src = voice;
+            audio.play();
         }
         render() {
             return (React.createElement("div", { className: "icon-view " },
@@ -1097,7 +1256,7 @@ define("iconView", ["require", "exports", "react", "react-router-dom", "css!./st
                 React.createElement("div", { style: { position: "fixed", top: "300px", left: "500px" } }),
                 React.createElement(RouterDOM.Link, { to: "/data" },
                     React.createElement(Analyze, null)),
-                React.createElement("span", { onClick: this.plays.bind("http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3") },
+                React.createElement("span", { onClick: this.playPark },
                     React.createElement(Play, null)),
                 React.createElement("span", { onClick: () => { this.props.toggleShare(); } },
                     React.createElement(Share, null)),
@@ -1117,7 +1276,14 @@ define("iconView", ["require", "exports", "react", "react-router-dom", "css!./st
         React.createElement("use", { xlinkHref: "#iconmengbanzu" }));
     exports.default = IconView;
     class Audio extends React.Component {
+        constructor(props) {
+            super(props);
+        }
         componentDidMount() {
+            let aud = document.getElementById("bgMusic");
+            aud.onended = function () {
+                console.log("音频播放完成");
+            };
         }
         render() {
             return (React.createElement("div", null,

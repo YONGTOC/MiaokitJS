@@ -6,15 +6,12 @@ import LeftNav from "leftNav";
 import IconView from "iconView";
 import Data from "data";
 import Share from "share";
+import DataService from "dataService";
 
-
-import "css!./styles/index.css"
+import "css!./styles/view.css"
 import { HashRouter, Route, Redirect, Switch } from 'react-router-dom';
 
-
-interface IProps {
-
-}
+interface IProps {}
 
 interface IState {
     isFullScreen: boolean,
@@ -29,54 +26,32 @@ class Index extends React.Component<IProps, IState> {
         Index.g_pIns = this;
     }
 
+    public componentDidMount() { }
+
     public readonly state: Readonly<IState> = {
         isFullScreen: false,
         isShare: false
     }
-    // 
+
     public static g_pIns: Index = null;
 
-    // ·ÖÏí
+    // åˆ†äº«
     toggleShare = (e) => {
         this.setState({ isShare: !this.state.isShare })
     }
 
-    // È«ÆÁ
+    // å…¨å±
     fullScreen = (e) => {
         this.setState({ isFullScreen: !this.state.isFullScreen })
     }
-
  
-
-    public sw(a) {
-        console.log(this);
-        // µ÷ÓÃ¹«¹²·½·¨
-        this.deo.sdeo(a);
-        // µ÷ÓÃTopNav×Ó×é¼şµÄ·½·¨£¨Íâ²¿js£¬Í¨¹ıUI.µ÷ÓÃ×Ó×é¼şµÄ·½·¨£©
-        this.btnClick(a);
-    }
-
-    public doPlay(a) {
-        // console.log(a);
-        this.btnPlay(a);
-    }
-
     public render() {
         return (
-            //<TopNav />
-
-            //{
-            //    this.state.isShare ?
-            //        <div className={"share"}><Share toggleShare={this.toggleShare} /></div>
-            //        : null
-            //}
-            //<div className={"iconView"}><IconView toggleShare={this.toggleShare} fullScreen={this.fullScreen} /></div>
-
             <div className={"web"} >
                 {this.state.isFullScreen ? null :
                     <span>
-                        <TopNav topNavFather={this.topNavSon} /> 
-                        <LeftNav leftNavFather={this.leftNavSon} />
+                        <TopNav /> 
+                        <LeftNav />
                     </span>
                 }
                 {
@@ -85,60 +60,74 @@ class Index extends React.Component<IProps, IState> {
                     : null
                 }
                 <div className={"iconView"}>
-                    <IconView toggleShare={this.toggleShare} fullScreen={this.fullScreen} iconFather={this.iconSon} />
+                    <IconView toggleShare={this.toggleShare} fullScreen={this.fullScreen}  />
                 </div>
-            
-               
+                <div id="webgl-output"></div>
             </div>
         )
     }
 
 
-    public deo: Deo = new Deo();
-
-    // ref, ½¨Á¢Á¬½Ó, ×Ó×é¼şÖ¸Ïò
-    public topNavSon = ref => { this.topNavChild = ref };
-    public leftNavSon = ref => { this.leftNavChild = ref };
+    public iconChild = null;
     public iconSon = ref => { this.iconChild = ref };
 
-    // ¸¸×é¼şµ÷ÓÃ indexµÄ×Ó×é¼şµÄ·½·¨£»
-    public btnClick = (a) => {
-        this.topNavChild.getValuefromChild(a)
-        // this.leftNavChild.getValuefromChild(a)
+  
+    //do ä¼ å‚å†³å®šæ˜¾ç¤ºåŒºåŸŸ ï¼Œ 1 - å›­åŒºä»‹ç»; 2 - åŒºåŸŸä¼˜åŠ¿; 3 - æ‹›å•†åˆ—è¡¨; 4 - å…¥é©»ä¼ä¸š; 10 - é¡¶éƒ¨æ ‘å½¢åˆ—è¡¨;
+    public showLeftview(a) {
+        // LeftNav.showList-- ListArea.showList
+        LeftNav.showList(a);
+    }
+    // éšè—ç»„ä»¶
+    public hideLeftview(a) {
+        LeftNav.indexCh(a);
+        LeftNav.showList(a);
     }
 
-    // ¸¸×é¼şµ÷ÓÃ iconViewµÄ×Ó×é¼şµÄ·½·¨£»
-    public btnPlay = (a) => {
-        console.log(a);
-        this.iconChild.play(a)
+    //åˆ·æ–°æ ‘å½¢å›¾æ•°æ®
+    public updateTree(data) {
+        // LeftNav.refreshTree -- TreeArea.setTreedata
+        LeftNav.refreshTree(data);
     }
+
+    //æ¿€æ´»æˆ¿é—´ç»„ä»¶
+    public updateBusiness(a) {
+        console.log("flushRoom", a);
+        // LeftNav.outBusinessdata(a) -- BusinessArea.outRoomdata(a);
+        LeftNav.updateBusiness(a)
+    }
+    // æ¿€æ´»ä¼ä¸šç»„ä»¶
+    public updateCompany(a) {
+        console.log("flushRoom", a);
+        // LeftNav.outCompanydata  --  CompanyArea.outRoomdata(a);
+        LeftNav.updateCompany(a)
+    }
+
+    // æ¿€æ´»æˆ¿é—´å…¨æ™¯
+    public roomScene(a) {
+        console.log("roomScene", a);
+    }
+
+    //æ¿€æ´»æˆ¿é—´è®²è§£
+    public roomAduio(a) {
+        IconView.play(a);
+    }
+
+    public dataService: DataService = new DataService();
+
+    // ç‚¹å‡»åœ°å›¾ç‚¹ï¼Œè·å–å›è°ƒ
+    public callback(a, pBack) {
+        this.dataService.callback(a, pBack);
+    }
+
+
 }
-
-
-// 
-class Deo {
-    public sdeo(e) {
-        console.log("Deo", e);
-       // console.log(TopNav);
-       // TopNav.sho();
-    };
-
-
-}
-
 
 ReactDOM.render(
-    //<RouterDOM.HashRouter>
-    //    <Index />
-    //</RouterDOM.HashRouter>
-
     <HashRouter>
-        <>
             <Switch>
                 <Route path="/data" component={Data} />
                 <Route exact path="/" component={Index} />
             </Switch>
-        </>
     </HashRouter>
     , document.getElementById('viewContainer'));
 

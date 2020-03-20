@@ -1,6 +1,6 @@
 import { message } from 'antd'
 import * as React from "react";
-import "css!./styles/share.css";
+import "css!./styles/view.css";
 
 interface IProps {
 
@@ -33,7 +33,7 @@ export default class Share extends React.Component<IProps, IState> {
         document.execCommand("Copy");
         oInput.className = 'oInput';
         oInput.style.display = 'none';
-        message.success('复制成功!', 1)
+        message.success('澶嶅埗鎴愬姛!', 1)
         this.props.toggleShare()
     }
 
@@ -44,14 +44,14 @@ export default class Share extends React.Component<IProps, IState> {
     render() {
         return (
             <div className="share">
-                <div className="share-title">园区分享</div>
+                <div className="share-title">鍥尯鍒嗕韩</div>
                 <div className="url">
-                    <span className="share-span-a">链接</span>
+                    <span className="share-span-a">閾炬帴</span>
                     <span className="share-span-b" id="copy">{this.state.value}</span>
                 </div>
                 <div className="share-bt">
-                    <div className="share-span-c" onClick={this.cancel}>取消</div>
-                    <div className="share-span-d" onClick={this.copy}>复制链接</div>
+                    <div className="share-span-c" onClick={this.cancel}>鍙栨秷</div>
+                    <div className="share-span-d" onClick={this.copy}>澶嶅埗閾炬帴</div>
                 </div>
             </div>
         )

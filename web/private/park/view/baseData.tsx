@@ -1,80 +1,77 @@
 import * as React from "react";
-import "css!./styles/baseData.css";
-
+import "css!./styles/view.css";
 
 import { StackArea } from 'g2plot';
 
-
-
 const data = [
     {
-        country: '¹úÍõ',
-        month: '1ÔÂ',
+        country: 'ï¿½ï¿½ï¿½ï¿½',
+        month: '1ï¿½ï¿½',
         value: 30,
     },
     {
-        country: '¹úÍõ',
-        month: '2ÔÂ',
+        country: 'ï¿½ï¿½ï¿½ï¿½',
+        month: '2ï¿½ï¿½',
         value: 50,
     },
     {
-        country: '¹úÍõ',
-        month: '3ÔÂ',
+        country: 'ï¿½ï¿½ï¿½ï¿½',
+        month: '3ï¿½ï¿½',
         value: 80,
     },
     {
-        country: '¹úÍõ',
-        month: '4ÔÂ',
+        country: 'ï¿½ï¿½ï¿½ï¿½',
+        month: '4ï¿½ï¿½',
         value: 100,
     },
     {
-        country: '¹úÍõ',
-        month: '5ÔÂ',
+        country: 'ï¿½ï¿½ï¿½ï¿½',
+        month: '5ï¿½ï¿½',
         value: 80,
     },
     {
-        country: '¹úÍõ',
-        month: '6ÔÂ',
+        country: 'ï¿½ï¿½ï¿½ï¿½',
+        month: '6ï¿½ï¿½',
         value: 50,
     },
     {
-        country: '¹úÍõ',
-        month: '7ÔÂ',
+        country: 'ï¿½ï¿½ï¿½ï¿½',
+        month: '7ï¿½ï¿½',
         value: 30,
     },
     {
-        country: '»Êºó',
-        month: '1ÔÂ',
+        country: 'ï¿½Êºï¿½',
+        month: '1ï¿½ï¿½',
         value: 20,
     },
     {
-        country: '»Êºó',
-        month: '2ÔÂ',
+        country: 'ï¿½Êºï¿½',
+        month: '2ï¿½ï¿½',
         value: 60,
     },
     {
-        country: '»Êºó',
-        month: '3ÔÂ',
+        country: 'ï¿½Êºï¿½',
+        month: '3ï¿½ï¿½',
         value: 120,
     },
     {
-        country: '»Êºó',
-        month: '4ÔÂ',
+        country: 'ï¿½Êºï¿½',
+        month: '4ï¿½ï¿½',
         value: 70,
     },
     {
-        country: '»Êºó',
-        month: '5ÔÂ',
+        country: 'ï¿½Êºï¿½',
+        month: '5ï¿½ï¿½',
         value: 50,
     },
     {
-        country: '»Êºó',
-        month: '6ÔÂ',
+        country: 'ï¿½Êºï¿½',
+        month: '6ï¿½ï¿½',
         value: 30,
     },
     {
-        country: '»Êºó',
-        month: '7ÔÂ',
+        country: 'ï¿½Êºï¿½',
+        month: '7ï¿½ï¿½',
         value: 20,
     },
 ];
@@ -87,20 +84,13 @@ interface IState {
     baseData: Array<any>
 }
 
-
-
-
-
-
 class BaseData extends React.Component<IProps, IState> {
     public readonly state: Readonly<IState> = {
-        baseData: [{ name: "½¨Öþ×ÜÃæ»ý", number: "95,000", unit: "Æ½·½Ã×", img: "./park/image/baseData/architecture.png" }, { name: "Èë×¤ÆóÒµ", number: "150", unit: "¼Ò", img: "./park/image/baseData/enterprise.png" },
-            { name: "Ô°ÄÚÈËÔ±", number: "6,000", unit: "ÈË", img: "./park/image/baseData/personnel.png" }, { name: "ÉãÏñ¼à¿Ø", number: "900", unit: "Ì¨", img: "./park/image/baseData/monitoring.png" },
-            { name: "ÖÇÄÜÉè±¸", number: "2,600", unit: "Ì¨", img: "./park/image/baseData/equipment.png" }, { name: "Í£³µÎ»", number: "600", unit: "¸ö", img: "./park/image/baseData/car.png" }], // »ù´¡Êý¾Ý
+        baseData: [{ name: "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", number: "95,000", unit: "Æ½ï¿½ï¿½ï¿½ï¿½", img: "./park/image/baseData/architecture.png" }, { name: "ï¿½ï¿½×¤ï¿½ï¿½Òµ", number: "150", unit: "ï¿½ï¿½", img: "./park/image/baseData/enterprise.png" },
+            { name: "Ô°ï¿½ï¿½ï¿½ï¿½Ô±", number: "6,000", unit: "ï¿½ï¿½", img: "./park/image/baseData/personnel.png" }, { name: "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", number: "900", unit: "Ì¨", img: "./park/image/baseData/monitoring.png" },
+            { name: "ï¿½ï¿½ï¿½ï¿½ï¿½è±¸", number: "2,600", unit: "Ì¨", img: "./park/image/baseData/equipment.png" }, { name: "Í£ï¿½ï¿½Î»", number: "600", unit: "ï¿½ï¿½", img: "./park/image/baseData/car.png" }], // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     }
     
-
-
     componentDidMount() {
         const areaPlot = new StackArea(document.getElementById('curve'), {
             data,
@@ -124,7 +114,6 @@ class BaseData extends React.Component<IProps, IState> {
         areaPlot.render();
     }
 
-
     render() {
         return (
             <div className="base-data">
@@ -134,7 +123,7 @@ class BaseData extends React.Component<IProps, IState> {
                         float: "left", marginTop: "4px", marginRight: "5px"
                     }}>
                     </div>
-                    <span style={{ color: "#FFFFFF", fontSize: "16px" }}>»ù±¾Êý¾ÝÍ³¼Æ</span>
+                    <span style={{ color: "#FFFFFF", fontSize: "16px" }}>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í³ï¿½ï¿½</span>
                 </div>
                 {
                     this.state.baseData.map((item, index) => {
@@ -150,18 +139,18 @@ class BaseData extends React.Component<IProps, IState> {
                     })
                 }
                 <div style={{ color: "#FFFFFF", marginLeft: "35px" }}>
-                    <div style={{ fontSize: "12px", float: "left" }}>Ô°ÇøÔÂ´´ÔìGDP</div>
-                    <div style={{ fontSize: "12px", marginLeft: "10px", float: "left" }}>(°ÙÍò)</div>
+                    <div style={{ fontSize: "12px", float: "left" }}>Ô°ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½GDP</div>
+                    <div style={{ fontSize: "12px", marginLeft: "10px", float: "left" }}>(ï¿½ï¿½ï¿½ï¿½)</div>
                     <div style={{
                         borderTop: "2px solid #07D1D3", width: "10px", height: "3px", float: "left", opacity: 1,
                         marginLeft: "50px", marginTop: "8px"
                     }}></div>
-                    <div style={{ float: "left", fontSize: "6px", marginLeft: "5px" }}>µ±Ç°Öµ</div>
+                    <div style={{ float: "left", fontSize: "6px", marginLeft: "5px" }}>ï¿½ï¿½Ç°Öµ</div>
                     <div style={{
                         borderTop: "2px solid #229FCE", width: "10px", height: "3px", float: "left", opacity: 1,
                         marginLeft: "10px", marginTop: "8px"
                     }}></div>
-                    <div style={{ float: "left", fontSize: "6px", marginLeft: "5px" }}>±ê×¼Öµ</div>
+                    <div style={{ float: "left", fontSize: "6px", marginLeft: "5px" }}>ï¿½ï¿½×¼Öµ</div>
                 </div>
                 <div id="curve" style={{ width: "350px", height: "260px", marginLeft: "12px" }}>
 
@@ -170,8 +159,6 @@ class BaseData extends React.Component<IProps, IState> {
         )
     }
 
-
 }
-
 
 export default BaseData;
