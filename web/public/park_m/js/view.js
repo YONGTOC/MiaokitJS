@@ -2,8 +2,8 @@ define("compat", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class GlobalAction {
-        web_call_webgl_initPark(park_id) {
-            console.log("web_call_webgl_initPark", park_id);
+        web_call_webgl_initPark(pInfo) {
+            console.log("web_call_webgl_initPark", pInfo);
         }
         web_call_webgl_switchCompany(pName) {
             console.log("web_call_webgl_switchCompany", pName);
@@ -509,18 +509,21 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         getCompanyType(pBack, park_id) {
             let thetoken = localStorage.getItem("token");
-            $.ajax({
-                url: this.state.rooturl + '/api/getCompanyType',
-                data: {
-                    "park_id": park_id,
-                    "token": thetoken,
-                },
-                type: "get",
-                success: function (data) {
-                    console.log("TTTTTTTTTT", data);
-                    pBack(data);
-                }
-            });
+            var data = {
+                "return_code": "100",
+                "response": [
+                    {
+                        "id": "1009",
+                        "name": "科技服务",
+                    },
+                    {
+                        "id": "1019",
+                        "name": "文化创意",
+                    }
+                ],
+                "err_msg": ""
+            };
+            pBack(data);
         }
         findCompany(pBack, park_id, company_type_id, name) {
             console.log("findCompany", park_id, company_type_id, name);
