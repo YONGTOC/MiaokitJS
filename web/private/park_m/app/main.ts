@@ -25,19 +25,30 @@ class Main {
     public Start(): void {
         let pThis = this;
 
+        if (!pThis.m_pCity) {
+            /// 根据定位获取城市信息，默认设置桂林市
+            pThis.m_pCity = {
+                m_pName: "桂林",
+                m_nLng: 110.258422,
+                m_nLat: 25.266594
+            };
+        }
+
         pThis.m_pGis = pThis.m_pApp.m_pGis;
 
         pThis.m_pApp.m_pCameraCtrl.Jump(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, {
-            m_nLng: 110.344301,
-            m_nLat: 25.272208,
-            m_mTarget: { x: 0.0, y: 0.0, z: 0.0 },
-            m_nDistance: 30.0,
+            m_nLng: pThis.m_pCity.m_nLng,
+            m_nLat: pThis.m_pCity.m_nLat,
+            m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
+            m_nDistance: 50000.0,
             m_nPitch: 30.0,
-            m_nYaw: 21
+            m_nYaw: 0.0
         });
 
-        pThis.InitStartMovie();
+        MiaokitJS.ShaderLab.SetSunlight(0.0, 90.0, 1.0);
     }
+
+
     private iii = 0;
     /// 帧更新方法。
     public Update(): void {
@@ -46,9 +57,9 @@ class Main {
         }
         let pState = undefined;
 
-        if (this.m_pStartMovie) {
-            pState = this.m_pStartMovie();
-        }
+        //if (this.m_pStartMovie) {
+        //    pState = this.m_pStartMovie();
+        //}
 
         if (this.m_pGis) {
             this.m_pGis.Update(this.m_pApp.m_pCameraCtrl.lng, this.m_pApp.m_pCameraCtrl.lat, pState ? pState.m_pGisDistance : this.m_pApp.m_pCameraCtrl.height);
@@ -86,6 +97,23 @@ class Main {
                 }
             }
         }
+    }
+
+    /// 进入园区。
+    public EnterPark(pPark): void {
+        let pThis = this;
+
+        pThis.m_pApp.m_pCameraCtrl.Fly(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, pPark.m_pView, 0.05);
+    }
+
+    /// 进入企业。
+    public EnterCompany(pCompany): void {
+        // 分两步执行。聚焦半透明楼栋，叠加楼层并高亮企业对应区域
+        // 如果尚未完成进入园区，则立即切换到园区
+
+        //if (pCamera.m_pFlyTask) {
+        //}
+
     }
 
     /// 初始化开始动画。
@@ -557,7 +585,7 @@ class Main {
             let pAdjust = pTile.m_aAdjust[pScene.building_id];
             let pObject = pScene.m_pScene.object3D;
             let bOutdoor = pScene.building_id === pTile.m_pOutdoor.building_id;
-            
+
             pObject.transform.localPosition = pTile.m_nOffset;
             pObject.transform.euler = pTile.m_mRotate;
             pObject.active = bOutdoor ? true : false;
@@ -685,6 +713,10 @@ class Main {
     private m_nLoading: number = 0;
     /// 当前进度条最大值。
     private m_nTaskMax: number = 0;
+
+    /// 当前聚焦城市。
+    private m_pCity: any = null;
+
     /// 开始动画。
     private m_pStartMovie: any = null;
 }
