@@ -48,7 +48,7 @@ class RentRoom extends React.Component {
                     使用状态：<span style={{ marginLeft: "30px", color: "#333333" }}>租用中</span>
                   </div>
                   <div style={{ fontSize: "38px", color: "#949494", margin: "10px 0 0 40px", overflow: "hidden" }}>
-                    <div style={{ float: "left" }}>租用日期：<span style={{ color: "#F53636" }}>2020-03-20 ~ 2021-03-20</span></div>
+                    <div style={{ float: "left" }}>租用日期：<span style={{ color: "#F53636", marginLeft: "28px" }}>2020-03-20 ~ 2021-03-20</span></div>
                     {this.state.defaultIndex === index ?
                       <div style={{
                         float: "right", backgroundColor: "#0BC491", color: "#ffffff", width: "160px", height: "55px", borderRadius: "50px",

@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import "css!./styles/enterpriseInformation.css"
 
 interface IProps {
@@ -18,135 +18,135 @@ interface IState {
 class EnterpriseInformation extends React.Component {
   public readonly state: Readonly<IState> = {
     imgList: ["./mpark/image/tx.jpg", "./mpark/image/tx.jpg", "./mpark/image/tx.jpg", "./mpark/image/tx.jpg", "./mpark/image/tx.jpg"],
-    modifyState: false, // ĞŞ¸Ä×´Ì¬
+    modifyState: false, // ä¿®æ”¹çŠ¶æ€
     inputEnterpriseIDValue: "123456",
-    inputEnterpriseNameValue: "ÇëÊäÈëÆóÒµÃû³Æ",
-    inputEnterprisePositionValue: "ÇëÊäÈëÏêÏ¸µØÖ·",
-    contactsValue: "ÇëÊäÈëÁªÏµÈËĞÕÃû",
-    officialWebsiteValue: "ÇëÊäÈëÆóÒµ¹Ù·½ÍøÖ·",
-    descriptionValue: "400×ÖÄÚ"
+    inputEnterpriseNameValue: "è¯·è¾“å…¥ä¼ä¸šåç§°",
+    inputEnterprisePositionValue: "è¯·è¾“å…¥è¯¦ç»†åœ°å€",
+    contactsValue: "è¯·è¾“å…¥è”ç³»äººå§“å",
+    officialWebsiteValue: "è¯·è¾“å…¥ä¼ä¸šå®˜æ–¹ç½‘å€",
+    descriptionValue: "400å­—å†…"
   }
 
 
-  // ·µ»Ø
+  // è¿”å›
   goBack() {
     this.props.history.goBack()
   }
-  // ĞŞ¸Ä
+  // ä¿®æ”¹
   modify() {
     this.setState({ modifyState: !this.state.modifyState })
   }
 
-  // ¾Û½¹ÆóÒµid
+  // èšç„¦ä¼ä¸šid
   focusEnterpriseID() {
     if (this.state.inputEnterpriseIDValue === "123456") {
       this.setState({ inputEnterpriseIDValue: "" })
     }
   }
 
-  // Ê§½¹ÆóÒµid
+  // å¤±ç„¦ä¼ä¸šid
   blurEnterpriseID() {
     if (this.state.inputEnterpriseIDValue === "") {
       this.setState({ inputEnterpriseIDValue: "123456" })
     }
   }
 
-  // ÊäÈëÆóÒµid
+  // è¾“å…¥ä¼ä¸šid
   changeEnterpriseID(event) {
     this.setState({ inputEnterpriseIDValue: event.target.value })
   }
 
-  // ¾Û½¹ÆóÒµÃû×Ö
+  // èšç„¦ä¼ä¸šåå­—
   focusEnterpriseName() {
-    if (this.state.inputEnterpriseNameValue === "ÇëÊäÈëÆóÒµÃû³Æ") {
+    if (this.state.inputEnterpriseNameValue === "è¯·è¾“å…¥ä¼ä¸šåç§°") {
       this.setState({ inputEnterpriseNameValue: "" })
     }
   }
 
-  // Ê§½¹ÆóÒµÃû×Ö
+  // å¤±ç„¦ä¼ä¸šåå­—
   blurEnterpriseName() {
     if (this.state.inputEnterpriseNameValue === "") {
-      this.setState({ inputEnterpriseNameValue: "ÇëÊäÈëÆóÒµÃû³Æ" })
+      this.setState({ inputEnterpriseNameValue: "è¯·è¾“å…¥ä¼ä¸šåç§°" })
     }
   }
 
-  // ÊäÈëÆóÒµÃû×Ö
+  // è¾“å…¥ä¼ä¸šåå­—
   changeEnterpriseName(event) {
     this.setState({ inputEnterpriseNameValue: event.target.value })
   }
 
-  // ¾Û½¹ÆóÒµÎ»ÖÃ
+  // èšç„¦ä¼ä¸šä½ç½®
   focusEnterprisePosition() {
-    if (this.state.inputEnterprisePositionValue === "ÇëÊäÈëÏêÏ¸µØÖ·") {
+    if (this.state.inputEnterprisePositionValue === "è¯·è¾“å…¥è¯¦ç»†åœ°å€") {
       this.setState({ inputEnterprisePositionValue: "" })
     }
   }
 
-  // Ê§½¹ÆóÒµÎ»ÖÃ
+  // å¤±ç„¦ä¼ä¸šä½ç½®
   blurEnterprisePosition() {
     if (this.state.inputEnterprisePositionValue === "") {
-      this.setState({ inputEnterprisePositionValue: "ÇëÊäÈëÏêÏ¸µØÖ·" })
+      this.setState({ inputEnterprisePositionValue: "è¯·è¾“å…¥è¯¦ç»†åœ°å€" })
     }
   }
 
-  // ÊäÈëÆóÒµÎ»ÖÃ
+  // è¾“å…¥ä¼ä¸šä½ç½®
   changeEnterprisePosition(event) {
     this.setState({ inputEnterprisePositionValue: event.target.value })
   }
 
-  // ¾Û½¹ÁªÏµÈË
+  // èšç„¦è”ç³»äºº
   focusContacts() {
-    if (this.state.contactsValue === "ÇëÊäÈëÁªÏµÈËĞÕÃû") {
+    if (this.state.contactsValue === "è¯·è¾“å…¥è”ç³»äººå§“å") {
       this.setState({ contactsValue: "" })
     }
   }
 
-  // Ê§½¹ÁªÏµÈË
+  // å¤±ç„¦è”ç³»äºº
   blurContacts() {
     if (this.state.contactsValue === "") {
-      this.setState({ contactsValue: "ÇëÊäÈëÁªÏµÈËĞÕÃû" })
+      this.setState({ contactsValue: "è¯·è¾“å…¥è”ç³»äººå§“å" })
     }
   }
 
-  // ÊäÈëÁªÏµÈË
+  // è¾“å…¥è”ç³»äºº
   changeContacts(event) {
     this.setState({ contactsValue: event.target.value })
   }
 
-  // ¾Û½¹ÆóÒµ¹ÙÍø
+  // èšç„¦ä¼ä¸šå®˜ç½‘
   focusOfficialWebsite() {
-    if (this.state.officialWebsiteValue === "ÇëÊäÈëÆóÒµ¹Ù·½ÍøÖ·") {
+    if (this.state.officialWebsiteValue === "è¯·è¾“å…¥ä¼ä¸šå®˜æ–¹ç½‘å€") {
       this.setState({ officialWebsiteValue: "" })
     }
   }
 
-  // Ê§½¹ÆóÒµ¹ÙÍø
+  // å¤±ç„¦ä¼ä¸šå®˜ç½‘
   blurOfficialWebsite() {
     if (this.state.officialWebsiteValue === "") {
-      this.setState({ officialWebsiteValue: "ÇëÊäÈëÆóÒµ¹Ù·½ÍøÖ·" })
+      this.setState({ officialWebsiteValue: "è¯·è¾“å…¥ä¼ä¸šå®˜æ–¹ç½‘å€" })
     }
   }
 
-  // ÊäÈëÆóÒµ¹ÙÍø
+  // è¾“å…¥ä¼ä¸šå®˜ç½‘
   changeOfficialWebsite(event) {
     this.setState({ officialWebsiteValue: event.target.value })
   }
 
-  // ¾Û½¹ÆóÒµÃèÊö
+  // èšç„¦ä¼ä¸šæè¿°
   focusDescription() {
-    if (this.state.descriptionValue === "400×ÖÄÚ") {
+    if (this.state.descriptionValue === "400å­—å†…") {
       this.setState({ descriptionValue: "" })
     }
   }
 
-  // Ê§½¹ÆóÒµÃèÊö
+  // å¤±ç„¦ä¼ä¸šæè¿°
   blurDescription() {
     if (this.state.descriptionValue === "") {
-      this.setState({ descriptionValue: "400×ÖÄÚ" })
+      this.setState({ descriptionValue: "400å­—å†…" })
     }
   }
 
-  // ÊäÈëÆóÒµÃèÊö
+  // è¾“å…¥ä¼ä¸šæè¿°
   changeDescription(event) {
     this.setState({ descriptionValue: event.target.value })
   }
@@ -156,128 +156,128 @@ class EnterpriseInformation extends React.Component {
     return (
       <div className="enterprise-information">
         <div className="enterprise-information-top">
-          <div className="enterprise-information-title">Êı×ÖÔ°Çø</div>
+          <div className="enterprise-information-title">æ•°å­—å›­åŒº</div>
         </div>
         <div className="enterprise-information-back">
           <div style={{ float: "left" }} onClick={this.goBack.bind(this)}>
             <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
-            <span>ÆóÒµĞÅÏ¢¹ÜÀí</span>
+            <span>ä¼ä¸šä¿¡æ¯ç®¡ç†</span>
           </div>
           {this.state.modifyState ? null :
-            <span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }} onClick={this.modify.bind(this)}>ĞŞ¸Ä</span>
+            <span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }} onClick={this.modify.bind(this)}>ä¿®æ”¹</span>
           }
         </div>
         {this.state.modifyState ?
           <div>
             <div className="enterprise-information-id">
-              <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", marginLeft: "30px", float: "left", width: "25%" }}>ÆóÒµID</div>
+              <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", marginLeft: "30px", float: "left", width: "25%" }}>ä¼ä¸šID</div>
               <input className="enterprise-information-id-input" value={this.state.inputEnterpriseIDValue}
                 onFocus={this.focusEnterpriseID.bind(this)} onBlur={this.blurEnterpriseID.bind(this)} onChange={this.changeEnterpriseID.bind(this)} />
             </div>
             <div className="enterprise-information-modify-tag">
               <div className="enterprise-information-star"></div>
-              <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "25%" }}>ÆóÒµÃû³Æ</div>
+              <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "25%" }}>ä¼ä¸šåç§°</div>
               <input className="enterprise-information-name-input" value={this.state.inputEnterpriseNameValue}
                 onFocus={this.focusEnterpriseName.bind(this)} onBlur={this.blurEnterpriseName.bind(this)} onChange={this.changeEnterpriseName.bind(this)} />
             </div>
             <div className="enterprise-information-modify-photograph-tag">
               <div className="enterprise-information-photograph-star"></div>
-              <div style={{ color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left", width: "25%" }}>ÆóÒµlogo</div>
+              <div style={{ color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left", width: "25%" }}>ä¼ä¸šlogo</div>
               <div style={{ backgroundColor: "#F2F2F2", height: "120px", width: "120px", float: "left", lineHeight: "120px", textAlign: "center", marginTop: "20px" }}>
                 <img src="./mpark/image/photograph.png" width="110px" height="110px" />
               </div>
             </div>
             <div className="enterprise-information-modify-tag">
               <div className="enterprise-information-star"></div>
-              <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "25%" }}>ÆóÒµÎ»ÖÃ</div>
+              <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "25%" }}>ä¼ä¸šä½ç½®</div>
               <input className="enterprise-information-name-input" value={this.state.inputEnterprisePositionValue}
                 onFocus={this.focusEnterprisePosition.bind(this)} onBlur={this.blurEnterprisePosition.bind(this)} onChange={this.changeEnterprisePosition.bind(this)} />
             </div>
             <div className="enterprise-information-modify-tag">
               <div className="enterprise-information-star"></div>
-              <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "25%" }}>ÁªÏµÈË</div>
+              <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "25%" }}>è”ç³»äºº</div>
               <input className="enterprise-information-name-input" value={this.state.contactsValue}
                 onFocus={this.focusContacts.bind(this)} onBlur={this.blurContacts.bind(this)} onChange={this.changeContacts.bind(this)} />
             </div>
             <div className="enterprise-information-modify-tag">
               <div className="enterprise-information-star"></div>
-              <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "25%" }}>ÆóÒµ·ÖÀà</div>
-              <div style={{ color: "#6C6C6C", fontSize: "40px", lineHeight: "120px", width: "50%", float: "left" }}>ÇëÑ¡ÔñÆóÒµ·ÖÀà</div>
-              <div style={{ float: "right",lineHeight: "120px", textAlign: "center", width: "60px" }}>
+              <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "25%" }}>ä¼ä¸šåˆ†ç±»</div>
+              <div style={{ color: "#6C6C6C", fontSize: "40px", lineHeight: "120px", width: "50%", float: "left" }}>è¯·é€‰æ‹©ä¼ä¸šåˆ†ç±»</div>
+              <div style={{ float: "right", lineHeight: "120px", textAlign: "center", width: "60px" }}>
                 <img src="./mpark/image/right.png" />
               </div>
             </div>
             <div className="enterprise-information-modify-tag">
-              <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "25%", marginLeft: "30px" }}>ÆóÒµ¹ÙÍø</div>
+              <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "25%", marginLeft: "30px" }}>ä¼ä¸šå®˜ç½‘</div>
               <input className="enterprise-information-name-input" value={this.state.officialWebsiteValue}
                 onFocus={this.focusOfficialWebsite.bind(this)} onBlur={this.blurOfficialWebsite.bind(this)} onChange={this.changeOfficialWebsite.bind(this)} />
             </div>
-            <div style={{width: "90%", height: "120px", margin: "auto", marginTop: "10px"}}>
+            <div style={{ width: "90%", height: "120px", margin: "auto", marginTop: "10px" }}>
               <div className="enterprise-information-star"></div>
-              <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "35%" }}>ÆóÒµÏêÇéÃèÊö:</div>
+              <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "35%" }}>ä¼ä¸šè¯¦æƒ…æè¿°:</div>
             </div>
             <textarea style={{ width: "84%", height: "400px", backgroundColor: "#F2F2F2", fontSize: "40px", color: "#949494", border: "none", outline: "none" }} value={this.state.descriptionValue}
               onFocus={this.focusDescription.bind(this)} onBlur={this.blurDescription.bind(this)} onChange={this.changeDescription.bind(this)}></textarea>
             <div className="enterprise-information-upload-a">
-              <div>ÆóÒµ·ç²É</div>
+              <div>ä¼ä¸šé£é‡‡</div>
               <div style={{ width: "200px", height: "200px", backgroundColor: "#F2F2F2", textAlign: "center", marginTop: "30px" }}>
                 <img src="./mpark/image/addPicture.png" width="70px" height="70px" style={{ marginTop: "35px" }} />
-                <div style={{marginTop: "10px"}}>Ìí¼Ó</div>
+                <div style={{ marginTop: "10px" }}>æ·»åŠ </div>
               </div>
             </div>
             <div className="enterprise-information-upload-a">
-              <div>²úÆ·Õ¹Ê¾</div>
+              <div>äº§å“å±•ç¤º</div>
               <div style={{ width: "200px", height: "200px", backgroundColor: "#F2F2F2", textAlign: "center", marginTop: "30px" }}>
                 <img src="./mpark/image/addPicture.png" width="70px" height="70px" style={{ marginTop: "35px" }} />
-                <div style={{ marginTop: "10px" }}>Ìí¼Ó</div>
+                <div style={{ marginTop: "10px" }}>æ·»åŠ </div>
               </div>
             </div>
             <div className="enterprise-information-upload-b">
-              <div>È«¾°Õ¹Ê¾</div>
+              <div>å…¨æ™¯å±•ç¤º</div>
               <div style={{ width: "200px", height: "200px", backgroundColor: "#F2F2F2", textAlign: "center", marginTop: "30px" }}>
                 <img src="./mpark/image/addPicture.png" width="70px" height="70px" style={{ marginTop: "35px" }} />
-                <div style={{ marginTop: "10px" }}>Ìí¼Ó</div>
+                <div style={{ marginTop: "10px" }}>æ·»åŠ </div>
               </div>
             </div>
             <div className="enterprise-information-submit" onClick={this.modify.bind(this)}>
-              Ìá½»
+              æäº¤
             </div>
           </div> :
           <div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
-              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ÆóÒµID</div><div style={{ color: "#333333", fontSize: "40px", float: "left" }}>123456</div>
+              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ä¼ä¸šID</div><div style={{ color: "#333333", fontSize: "40px", float: "left" }}>123456</div>
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
-              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ÆóÒµÃû³Æ</div><div style={{ color: "#333333", fontSize: "40px", float: "left" }}>Õã½­ÓÀÍØĞÅÏ¢¿Æ¼¼ÓĞÏŞ¹«Ë¾</div>
+              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ä¼ä¸šåç§°</div><div style={{ color: "#333333", fontSize: "40px", float: "left" }}>æµ™æ±Ÿæ°¸æ‹“ä¿¡æ¯ç§‘æŠ€æœ‰é™å…¬å¸</div>
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
-              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ÆóÒµlogo</div>
+              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ä¼ä¸šlogo</div>
               <div style={{ color: "#333333", fontSize: "40px", float: "left" }}>
                 <img src="./mpark/image/logo.png" />
               </div>
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
-              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ÆóÒµÎ»ÖÃ</div><div style={{ color: "#333333", fontSize: "40px", float: "left" }}>¹ğÁÖÊĞĞÅÏ¢²úÒµÔ°E×ùBÇø3Â¥</div>
+              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ä¼ä¸šä½ç½®</div><div style={{ color: "#333333", fontSize: "40px", float: "left" }}>æ¡‚æ—å¸‚ä¿¡æ¯äº§ä¸šå›­Eåº§BåŒº3æ¥¼</div>
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
-              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ÁªÏµÈË</div><div style={{ color: "#333333", fontSize: "40px", float: "left" }}>XXX</div>
+              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>è”ç³»äºº</div><div style={{ color: "#333333", fontSize: "40px", float: "left" }}>XXX</div>
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
-              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ÁªÏµµç»°</div><div style={{ color: "#333333", fontSize: "40px", float: "left" }}>12345678910</div>
+              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>è”ç³»ç”µè¯</div><div style={{ color: "#333333", fontSize: "40px", float: "left" }}>12345678910</div>
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
-              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ÆóÒµ·ÖÀà</div><div style={{ color: "#333333", fontSize: "40px", float: "left" }}>¿Æ¼¼·şÎñ</div>
+              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ä¼ä¸šåˆ†ç±»</div><div style={{ color: "#333333", fontSize: "40px", float: "left" }}>ç§‘æŠ€æœåŠ¡</div>
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
-              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ÆóÒµ¹ÙÍø</div><div style={{ color: "#333333", fontSize: "40px", float: "left" }}>www.yongtoc.com</div>
+              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ä¼ä¸šå®˜ç½‘</div><div style={{ color: "#333333", fontSize: "40px", float: "left" }}>www.yongtoc.com</div>
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
-              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ÆóÒµ½éÉÜ</div>
-              <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "70%" }}>      Õã½­ÓÀÍØĞÅÏ¢¿Æ¼¼ÓĞÏŞ¹«Ë¾ÊÇÕã½­ÓÀÍØÊµÒµÓĞÏŞ¹«Ë¾ÆìÏÂµÄ¿Ø¹É×Ó¹«Ë¾¡£
-        ¹«Ë¾ÓÉ¼ÆËã»úÍ¼ĞÎÑ§¡¢¼ÆËã»úÓ¦ÓÃÑ§¡¢ÎïÁªÍø¼¼ÊõµÈÈı·½Ãæ×¨¼Ò×é³É£¬ÊÇÒ»¼Ò×¨×¢ÓÚÒÔ3DÎªÕ¹ÏÖ·½Ê½£¬½â¾öÎïÀí¿Õ¼ä¹ØÏµµÄ¼¼ÊõÌá¹©ÉÌ£¬ÖÂÁ¦ÓÚ³ÉÎªÈ«ÇòÁìÏÈ3D¿ÉÊÓ»¯ÆóÒµ£¬Îª¿Í»§ºÍºÏ×÷»ï°éÈ«ÃæÌá¹©3D¿ÉÊÓ»¯¼¼ÊõµÄ·şÎñ£¬ÊµÏÖÆäÒµÎñµÄ²îÒì»¯¾ºÕùÓÅÊÆ¡£</div>
+              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ä¼ä¸šä»‹ç»</div>
+              <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "70%" }}>      æµ™æ±Ÿæ°¸æ‹“ä¿¡æ¯ç§‘æŠ€æœ‰é™å…¬å¸æ˜¯æµ™æ±Ÿæ°¸æ‹“å®ä¸šæœ‰é™å…¬å¸æ——ä¸‹çš„æ§è‚¡å­å…¬å¸ã€‚
+        å…¬å¸ç”±è®¡ç®—æœºå›¾å½¢å­¦ã€è®¡ç®—æœºåº”ç”¨å­¦ã€ç‰©è”ç½‘æŠ€æœ¯ç­‰ä¸‰æ–¹é¢ä¸“å®¶ç»„æˆï¼Œæ˜¯ä¸€å®¶ä¸“æ³¨äºä»¥3Dä¸ºå±•ç°æ–¹å¼ï¼Œè§£å†³ç‰©ç†ç©ºé—´å…³ç³»çš„æŠ€æœ¯æä¾›å•†ï¼Œè‡´åŠ›äºæˆä¸ºå…¨çƒé¢†å…ˆ3Då¯è§†åŒ–ä¼ä¸šï¼Œä¸ºå®¢æˆ·å’Œåˆä½œä¼™ä¼´å…¨é¢æä¾›3Då¯è§†åŒ–æŠ€æœ¯çš„æœåŠ¡ï¼Œå®ç°å…¶ä¸šåŠ¡çš„å·®å¼‚åŒ–ç«äº‰ä¼˜åŠ¿ã€‚</div>
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
-              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ÆóÒµ·ç²É</div>
+              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>ä¼ä¸šé£é‡‡</div>
               <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "70%" }}>
                 {
                   this.state.imgList.map((item, index) => {
@@ -291,7 +291,7 @@ class EnterpriseInformation extends React.Component {
               </div>
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
-              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>²úÆ·Õ¹Ê¾</div>
+              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>äº§å“å±•ç¤º</div>
               <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "70%" }}>
                 {
                   this.state.imgList.map((item, index) => {
@@ -305,7 +305,7 @@ class EnterpriseInformation extends React.Component {
               </div>
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
-              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>È«¾°Õ¹Ê¾</div>
+              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>å…¨æ™¯å±•ç¤º</div>
               <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "70%" }}>
                 {
                   this.state.imgList.map((item, index) => {

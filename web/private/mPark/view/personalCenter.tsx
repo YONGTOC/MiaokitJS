@@ -15,9 +15,9 @@ interface IState {
 class PersonalCenter extends React.Component {
   public readonly state: Readonly<IState> = {
     parkList: [
-      { name: "统计报表", imgUrl: "./mpark/image/statistics.png" }, { name: "房间管理", imgUrl: "./mpark/image/room.png" },
-      { name: "工单派发管理", imgUrl: "./mpark/image/distribute.png" }, { name: "客服电话", imgUrl: "./mpark/image/service.png" },
-      { name: "招商管理", imgUrl: "./mpark/image/attractInvestment.png" }
+      { name: "统计报表", imgUrl: "./mpark/image/statistics.png", url: "/statisticalStatement" }, { name: "房间管理", imgUrl: "./mpark/image/room.png", url: "" },
+      { name: "工单派发管理", imgUrl: "./mpark/image/distribute.png", url: "/distribute" }, { name: "客服电话", imgUrl: "./mpark/image/service.png", url: "/serviceTel" },
+      { name: "招商管理", imgUrl: "./mpark/image/attractInvestment.png", url: "" }
     ],
     isSpread: false,
     userInfo: "园区成员"
@@ -82,7 +82,7 @@ class PersonalCenter extends React.Component {
           <span style={{ margin: "0 50px 0 50px" }}>客服电话</span><span>0773-123456</span>
         </div>
         <div className="personal-center-my">
-          <Link to="/workOrder">
+          <Link to={sessionStorage.getItem("userInfo") === "园区管理员" ? "/parkWorkOrder" : "/workOrder"}>
             <div className="personal-center-my-left">
               <div style={{ fontSize: "40px", marginTop: "30px", color: "#333333" }}>5</div>
               <div style={{ fontSize: "40px", marginTop: "5px", color: "#6C6C6C" }}>我的工单</div>
@@ -122,10 +122,10 @@ class PersonalCenter extends React.Component {
 
         {sessionStorage.getItem("userInfo") === "园区管理员" ?
           <div className="personal-center-park">
-            <div className="personal-center-enterprise-child">
+            <div className="personal-center-enterprise-child" onClick={this.spread.bind(this)}>
               <img src="./mpark/image/park.png" width="60px" height="60px" style={{ marginBottom: "10px" }}/>
               <span style={{ fontSize: "40px", color: "#333333", marginLeft: "30px" }}>园区管理</span>
-              <div style={{ float: "right", height: "100%", width: "120px", textAlign: "center" }} onClick={ this.spread.bind(this) }>
+              <div style={{ float: "right", height: "100%", width: "120px", textAlign: "center" }}>
                 <img src="./mpark/image/right.png" className={this.state.isSpread ? "personal-center-bottom-img" : ""} />
               </div>
             </div>
@@ -133,10 +133,14 @@ class PersonalCenter extends React.Component {
               <div style={{ backgroundColor: "#ffffff", overflow: "hidden", paddingTop: "30px" }}>
                 {
                   this.state.parkList.map((item, index) => {
-                    return <div key={index} className="personal-center-park-child">
-                      <img src={item.imgUrl} width="110px" height="110px" />
-                      <div style={{ marginTop: "10px" }}>{item.name}</div>
-                    </div>
+                    return (
+                      <Link to={item.url}>
+                        <div key={index} className="personal-center-park-child">
+                          <img src={item.imgUrl} width="110px" height="110px" />
+                          <div style={{ marginTop: "10px" }}>{item.name}</div>
+                        </div>
+                      </Link>
+                    )
                   })
                 }
               </div> : null
