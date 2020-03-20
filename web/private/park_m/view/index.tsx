@@ -7,8 +7,10 @@ import ParkCompany from "parkCompany";
 import FindLease from "findLease";
 import ApplyPut from "applyPut";
 import Photograph from "photograph";
+import Home from "home";
 import RepairsOnline from "repairsOnline";
 import GlobalAction from "compat";
+
 
 interface IProps {
   history: any
@@ -71,7 +73,7 @@ class Index extends React.Component {
   // 失焦
   blur() {
     if (this.state.inputValue === "") {
-      this.setState({ inputValue: "请输入园区名称" })
+      this.setState({ inputValue: "请输入园区名称 " })
     }
   }
 
@@ -80,9 +82,12 @@ class Index extends React.Component {
     this.setState({inputValue: event.target.value})
   }
 
+  public globalAction: GlobalAction = new GlobalAction();
   public initPark(park_id) {
+    this.globalAction.web_call_webgl_initPark(park_id);
     console.log(park_id);
-   localStorage.setItem("park_id", park_id);
+    localStorage.setItem("park_id", park_id);
+  
   }
 
   render() {

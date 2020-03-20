@@ -437,7 +437,7 @@ class IllegalUpload extends React.Component {
     illegalLoadcss: "illegalLoad-part",
     illfromcss: "illfrom-part illfrom",
     illTime: "",
-    illImg: "./mPark/image/photo.png",
+    illImg: "./park_m/image/photo.png",
     illcauseUL: [
       //{ name: "非停车位路侧停车", type_id: 1 },
       //{ name: "阻挡正常车位出入", type_id: 2},

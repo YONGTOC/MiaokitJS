@@ -77,7 +77,7 @@
         <li>
             <button onclick="companyScene(2)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业全景</button>
         </li>-->
-        <li>
+        <!--<li>
             <button onclick="addReqairs(3, 4,'A座','2F','201-2')" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加报修位置34</button>
         </li>
         <li>
@@ -94,7 +94,7 @@
         </li>
         <li>
             <button onclick="refreshLeaseinfo(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活招租显示</button>
-        </li>
+        </li>-->
     </ul>
 
     <script>
@@ -116,14 +116,14 @@
 
         // 激活房间全景
         function roomScene(a) {
-            // window.open('./mPark/vr-y.html?roomId='+ a);
-            // location.href = './mPark/vr-y.html?roomId=' + a;
-            window.open('./mPark/vr-y.html?roomId=' + a, '_blank');
+            // window.open('./park_m/vr-y.html?roomId='+ a);
+            // location.href = './park_m/vr-y.html?roomId=' + a;
+            window.open('./park_m/vr-y.html?roomId=' + a, '_blank');
         }
 
         // 激活企业全景
         function companyScene(a) {
-            window.open('./mPark/vr.html?companyId=' + a);
+            window.open('./park_m/vr.html?companyId=' + a);
         }
 
         // 激活企业显示

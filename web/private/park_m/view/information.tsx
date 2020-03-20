@@ -24,7 +24,7 @@ class Information extends React.Component {
           <div className="information-title">数字园区</div>
         </div>
         <div className="information-headline">
-          <div style={{ float: "left", width: "25%", height: "100%" }}><img src="./mpark/image/headline.png" style={{marginBottom: "14px"}} /></div>
+          <div style={{ float: "left", width: "25%", height: "100%" }}><img src="./park_m/image/headline.png" style={{marginBottom: "14px"}} /></div>
           <div style={{ float: "left", width: "75%", height: "100%", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}>关于桂林信息产业园园区企业复工的重要通知你你你你你</div>
         </div>
         <div className="information-content">

@@ -15,9 +15,9 @@ interface IState {
 class PersonalCenter extends React.Component {
   public readonly state: Readonly<IState> = {
     parkList: [
-      { name: "统计报表", imgUrl: "./mpark/image/statistics.png" }, { name: "房间管理", imgUrl: "./mpark/image/room.png" },
-      { name: "工单派发管理", imgUrl: "./mpark/image/distribute.png" }, { name: "客服电话", imgUrl: "./mpark/image/service.png" },
-      { name: "招商管理", imgUrl: "./mpark/image/attractInvestment.png" }
+      { name: "统计报表", imgUrl: "./park_m/image/statistics.png" }, { name: "房间管理", imgUrl: "./park_m/image/room.png" },
+      { name: "工单派发管理", imgUrl: "./park_m/image/distribute.png" }, { name: "客服电话", imgUrl: "./park_m/image/service.png" },
+      { name: "招商管理", imgUrl: "./park_m/image/attractInvestment.png" }
     ],
     isSpread: false,
     userInfo: "园区成员"
@@ -56,7 +56,7 @@ class PersonalCenter extends React.Component {
           <div className="personal-center-title">数字园区</div>
           <div className="personal-center-info">
             <div className="personal-center-tx">
-              <img src="./mpark/image/tx.jpg" className="personal-center-tx-img" />
+              <img src="./park_m/image/tx.jpg" className="personal-center-tx-img" />
             </div>
             <div style={{ float: "left", color: "#FFFFFF", fontSize: "42px", margin: "10px 0 0 36px"}}>
               <div>用户名字</div>
@@ -67,7 +67,7 @@ class PersonalCenter extends React.Component {
             </div>
             <Link to="/modificationAuthentication">
               <div className="personal-center-right">
-                <img src="./mpark/image/w-right.png" />
+                <img src="./park_m/image/w-right.png" />
               </div>
             </Link>
           </div>
@@ -100,17 +100,17 @@ class PersonalCenter extends React.Component {
         {sessionStorage.getItem("userInfo") === "企业管理员" ?
           <div className="personal-center-enterprise">
             <div className="personal-center-enterprise-child">
-              <img src="./mpark/image/enterprise.png" width="70px" height="70px" style={{marginBottom: "10px"}} />
+              <img src="./park_m/image/enterprise.png" width="70px" height="70px" style={{marginBottom: "10px"}} />
               <span style={{ fontSize: "40px", color: "#333333", marginLeft: "30px" }}>企业信息管理</span>
               <div style={{ float: "right", height: "100%", width: "120px", textAlign: "center" }}>
-                <img src="./mpark/image/right.png" />
+                <img src="./park_m/image/right.png" />
               </div>
             </div>
             <div className="personal-center-enterprise-child">
-              <img src="./mpark/image/let.png" width="70px" height="70px" style={{ marginBottom: "10px" }} />
+              <img src="./park_m/image/let.png" width="70px" height="70px" style={{ marginBottom: "10px" }} />
               <span style={{ fontSize: "40px", color: "#333333", marginLeft: "30px" }}>租用房间管理</span>
               <div style={{ float: "right", height: "100%", width: "120px", textAlign: "center" }}>
-                <img src="./mpark/image/right.png" />
+                <img src="./park_m/image/right.png" />
               </div>
             </div>
           </div> : null
@@ -119,10 +119,10 @@ class PersonalCenter extends React.Component {
         {sessionStorage.getItem("userInfo") === "园区管理员" ?
           <div className="personal-center-park">
             <div className="personal-center-enterprise-child">
-              <img src="./mpark/image/park.png" width="60px" height="60px" style={{ marginBottom: "10px" }}/>
+              <img src="./park_m/image/park.png" width="60px" height="60px" style={{ marginBottom: "10px" }}/>
               <span style={{ fontSize: "40px", color: "#333333", marginLeft: "30px" }}>园区管理</span>
               <div style={{ float: "right", height: "100%", width: "120px", textAlign: "center" }} onClick={ this.spread.bind(this) }>
-                <img src="./mpark/image/right.png" className={this.state.isSpread ? "personal-center-bottom-img" : ""} />
+                <img src="./park_m/image/right.png" className={this.state.isSpread ? "personal-center-bottom-img" : ""} />
               </div>
             </div>
             {this.state.isSpread ?

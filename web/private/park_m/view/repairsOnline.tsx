@@ -263,7 +263,7 @@ class RepairsOnline extends React.Component<{ history:any}>{
     //描述
     descript: "",
     //照片
-    photo: "./mPark/image/photo.png",
+    photo: "./park_m/image/photo.png",
 
   }
 }

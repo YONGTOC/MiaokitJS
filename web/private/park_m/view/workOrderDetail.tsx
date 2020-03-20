@@ -26,7 +26,7 @@ class workOrderDetail extends React.Component<{ history:any}> {
           <div className="work-order-detail-title">数字园区</div>
         </div>
         <div className="work-order-detail-back" onClick={this.goBack.bind(this)}>
-          <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
+          <img src="./park_m/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
           <span>我的工单</span>
         </div>
         <div style={{ padding: "40px 0 0 50px", borderBottom: "4px solid #F2F2F2", width: "100%", height: "140px" }}>

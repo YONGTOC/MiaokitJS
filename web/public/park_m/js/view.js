@@ -3,16 +3,6 @@ define("compat", ["require", "exports"], function (require, exports) {
     Object.defineProperty(exports, "__esModule", { value: true });
     class GlobalAction {
         web_call_webgl_initPark(pInfo) {
-            MiaokitJS.App.m_pProject.EnterPark({
-                m_pView: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
-                    m_nDistance: 300.0,
-                    m_nPitch: 19.0,
-                    m_nYaw: 90.0
-                }
-            });
             console.log("web_call_webgl_initPark", pInfo);
         }
         web_call_webgl_switchCompany(pName) {
@@ -36,12 +26,13 @@ define("compat", ["require", "exports"], function (require, exports) {
     }
     exports.default = GlobalAction;
 });
-define("findLease", ["require", "exports", "react", "react-router-dom", "dataService"], function (require, exports, React, RouterDOM, dataService_1) {
+define("findLease", ["require", "exports", "react", "react-router-dom", "compat", "dataService"], function (require, exports, React, RouterDOM, compat_1, dataService_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class FindLease extends React.Component {
         constructor(props) {
             super(props);
+            this.globalAction = new compat_1.default();
             this.state = {
                 FindLeasecss: "findLease",
                 showList: true,
@@ -76,11 +67,14 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "dataSer
                 });
             }
         }
+        mapReturnpark() {
+            this.globalAction.web_call_webgl_mapReturnpark();
+        }
         render() {
             return (React.createElement("div", { className: this.state.FindLeasecss },
                 React.createElement("p", { className: "companyInfotit" },
                     React.createElement(RouterDOM.Link, { to: "/home" },
-                        React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B")),
+                        React.createElement("i", { className: "iconfont companyInfoicon", onClick: this.mapReturnpark.bind(this) }, "\uE83B")),
                     React.createElement("span", null, "\u62DB\u79DF\u67E5\u8BE2")),
                 React.createElement("div", { className: this.state.showList == true ? "show" : "hide" },
                     React.createElement(LeaseList, null)),
@@ -93,6 +87,7 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "dataSer
         constructor(props) {
             super(props);
             this.dataService = new dataService_1.default();
+            this.globalAction = new compat_1.default();
             this.state = {
                 park_id: "1001",
                 roomId: "",
@@ -180,6 +175,7 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "dataSer
                 roomId: id
             });
             console.log("leaseActive", this.state);
+            this.globalAction.web_call_webgl_switchRoom(id);
         }
         typeActive(indexof, name) {
             console.log("typeActive-1", indexof);
@@ -513,40 +509,52 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         getCompanyType(pBack, park_id) {
             let thetoken = localStorage.getItem("token");
-            $.ajax({
-                url: this.state.rooturl + '/api/getCompanyType',
-                data: {
-                    "park_id": park_id,
-                    "token": thetoken,
-                },
-                type: "get",
-                success: function (data) {
-                    console.log("TTTTTTTTTT", data);
-                    pBack(data);
-                }
-            });
+            var data = {
+                "return_code": "100",
+                "response": [
+                    {
+                        "id": "1009",
+                        "name": "科技服务",
+                    },
+                    {
+                        "id": "1019",
+                        "name": "文化创意",
+                    }
+                ],
+                "err_msg": ""
+            };
+            pBack(data);
         }
         findCompany(pBack, park_id, company_type_id, name) {
             console.log("findCompany", park_id, company_type_id, name);
             let thetoken = localStorage.getItem("token");
-            $.ajax({
-                url: this.state.rooturl + '/api/findCompany',
-                data: {
-                    "park_id": 1,
-                    "company_type_id": 1,
-                    "token": thetoken,
-                },
-                type: "get",
-                success: function (data) {
-                    console.log("findCompanyJJJJJJJ", data);
-                    if (data.status == 113) {
+            let data = {
+                "return_code": "100",
+                "response": [
+                    {
+                        "id": "1009",
+                        "name": "桂林国家高新",
+                        "headimgurl": "./park_m/image/i.png",
+                        "building_id": "a座",
+                        "floor_id": "1F",
+                        "room_id": "201-2",
+                        "address": "桂林市七星区民华产业园E座B区三楼",
+                        "company_type": "科技服务",
+                    },
+                    {
+                        "id": "1010",
+                        "name": "桂林国家高新",
+                        "headimgurl": "./park_m/image/i.png",
+                        "building_id": "a座",
+                        "floor_id": "1F",
+                        "room_id": "201-2",
+                        "address": "桂林市七星区民华产业园E座B区三楼",
+                        "company_type": "科技服务",
                     }
-                    else {
-                        pBack(data);
-                        console.log("finJJJ", data);
-                    }
-                }
-            });
+                ],
+                "err_msg": ""
+            };
+            pBack(data);
         }
         getCompanyInfo(pBack, id) {
             console.log("getCompanyInfo", pBack, id);
@@ -555,7 +563,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 "response": {
                     "id": "1009",
                     "name": "桂林国家高新",
-                    "headimgurl": "./mPark/image/i.png",
+                    "headimgurl": "./park_m/image/i.png",
                     "building_id": "a座",
                     "floor_id": "1F",
                     "room_id": "201-2",
@@ -574,22 +582,22 @@ define("dataService", ["require", "exports"], function (require, exports) {
                         {
                             "id": "1009",
                             "name": "xxx图片",
-                            "pic_url": "./mPark/image/i.png",
+                            "pic_url": "./park_m/image/i.png",
                         }, {
                             "id": "1009",
                             "name": "xxx图片",
-                            "pic_url": "./mPark/image/i.png",
+                            "pic_url": "./park_m/image/i.png",
                         }
                     ],
                     "product": [
                         {
                             "id": "1009",
                             "name": "xxx图片",
-                            "pic_url": "./mPark/image/i.png",
+                            "pic_url": "./park_m/image/i.png",
                         }, {
                             "id": "1009",
                             "name": "xxx图片",
-                            "pic_url": "./mPark/image/i.png",
+                            "pic_url": "./park_m/image/i.png",
                         }
                     ],
                     "panorama": [
@@ -629,24 +637,23 @@ define("dataService", ["require", "exports"], function (require, exports) {
         findRoomRentByparkid(pBack, park_id, square) {
             console.log("findRoomRentByparkid", pBack, park_id, square);
             let thetoken = localStorage.getItem("token");
-            $.ajax({
-                url: this.state.rooturl + '/api/findRoomRent',
-                data: {
-                    "park_id": park_id,
-                    "token": thetoken,
-                    "square": square
-                },
-                type: "get",
-                success: function (data) {
-                    console.log("getRoomRentSquareType", data);
-                    if (data.status == 113) {
+            let data = {
+                "return_code": "100",
+                "response": [
+                    {
+                        "id": "1009",
+                        "headimgurl": "./park_m/image/i.png",
+                        "building_id": "a座",
+                        "floor_id": "1F",
+                        "room_id": "201-2",
+                        "date": "2019-07-05",
+                        "square": "45",
+                        "price": "2.8"
                     }
-                    else {
-                        pBack(data);
-                        console.log("findRoomRentByparkid", data);
-                    }
-                }
-            });
+                ],
+                "err_msg": ""
+            };
+            pBack(data);
         }
         findRoomRentByroomid(pBack, id) {
             console.log("findRoomRentByroomid", pBack, id);
@@ -654,7 +661,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 "return_code": "100",
                 "response": {
                     "id": "1009",
-                    "headimgurl": "./mPark/image/i.png",
+                    "headimgurl": "./park_m/image/i.png",
                     "building_id": "a座",
                     "floor_id": "1F",
                     "room_id": "201-2",
@@ -672,15 +679,15 @@ define("dataService", ["require", "exports"], function (require, exports) {
                         {
                             "id": "1009",
                             "name": "xxx图片",
-                            "url": "./mPark/image/i.png",
+                            "url": "./park_m/image/i.png",
                         }, {
                             "id": "1009",
                             "name": "xxx图片",
-                            "url": "./mPark/image/i.png",
+                            "url": "./park_m/image/i.png",
                         }, {
                             "id": "1009",
                             "name": "xxx图片",
-                            "url": "./mPark/image/i.png",
+                            "url": "./park_m/image/i.png",
                         }
                     ],
                     "panorama": [
@@ -735,7 +742,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                         "position": "A座厦门旁",
                         "longitude": "10.55",
                         "latitude": "66.666",
-                        "photo": "./mPark/image/i.png"
+                        "photo": "./park_m/image/i.png"
                     }, {
                         "id": "1009",
                         "type": "非停车位侧停车",
@@ -744,7 +751,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                         "position": "A座厦门旁",
                         "longitude": "10.55",
                         "latitude": "66.666",
-                        "photo": "./mPark/image/i.png"
+                        "photo": "./park_m/image/i.png"
                     }
                 ],
                 "err_msg": ""
@@ -764,7 +771,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     "longitude": "10.55",
                     "latitude": "66.666",
                     "descript": "横跨在斑马线上",
-                    "photo": "./mPark/image/i.png",
+                    "photo": "./park_m/image/i.png",
                 },
                 "err_msg": ""
             };
@@ -788,7 +795,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                         "building_id": "a座",
                         "floor_id": "1F",
                         "room_id": "201-1",
-                        "headimgurl": "./mPark/image/i.png",
+                        "headimgurl": "./park_m/image/i.png",
                         "price": [
                             {
                                 "content": "4小时内",
@@ -804,7 +811,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                         "building_id": "a座",
                         "floor_id": "1F",
                         "room_id": "201-2",
-                        "headimgurl": "./mPark/image/i.png",
+                        "headimgurl": "./park_m/image/i.png",
                         "price": [
                             {
                                 "content": "4小时内",
@@ -1525,7 +1532,7 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "dataServ
         }
     }
 });
-define("bottomBtn", ["require", "exports", "react", "react-router-dom", "css!./styles/view.css"], function (require, exports, React, RouterDOM) {
+define("bottomBtn", ["require", "exports", "react", "react-router-dom", "compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class BottomBtn extends React.Component {
@@ -1534,16 +1541,17 @@ define("bottomBtn", ["require", "exports", "react", "react-router-dom", "css!./s
             this.props = {
                 history: this.props.history
             };
+            this.globalAction = new compat_2.default();
             this.state = {
                 index: 1,
-                iconImg1In: "./mPark/image/bottomBtn/3d-in.png",
-                iconImg1Un: "./mPark/image/bottomBtn/3d-un.png",
-                iconImg2In: "./mPark/image/bottomBtn/wq-in.png",
-                iconImg2Un: "./mPark/image/bottomBtn/wq-un.png",
-                iconImg3In: "./mPark/image/bottomBtn/zx-in.png",
-                iconImg3Un: "./mPark/image/bottomBtn/zx-un.png",
-                iconImg4In: "./mPark/image/bottomBtn/my-in.png",
-                iconImg4Un: "./mPark/image/bottomBtn/my-un.png",
+                iconImg1In: "./park_m/image/bottomBtn/3d-in.png",
+                iconImg1Un: "./park_m/image/bottomBtn/3d-un.png",
+                iconImg2In: "./park_m/image/bottomBtn/wq-in.png",
+                iconImg2Un: "./park_m/image/bottomBtn/wq-un.png",
+                iconImg3In: "./park_m/image/bottomBtn/zx-in.png",
+                iconImg3Un: "./park_m/image/bottomBtn/zx-un.png",
+                iconImg4In: "./park_m/image/bottomBtn/my-in.png",
+                iconImg4Un: "./park_m/image/bottomBtn/my-un.png",
             };
             this.toggleIcon = this.toggleIcon.bind(this);
         }
@@ -1573,6 +1581,12 @@ define("bottomBtn", ["require", "exports", "react", "react-router-dom", "css!./s
             this.setState({
                 index: data
             });
+            if (data == 1) {
+                this.globalAction.web_call_webgl_continueloadModuler();
+            }
+            else {
+                this.globalAction.web_call_webgl_pauseloadModuler();
+            }
         }
         render() {
             return (React.createElement("div", { className: "bottomView" },
@@ -1597,7 +1611,7 @@ define("bottomBtn", ["require", "exports", "react", "react-router-dom", "css!./s
     }
     exports.default = BottomBtn;
 });
-define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", "dataService", "compat", "css!./styles/iconfont.css", "css!./styles/view.css"], function (require, exports, React, RouterDOM, bottomBtn_1, dataService_4, compat_1) {
+define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", "dataService", "compat", "css!./styles/iconfont.css", "css!./styles/view.css"], function (require, exports, React, RouterDOM, bottomBtn_1, dataService_4, compat_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Home extends React.Component {
@@ -1607,6 +1621,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                 history: this.props.history,
                 children: this.props.children
             };
+            this.globalAction = new compat_3.default();
             this.dataService = new dataService_4.default();
             this.setToken = this.setToken.bind(this);
         }
@@ -1617,8 +1632,14 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
             console.log("setToken", data);
             localStorage.setItem("token", data.token);
         }
+        backParklist() {
+            this.globalAction.web_call_webgl_pauseloadModuler();
+        }
         render() {
             return (React.createElement("div", null,
+                React.createElement("div", { className: "backParklist", onClick: this.backParklist.bind(this) },
+                    React.createElement(RouterDOM.Link, { to: "/" },
+                        React.createElement("i", { className: "iconfont", style: { "fontSize": "4rem", "color": "#6C6C6C" } }, "\uE83B"))),
                 React.createElement(TopBtn, null),
                 React.createElement(FoldBtn, null),
                 this.props.children,
@@ -1652,7 +1673,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                     { name: "交通" },
                 ]
             };
-            this.globalAction = new compat_1.default();
+            this.globalAction = new compat_3.default();
         }
         moreIcon(a) {
             console.log('toggleIconbox', a);
@@ -1752,7 +1773,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                             topIcon1: "iconBox",
                         });
                     }
-                    this.globalAction.switchMark(a, 0);
+                    this.globalAction.web_call_webgl_switchMark(a, 0);
                 }
                 else {
                     if (this.state.topView == "topView-big") {
@@ -1765,7 +1786,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                             topIcon1: "iconBoxIn",
                         });
                     }
-                    this.globalAction.switchMark(a, 1);
+                    this.globalAction.web_call_webgl_switchMark(a, 1);
                 }
             }
             else if (a == "商圈") {
@@ -1780,7 +1801,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                             topIcon2: "iconBox",
                         });
                     }
-                    this.globalAction.switchMark(a, 0);
+                    this.globalAction.web_call_webgl_switchMark(a, 0);
                 }
                 else {
                     if (this.state.topView == "topView-big") {
@@ -1793,7 +1814,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                             topIcon2: "iconBoxIn",
                         });
                     }
-                    this.globalAction.switchMark(a, 1);
+                    this.globalAction.web_call_webgl_switchMark(a, 1);
                 }
             }
             else if (a == "公交车") {
@@ -1802,14 +1823,14 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                         topIcon3: "iconBox-bigIn",
                         topIcon3info: 1,
                     });
-                    this.globalAction.switchMark(a, 1);
+                    this.globalAction.web_call_webgl_switchMark(a, 1);
                 }
                 else {
                     this.setState({
                         topIcon3: "iconBox-big",
                         topIcon3info: 0,
                     });
-                    this.globalAction.switchMark(a, 0);
+                    this.globalAction.web_call_webgl_switchMark(a, 0);
                 }
             }
             else if (a == "全景") {
@@ -1818,14 +1839,14 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                         topIcon4: "iconBox-bigIn",
                         topIcon4info: 1,
                     });
-                    this.globalAction.switchMark(a, 1);
+                    this.globalAction.web_call_webgl_switchMark(a, 1);
                 }
                 else {
                     this.setState({
                         topIcon4: "iconBox-big",
                         topIcon4info: 0,
                     });
-                    this.globalAction.switchMark(a, 0);
+                    this.globalAction.web_call_webgl_switchMark(a, 0);
                 }
             }
             else if (a == "停车场") {
@@ -1834,14 +1855,14 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                         topIcon5: "iconBox-bigIn",
                         topIcon5info: 1,
                     });
-                    this.globalAction.switchMark(a, 1);
+                    this.globalAction.web_call_webgl_switchMark(a, 1);
                 }
                 else {
                     this.setState({
                         topIcon5: "iconBox-big",
                         topIcon5info: 0,
                     });
-                    this.globalAction.switchMark(a, 0);
+                    this.globalAction.web_call_webgl_switchMark(a, 0);
                 }
             }
         }
@@ -1943,12 +1964,13 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
     }
     exports.default = Home;
 });
-define("parkCompany", ["require", "exports", "react", "react-router-dom", "compat", "dataService"], function (require, exports, React, RouterDOM, compat_2, dataService_5) {
+define("parkCompany", ["require", "exports", "react", "react-router-dom", "compat", "dataService"], function (require, exports, React, RouterDOM, compat_4, dataService_5) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParkCompany extends React.Component {
         constructor(props) {
             super(props);
+            this.globalAction = new compat_4.default();
             this.state = {
                 parkCompanycss: "parkCompany",
                 showList: true,
@@ -1985,11 +2007,14 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                 });
             }
         }
+        mapReturnpark() {
+            this.globalAction.web_call_webgl_mapReturnpark();
+        }
         render() {
             return (React.createElement("div", { className: this.state.parkCompanycss },
                 React.createElement("p", { className: "companyInfotit" },
                     React.createElement(RouterDOM.Link, { to: "/home" },
-                        React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B")),
+                        React.createElement("i", { className: "iconfont companyInfoicon", onClick: this.mapReturnpark.bind(this) }, "\uE83B")),
                     React.createElement("span", null, "\u56ED\u533A\u4F01\u4E1A")),
                 React.createElement("div", { className: this.state.showList == true ? "show" : "hide" },
                     React.createElement(CompanyList, null)),
@@ -2001,7 +2026,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
         constructor(props) {
             super(props);
             this.dataService = new dataService_5.default();
-            this.globalAction = new compat_2.default();
+            this.globalAction = new compat_4.default();
             this.state = {
                 park_id: 1001,
                 companyListcss: "companyList-part",
@@ -2088,7 +2113,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
             this.setState({
                 indexOf: data,
             });
-            this.globalAction.switchCompany(id);
+            this.globalAction.web_call_webgl_switchCompany(id);
         }
         typeActive(indexof, name, id) {
             console.log("typeActive", indexof);
@@ -2131,7 +2156,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                             React.createElement("img", { src: i.headimgurl })),
                         React.createElement("div", { className: "companyul-middle" },
                             React.createElement("p", { className: this.state.indexOf == index ? "companyName-active" : "companyName", style: { "font-size": "2.4rem", "font-weight": "bold" } }, i.name),
-                            React.createElement("p", { style: { "font-size": "2.5rem" } },
+                            React.createElement("p", { style: { "font-size": "2.5rem", "overflow": "hidden", "text-overflow": "ellipsis", "white-space": "nowrap" } },
                                 React.createElement("i", { className: "iconfont", style: { "fontSize": "2.5rem" } }, "\uE815"),
                                 i.address)),
                         React.createElement("div", { className: "companyul-right" },
@@ -2533,7 +2558,7 @@ define("photograph", ["require", "exports", "react", "react-router-dom", "dataSe
                 illegalLoadcss: "illegalLoad-part",
                 illfromcss: "illfrom-part illfrom",
                 illTime: "",
-                illImg: "./mPark/image/photo.png",
+                illImg: "./park_m/image/photo.png",
                 illcauseUL: [],
                 indexOf: 0,
                 illcauseInname: "",
@@ -2923,7 +2948,7 @@ define("infoArea", ["require", "exports", "react", "react-router-dom", "css!./st
                     React.createElement("div", { className: "infoarea-title" }, "\u6570\u5B57\u56ED\u533A"),
                     React.createElement("div", { className: "infoarea-child-top" },
                         React.createElement("input", { className: "infoarea-input", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) }),
-                        React.createElement("img", { src: "./mpark/image/search.png", className: "infoarea-search-img" }),
+                        React.createElement("img", { src: "./park_m/image/search.png", className: "infoarea-search-img" }),
                         React.createElement("span", { className: "infoarea-sreach-bt" }, "\u641C\u7D22"))),
                 React.createElement("div", { className: "infoarea-tag" }, this.state.tagArr.map((item, index) => {
                     return React.createElement("div", { key: index, className: index !== this.state.tagIndex ? "infoarea-tag-child" : "infoarea-tag-child-add", onClick: e => this.clickTag(index) }, item);
@@ -2935,7 +2960,7 @@ define("infoArea", ["require", "exports", "react", "react-router-dom", "css!./st
                                 React.createElement("div", { style: { height: "50%", width: "100%" } },
                                     React.createElement("div", { className: "infoarea-content-name" }, "\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219"),
                                     React.createElement("div", { className: "infoarea-content-bottom", onClick: e => this.spread(index) },
-                                        React.createElement("img", { src: "./mpark/image/right.png", className: "infoarea-content-right-img" }))),
+                                        React.createElement("img", { src: "./park_m/image/right.png", className: "infoarea-content-right-img" }))),
                                 React.createElement("div", { className: "infoarea-br" },
                                     index !== 2 ?
                                         React.createElement("div", { className: "infoarea-br-bt" }, "\u5DF2\u89E3\u51B3") :
@@ -2956,7 +2981,7 @@ define("infoArea", ["require", "exports", "react", "react-router-dom", "css!./st
                                 React.createElement("div", { style: { height: "50%", width: "100%" } },
                                     React.createElement("div", { className: "infoarea-content-name" }, "\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219"),
                                     React.createElement("div", { className: "infoarea-content-right", onClick: e => this.spread(index) },
-                                        React.createElement("img", { src: "./mpark/image/right.png", className: "infoarea-content-right-img" }))),
+                                        React.createElement("img", { src: "./park_m/image/right.png", className: "infoarea-content-right-img" }))),
                                 React.createElement("div", { className: "infoarea-br" },
                                     index !== 2 ?
                                         React.createElement("div", { className: "infoarea-br-bt" }, "\u5DF2\u89E3\u51B3") :
@@ -2966,7 +2991,7 @@ define("infoArea", ["require", "exports", "react", "react-router-dom", "css!./st
                     React.createElement("div", { style: { width: "100%", height: "30%", textAlign: "center", fontSize: "40px", lineHeight: "60px", margin: "20px 0 0 -25px" } }, "\u5230\u5E95\u5566~")),
                 React.createElement(react_router_dom_1.Link, { to: "/isay" },
                     React.createElement("div", { className: "infoarea-add-c" },
-                        React.createElement("img", { src: "./mpark/image/add.png", width: "60px", height: "60px" })))));
+                        React.createElement("img", { src: "./park_m/image/add.png", width: "60px", height: "60px" })))));
         }
     }
     exports.default = InfoArea;
@@ -2979,8 +3004,8 @@ define("information", ["require", "exports", "react", "css!./styles/information.
             super(...arguments);
             this.state = {
                 informationList: [
-                    { name: "优惠政策", imgUrl: "./mpark/image/preferentialPolicy.png" }, { name: "园区咨询", imgUrl: "./mpark/image/information.png" },
-                    { name: "园区活动", imgUrl: "./mpark/image/activity.png" }, { name: "第三方服务", imgUrl: "./mpark/image/thirdParty.png" }
+                    { name: "优惠政策", imgUrl: "./park_m/image/preferentialPolicy.png" }, { name: "园区咨询", imgUrl: "./park_m/image/information.png" },
+                    { name: "园区活动", imgUrl: "./park_m/image/activity.png" }, { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }
                 ]
             };
         }
@@ -2990,7 +3015,7 @@ define("information", ["require", "exports", "react", "css!./styles/information.
                     React.createElement("div", { className: "information-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "information-headline" },
                     React.createElement("div", { style: { float: "left", width: "25%", height: "100%" } },
-                        React.createElement("img", { src: "./mpark/image/headline.png", style: { marginBottom: "14px" } })),
+                        React.createElement("img", { src: "./park_m/image/headline.png", style: { marginBottom: "14px" } })),
                     React.createElement("div", { style: { float: "left", width: "75%", height: "100%", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" } }, "\u5173\u4E8E\u6842\u6797\u4FE1\u606F\u4EA7\u4E1A\u56ED\u56ED\u533A\u4F01\u4E1A\u590D\u5DE5\u7684\u91CD\u8981\u901A\u77E5\u4F60\u4F60\u4F60\u4F60\u4F60")),
                 React.createElement("div", { className: "information-content" }, this.state.informationList.map((item, index) => {
                     return React.createElement("div", { className: "information-content-child", key: index },
@@ -3009,9 +3034,9 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "cs
             super(...arguments);
             this.state = {
                 parkList: [
-                    { name: "统计报表", imgUrl: "./mpark/image/statistics.png" }, { name: "房间管理", imgUrl: "./mpark/image/room.png" },
-                    { name: "工单派发管理", imgUrl: "./mpark/image/distribute.png" }, { name: "客服电话", imgUrl: "./mpark/image/service.png" },
-                    { name: "招商管理", imgUrl: "./mpark/image/attractInvestment.png" }
+                    { name: "统计报表", imgUrl: "./park_m/image/statistics.png" }, { name: "房间管理", imgUrl: "./park_m/image/room.png" },
+                    { name: "工单派发管理", imgUrl: "./park_m/image/distribute.png" }, { name: "客服电话", imgUrl: "./park_m/image/service.png" },
+                    { name: "招商管理", imgUrl: "./park_m/image/attractInvestment.png" }
                 ],
                 isSpread: false,
                 userInfo: "园区成员"
@@ -3044,7 +3069,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "cs
                     React.createElement("div", { className: "personal-center-title" }, "\u6570\u5B57\u56ED\u533A"),
                     React.createElement("div", { className: "personal-center-info" },
                         React.createElement("div", { className: "personal-center-tx" },
-                            React.createElement("img", { src: "./mpark/image/tx.jpg", className: "personal-center-tx-img" })),
+                            React.createElement("img", { src: "./park_m/image/tx.jpg", className: "personal-center-tx-img" })),
                         React.createElement("div", { style: { float: "left", color: "#FFFFFF", fontSize: "42px", margin: "10px 0 0 36px" } },
                             React.createElement("div", null, "\u7528\u6237\u540D\u5B57"),
                             React.createElement("div", { style: {
@@ -3053,7 +3078,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "cs
                                 }, onClick: this.switchMember.bind(this) }, this.state.userInfo)),
                         React.createElement(react_router_dom_2.Link, { to: "/modificationAuthentication" },
                             React.createElement("div", { className: "personal-center-right" },
-                                React.createElement("img", { src: "./mpark/image/w-right.png" }))))),
+                                React.createElement("img", { src: "./park_m/image/w-right.png" }))))),
                 React.createElement("div", { className: "personal-center-tag" },
                     React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u624B\u673A\u53F7\u7801"),
                     React.createElement("span", null, "15578383040"),
@@ -3078,22 +3103,22 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "cs
                 sessionStorage.getItem("userInfo") === "企业管理员" ?
                     React.createElement("div", { className: "personal-center-enterprise" },
                         React.createElement("div", { className: "personal-center-enterprise-child" },
-                            React.createElement("img", { src: "./mpark/image/enterprise.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
+                            React.createElement("img", { src: "./park_m/image/enterprise.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
                             React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u4F01\u4E1A\u4FE1\u606F\u7BA1\u7406"),
                             React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
-                                React.createElement("img", { src: "./mpark/image/right.png" }))),
+                                React.createElement("img", { src: "./park_m/image/right.png" }))),
                         React.createElement("div", { className: "personal-center-enterprise-child" },
-                            React.createElement("img", { src: "./mpark/image/let.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
+                            React.createElement("img", { src: "./park_m/image/let.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
                             React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"),
                             React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
-                                React.createElement("img", { src: "./mpark/image/right.png" })))) : null,
+                                React.createElement("img", { src: "./park_m/image/right.png" })))) : null,
                 sessionStorage.getItem("userInfo") === "园区管理员" ?
                     React.createElement("div", { className: "personal-center-park" },
                         React.createElement("div", { className: "personal-center-enterprise-child" },
-                            React.createElement("img", { src: "./mpark/image/park.png", width: "60px", height: "60px", style: { marginBottom: "10px" } }),
+                            React.createElement("img", { src: "./park_m/image/park.png", width: "60px", height: "60px", style: { marginBottom: "10px" } }),
                             React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u56ED\u533A\u7BA1\u7406"),
                             React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" }, onClick: this.spread.bind(this) },
-                                React.createElement("img", { src: "./mpark/image/right.png", className: this.state.isSpread ? "personal-center-bottom-img" : "" }))),
+                                React.createElement("img", { src: "./park_m/image/right.png", className: this.state.isSpread ? "personal-center-bottom-img" : "" }))),
                         this.state.isSpread ?
                             React.createElement("div", { style: { backgroundColor: "#ffffff", overflow: "hidden", paddingTop: "30px" } }, this.state.parkList.map((item, index) => {
                                 return React.createElement("div", { key: index, className: "personal-center-park-child" },
@@ -3131,7 +3156,7 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
                 contacts: "",
                 phone: "",
                 descript: "",
-                photo: "./mPark/image/photo.png",
+                photo: "./park_m/image/photo.png",
             };
             this.setTypeUL = this.setTypeUL.bind(this);
             RepairsOnline.getReqairstpostion = this.getReqairstpostion.bind(this);
@@ -3829,14 +3854,14 @@ define("isay", ["require", "exports", "react", "css!./styles/isay.css"], functio
                 React.createElement("div", { className: "isay-top" },
                     React.createElement("div", { className: "isay-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "isay-back" },
-                    React.createElement("img", { src: "./mpark/image/back.png", style: { marginBottom: "25px" }, onClick: this.goBack.bind(this) }),
+                    React.createElement("img", { src: "./park_m/image/back.png", style: { marginBottom: "25px" }, onClick: this.goBack.bind(this) }),
                     React.createElement("span", { style: { color: "#6C6C6C", fontSize: "40px", marginLeft: "15px" } }, "\u6211\u6709\u8BDD\u8BF4")),
                 React.createElement("div", { style: { fontSize: "40px", color: "#949494", margin: "20px 0 0 35px", overflow: "hidden" } },
                     React.createElement("div", { className: "isay-star" }),
                     React.createElement("div", { style: { float: "left", marginLeft: "15px" } }, "\u7559\u8A00\u7C7B\u522B:")),
                 React.createElement("div", { className: "isay-tag" }, this.state.tagArray.map((item, index) => {
                     return React.createElement("div", { className: "isay-tag-child", key: index },
-                        React.createElement("img", { src: "./mpark/image/checked.png", style: { margin: "-22px 20px 0 0" } }),
+                        React.createElement("img", { src: "./park_m/image/checked.png", style: { margin: "-22px 20px 0 0" } }),
                         React.createElement("span", { style: { fontSize: "40px", color: "#6C6C6C" } }, item.name));
                 })),
                 React.createElement("div", { style: { borderTop: "3px solid #F2F2F2", marginTop: "30px", margin: "0 30px 0 30px" } }),
@@ -3878,7 +3903,7 @@ define("workOrder", ["require", "exports", "react", "react-router-dom", "css!./s
                 React.createElement("div", { className: "work-order-top" },
                     React.createElement("div", { className: "work-order-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "work-order-back", onClick: this.goBack.bind(this) },
-                    React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
+                    React.createElement("img", { src: "./park_m/image/back.png", style: { margin: "-10px 10px 0 0" } }),
                     React.createElement("span", null, "\u6211\u7684\u5DE5\u5355")),
                 React.createElement("div", { className: "work-order-tag" }, this.state.tagList.map((item, index) => {
                     return React.createElement("div", { key: index, className: index === this.state.tagIndex ? "work-order-tag-child-add" : "work-order-tag-child", onClick: e => this.changeTag(index) }, item);
@@ -3889,7 +3914,7 @@ define("workOrder", ["require", "exports", "react", "react-router-dom", "css!./s
                             React.createElement("div", { key: index, className: "work-order-list-child" },
                                 React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 40px" } },
                                     React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, "\u4F01\u4E1A\u8BA4\u8BC1\u5DE5\u53551"),
-                                    React.createElement("img", { style: { float: "right", marginRight: "40px" }, src: "./mpark/image/right.png" })),
+                                    React.createElement("img", { style: { float: "right", marginRight: "40px" }, src: "./park_m/image/right.png" })),
                                 React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" } }, "\u7533\u8BF7\u4EBA\uFF1A\u83ABXX"),
                                 React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "10px 0 0 40px", overflow: "hidden" } },
                                     React.createElement("div", { style: { float: "left" } }, "\u7533\u8BF7\u65F6\u95F4\uFF1A2020-02-28 14:38:15"),
@@ -3919,7 +3944,7 @@ define("workOrderDetail", ["require", "exports", "react", "css!./styles/workOrde
                 React.createElement("div", { className: "work-order-detail-top" },
                     React.createElement("div", { className: "work-order-detail-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "work-order-detail-back", onClick: this.goBack.bind(this) },
-                    React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
+                    React.createElement("img", { src: "./park_m/image/back.png", style: { margin: "-10px 10px 0 0" } }),
                     React.createElement("span", null, "\u6211\u7684\u5DE5\u5355")),
                 React.createElement("div", { style: { padding: "40px 0 0 50px", borderBottom: "4px solid #F2F2F2", width: "100%", height: "140px" } },
                     React.createElement("span", { style: { fontSize: "40px", fontWeight: "600" } }, "\u573A\u5730\u9884\u5B9A\u5DE5\u5355"),
@@ -4005,7 +4030,7 @@ define("modificationAuthentication", ["require", "exports", "react", "css!./styl
                     React.createElement("div", { className: "modification-authentication-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "personal-center-tag" },
                     React.createElement("div", { style: { paddingLeft: "30px", float: "left" }, onClick: this.goBack.bind(this) },
-                        React.createElement("img", { src: "./mpark/image/right.png", style: { transform: "rotate(180deg)", marginBottom: "10px" } }),
+                        React.createElement("img", { src: "./park_m/image/right.png", style: { transform: "rotate(180deg)", marginBottom: "10px" } }),
                         React.createElement("span", { style: { color: "#6C6C6C" } }, "\u4FEE\u6539\u8BA4\u8BC1"))),
                 React.createElement("div", { className: "modification-authentication-tag", style: { marginTop: "15px" } },
                     React.createElement("div", { style: { paddingLeft: "40px", float: "left" } },
@@ -4044,7 +4069,7 @@ define("message", ["require", "exports", "react", "css!./styles/message.css"], f
                 React.createElement("div", { className: "work-order-top" },
                     React.createElement("div", { className: "work-order-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "work-order-back", onClick: this.goBack.bind(this) },
-                    React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
+                    React.createElement("img", { src: "./park_m/image/back.png", style: { margin: "-10px 10px 0 0" } }),
                     React.createElement("span", null, "\u6211\u7684\u6D88\u606F")),
                 React.createElement("div", { className: "work-order-tag" }, this.state.tagList.map((item, index) => {
                     return React.createElement("div", { key: index, className: index === this.state.tagIndex ? "work-order-tag-child-add" : "work-order-tag-child", onClick: e => this.changeTag(index) }, item);
@@ -4091,7 +4116,7 @@ define("router", ["require", "exports", "react-router-dom", "react", "index", "h
     }
     exports.default = Router;
 });
-define("index", ["require", "exports", "react", "react-dom", "react-router-dom", "router", "parkCompany", "findLease", "applyPut", "photograph", "repairsOnline", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_5, router_1, parkCompany_2, findLease_2, applyPut_2, photograph_2, repairsOnline_2) {
+define("index", ["require", "exports", "react", "react-dom", "react-router-dom", "router", "parkCompany", "findLease", "applyPut", "photograph", "repairsOnline", "compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_5, router_1, parkCompany_2, findLease_2, applyPut_2, photograph_2, repairsOnline_2, compat_5) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
@@ -4106,6 +4131,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             this.props = {
                 history: this.props.history
             };
+            this.globalAction = new compat_5.default();
             Index.g_pIns = this;
         }
         componentDidMount() {
@@ -4133,11 +4159,16 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         }
         blur() {
             if (this.state.inputValue === "") {
-                this.setState({ inputValue: "请输入园区名称" });
+                this.setState({ inputValue: "请输入园区名称 " });
             }
         }
         change(event) {
             this.setState({ inputValue: event.target.value });
+        }
+        initPark(park_id) {
+            this.globalAction.web_call_webgl_initPark(park_id);
+            console.log(park_id);
+            localStorage.setItem("park_id", park_id);
         }
         render() {
             return (React.createElement("div", { className: "index" },
@@ -4145,25 +4176,25 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
                 React.createElement("div", { className: "index-input-div" },
                     React.createElement("div", { className: "index-child-left" },
                         React.createElement("input", { className: "index-input", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) }),
-                        React.createElement("img", { src: "./mpark/image/search.png", className: "index-search-img" })),
+                        React.createElement("img", { src: "./park_m/image/search.png", className: "index-search-img" })),
                     React.createElement("div", { className: "index-child-right" },
                         React.createElement("span", null, this.state.city),
-                        React.createElement("img", { src: "./mpark/image/bottom.png", width: "50px", height: "50px", style: { marginTop: "-10px" } }))),
+                        React.createElement("img", { src: "./park_m/image/bottom.png", width: "50px", height: "50px", style: { marginTop: "-10px" } }))),
                 React.createElement("div", { className: "index-number" },
-                    React.createElement("img", { src: "./mpark/image/tower.png", className: "tower-img" }),
+                    React.createElement("img", { src: "./park_m/image/tower.png", className: "tower-img" }),
                     "\u5DF2\u6709",
                     React.createElement("span", { style: { color: "#0B8BF0", margin: "0 15px 0 15px" } }, "15"),
                     "\u5BB6\u56ED\u533A\u4E0A\u7EBF"),
                 React.createElement("div", { className: "index-park" },
                     this.state.parkArr.map((item, index) => {
                         return React.createElement(react_router_dom_5.Link, { to: "/home" },
-                            React.createElement("div", { className: "index-child-park", key: index },
+                            React.createElement("div", { className: "index-child-park", key: index, onClick: this.initPark.bind(this, 1001) },
                                 React.createElement("div", { className: "index-child-park-left" },
-                                    React.createElement("img", { src: "./mpark/image/a.jpg", className: "park-img" })),
+                                    React.createElement("img", { src: "./park_m/image/a.jpg", className: "park-img" })),
                                 React.createElement("div", { className: "index-child-park-right" },
                                     React.createElement("div", { className: "index-park-name" }, "\u6842\u6797\u56FD\u5BB6\u9AD8\u65B0\u533A\u4FE1\u606F\u4EA7\u4E1A\u56ED"),
                                     React.createElement("div", { className: "index-park-position" },
-                                        React.createElement("img", { src: "./mpark/image/position.png", width: "45px", height: "40px", style: { marginTop: "-18px" } }),
+                                        React.createElement("img", { src: "./park_m/image/position.png", width: "45px", height: "40px", style: { marginTop: "-18px" } }),
                                         React.createElement("span", { className: "index-park-position-name" }, "\u6842\u6797\u9AD8\u65B0\u533A\u671D\u9633\u8DEFD-12\u53F7")),
                                     React.createElement("div", { className: "index-tag" }, this.state.tagArr.map((item, index) => {
                                         return React.createElement("div", { key: index, className: "index-tag-child" }, item);
@@ -4173,7 +4204,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
                     }),
                     React.createElement("div", { style: { width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginLeft: "-25px" } }, "\u5230\u5E95\u5566~")),
                 React.createElement("div", { className: "index-bottom-logo" },
-                    React.createElement("img", { src: "./mpark/image/bottomLogo.png", className: "index-bottom-logo-img" }))));
+                    React.createElement("img", { src: "./park_m/image/bottomLogo.png", className: "index-bottom-logo-img" }))));
         }
         refreshCompanyinfo(id) {
             this.props.history.push('/parkCompany');
