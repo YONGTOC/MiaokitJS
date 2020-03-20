@@ -2,24 +2,37 @@ define("compat", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class GlobalAction {
-        switchCompany(pName) {
-            console.log("switchCompany", pName);
+        web_call_webgl_initPark(park_id) {
+            console.log("web_call_webgl_initPark", park_id);
         }
-        switchRoom(pName) {
-            console.log("SwitchRoom", pName);
+        web_call_webgl_switchCompany(pName) {
+            console.log("web_call_webgl_switchCompany", pName);
         }
-        switchMark(pName, pInfo) {
-            console.log("switchMark", pName, pInfo);
+        web_call_webgl_switchRoom(pName) {
+            console.log("web_call_webgl_SwitchRoom", pName);
+        }
+        web_call_webgl_switchMark(pName, pInfo) {
+            console.log("web_call_webgl_switchMark", pName, pInfo);
+        }
+        web_call_webgl_mapReturnpark() {
+            console.log("web_call_webgl_mapReturnpark");
+        }
+        web_call_webgl_pauseloadModuler() {
+            console.log("web_call_webgl_pauseloadModuler");
+        }
+        web_call_webgl_continueloadModuler() {
+            console.log("web_call_webgl_continueloadModuler");
         }
     }
     exports.default = GlobalAction;
 });
-define("findLease", ["require", "exports", "react", "react-router-dom", "dataService"], function (require, exports, React, RouterDOM, dataService_1) {
+define("findLease", ["require", "exports", "react", "react-router-dom", "compat", "dataService"], function (require, exports, React, RouterDOM, compat_1, dataService_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class FindLease extends React.Component {
         constructor(props) {
             super(props);
+            this.globalAction = new compat_1.default();
             this.state = {
                 FindLeasecss: "findLease",
                 showList: true,
@@ -54,11 +67,14 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "dataSer
                 });
             }
         }
+        mapReturnpark() {
+            this.globalAction.web_call_webgl_mapReturnpark();
+        }
         render() {
             return (React.createElement("div", { className: this.state.FindLeasecss },
                 React.createElement("p", { className: "companyInfotit" },
                     React.createElement(RouterDOM.Link, { to: "/home" },
-                        React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B")),
+                        React.createElement("i", { className: "iconfont companyInfoicon", onClick: this.mapReturnpark.bind(this) }, "\uE83B")),
                     React.createElement("span", null, "\u62DB\u79DF\u67E5\u8BE2")),
                 React.createElement("div", { className: this.state.showList == true ? "show" : "hide" },
                     React.createElement(LeaseList, null)),
@@ -71,6 +87,7 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "dataSer
         constructor(props) {
             super(props);
             this.dataService = new dataService_1.default();
+            this.globalAction = new compat_1.default();
             this.state = {
                 park_id: "1001",
                 roomId: "",
@@ -158,6 +175,7 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "dataSer
                 roomId: id
             });
             console.log("leaseActive", this.state);
+            this.globalAction.web_call_webgl_switchRoom(id);
         }
         typeActive(indexof, name) {
             console.log("typeActive-1", indexof);
@@ -507,24 +525,23 @@ define("dataService", ["require", "exports"], function (require, exports) {
         findCompany(pBack, park_id, company_type_id, name) {
             console.log("findCompany", park_id, company_type_id, name);
             let thetoken = localStorage.getItem("token");
-            $.ajax({
-                url: this.state.rooturl + '/api/findCompany',
-                data: {
-                    "park_id": 1,
-                    "company_type_id": 1,
-                    "token": thetoken,
-                },
-                type: "get",
-                success: function (data) {
-                    console.log("findCompanyJJJJJJJ", data);
-                    if (data.status == 113) {
+            let data = {
+                "return_code": "100",
+                "response": [
+                    {
+                        "id": "1009",
+                        "name": "桂林国家高新",
+                        "headimgurl": "./park_m/image/i.png",
+                        "building_id": "a座",
+                        "floor_id": "1F",
+                        "room_id": "201-2",
+                        "address": "桂林市七星区民华产业园E座B区三楼",
+                        "company_type": "科技服务",
                     }
-                    else {
-                        pBack(data);
-                        console.log("finJJJ", data);
-                    }
-                }
-            });
+                ],
+                "err_msg": ""
+            };
+            pBack(data);
         }
         getCompanyInfo(pBack, id) {
             console.log("getCompanyInfo", pBack, id);
@@ -607,24 +624,23 @@ define("dataService", ["require", "exports"], function (require, exports) {
         findRoomRentByparkid(pBack, park_id, square) {
             console.log("findRoomRentByparkid", pBack, park_id, square);
             let thetoken = localStorage.getItem("token");
-            $.ajax({
-                url: this.state.rooturl + '/api/findRoomRent',
-                data: {
-                    "park_id": park_id,
-                    "token": thetoken,
-                    "square": square
-                },
-                type: "get",
-                success: function (data) {
-                    console.log("getRoomRentSquareType", data);
-                    if (data.status == 113) {
+            let data = {
+                "return_code": "100",
+                "response": [
+                    {
+                        "id": "1009",
+                        "headimgurl": "./park_m/image/i.png",
+                        "building_id": "a座",
+                        "floor_id": "1F",
+                        "room_id": "201-2",
+                        "date": "2019-07-05",
+                        "square": "45",
+                        "price": "2.8"
                     }
-                    else {
-                        pBack(data);
-                        console.log("findRoomRentByparkid", data);
-                    }
-                }
-            });
+                ],
+                "err_msg": ""
+            };
+            pBack(data);
         }
         findRoomRentByroomid(pBack, id) {
             console.log("findRoomRentByroomid", pBack, id);
@@ -1503,7 +1519,7 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "dataServ
         }
     }
 });
-define("bottomBtn", ["require", "exports", "react", "react-router-dom", "css!./styles/view.css"], function (require, exports, React, RouterDOM) {
+define("bottomBtn", ["require", "exports", "react", "react-router-dom", "compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class BottomBtn extends React.Component {
@@ -1512,16 +1528,17 @@ define("bottomBtn", ["require", "exports", "react", "react-router-dom", "css!./s
             this.props = {
                 history: this.props.history
             };
+            this.globalAction = new compat_2.default();
             this.state = {
                 index: 1,
-                iconImg1In: "./mPark/image/bottomBtn/3d-in.png",
-                iconImg1Un: "./mPark/image/bottomBtn/3d-un.png",
-                iconImg2In: "./mPark/image/bottomBtn/wq-in.png",
-                iconImg2Un: "./mPark/image/bottomBtn/wq-un.png",
-                iconImg3In: "./mPark/image/bottomBtn/zx-in.png",
-                iconImg3Un: "./mPark/image/bottomBtn/zx-un.png",
-                iconImg4In: "./mPark/image/bottomBtn/my-in.png",
-                iconImg4Un: "./mPark/image/bottomBtn/my-un.png",
+                iconImg1In: "./park_m/image/bottomBtn/3d-in.png",
+                iconImg1Un: "./park_m/image/bottomBtn/3d-un.png",
+                iconImg2In: "./park_m/image/bottomBtn/wq-in.png",
+                iconImg2Un: "./park_m/image/bottomBtn/wq-un.png",
+                iconImg3In: "./park_m/image/bottomBtn/zx-in.png",
+                iconImg3Un: "./park_m/image/bottomBtn/zx-un.png",
+                iconImg4In: "./park_m/image/bottomBtn/my-in.png",
+                iconImg4Un: "./park_m/image/bottomBtn/my-un.png",
             };
             this.toggleIcon = this.toggleIcon.bind(this);
         }
@@ -1551,6 +1568,12 @@ define("bottomBtn", ["require", "exports", "react", "react-router-dom", "css!./s
             this.setState({
                 index: data
             });
+            if (data == 1) {
+                this.globalAction.web_call_webgl_continueloadModuler();
+            }
+            else {
+                this.globalAction.web_call_webgl_pauseloadModuler();
+            }
         }
         render() {
             return (React.createElement("div", { className: "bottomView" },
@@ -1575,7 +1598,7 @@ define("bottomBtn", ["require", "exports", "react", "react-router-dom", "css!./s
     }
     exports.default = BottomBtn;
 });
-define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", "dataService", "compat", "css!./styles/iconfont.css", "css!./styles/view.css"], function (require, exports, React, RouterDOM, bottomBtn_1, dataService_4, compat_1) {
+define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", "dataService", "compat", "css!./styles/iconfont.css", "css!./styles/view.css"], function (require, exports, React, RouterDOM, bottomBtn_1, dataService_4, compat_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Home extends React.Component {
@@ -1585,11 +1608,16 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                 history: this.props.history,
                 children: this.props.children
             };
+            this.globalAction = new compat_3.default();
             this.dataService = new dataService_4.default();
             this.setToken = this.setToken.bind(this);
         }
         componentDidMount() {
             this.dataService.login(this.setToken);
+        }
+        initPark() {
+            let park_id = localStorage.getItem("park_id");
+            this.globalAction.web_call_webgl_initPark(park_id);
         }
         setToken(data) {
             console.log("setToken", data);
@@ -1630,7 +1658,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                     { name: "交通" },
                 ]
             };
-            this.globalAction = new compat_1.default();
+            this.globalAction = new compat_3.default();
         }
         moreIcon(a) {
             console.log('toggleIconbox', a);
@@ -1730,7 +1758,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                             topIcon1: "iconBox",
                         });
                     }
-                    this.globalAction.switchMark(a, 0);
+                    this.globalAction.web_call_webgl_switchMark(a, 0);
                 }
                 else {
                     if (this.state.topView == "topView-big") {
@@ -1743,7 +1771,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                             topIcon1: "iconBoxIn",
                         });
                     }
-                    this.globalAction.switchMark(a, 1);
+                    this.globalAction.web_call_webgl_switchMark(a, 1);
                 }
             }
             else if (a == "商圈") {
@@ -1758,7 +1786,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                             topIcon2: "iconBox",
                         });
                     }
-                    this.globalAction.switchMark(a, 0);
+                    this.globalAction.web_call_webgl_switchMark(a, 0);
                 }
                 else {
                     if (this.state.topView == "topView-big") {
@@ -1771,7 +1799,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                             topIcon2: "iconBoxIn",
                         });
                     }
-                    this.globalAction.switchMark(a, 1);
+                    this.globalAction.web_call_webgl_switchMark(a, 1);
                 }
             }
             else if (a == "公交车") {
@@ -1780,14 +1808,14 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                         topIcon3: "iconBox-bigIn",
                         topIcon3info: 1,
                     });
-                    this.globalAction.switchMark(a, 1);
+                    this.globalAction.web_call_webgl_switchMark(a, 1);
                 }
                 else {
                     this.setState({
                         topIcon3: "iconBox-big",
                         topIcon3info: 0,
                     });
-                    this.globalAction.switchMark(a, 0);
+                    this.globalAction.web_call_webgl_switchMark(a, 0);
                 }
             }
             else if (a == "全景") {
@@ -1796,14 +1824,14 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                         topIcon4: "iconBox-bigIn",
                         topIcon4info: 1,
                     });
-                    this.globalAction.switchMark(a, 1);
+                    this.globalAction.web_call_webgl_switchMark(a, 1);
                 }
                 else {
                     this.setState({
                         topIcon4: "iconBox-big",
                         topIcon4info: 0,
                     });
-                    this.globalAction.switchMark(a, 0);
+                    this.globalAction.web_call_webgl_switchMark(a, 0);
                 }
             }
             else if (a == "停车场") {
@@ -1812,14 +1840,14 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                         topIcon5: "iconBox-bigIn",
                         topIcon5info: 1,
                     });
-                    this.globalAction.switchMark(a, 1);
+                    this.globalAction.web_call_webgl_switchMark(a, 1);
                 }
                 else {
                     this.setState({
                         topIcon5: "iconBox-big",
                         topIcon5info: 0,
                     });
-                    this.globalAction.switchMark(a, 0);
+                    this.globalAction.web_call_webgl_switchMark(a, 0);
                 }
             }
         }
@@ -1921,12 +1949,13 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
     }
     exports.default = Home;
 });
-define("parkCompany", ["require", "exports", "react", "react-router-dom", "compat", "dataService"], function (require, exports, React, RouterDOM, compat_2, dataService_5) {
+define("parkCompany", ["require", "exports", "react", "react-router-dom", "compat", "dataService"], function (require, exports, React, RouterDOM, compat_4, dataService_5) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParkCompany extends React.Component {
         constructor(props) {
             super(props);
+            this.globalAction = new compat_4.default();
             this.state = {
                 parkCompanycss: "parkCompany",
                 showList: true,
@@ -1963,11 +1992,14 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                 });
             }
         }
+        mapReturnpark() {
+            this.globalAction.web_call_webgl_mapReturnpark();
+        }
         render() {
             return (React.createElement("div", { className: this.state.parkCompanycss },
                 React.createElement("p", { className: "companyInfotit" },
                     React.createElement(RouterDOM.Link, { to: "/home" },
-                        React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B")),
+                        React.createElement("i", { className: "iconfont companyInfoicon", onClick: this.mapReturnpark.bind(this) }, "\uE83B")),
                     React.createElement("span", null, "\u56ED\u533A\u4F01\u4E1A")),
                 React.createElement("div", { className: this.state.showList == true ? "show" : "hide" },
                     React.createElement(CompanyList, null)),
@@ -1979,7 +2011,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
         constructor(props) {
             super(props);
             this.dataService = new dataService_5.default();
-            this.globalAction = new compat_2.default();
+            this.globalAction = new compat_4.default();
             this.state = {
                 park_id: 1001,
                 companyListcss: "companyList-part",
@@ -2066,7 +2098,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
             this.setState({
                 indexOf: data,
             });
-            this.globalAction.switchCompany(id);
+            this.globalAction.web_call_webgl_switchCompany(id);
         }
         typeActive(indexof, name, id) {
             console.log("typeActive", indexof);
@@ -2109,7 +2141,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                             React.createElement("img", { src: i.headimgurl })),
                         React.createElement("div", { className: "companyul-middle" },
                             React.createElement("p", { className: this.state.indexOf == index ? "companyName-active" : "companyName", style: { "font-size": "2.4rem", "font-weight": "bold" } }, i.name),
-                            React.createElement("p", { style: { "font-size": "2.5rem" } },
+                            React.createElement("p", { style: { "font-size": "2.5rem", "overflow": "hidden", "text-overflow": "ellipsis", "white-space": "nowrap" } },
                                 React.createElement("i", { className: "iconfont", style: { "fontSize": "2.5rem" } }, "\uE815"),
                                 i.address)),
                         React.createElement("div", { className: "companyul-right" },
@@ -4117,31 +4149,35 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         change(event) {
             this.setState({ inputValue: event.target.value });
         }
+        initPark(park_id) {
+            console.log(park_id);
+            localStorage.setItem("park_id", park_id);
+        }
         render() {
             return (React.createElement("div", { className: "index" },
                 React.createElement("div", { className: "index-top" }, "\u6570\u5B57\u56ED\u533A"),
                 React.createElement("div", { className: "index-input-div" },
                     React.createElement("div", { className: "index-child-left" },
                         React.createElement("input", { className: "index-input", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) }),
-                        React.createElement("img", { src: "./mpark/image/search.png", className: "index-search-img" })),
+                        React.createElement("img", { src: "./park_m/image/search.png", className: "index-search-img" })),
                     React.createElement("div", { className: "index-child-right" },
                         React.createElement("span", null, this.state.city),
-                        React.createElement("img", { src: "./mpark/image/bottom.png", width: "50px", height: "50px", style: { marginTop: "-10px" } }))),
+                        React.createElement("img", { src: "./park_m/image/bottom.png", width: "50px", height: "50px", style: { marginTop: "-10px" } }))),
                 React.createElement("div", { className: "index-number" },
-                    React.createElement("img", { src: "./mpark/image/tower.png", className: "tower-img" }),
+                    React.createElement("img", { src: "./park_m/image/tower.png", className: "tower-img" }),
                     "\u5DF2\u6709",
                     React.createElement("span", { style: { color: "#0B8BF0", margin: "0 15px 0 15px" } }, "15"),
                     "\u5BB6\u56ED\u533A\u4E0A\u7EBF"),
                 React.createElement("div", { className: "index-park" },
                     this.state.parkArr.map((item, index) => {
                         return React.createElement(react_router_dom_5.Link, { to: "/home" },
-                            React.createElement("div", { className: "index-child-park", key: index },
+                            React.createElement("div", { className: "index-child-park", key: index, onClick: this.initPark.bind(this, 1001) },
                                 React.createElement("div", { className: "index-child-park-left" },
-                                    React.createElement("img", { src: "./mpark/image/a.jpg", className: "park-img" })),
+                                    React.createElement("img", { src: "./park_m/image/a.jpg", className: "park-img" })),
                                 React.createElement("div", { className: "index-child-park-right" },
                                     React.createElement("div", { className: "index-park-name" }, "\u6842\u6797\u56FD\u5BB6\u9AD8\u65B0\u533A\u4FE1\u606F\u4EA7\u4E1A\u56ED"),
                                     React.createElement("div", { className: "index-park-position" },
-                                        React.createElement("img", { src: "./mpark/image/position.png", width: "45px", height: "40px", style: { marginTop: "-18px" } }),
+                                        React.createElement("img", { src: "./park_m/image/position.png", width: "45px", height: "40px", style: { marginTop: "-18px" } }),
                                         React.createElement("span", { className: "index-park-position-name" }, "\u6842\u6797\u9AD8\u65B0\u533A\u671D\u9633\u8DEFD-12\u53F7")),
                                     React.createElement("div", { className: "index-tag" }, this.state.tagArr.map((item, index) => {
                                         return React.createElement("div", { key: index, className: "index-tag-child" }, item);
@@ -4151,7 +4187,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
                     }),
                     React.createElement("div", { style: { width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginLeft: "-25px" } }, "\u5230\u5E95\u5566~")),
                 React.createElement("div", { className: "index-bottom-logo" },
-                    React.createElement("img", { src: "./mpark/image/bottomLogo.png", className: "index-bottom-logo-img" }))));
+                    React.createElement("img", { src: "./park_m/image/bottomLogo.png", className: "index-bottom-logo-img" }))));
         }
         refreshCompanyinfo(id) {
             this.props.history.push('/parkCompany');
