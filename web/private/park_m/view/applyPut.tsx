@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
 import DataService from "dataService";
-import GlobalAction from "compat"; 
+import GlobalAction from "compat";  
 
 class ApplyPut extends React.Component {
   public constructor(props) {

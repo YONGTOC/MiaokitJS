@@ -158,7 +158,7 @@ class RepairsOnline extends React.Component<{ history: any }>{
   //提交报修单 -- 成功
   public sumbitReqairssucceed(data) {
     alert(data);
-    window.history.back();
+    window.history.back(); 
   }
 
   public render() {

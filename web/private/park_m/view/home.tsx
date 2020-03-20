@@ -18,7 +18,7 @@ class Home extends React.Component {
     super(props)
 
     this.setToken = this.setToken.bind(this);
-  } 
+  }  
 
   public readonly props: Readonly<IProps> = {
     history: this.props.history,

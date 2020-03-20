@@ -17,7 +17,7 @@ class InfoArea extends React.Component {
     inputValue: "请输入主题", // 输入框默认值
     tagArr: ["咨询", "建议", "投诉", "其他"],
     listArr: [{ spread: true }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }],
-    tagIndex: 0, // 选中的标签  
+    tagIndex: 0, // 选中的标签   
   }
 
   // 聚焦
