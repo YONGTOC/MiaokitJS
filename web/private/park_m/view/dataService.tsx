@@ -78,32 +78,60 @@ class DataService {
     })
   }
 
-  //6 (企业园区模块-搜索类型)获取园区下面企业类型列表
+  //6 通过园区id，企业类型，关键词搜索园区下面企业列表
   public findCompany(pBack, park_id, company_type_id, name) {
     console.log("findCompany", park_id, company_type_id, name);
     let thetoken =  localStorage.getItem("token");
-    $.ajax({
-      url: this.state.rooturl + '/api/findCompany',
-      data: {
-        "park_id": 1,
-        "company_type_id": 1,
-        "token": thetoken,
-      },
-      type: "get",
-      success: function (data) {
-        console.log("findCompanyJJJJJJJ", data);
-        if (data.status == 113) {
-          // 113 token到期，跳转登录页面
-         // console.log(window.location.pathname);
-         //  window.location.href = window.location.pathname+"#/"
-        } else {
-          pBack(data);
-          console.log("finJJJ", data);
+    //$.ajax({
+    //  url: this.state.rooturl + '/api/findCompany',
+    //  data: {
+    //    "park_id": 1,
+    //    "company_type_id": 1,
+    //    "token": thetoken,
+    //  },
+    //  type: "get",
+    //  success: function (data) {
+    //    console.log("findCompanyJJJJJJJ", data);
+    //    if (data.status == 113) {
+    //      // 113 token到期，跳转登录页面
+    //     // console.log(window.location.pathname);
+    //     //  window.location.href = window.location.pathname+"#/"
+    //    } else {
+    //      pBack(data);
+    //      console.log("finJJJ", data);
+    //    }
+    //  }
+    //})
+
+    let data = {
+      //错误码
+      "return_code": "100",
+      "response": [
+        {
+          //id
+          "id": "1009",
+          //公司名字
+          "name": "桂林国家高新",
+          //园区图像url
+          "headimgurl": "./park_m/image/i.png",
+          //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
+          "building_id": "a座",
+          //使用场地对应楼层id，模型编号(用于匹配对应楼层id)
+          "floor_id": "1F",
+          //使用场地，模型编号(用于匹配对应3d房间)
+          "room_id": "201-2",
+          //地址
+          "address": "桂林市七星区民华产业园E座B区三楼",
+          //企业类型
+          "company_type": "科技服务",
         }
-      }
-    })
 
+      ],
+      //错误代码信息
+      "err_msg": ""
+    }
 
+    pBack(data);
   }
 
   //7 通过企业id, 获企业详细信息
@@ -232,26 +260,53 @@ class DataService {
   public findRoomRentByparkid(pBack, park_id, square) {
     console.log("findRoomRentByparkid", pBack, park_id, square);
     let thetoken = localStorage.getItem("token");
-    $.ajax({
-      url: this.state.rooturl + '/api/findRoomRent',
-      data: {
-        "park_id": park_id,
-        "token": thetoken,
-        "square": square
-      },
-      type: "get",
-      success: function (data) {
-        console.log("getRoomRentSquareType", data);
-        if (data.status == 113) {
-          // 113 token到期，跳转登录页面
-          // console.log(window.location.pathname);
-          //  window.location.href = window.location.pathname+"#/"
-        } else {
-          pBack(data);
-          console.log("findRoomRentByparkid", data);
+    //$.ajax({
+    //  url: this.state.rooturl + '/api/findRoomRent',
+    //  data: {
+    //    "park_id": park_id,
+    //    "token": thetoken,
+    //    "square": square
+    //  },
+    //  type: "get",
+    //  success: function (data) {
+    //    console.log("getRoomRentSquareType", data);
+    //    if (data.status == 113) {
+    //      // 113 token到期，跳转登录页面
+    //      // console.log(window.location.pathname);
+    //      //  window.location.href = window.location.pathname+"#/"
+    //    } else {
+    //      pBack(data);
+    //      console.log("findRoomRentByparkid", data);
+    //    }
+    //  }
+    //})
+    let data = {
+      //错误码
+      "return_code": "100",
+      "response": [
+        {
+          //id
+          "id": "1009",
+          //头像url
+          "headimgurl": "./park_m/image/i.png",
+          //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
+          "building_id": "a座",
+          //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
+          "floor_id": "1F",
+          //使用场地房间id，模型编号(用于匹配对应3d房间)
+          "room_id": "201-2",
+          //招租发布时间
+          "date": "2019-07-05",
+          //面积m²
+          "square": "45",
+          //价格元/m²/天。
+          "price": "2.8"
         }
-      }
-    })
+      ],
+      //错误代码信息
+      "err_msg": ""
+    }
+    pBack(data);
   }
 
   //10 通过招租id,获取租房信息列表接口(getRoomRentInfo)

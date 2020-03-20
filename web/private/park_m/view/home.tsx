@@ -25,12 +25,26 @@ class Home extends React.Component {
     children: this.props.children
   }
 
+  public globalAction: GlobalAction = new GlobalAction();
+  public dataService: DataService = new DataService();
+
   public componentDidMount() {
-   //2 登录获取 token
+    //2 登录获取 token
     this.dataService.login(this.setToken);
+
+
   }
 
-  public dataService: DataService = new DataService();
+  //通知3d，加载园区模型
+
+  public initPark() {
+    //获取 index 传来的park_id;
+    let park_id = localStorage.getItem("park_id");
+    //  console.log("park_id", park_id);
+    this.globalAction.web_call_webgl_initPark(park_id);
+  }
+
+
   //set token
   public setToken(data) {
     console.log("setToken", data);
@@ -99,7 +113,7 @@ class TopBtn extends React.Component {
       topIcon3: "iconBox-big",
       topIcon4: "iconBox-big",
       topIcon5: "iconBox-big",
-      topViewBack:"topViewBack",
+      topViewBack: "topViewBack",
     })
     if (this.state.topIcon1 == "iconBoxIn" && this.state.topIcon2 == "iconBoxIn") {
       this.setState({
@@ -125,10 +139,10 @@ class TopBtn extends React.Component {
       this.setState({
         topIcon4: "iconBox-bigIn",
       })
-    } if (this.state.topIcon5info == 1){
-        this.setState({
-          topIcon5: "iconBox-bigIn",
-        })
+    } if (this.state.topIcon5info == 1) {
+      this.setState({
+        topIcon5: "iconBox-bigIn",
+      })
     }
   }
 
@@ -165,7 +179,7 @@ class TopBtn extends React.Component {
         topIcon5: "iconBox",
       })
     }
-   
+
   }
 
   public globalAction: GlobalAction = new GlobalAction();
@@ -185,7 +199,7 @@ class TopBtn extends React.Component {
             topIcon1: "iconBox",
           })
         }
-        this.globalAction.switchMark(a, 0);
+        this.globalAction.web_call_webgl_switchMark(a, 0);
       } else {
         if (this.state.topView == "topView-big") {
           this.setState({
@@ -196,7 +210,7 @@ class TopBtn extends React.Component {
             topIcon1: "iconBoxIn",
           })
         }
-        this.globalAction.switchMark(a, 1);
+        this.globalAction.web_call_webgl_switchMark(a, 1);
       }
     } else if (a == "商圈") {
       // 判断当前是否为选中状态
@@ -210,7 +224,7 @@ class TopBtn extends React.Component {
             topIcon2: "iconBox",
           })
         }
-        this.globalAction.switchMark(a, 0);
+        this.globalAction.web_call_webgl_switchMark(a, 0);
       } else {
         if (this.state.topView == "topView-big") {
           this.setState({
@@ -221,21 +235,21 @@ class TopBtn extends React.Component {
             topIcon2: "iconBoxIn",
           })
         }
-        this.globalAction.switchMark(a, 1);
+        this.globalAction.web_call_webgl_switchMark(a, 1);
       }
     } else if (a == "公交车") {
       if (this.state.topIcon3 == "iconBox-big") {
         this.setState({
           topIcon3: "iconBox-bigIn",
-          topIcon3info:1,
+          topIcon3info: 1,
         })
-        this.globalAction.switchMark(a, 1);
+        this.globalAction.web_call_webgl_switchMark(a, 1);
       } else {
         this.setState({
           topIcon3: "iconBox-big",
           topIcon3info: 0,
         })
-        this.globalAction.switchMark(a, 0);
+        this.globalAction.web_call_webgl_switchMark(a, 0);
       }
     } else if (a == "全景") {
       if (this.state.topIcon4 == "iconBox-big") {
@@ -243,13 +257,13 @@ class TopBtn extends React.Component {
           topIcon4: "iconBox-bigIn",
           topIcon4info: 1,
         })
-        this.globalAction.switchMark(a, 1);
+        this.globalAction.web_call_webgl_switchMark(a, 1);
       } else {
         this.setState({
           topIcon4: "iconBox-big",
           topIcon4info: 0,
         })
-        this.globalAction.switchMark(a, 0);
+        this.globalAction.web_call_webgl_switchMark(a, 0);
       }
     } else if (a == "停车场") {
       if (this.state.topIcon5 == "iconBox-big") {
@@ -257,13 +271,13 @@ class TopBtn extends React.Component {
           topIcon5: "iconBox-bigIn",
           topIcon5info: 1,
         })
-        this.globalAction.switchMark(a, 1);
+        this.globalAction.web_call_webgl_switchMark(a, 1);
       } else {
         this.setState({
           topIcon5: "iconBox-big",
           topIcon5info: 0,
         })
-        this.globalAction.switchMark(a, 0);
+        this.globalAction.web_call_webgl_switchMark(a, 0);
       }
     }
 
@@ -349,33 +363,33 @@ class FoldBtn extends React.Component {
     return (
       <div className={this.state.foldView}>
         <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-          <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i> 
+          <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
         </div>
 
         <div className={"foleIconbox"}>
           <RouterDOM.Link to="/parkCompany" >
             <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#1C90E2", "height": "6rem" }}>&#xe81e;</i> 
+              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#1C90E2", "height": "6rem" }}>&#xe81e;</i>
               <p>园区企业</p>
             </div>
 
           </RouterDOM.Link>
           <RouterDOM.Link to="/findLease" >
             <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#866FF1", "height": "6rem"}}>&#xe824;</i>
+              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#866FF1", "height": "6rem" }}>&#xe824;</i>
               <p>招租查询</p>
             </div>
           </RouterDOM.Link>
           <RouterDOM.Link to="/photograph" >
             <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#F0594C", "height": "6rem"}}>&#xe821;</i>
+              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#F0594C", "height": "6rem" }}>&#xe821;</i>
               <p>随手拍</p>
             </div>
           </RouterDOM.Link>
-         
+
           <RouterDOM.Link to="/applyPut" >
             <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#208FE6", "height": "6rem"}}>&#xe81f;</i>
+              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#208FE6", "height": "6rem" }}>&#xe81f;</i>
               <p>摆点申请</p>
             </div>
           </RouterDOM.Link>
@@ -387,13 +401,13 @@ class FoldBtn extends React.Component {
           </RouterDOM.Link>
           <RouterDOM.Link to="/repairsOnline" >
             <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#26AC8F", "height": "6rem"}}>&#xe822;</i>
+              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#26AC8F", "height": "6rem" }}>&#xe822;</i>
               <p>在线报修</p>
             </div>
           </RouterDOM.Link>
           <RouterDOM.Link to="/parking" >
             <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#208FE6", "height": "6rem"}}>&#xe823;</i>
+              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#208FE6", "height": "6rem" }}>&#xe823;</i>
               <p>停车业务</p>
             </div>
           </RouterDOM.Link>

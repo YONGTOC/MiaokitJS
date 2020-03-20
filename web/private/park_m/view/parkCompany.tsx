@@ -46,12 +46,19 @@ class ParkCompany extends React.Component {
     //over
   }
 
+  public globalAction: GlobalAction = new GlobalAction();
+  //返回园区map
+  public mapReturnpark() {
+  //通知3d，返回园区视角
+    this.globalAction.web_call_webgl_mapReturnpark();
+  }
+
   public render() {
     return (
       <div className={this.state.parkCompanycss}>
         <p className="companyInfotit">
           <RouterDOM.Link to="/home" >
-            <i className="iconfont companyInfoicon">&#xe83b;</i>
+            <i className="iconfont companyInfoicon" onClick={this.mapReturnpark.bind(this)}>&#xe83b;</i>
           </RouterDOM.Link>
           <span>园区企业</span>
         </p>
@@ -175,7 +182,7 @@ class CompanyList extends React.Component{
       indexOf: data,
     });
     // 通知3d，切换公司定位（web获取的是 公司id）
-    this.globalAction.switchCompany(id);
+    this.globalAction.web_call_webgl_switchCompany(id);
     // 
   }
 
@@ -236,7 +243,7 @@ class CompanyList extends React.Component{
                 </div>
                 <div className="companyul-middle">
                   <p className={this.state.indexOf == index ? "companyName-active" : "companyName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.name}</p>
-                  <p style={{ "font-size": "2.5rem" }}>
+                  <p style={{ "font-size": "2.5rem","overflow": "hidden","text-overflow": "ellipsis","white-space": "nowrap" }}>
                     <i className="iconfont" style={{ "fontSize": "2.5rem" }}>&#xe815;</i>
                     {i.address}</p>
                 </div>

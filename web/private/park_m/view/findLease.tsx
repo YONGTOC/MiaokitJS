@@ -46,12 +46,19 @@ class FindLease extends React.Component {
 
   }
 
+  public globalAction: GlobalAction = new GlobalAction();
+  //返回园区map
+  public mapReturnpark() {
+    //通知3d，返回园区视角
+    this.globalAction.web_call_webgl_mapReturnpark();
+  }
+
   public render() {
     return (
         <div className={this.state.FindLeasecss}>
           <p className="companyInfotit">
             <RouterDOM.Link to="/home" >
-              <i className="iconfont companyInfoicon">&#xe83b;</i>
+            <i className="iconfont companyInfoicon" onClick={this.mapReturnpark.bind(this)}>&#xe83b;</i>
             </RouterDOM.Link>
             <span>招租查询</span>
           </p>
@@ -158,13 +165,18 @@ class LeaseList extends React.Component {
     }
   }
 
+  public globalAction: GlobalAction = new GlobalAction();
+  //选中某个房间
   public leaseActive(index, id) {
     console.log("active", index, id);
     this.setState({
       indexOf: index,
       roomId: id
     });
-    console.log("leaseActive", this.state)
+    console.log("leaseActive", this.state);
+    // 通知3d，切换房间定位（web获取的是 房间id）
+    this.globalAction.web_call_webgl_switchRoom(id);
+
   }
 
   public typeActive(indexof, name) {
