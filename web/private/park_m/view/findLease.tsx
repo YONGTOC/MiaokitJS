@@ -18,7 +18,7 @@ class FindLease extends React.Component {
 
   public globalAction: GlobalAction = new GlobalAction();
 
-  // 外部传入的企业id，传给企业详情组件，刷新企业详情数据；
+  // 外部传入的企业id，传给企业详情组件，刷新企业详情数据； 
    //(招租查询模块-查询)通过roomid获取招租的场地列表接口
   static getLeaseinfoByroomid(id) { }
   public getLeaseinfoByroomid(id) {

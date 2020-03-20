@@ -28,7 +28,7 @@ class WorkOrder extends React.Component<{ history: any }>  {
   }
 
   render() {
-    return (
+    return ( 
       <div className="work-order">
         <div className="work-order-top">
           <div className="work-order-title">数字园区</div>

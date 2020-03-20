@@ -252,7 +252,7 @@ class RepairsOnline extends React.Component<{ history: any }>{
     park_id: 1001,
     //类型id (水管报修等对应的id)
     type_id: 1,
-    type_name: "",
+    type_name: "", 
     //位置
     position: "",
     //经度

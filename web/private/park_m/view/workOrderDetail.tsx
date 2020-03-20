@@ -19,7 +19,7 @@ class workOrderDetail extends React.Component<{ history:any}> {
 
 
   render() {
-    return (
+    return ( 
       <div className="work-order-detail">
         <div className="work-order-detail-top">
           <div className="work-order-detail-title">数字园区</div>

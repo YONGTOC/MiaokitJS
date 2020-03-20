@@ -13,7 +13,7 @@ class ParkCompany extends React.Component {
   }
 
   public componentDidMount() {
-    console.log(12313123);
+    console.log("ParkCompany");
    
   }
 

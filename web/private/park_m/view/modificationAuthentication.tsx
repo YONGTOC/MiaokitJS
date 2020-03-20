@@ -13,7 +13,7 @@ class ModificationAuthentication extends React.Component<{ history:any}> {
     inputValue: "用户昵称XXX"
   }
 
-  // 聚焦  
+  // 聚焦   
   focus() {
     if (this.state.inputValue === "用户昵称XXX") {
       this.setState({ inputValue: "" })

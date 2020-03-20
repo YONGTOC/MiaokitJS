@@ -16,7 +16,7 @@ class Narrate extends React.Component {
   }
 
 
-  public componentDidMount() {
+  public componentDidMount() { 
     let audio = document.getElementById("audioTool");
     let audioN = 0
     audio.onended = function () {
@@ -124,7 +124,7 @@ class Narrate extends React.Component {
       { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
       { name: "园区建筑", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
     ],
-    currentAudio: 0 // 当前音频
+    currentAudio: 0 // 当前音频 
   }
   //over
 }

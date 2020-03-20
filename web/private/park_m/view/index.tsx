@@ -20,7 +20,7 @@ interface IProps {
 interface IState {
   inputValue: string,
   city: string,
-  parkArr: Array<any>,
+  parkArr: Array<any>, 
   tagArr: Array<any>
 }
 
