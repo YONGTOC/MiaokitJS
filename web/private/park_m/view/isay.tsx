@@ -15,7 +15,7 @@ class Isay extends React.Component<{ history:any}>{
   public readonly state: Readonly<IState> = {
     tagArray: [{ name: "咨询" }, { name: "建议" }, { name: "投诉" }, { name: "其它" }],
     tagIndex: 0,
-    inputValue: "不能少于3个字且不能大于33个字", // 主题默认值
+    inputValue: "不能少于3个字且不能大于33个字", // 主题默认值  
     textareaValue: "请将留言内容描述出来（200字内）"
   }
 

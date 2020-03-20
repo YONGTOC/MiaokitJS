@@ -8,7 +8,7 @@ interface IProps {
 
 interface IState {
   parkList: Array<any>,
-  isSpread: boolean, // 是否展开
+  isSpread: boolean, // 是否展开 
   userInfo: string
 }
 

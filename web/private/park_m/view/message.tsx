@@ -21,7 +21,7 @@ class Message extends React.Component<{ history: any }>  {
     this.setState({ tagIndex: index })
   }
   
-  // 返回
+  // 返回 
   goBack() {
     this.props.history.goBack()
   }

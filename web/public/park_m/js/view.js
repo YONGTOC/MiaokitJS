@@ -137,12 +137,14 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
                     leaseListcss: "leaseList-part",
                     leaseul: "leaseul"
                 });
+                this.globalAction.web_call_webgl_continueloadModuler();
             }
             else {
                 this.setState({
                     leaseListcss: "leaseList-all",
                     leaseul: "leaseul-all"
                 });
+                this.globalAction.web_call_webgl_pauseloadModuler();
             }
             if (this.state.iconfont == "iconfont iconfont-unturn") {
                 this.setState({
@@ -376,7 +378,7 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
                 limit: data.response.require,
                 elevator: data.response.lift,
                 price: data.response.price,
-                man: data.response.Contacts,
+                man: data.response.contact,
                 tel: data.response.phone
             });
         }
@@ -568,7 +570,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     "floor_id": "1F",
                     "room_id": "201-2",
                     "address": "桂林市七星区信息产业园E座B区三楼",
-                    "Contacts": "莫xxx",
+                    "contact": "莫xxx",
                     "phone": "15266666666",
                     "website": "www.yongtoc.com",
                     "descript": "xxx公司是由计算机图形学，计算机应用学组方面专家成。",
@@ -671,7 +673,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     "squre": "150",
                     "floor": "4楼",
                     "lift": "有",
-                    "Contacts": "莫xxx",
+                    "contact": "莫xxx",
                     "phone": "135000000",
                     "inspection_time": "80:30-12:00",
                     "require": "一年起租",
@@ -891,13 +893,14 @@ define("dataService", ["require", "exports"], function (require, exports) {
     }
     exports.default = DataService;
 });
-define("applyPut", ["require", "exports", "react", "react-router-dom", "dataService"], function (require, exports, React, RouterDOM, dataService_2) {
+define("applyPut", ["require", "exports", "react", "react-router-dom", "dataService", "compat"], function (require, exports, React, RouterDOM, dataService_2, compat_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ApplyPut extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_2.default();
+            this.globalAction = new compat_2.default();
             this.state = {
                 inval: "",
                 applicant: "莫光宇",
@@ -922,12 +925,14 @@ define("applyPut", ["require", "exports", "react", "react-router-dom", "dataServ
                     applyPutcss: "applyPut-part",
                     applyPutfrom: "applyPutfrom-part applyPutfrom"
                 });
+                this.globalAction.web_call_webgl_continueloadModuler();
             }
             else {
                 this.setState({
                     applyPutcss: "applyPut-all",
                     applyPutfrom: "applyPutfrom-all applyPutfrom"
                 });
+                this.globalAction.web_call_webgl_pauseloadModuler();
             }
             if (this.state.iconfont == "iconfont iconfont-unturn") {
                 this.setState({
@@ -939,6 +944,9 @@ define("applyPut", ["require", "exports", "react", "react-router-dom", "dataServ
                     iconfont: "iconfont iconfont-unturn",
                 });
             }
+        }
+        mapReturnpark() {
+            this.globalAction.web_call_webgl_mapReturnpark();
         }
         static addapplyPut(x, y) { }
         ;
@@ -982,8 +990,7 @@ define("applyPut", ["require", "exports", "react", "react-router-dom", "dataServ
             let latitude = event.target.getAttribute("data-latitude");
         }
         sumbitApplyput() {
-            console.log("提交", this);
-            console.log("提交2", this.state);
+            console.log("提交摆点申请", this.state);
             this.dataService.postAdvertisementPoint(this.sumbitApplyputsucceed, this.state);
         }
         sumbitApplyputsucceed(data) {
@@ -994,7 +1001,7 @@ define("applyPut", ["require", "exports", "react", "react-router-dom", "dataServ
             return (React.createElement("div", null,
                 React.createElement("p", { className: "companyInfotit" },
                     React.createElement(RouterDOM.Link, { to: "/home" },
-                        React.createElement("span", { className: "iconfont companyInfoicon" }, "\uE83B")),
+                        React.createElement("span", { className: "iconfont companyInfoicon", onClick: this.mapReturnpark.bind(this) }, "\uE83B")),
                     React.createElement("span", null, "\u7533\u8BF7\u6446\u70B9")),
                 React.createElement("div", { className: this.state.applyPutcss },
                     React.createElement("div", { className: "foleBtn", onClick: this.toggleFold.bind(this) },
@@ -1045,12 +1052,13 @@ define("applyPut", ["require", "exports", "react", "react-router-dom", "dataServ
     }
     exports.default = ApplyPut;
 });
-define("bookSite", ["require", "exports", "react", "react-router-dom", "dataService"], function (require, exports, React, RouterDOM, dataService_3) {
+define("bookSite", ["require", "exports", "react", "react-router-dom", "dataService", "compat"], function (require, exports, React, RouterDOM, dataService_3, compat_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class BookSite extends React.Component {
         constructor(props) {
             super(props);
+            this.globalAction = new compat_3.default();
             this.state = {
                 BookSitecss: "bookSite",
                 showList: true,
@@ -1077,10 +1085,13 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "dataServ
                 });
             }
         }
+        mapReturnpark() {
+            this.globalAction.web_call_webgl_mapReturnpark();
+        }
         render() {
             return (React.createElement("div", { className: this.state.BookSitecss },
                 React.createElement("p", { className: "companyInfotit" },
-                    React.createElement(RouterDOM.Link, { to: "/home" },
+                    React.createElement(RouterDOM.Link, { to: "/home", onClick: this.mapReturnpark.bind(this) },
                         React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B")),
                     React.createElement("span", null, "\u573A\u5730\u9884\u7EA6")),
                 React.createElement("div", { className: this.state.showList == true ? "show" : "hide" },
@@ -1094,6 +1105,7 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "dataServ
         constructor(props) {
             super(props);
             this.dataService = new dataService_3.default();
+            this.globalAction = new compat_3.default();
             this.state = {
                 bookListcss: "bookList-part",
                 iconfont: "iconfont iconfont-unturn",
@@ -1119,12 +1131,16 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "dataServ
             if (this.state.bookListcss == "bookList-all") {
                 this.setState({
                     bookListcss: "bookList-part",
+                    bookul: "bookul"
                 });
+                this.globalAction.web_call_webgl_continueloadModuler();
             }
             else {
                 this.setState({
                     bookListcss: "bookList-all",
+                    bookul: "bookul-all"
                 });
+                this.globalAction.web_call_webgl_pauseloadModuler();
             }
             if (this.state.iconfont == "iconfont iconfont-unturn") {
                 this.setState({
@@ -1322,6 +1338,7 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "dataServ
     class BookRoom extends React.Component {
         constructor(props) {
             super(props);
+            this.globalAction = new compat_3.default();
             this.dataService = new dataService_3.default();
             this.state = {
                 iconfont: "iconfont iconfont-unturn",
@@ -1374,12 +1391,14 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "dataServ
                     bookRoom: "bookRoom-all",
                     bookformcss: "bookform-all "
                 });
+                this.globalAction.web_call_webgl_pauseloadModuler();
             }
             else {
                 this.setState({
                     bookRoom: "bookRoom-part",
                     bookformcss: "bookform-part"
                 });
+                this.globalAction.web_call_webgl_continueloadModuler();
             }
         }
         changebookContent(event) {
@@ -1532,7 +1551,7 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "dataServ
         }
     }
 });
-define("bottomBtn", ["require", "exports", "react", "react-router-dom", "compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_2) {
+define("bottomBtn", ["require", "exports", "react", "react-router-dom", "compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_4) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class BottomBtn extends React.Component {
@@ -1541,7 +1560,7 @@ define("bottomBtn", ["require", "exports", "react", "react-router-dom", "compat"
             this.props = {
                 history: this.props.history
             };
-            this.globalAction = new compat_2.default();
+            this.globalAction = new compat_4.default();
             this.state = {
                 index: 1,
                 iconImg1In: "./park_m/image/bottomBtn/3d-in.png",
@@ -1611,7 +1630,7 @@ define("bottomBtn", ["require", "exports", "react", "react-router-dom", "compat"
     }
     exports.default = BottomBtn;
 });
-define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", "dataService", "compat", "css!./styles/iconfont.css", "css!./styles/view.css"], function (require, exports, React, RouterDOM, bottomBtn_1, dataService_4, compat_3) {
+define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", "dataService", "compat", "css!./styles/iconfont.css", "css!./styles/view.css"], function (require, exports, React, RouterDOM, bottomBtn_1, dataService_4, compat_5) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Home extends React.Component {
@@ -1621,7 +1640,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                 history: this.props.history,
                 children: this.props.children
             };
-            this.globalAction = new compat_3.default();
+            this.globalAction = new compat_5.default();
             this.dataService = new dataService_4.default();
             this.setToken = this.setToken.bind(this);
         }
@@ -1673,7 +1692,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                     { name: "交通" },
                 ]
             };
-            this.globalAction = new compat_3.default();
+            this.globalAction = new compat_5.default();
         }
         moreIcon(a) {
             console.log('toggleIconbox', a);
@@ -1940,10 +1959,6 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                         React.createElement("div", { className: this.state.foleIcon },
                             React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem", "color": "#866FF1", "height": "6rem" } }, "\uE824"),
                             React.createElement("p", null, "\u62DB\u79DF\u67E5\u8BE2"))),
-                    React.createElement(RouterDOM.Link, { to: "/photograph" },
-                        React.createElement("div", { className: this.state.foleIcon },
-                            React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem", "color": "#F0594C", "height": "6rem" } }, "\uE821"),
-                            React.createElement("p", null, "\u968F\u624B\u62CD"))),
                     React.createElement(RouterDOM.Link, { to: "/applyPut" },
                         React.createElement("div", { className: this.state.foleIcon },
                             React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem", "color": "#208FE6", "height": "6rem" } }, "\uE81F"),
@@ -1955,22 +1970,18 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
                     React.createElement(RouterDOM.Link, { to: "/repairsOnline" },
                         React.createElement("div", { className: this.state.foleIcon },
                             React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem", "color": "#26AC8F", "height": "6rem" } }, "\uE822"),
-                            React.createElement("p", null, "\u5728\u7EBF\u62A5\u4FEE"))),
-                    React.createElement(RouterDOM.Link, { to: "/parking" },
-                        React.createElement("div", { className: this.state.foleIcon },
-                            React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem", "color": "#208FE6", "height": "6rem" } }, "\uE823"),
-                            React.createElement("p", null, "\u505C\u8F66\u4E1A\u52A1"))))));
+                            React.createElement("p", null, "\u5728\u7EBF\u62A5\u4FEE"))))));
         }
     }
     exports.default = Home;
 });
-define("parkCompany", ["require", "exports", "react", "react-router-dom", "compat", "dataService"], function (require, exports, React, RouterDOM, compat_4, dataService_5) {
+define("parkCompany", ["require", "exports", "react", "react-router-dom", "compat", "dataService"], function (require, exports, React, RouterDOM, compat_6, dataService_5) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParkCompany extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_4.default();
+            this.globalAction = new compat_6.default();
             this.state = {
                 parkCompanycss: "parkCompany",
                 showList: true,
@@ -2026,7 +2037,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
         constructor(props) {
             super(props);
             this.dataService = new dataService_5.default();
-            this.globalAction = new compat_4.default();
+            this.globalAction = new compat_6.default();
             this.state = {
                 park_id: 1001,
                 companyListcss: "companyList-part",
@@ -2077,12 +2088,14 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                     companyListcss: "companyList-part",
                     companyul: "companyul"
                 });
+                this.globalAction.web_call_webgl_continueloadModuler();
             }
             else {
                 this.setState({
                     companyListcss: "companyList-all",
                     companyul: "companyul-all"
                 });
+                this.globalAction.web_call_webgl_pauseloadModuler();
             }
             if (this.state.iconfont == "iconfont iconfont-unturn") {
                 this.setState({
@@ -2291,7 +2304,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                 name: data.response.name,
                 address: data.response.address,
                 type: data.response.company_type,
-                man: data.response.Contacts,
+                man: data.response.contact,
                 tel: data.response.phone,
                 http: data.response.website,
             });
@@ -3129,13 +3142,14 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "cs
     }
     exports.default = PersonalCenter;
 });
-define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dataService"], function (require, exports, React, RouterDOM, dataService_7) {
+define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dataService", "compat"], function (require, exports, React, RouterDOM, dataService_7, compat_7) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RepairsOnline extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_7.default();
+            this.globalAction = new compat_7.default();
             this.state = {
                 reqairscss: "reqairs-part",
                 iconfont: "iconfont iconfont-unturn",
@@ -3153,7 +3167,7 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
                 floor_id: "5",
                 room_id: "6",
                 company: "",
-                contacts: "",
+                contact: "",
                 phone: "",
                 descript: "",
                 photo: "./park_m/image/photo.png",
@@ -3177,12 +3191,14 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
                     reqairscss: "reqairs-part",
                     reqairscssul: "reqairsul-part reqairsul"
                 });
+                this.globalAction.web_call_webgl_continueloadModuler();
             }
             else {
                 this.setState({
                     reqairscss: "reqairs-all",
                     reqairsul: "reqairsul-all reqairsul"
                 });
+                this.globalAction.web_call_webgl_pauseloadModuler();
             }
             if (this.state.iconfont == "iconfont iconfont-unturn") {
                 this.setState({
@@ -3194,6 +3210,9 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
                     iconfont: "iconfont iconfont-unturn",
                 });
             }
+        }
+        mapReturnpark() {
+            this.globalAction.web_call_webgl_mapReturnpark();
         }
         static getReqairstpostion(x, y, building_id, floor_id, room_id) { }
         ;
@@ -3248,7 +3267,7 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
         }
         reqairsContacts(event) {
             this.setState({
-                contacts: event.target.value,
+                contact: event.target.value,
             });
         }
         reqairsPhone(event) {
@@ -3272,7 +3291,7 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
         render() {
             return (React.createElement("div", { className: "repairsOnline" },
                 React.createElement("p", { className: "companyInfotit" },
-                    React.createElement(RouterDOM.Link, { to: "/home" },
+                    React.createElement(RouterDOM.Link, { to: "/home", onClick: this.mapReturnpark.bind(this) },
                         React.createElement("span", { className: "iconfont companyInfoicon" }, "\uE83B")),
                     React.createElement("span", null, "\u5728\u7EBF\u62A5\u4FEE")),
                 React.createElement("div", { className: this.state.reqairscss },
@@ -3293,7 +3312,7 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 "\u62A5\u4FEE\u4F4D\u7F6E",
-                                React.createElement("input", { type: "text", value: this.state.position, placeholder: "\u8BF7\u70B9\u51FB\u5730\u56FE\u9009\u62E9\u62A5\u4FEE\u70B9", style: { "margin-left": "4rem", "border": "0" }, onChange: this.getPosition.bind(this) }),
+                                React.createElement("input", { type: "text", value: this.state.position, placeholder: "\u8BF7\u8F93\u5165\u62A5\u4FEE\u4F4D\u7F6E", style: { "margin-left": "4rem", "border": "0" }, onChange: this.getPosition.bind(this) }),
                                 React.createElement("i", { className: "iconfont", style: { "fontSize": "3rem", "color": "#0B8BF0", "float": "right", "padding": " 0 0 0 4rem" } }, "\uE82C")),
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
@@ -3302,7 +3321,7 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 "\u8054\u7CFB\u4EBA",
-                                React.createElement("input", { type: "text", value: this.state.contacts, placeholder: "\u8BF7\u586B\u5199\u8054\u7CFB\u4EBA", style: { "margin-left": "6rem", "border": "0" }, onChange: this.reqairsContacts.bind(this) })),
+                                React.createElement("input", { type: "text", value: this.state.contact, placeholder: "\u8BF7\u586B\u5199\u8054\u7CFB\u4EBA", style: { "margin-left": "6rem", "border": "0" }, onChange: this.reqairsContacts.bind(this) })),
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 "\u7535\u8BDD\u53F7\u7801",
@@ -4116,7 +4135,7 @@ define("router", ["require", "exports", "react-router-dom", "react", "index", "h
     }
     exports.default = Router;
 });
-define("index", ["require", "exports", "react", "react-dom", "react-router-dom", "router", "parkCompany", "findLease", "applyPut", "photograph", "repairsOnline", "compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_5, router_1, parkCompany_2, findLease_2, applyPut_2, photograph_2, repairsOnline_2, compat_5) {
+define("index", ["require", "exports", "react", "react-dom", "react-router-dom", "router", "parkCompany", "findLease", "applyPut", "photograph", "repairsOnline", "dataService", "compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_5, router_1, parkCompany_2, findLease_2, applyPut_2, photograph_2, repairsOnline_2, dataService_8, compat_8) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
@@ -4131,7 +4150,8 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             this.props = {
                 history: this.props.history
             };
-            this.globalAction = new compat_5.default();
+            this.dataService = new dataService_8.default();
+            this.globalAction = new compat_8.default();
             Index.g_pIns = this;
         }
         componentDidMount() {
@@ -4159,7 +4179,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         }
         blur() {
             if (this.state.inputValue === "") {
-                this.setState({ inputValue: "请输入园区名称 " });
+                this.setState({ inputValue: "请输入园区名称" });
             }
         }
         change(event) {

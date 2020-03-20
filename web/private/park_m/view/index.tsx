@@ -9,6 +9,7 @@ import ApplyPut from "applyPut";
 import Photograph from "photograph";
 import Home from "home";
 import RepairsOnline from "repairsOnline";
+import DataService from "dataService";
 import GlobalAction from "compat";
 
 
@@ -63,6 +64,9 @@ class Index extends React.Component {
     });
   }
 
+  public dataService: DataService = new DataService();
+  public globalAction: GlobalAction = new GlobalAction();
+
   // 聚焦
   foucus() {
     if (this.state.inputValue === "请输入园区名称") {
@@ -73,7 +77,7 @@ class Index extends React.Component {
   // 失焦
   blur() {
     if (this.state.inputValue === "") {
-      this.setState({ inputValue: "请输入园区名称 " })
+      this.setState({ inputValue: "请输入园区名称" })
     }
   }
 
@@ -82,7 +86,7 @@ class Index extends React.Component {
     this.setState({inputValue: event.target.value})
   }
 
-  public globalAction: GlobalAction = new GlobalAction();
+
   public initPark(park_id) {
     this.globalAction.web_call_webgl_initPark(park_id);
     console.log(park_id);

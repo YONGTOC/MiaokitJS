@@ -1,15 +1,15 @@
 import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
-
-
 import DataService from "dataService";
+import GlobalAction from "compat";
 
 class BookSite extends React.Component {
   public constructor(props) {
     super(props);
-
     BookSite.toggleView = this.toggleView.bind(this);
   }
+
+  public globalAction: GlobalAction = new GlobalAction();
 
   static toggleView(a, id) { };
   public toggleView(a, id) {
@@ -28,11 +28,17 @@ class BookSite extends React.Component {
     }
   }
 
+  public mapReturnpark() {
+    //通知3d，返回园区视角
+    this.globalAction.web_call_webgl_mapReturnpark();
+  }
+
+
   public render() {
     return (
       <div className={this.state.BookSitecss}>
         <p className="companyInfotit">
-          <RouterDOM.Link to="/home" >
+          <RouterDOM.Link to="/home" onClick={this.mapReturnpark.bind(this)}>
             <i className="iconfont companyInfoicon">&#xe83b;</i>
           </RouterDOM.Link>
           <span>场地预约</span>
@@ -69,10 +75,11 @@ class BookList extends React.Component {
   public componentDidMount() {
     //##16.(场地预定模块-搜索)通过园区id获取园区内可以预定的场地列表接口 ###
     this.dataService.getRoomBook(this.getRoomBook, this.state.park_id, name);
-
   }
 
   public dataService: DataService = new DataService();
+  public globalAction: GlobalAction = new GlobalAction();
+ 
   //获取园区内可以预定的场地列表
   public getRoomBook(data) {
     console.log("returnRoomBook", data);
@@ -86,13 +93,17 @@ class BookList extends React.Component {
     if (this.state.bookListcss == "bookList-all") {
       this.setState({
         bookListcss: "bookList-part",
-        //leaseul: "leaseul"
+        bookul: "bookul"
       })
+      //通知3d，继续加载模型  
+      this.globalAction.web_call_webgl_continueloadModuler();
     } else {
       this.setState({
         bookListcss: "bookList-all",
-        // leaseul: "leaseul-all"
+        bookul: "bookul-all"
       })
+      // 通知3d，暂停加载模型
+      this.globalAction.web_call_webgl_pauseloadModuler();
     }
     if (this.state.iconfont == "iconfont iconfont-unturn") {
       this.setState({
@@ -358,6 +369,8 @@ class BookRoom extends React.Component {
     console.log("NotesNotesNotes")
   }
 
+  public globalAction: GlobalAction = new GlobalAction();
+
   static getRoomdata(data) { };
   public getRoomdata(data) {
     console.log("getBook", data);
@@ -385,11 +398,15 @@ class BookRoom extends React.Component {
         bookRoom: "bookRoom-all",
         bookformcss:"bookform-all "
       })
+      // 通知3d，暂停加载模型
+      this.globalAction.web_call_webgl_pauseloadModuler();
     } else {
       this.setState({
         bookRoom: "bookRoom-part",
         bookformcss:"bookform-part"
       })
+      //通知3d，继续加载模型  
+      this.globalAction.web_call_webgl_continueloadModuler();
     }
   }
 

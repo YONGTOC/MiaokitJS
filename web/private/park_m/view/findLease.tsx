@@ -16,12 +16,13 @@ class FindLease extends React.Component {
 
   }
 
+  public globalAction: GlobalAction = new GlobalAction();
+
   // 外部传入的企业id，传给企业详情组件，刷新企业详情数据；
    //(招租查询模块-查询)通过roomid获取招租的场地列表接口
   static getLeaseinfoByroomid(id) { }
   public getLeaseinfoByroomid(id) {
     console.log("getCompanyinfo", id);
-
     this.toggleView("Info", id);
     LeaseInfo.getLeaseInfo(id);
   }
@@ -43,10 +44,8 @@ class FindLease extends React.Component {
         showInfo: false,
       })
     }
-
   }
 
-  public globalAction: GlobalAction = new GlobalAction();
   //返回园区map
   public mapReturnpark() {
     //通知3d，返回园区视角
@@ -105,6 +104,8 @@ class LeaseList extends React.Component {
   }
 
   public dataService: DataService = new DataService();
+  public globalAction: GlobalAction = new GlobalAction();
+
   //set 招租查询面积分类列表
   public getRoomRentSquareType(data) {
     console.log("getRoomRentSquareType", data);
@@ -135,11 +136,15 @@ class LeaseList extends React.Component {
         leaseListcss: "leaseList-part",
         leaseul: "leaseul"
       })
+      //通知3d，继续加载模型  
+      this.globalAction.web_call_webgl_continueloadModuler();
     } else {
       this.setState({
         leaseListcss: "leaseList-all",
         leaseul: "leaseul-all"
       })
+      // 通知3d，暂停加载模型
+      this.globalAction.web_call_webgl_pauseloadModuler();
     }
     if (this.state.iconfont == "iconfont iconfont-unturn") {
       this.setState({
@@ -165,7 +170,7 @@ class LeaseList extends React.Component {
     }
   }
 
-  public globalAction: GlobalAction = new GlobalAction();
+ 
   //选中某个房间
   public leaseActive(index, id) {
     console.log("active", index, id);
@@ -436,7 +441,7 @@ class LeaseInfos extends React.Component {
       limit: data.response.require,
       elevator: data.response.lift,
       price: data.response.price,
-      man: data.response.Contacts,
+      man: data.response.contact,
       tel: data.response.phone
     })
   }

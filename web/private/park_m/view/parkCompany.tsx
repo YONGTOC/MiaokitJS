@@ -103,6 +103,8 @@ class CompanyList extends React.Component{
     //console.log("token",this.state)
   }
 
+  public dataService: DataService = new DataService();
+
   public componentDidMount() {
     //获取园区下面企业类型列表
     this.dataService.getCompanyType(this.setCompanyType, this.state.park_id);
@@ -110,7 +112,7 @@ class CompanyList extends React.Component{
     this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.typeName);
   }
 
-  public dataService: DataService = new DataService();
+
   // set企业类型列表
   public setCompanyType(data) {
     console.log("set企业类型列表", data.response);
@@ -143,11 +145,15 @@ class CompanyList extends React.Component{
         companyListcss: "companyList-part",
         companyul: "companyul"
       })
+      //通知3d，继续加载模型  
+      this.globalAction.web_call_webgl_continueloadModuler();
     } else {
       this.setState({
         companyListcss: "companyList-all",
         companyul: "companyul-all"
       })
+      // 通知3d，暂停加载模型
+      this.globalAction.web_call_webgl_pauseloadModuler();
     }
     if (this.state.iconfont == "iconfont iconfont-unturn") {
       this.setState({
@@ -457,7 +463,7 @@ class CompanyInfos extends React.Component {
       address: data.response.address,
      // type: data.response.service[0].name,
       type: data.response.company_type,
-      man: data.response.Contacts,
+      man: data.response.contact,
       tel: data.response.phone,
       http: data.response.website,
     })

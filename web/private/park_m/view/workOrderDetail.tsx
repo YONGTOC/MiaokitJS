@@ -2,7 +2,6 @@ import * as React from "react";
 import "css!./styles/workOrderDetail.css"
 
 interface IProps {
-
 }
 
 interface IState {

@@ -359,6 +359,19 @@ class FoldBtn extends React.Component {
   }
 
   public render() {
+    // 2期功能
+      //<RouterDOM.Link to="/photograph" >
+      //      <div className={this.state.foleIcon} >
+      //        <i className="iconfont" style={{ "fontSize": "5rem", "color": "#F0594C", "height": "6rem" }}>&#xe821;</i>
+      //        <p>随手拍</p>
+      //      </div>
+      //    </RouterDOM.Link>
+    //<RouterDOM.Link to="/parking" >
+    //  <div className={this.state.foleIcon} >
+    //    <i className="iconfont" style={{ "fontSize": "5rem", "color": "#208FE6", "height": "6rem" }}>&#xe823;</i>
+    //    <p>停车业务</p>
+    //  </div>
+    //</RouterDOM.Link>
     return (
       <div className={this.state.foldView}>
         <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
@@ -379,12 +392,7 @@ class FoldBtn extends React.Component {
               <p>招租查询</p>
             </div>
           </RouterDOM.Link>
-          <RouterDOM.Link to="/photograph" >
-            <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#F0594C", "height": "6rem" }}>&#xe821;</i>
-              <p>随手拍</p>
-            </div>
-          </RouterDOM.Link>
+        
 
           <RouterDOM.Link to="/applyPut" >
             <div className={this.state.foleIcon} >
@@ -404,12 +412,7 @@ class FoldBtn extends React.Component {
               <p>在线报修</p>
             </div>
           </RouterDOM.Link>
-          <RouterDOM.Link to="/parking" >
-            <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#208FE6", "height": "6rem" }}>&#xe823;</i>
-              <p>停车业务</p>
-            </div>
-          </RouterDOM.Link>
+         
         </div>
       </div>
     )

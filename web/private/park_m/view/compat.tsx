@@ -26,12 +26,12 @@ class GlobalAction {
     console.log("web_call_webgl_mapReturnpark");
   }
 
-  //通知3d，暂停加载模型
+  //通知3d，暂停加载模型   this.globalAction.web_call_webgl_continueloadModuler();
   public web_call_webgl_pauseloadModuler() {
     console.log("web_call_webgl_pauseloadModuler");
   }
 
-  //通知3d，继续加载模型  
+  //通知3d，继续加载模型   this.globalAction.web_call_webgl_continueloadModuler();
   public web_call_webgl_continueloadModuler() {
     console.log("web_call_webgl_continueloadModuler");
   }

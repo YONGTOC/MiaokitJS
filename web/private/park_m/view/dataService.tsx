@@ -63,6 +63,7 @@ class DataService {
 
   // 5. (企业园区模块-搜索类型)获取园区下面企业类型列表
   public getCompanyType(pBack, park_id) {
+    // id =1
     let thetoken = localStorage.getItem("token");
     //$.ajax({
     //  url: this.state.rooturl + '/api/getCompanyType',
@@ -103,6 +104,7 @@ class DataService {
 
   //6 通过园区id，企业类型，关键词搜索园区下面企业列表
   public findCompany(pBack, park_id, company_type_id, name) {
+    // id=1
     console.log("findCompany", park_id, company_type_id, name);
     let thetoken =  localStorage.getItem("token");
     //$.ajax({
@@ -177,6 +179,7 @@ class DataService {
 
   //7 通过企业id, 获企业详细信息
   public getCompanyInfo(pBack, id) {
+    // id=2 模拟id
     console.log("getCompanyInfo", pBack, id);
     var data = {
       //错误码
@@ -197,7 +200,7 @@ class DataService {
         //地址
         "address": "桂林市七星区信息产业园E座B区三楼",
         //联系人
-        "Contacts": "莫xxx",
+        "contact": "莫xxx",
         //电话
         "phone": "15266666666",
         //企业官网
@@ -299,6 +302,7 @@ class DataService {
 
   //9 通过园区id, 获取招租的场地列表接口(findRoomRent);
   public findRoomRentByparkid(pBack, park_id, square) {
+    // id =1
     console.log("findRoomRentByparkid", pBack, park_id, square);
     let thetoken = localStorage.getItem("token");
     //$.ajax({
@@ -380,7 +384,7 @@ class DataService {
         //是否有电梯
         "lift": "有",
         //联系人
-        "Contacts": "莫xxx",
+        "contact": "莫xxx",
         //电话
         "phone": "135000000",
         //看房时间

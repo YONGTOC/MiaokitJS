@@ -3,7 +3,6 @@ import "css!./styles/workOrder.css"
 import { Link } from 'react-router-dom';
 
 interface IProps {
-
 }
 
 interface IState {
