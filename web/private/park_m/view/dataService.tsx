@@ -64,18 +64,41 @@ class DataService {
   // 5. (企业园区模块-搜索类型)获取园区下面企业类型列表
   public getCompanyType(pBack, park_id) {
     let thetoken = localStorage.getItem("token");
-    $.ajax({
-      url: this.state.rooturl + '/api/getCompanyType',
-      data: {
-        "park_id": park_id,
-        "token":thetoken,
-      },
-      type: "get",    
-      success: function (data) {
-        console.log("TTTTTTTTTT",data);
-        pBack(data);
+    //$.ajax({
+    //  url: this.state.rooturl + '/api/getCompanyType',
+    //  data: {
+    //    "park_id": park_id,
+    //    "token":thetoken,
+    //  },
+    //  type: "get",    
+    //  success: function (data) {
+    //    console.log("TTTTTTTTTT",data);
+    //    pBack(data);
+    //    }
+    //})
+
+    var data = {
+      //错误码
+      "return_code": "100",
+      "response": [
+        {
+          //id
+          "id": "1009",
+          //企业类型
+          "name": "科技服务",
+        },
+        {
+          //id
+          "id": "1019",
+          //企业类型
+          "name": "文化创意",
         }
-    })
+      ],
+      //错误代码信息
+      "err_msg": ""
+    }
+
+    pBack(data);
   }
 
   //6 通过园区id，企业类型，关键词搜索园区下面企业列表

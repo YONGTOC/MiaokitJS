@@ -2,8 +2,8 @@
 class GlobalAction {
 
   //通知3d，要加载的园区模型  
-  public web_call_webgl_initPark(park_id) {
-    console.log("web_call_webgl_initPark", park_id);
+  public web_call_webgl_initPark(pInfo) {
+    console.log("web_call_webgl_initPark", pInfo);
   }
 
   //切换公司
