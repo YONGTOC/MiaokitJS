@@ -1,16 +1,16 @@
 // TODO
 class GlobalAction {
-  //ÇĞ»»¹«Ë¾
+  //åˆ‡æ¢å…¬å¸
   public switchCompany(pName) {
     console.log("switchCompany", pName);
   }
 
-  // ÇĞ»»·¿¼ä
+  // åˆ‡æ¢æˆ¿é—´
   public switchRoom(pName) {
     console.log("SwitchRoom", pName);
   }
 
-  //ÇĞ»»±êÊ¶£» 0--Òş²Ø±êÊ¶£» 1--ÏÔÊ¾±êÊ¶
+  //åˆ‡æ¢æ ‡è¯†ï¼› 0--éšè—æ ‡è¯†ï¼› 1--æ˜¾ç¤ºæ ‡è¯†
   public switchMark(pName, pInfo) {
     console.log("switchMark", pName, pInfo);
   }

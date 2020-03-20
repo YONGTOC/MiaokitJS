@@ -35,12 +35,12 @@ class ApplyPut extends React.Component {
     }
   }
 
-  //  Ìí¼Ó°ÚµãĞÅÏ¢;
+  //  æ·»åŠ æ‘†ç‚¹ä¿¡æ¯;
   static addapplyPut(x, y) { };
   public addapplyPut(x, y) {
     let arr = this.state.applyList;
     arr.push({
-      address: "ÇëÊäÈëÉêÇë°Ú·ÅµØµã", startTime: "2020-03-14", endTime: "2020-03-17", longitude: x, latitude: y
+      address: "è¯·è¾“å…¥ç”³è¯·æ‘†æ”¾åœ°ç‚¹", startTime: "2020-03-14", endTime: "2020-03-17", longitude: x, latitude: y
     });
     this.setState({
       applyList: arr
@@ -48,63 +48,63 @@ class ApplyPut extends React.Component {
     console.log(this.state)
   }
 
-  // ¾Û½¹
+  // èšç„¦
   public foucus(event) {
-    console.log("¾Û½¹2", event.target.value);
+    console.log("èšç„¦2", event.target.value);
     let index = event.target.getAttribute("data-index");
-    console.log("addressÊäÈëindex", index);
+    console.log("addressè¾“å…¥index", index);
   }
 
-  // Ê§½¹
+  // å¤±ç„¦
   public blur(event) {
     //if (this.state.address == "") {
-    //  this.setState({ address: "ÇëÊäÈëÉêÇë°Ú·ÅµØµã" })
+    //  this.setState({ address: "è¯·è¾“å…¥ç”³è¯·æ‘†æ”¾åœ°ç‚¹" })
     //}
   }
 
-  // ÉêÇëÄÚÈİÊäÈë
+  // ç”³è¯·å†…å®¹è¾“å…¥
   public changeContent(event) {
-   // console.log("contentÊäÈë", event.target.value);
+   // console.log("contentè¾“å…¥", event.target.value);
     this.setState({
       content: event.target.value,
     });
   }
 
 
-  //ĞŞ¸Ä°ÚµãµØÖ·
+  //ä¿®æ”¹æ‘†ç‚¹åœ°å€
   public changeAddress(event) {
    let index = event.target.getAttribute("data-index");
-  // console.log("addressÊäÈëindex", index);
-    let applyList = this.state.applyList // ¸ø¶ÔÏó¸³Öµ³öÀ´
-    applyList[index].address = event.target.value // ÔÚĞÂ¶ÔÏóÀïÃæĞŞ¸Ä£¬È»ºó¸³Öµ¸øĞèÒª¸Ä±äµÄ¶ÔÏó
+  // console.log("addressè¾“å…¥index", index);
+    let applyList = this.state.applyList // ç»™å¯¹è±¡èµ‹å€¼å‡ºæ¥
+    applyList[index].address = event.target.value // åœ¨æ–°å¯¹è±¡é‡Œé¢ä¿®æ”¹ï¼Œç„¶åèµ‹å€¼ç»™éœ€è¦æ”¹å˜çš„å¯¹è±¡
     this.setState({
       applyList: applyList,
     });
   }
 
-  // É¾³ıÌõÄ¿-ok
+  // åˆ é™¤æ¡ç›®-ok
   public delApply(event) {
     let index = event.target.getAttribute("data-index");
      let applyList = this.state.applyList;
       applyList.splice(index, 1);
      this.setState({ applyList: applyList });
-    console.log("É¾³ıÌõÄ¿2", this.state.applyList);
+    console.log("åˆ é™¤æ¡ç›®2", this.state.applyList);
 
-    //Í¨Öª3d£¬É¾³ı¶¨Î»µã
+    //é€šçŸ¥3dï¼Œåˆ é™¤å®šä½ç‚¹
     let longitude = event.target.getAttribute("data-longitude");
     let latitude = event.target.getAttribute("data-latitude");
       
   }
 
   public dataService: DataService = new DataService();
-  //Ìá½»
+  //æäº¤
   public sumbitApplyput() {
-    console.log("Ìá½»", this);
-    console.log("Ìá½»2", this.state);
+    console.log("æäº¤", this);
+    console.log("æäº¤2", this.state);
     this.dataService.postAdvertisementPoint(this.sumbitApplyputsucceed, this.state);
   }
 
-  // °ÚµãÉêÇëÌá½» -- ³É¹¦
+  // æ‘†ç‚¹ç”³è¯·æäº¤ -- æˆåŠŸ
   public sumbitApplyputsucceed(data) {
     alert(data);
     window.history.back();
@@ -117,7 +117,7 @@ class ApplyPut extends React.Component {
           <RouterDOM.Link to="/home" >
             <span className="iconfont companyInfoicon">&#xe83b;</span>
           </RouterDOM.Link>
-          <span>ÉêÇë°Úµã</span>
+          <span>ç”³è¯·æ‘†ç‚¹</span>
         </p>
 
         <div className={this.state.applyPutcss}>
@@ -127,28 +127,28 @@ class ApplyPut extends React.Component {
           <form >
             <ul className={this.state.applyPutul}>
               <li>
-                <span className={"applySpanleft"}><span className="redStar">*</span>ÉêÇëÈË</span><p className={"applyRight"}>{this.state.applicant}</p>
+                <span className={"applySpanleft"}><span className="redStar">*</span>ç”³è¯·äºº</span><p className={"applyRight"}>{this.state.applicant}</p>
               </li>
               <li>
-                <span className="redStar">*</span>ÊÖ»úºÅÂë<p className={"applyRight"}>{this.state.phone}</p>
+                <span className="redStar">*</span>æ‰‹æœºå·ç <p className={"applyRight"}>{this.state.phone}</p>
               </li>
               <li>
-                <span className="redStar">*</span>ÉêÇëµ¥Î»<p className={"applyRight"}>{this.state.company}</p>
+                <span className="redStar">*</span>ç”³è¯·å•ä½<p className={"applyRight"}>{this.state.company}</p>
               </li>
               <li>
-                <p><span className="redStar">*</span>¾ßÌåÄÚÈİ£º</p>
+                <p><span className="redStar">*</span>å…·ä½“å†…å®¹ï¼š</p>
                 <textarea className="getapplyPuttextarea" value={this.state.content} 
-                  placeholder="Çë½«¾ßÌåÄÚÈİÃèÊö³öÀ´¡££¨200×ÖÄÚ£©"
+                  placeholder="è¯·å°†å…·ä½“å†…å®¹æè¿°å‡ºæ¥ã€‚ï¼ˆ200å­—å†…ï¼‰"
                   onChange={this.changeContent.bind(this)}></textarea>
             </li>
             </ul>
             <div className="applyList">
-              <p className="theapplyP">ÇëÔÚËùĞèÍ¶·ÅµØµãºóÉèÖÃÍ¶·Å¿ªÊ¼¼°½áÊøÊ±¼ä</p>
+              <p className="theapplyP">è¯·åœ¨æ‰€éœ€æŠ•æ”¾åœ°ç‚¹åè®¾ç½®æŠ•æ”¾å¼€å§‹åŠç»“æŸæ—¶é—´</p>
               <ul style={{ "margin": "0" }}>
                 <li>
-                  <div className="applyAddress">¹ã¸æ·ÅÖÃµØµã</div>
-                  <div className="applytime">¿ªÊ¼Ê±¼ä</div>
-                  <div className="applytime">½áÊøÊ±¼ä</div>
+                  <div className="applyAddress">å¹¿å‘Šæ”¾ç½®åœ°ç‚¹</div>
+                  <div className="applytime">å¼€å§‹æ—¶é—´</div>
+                  <div className="applytime">ç»“æŸæ—¶é—´</div>
                   <div className="applyicom"> <i className="iconfont" style={{ "color": "#fff" }}>&#xe82d;</i></div>
                 </li>
                 {
@@ -156,7 +156,7 @@ class ApplyPut extends React.Component {
                     return (
                       <li key={index}>
                         <div className="applyAddress"><span className="applyIndexof">{index + 1}</span>
-                          <input className="" type="text" placeholder="ËÑË÷" style={{ " width": "18rem",  "border": 0 }}
+                          <input className="" type="text" placeholder="æœç´¢" style={{ " width": "18rem",  "border": 0 }}
                             value={i.address} onFocus={this.foucus.bind(this)} data-longitude={i.longitude} data-latitude={i.latitude}
                             onBlur={this.blur.bind(this)} onChange={this.changeAddress.bind(this)} data-index={index} />
                         </div>
@@ -172,7 +172,7 @@ class ApplyPut extends React.Component {
          
               </ul>
             </div>
-            <div className="applyPutSumbit" onClick={this.sumbitApplyput.bind(this)}>Ìá½»</div>
+            <div className="applyPutSumbit" onClick={this.sumbitApplyput.bind(this)}>æäº¤</div>
           </form>
         </div>
       </div>
@@ -181,19 +181,19 @@ class ApplyPut extends React.Component {
 
   public state = {
     inval:"",
-    // ÉêÇëÈË
-    applicant: "Äª¹âÓî",
+    // ç”³è¯·äºº
+    applicant: "è«å…‰å®‡",
     //phone
     phone: "13000000000",
-    //ÉêÇëÆóÒµ
-    company: "ÓÀÍØĞÅÏ¢¿Æ¼¼",
+    //ç”³è¯·ä¼ä¸š
+    company: "æ°¸æ‹“ä¿¡æ¯ç§‘æŠ€",
     applyPutcss: "applyPut-part ",
     iconfont: "iconfont iconfont-unturn",
     applyPutul: "applyPutul-part applyPutul",
-    // °ÚµãÁĞ±í
+    // æ‘†ç‚¹åˆ—è¡¨
     applyList: [ ],
     address: "",
-    // °ÚµãÄÚÈİ
+    // æ‘†ç‚¹å†…å®¹
     content: "ddd",
     inputValue: "",
     value: '2017-01-25',

@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
 import DataService from "dataService";
 

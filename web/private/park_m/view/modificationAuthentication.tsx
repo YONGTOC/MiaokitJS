@@ -10,29 +10,29 @@ interface IState {
 
 class ModificationAuthentication extends React.Component<{ history:any}> {
   public readonly state: Readonly<IState> = {
-    inputValue: "ÓÃ»§êÇ³ÆXXX"
+    inputValue: "ç”¨æˆ·æ˜µç§°XXX"
   }
 
-  // ¾Û½¹
+  // èšç„¦
   focus() {
-    if (this.state.inputValue === "ÓÃ»§êÇ³ÆXXX") {
+    if (this.state.inputValue === "ç”¨æˆ·æ˜µç§°XXX") {
       this.setState({ inputValue: "" })
     }
   }
 
-  // Ê§½¹
+  // å¤±ç„¦
   blur() {
     if (this.state.inputValue === "") {
-      this.setState({ inputValue: "ÓÃ»§êÇ³ÆXXX" })
+      this.setState({ inputValue: "ç”¨æˆ·æ˜µç§°XXX" })
     }
   }
 
-  // ÊäÈë
+  // è¾“å…¥
   change(event) {
     this.setState({ inputValue: event.target.value })
   }
 
-  // ·µ»Ø
+  // è¿”å›
   goBack() {
     this.props.history.goBack()
   }
@@ -41,28 +41,28 @@ class ModificationAuthentication extends React.Component<{ history:any}> {
     return (
       <div className="modification-authentication">
         <div className="modification-authentication-top">
-          <div className="modification-authentication-title">Êı×ÖÔ°Çø</div>
+          <div className="modification-authentication-title">æ•°å­—å›­åŒº</div>
         </div>
         <div className="personal-center-tag">
           <div style={{ paddingLeft: "30px", float: "left" }} onClick={this.goBack.bind(this)}>
             <img src="./mpark/image/right.png" style={{ transform: "rotate(180deg)", marginBottom: "10px" }} />
-            <span style={{ color: "#6C6C6C" }}>ĞŞ¸ÄÈÏÖ¤</span>
+            <span style={{ color: "#6C6C6C" }}>ä¿®æ”¹è®¤è¯</span>
           </div>
         </div>
         <div className="modification-authentication-tag" style={{marginTop: "15px"}}>
           <div style={{ paddingLeft: "40px", float: "left" }}>
-            <span style={{ color: "#333333", fontSize: "42px" }}>ÓÃ»§êÇ³Æ</span>
+            <span style={{ color: "#333333", fontSize: "42px" }}>ç”¨æˆ·æ˜µç§°</span>
             <input value={this.state.inputValue} className="modification-authentication-input"
               onFocus={this.focus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
           </div>
-          <div style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>ĞŞ¸Ä</div>
+          <div style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>ä¿®æ”¹</div>
         </div>
         <div className="modification-authentication-tag">
           <div style={{ paddingLeft: "40px", float: "left" }}>
-            <span style={{ color: "#333333", fontSize: "42px" }}>Éí·İÈÏÖ¤</span>
-            <span style={{ color: "#949494", fontSize: "42px", marginLeft: "50px" }}>ÈÏÖ¤³ÉÎª¹ÜÀíÔ±</span>
+            <span style={{ color: "#333333", fontSize: "42px" }}>èº«ä»½è®¤è¯</span>
+            <span style={{ color: "#949494", fontSize: "42px", marginLeft: "50px" }}>è®¤è¯æˆä¸ºç®¡ç†å‘˜</span>
           </div>
-          <div style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>ÈÏÖ¤</div>
+          <div style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>è®¤è¯</div>
         </div>
       </div>
     )

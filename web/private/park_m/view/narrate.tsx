@@ -20,7 +20,7 @@ class Narrate extends React.Component {
     let audio = document.getElementById("audioTool");
     let audioN = 0
     audio.onended = function () {
-      console.log("µ±Ç°ÒôÆµ£¬²¥·Å½áÊø", audio.paused);
+      console.log("å½“å‰éŸ³é¢‘ï¼Œæ’­æ”¾ç»“æŸ", audio.paused);
       audioN = audioN + 1;
       Narrate.selfPlay(audioN);
     };
@@ -37,7 +37,7 @@ class Narrate extends React.Component {
       audio.src = url;
       audio.play();
     } else {
-      // ÁĞ±í²¥·Å½áÊø
+      // åˆ—è¡¨æ’­æ”¾ç»“æŸ
       audioN = 0;
       console.log("audioOver", audioN, audio.paused);
       this.playerOver(false);
@@ -61,19 +61,19 @@ class Narrate extends React.Component {
     audio.play();
   }
 
-  // ²¥·ÅºÍÔİÍ£ÇĞ»»
+  // æ’­æ”¾å’Œæš‚åœåˆ‡æ¢
   public togglePlay(a) {
     var audio = document.getElementById('audioTool');
     if (audio !== null) {
-      //¼ì²â²¥·ÅÊÇ·ñÒÑÔİÍ£.audio.paused ÔÚ²¥·ÅÆ÷²¥·ÅÊ±·µ»Øfalse.
+      //æ£€æµ‹æ’­æ”¾æ˜¯å¦å·²æš‚åœ.audio.paused åœ¨æ’­æ”¾å™¨æ’­æ”¾æ—¶è¿”å›false.
       console.log(audio.paused);
       if (audio.paused) {
-        audio.play();//audio.play();// Õâ¸ö¾ÍÊÇ²¥·Å  
+        audio.play();//audio.play();// è¿™ä¸ªå°±æ˜¯æ’­æ”¾  
         this.setState({
           paused: true,
         })
       } else {
-        audio.pause();// Õâ¸ö¾ÍÊÇÔİÍ£
+        audio.pause();// è¿™ä¸ªå°±æ˜¯æš‚åœ
         this.setState({
           paused: false,
         })
@@ -91,7 +91,7 @@ class Narrate extends React.Component {
           <RouterDOM.Link to="/home" >
             <i className="iconfont companyInfoicon">&#xe83b;</i>
           </RouterDOM.Link>
-          <span>×Ô¶¯½²½â</span>
+          <span>è‡ªåŠ¨è®²è§£</span>
         </p>
         <div className={"audioBox"}>
           <ul className={"flex-layout category-head"}>
@@ -119,12 +119,12 @@ class Narrate extends React.Component {
     paused:true,
     activeType: 0,
     parkAudio: [
-      { name: "Ô°Çø½»Í¨", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-      { name: "Ô°ÇøÅäÌ×", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
-      { name: "Ô°Çø½»Í¨", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-      { name: "Ô°Çø½¨Öş", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
+      { name: "å›­åŒºäº¤é€š", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+      { name: "å›­åŒºé…å¥—", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
+      { name: "å›­åŒºäº¤é€š", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+      { name: "å›­åŒºå»ºç­‘", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
     ],
-    currentAudio: 0 // µ±Ç°ÒôÆµ
+    currentAudio: 0 // å½“å‰éŸ³é¢‘
   }
   //over
 }

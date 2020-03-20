@@ -32,7 +32,7 @@ class Parking extends React.Component {
     }
   }
 
-  // ÇĞ»»ÏÔÊ¾×Ó×é¼ş
+  // åˆ‡æ¢æ˜¾ç¤ºå­ç»„ä»¶
   static infoClick(indexof) { };
   public infoClick(indexof) {
     console.log("infoClick", indexof);
@@ -48,7 +48,7 @@ class Parking extends React.Component {
           <RouterDOM.Link to="/home" >
             <span className="iconfont companyInfoicon">&#xe83b;</span>
           </RouterDOM.Link>
-          <span>Í£³µÒµÎñ</span>
+          <span>åœè½¦ä¸šåŠ¡</span>
         </p>
 
         <div className={this.state.parkingcss}>
@@ -58,26 +58,26 @@ class Parking extends React.Component {
           <ul className="parkingul">
             <li onClick={this.infoClick.bind(this, 0)}>
               <i className="iconfont" style={{ "fontSize": "5rem", "color": "#00A447" }}>&#xe832;</i>
-              <p>³µÎ»ÉêÇë
+              <p>è½¦ä½ç”³è¯·
                  <i className="iconfont" style={{ "fontSize": "3rem", "color": "#949494", "float": "right" }}>&#xe83c;</i>
               </p>
             </li>
             <li onClick={this.infoClick.bind(this, 1)}>
               <i className="iconfont" style={{ "fontSize": "5rem", "color": "#118EEA" }}>&#xe830;</i>
-              <p>µØ¿â³µÎ»Ô¤Ô¼
+              <p>åœ°åº“è½¦ä½é¢„çº¦
                   <i className="iconfont" style={{ "fontSize": "3rem", "color": "#949494", "float": "right"}}>&#xe83c;</i>
               </p>
             </li>
             <li onClick={this.infoClick.bind(this, 2)}>
               <i className="iconfont" style={{ "fontSize": "5rem", "color": "#E7551C" }}>&#xe82f;</i>
-              <p>Í£³µÎ»±ä¸ü
+              <p>åœè½¦ä½å˜æ›´
                   <i className="iconfont" style={{ "fontSize": "3rem", "color": "#949494", "float": "right"}}>&#xe83c;</i>
               </p>
 
             </li>
             <li onClick={this.infoClick.bind(this, 3)}>
               <i className="iconfont" style={{ "fontSize": "5rem", "color": "#F49C2E" }}>&#xe831;</i>
-              <p>À´·Ã³µÁ¾Ô¤Ô¼
+              <p>æ¥è®¿è½¦è¾†é¢„çº¦
                   <i className="iconfont" style={{ "fontSize": "3rem", "color": "#949494", "float": "right" }}>&#xe83c;</i>
               </p>
             </li>
@@ -111,7 +111,7 @@ class Parking extends React.Component {
 
 export default Parking;
 
-//³µÎ»ÉêÇë -- apply
+//è½¦ä½ç”³è¯· -- apply
 class Apply extends React.Component {
   public constructor(props) {
     super(props);
@@ -145,22 +145,22 @@ class Apply extends React.Component {
     }
   }
 
-  //ÏÔÊ¾×Ü±í
+  //æ˜¾ç¤ºæ€»è¡¨
   public showParking() {
     Parking.infoClick(99);
   }
 
-  // ÏÔÊ¾³µÎ»ÀàĞÍÁĞ±í
+  // æ˜¾ç¤ºè½¦ä½ç±»å‹åˆ—è¡¨
   public showParkingtype() {
 
   }
 
-  // ÏÔÊ¾³µÁ¾ÀàĞÍÁĞ±í
+  // æ˜¾ç¤ºè½¦è¾†ç±»å‹åˆ—è¡¨
   public showCartype() {
 
   }
 
-  //applySumbit Ìá½»³µÎ»ÉêÇë
+  //applySumbit æäº¤è½¦ä½ç”³è¯·
   public applySumbit() {
     console.log("applySumbit");
   }
@@ -170,7 +170,7 @@ class Apply extends React.Component {
       <div className={this.state.componentBox}>
         <p className="companyInfotit">
           <span className="iconfont companyInfoicon" onClick={this.showParking}>&#xe83b;</span>
-          <span>³µÎ»ÉêÇë</span>
+          <span>è½¦ä½ç”³è¯·</span>
         </p>
 
         <div className={this.state.contentBox}>
@@ -180,79 +180,79 @@ class Apply extends React.Component {
           <form>
             <ul className={this.state.contentUL}>
               <li>
-                <span className={"bookformLeft"}><span className="redStar">*</span>³µÅÆÑÕÉ«</span>
+                <span className={"bookformLeft"}><span className="redStar">*</span>è½¦ç‰Œé¢œè‰²</span>
                 <p className={"bookfromliRight"}>
-                  <input type="text" value={this.state.car_license_color} placeholder="ÇëÌîĞ´³µÅÆÑÕÉ«" />
+                  <input type="text" value={this.state.car_license_color} placeholder="è¯·å¡«å†™è½¦ç‰Œé¢œè‰²" />
                 </p>
               </li>
               <li>
-                <span className={"bookformLeft"}><span className="redStar">*</span>³µÅÆºÅÂë</span>
+                <span className={"bookformLeft"}><span className="redStar">*</span>è½¦ç‰Œå·ç </span>
                 <p className={"bookfromliRight"}>
-                  <input type="text" value={this.state.car_license_color} placeholder="ÇëÌîĞ´³µÅÆºÅÂë" />
+                  <input type="text" value={this.state.car_license_color} placeholder="è¯·å¡«å†™è½¦ç‰Œå·ç " />
                 </p>
               </li>
               <li>
-                <span className={"bookformLeft"}><span className="redStar">*</span>ÉêÇëÈË</span>
+                <span className={"bookformLeft"}><span className="redStar">*</span>ç”³è¯·äºº</span>
                 <p className={"bookfromliRight"}>
-                  <input type="text" value={this.state.car_license_color} placeholder="ÇëÊäÈëÉêÇëÈËĞÕÃû" />
+                  <input type="text" value={this.state.car_license_color} placeholder="è¯·è¾“å…¥ç”³è¯·äººå§“å" />
                 </p>
               </li>
               <li>
-                <span className={"bookformLeft"}><span className="redStar">*</span>µç»°ºÅÂë</span>
+                <span className={"bookformLeft"}><span className="redStar">*</span>ç”µè¯å·ç </span>
                 <p className={"bookfromliRight"}>
-                  <input type="text" value={this.state.car_license_color} placeholder="ÇëÊäÈëµç»°ºÅÂë" />
+                  <input type="text" value={this.state.car_license_color} placeholder="è¯·è¾“å…¥ç”µè¯å·ç " />
                 </p>
               </li>
               <li>
-                <span className={"bookformLeft"}><span className="redStar">*</span>¹«Ë¾Ãû³Æ</span>
+                <span className={"bookformLeft"}><span className="redStar">*</span>å…¬å¸åç§°</span>
                 <p className={"bookfromliRight"}>
-                  <input type="text" value={this.state.car_license_color} placeholder="ÇëÊäÈë¹«Ë¾Ãû³Æ" />
+                  <input type="text" value={this.state.car_license_color} placeholder="è¯·è¾“å…¥å…¬å¸åç§°" />
                 </p>
               </li>
               <li>
-                <span className={"bookformLeft"}><span className="redStar">*</span>¹«Ë¾µØÖ·</span>
+                <span className={"bookformLeft"}><span className="redStar">*</span>å…¬å¸åœ°å€</span>
                 <p className={"bookfromliRight"}>
-                  <input type="text" value={this.state.car_license_color} placeholder="Èç**×ù**Çø**Â¥**ºÅ" />
+                  <input type="text" value={this.state.car_license_color} placeholder="å¦‚**åº§**åŒº**æ¥¼**å·" />
                 </p>
               </li>
               <li>
-                <span className={"bookformLeft"}><span className="redStar">*</span>ÉêÇëÀàĞÍ</span>
-                <p className={"bookfromliRight"}>ÉêÇëµØÃæ³µÎ»</p>
+                <span className={"bookformLeft"}><span className="redStar">*</span>ç”³è¯·ç±»å‹</span>
+                <p className={"bookfromliRight"}>ç”³è¯·åœ°é¢è½¦ä½</p>
               </li>
               <li>
-                <span className={"bookformLeft"}><span className="redStar">*</span>³µÖ÷</span>
+                <span className={"bookformLeft"}><span className="redStar">*</span>è½¦ä¸»</span>
                 <p className={"bookfromliRight"}>
-                  <input type="text" value={this.state.car_license_color} placeholder="ÇëÊäÈë³µÖ÷" />
+                  <input type="text" value={this.state.car_license_color} placeholder="è¯·è¾“å…¥è½¦ä¸»" />
                 </p>
               </li>
               <li>
-                <span className={"bookformLeft"}><span className="redStar">*</span>³µÁ¾Æ·ÅÆ</span>
+                <span className={"bookformLeft"}><span className="redStar">*</span>è½¦è¾†å“ç‰Œ</span>
                 <p className={"bookfromliRight"}>
-                  <input type="text" value={this.state.car_license_color} placeholder="ÇëÊäÈë³µÁ¾Æ·ÅÆ£¬Èç£º´óÖÚ" />
+                  <input type="text" value={this.state.car_license_color} placeholder="è¯·è¾“å…¥è½¦è¾†å“ç‰Œï¼Œå¦‚ï¼šå¤§ä¼—" />
                 </p>
               </li>
               <li>
-                <span className={"bookformLeft"}><span className="redStar">*</span>³µÁ¾ĞÍºÅ</span>
+                <span className={"bookformLeft"}><span className="redStar">*</span>è½¦è¾†å‹å·</span>
                 <p className={"bookfromliRight"}>
-                  <input type="text" value={this.state.car_license_color} placeholder="ÇëÊäÈë³µÁ¾ĞÍºÅ£¬Èç£º¸ß¶û·ò" />
+                  <input type="text" value={this.state.car_license_color} placeholder="è¯·è¾“å…¥è½¦è¾†å‹å·ï¼Œå¦‚ï¼šé«˜å°”å¤«" />
                 </p>
               </li>
               <li>
-                <span className={"bookformLeft"}><span className="redStar">*</span>³µÉíÑÕÉ«</span>
+                <span className={"bookformLeft"}><span className="redStar">*</span>è½¦èº«é¢œè‰²</span>
                 <p className={"bookfromliRight"}>
-                  <input type="text" value={this.state.car_license_color} placeholder="ÇëÊäÈë³µÉíÑÕÉ«£¬Èç£º°×É«" />
+                  <input type="text" value={this.state.car_license_color} placeholder="è¯·è¾“å…¥è½¦èº«é¢œè‰²ï¼Œå¦‚ï¼šç™½è‰²" />
                 </p>
               </li>
               <li>
-                <span className={"bookformLeft"}><span className="redStar">*</span>³µÁ¾ÀàĞÍ</span>
+                <span className={"bookformLeft"}><span className="redStar">*</span>è½¦è¾†ç±»å‹</span>
                 <p className={"bookfromliRight"}>
-                  <input type="text" value={this.state.car_license_color} placeholder="ÇëÑ¡Ôñ³µÁ¾ÀàĞÍ" />
+                  <input type="text" value={this.state.car_license_color} placeholder="è¯·é€‰æ‹©è½¦è¾†ç±»å‹" />
                   <span className="iconfont" style={{ "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" }}
                     onClick={this.showCartype.bind(this)}>&#xe827;</span>
                 </p>
               </li>
             </ul>
-            <div className="bookSumbit" onClick={this.applySumbit.bind(this)}>Ìá½»</div>
+            <div className="bookSumbit" onClick={this.applySumbit.bind(this)}>æäº¤</div>
           </form>
         </div>
       </div>
@@ -264,40 +264,40 @@ class Apply extends React.Component {
     contentBox: "contentBox-part",
     iconfont: "iconfont iconfont-unturn",
     contentUL: "contentUL-part contentUL",
-    //Ô°Çøid
+    //å›­åŒºid
     park_id: "1001",
-    //³µÅÆÑÕÉ«
+    //è½¦ç‰Œé¢œè‰²
     car_license_color: "",
-    //³µÅÆºÅ
-    car_license: "¹ğC10000",
-    //ÉêÇëÈË
-    applicant: "ÕÔxxx",
-    //ÊÖ»úºÅÂë
+    //è½¦ç‰Œå·
+    car_license: "æ¡‚C10000",
+    //ç”³è¯·äºº
+    applicant: "èµµxxx",
+    //æ‰‹æœºå·ç 
     phone: "15211111111",
-    //¹«Ë¾Ãû³Æ
-    company: "ÓÀÍØĞÅÏ¢¿Æ¼¼",
-    //¹«Ë¾µØÖ·
-    company_address: "a×ùbÇøÈıÂ¥",
-    //Í£³µ³¡id
+    //å…¬å¸åç§°
+    company: "æ°¸æ‹“ä¿¡æ¯ç§‘æŠ€",
+    //å…¬å¸åœ°å€
+    company_address: "aåº§båŒºä¸‰æ¥¼",
+    //åœè½¦åœºid
     underground_parking_id: "100001",
-    //µØÏÂÍ£³µ³¡Ãû
-    underground_parking_name: "µØÃæA¿â",
-    //³µÖ÷
-    car_owner: "ÕÔxxx",
-    //Æ·ÅÆ
-    car_brand: "·áÌï",
-    //ĞÍºÅ
-    car_model: "¿¨ÂŞÀ­",
-    //ÑÕÉ«
+    //åœ°ä¸‹åœè½¦åœºå
+    underground_parking_name: "åœ°é¢Aåº“",
+    //è½¦ä¸»
+    car_owner: "èµµxxx",
+    //å“ç‰Œ
+    car_brand: "ä¸°ç”°",
+    //å‹å·
+    car_model: "å¡ç½—æ‹‰",
+    //é¢œè‰²
     car_color: "",
-    //³µÁ¾ÀàĞÍid
+    //è½¦è¾†ç±»å‹id
     car_type: "",
   }
 
 }
 
 
-//µØ¿â³µÎ»Ô¤Ô¼ -- appointment 
+//åœ°åº“è½¦ä½é¢„çº¦ -- appointment 
 class Appointment extends React.Component {
   public constructor(props) {
     super(props);
@@ -331,7 +331,7 @@ class Appointment extends React.Component {
     }
   }
 
-  //ÏÔÊ¾×Ü±í
+  //æ˜¾ç¤ºæ€»è¡¨
   public showParking() {
     Parking.infoClick(99);
   }
@@ -341,7 +341,7 @@ class Appointment extends React.Component {
       <div className={this.state.componentBox}>
         <p className="companyInfotit">
           <span className="iconfont companyInfoicon" onClick={this.showParking}>&#xe83b;</span>
-          <span>µØ¿â³µÎ»Ô¤Ô¼</span>
+          <span>åœ°åº“è½¦ä½é¢„çº¦</span>
         </p>
 
         <div className={this.state.contentBox}>
@@ -350,7 +350,7 @@ class Appointment extends React.Component {
           </div>
           <form>
             <ul className={this.state.contentUL}>
-              <li>µØ¿â³µÎ»Ô¤Ô¼111111</li>
+              <li>åœ°åº“è½¦ä½é¢„çº¦111111</li>
             </ul>
           </form>
         </div>
@@ -366,7 +366,7 @@ class Appointment extends React.Component {
   }
 }
 
-//Í£³µÎ»±ä¸ü --alteration
+//åœè½¦ä½å˜æ›´ --alteration
 class Alteration extends React.Component {
   public constructor(props) {
     super(props);
@@ -400,7 +400,7 @@ class Alteration extends React.Component {
     }
   }
 
-  //ÏÔÊ¾×Ü±í
+  //æ˜¾ç¤ºæ€»è¡¨
   public showParking() {
     Parking.infoClick(99);
   }
@@ -410,7 +410,7 @@ class Alteration extends React.Component {
       <div className={this.state.componentBox}>
         <p className="companyInfotit">
           <span className="iconfont companyInfoicon" onClick={this.showParking}>&#xe83b;</span>
-          <span>Í£³µÎ»±ä¸ü</span>
+          <span>åœè½¦ä½å˜æ›´</span>
         </p>
 
         <div className={this.state.contentBox}>
@@ -419,7 +419,7 @@ class Alteration extends React.Component {
           </div>
           <form>
             <ul className={this.state.contentUL}>
-              <li>Í£³µÎ»±ä¸ü111111</li>
+              <li>åœè½¦ä½å˜æ›´111111</li>
             </ul>
           </form>
         </div>
@@ -436,7 +436,7 @@ class Alteration extends React.Component {
 }
 
 
-//À´·Ã³µÁ¾Ô¤Ô¼ -- visitor
+//æ¥è®¿è½¦è¾†é¢„çº¦ -- visitor
 class Visitor extends React.Component {
   public constructor(props) {
     super(props);
@@ -470,7 +470,7 @@ class Visitor extends React.Component {
     }
   }
 
-  //ÏÔÊ¾×Ü±í
+  //æ˜¾ç¤ºæ€»è¡¨
   public showParking() {
     Parking.infoClick(99);
   }
@@ -480,7 +480,7 @@ class Visitor extends React.Component {
       <div className={this.state.componentBox}>
         <p className="companyInfotit">
           <span className="iconfont companyInfoicon" onClick={this.showParking}>&#xe83b;</span>
-          <span>À´·Ã³µÁ¾Ô¤Ô¼</span>
+          <span>æ¥è®¿è½¦è¾†é¢„çº¦</span>
         </p>
 
         <div className={this.state.contentBox}>
@@ -489,7 +489,7 @@ class Visitor extends React.Component {
           </div>
           <form>
             <ul className={this.state.contentUL}>
-              <li>À´·Ã³µÁ¾Ô¤Ô¼111111</li>
+              <li>æ¥è®¿è½¦è¾†é¢„çº¦111111</li>
             </ul>
           </form>
         </div>

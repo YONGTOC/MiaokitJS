@@ -35,7 +35,7 @@ class BookSite extends React.Component {
           <RouterDOM.Link to="/home" >
             <i className="iconfont companyInfoicon">&#xe83b;</i>
           </RouterDOM.Link>
-          <span>³¡µØÔ¤Ô¼</span>
+          <span>åœºåœ°é¢„çº¦</span>
         </p>
         <div className={this.state.showList == true ? "show" : "hide"}>
           <BookList />
@@ -58,7 +58,7 @@ class BookSite extends React.Component {
 
 export default BookSite;
 
-// ³¡µØÁĞ±í
+// åœºåœ°åˆ—è¡¨
 class BookList extends React.Component {
   public constructor(props) {
     super(props);
@@ -67,13 +67,13 @@ class BookList extends React.Component {
   }
 
   public componentDidMount() {
-    //##16.(³¡µØÔ¤¶¨Ä£¿é-ËÑË÷)Í¨¹ıÔ°Çøid»ñÈ¡Ô°ÇøÄÚ¿ÉÒÔÔ¤¶¨µÄ³¡µØÁĞ±í½Ó¿Ú ###
+    //##16.(åœºåœ°é¢„å®šæ¨¡å—-æœç´¢)é€šè¿‡å›­åŒºidè·å–å›­åŒºå†…å¯ä»¥é¢„å®šçš„åœºåœ°åˆ—è¡¨æ¥å£ ###
     this.dataService.getRoomBook(this.getRoomBook, this.state.park_id, name);
 
   }
 
   public dataService: DataService = new DataService();
-  //»ñÈ¡Ô°ÇøÄÚ¿ÉÒÔÔ¤¶¨µÄ³¡µØÁĞ±í
+  //è·å–å›­åŒºå†…å¯ä»¥é¢„å®šçš„åœºåœ°åˆ—è¡¨
   public getRoomBook(data) {
     console.log("returnRoomBook", data);
     this.setState({
@@ -105,11 +105,11 @@ class BookList extends React.Component {
     }
   }
 
-  // µã»÷¸ü¶à£¬ÏÔÊ¾info;Òş²Ølist£»ÕâÀïĞèÒªµ÷ÓÃFindLease µÄ·½·¨£»
+  // ç‚¹å‡»æ›´å¤šï¼Œæ˜¾ç¤ºinfo;éšè—listï¼›è¿™é‡Œéœ€è¦è°ƒç”¨FindLease çš„æ–¹æ³•ï¼›
   public showInfo(a, id, name, e) {
     BookSite.toggleView(a, id);
     console.log("more", a, id, name, e);
-    // °ÑID´«¸øinfo×é¼ş£»
+    // æŠŠIDä¼ ç»™infoç»„ä»¶ï¼›
     BookInfo.getRoomdata(id);
   }
 
@@ -122,21 +122,21 @@ class BookList extends React.Component {
     console.log("bookActive", this.state)
   }
 
-  // ¾Û½¹
+  // èšç„¦
   public foucus() {
-    if (this.state.inputValue == "ËÑË÷") {
+    if (this.state.inputValue == "æœç´¢") {
       this.setState({ inputValue: "" })
     }
   }
 
-  // Ê§½¹
+  // å¤±ç„¦
   public blur(event) {
     if (this.state.inputValue == "") {
-      this.setState({ inputValue: "ËÑË÷" })
+      this.setState({ inputValue: "æœç´¢" })
     }
   }
 
-  // ÊäÈë
+  // è¾“å…¥
   public change(event) {
     this.setState({
       inputValue: event.target.value,
@@ -145,13 +145,13 @@ class BookList extends React.Component {
 
 
   public searchRoomBook() {
-    console.log("ËÑË÷", this.state);
-    // ¹Ø¼ü´ÊÉ¸Ñ¡ name
+    console.log("æœç´¢", this.state);
+    // å…³é”®è¯ç­›é€‰ name
     this.dataService.getRoomBook(this.getRoomBook, this.state.park_id, this.state.inputValue);
   }
 
   public render() {
-    //<p onClick={this.showInfo.bind(this, "Info", "id", "name")} >¸ü¶à </p>
+    //<p onClick={this.showInfo.bind(this, "Info", "id", "name")} >æ›´å¤š </p>
     return (
       <div className={this.state.bookListcss}>
         <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
@@ -168,12 +168,12 @@ class BookList extends React.Component {
                   <p style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.building_id}-{i.floor_id}-{i.room_id}</p>
                   {i.price.map((it, index) => {
                     return (
-                      <p style={{ "font-size": "2.5rem" }}>{it.content}£º<span className={"bookPrice"}>{it.price}</span> </p>
+                      <p style={{ "font-size": "2.5rem" }}>{it.content}ï¼š<span className={"bookPrice"}>{it.price}</span> </p>
                     )
                   })}
                 </div>
                 <div className="bookul-right">
-                  <p onClick={this.showInfo.bind(this, "Info", i.id, "name")} className={this.state.indexOf == index ? "show" : "hide"}>¸ü¶à
+                  <p onClick={this.showInfo.bind(this, "Info", i.id, "name")} className={this.state.indexOf == index ? "show" : "hide"}>æ›´å¤š
                   <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
                   </p>
                 </div>
@@ -185,12 +185,12 @@ class BookList extends React.Component {
           <div className="searchBox">
             <span className="searchBox-text">
               <span className="iconfont" style={{ "fontSize": "3rem" }}>&#xe810;</span>
-              <input className="leaseSearch" type="text" placeholder="ËÑË÷"
+              <input className="leaseSearch" type="text" placeholder="æœç´¢"
                 value={this.state.inputValue} onFocus={this.foucus.bind(this)}
                 onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
             </span>
           </div>
-          <span className="searchBtn" onClick={this.searchRoomBook.bind(this)}>ËÑË÷</span>
+          <span className="searchBtn" onClick={this.searchRoomBook.bind(this)}>æœç´¢</span>
         </div>
       </div>
     )
@@ -203,14 +203,14 @@ class BookList extends React.Component {
     bookul: "bookul",
     indexOf: 0,
     park_id: 1,
-    // ËÑË÷¿òÄÚÈİ
-    inputValue: "ËÑË÷",
+    // æœç´¢æ¡†å†…å®¹
+    inputValue: "æœç´¢",
     bookData: []
   }
 }
 
 
-// ¸ü¶à-¡·³¡µØĞÅÏ¢Ò³ -- Bookinfo
+// æ›´å¤š-ã€‹åœºåœ°ä¿¡æ¯é¡µ -- Bookinfo
 class BookInfo extends React.Component {
   public constructor(props) {
     super(props);
@@ -224,11 +224,11 @@ class BookInfo extends React.Component {
   public dataService: DataService = new DataService();
   static getRoomdata(id) { }
   public getRoomdata(id) {
-    // Í¨¹ıid£¬»ñÈ¡³¡µØĞÅÏ¢£»
+    // é€šè¿‡idï¼Œè·å–åœºåœ°ä¿¡æ¯ï¼›
     this.dataService.getRoomBookInfo(this.setBookdata, id);
   }
 
-  // »ñÈ¡³¡µØÏêÇé£¬¸ø×Ó×é¼şÏÔÊ¾£»
+  // è·å–åœºåœ°è¯¦æƒ…ï¼Œç»™å­ç»„ä»¶æ˜¾ç¤ºï¼›
   static setBookdata(data) { }
   public setBookdata(data) {
     console.log("setBookdata,setBookdata", data);
@@ -252,7 +252,7 @@ class BookInfo extends React.Component {
     })
   }
 
-  // ÇĞ»»ÄÚÈİ¿òcss
+  // åˆ‡æ¢å†…å®¹æ¡†css
   public toggleFold() {
     console.log("tftft", this.state.infoli)
     if (this.state.infoli == 2) {
@@ -292,7 +292,7 @@ class BookInfo extends React.Component {
     }
   }
 
-  // ÇĞ»»ÏÔÊ¾×Ó×é¼ş
+  // åˆ‡æ¢æ˜¾ç¤ºå­ç»„ä»¶
   public infoClick(indexof) {
     console.log("infoClick", indexof);
     this.setState({
@@ -306,15 +306,15 @@ class BookInfo extends React.Component {
         <p className="companyInfotit">
           <span className="iconfont companyInfoicon" onClick={this.showList.bind(this, "List", "id-01")}>&#xe83b;</span>
           <span className={this.state.infoli !== 2 ? "show" : "hide"}>{this.state.building}-{this.state.floor}-{this.state.room}</span>
-          <span className={this.state.infoli == 2 ? "show" : "hide"}>Ô¤¶¨ÉêÇë</span>
+          <span className={this.state.infoli == 2 ? "show" : "hide"}>é¢„å®šç”³è¯·</span>
         </p>
         <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
           <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
         </div>
         <div className={this.state.infoli !== 2 ? "leaseInfoul" : "hide"}>
           <ul className={this.state.bookInfoul}>
-            <li className={this.state.infoli == 0 ? "bookInfoli-active" : "bookInfoli"} onClick={this.infoClick.bind(this, 0)} >³¡µØĞÅÏ¢</li>
-            <li className={this.state.infoli == 1 ? "bookInfoli-active" : "bookInfoli"} onClick={this.infoClick.bind(this, 1)} >Ê¹ÓÃĞëÖª</li>
+            <li className={this.state.infoli == 0 ? "bookInfoli-active" : "bookInfoli"} onClick={this.infoClick.bind(this, 0)} >åœºåœ°ä¿¡æ¯</li>
+            <li className={this.state.infoli == 1 ? "bookInfoli-active" : "bookInfoli"} onClick={this.infoClick.bind(this, 1)} >ä½¿ç”¨é¡»çŸ¥</li>
           </ul>
         </div>
         <div className="infoContain">
@@ -327,7 +327,7 @@ class BookInfo extends React.Component {
           <div className={this.state.infoli == 2 ? "show" : "hide"}>
             <BookRoom />
           </div>
-          <div className={this.state.infoli !== 2 ? "bookSumbit" : "hide"} onClick={this.infoClick.bind(this, 2)}>Ô¤¶¨</div>
+          <div className={this.state.infoli !== 2 ? "bookSumbit" : "hide"} onClick={this.infoClick.bind(this, 2)}>é¢„å®š</div>
         </div>
       </div>
     )
@@ -346,7 +346,7 @@ class BookInfo extends React.Component {
   }
 }
 
-//Ô¤¶¨ÉêÇë-¡·BookingRoom
+//é¢„å®šç”³è¯·-ã€‹BookingRoom
 class BookRoom extends React.Component {
   public constructor(props) {
     super(props);
@@ -393,14 +393,14 @@ class BookRoom extends React.Component {
     }
   }
 
-  // ÊäÈë¾ßÌåĞèÇó
+  // è¾“å…¥å…·ä½“éœ€æ±‚
   public changebookContent(event) {
     this.setState({
       content: event.target.value,
     });
   }
 
-  //ÊäÈëÖ÷Ìâ
+  //è¾“å…¥ä¸»é¢˜
   public changebookTheme(event) {
     this.setState({
       theme: event.target.value,
@@ -409,13 +409,13 @@ class BookRoom extends React.Component {
 
 
   public dataService: DataService = new DataService();
-  // Ìá½»Ô¤Ô¼ÉêÇë 
+  // æäº¤é¢„çº¦ç”³è¯· 
   public bookSumbit() {
     console.log("bookSumbit",this.state);
     this.dataService.bookingRoom(this.bookSumbitOK, this.state);
   }
 
-  //Ìá½»³É¹¦
+  //æäº¤æˆåŠŸ
   public bookSumbitOK(data) {
     alert(data);
    //BookInfo.showList("List", "id-01");
@@ -431,70 +431,70 @@ class BookRoom extends React.Component {
         <form className={this.state.bookformcss}>
           <ul className={"bookfromul"}>
           <li>
-              <span className={"bookformLeft"}><span className="redStar">*</span>ÉêÇëÈË</span>
+              <span className={"bookformLeft"}><span className="redStar">*</span>ç”³è¯·äºº</span>
               <p className={"bookfromliRight"}>
-                <input type="text" value={this.state.applicant} placeholder="ÇëÊäÈëÁªÏµÈËĞÕÃû" />
+                <input type="text" value={this.state.applicant} placeholder="è¯·è¾“å…¥è”ç³»äººå§“å" />
               </p>
           </li>
           <li>
-              <span className={"bookformLeft"}> <span className="redStar">*</span>ÊÖ»úºÅÂë</span>
+              <span className={"bookformLeft"}> <span className="redStar">*</span>æ‰‹æœºå·ç </span>
               <p className={"bookfromliRight"}>
-                <input type="number" value={this.state.phone} placeholder="ÇëÊäÈëÁªÏµÈËĞÕÃû" />
+                <input type="number" value={this.state.phone} placeholder="è¯·è¾“å…¥è”ç³»äººå§“å" />
               </p>
           </li>
           <li>
-              <span className={"bookformLeft"}><span className="redStar">*</span>ÉêÇëÆóÒµ</span>
+              <span className={"bookformLeft"}><span className="redStar">*</span>ç”³è¯·ä¼ä¸š</span>
               <p className={"bookfromliRight"}>
-                <input type="text" value={this.state.company} placeholder="ÇëÊäÈëÆóÒµÃû³Æ" />
+                <input type="text" value={this.state.company} placeholder="è¯·è¾“å…¥ä¼ä¸šåç§°" />
               </p>
           </li>
             <li className={"bookActive"}>
-              <span className={"bookformLeft"}><span style={{ "color": "#F2F2F2", "margin-right": "1rem" }}>*</span>Ê¹ÓÃ³¡µØ</span>
+              <span className={"bookformLeft"}><span style={{ "color": "#F2F2F2", "margin-right": "1rem" }}>*</span>ä½¿ç”¨åœºåœ°</span>
               <p className={"bookfromliRight"}>
                 {this.state.building_id}-{this.state.floor_id}-{this.state.room_id}  
               </p>
           </li>
           <li>
-              <span className={"bookformLeft"}><span className="redStar">*</span>¿ªÊ¼ÈÕÆÚ</span>
+              <span className={"bookformLeft"}><span className="redStar">*</span>å¼€å§‹æ—¥æœŸ</span>
               <p className={"bookfromliRight"}>
-                <input type="text" value={this.state.start_date} placeholder="ÇëÑ¡Ôñ¿ªÊ¼ÈÕÆÚ" />
+                <input type="text" value={this.state.start_date} placeholder="è¯·é€‰æ‹©å¼€å§‹æ—¥æœŸ" />
                 <i className="iconfont" style={{ "color":" #158CE8","float": "right","font-size": "3rem"}}>&#xe82d;</i>
               </p>
           </li>
           <li>
-              <span className={"bookformLeft"}><span className="redStar">*</span>¿ªÊ¼Ê±¼ä</span>
+              <span className={"bookformLeft"}><span className="redStar">*</span>å¼€å§‹æ—¶é—´</span>
               <p className={"bookfromliRight"}>
-                <input type="text" value={this.state.start_time} placeholder="ÇëÑ¡Ôñ¿ªÊ¼Ê±¼ä" />
+                <input type="text" value={this.state.start_time} placeholder="è¯·é€‰æ‹©å¼€å§‹æ—¶é—´" />
                 <i className="iconfont" style={{ "color": " #949494", "float": "right", "font-size": "3rem" }}>&#xe827;</i>
               </p>
           </li>
           <li>
-              <span className={"bookformLeft"}><span className="redStar">*</span>½áÊøÈÕÆÚ</span>
+              <span className={"bookformLeft"}><span className="redStar">*</span>ç»“æŸæ—¥æœŸ</span>
               <p className={"bookfromliRight"}>
-                <input type="text" value={this.state.end_date} placeholder="ÇëÑ¡Ôñ½áÊøÈÕÆÚ" />
+                <input type="text" value={this.state.end_date} placeholder="è¯·é€‰æ‹©ç»“æŸæ—¥æœŸ" />
                 <i className="iconfont" style={{ "color": " #158CE8", "float": "right", "font-size": "3rem" }}>&#xe82d;</i>
               </p>
           </li>
           <li>
-              <span className={"bookformLeft"}><span className="redStar">*</span>½áÊøÊ±¼ä</span>
+              <span className={"bookformLeft"}><span className="redStar">*</span>ç»“æŸæ—¶é—´</span>
               <p className={"bookfromliRight"}>
-                <input type="text" value={this.state.end_time} placeholder="ÇëÑ¡Ôñ½áÊøÊ±¼ä" />
+                <input type="text" value={this.state.end_time} placeholder="è¯·é€‰æ‹©ç»“æŸæ—¶é—´" />
                 <i className="iconfont" style={{ "color": " #949494", "float": "right", "font-size": "3rem" }}>&#xe827;</i>
               </p>
           </li>
           <li>
-            <p><span className="redStar">*</span>»áÒéÖ÷Ìâ£º</p>
-              <textarea className="bookTheme" value={this.state.theme} placeholder="50×ÖÄÚ"
+            <p><span className="redStar">*</span>ä¼šè®®ä¸»é¢˜ï¼š</p>
+              <textarea className="bookTheme" value={this.state.theme} placeholder="50å­—å†…"
                 onChange={this.changebookTheme.bind(this)}></textarea>
           </li>
           <li>
-            <p><span className="redStar">*</span>¾ßÌåĞèÇó£º</p>
+            <p><span className="redStar">*</span>å…·ä½“éœ€æ±‚ï¼š</p>
               <textarea className="bookContent" value={this.state.content}
-                placeholder="50Çë½«¾ßÌåĞèÇóÃèÊö³öÀ´¡££¨200×ÖÄÚ£©"
+                placeholder="50è¯·å°†å…·ä½“éœ€æ±‚æè¿°å‡ºæ¥ã€‚ï¼ˆ200å­—å†…ï¼‰"
                 onChange={this.changebookContent.bind(this)}></textarea>
             </li>
           </ul>
-          <div className="bookSumbit" onClick={this.bookSumbit.bind(this)}>Ìá½»</div>
+          <div className="bookSumbit" onClick={this.bookSumbit.bind(this)}>æäº¤</div>
         </form>
       </div>
     )
@@ -506,38 +506,38 @@ class BookRoom extends React.Component {
     bookformcss: "bookform-part",
       //id
       id: "",
-      //ÉêÇëÈË
-      applicant: "ÕÔxxx",
-      //ÊÖ»úºÅÂë
+      //ç”³è¯·äºº
+      applicant: "èµµxxx",
+      //æ‰‹æœºå·ç 
       phone: "15211111111",
-      //ÉêÇëÆóÒµ
-      company: "ÓÀÍØĞÅÏ¢¿Æ¼¼",
-      //Ê¹ÓÃ³¡µØ
+      //ç”³è¯·ä¼ä¸š
+      company: "æ°¸æ‹“ä¿¡æ¯ç§‘æŠ€",
+      //ä½¿ç”¨åœºåœ°
       room: "",
-      //Ê¹ÓÃ³¡µØ¶ÔÓ¦´óÂ¥id£¬Ä£ĞÍ±àºÅ(ÓÃÓÚÆ¥Åä¶ÔÓ¦3d´óÂ¥)
+      //ä½¿ç”¨åœºåœ°å¯¹åº”å¤§æ¥¼idï¼Œæ¨¡å‹ç¼–å·(ç”¨äºåŒ¹é…å¯¹åº”3då¤§æ¥¼)
       building_id: "",
-      //Ê¹ÓÃ³¡µØ¶ÔÓ¦´óÂ¥id£¬Ä£ĞÍ±àºÅ(ÓÃÓÚÆ¥Åä¶ÔÓ¦3d´óÂ¥)
+      //ä½¿ç”¨åœºåœ°å¯¹åº”å¤§æ¥¼idï¼Œæ¨¡å‹ç¼–å·(ç”¨äºåŒ¹é…å¯¹åº”3då¤§æ¥¼)
       floor_id: "",
-      //Ê¹ÓÃ³¡µØ£¬Ä£ĞÍ±àºÅ(ÓÃÓÚÆ¥Åä¶ÔÓ¦3d·¿¼ä)
+      //ä½¿ç”¨åœºåœ°ï¼Œæ¨¡å‹ç¼–å·(ç”¨äºåŒ¹é…å¯¹åº”3dæˆ¿é—´)
       room_id: "",
-      //¿ªÊ¼ÈÕÆÚ
+      //å¼€å§‹æ—¥æœŸ
       start_date: "2020-02-28",
-      //¿ªÊ¼Ê±¼ä
+      //å¼€å§‹æ—¶é—´
       start_time: "19:30:00",
-      //½áÊøÈÕÆÚ
+      //ç»“æŸæ—¥æœŸ
       end_date: "2020-02-28",
-      //½áÊøÊ±¼ä
+      //ç»“æŸæ—¶é—´
       end_time: "19:30:00",
-      //Ö÷Ìâ
+      //ä¸»é¢˜
       theme: "",
-      //¾ßÌåĞèÇó
+      //å…·ä½“éœ€æ±‚
       content: "", 
   }
 
 }
 
 
-//×ó-¡·³¡µØĞÅÏ¢ siteInfos
+//å·¦-ã€‹åœºåœ°ä¿¡æ¯ siteInfos
 class SiteInfos extends React.Component {
   public constructor(props) {
     super(props);
@@ -546,7 +546,7 @@ class SiteInfos extends React.Component {
   }
 
   public componentDidMount() {
-    console.log("³¡µØĞÅÏ¢,³¡µØĞÅÏ¢");
+    console.log("åœºåœ°ä¿¡æ¯,åœºåœ°ä¿¡æ¯");
   }
 
   static getInfos(data) { };
@@ -563,7 +563,7 @@ class SiteInfos extends React.Component {
         <ul>
           {this.state.descript.map((i, index) => {
             return (
-              <li>{index + 1}¡¢{i.content} </li>
+              <li>{index + 1}ã€{i.content} </li>
             )
           })}
         </ul>
@@ -578,7 +578,7 @@ class SiteInfos extends React.Component {
 }
 
 
-//ÓÒ-¡·Ê¹ÓÃĞëÖª
+//å³-ã€‹ä½¿ç”¨é¡»çŸ¥
 class Notes extends React.Component {
   public constructor(props) {
     super(props);
@@ -589,7 +589,7 @@ class Notes extends React.Component {
   }
 
   public componentDidMount() {
-    console.log("Ê¹ÓÃĞëÖª,Ê¹ÓÃĞëÖª")
+    console.log("ä½¿ç”¨é¡»çŸ¥,ä½¿ç”¨é¡»çŸ¥")
   }
 
   static getNotes(data) { };
@@ -603,7 +603,7 @@ class Notes extends React.Component {
   public render() {
     return (
       <div className={"notesBox"}>
-        <p>×ğ¾´µÄÆóÒµ£º ÄúºÃ£¬<span>{this.state.guide}</span></p>
+        <p>å°Šæ•¬çš„ä¼ä¸šï¼š æ‚¨å¥½ï¼Œ<span>{this.state.guide}</span></p>
       </div>
     )
   }

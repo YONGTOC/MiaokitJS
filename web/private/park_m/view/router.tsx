@@ -19,10 +19,10 @@ import WorkOrderDetail from "workOrderDetail";
 import ModificationAuthentication from "modificationAuthentication";
 import Message from "message";
 
-//Ô°ÇøÆóÒµ--parkCompany; ËæÊÖÅÄ -- photograph£»ÕĞ×â²éÑ¯--findLease£» °ÚµãÉêÇë-- applyPut£» 
-//³¡µØÔ¤¶¨-- bookSite£»ÔÚÏß±¨ĞŞ-- repairsOnline£»Í£³µ·şÎñ-- parking
-//Index£¬3dÉ³ÅÌ£» Î¢È¦ --infoArea£» ×ÊÑ¶--information£»ÎÒµÄ --personalCenter£»
-//modificationAuthentication -- ĞŞ¸ÄÈÏÖ¤
+//å›­åŒºä¼ä¸š--parkCompany; éšæ‰‹æ‹ -- photographï¼›æ‹›ç§ŸæŸ¥è¯¢--findLeaseï¼› æ‘†ç‚¹ç”³è¯·-- applyPutï¼› 
+//åœºåœ°é¢„å®š-- bookSiteï¼›åœ¨çº¿æŠ¥ä¿®-- repairsOnlineï¼›åœè½¦æœåŠ¡-- parking
+//Indexï¼Œ3dæ²™ç›˜ï¼› å¾®åœˆ --infoAreaï¼› èµ„è®¯--informationï¼›æˆ‘çš„ --personalCenterï¼›
+//modificationAuthentication -- ä¿®æ”¹è®¤è¯
 
 class Router extends React.Component {
   render() {

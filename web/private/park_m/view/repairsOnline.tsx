@@ -12,7 +12,7 @@ class RepairsOnline extends React.Component<{ history:any}>{
   }
 
   public componentDidMount() {
-    //19.(ÔÚÏß±¨ĞŞÄ£¿é-±¨ĞŞÀàĞÍ)Í¨¹ıÔ°Çøid»ñÈ¡ÔÚÏß±¨ĞŞÀàĞÍ
+    //19.(åœ¨çº¿æŠ¥ä¿®æ¨¡å—-æŠ¥ä¿®ç±»å‹)é€šè¿‡å›­åŒºidè·å–åœ¨çº¿æŠ¥ä¿®ç±»å‹
     this.dataService.getRepairType(this.setTypeUL);
   }
 
@@ -56,30 +56,30 @@ class RepairsOnline extends React.Component<{ history:any}>{
       building_id: building_id,
       floor_id: floor_id,
       room_id: room_id,
-      position: "ÇëÊäÈë±¨ĞŞÎ»ÖÃ",
+      position: "è¯·è¾“å…¥æŠ¥ä¿®ä½ç½®",
       longitude: x,
       latitude: y ,
     })
   }
 
-  // inputÑ¡ÔñÕÕÆ¬
+  // inputé€‰æ‹©ç…§ç‰‡
   public reqairsImginput() {
 
   }
 
-  // ÏÔÊ¾Í¼Æ¬
+  // æ˜¾ç¤ºå›¾ç‰‡
   public reqairsImgshow() {
 
   }
 
-  //ÏÔÊ¾±¨ĞŞÀàĞÍÁĞ±í
+  //æ˜¾ç¤ºæŠ¥ä¿®ç±»å‹åˆ—è¡¨
   public showTypeUL() {
     this.setState({
       typeULBox: "typeULBox"
     })
   }
 
-  //Ñ¡ÖĞ±¨ĞŞÀàĞÍ
+  //é€‰ä¸­æŠ¥ä¿®ç±»å‹
   public reqairsType(i, id, name) {
     this.setState({
       type_id: id,
@@ -88,14 +88,14 @@ class RepairsOnline extends React.Component<{ history:any}>{
     })
   }
 
-  // ±¨ĞŞÀàĞÍÁĞ±í  -- ¡°È·ÈÏ¡±
+  // æŠ¥ä¿®ç±»å‹åˆ—è¡¨  -- â€œç¡®è®¤â€
   public gettypeUL() {
     this.setState({
       typeULBox: "hide"
     })
   }
 
-  // ±¨ĞŞÀàĞÍÁĞ±í  -- ¡°È¡Ïû¡±
+  // æŠ¥ä¿®ç±»å‹åˆ—è¡¨  -- â€œå–æ¶ˆâ€
   public hidetypeUL() {
     this.setState({
       typeULBox: "hide",
@@ -104,48 +104,48 @@ class RepairsOnline extends React.Component<{ history:any}>{
     })
   }
 
-  //±¨ĞŞÎ»ÖÃ  
+  //æŠ¥ä¿®ä½ç½®  
   public getPosition(event) {
     this.setState({
       position: event.target.value
     })
   }
 
-  //±¨ĞŞÆóÒµ
+  //æŠ¥ä¿®ä¼ä¸š
   public reqairsCompany(event) {
     this.setState({
       company: event.target.value,
     })
   }
 
-  //±¨ĞŞÁªÏµÈË
+  //æŠ¥ä¿®è”ç³»äºº
   public reqairsContacts(event) {
     this.setState({
       contacts: event.target.value,
     })
   }
 
-  //±¨ĞŞÁªÏµÈËµç»°
+  //æŠ¥ä¿®è”ç³»äººç”µè¯
   public reqairsPhone(event) {
     this.setState({
       phone: event.target.value,
     })
   }
 
-  //±¨ĞŞÎÊÌâÃèÊö   
+  //æŠ¥ä¿®é—®é¢˜æè¿°   
   public changeDescript(event) {
     this.setState({
       descript: event.target.value,
     })
   }
 
-  //Ìá½»±¨ĞŞµ¥
+  //æäº¤æŠ¥ä¿®å•
   public sumbitReqairs() {
-    console.log("Ìá½»±¨ĞŞ", this.state);
+    console.log("æäº¤æŠ¥ä¿®", this.state);
     this.dataService.saveRepairInfo(this.sumbitReqairssucceed,this.state);
   }
 
-  //Ìá½»±¨ĞŞµ¥ -- ³É¹¦
+  //æäº¤æŠ¥ä¿®å• -- æˆåŠŸ
   public sumbitReqairssucceed(data) {
     alert(data);
     window.history.back();
@@ -158,7 +158,7 @@ class RepairsOnline extends React.Component<{ history:any}>{
           <RouterDOM.Link to="/home" >
             <span className="iconfont companyInfoicon">&#xe83b;</span>
           </RouterDOM.Link>
-          <span>ÔÚÏß±¨ĞŞ</span>
+          <span>åœ¨çº¿æŠ¥ä¿®</span>
         </p>
 
         <div className={this.state.reqairscss}>
@@ -168,44 +168,44 @@ class RepairsOnline extends React.Component<{ history:any}>{
           <form >
             <ul className={this.state.reqairsul} >
               <li>
-                <span className="redStar">*</span>±¨ĞŞÕÕÆ¬
+                <span className="redStar">*</span>æŠ¥ä¿®ç…§ç‰‡
                   <input type="file" accept="image/*" className="getillImg" value="" onClick={this.reqairsImginput.bind(this)} style={{ "opacity": "0", "position": "absolute", "right": "-16rem" }} />
                 <img src={this.state.photo} onClick={this.reqairsImgshow.bind(this)} />
               </li>
               <li>
-                <span className="redStar">*</span>±¨ĞŞÀàĞÍ
-                 <input type="text" className="getillType" value={this.state.type_name} placeholder="ÇëÑ¡Ôñ±¨ĞŞÀàĞÍ"  />
+                <span className="redStar">*</span>æŠ¥ä¿®ç±»å‹
+                 <input type="text" className="getillType" value={this.state.type_name} placeholder="è¯·é€‰æ‹©æŠ¥ä¿®ç±»å‹"  />
                 <span className="iconfont" style={{ "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" }}
                   onClick={this.showTypeUL.bind(this)}>&#xe827;</span>
               </li>
               <li>
-                <span className="redStar">*</span>±¨ĞŞÎ»ÖÃ
-                  <input type="text" value={this.state.position} placeholder="Çëµã»÷µØÍ¼Ñ¡Ôñ±¨ĞŞµã" style={{ "margin-left": "4rem","border": "0"}}
+                <span className="redStar">*</span>æŠ¥ä¿®ä½ç½®
+                  <input type="text" value={this.state.position} placeholder="è¯·ç‚¹å‡»åœ°å›¾é€‰æ‹©æŠ¥ä¿®ç‚¹" style={{ "margin-left": "4rem","border": "0"}}
                     onChange={this.getPosition.bind(this)}/>
                   <i className="iconfont" style={{ "fontSize": "3rem", "color": "#0B8BF0", "float": "right", "padding": " 0 0 0 4rem" }}>&#xe82c;</i>
               </li>
               <li>
-                <span className="redStar">*</span>±¨ĞŞÆóÒµ
-                <input type="text" value={this.state.company} placeholder="ÇëÌîĞ´±¨ĞŞÆóÒµ" style={{ "margin-left": "4rem", "border": "0" }}
+                <span className="redStar">*</span>æŠ¥ä¿®ä¼ä¸š
+                <input type="text" value={this.state.company} placeholder="è¯·å¡«å†™æŠ¥ä¿®ä¼ä¸š" style={{ "margin-left": "4rem", "border": "0" }}
                   onChange={this.reqairsCompany.bind(this)} />
               </li>
               <li>
-                <span className="redStar">*</span>ÁªÏµÈË
-                <input type="text" value={this.state.contacts} placeholder="ÇëÌîĞ´ÁªÏµÈË" style={{ "margin-left": "6rem", "border": "0" }}
+                <span className="redStar">*</span>è”ç³»äºº
+                <input type="text" value={this.state.contacts} placeholder="è¯·å¡«å†™è”ç³»äºº" style={{ "margin-left": "6rem", "border": "0" }}
                   onChange={this.reqairsContacts.bind(this)} />
               </li>
               <li>
-                <span className="redStar">*</span>µç»°ºÅÂë 
-                <input type="text" value={this.state.phone} placeholder="ÇëÌîĞ´ÁªÏµµç»°ºÅÂë " style={{ "margin-left": "4rem", "border": "0" }}
+                <span className="redStar">*</span>ç”µè¯å·ç  
+                <input type="text" value={this.state.phone} placeholder="è¯·å¡«å†™è”ç³»ç”µè¯å·ç  " style={{ "margin-left": "4rem", "border": "0" }}
                   onChange={this.reqairsPhone.bind(this)} />
               </li>
               <li>
-                <p><span className="redStar">*</span>±¨ĞŞÃèÊö£º</p>
-                <textarea className="bookContent" value={this.state.descript} placeholder="Çë½«±¨ĞŞÎÊÌâÃèÊö³öÀ´¡££¨120×ÖÄÚ£©"
+                <p><span className="redStar">*</span>æŠ¥ä¿®æè¿°ï¼š</p>
+                <textarea className="bookContent" value={this.state.descript} placeholder="è¯·å°†æŠ¥ä¿®é—®é¢˜æè¿°å‡ºæ¥ã€‚ï¼ˆ120å­—å†…ï¼‰"
                   onChange={this.changeDescript.bind(this)}></textarea>
               </li>
             </ul>
-            <div className="reqairsSumbit" onClick={this.sumbitReqairs.bind(this)}>Ìá½»</div>
+            <div className="reqairsSumbit" onClick={this.sumbitReqairs.bind(this)}>æäº¤</div>
           </form>
         </div>
 
@@ -219,8 +219,8 @@ class RepairsOnline extends React.Component<{ history:any}>{
             })}
           </ul>
           <div className="illCuasedBtn">
-            <span className="illCancel" onClick={this.hidetypeUL.bind(this)} >È¡Ïû</span>
-            <span className="illConfirm" onClick={this.gettypeUL.bind(this)}>È·ÈÏ</span>
+            <span className="illCancel" onClick={this.hidetypeUL.bind(this)} >å–æ¶ˆ</span>
+            <span className="illConfirm" onClick={this.gettypeUL.bind(this)}>ç¡®è®¤</span>
           </div>
         </div>
 
@@ -234,35 +234,35 @@ class RepairsOnline extends React.Component<{ history:any}>{
     reqairsul: "reqairsul-part reqairsul",
     typeULBox: "hide",
     typeUL: [
-      //{ id: "1009",  name: "Ë®¹Ü±¨ĞŞ"},
-      //{ id: "1009",  name: "´Å×©±¨ĞŞ" }
+      //{ id: "1009",  name: "æ°´ç®¡æŠ¥ä¿®"},
+      //{ id: "1009",  name: "ç£ç –æŠ¥ä¿®" }
     ],
     indexOf:0,
-    //Ô°Çøid
+    //å›­åŒºid
     park_id: 1001,
-    //ÀàĞÍid (Ë®¹Ü±¨ĞŞµÈ¶ÔÓ¦µÄid)
+    //ç±»å‹id (æ°´ç®¡æŠ¥ä¿®ç­‰å¯¹åº”çš„id)
     type_id: 1,
     type_name: "",
-    //Î»ÖÃ
+    //ä½ç½®
     position: "",
-    //¾­¶È
+    //ç»åº¦
     longitude: "",
-    //Î³¶È
+    //çº¬åº¦
     latitude: "",
-    //Ê¹ÓÃ³¡µØ¶ÔÓ¦´óÂ¥id£¬Ä£ĞÍ±àºÅ(ÓÃÓÚÆ¥Åä¶ÔÓ¦3d´óÂ¥)
+    //ä½¿ç”¨åœºåœ°å¯¹åº”å¤§æ¥¼idï¼Œæ¨¡å‹ç¼–å·(ç”¨äºåŒ¹é…å¯¹åº”3då¤§æ¥¼)
     building_id: "f",
-    //Ê¹ÓÃ³¡µØ¶ÔÓ¦´óÂ¥id£¬Ä£ĞÍ±àºÅ(ÓÃÓÚÆ¥Åä¶ÔÓ¦3d´óÂ¥)
+    //ä½¿ç”¨åœºåœ°å¯¹åº”å¤§æ¥¼idï¼Œæ¨¡å‹ç¼–å·(ç”¨äºåŒ¹é…å¯¹åº”3då¤§æ¥¼)
     floor_id: "5",
-    //Ê¹ÓÃ³¡µØid£¬Ä£ĞÍ±àºÅ(ÓÃÓÚÆ¥Åä¶ÔÓ¦3d·¿¼ä)
+    //ä½¿ç”¨åœºåœ°idï¼Œæ¨¡å‹ç¼–å·(ç”¨äºåŒ¹é…å¯¹åº”3dæˆ¿é—´)
     room_id: "6",
-    //±¨ĞŞÆóÒµ
+    //æŠ¥ä¿®ä¼ä¸š
     company: "",
-    //ÁªÏµÈË
+    //è”ç³»äºº
     contacts: "",
     phone:"",
-    //ÃèÊö
+    //æè¿°
     descript: "",
-    //ÕÕÆ¬
+    //ç…§ç‰‡
     photo: "./mPark/image/photo.png",
 
   }

@@ -26,7 +26,7 @@ class Home extends React.Component {
   }
 
   public componentDidMount() {
-   //2 µÇÂ¼»ñÈ¡ token
+   //2 ç™»å½•è·å– token
     this.dataService.login(this.setToken);
   }
 
@@ -52,7 +52,7 @@ class Home extends React.Component {
 }
 
 
-// ¶¥²¿°´Å¥Çø
+// é¡¶éƒ¨æŒ‰é’®åŒº
 class TopBtn extends React.Component {
   public constructor(props) {
     super(props)
@@ -76,18 +76,18 @@ class TopBtn extends React.Component {
     topIcon5info: 0,
 
     mapIcon: [
-      { name: "½»Í¨" },
-      { name: "ÉÌÈ¦" },
-      { name: "¹«½»Õ¾" },
-      { name: "È«¾°" },
-      { name: "Í£³µ³¡" },
-      { name: "½»Í¨" },
+      { name: "äº¤é€š" },
+      { name: "å•†åœˆ" },
+      { name: "å…¬äº¤ç«™" },
+      { name: "å…¨æ™¯" },
+      { name: "åœè½¦åœº" },
+      { name: "äº¤é€š" },
     ]
   }
 
 
 
-  //ÏÔÊ¾¸ü¶à±êÊ¶
+  //æ˜¾ç¤ºæ›´å¤šæ ‡è¯†
   public moreIcon(a) {
     console.log('toggleIconbox', a);
     this.setState({
@@ -132,7 +132,7 @@ class TopBtn extends React.Component {
     }
   }
 
-  // ¹Ø±Õ¸ü¶àicon
+  // å…³é—­æ›´å¤šicon
   public topClose(a) {
     console.log('topClose', a);
     this.setState({
@@ -170,11 +170,11 @@ class TopBtn extends React.Component {
 
   public globalAction: GlobalAction = new GlobalAction();
 
-  // ÇĞ»»µØÍ¼±êÊ¶;0--Òş²Ø±êÊ¶£» 1--ÏÔÊ¾±êÊ¶
+  // åˆ‡æ¢åœ°å›¾æ ‡è¯†;0--éšè—æ ‡è¯†ï¼› 1--æ˜¾ç¤ºæ ‡è¯†
   public switchMark(a, bInfo) {
     console.log('switchMark', a);
-    if (a == "½»Í¨") {
-      // ÅĞ¶Ïµ±Ç°ÊÇ·ñÎªÑ¡ÖĞ×´Ì¬
+    if (a == "äº¤é€š") {
+      // åˆ¤æ–­å½“å‰æ˜¯å¦ä¸ºé€‰ä¸­çŠ¶æ€
       if (this.state.topIcon1 == "iconBoxIn" || this.state.topIcon1 == "iconBox-bigIn") {
         if (this.state.topView == "topView-big") {
           this.setState({
@@ -198,8 +198,8 @@ class TopBtn extends React.Component {
         }
         this.globalAction.switchMark(a, 1);
       }
-    } else if (a == "ÉÌÈ¦") {
-      // ÅĞ¶Ïµ±Ç°ÊÇ·ñÎªÑ¡ÖĞ×´Ì¬
+    } else if (a == "å•†åœˆ") {
+      // åˆ¤æ–­å½“å‰æ˜¯å¦ä¸ºé€‰ä¸­çŠ¶æ€
       if (this.state.topIcon2 == "iconBoxIn" || this.state.topIcon2 == "iconBox-bigIn") {
         if (this.state.topView == "topView-big") {
           this.setState({
@@ -223,7 +223,7 @@ class TopBtn extends React.Component {
         }
         this.globalAction.switchMark(a, 1);
       }
-    } else if (a == "¹«½»³µ") {
+    } else if (a == "å…¬äº¤è½¦") {
       if (this.state.topIcon3 == "iconBox-big") {
         this.setState({
           topIcon3: "iconBox-bigIn",
@@ -237,7 +237,7 @@ class TopBtn extends React.Component {
         })
         this.globalAction.switchMark(a, 0);
       }
-    } else if (a == "È«¾°") {
+    } else if (a == "å…¨æ™¯") {
       if (this.state.topIcon4 == "iconBox-big") {
         this.setState({
           topIcon4: "iconBox-bigIn",
@@ -251,7 +251,7 @@ class TopBtn extends React.Component {
         })
         this.globalAction.switchMark(a, 0);
       }
-    } else if (a == "Í£³µ³¡") {
+    } else if (a == "åœè½¦åœº") {
       if (this.state.topIcon5 == "iconBox-big") {
         this.setState({
           topIcon5: "iconBox-bigIn",
@@ -273,29 +273,29 @@ class TopBtn extends React.Component {
     return (
       <div className={this.state.topViewBack}>
         <div className={this.state.topView}>
-          <div className={this.state.topIcon1} onClick={this.switchMark.bind(this, "½»Í¨")}>
+          <div className={this.state.topIcon1} onClick={this.switchMark.bind(this, "äº¤é€š")}>
             <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe816;</i>
-            <p>½»Í¨</p>
+            <p>äº¤é€š</p>
           </div>
-          <div className={this.state.topIcon2} onClick={this.switchMark.bind(this, "ÉÌÈ¦")}>
+          <div className={this.state.topIcon2} onClick={this.switchMark.bind(this, "å•†åœˆ")}>
             <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe81a;</i>
-            <p>ÉÌÈ¦</p>
+            <p>å•†åœˆ</p>
           </div>
           <div className={this.state.moreIcon} onClick={this.moreIcon.bind(this, 10)}>
             <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe819;</i>
-            <p>¸ü¶à</p>
+            <p>æ›´å¤š</p>
           </div>
-          <div className={this.state.topIcon3} onClick={this.switchMark.bind(this, "¹«½»³µ")}>
+          <div className={this.state.topIcon3} onClick={this.switchMark.bind(this, "å…¬äº¤è½¦")}>
             <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe817;</i>
-            <p>¹«½»³µ</p>
+            <p>å…¬äº¤è½¦</p>
           </div>
-          <div className={this.state.topIcon4} onClick={this.switchMark.bind(this, "È«¾°")}>
+          <div className={this.state.topIcon4} onClick={this.switchMark.bind(this, "å…¨æ™¯")}>
             <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe818;</i>
-            <p>È«¾°</p>
+            <p>å…¨æ™¯</p>
           </div>
-          <div className={this.state.topIcon5} onClick={this.switchMark.bind(this, "Í£³µ³¡")}>
+          <div className={this.state.topIcon5} onClick={this.switchMark.bind(this, "åœè½¦åœº")}>
             <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe81b;</i>
-            <p>Í£³µ³¡</p>
+            <p>åœè½¦åœº</p>
           </div>
           <div className={this.state.topClose} onClick={this.topClose.bind(this, 10)}>
             <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe81c;</i>
@@ -306,7 +306,7 @@ class TopBtn extends React.Component {
           <div className="playIconbox" style={{ "color": "#707070" }}>
             <div className={this.state.playIcon}>
               <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe81d;</i>
-              <p>½²½â</p>
+              <p>è®²è§£</p>
             </div>
           </div>
         </RouterDOM.Link>
@@ -316,7 +316,7 @@ class TopBtn extends React.Component {
   }
 }
 
-// ÕÛµş°´Å¥Çø
+// æŠ˜å æŒ‰é’®åŒº
 class FoldBtn extends React.Component {
   public constructor(props) {
     super(props)
@@ -356,45 +356,45 @@ class FoldBtn extends React.Component {
           <RouterDOM.Link to="/parkCompany" >
             <div className={this.state.foleIcon} >
               <i className="iconfont" style={{ "fontSize": "5rem", "color": "#1C90E2", "height": "6rem" }}>&#xe81e;</i> 
-              <p>Ô°ÇøÆóÒµ</p>
+              <p>å›­åŒºä¼ä¸š</p>
             </div>
 
           </RouterDOM.Link>
           <RouterDOM.Link to="/findLease" >
             <div className={this.state.foleIcon} >
               <i className="iconfont" style={{ "fontSize": "5rem", "color": "#866FF1", "height": "6rem"}}>&#xe824;</i>
-              <p>ÕĞ×â²éÑ¯</p>
+              <p>æ‹›ç§ŸæŸ¥è¯¢</p>
             </div>
           </RouterDOM.Link>
           <RouterDOM.Link to="/photograph" >
             <div className={this.state.foleIcon} >
               <i className="iconfont" style={{ "fontSize": "5rem", "color": "#F0594C", "height": "6rem"}}>&#xe821;</i>
-              <p>ËæÊÖÅÄ</p>
+              <p>éšæ‰‹æ‹</p>
             </div>
           </RouterDOM.Link>
          
           <RouterDOM.Link to="/applyPut" >
             <div className={this.state.foleIcon} >
               <i className="iconfont" style={{ "fontSize": "5rem", "color": "#208FE6", "height": "6rem"}}>&#xe81f;</i>
-              <p>°ÚµãÉêÇë</p>
+              <p>æ‘†ç‚¹ç”³è¯·</p>
             </div>
           </RouterDOM.Link>
           <RouterDOM.Link to="/bookSite" >
             <div className={this.state.foleIcon} >
               <i className="iconfont" style={{ "fontSize": "5rem", "color": "#208FE6", "height": "6rem" }}>&#xe820;</i>
-              <p>³¡µØÔ¤¶¨</p>
+              <p>åœºåœ°é¢„å®š</p>
             </div>
           </RouterDOM.Link>
           <RouterDOM.Link to="/repairsOnline" >
             <div className={this.state.foleIcon} >
               <i className="iconfont" style={{ "fontSize": "5rem", "color": "#26AC8F", "height": "6rem"}}>&#xe822;</i>
-              <p>ÔÚÏß±¨ĞŞ</p>
+              <p>åœ¨çº¿æŠ¥ä¿®</p>
             </div>
           </RouterDOM.Link>
           <RouterDOM.Link to="/parking" >
             <div className={this.state.foleIcon} >
               <i className="iconfont" style={{ "fontSize": "5rem", "color": "#208FE6", "height": "6rem"}}>&#xe823;</i>
-              <p>Í£³µÒµÎñ</p>
+              <p>åœè½¦ä¸šåŠ¡</p>
             </div>
           </RouterDOM.Link>
         </div>

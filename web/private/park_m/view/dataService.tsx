@@ -1,4 +1,4 @@
-﻿import FindLease from 'findLease';
+import FindLease from 'findLease';
 
 class DataService {
 

@@ -14,7 +14,7 @@ interface IState {
 
 class WorkOrder extends React.Component<{ history: any }>  {
   public readonly state: Readonly<IState> = {
-    tagList: ["È«²¿", "ÆóÒµÈÏÖ¤", "³¡µØÔ¤¶¨", "°ÚµãÉêÇë", "ÔÚÏß±£ĞŞ"],
+    tagList: ["å…¨éƒ¨", "ä¼ä¸šè®¤è¯", "åœºåœ°é¢„å®š", "æ‘†ç‚¹ç”³è¯·", "åœ¨çº¿ä¿ä¿®"],
     tagIndex: 0,
     workOrderArray: [1, 2, 3, 4, 5, 6, 7, 8, 9]
   }
@@ -23,7 +23,7 @@ class WorkOrder extends React.Component<{ history: any }>  {
     this.setState({ tagIndex: index })
   }
 
-  // ·µ»Ø
+  // è¿”å›
   goBack() {
     this.props.history.goBack()
   }
@@ -32,11 +32,11 @@ class WorkOrder extends React.Component<{ history: any }>  {
     return (
       <div className="work-order">
         <div className="work-order-top">
-          <div className="work-order-title">Êı×ÖÔ°Çø</div>
+          <div className="work-order-title">æ•°å­—å›­åŒº</div>
         </div>
         <div className="work-order-back" onClick={this.goBack.bind(this)}>
           <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }}/>
-          <span>ÎÒµÄ¹¤µ¥</span>
+          <span>æˆ‘çš„å·¥å•</span>
         </div>
         <div className="work-order-tag">
           {
@@ -53,24 +53,24 @@ class WorkOrder extends React.Component<{ history: any }>  {
               return <Link to="/workOrderDetail">
                 <div key={index} className="work-order-list-child">
                   <div style={{ overflow: "hidden", margin: "30px 0 0 40px" }}>
-                    <div style={{ float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" }}>ÆóÒµÈÏÖ¤¹¤µ¥1</div>
+                    <div style={{ float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" }}>ä¼ä¸šè®¤è¯å·¥å•1</div>
                     <img style={{ float: "right", marginRight: "40px"}} src="./mpark/image/right.png"/>
                   </div>
                   <div style={{ fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" }}>
-                    ÉêÇëÈË£ºÄªXX
+                    ç”³è¯·äººï¼šè«XX
                   </div>
                   <div style={{ fontSize: "38px", color: "#949494", margin: "10px 0 0 40px", overflow: "hidden" }}>
-                    <div style={{ float: "left" }}>ÉêÇëÊ±¼ä£º2020-02-28 14:38:15</div>
+                    <div style={{ float: "left" }}>ç”³è¯·æ—¶é—´ï¼š2020-02-28 14:38:15</div>
                     <div style={{
                       float: "right", backgroundColor: "#0BC491", color: "#ffffff", width: "130px", height: "55px", borderRadius: "50px",
                       marginRight: "40px", fontSize: "32px", textAlign: "center", lineHeight: "55px"
-                    }}>ÒÑÍ¨¹ı</div>
+                    }}>å·²é€šè¿‡</div>
                   </div>
                 </div>
               </Link>
             })
           }
-          <div style={{ width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "30px" }}>µ½µ×À²~</div>
+          <div style={{ width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "30px" }}>åˆ°åº•å•¦~</div>
         </div>
       </div>
     )

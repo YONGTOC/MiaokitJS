@@ -12,8 +12,8 @@ interface IState {
 class Information extends React.Component {
   public readonly state: Readonly<IState> = {
     informationList: [
-      { name: "ÓÅ»İÕş²ß", imgUrl: "./mpark/image/preferentialPolicy.png" }, { name: "Ô°Çø×ÉÑ¯", imgUrl: "./mpark/image/information.png" },
-      { name: "Ô°Çø»î¶¯", imgUrl: "./mpark/image/activity.png" }, { name: "µÚÈı·½·şÎñ", imgUrl: "./mpark/image/thirdParty.png" }
+      { name: "ä¼˜æƒ æ”¿ç­–", imgUrl: "./mpark/image/preferentialPolicy.png" }, { name: "å›­åŒºå’¨è¯¢", imgUrl: "./mpark/image/information.png" },
+      { name: "å›­åŒºæ´»åŠ¨", imgUrl: "./mpark/image/activity.png" }, { name: "ç¬¬ä¸‰æ–¹æœåŠ¡", imgUrl: "./mpark/image/thirdParty.png" }
     ]
   }
 
@@ -21,11 +21,11 @@ class Information extends React.Component {
     return (
       <div className="information">
         <div className="information-top">
-          <div className="information-title">Êı×ÖÔ°Çø</div>
+          <div className="information-title">æ•°å­—å›­åŒº</div>
         </div>
         <div className="information-headline">
           <div style={{ float: "left", width: "25%", height: "100%" }}><img src="./mpark/image/headline.png" style={{marginBottom: "14px"}} /></div>
-          <div style={{ float: "left", width: "75%", height: "100%", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}>¹ØÓÚ¹ğÁÖĞÅÏ¢²úÒµÔ°Ô°ÇøÆóÒµ¸´¹¤µÄÖØÒªÍ¨ÖªÄãÄãÄãÄãÄã</div>
+          <div style={{ float: "left", width: "75%", height: "100%", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}>å…³äºæ¡‚æ—ä¿¡æ¯äº§ä¸šå›­å›­åŒºä¼ä¸šå¤å·¥çš„é‡è¦é€šçŸ¥ä½ ä½ ä½ ä½ ä½ </div>
         </div>
         <div className="information-content">
           {this.state.informationList.map((item, index) => {
