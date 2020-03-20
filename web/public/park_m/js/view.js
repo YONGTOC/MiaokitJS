@@ -2989,8 +2989,8 @@ define("information", ["require", "exports", "react", "css!./styles/information.
             super(...arguments);
             this.state = {
                 informationList: [
-                    { name: "优惠政策", imgUrl: "./mpark/image/preferentialPolicy.png" }, { name: "园区咨询", imgUrl: "./mpark/image/information.png" },
-                    { name: "园区活动", imgUrl: "./mpark/image/activity.png" }, { name: "第三方服务", imgUrl: "./mpark/image/thirdParty.png" }
+                    { name: "优惠政策", imgUrl: "./park_m/image/preferentialPolicy.png" }, { name: "园区咨询", imgUrl: "./park_m/image/information.png" },
+                    { name: "园区活动", imgUrl: "./park_m/image/activity.png" }, { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }
                 ]
             };
         }
