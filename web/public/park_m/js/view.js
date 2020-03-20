@@ -4159,7 +4159,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         }
         blur() {
             if (this.state.inputValue === "") {
-                this.setState({ inputValue: "请输入园区名称" });
+                this.setState({ inputValue: "请输入园区名称 " });
             }
         }
         change(event) {

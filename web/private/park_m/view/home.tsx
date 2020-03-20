@@ -40,7 +40,7 @@ class Home extends React.Component {
     localStorage.setItem("token", data.token);
   }
 
-  //backParklist;通知3d暂停加载模型；
+  //backParklist;通知3d暂停加载模型 ；
   public backParklist() {
     this.globalAction.web_call_webgl_pauseloadModuler();
   }

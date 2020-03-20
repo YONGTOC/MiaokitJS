@@ -73,7 +73,7 @@ class Index extends React.Component {
   // 失焦
   blur() {
     if (this.state.inputValue === "") {
-      this.setState({ inputValue: "请输入园区名称" })
+      this.setState({ inputValue: "请输入园区名称 " })
     }
   }
 
