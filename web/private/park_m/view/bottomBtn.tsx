@@ -21,7 +21,6 @@ class BottomBtn extends React.Component {
   public globalAction: GlobalAction = new GlobalAction();
 
   componentDidMount() {
-
     if (this.props.history.location.pathname === "/home") {
       this.setState({ index: 1 }, () => {
         this.toggleIcon(this.state.index)
@@ -46,7 +45,7 @@ class BottomBtn extends React.Component {
       index: data
     });
     if (data == 1) {
-      //通知3d，继续加载模型 
+      //通知3d，继续加载模型  
       this.globalAction.web_call_webgl_continueloadModuler();
     } else {
       //通知3d，暂停加载模型

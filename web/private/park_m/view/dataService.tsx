@@ -42,7 +42,7 @@ class DataService {
     })
   }
 
-  // 原有token过期，换取新 token
+  //  原有token过期，换取新 token
   public refreshToken(ytoken) {
     //  /api/refresh ?token=ytoken；
     //获取到ntoken，存localStorage.setItem("token", data.access_token);

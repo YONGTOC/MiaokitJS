@@ -75,7 +75,7 @@ class Index extends React.Component {
     }
   }
 
-  // 输入
+  //  输入
   change(event) {
     this.setState({inputValue: event.target.value})
   }

@@ -16,7 +16,7 @@ class GlobalAction {
     console.log("web_call_webgl_SwitchRoom", pName);
   }
 
-  //切换标识； 0--隐藏标识； 1--显示标识
+  //切换标识； 0--隐藏标识；1--显示标识
   public web_call_webgl_switchMark(pName, pInfo) {
     console.log("web_call_webgl_switchMark", pName, pInfo);
   }

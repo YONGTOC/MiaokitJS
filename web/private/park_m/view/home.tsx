@@ -29,7 +29,7 @@ class Home extends React.Component {
   public dataService: DataService = new DataService();
 
   public componentDidMount() {
-    //2 登录获取 token
+    //2  登录获取 token
     this.dataService.login(this.setToken);
 
 

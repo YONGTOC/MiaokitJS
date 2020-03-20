@@ -30,7 +30,7 @@ class ParkCompany extends React.Component {
   static toggleView(a, id) { };
   public toggleView(a, id) {
     console.log("ff", a);
-    //企业id
+    // 企业id
     console.log("ff", id);
     if (a == "Info") {
       this.setState({

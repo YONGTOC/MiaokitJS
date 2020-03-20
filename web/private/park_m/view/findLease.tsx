@@ -323,7 +323,7 @@ class LeaseInfo extends React.Component {
   // 获取企业详情，给子组件显示；
   public setLeaseInfo(data) {
     console.log("setLeaseInfo", data);
-    // set房间name
+    //  set房间name
     this.setState({
       building: data.response.building_id,
       floor: data.response.floor_id,
