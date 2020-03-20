@@ -33,7 +33,7 @@ class Message extends React.Component<{ history: any }>  {
           <div className="work-order-title">数字园区</div>
         </div>
         <div className="work-order-back" onClick={this.goBack.bind(this)}>
-          <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
+          <img src="./park_m/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
           <span>我的消息</span>
         </div>
         <div className="work-order-tag">

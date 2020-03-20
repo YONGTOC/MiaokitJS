@@ -147,6 +147,24 @@ class DataService {
           "address": "桂林市七星区民华产业园E座B区三楼",
           //企业类型
           "company_type": "科技服务",
+        },
+        {
+          //id
+          "id": "1010",
+          //公司名字
+          "name": "桂林国家高新",
+          //园区图像url
+          "headimgurl": "./park_m/image/i.png",
+          //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
+          "building_id": "a座",
+          //使用场地对应楼层id，模型编号(用于匹配对应楼层id)
+          "floor_id": "1F",
+          //使用场地，模型编号(用于匹配对应3d房间)
+          "room_id": "201-2",
+          //地址
+          "address": "桂林市七星区民华产业园E座B区三楼",
+          //企业类型
+          "company_type": "科技服务",
         }
 
       ],
@@ -169,7 +187,7 @@ class DataService {
         //公司名字
         "name": "桂林国家高新",
         //企业图像url
-        "headimgurl": "./mPark/image/i.png",
+        "headimgurl": "./park_m/image/i.png",
         //场地对应大楼id(用于匹配对应3d大楼)
         "building_id": "a座",
         //场地对应大楼id(用于匹配对应3d大楼)
@@ -203,14 +221,14 @@ class DataService {
             //图片名字
             "name": "xxx图片",
             //图片地址
-            "pic_url": "./mPark/image/i.png",
+            "pic_url": "./park_m/image/i.png",
           }, {
             //id
             "id": "1009",
             //图片名字
             "name": "xxx图片",
             //图片地址
-            "pic_url": "./mPark/image/i.png",
+            "pic_url": "./park_m/image/i.png",
           }
         ],
         //产品展示
@@ -221,14 +239,14 @@ class DataService {
             //图片名字
             "name": "xxx图片",
             //图片地址
-            "pic_url": "./mPark/image/i.png",
+            "pic_url": "./park_m/image/i.png",
           }, {
             //id
             "id": "1009",
             //图片名字
             "name": "xxx图片",
             //图片地址
-            "pic_url": "./mPark/image/i.png",
+            "pic_url": "./park_m/image/i.png",
           }
         ],
         //全景图
@@ -342,7 +360,7 @@ class DataService {
         //id
         "id": "1009",
         //头像url
-        "headimgurl": "./mPark/image/i.png",
+        "headimgurl": "./park_m/image/i.png",
         //使用场地对应大楼id(用于匹配对应3d大楼)
         "building_id": "a座",
         //使用场地对应大楼id(用于匹配对应3d大楼)
@@ -376,21 +394,21 @@ class DataService {
             //图片名字
             "name": "xxx图片",
             //图片地址
-            "url": "./mPark/image/i.png",
+            "url": "./park_m/image/i.png",
           }, {
             //id
             "id": "1009",
             //图片名字
             "name": "xxx图片",
             //图片地址
-            "url": "./mPark/image/i.png",
+            "url": "./park_m/image/i.png",
           }, {
             //id
             "id": "1009",
             //图片名字
             "name": "xxx图片",
             //图片地址
-            "url": "./mPark/image/i.png",
+            "url": "./park_m/image/i.png",
           }
         ],
         //全景图
@@ -475,7 +493,7 @@ class DataService {
           //纬度
           "latitude": "66.666",
           //照片
-          "photo": "./mPark/image/i.png"
+          "photo": "./park_m/image/i.png"
         }, {
           //id
           "id": "1009",
@@ -492,7 +510,7 @@ class DataService {
           //纬度
           "latitude": "66.666",
           //照片
-          "photo": "./mPark/image/i.png"
+          "photo": "./park_m/image/i.png"
         }
       ],
       //错误代码信息
@@ -525,7 +543,7 @@ class DataService {
         //描述
         "descript": "横跨在斑马线上",
         //违规照片
-        "photo": "./mPark/image/i.png",
+        "photo": "./park_m/image/i.png",
       },
       //错误代码信息
       "err_msg": ""
@@ -561,7 +579,7 @@ class DataService {
           "floor_id": "1F",
           //使用场地房间id，模型编号(用于匹配对应3d房间)
           "room_id": "201-1",
-          "headimgurl": "./mPark/image/i.png",
+          "headimgurl": "./park_m/image/i.png",
           //价格。
           "price": [
             {
@@ -586,7 +604,7 @@ class DataService {
           "floor_id": "1F",
           //使用场地房间id，模型编号(用于匹配对应3d房间)
           "room_id": "201-2",
-          "headimgurl": "./mPark/image/i.png",
+          "headimgurl": "./park_m/image/i.png",
           //价格。
           "price": [
             {

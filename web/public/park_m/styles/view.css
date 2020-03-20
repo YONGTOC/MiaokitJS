@@ -22,7 +22,7 @@ i{
     transition: 0.5s;
     color: #C0C0C0;
 }
-/*index*/
+/*home*/
 .web {
     position: fixed;
     width: 100%;
@@ -30,7 +30,18 @@ i{
     top: 0px;
     /*border:1rem solid red;*/
 }
-
+.backParklist {
+    position: fixed;
+    width: 6rem;
+    height: 6rem;
+    z-index: 100;
+    top: 3rem;
+    left: 2.4rem;
+    background: rgba(247,247,247,1);
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+    border-radius: 50%;
+    text-align: center;
+}
 .topView {
     position: fixed;
     width: 7rem;

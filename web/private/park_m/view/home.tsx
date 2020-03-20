@@ -31,17 +31,6 @@ class Home extends React.Component {
   public componentDidMount() {
     //2  登录获取 token
     this.dataService.login(this.setToken);
-
-
-  }
-
-  //通知3d，加载园区模型
-
-  public initPark() {
-    //获取 index 传来的park_id;
-    let park_id = localStorage.getItem("park_id");
-    //  console.log("park_id", park_id);
-    this.globalAction.web_call_webgl_initPark(park_id);
   }
 
 
@@ -51,9 +40,17 @@ class Home extends React.Component {
     localStorage.setItem("token", data.token);
   }
 
+  //backParklist;通知3d暂停加载模型；
+  public backParklist() {
+    this.globalAction.web_call_webgl_pauseloadModuler();
+  }
+
   public render() {
     return (
       <div >
+        <div className="backParklist" onClick={this.backParklist.bind(this)}>
+          <RouterDOM.Link to="/"><i className="iconfont" style={{ "fontSize": "4rem", "color":"#6C6C6C"}}>&#xe83b;</i></RouterDOM.Link >
+        </div>
         <TopBtn />
         <FoldBtn />
         {this.props.children}
@@ -62,8 +59,10 @@ class Home extends React.Component {
     )
   }
 
-  //over
+  //  over
 }
+
+
 
 
 // 顶部按钮区

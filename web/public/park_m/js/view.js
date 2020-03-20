@@ -540,6 +540,16 @@ define("dataService", ["require", "exports"], function (require, exports) {
                         "room_id": "201-2",
                         "address": "桂林市七星区民华产业园E座B区三楼",
                         "company_type": "科技服务",
+                    },
+                    {
+                        "id": "1010",
+                        "name": "桂林国家高新",
+                        "headimgurl": "./park_m/image/i.png",
+                        "building_id": "a座",
+                        "floor_id": "1F",
+                        "room_id": "201-2",
+                        "address": "桂林市七星区民华产业园E座B区三楼",
+                        "company_type": "科技服务",
                     }
                 ],
                 "err_msg": ""
@@ -553,7 +563,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 "response": {
                     "id": "1009",
                     "name": "桂林国家高新",
-                    "headimgurl": "./mPark/image/i.png",
+                    "headimgurl": "./park_m/image/i.png",
                     "building_id": "a座",
                     "floor_id": "1F",
                     "room_id": "201-2",
@@ -572,22 +582,22 @@ define("dataService", ["require", "exports"], function (require, exports) {
                         {
                             "id": "1009",
                             "name": "xxx图片",
-                            "pic_url": "./mPark/image/i.png",
+                            "pic_url": "./park_m/image/i.png",
                         }, {
                             "id": "1009",
                             "name": "xxx图片",
-                            "pic_url": "./mPark/image/i.png",
+                            "pic_url": "./park_m/image/i.png",
                         }
                     ],
                     "product": [
                         {
                             "id": "1009",
                             "name": "xxx图片",
-                            "pic_url": "./mPark/image/i.png",
+                            "pic_url": "./park_m/image/i.png",
                         }, {
                             "id": "1009",
                             "name": "xxx图片",
-                            "pic_url": "./mPark/image/i.png",
+                            "pic_url": "./park_m/image/i.png",
                         }
                     ],
                     "panorama": [
@@ -651,7 +661,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 "return_code": "100",
                 "response": {
                     "id": "1009",
-                    "headimgurl": "./mPark/image/i.png",
+                    "headimgurl": "./park_m/image/i.png",
                     "building_id": "a座",
                     "floor_id": "1F",
                     "room_id": "201-2",
@@ -669,15 +679,15 @@ define("dataService", ["require", "exports"], function (require, exports) {
                         {
                             "id": "1009",
                             "name": "xxx图片",
-                            "url": "./mPark/image/i.png",
+                            "url": "./park_m/image/i.png",
                         }, {
                             "id": "1009",
                             "name": "xxx图片",
-                            "url": "./mPark/image/i.png",
+                            "url": "./park_m/image/i.png",
                         }, {
                             "id": "1009",
                             "name": "xxx图片",
-                            "url": "./mPark/image/i.png",
+                            "url": "./park_m/image/i.png",
                         }
                     ],
                     "panorama": [
@@ -732,7 +742,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                         "position": "A座厦门旁",
                         "longitude": "10.55",
                         "latitude": "66.666",
-                        "photo": "./mPark/image/i.png"
+                        "photo": "./park_m/image/i.png"
                     }, {
                         "id": "1009",
                         "type": "非停车位侧停车",
@@ -741,7 +751,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                         "position": "A座厦门旁",
                         "longitude": "10.55",
                         "latitude": "66.666",
-                        "photo": "./mPark/image/i.png"
+                        "photo": "./park_m/image/i.png"
                     }
                 ],
                 "err_msg": ""
@@ -761,7 +771,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     "longitude": "10.55",
                     "latitude": "66.666",
                     "descript": "横跨在斑马线上",
-                    "photo": "./mPark/image/i.png",
+                    "photo": "./park_m/image/i.png",
                 },
                 "err_msg": ""
             };
@@ -785,7 +795,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                         "building_id": "a座",
                         "floor_id": "1F",
                         "room_id": "201-1",
-                        "headimgurl": "./mPark/image/i.png",
+                        "headimgurl": "./park_m/image/i.png",
                         "price": [
                             {
                                 "content": "4小时内",
@@ -801,7 +811,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                         "building_id": "a座",
                         "floor_id": "1F",
                         "room_id": "201-2",
-                        "headimgurl": "./mPark/image/i.png",
+                        "headimgurl": "./park_m/image/i.png",
                         "price": [
                             {
                                 "content": "4小时内",
@@ -1618,16 +1628,18 @@ define("home", ["require", "exports", "react", "react-router-dom", "bottomBtn", 
         componentDidMount() {
             this.dataService.login(this.setToken);
         }
-        initPark() {
-            let park_id = localStorage.getItem("park_id");
-            this.globalAction.web_call_webgl_initPark(park_id);
-        }
         setToken(data) {
             console.log("setToken", data);
             localStorage.setItem("token", data.token);
         }
+        backParklist() {
+            this.globalAction.web_call_webgl_pauseloadModuler();
+        }
         render() {
             return (React.createElement("div", null,
+                React.createElement("div", { className: "backParklist", onClick: this.backParklist.bind(this) },
+                    React.createElement(RouterDOM.Link, { to: "/" },
+                        React.createElement("i", { className: "iconfont", style: { "fontSize": "4rem", "color": "#6C6C6C" } }, "\uE83B"))),
                 React.createElement(TopBtn, null),
                 React.createElement(FoldBtn, null),
                 this.props.children,
@@ -2546,7 +2558,7 @@ define("photograph", ["require", "exports", "react", "react-router-dom", "dataSe
                 illegalLoadcss: "illegalLoad-part",
                 illfromcss: "illfrom-part illfrom",
                 illTime: "",
-                illImg: "./mPark/image/photo.png",
+                illImg: "./park_m/image/photo.png",
                 illcauseUL: [],
                 indexOf: 0,
                 illcauseInname: "",
@@ -2936,7 +2948,7 @@ define("infoArea", ["require", "exports", "react", "react-router-dom", "css!./st
                     React.createElement("div", { className: "infoarea-title" }, "\u6570\u5B57\u56ED\u533A"),
                     React.createElement("div", { className: "infoarea-child-top" },
                         React.createElement("input", { className: "infoarea-input", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) }),
-                        React.createElement("img", { src: "./mpark/image/search.png", className: "infoarea-search-img" }),
+                        React.createElement("img", { src: "./park_m/image/search.png", className: "infoarea-search-img" }),
                         React.createElement("span", { className: "infoarea-sreach-bt" }, "\u641C\u7D22"))),
                 React.createElement("div", { className: "infoarea-tag" }, this.state.tagArr.map((item, index) => {
                     return React.createElement("div", { key: index, className: index !== this.state.tagIndex ? "infoarea-tag-child" : "infoarea-tag-child-add", onClick: e => this.clickTag(index) }, item);
@@ -2948,7 +2960,7 @@ define("infoArea", ["require", "exports", "react", "react-router-dom", "css!./st
                                 React.createElement("div", { style: { height: "50%", width: "100%" } },
                                     React.createElement("div", { className: "infoarea-content-name" }, "\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219"),
                                     React.createElement("div", { className: "infoarea-content-bottom", onClick: e => this.spread(index) },
-                                        React.createElement("img", { src: "./mpark/image/right.png", className: "infoarea-content-right-img" }))),
+                                        React.createElement("img", { src: "./park_m/image/right.png", className: "infoarea-content-right-img" }))),
                                 React.createElement("div", { className: "infoarea-br" },
                                     index !== 2 ?
                                         React.createElement("div", { className: "infoarea-br-bt" }, "\u5DF2\u89E3\u51B3") :
@@ -2969,7 +2981,7 @@ define("infoArea", ["require", "exports", "react", "react-router-dom", "css!./st
                                 React.createElement("div", { style: { height: "50%", width: "100%" } },
                                     React.createElement("div", { className: "infoarea-content-name" }, "\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219"),
                                     React.createElement("div", { className: "infoarea-content-right", onClick: e => this.spread(index) },
-                                        React.createElement("img", { src: "./mpark/image/right.png", className: "infoarea-content-right-img" }))),
+                                        React.createElement("img", { src: "./park_m/image/right.png", className: "infoarea-content-right-img" }))),
                                 React.createElement("div", { className: "infoarea-br" },
                                     index !== 2 ?
                                         React.createElement("div", { className: "infoarea-br-bt" }, "\u5DF2\u89E3\u51B3") :
@@ -2979,7 +2991,7 @@ define("infoArea", ["require", "exports", "react", "react-router-dom", "css!./st
                     React.createElement("div", { style: { width: "100%", height: "30%", textAlign: "center", fontSize: "40px", lineHeight: "60px", margin: "20px 0 0 -25px" } }, "\u5230\u5E95\u5566~")),
                 React.createElement(react_router_dom_1.Link, { to: "/isay" },
                     React.createElement("div", { className: "infoarea-add-c" },
-                        React.createElement("img", { src: "./mpark/image/add.png", width: "60px", height: "60px" })))));
+                        React.createElement("img", { src: "./park_m/image/add.png", width: "60px", height: "60px" })))));
         }
     }
     exports.default = InfoArea;
@@ -3003,7 +3015,7 @@ define("information", ["require", "exports", "react", "css!./styles/information.
                     React.createElement("div", { className: "information-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "information-headline" },
                     React.createElement("div", { style: { float: "left", width: "25%", height: "100%" } },
-                        React.createElement("img", { src: "./mpark/image/headline.png", style: { marginBottom: "14px" } })),
+                        React.createElement("img", { src: "./park_m/image/headline.png", style: { marginBottom: "14px" } })),
                     React.createElement("div", { style: { float: "left", width: "75%", height: "100%", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" } }, "\u5173\u4E8E\u6842\u6797\u4FE1\u606F\u4EA7\u4E1A\u56ED\u56ED\u533A\u4F01\u4E1A\u590D\u5DE5\u7684\u91CD\u8981\u901A\u77E5\u4F60\u4F60\u4F60\u4F60\u4F60")),
                 React.createElement("div", { className: "information-content" }, this.state.informationList.map((item, index) => {
                     return React.createElement("div", { className: "information-content-child", key: index },
@@ -3022,9 +3034,9 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "cs
             super(...arguments);
             this.state = {
                 parkList: [
-                    { name: "统计报表", imgUrl: "./mpark/image/statistics.png" }, { name: "房间管理", imgUrl: "./mpark/image/room.png" },
-                    { name: "工单派发管理", imgUrl: "./mpark/image/distribute.png" }, { name: "客服电话", imgUrl: "./mpark/image/service.png" },
-                    { name: "招商管理", imgUrl: "./mpark/image/attractInvestment.png" }
+                    { name: "统计报表", imgUrl: "./park_m/image/statistics.png" }, { name: "房间管理", imgUrl: "./park_m/image/room.png" },
+                    { name: "工单派发管理", imgUrl: "./park_m/image/distribute.png" }, { name: "客服电话", imgUrl: "./park_m/image/service.png" },
+                    { name: "招商管理", imgUrl: "./park_m/image/attractInvestment.png" }
                 ],
                 isSpread: false,
                 userInfo: "园区成员"
@@ -3057,7 +3069,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "cs
                     React.createElement("div", { className: "personal-center-title" }, "\u6570\u5B57\u56ED\u533A"),
                     React.createElement("div", { className: "personal-center-info" },
                         React.createElement("div", { className: "personal-center-tx" },
-                            React.createElement("img", { src: "./mpark/image/tx.jpg", className: "personal-center-tx-img" })),
+                            React.createElement("img", { src: "./park_m/image/tx.jpg", className: "personal-center-tx-img" })),
                         React.createElement("div", { style: { float: "left", color: "#FFFFFF", fontSize: "42px", margin: "10px 0 0 36px" } },
                             React.createElement("div", null, "\u7528\u6237\u540D\u5B57"),
                             React.createElement("div", { style: {
@@ -3066,7 +3078,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "cs
                                 }, onClick: this.switchMember.bind(this) }, this.state.userInfo)),
                         React.createElement(react_router_dom_2.Link, { to: "/modificationAuthentication" },
                             React.createElement("div", { className: "personal-center-right" },
-                                React.createElement("img", { src: "./mpark/image/w-right.png" }))))),
+                                React.createElement("img", { src: "./park_m/image/w-right.png" }))))),
                 React.createElement("div", { className: "personal-center-tag" },
                     React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u624B\u673A\u53F7\u7801"),
                     React.createElement("span", null, "15578383040"),
@@ -3091,22 +3103,22 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "cs
                 sessionStorage.getItem("userInfo") === "企业管理员" ?
                     React.createElement("div", { className: "personal-center-enterprise" },
                         React.createElement("div", { className: "personal-center-enterprise-child" },
-                            React.createElement("img", { src: "./mpark/image/enterprise.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
+                            React.createElement("img", { src: "./park_m/image/enterprise.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
                             React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u4F01\u4E1A\u4FE1\u606F\u7BA1\u7406"),
                             React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
-                                React.createElement("img", { src: "./mpark/image/right.png" }))),
+                                React.createElement("img", { src: "./park_m/image/right.png" }))),
                         React.createElement("div", { className: "personal-center-enterprise-child" },
-                            React.createElement("img", { src: "./mpark/image/let.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
+                            React.createElement("img", { src: "./park_m/image/let.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
                             React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"),
                             React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
-                                React.createElement("img", { src: "./mpark/image/right.png" })))) : null,
+                                React.createElement("img", { src: "./park_m/image/right.png" })))) : null,
                 sessionStorage.getItem("userInfo") === "园区管理员" ?
                     React.createElement("div", { className: "personal-center-park" },
                         React.createElement("div", { className: "personal-center-enterprise-child" },
-                            React.createElement("img", { src: "./mpark/image/park.png", width: "60px", height: "60px", style: { marginBottom: "10px" } }),
+                            React.createElement("img", { src: "./park_m/image/park.png", width: "60px", height: "60px", style: { marginBottom: "10px" } }),
                             React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u56ED\u533A\u7BA1\u7406"),
                             React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" }, onClick: this.spread.bind(this) },
-                                React.createElement("img", { src: "./mpark/image/right.png", className: this.state.isSpread ? "personal-center-bottom-img" : "" }))),
+                                React.createElement("img", { src: "./park_m/image/right.png", className: this.state.isSpread ? "personal-center-bottom-img" : "" }))),
                         this.state.isSpread ?
                             React.createElement("div", { style: { backgroundColor: "#ffffff", overflow: "hidden", paddingTop: "30px" } }, this.state.parkList.map((item, index) => {
                                 return React.createElement("div", { key: index, className: "personal-center-park-child" },
@@ -3144,7 +3156,7 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
                 contacts: "",
                 phone: "",
                 descript: "",
-                photo: "./mPark/image/photo.png",
+                photo: "./park_m/image/photo.png",
             };
             this.setTypeUL = this.setTypeUL.bind(this);
             RepairsOnline.getReqairstpostion = this.getReqairstpostion.bind(this);
@@ -3842,14 +3854,14 @@ define("isay", ["require", "exports", "react", "css!./styles/isay.css"], functio
                 React.createElement("div", { className: "isay-top" },
                     React.createElement("div", { className: "isay-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "isay-back" },
-                    React.createElement("img", { src: "./mpark/image/back.png", style: { marginBottom: "25px" }, onClick: this.goBack.bind(this) }),
+                    React.createElement("img", { src: "./park_m/image/back.png", style: { marginBottom: "25px" }, onClick: this.goBack.bind(this) }),
                     React.createElement("span", { style: { color: "#6C6C6C", fontSize: "40px", marginLeft: "15px" } }, "\u6211\u6709\u8BDD\u8BF4")),
                 React.createElement("div", { style: { fontSize: "40px", color: "#949494", margin: "20px 0 0 35px", overflow: "hidden" } },
                     React.createElement("div", { className: "isay-star" }),
                     React.createElement("div", { style: { float: "left", marginLeft: "15px" } }, "\u7559\u8A00\u7C7B\u522B:")),
                 React.createElement("div", { className: "isay-tag" }, this.state.tagArray.map((item, index) => {
                     return React.createElement("div", { className: "isay-tag-child", key: index },
-                        React.createElement("img", { src: "./mpark/image/checked.png", style: { margin: "-22px 20px 0 0" } }),
+                        React.createElement("img", { src: "./park_m/image/checked.png", style: { margin: "-22px 20px 0 0" } }),
                         React.createElement("span", { style: { fontSize: "40px", color: "#6C6C6C" } }, item.name));
                 })),
                 React.createElement("div", { style: { borderTop: "3px solid #F2F2F2", marginTop: "30px", margin: "0 30px 0 30px" } }),
@@ -3891,7 +3903,7 @@ define("workOrder", ["require", "exports", "react", "react-router-dom", "css!./s
                 React.createElement("div", { className: "work-order-top" },
                     React.createElement("div", { className: "work-order-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "work-order-back", onClick: this.goBack.bind(this) },
-                    React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
+                    React.createElement("img", { src: "./park_m/image/back.png", style: { margin: "-10px 10px 0 0" } }),
                     React.createElement("span", null, "\u6211\u7684\u5DE5\u5355")),
                 React.createElement("div", { className: "work-order-tag" }, this.state.tagList.map((item, index) => {
                     return React.createElement("div", { key: index, className: index === this.state.tagIndex ? "work-order-tag-child-add" : "work-order-tag-child", onClick: e => this.changeTag(index) }, item);
@@ -3902,7 +3914,7 @@ define("workOrder", ["require", "exports", "react", "react-router-dom", "css!./s
                             React.createElement("div", { key: index, className: "work-order-list-child" },
                                 React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 40px" } },
                                     React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, "\u4F01\u4E1A\u8BA4\u8BC1\u5DE5\u53551"),
-                                    React.createElement("img", { style: { float: "right", marginRight: "40px" }, src: "./mpark/image/right.png" })),
+                                    React.createElement("img", { style: { float: "right", marginRight: "40px" }, src: "./park_m/image/right.png" })),
                                 React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" } }, "\u7533\u8BF7\u4EBA\uFF1A\u83ABXX"),
                                 React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "10px 0 0 40px", overflow: "hidden" } },
                                     React.createElement("div", { style: { float: "left" } }, "\u7533\u8BF7\u65F6\u95F4\uFF1A2020-02-28 14:38:15"),
@@ -3932,7 +3944,7 @@ define("workOrderDetail", ["require", "exports", "react", "css!./styles/workOrde
                 React.createElement("div", { className: "work-order-detail-top" },
                     React.createElement("div", { className: "work-order-detail-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "work-order-detail-back", onClick: this.goBack.bind(this) },
-                    React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
+                    React.createElement("img", { src: "./park_m/image/back.png", style: { margin: "-10px 10px 0 0" } }),
                     React.createElement("span", null, "\u6211\u7684\u5DE5\u5355")),
                 React.createElement("div", { style: { padding: "40px 0 0 50px", borderBottom: "4px solid #F2F2F2", width: "100%", height: "140px" } },
                     React.createElement("span", { style: { fontSize: "40px", fontWeight: "600" } }, "\u573A\u5730\u9884\u5B9A\u5DE5\u5355"),
@@ -4018,7 +4030,7 @@ define("modificationAuthentication", ["require", "exports", "react", "css!./styl
                     React.createElement("div", { className: "modification-authentication-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "personal-center-tag" },
                     React.createElement("div", { style: { paddingLeft: "30px", float: "left" }, onClick: this.goBack.bind(this) },
-                        React.createElement("img", { src: "./mpark/image/right.png", style: { transform: "rotate(180deg)", marginBottom: "10px" } }),
+                        React.createElement("img", { src: "./park_m/image/right.png", style: { transform: "rotate(180deg)", marginBottom: "10px" } }),
                         React.createElement("span", { style: { color: "#6C6C6C" } }, "\u4FEE\u6539\u8BA4\u8BC1"))),
                 React.createElement("div", { className: "modification-authentication-tag", style: { marginTop: "15px" } },
                     React.createElement("div", { style: { paddingLeft: "40px", float: "left" } },
@@ -4057,7 +4069,7 @@ define("message", ["require", "exports", "react", "css!./styles/message.css"], f
                 React.createElement("div", { className: "work-order-top" },
                     React.createElement("div", { className: "work-order-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "work-order-back", onClick: this.goBack.bind(this) },
-                    React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
+                    React.createElement("img", { src: "./park_m/image/back.png", style: { margin: "-10px 10px 0 0" } }),
                     React.createElement("span", null, "\u6211\u7684\u6D88\u606F")),
                 React.createElement("div", { className: "work-order-tag" }, this.state.tagList.map((item, index) => {
                     return React.createElement("div", { key: index, className: index === this.state.tagIndex ? "work-order-tag-child-add" : "work-order-tag-child", onClick: e => this.changeTag(index) }, item);
@@ -4104,7 +4116,7 @@ define("router", ["require", "exports", "react-router-dom", "react", "index", "h
     }
     exports.default = Router;
 });
-define("index", ["require", "exports", "react", "react-dom", "react-router-dom", "router", "parkCompany", "findLease", "applyPut", "photograph", "repairsOnline", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_5, router_1, parkCompany_2, findLease_2, applyPut_2, photograph_2, repairsOnline_2) {
+define("index", ["require", "exports", "react", "react-dom", "react-router-dom", "router", "parkCompany", "findLease", "applyPut", "photograph", "repairsOnline", "compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_5, router_1, parkCompany_2, findLease_2, applyPut_2, photograph_2, repairsOnline_2, compat_5) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
@@ -4119,6 +4131,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             this.props = {
                 history: this.props.history
             };
+            this.globalAction = new compat_5.default();
             Index.g_pIns = this;
         }
         componentDidMount() {
@@ -4153,6 +4166,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             this.setState({ inputValue: event.target.value });
         }
         initPark(park_id) {
+            this.globalAction.web_call_webgl_initPark(park_id);
             console.log(park_id);
             localStorage.setItem("park_id", park_id);
         }
