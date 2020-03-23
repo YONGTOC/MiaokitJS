@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import "css!./styles/statisticalStatement.css"
 import Ring from "ring"
 
@@ -11,8 +11,8 @@ interface IState {
   ringRadius: number,
   ringWidth: number,
   fontSize: number,
-  RingName: string,
-  RingNumber: number
+  ringName: string,
+  ringNumber: number
 }
 
 class StatisticalStatement extends React.Component {
@@ -22,17 +22,17 @@ class StatisticalStatement extends React.Component {
 
   public readonly state: Readonly<IState> = {
     ringList: [
-      { color: "pink", percentage: 0.5, position: 0, length: 0 }, { color: "yellow", percentage: 0.1, position: 0, length: 0 }, { color: "greenyellow", percentage: 0.25, position: 0, length: 0 },
-      { color: "lavenderblush", percentage: 0.15, position: 0, length: 0 }
-    ], // Êı¾İ
-    ringRadius: 300, // »·°ë¾¶
-    ringWidth: 100, // »·¿í¶È
-    fontSize: 50, // ×ÖÌå´óĞ¡
-    RingName: "·¿¼ä", // Ãû×Ö
-    RingNumber: 1200 // ÊıÁ¿
+      { color: "#55D8FE", percentage: 0.5, name: "å‚æˆ¿", number: 200 }, { color: "#FF8373", percentage: 0.1, name: "å¥—é—´", number: 1000 }, { color: "#FFDA83", percentage: 0.25, name: "å•é—´", number: 500 },
+      { color: "#A3A0FB", percentage: 0.15, name: "æˆ¿é—´", number: 300 }
+    ], // æ•°æ®
+    ringRadius: 250, // ç¯åŠå¾„
+    ringWidth: 100, // ç¯å®½åº¦
+    fontSize: 50, // å­—ä½“å¤§å°
+    ringName: "æ€»æ•°", // åå­—
+    ringNumber: 2000 // æ•°é‡
   }
 
-  // ·µ»Ø
+  // è¿”å›
   goBack() {
     this.props.history.goBack()
   }
@@ -40,21 +40,27 @@ class StatisticalStatement extends React.Component {
   render() {
     return (
       <div className="rent-room">
-        <div className="rent-room-top">
-          <div className="rent-room-title">
-            Êı×ÖÔ°Çø
-          </div>
-        </div>
         <div className="rent-room-back">
           <div style={{ float: "left" }} onClick={this.goBack.bind(this)}>
             <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
-            <span>¿Í·şµç»°</span>
+            <span>å®¢æœç”µè¯</span>
           </div>
         </div>
-        <div className="statistical-statementl-a">
-          <Ring ringList={this.state.ringList} ringRadius={this.state.ringRadius} ringWidth={this.state.ringWidth} fontSize={this.state.fontSize}
-          RingName={this.state.RingName} RingNumber={this.state.RingNumber}/>
-        </div>
+        {["æˆ¿å±‹é¢ç§¯ç»Ÿè®¡", "å‡ºç§Ÿç»Ÿè®¡", "å…¥é©»åˆ†ç±»ç»Ÿè®¡"].map((item, index) => {
+          return (
+            <div className="statistical-statementl-child" key={index}>
+              <div className="statistical-statement-sign">
+                <div style={{ height: "100%", width: "12px", backgroundColor: "#0B8BF0", float: "left", marginRight: "25px" }}></div>
+                <div style={{ float: "left" }}>{item}</div>
+              </div>
+              <div style={{ width: "100%", padding: "90px 20px 20px 80px" }}>
+                <Ring ringList={this.state.ringList} ringRadius={this.state.ringRadius} ringWidth={this.state.ringWidth} fontSize={this.state.fontSize}
+                  ringName={this.state.ringName} ringNumber={this.state.ringNumber} label={true} />
+              </div>
+            </div>
+            )
+          })
+        }
       </div>
     )
   }

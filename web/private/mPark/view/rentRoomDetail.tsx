@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import "css!./styles/rentRoomDetail.css"
 
 interface IProps {
@@ -13,7 +13,7 @@ class RentRoomDetail extends React.Component {
    
   }
 
-  // ·µ»Ø
+  // è¿”å›
   goBack() {
     this.props.history.goBack()
   }
@@ -23,33 +23,33 @@ class RentRoomDetail extends React.Component {
       <div className="rent-room-detail">
         <div className="rent-room-top">
           <div className="rent-room-title">
-            Êı×ÖÔ°Çø
+            æ•°å­—å›­åŒº
           </div>
         </div>
         <div className="rent-room-back">
           <div style={{ float: "left" }} onClick={this.goBack.bind(this)}>
             <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
-            <span>×âÓÃ·¿¼ä¹ÜÀí</span>
+            <span>ç§Ÿç”¨æˆ¿é—´ç®¡ç†</span>
           </div>
         </div>
         <div className="rent-room-detail-content">
           <div style={{ overflow: "hidden", marginBottom: "20px" }}>
-            <div style={{ float: "left", width: "22%" }}>·¿¼äÃû³Æ</div><div style={{ color: "#333333", marginLeft: "30px", float: "left", width: "60%" }}>A×ù-1F-201ÊÒ</div>
+            <div style={{ float: "left", width: "22%" }}>æˆ¿é—´åç§°</div><div style={{ color: "#333333", marginLeft: "30px", float: "left", width: "60%" }}>Aåº§-1F-201å®¤</div>
           </div>
           <div style={{ overflow: "hidden", marginBottom: "20px" }}>
-            <div style={{ float: "left", width: "22%" }}>Ê¹ÓÃ×´Ì¬</div><div style={{ color: "#333333", marginLeft: "30px", float: "left", width: "60%" }}>×âÓÃÖĞ</div>
+            <div style={{ float: "left", width: "22%" }}>ä½¿ç”¨çŠ¶æ€</div><div style={{ color: "#333333", marginLeft: "30px", float: "left", width: "60%" }}>ç§Ÿç”¨ä¸­</div>
           </div>
           <div style={{ overflow: "hidden", marginBottom: "20px" }}>
-            <div style={{ float: "left", width: "22%" }}>×âÓÃµ¥Î»</div><div style={{ color: "#333333", marginLeft: "30px", float: "left", width: "60%" }}>Õã½­ÓÀÍØĞÅÏ¢¿Æ¼¼ÓĞÏŞ¹«Ë¾</div>
+            <div style={{ float: "left", width: "22%" }}>ç§Ÿç”¨å•ä½</div><div style={{ color: "#333333", marginLeft: "30px", float: "left", width: "60%" }}>æµ™æ±Ÿæ°¸æ‹“ä¿¡æ¯ç§‘æŠ€æœ‰é™å…¬å¸</div>
           </div>
           <div style={{ overflow: "hidden", marginBottom: "20px" }}>
-            <div style={{ float: "left", width: "22%" }}>×âÓÃÈË</div><div style={{ color: "#333333", marginLeft: "30px", float: "left", width: "60%" }}>Ğ¡Ã÷</div>
+            <div style={{ float: "left", width: "22%" }}>ç§Ÿç”¨äºº</div><div style={{ color: "#333333", marginLeft: "30px", float: "left", width: "60%" }}>å°æ˜</div>
           </div>
           <div style={{ overflow: "hidden", marginBottom: "20px" }}>
-            <div style={{ float: "left", width: "22%" }}>ÁªÏµµç»°</div><div style={{ color: "#333333", marginLeft: "30px", float: "left", width: "60%" }}>123456789</div>
+            <div style={{ float: "left", width: "22%" }}>è”ç³»ç”µè¯</div><div style={{ color: "#333333", marginLeft: "30px", float: "left", width: "60%" }}>123456789</div>
           </div>
           <div style={{ overflow: "hidden", marginBottom: "20px" }}>
-            <div style={{ float: "left", width: "22%" }}>×âÓÃÈÕÆÚ</div><div style={{ color: "#F53636", marginLeft: "30px", float: "left", width: "60%" }}>2020-03-20 ~ 2021-03-20</div>
+            <div style={{ float: "left", width: "22%" }}>ç§Ÿç”¨æ—¥æœŸ</div><div style={{ color: "#F53636", marginLeft: "30px", float: "left", width: "60%" }}>2020-03-20 ~ 2021-03-20</div>
           </div>
         </div>
       </div>

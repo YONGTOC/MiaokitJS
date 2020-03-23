@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import "css!./styles/distribute.css"
 import { Link } from 'react-router-dom';
 
@@ -12,13 +12,13 @@ interface IState {
 class Distribute extends React.Component {
   public readonly state: Readonly<IState> = {
     distributeList: [
-      { title: "Éí·İÈÏÖ¤¹¤µ¥¹ÜÀí", userName: "Ğ¡Ã÷" }, { title: "³¡µØÔ¤¶¨¹¤µ¥¹ÜÀí", userName: "Ğ¡Ã÷" }, { title: "°ÚµãÉêÇë¹¤µ¥¹ÜÀí", userName: "Ğ¡Ã÷" }, 
-      { title: "ÔÚÏß±¨ĞŞ¹¤µ¥¹ÜÀí", userName: "Ğ¡Ã÷" }, { title: "Í£³µÒµÎñ¹¤µ¥¹ÜÀí", userName: "Ğ¡Ã÷" }, { title: "Í¶Ëß½¨Òé¹¤µ¥¹ÜÀí", userName: "Ğ¡Ã÷" },
-      { title: "ËæÊÖÅÄ¹¤µ¥¹ÜÀí", userName: "Ğ¡Ã÷" }, { title: "Éí·İÈÏÖ¤¹¤µ¥¹ÜÀí", userName: "Ğ¡Ã÷" }, { title: "Éí·İÈÏÖ¤¹¤µ¥¹ÜÀí", userName: "Ğ¡Ã÷" }
+      { title: "èº«ä»½è®¤è¯å·¥å•ç®¡ç†", userName: "å°æ˜" }, { title: "åœºåœ°é¢„å®šå·¥å•ç®¡ç†", userName: "å°æ˜" }, { title: "æ‘†ç‚¹ç”³è¯·å·¥å•ç®¡ç†", userName: "å°æ˜" }, 
+      { title: "åœ¨çº¿æŠ¥ä¿®å·¥å•ç®¡ç†", userName: "å°æ˜" }, { title: "åœè½¦ä¸šåŠ¡å·¥å•ç®¡ç†", userName: "å°æ˜" }, { title: "æŠ•è¯‰å»ºè®®å·¥å•ç®¡ç†", userName: "å°æ˜" },
+      { title: "éšæ‰‹æ‹å·¥å•ç®¡ç†", userName: "å°æ˜" }, { title: "èº«ä»½è®¤è¯å·¥å•ç®¡ç†", userName: "å°æ˜" }, { title: "èº«ä»½è®¤è¯å·¥å•ç®¡ç†", userName: "å°æ˜" }
     ]
   }
 
-  // ·µ»Ø
+  // è¿”å›
   goBack() {
     this.props.history.goBack()
   }
@@ -28,13 +28,13 @@ class Distribute extends React.Component {
       <div className="rent-room">
         <div className="rent-room-top">
           <div className="rent-room-title">
-            Êı×ÖÔ°Çø
+            æ•°å­—å›­åŒº
           </div>
         </div>
         <div className="rent-room-back">
           <div style={{ float: "left" }} onClick={this.goBack.bind(this)}>
             <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
-            <span>¹¤µ¥ÅÉ·¢¹ÜÀí</span>
+            <span>å·¥å•æ´¾å‘ç®¡ç†</span>
           </div>
         </div>
         <div className="distribute-list">
@@ -45,22 +45,22 @@ class Distribute extends React.Component {
                   {item.title}
                 </div>
                 <div style={{ padding: "30px 0 0 45px", overflow: "hidden" }}>
-                  <div style={{ float: "left" }}>¹¤µ¥¸ºÔğÈË£º</div>
+                  <div style={{ float: "left" }}>å·¥å•è´Ÿè´£äººï¼š</div>
                   <div style={{
                     float: "left", height: "70px", backgroundColor: "#E8F5FE", borderRadius: "5px", border: "3px solid #C3E3FA", overflow: "hidden", lineHright: "70px", textAlign: "center",
                     minWidth: "150px"}}>
                     <div style={{ height: "100%", width: "60px", float: "left", lineHeight: "52px" }}>
                       <img src="./mpark/image/user.png" width="40px" height="40px"/>
                     </div>
-                    <div style={{ float: "left", lineHeight: "61px", height: "100%", minWidth: "90px", padding: "0 20px 0 15px" }}>Ğ¡Ã÷</div>
+                    <div style={{ float: "left", lineHeight: "61px", height: "100%", minWidth: "90px", padding: "0 20px 0 15px" }}>å°æ˜</div>
                   </div>
-                  <Link to="/searchUser"><div style={{ float: "right", color: "#0B8BF0", marginRight: "50px", textAlign: "center" }}>ĞŞ¸Ä</div></Link>
+                  <Link to="/searchUser"><div style={{ float: "right", color: "#0B8BF0", marginRight: "50px", textAlign: "center" }}>ä¿®æ”¹</div></Link>
                 </div>
               </div>  
             )
           })
           }
-          <div style={{ width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>µ½µ×À²~</div>
+          <div style={{ width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>åˆ°åº•å•¦~</div>
         </div>
       </div>
     )

@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
 
 import GlobalAction from "compat";
@@ -17,8 +17,8 @@ class ParkCompany extends React.Component {
    
   }
 
-  // ¶¨Òå¾²Ì¬Àà£¬ĞèÒª°ó¶¨µ½thisµÄ·½·¨ÉÏ£¬¹©Íâ²¿µ÷ÓÃ;
-  // Íâ²¿´«ÈëµÄÆóÒµid£¬´«¸øÆóÒµÏêÇé×é¼ş£¬Ë¢ĞÂÆóÒµÏêÇéÊı¾İ£»
+  // å®šä¹‰é™æ€ç±»ï¼Œéœ€è¦ç»‘å®šåˆ°thisçš„æ–¹æ³•ä¸Šï¼Œä¾›å¤–éƒ¨è°ƒç”¨;
+  // å¤–éƒ¨ä¼ å…¥çš„ä¼ä¸šidï¼Œä¼ ç»™ä¼ä¸šè¯¦æƒ…ç»„ä»¶ï¼Œåˆ·æ–°ä¼ä¸šè¯¦æƒ…æ•°æ®ï¼›
   static getCompanyinfo(id) { }
   public getCompanyinfo(id) {
     console.log("getCompanyinfo", id);
@@ -30,7 +30,7 @@ class ParkCompany extends React.Component {
   static toggleView(a, id) { };
   public toggleView(a, id) {
     console.log("ff", a);
-    //ÆóÒµid
+    //ä¼ä¸šid
     console.log("ff", id);
     if (a == "Info") {
       this.setState({
@@ -53,7 +53,7 @@ class ParkCompany extends React.Component {
           <RouterDOM.Link to="/home" >
             <i className="iconfont companyInfoicon">&#xe83b;</i>
           </RouterDOM.Link>
-          <span>Ô°ÇøÆóÒµ</span>
+          <span>å›­åŒºä¼ä¸š</span>
         </p>
         <div className={this.state.showList == true ? "show" : "hide"}>
           <CompanyList />
@@ -78,7 +78,7 @@ class ParkCompany extends React.Component {
   //over
 }
 
-// ¹«Ë¾ÁĞ±íÒ³
+// å…¬å¸åˆ—è¡¨é¡µ
 class CompanyList extends React.Component{
   public constructor(props) {
     super(props);
@@ -97,21 +97,21 @@ class CompanyList extends React.Component{
   }
 
   public componentDidMount() {
-    //»ñÈ¡Ô°ÇøÏÂÃæÆóÒµÀàĞÍÁĞ±í
+    //è·å–å›­åŒºä¸‹é¢ä¼ä¸šç±»å‹åˆ—è¡¨
     this.dataService.getCompanys(this.setCompanys, this.state.park_id);
-    //Í¨¹ıÔ°ÇøidËÑË÷Ô°ÇøÏÂÃæÆóÒµÁĞ±í
+    //é€šè¿‡å›­åŒºidæœç´¢å›­åŒºä¸‹é¢ä¼ä¸šåˆ—è¡¨
     this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.typeName, this.state.token);
   }
 
   public dataService: DataService = new DataService();
-  // setÆóÒµÀàĞÍÁĞ±í
+  // setä¼ä¸šç±»å‹åˆ—è¡¨
   public setCompanys(data) {
     this.setState({
       companyType: data.response,
     });
   }
 
-  // setÆóÒµÁĞ±í
+  // setä¼ä¸šåˆ—è¡¨
   public setCompany(data) {
     console.log("setCompany", data.response)
   //  console.log("setCompany", data.response[0].name)
@@ -120,8 +120,8 @@ class CompanyList extends React.Component{
     })
   }
 
-  // µã»÷¸ü¶à£¬ÏÔÊ¾info;Òş²Ølist£»ÕâÀïĞèÒªµ÷ÓÃParkCompany µÄ·½·¨£»
-  // Í¨¹ı ¹«Ë¾id£¬»ñÈ¡ÏêÇéÄÚÈİ
+  // ç‚¹å‡»æ›´å¤šï¼Œæ˜¾ç¤ºinfo;éšè—listï¼›è¿™é‡Œéœ€è¦è°ƒç”¨ParkCompany çš„æ–¹æ³•ï¼›
+  // é€šè¿‡ å…¬å¸idï¼Œè·å–è¯¦æƒ…å†…å®¹
   public showInfo(a, id, name, e) {
     ParkCompany.toggleView(a, id);
     CompanyInfo.getCompanyinfo(id);
@@ -167,13 +167,13 @@ class CompanyList extends React.Component{
   }
 
   public globalAction: GlobalAction = new GlobalAction();
-  // Ñ¡ÖĞÄ³ÆóÒµ
+  // é€‰ä¸­æŸä¼ä¸š
   public companyActive(data, id) {
     console.log("active", data);
     this.setState({
       indexOf: data,
     });
-    // Í¨Öª3d£¬ÇĞ»»¹«Ë¾¶¨Î»£¨web»ñÈ¡µÄÊÇ ¹«Ë¾id£©
+    // é€šçŸ¥3dï¼Œåˆ‡æ¢å…¬å¸å®šä½ï¼ˆwebè·å–çš„æ˜¯ å…¬å¸idï¼‰
     this.globalAction.switchCompany(id);
     // 
   }
@@ -190,30 +190,30 @@ class CompanyList extends React.Component{
     })
   }
 
-  // ¾Û½¹
+  // èšç„¦
   public foucus() {
-    if (this.state.inputValue == "ÇëÊäÈëÆóÒµÃû³Æ") {
+    if (this.state.inputValue == "è¯·è¾“å…¥ä¼ä¸šåç§°") {
       this.setState({ inputValue: "" })
     }
   }
 
-  // Ê§½¹
+  // å¤±ç„¦
   public blur(event) {
     if (this.state.inputValue == "") {
-      this.setState({ inputValue: "ÇëÊäÈëÆóÒµÃû³Æ" })
+      this.setState({ inputValue: "è¯·è¾“å…¥ä¼ä¸šåç§°" })
     }
   }
 
-  // ÊäÈë
+  // è¾“å…¥
   public change(event) {
     this.setState({ inputValue: event.target.value })
   }
 
 
-  //Èí¼üÅÌËÑË÷£¬»ñÈ¡Êı¾İ£¬³ÊÏÖÁĞ±íĞ§¹û£»£¨3.5-Î´Ğ´£©£»1Ìá½»ËÑË÷Ìõ¼ş¡££»2-css£» 
+  //è½¯é”®ç›˜æœç´¢ï¼Œè·å–æ•°æ®ï¼Œå‘ˆç°åˆ—è¡¨æ•ˆæœï¼›ï¼ˆ3.5-æœªå†™ï¼‰ï¼›1æäº¤æœç´¢æ¡ä»¶ã€‚ï¼›2-cssï¼› 
   public searchCompany() {
 
-    if (this.state.inputValue == "ÇëÊäÈëÆóÒµÃû³Æ") {
+    if (this.state.inputValue == "è¯·è¾“å…¥ä¼ä¸šåç§°") {
       this.setState({ inputValue: "" })
     };
     console.log("searchBtn", this.state.inputValue, this.state.company_type_id);
@@ -240,7 +240,7 @@ class CompanyList extends React.Component{
                     {i.address}</p>
                 </div>
                 <div className="companyul-right">
-                  <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)} className={this.state.indexOf == index ? "show" : "hide"} >¸ü¶à
+                  <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)} className={this.state.indexOf == index ? "show" : "hide"} >æ›´å¤š
                     <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
                   </p>
                   <p className={this.state.indexOf == index ? "companyType-active" : "companyType"} >{i.company_type}</p>
@@ -254,7 +254,7 @@ class CompanyList extends React.Component{
             <div className="searchBox">
               <span className="searchBox-text">
                 <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe810;</i>
-                <input className="companySearch" type="text" placeholder="ÇëÊäÈëÆóÒµÃû³Æ"
+                <input className="companySearch" type="text" placeholder="è¯·è¾“å…¥ä¼ä¸šåç§°"
                   value={this.state.inputValue} onFocus={this.foucus.bind(this)}
                   onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
               </span>
@@ -264,7 +264,7 @@ class CompanyList extends React.Component{
             </div>
             <ul className="companyTypeul">
               <li className={this.state.typeIndexof == 100 ? "companyTypeli-active" : "companyTypeli"}
-                onClick={this.typeActive.bind(this, 100, "È«²¿", "")} style={{ "width": "12rem" }}>È«²¿</li>
+                onClick={this.typeActive.bind(this, 100, "å…¨éƒ¨", "")} style={{ "width": "12rem" }}>å…¨éƒ¨</li>
               {this.state.companyType.map((i, index) => {
                 return (
                   <li onClick={this.typeActive.bind(this, index, i.name, i.id)} className={this.state.typeIndexof == index ? "companyTypeli-active" : "companyTypeli"}>{i.name}</li>
@@ -272,7 +272,7 @@ class CompanyList extends React.Component{
               })}
             </ul>
 
-            <span className="searchBtn" onClick={this.searchCompany.bind(this)}>ËÑË÷</span>
+            <span className="searchBtn" onClick={this.searchCompany.bind(this)}>æœç´¢</span>
           </div>
         </form>
       </div>
@@ -280,25 +280,25 @@ class CompanyList extends React.Component{
   }
 
   public state = {
-    // Ô°Çøid
+    // å›­åŒºid
     park_id: 1001,
     companyListcss: "companyList-part",
     foleBtn: "foleBtn",
     companyBtn: "companyBtn-part",
     companyul: "companyul",
-    //ÆóÒµÁĞ±í
+    //ä¼ä¸šåˆ—è¡¨
     companyData: [],
-    // ÆóÒµÀàĞÍ
+    // ä¼ä¸šç±»å‹
     companyType: [],
-    // µ±Ç°Ñ¡ÖĞÆóÒµliµÄĞòÁĞºÅ
+    // å½“å‰é€‰ä¸­ä¼ä¸šliçš„åºåˆ—å·
     indexOf: 0,
-    //µ±Ç°Ñ¡ÖĞÀàĞÍĞòÁĞºÅ
+    //å½“å‰é€‰ä¸­ç±»å‹åºåˆ—å·
     typeIndexof: 100,
-    //ËÑË÷¹Ø¼ü´Ê
-    typeName: "È«²¿",
-    //ËÑË÷ÆóÒµÀàĞÍid
+    //æœç´¢å…³é”®è¯
+    typeName: "å…¨éƒ¨",
+    //æœç´¢ä¼ä¸šç±»å‹id
     company_type_id: "",
-    // ÊäÈë¿òÄ¬ÈÏÖµ
+    // è¾“å…¥æ¡†é»˜è®¤å€¼
     inputValue: "",
     iconfont: "iconfont iconfont-unturn",
     token:"",
@@ -308,7 +308,7 @@ class CompanyList extends React.Component{
   //over
 }
 
-// ¹«Ë¾ÏêÇéÒ³
+// å…¬å¸è¯¦æƒ…é¡µ
 class CompanyInfo extends React.Component {
   public constructor(props) {
     super(props);
@@ -321,15 +321,15 @@ class CompanyInfo extends React.Component {
   public dataService: DataService = new DataService();
   static getCompanyinfo(id) { }
   public getCompanyinfo(id) {
-    // Í¨¹ıÆóÒµid£¬setÆóÒµÏêÇé£»
+    // é€šè¿‡ä¼ä¸šidï¼Œsetä¼ä¸šè¯¦æƒ…ï¼›
     this.dataService.getCompanyInfo(this.setCompanyinfo, id);
   }
 
-  // »ñÈ¡ÆóÒµÏêÇé£¬¸ø×Ó×é¼şÏÔÊ¾£»
-  //  ´«µİÆóÒµÏêÇé£¬µ½ CompanyInfos(ÆóÒµĞÅÏ¢) ¡¢Mien£¨ÆóÒµ·ç²É£©¡¢Details£¨ÆóÒµ¼ò½é£©¡¢ Product(²úÆ·Õ¹Ê¾)×é¼şÖĞ
+  // è·å–ä¼ä¸šè¯¦æƒ…ï¼Œç»™å­ç»„ä»¶æ˜¾ç¤ºï¼›
+  //  ä¼ é€’ä¼ä¸šè¯¦æƒ…ï¼Œåˆ° CompanyInfos(ä¼ä¸šä¿¡æ¯) ã€Mienï¼ˆä¼ä¸šé£é‡‡ï¼‰ã€Detailsï¼ˆä¼ä¸šç®€ä»‹ï¼‰ã€ Product(äº§å“å±•ç¤º)ç»„ä»¶ä¸­
   public setCompanyinfo(data) {
     console.log("getCompanyinfo", data);
-    // set¹«Ë¾name
+    // setå…¬å¸name
     this.setState({
       companyName: data.response.name,
     });
@@ -387,13 +387,13 @@ class CompanyInfo extends React.Component {
           <ul className={this.state.companyInfoul}>
             <li className={this.state.infoli == 0 ? "companyInfoli-active" : "companyInfoli"}
               onClick={this.infoClick.bind(this, 0)}
-            >ÆóÒµĞÅÏ¢</li>
+            >ä¼ä¸šä¿¡æ¯</li>
             <li className={this.state.infoli == 1 ? "companyInfoli-active" : "companyInfoli"}
-              onClick={this.infoClick.bind(this, 1)} >ÆóÒµ·ç²É</li>
+              onClick={this.infoClick.bind(this, 1)} >ä¼ä¸šé£é‡‡</li>
             <li className={this.state.infoli == 2 ? "companyInfoli-active" : "companyInfoli"}
-              onClick={this.infoClick.bind(this, 2)} >ÆóÒµÏêÇé</li>
+              onClick={this.infoClick.bind(this, 2)} >ä¼ä¸šè¯¦æƒ…</li>
             <li className={this.state.infoli == 3 ? "companyInfoli-active" : "companyInfoli"}
-              onClick={this.infoClick.bind(this, 3)} >²úÆ·Õ¹Ê¾</li>
+              onClick={this.infoClick.bind(this, 3)} >äº§å“å±•ç¤º</li>
           </ul>
           <div className="infoContain">
             <div className={this.state.infoli == 0 ? "show" : "hide"}>
@@ -419,7 +419,7 @@ class CompanyInfo extends React.Component {
   public state = {
     companyInfocss: "companyInfo",
     //  companyId:"",
-    companyName: "Õã½­ÓÀÍØĞÅÏ¢¿Æ¼¼ÓĞÏŞ¹«Ë¾",
+    companyName: "æµ™æ±Ÿæ°¸æ‹“ä¿¡æ¯ç§‘æŠ€æœ‰é™å…¬å¸",
     companyInfoul: "companyInfoul",
     infoli: 0,
     iconfont: "iconfont iconfont-unturn",
@@ -428,7 +428,7 @@ class CompanyInfo extends React.Component {
   //over
 }
 
-//ÆóÒµĞÅÏ¢;
+//ä¼ä¸šä¿¡æ¯;
 class CompanyInfos extends React.Component {
   public constructor(props) {
     super(props);
@@ -439,7 +439,7 @@ class CompanyInfos extends React.Component {
 
   public componentDidMount() { }
 
-  // ÏÔÊ¾»ñÈ¡µÄÆóÒµÏêÇé
+  // æ˜¾ç¤ºè·å–çš„ä¼ä¸šè¯¦æƒ…
   static setCompanyinfos(data) { }
   public setCompanyinfos(data) {
     console.log("setCompanyinfoCCCCCCCCCCC", data);
@@ -467,15 +467,15 @@ class CompanyInfos extends React.Component {
           </h5>
           <p className={"infos-3"} >{this.state.type}</p>
           <p className={"infos-4"} >
-            <span>ÁªÏµÈË</span>
+            <span>è”ç³»äºº</span>
             <span>{this.state.man}</span>
           </p>
           <p className={"infos-5"} >
-            <span>ÁªÏµµç»°</span>
+            <span>è”ç³»ç”µè¯</span>
             <span>{this.state.tel}</span>
           </p>
           <p className={"infos-6"} >
-            <span>ÆóÒµ¹ÙÍø</span>
+            <span>ä¼ä¸šå®˜ç½‘</span>
             <span >{this.state.http}</span>
           </p>
         </div>
@@ -496,7 +496,7 @@ class CompanyInfos extends React.Component {
   //over
 }
 
-//ÆóÒµ·ç²É;
+//ä¼ä¸šé£é‡‡;
 class Mien extends React.Component {
   public constructor(props) {
     super(props);
@@ -506,7 +506,7 @@ class Mien extends React.Component {
 
   public componentDidMount() { }
 
-  // ÏÔÊ¾»ñÈ¡µÄÆóÒµÏêÇé
+  // æ˜¾ç¤ºè·å–çš„ä¼ä¸šè¯¦æƒ…
   static setCompanymien(data) { }
   public setCompanymien(data) {
     console.log("setCompanyMienMMMMM", data);
@@ -538,7 +538,7 @@ class Mien extends React.Component {
   //over
 }
 
-//ÆóÒµÏêÇé
+//ä¼ä¸šè¯¦æƒ…
 class Details extends React.Component {
   public constructor(props) {
     super(props);
@@ -548,7 +548,7 @@ class Details extends React.Component {
 
   public componentDidMount() { }
 
-  // ÏÔÊ¾»ñÈ¡µÄÆóÒµÏêÇé
+  // æ˜¾ç¤ºè·å–çš„ä¼ä¸šè¯¦æƒ…
   static setCompanydetails(data) { }
   public setCompanydetails(data) {
     console.log("setCompanyDetailsDDDDD", data);
@@ -571,7 +571,7 @@ class Details extends React.Component {
   //over
 }
 
-//²úÆ·Õ¹Ê¾
+//äº§å“å±•ç¤º
 class Product extends React.Component {
   public constructor(props) {
     super(props);
@@ -581,7 +581,7 @@ class Product extends React.Component {
 
   public componentDidMount() { }
 
-  // ÏÔÊ¾»ñÈ¡µÄÆóÒµÏêÇé
+  // æ˜¾ç¤ºè·å–çš„ä¼ä¸šè¯¦æƒ…
   static setCompanyproduct(data) { }
   public setCompanyproduct(data) {
     console.log("setCompanyproductPPPP", data);

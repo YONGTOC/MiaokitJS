@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import "css!./styles/message.css"
 
 interface IProps {
@@ -12,7 +12,7 @@ interface IState {
 
 class Message extends React.Component {
   public readonly state: Readonly<IState> = {
-    tagList: ["È«²¿", "·¿Îİ×âÁŞµ½ÆÚ", "³µÎ»µ½ÆÚ", "²ÎÓë»î¶¯"],
+    tagList: ["å…¨éƒ¨", "æˆ¿å±‹ç§Ÿèµåˆ°æœŸ", "è½¦ä½åˆ°æœŸ", "å‚ä¸æ´»åŠ¨"],
     tagIndex: 0,
     workOrderArray: [1, 2, 3, 4, 5, 6, 7, 8, 9]
   }
@@ -21,7 +21,7 @@ class Message extends React.Component {
     this.setState({ tagIndex: index })
   }
   
-  // ·µ»Ø
+  // è¿”å›
   goBack() {
     this.props.history.goBack()
   }
@@ -30,11 +30,11 @@ class Message extends React.Component {
     return (
       <div className="work-order">
         <div className="work-order-top">
-          <div className="work-order-title">Êı×ÖÔ°Çø</div>
+          <div className="work-order-title">æ•°å­—å›­åŒº</div>
         </div>
         <div className="work-order-back" onClick={this.goBack.bind(this)}>
           <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
-          <span>ÎÒµÄÏûÏ¢</span>
+          <span>æˆ‘çš„æ¶ˆæ¯</span>
         </div>
         <div className="work-order-tag">
           {
@@ -50,18 +50,18 @@ class Message extends React.Component {
             this.state.workOrderArray.map((item, index) => {
               return  <div key={index} className="work-order-list-child">
                 <div style={{ overflow: "hidden", margin: "30px 0 0 40px" }}>
-                  <div style={{ float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" }}>·¿Îİ×âÁŞ¼´½«µ½ÆÚ</div>
+                  <div style={{ float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" }}>æˆ¿å±‹ç§Ÿèµå³å°†åˆ°æœŸ</div>
                 </div>
                 <div style={{ fontSize: "38px", color: "#DB0A0A", margin: "30px 0 0 40px" }}>
-                  ·¿¼äÎ»ÖÃ£ºĞÅÏ¢²úÒµÔ°A×ù215ÊÒ
+                  æˆ¿é—´ä½ç½®ï¼šä¿¡æ¯äº§ä¸šå›­Aåº§215å®¤
                 </div>
                 <div style={{ fontSize: "38px", color: "#DB0A0A", margin: "10px 0 0 40px" }}>
-                  µ½ÆÚÊ±¼ä£º2020-03-28 14:38:15
+                  åˆ°æœŸæ—¶é—´ï¼š2020-03-28 14:38:15
                 </div>
               </div>
             })
           }
-          <div style={{ width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "30px" }}>µ½µ×À²~</div>
+          <div style={{ width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "30px" }}>åˆ°åº•å•¦~</div>
         </div>
       </div>
     )

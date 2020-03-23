@@ -8,6 +8,9 @@
   background-color: #F2F2F2;
   overflow-y: auto;
 }
+.rent-room::-webkit-scrollbar {
+  display: none;
+}
 .rent-room-top {
   background-color: #0B8BF0;
   width: 100%;

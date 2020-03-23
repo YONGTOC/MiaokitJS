@@ -9,7 +9,7 @@ define("applyPut", ["require", "exports", "react", "react-router-dom"], function
                 iconfont: "iconfont iconfont-unturn",
                 applyPutfrom: "applyPutfrom-part applyPutfrom",
                 applyList: [
-                    { address: "����������ڷŵص�", startTime: "2020-03-14", endTime: "2020-03-17" }
+                    { address: "请输入申请摆放地点", startTime: "2020-03-14", endTime: "2020-03-17" }
                 ]
             };
             ApplyPut.addapplyPut = this.addapplyPut.bind(this);
@@ -45,7 +45,7 @@ define("applyPut", ["require", "exports", "react", "react-router-dom"], function
         ;
         addapplyPut(a) {
             let arr = this.state.applyList;
-            arr.push({ address: "����������ڷŵص�", startTime: "2020-03-14", endTime: "2020-03-17" });
+            arr.push({ address: "请输入申请摆放地点", startTime: "2020-03-14", endTime: "2020-03-17" });
             this.setState({
                 applyList: arr
             });
@@ -56,35 +56,35 @@ define("applyPut", ["require", "exports", "react", "react-router-dom"], function
                 React.createElement("p", { className: "companyInfotit" },
                     React.createElement(RouterDOM.Link, { to: "/home" },
                         React.createElement("span", { className: "iconfont companyInfoicon" }, "\uE83B")),
-                    React.createElement("span", null, "\uFFFD\uFFFD\uFFFD\uFFFD\u06B5\uFFFD")),
+                    React.createElement("span", null, "\u7533\u8BF7\u6446\u70B9")),
                 React.createElement("div", { className: this.state.applyPutcss },
                     React.createElement("div", { className: "foleBtn", onClick: this.toggleFold.bind(this) },
                         React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem" } }, "\uE849")),
                     React.createElement("form", { className: this.state.applyPutfrom },
                         React.createElement("p", null,
                             React.createElement("span", { className: "redStar" }, "*"),
-                            "  \uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD",
-                            React.createElement("input", { type: "text", value: "", className: "getillNum", placeholder: "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uBD65\u03BB" })),
+                            "  \u7533\u8BF7\u4EBA",
+                            React.createElement("input", { type: "text", value: "", className: "getillNum", placeholder: "\u8BF7\u8F93\u5165\u7533\u8BF7\u5355\u4F4D" })),
                         React.createElement("p", null,
                             React.createElement("span", { className: "redStar" }, "*"),
-                            " \uFFFD\u05BB\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD",
-                            React.createElement("input", { type: "number", value: "", className: "getillNum", placeholder: "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u05BB\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD" })),
+                            " \u624B\u673A\u53F7\u7801",
+                            React.createElement("input", { type: "number", value: "", className: "getillNum", placeholder: "\u8BF7\u8F93\u5165\u624B\u673A\u53F7\u7801" })),
                         React.createElement("p", null,
                             React.createElement("span", { className: "redStar" }, "*"),
-                            " \uFFFD\uFFFD\uFFFD\uBD65\u03BB",
-                            React.createElement("input", { type: "text", value: "", className: "getillNum", placeholder: "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uBD65\u03BB" })),
+                            " \u7533\u8BF7\u5355\u4F4D",
+                            React.createElement("input", { type: "text", value: "", className: "getillNum", placeholder: "\u8BF7\u8F93\u5165\u7533\u8BF7\u5355\u4F4D" })),
                         React.createElement("p", null,
                             React.createElement("span", { className: "redStar" }, "*"),
-                            " \uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u0763\uFFFD"),
+                            " \u5177\u4F53\u5185\u5BB9\uFF1A"),
                         React.createElement("div", null,
-                            React.createElement("textarea", { className: "getapplyPuttextarea", value: "", placeholder: "\uFFFD\uBF6B\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD200\uFFFD\uFFFD\uFFFD\u06A3\uFFFD" })),
+                            React.createElement("textarea", { className: "getapplyPuttextarea", value: "", placeholder: "\u8BF7\u5C06\u5177\u4F53\u5185\u5BB9\u63CF\u8FF0\u51FA\u6765\u3002\uFF08200\u5B57\u5185\uFF09" })),
                         React.createElement("div", { className: "applyList" },
-                            React.createElement("p", { className: "theapplyP" }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u0376\uFFFD\u0175\u0635\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u0376\uFFFD\u017F\uFFFD\u02BC\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u02B1\uFFFD\uFFFD"),
+                            React.createElement("p", { className: "theapplyP" }, "\u8BF7\u5728\u6240\u9700\u6295\u653E\u5730\u70B9\u540E\u8BBE\u7F6E\u6295\u653E\u5F00\u59CB\u53CA\u7ED3\u675F\u65F6\u95F4"),
                             React.createElement("ul", { style: { "margin": "0" } },
                                 React.createElement("li", null,
-                                    React.createElement("div", { className: "applyAddress" }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u00F5\u0635\uFFFD"),
-                                    React.createElement("div", { className: "applytime" }, "\uFFFD\uFFFD\u02BC\u02B1\uFFFD\uFFFD"),
-                                    React.createElement("div", { className: "applytime" }, "\uFFFD\uFFFD\uFFFD\uFFFD\u02B1\uFFFD\uFFFD"),
+                                    React.createElement("div", { className: "applyAddress" }, "\u5E7F\u544A\u653E\u7F6E\u5730\u70B9"),
+                                    React.createElement("div", { className: "applytime" }, "\u5F00\u59CB\u65F6\u95F4"),
+                                    React.createElement("div", { className: "applytime" }, "\u7ED3\u675F\u65F6\u95F4"),
                                     React.createElement("div", { className: "applyicom" },
                                         " ",
                                         React.createElement("i", { className: "iconfont", style: { "color": "#fff" } }, "\uE82D"))),
@@ -92,14 +92,14 @@ define("applyPut", ["require", "exports", "react", "react-router-dom"], function
                                     return (React.createElement("li", { key: index },
                                         React.createElement("div", { className: "applyAddress" },
                                             React.createElement("span", { className: "applyIndexof" }, index + 1),
-                                            React.createElement("input", { className: "applyAddressInput", type: "text", value: i.address, placeholder: "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u06B7\u0175\u0635\uFFFD" })),
+                                            React.createElement("input", { className: "applyAddressInput", type: "text", value: i.address, placeholder: "\u8BF7\u8F93\u5165\u7533\u8BF7\u6446\u653E\u5730\u70B9" })),
                                         React.createElement("div", { className: "applytime", style: { "color": "#158CE8" } }, i.startTime),
                                         React.createElement("div", { className: "applytime", style: { "color": "#158CE8" } }, i.endTime),
                                         React.createElement("div", { className: "applyicom" },
                                             " ",
                                             React.createElement("i", { className: "iconfont", style: { "color": "#158CE8" } }, "\uE82D"))));
                                 }))),
-                        React.createElement("div", { className: "applyPutSumbit", onClick: this.sumbitApplyputfrom.bind(this) }, "\uFFFD\u1F7B")))));
+                        React.createElement("div", { className: "applyPutSumbit", onClick: this.sumbitApplyputfrom.bind(this) }, "\u63D0\u4EA4")))));
         }
     }
     exports.default = ApplyPut;
@@ -895,7 +895,7 @@ define("defaultRentRoom", ["require", "exports", "react", "css!./styles/defaultR
         constructor() {
             super(...arguments);
             this.state = {
-                workOrderArray: ["A��-1F-201��", "A��-1F-202��", "A��-1F-203��"],
+                workOrderArray: ["A座-1F-201室", "A座-1F-202室", "A座-1F-203室"],
                 defaultIndex: 0
             };
         }
@@ -908,11 +908,11 @@ define("defaultRentRoom", ["require", "exports", "react", "css!./styles/defaultR
         render() {
             return (React.createElement("div", { className: "rent-room-detail" },
                 React.createElement("div", { className: "rent-room-top" },
-                    React.createElement("div", { className: "rent-room-title" }, "\uFFFD\uFFFD\uFFFD\uFFFD\u0530\uFFFD\uFFFD")),
+                    React.createElement("div", { className: "rent-room-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "rent-room-back" },
                     React.createElement("div", { style: { float: "left" }, onClick: this.goBack.bind(this) },
                         React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
-                        React.createElement("span", null, "\uFFFD\uFFFD\uFFFD\u00F7\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"))),
+                        React.createElement("span", null, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"))),
                 React.createElement("div", { className: "rent-room-list" }, this.state.workOrderArray.map((item, index) => {
                     return (React.createElement("div", { key: index, className: "rent-room-list-child", onClick: e => this.changeDefaultIndex(index) },
                         React.createElement("div", { style: { float: "left", height: "100%", width: "13%", lineHeight: "286px", textAlign: "center" } }, this.state.defaultIndex === index ?
@@ -923,16 +923,16 @@ define("defaultRentRoom", ["require", "exports", "react", "css!./styles/defaultR
                                 React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, item),
                                 React.createElement("img", { style: { float: "right", marginRight: "40px" }, src: "./mpark/image/right.png" })),
                             React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "30px 0 0 0" } },
-                                "\u02B9\uFFFD\uFFFD\u05F4\u032C\uFFFD\uFFFD",
-                                React.createElement("span", { style: { marginLeft: "30px", color: "#333333" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD")),
+                                "\u4F7F\u7528\u72B6\u6001\uFF1A",
+                                React.createElement("span", { style: { marginLeft: "30px", color: "#333333" } }, "\u79DF\u7528\u4E2D")),
                             React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "10px 0 0 0", overflow: "hidden" } },
                                 React.createElement("div", { style: { float: "left" } },
-                                    "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u06A3\uFFFD",
+                                    "\u79DF\u7528\u65E5\u671F\uFF1A",
                                     React.createElement("span", { style: { color: "#F53636" } }, "2020-03-20 ~ 2021-03-20"))))));
                 })),
                 React.createElement("div", { className: "rent-room-detail-bottom" },
-                    React.createElement("div", { style: { float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", color: "#6C6C6C" } }, "\u0221\uFFFD\uFFFD"),
-                    React.createElement("div", { style: { float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", backgroundColor: "#0B8BF0", color: "#ffffff" } }, "\uFFFD\u1F7B"))));
+                    React.createElement("div", { style: { float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", color: "#6C6C6C" } }, "\u53D6\u6D88"),
+                    React.createElement("div", { style: { float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", backgroundColor: "#0B8BF0", color: "#ffffff" } }, "\u63D0\u4EA4"))));
         }
     }
     exports.default = DetaultRentRoom;
@@ -945,9 +945,9 @@ define("distribute", ["require", "exports", "react", "react-router-dom", "css!./
             super(...arguments);
             this.state = {
                 distributeList: [
-                    { title: "������֤��������", userName: "С��" }, { title: "����Ԥ����������", userName: "С��" }, { title: "�ڵ����빤������", userName: "С��" },
-                    { title: "���߱��޹�������", userName: "С��" }, { title: "ͣ��ҵ�񹤵�����", userName: "С��" }, { title: "Ͷ�߽��鹤������", userName: "С��" },
-                    { title: "�����Ĺ�������", userName: "С��" }, { title: "������֤��������", userName: "С��" }, { title: "������֤��������", userName: "С��" }
+                    { title: "身份认证工单管理", userName: "小明" }, { title: "场地预定工单管理", userName: "小明" }, { title: "摆点申请工单管理", userName: "小明" },
+                    { title: "在线报修工单管理", userName: "小明" }, { title: "停车业务工单管理", userName: "小明" }, { title: "投诉建议工单管理", userName: "小明" },
+                    { title: "随手拍工单管理", userName: "小明" }, { title: "身份认证工单管理", userName: "小明" }, { title: "身份认证工单管理", userName: "小明" }
                 ]
             };
         }
@@ -957,28 +957,28 @@ define("distribute", ["require", "exports", "react", "react-router-dom", "css!./
         render() {
             return (React.createElement("div", { className: "rent-room" },
                 React.createElement("div", { className: "rent-room-top" },
-                    React.createElement("div", { className: "rent-room-title" }, "\uFFFD\uFFFD\uFFFD\uFFFD\u0530\uFFFD\uFFFD")),
+                    React.createElement("div", { className: "rent-room-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "rent-room-back" },
                     React.createElement("div", { style: { float: "left" }, onClick: this.goBack.bind(this) },
                         React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
-                        React.createElement("span", null, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u0277\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"))),
+                        React.createElement("span", null, "\u5DE5\u5355\u6D3E\u53D1\u7BA1\u7406"))),
                 React.createElement("div", { className: "distribute-list" },
                     this.state.distributeList.map((item, index) => {
                         return (React.createElement("div", { key: index, className: "distribute-list-child" },
                             React.createElement("div", { style: { padding: "30px 0 0 45px", fontWeight: "600" } }, item.title),
                             React.createElement("div", { style: { padding: "30px 0 0 45px", overflow: "hidden" } },
-                                React.createElement("div", { style: { float: "left" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u02E3\uFFFD"),
+                                React.createElement("div", { style: { float: "left" } }, "\u5DE5\u5355\u8D1F\u8D23\u4EBA\uFF1A"),
                                 React.createElement("div", { style: {
                                         float: "left", height: "70px", backgroundColor: "#E8F5FE", borderRadius: "5px", border: "3px solid #C3E3FA", overflow: "hidden", lineHright: "70px", textAlign: "center",
                                         minWidth: "150px"
                                     } },
                                     React.createElement("div", { style: { height: "100%", width: "60px", float: "left", lineHeight: "52px" } },
                                         React.createElement("img", { src: "./mpark/image/user.png", width: "40px", height: "40px" })),
-                                    React.createElement("div", { style: { float: "left", lineHeight: "61px", height: "100%", minWidth: "90px", padding: "0 20px 0 15px" } }, "\u0421\uFFFD\uFFFD")),
+                                    React.createElement("div", { style: { float: "left", lineHeight: "61px", height: "100%", minWidth: "90px", padding: "0 20px 0 15px" } }, "\u5C0F\u660E")),
                                 React.createElement(react_router_dom_1.Link, { to: "/searchUser" },
-                                    React.createElement("div", { style: { float: "right", color: "#0B8BF0", marginRight: "50px", textAlign: "center" } }, "\uFFFD\u07B8\uFFFD")))));
+                                    React.createElement("div", { style: { float: "right", color: "#0B8BF0", marginRight: "50px", textAlign: "center" } }, "\u4FEE\u6539")))));
                     }),
-                    React.createElement("div", { style: { width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD~"))));
+                    React.createElement("div", { style: { width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" } }, "\u5230\u5E95\u5566~"))));
         }
     }
     exports.default = Distribute;
@@ -1588,7 +1588,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                 React.createElement("p", { className: "companyInfotit" },
                     React.createElement(RouterDOM.Link, { to: "/home" },
                         React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B")),
-                    React.createElement("span", null, "\u0530\uFFFD\uFFFD\uFFFD\uFFFD\u04B5")),
+                    React.createElement("span", null, "\u56ED\u533A\u4F01\u4E1A")),
                 React.createElement("div", { className: this.state.showList == true ? "show" : "hide" },
                     React.createElement(CompanyList, null)),
                 React.createElement("div", { className: this.state.showInfo == true ? "show" : "hide" },
@@ -1610,7 +1610,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                 companyType: [],
                 indexOf: 0,
                 typeIndexof: 100,
-                typeName: "ȫ��",
+                typeName: "全部",
                 company_type_id: "",
                 inputValue: "",
                 iconfont: "iconfont iconfont-unturn",
@@ -1703,20 +1703,20 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
             });
         }
         foucus() {
-            if (this.state.inputValue == "��������ҵ����") {
+            if (this.state.inputValue == "请输入企业名称") {
                 this.setState({ inputValue: "" });
             }
         }
         blur(event) {
             if (this.state.inputValue == "") {
-                this.setState({ inputValue: "��������ҵ����" });
+                this.setState({ inputValue: "请输入企业名称" });
             }
         }
         change(event) {
             this.setState({ inputValue: event.target.value });
         }
         searchCompany() {
-            if (this.state.inputValue == "��������ҵ����") {
+            if (this.state.inputValue == "请输入企业名称") {
                 this.setState({ inputValue: "" });
             }
             ;
@@ -1738,7 +1738,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                                 i.address)),
                         React.createElement("div", { className: "companyul-right" },
                             React.createElement("p", { onClick: this.showInfo.bind(this, "Info", i.id, i.name), className: this.state.indexOf == index ? "show" : "hide" },
-                                "\uFFFD\uFFFD\uFFFD\uFFFD",
+                                "\u66F4\u591A",
                                 React.createElement("i", { className: "iconfont", style: { "fontSize": "2rem" } }, "\uE827")),
                             React.createElement("p", { className: this.state.indexOf == index ? "companyType-active" : "companyType" }, i.company_type))));
                 })),
@@ -1747,17 +1747,17 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                         React.createElement("div", { className: "searchBox" },
                             React.createElement("span", { className: "searchBox-text" },
                                 React.createElement("i", { className: "iconfont", style: { "fontSize": "3rem" } }, "\uE810"),
-                                React.createElement("input", { className: "companySearch", type: "text", placeholder: "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\uFFFD\uFFFD", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) })),
+                                React.createElement("input", { className: "companySearch", type: "text", placeholder: "\u8BF7\u8F93\u5165\u4F01\u4E1A\u540D\u79F0", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) })),
                             React.createElement("span", { onClick: this.foldBtn.bind(this), className: "searchBox-type" },
                                 this.state.typeName,
                                 " ",
                                 React.createElement("i", { className: "iconfont", style: { "fontSize": "3rem" } }, "\uE828"))),
                         React.createElement("ul", { className: "companyTypeul" },
-                            React.createElement("li", { className: this.state.typeIndexof == 100 ? "companyTypeli-active" : "companyTypeli", onClick: this.typeActive.bind(this, 100, "ȫ��", ""), style: { "width": "12rem" } }, "\u022B\uFFFD\uFFFD"),
+                            React.createElement("li", { className: this.state.typeIndexof == 100 ? "companyTypeli-active" : "companyTypeli", onClick: this.typeActive.bind(this, 100, "全部", ""), style: { "width": "12rem" } }, "\u5168\u90E8"),
                             this.state.companyType.map((i, index) => {
                                 return (React.createElement("li", { onClick: this.typeActive.bind(this, index, i.name, i.id), className: this.state.typeIndexof == index ? "companyTypeli-active" : "companyTypeli" }, i.name));
                             })),
-                        React.createElement("span", { className: "searchBtn", onClick: this.searchCompany.bind(this) }, "\uFFFD\uFFFD\uFFFD\uFFFD")))));
+                        React.createElement("span", { className: "searchBtn", onClick: this.searchCompany.bind(this) }, "\u641C\u7D22")))));
         }
     }
     class CompanyInfo extends React.Component {
@@ -1766,7 +1766,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
             this.dataService = new dataService_3.default();
             this.state = {
                 companyInfocss: "companyInfo",
-                companyName: "�㽭������Ϣ�Ƽ����޹�˾",
+                companyName: "浙江永拓信息科技有限公司",
                 companyInfoul: "companyInfoul",
                 infoli: 0,
                 iconfont: "iconfont iconfont-unturn",
@@ -1830,10 +1830,10 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                     React.createElement("div", { className: "foleBtn", onClick: this.toggleFold.bind(this) },
                         React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem" } }, "\uE849")),
                     React.createElement("ul", { className: this.state.companyInfoul },
-                        React.createElement("li", { className: this.state.infoli == 0 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 0) }, "\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\u03E2"),
-                        React.createElement("li", { className: this.state.infoli == 1 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 1) }, "\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\uFFFD"),
-                        React.createElement("li", { className: this.state.infoli == 2 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 2) }, "\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\uFFFD\uFFFD"),
-                        React.createElement("li", { className: this.state.infoli == 3 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 3) }, "\uFFFD\uFFFD\u01B7\u0579\u02BE")),
+                        React.createElement("li", { className: this.state.infoli == 0 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 0) }, "\u4F01\u4E1A\u4FE1\u606F"),
+                        React.createElement("li", { className: this.state.infoli == 1 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 1) }, "\u4F01\u4E1A\u98CE\u91C7"),
+                        React.createElement("li", { className: this.state.infoli == 2 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 2) }, "\u4F01\u4E1A\u8BE6\u60C5"),
+                        React.createElement("li", { className: this.state.infoli == 3 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 3) }, "\u4EA7\u54C1\u5C55\u793A")),
                     React.createElement("div", { className: "infoContain" },
                         React.createElement("div", { className: this.state.infoli == 0 ? "show" : "hide" },
                             React.createElement(CompanyInfos, null)),
@@ -1885,13 +1885,13 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                         this.state.address),
                     React.createElement("p", { className: "infos-3" }, this.state.type),
                     React.createElement("p", { className: "infos-4" },
-                        React.createElement("span", null, "\uFFFD\uFFFD\u03F5\uFFFD\uFFFD"),
+                        React.createElement("span", null, "\u8054\u7CFB\u4EBA"),
                         React.createElement("span", null, this.state.man)),
                     React.createElement("p", { className: "infos-5" },
-                        React.createElement("span", null, "\uFFFD\uFFFD\u03F5\uFFFD\u7EF0"),
+                        React.createElement("span", null, "\u8054\u7CFB\u7535\u8BDD"),
                         React.createElement("span", null, this.state.tel)),
                     React.createElement("p", { className: "infos-6" },
-                        React.createElement("span", null, "\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\uFFFD\uFFFD"),
+                        React.createElement("span", null, "\u4F01\u4E1A\u5B98\u7F51"),
                         React.createElement("span", null, this.state.http)))));
         }
     }
@@ -2429,20 +2429,20 @@ define("infoArea", ["require", "exports", "react", "react-router-dom", "css!./st
         constructor() {
             super(...arguments);
             this.state = {
-                inputValue: "����������",
-                tagArr: ["��ѯ", "����", "Ͷ��", "����"],
+                inputValue: "请输入主题",
+                tagArr: ["咨询", "建议", "投诉", "其他"],
                 listArr: [{ spread: true }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }],
                 tagIndex: 0,
             };
         }
         foucus() {
-            if (this.state.inputValue === "����������") {
+            if (this.state.inputValue === "请输入主题") {
                 this.setState({ inputValue: "" });
             }
         }
         blur() {
             if (this.state.inputValue === "") {
-                this.setState({ inputValue: "����������" });
+                this.setState({ inputValue: "请输入主题" });
             }
         }
         change(event) {
@@ -2459,11 +2459,11 @@ define("infoArea", ["require", "exports", "react", "react-router-dom", "css!./st
         render() {
             return (React.createElement("div", { className: "infoarea" },
                 React.createElement("div", { className: "infoarea-top" },
-                    React.createElement("div", { className: "infoarea-title" }, "\uFFFD\uFFFD\uFFFD\uFFFD\u0530\uFFFD\uFFFD"),
+                    React.createElement("div", { className: "infoarea-title" }, "\u6570\u5B57\u56ED\u533A"),
                     React.createElement("div", { className: "infoarea-child-top" },
                         React.createElement("input", { className: "infoarea-input", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) }),
                         React.createElement("img", { src: "./mpark/image/search.png", className: "infoarea-search-img" }),
-                        React.createElement("span", { className: "infoarea-sreach-bt" }, "\uFFFD\uFFFD\uFFFD\uFFFD"))),
+                        React.createElement("span", { className: "infoarea-sreach-bt" }, "\u641C\u7D22"))),
                 React.createElement("div", { className: "infoarea-tag" }, this.state.tagArr.map((item, index) => {
                     return React.createElement("div", { key: index, className: index !== this.state.tagIndex ? "infoarea-tag-child" : "infoarea-tag-child-add", onClick: e => this.clickTag(index) }, item);
                 })),
@@ -2472,37 +2472,37 @@ define("infoArea", ["require", "exports", "react", "react-router-dom", "css!./st
                         return React.createElement("div", { className: item.spread ? "infoarea-content-child-bottom" : "infoarea-content-child", key: index }, item.spread ?
                             React.createElement("div", { style: { width: "100%", height: "100%" } },
                                 React.createElement("div", { style: { height: "50%", width: "100%" } },
-                                    React.createElement("div", { className: "infoarea-content-name" }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u00B5\uFFFD\u01BE\uFFFD\u2E6B\u0522\uFFFD\u0176\u04F9\uFFFD\uFFFD\uFFFD"),
+                                    React.createElement("div", { className: "infoarea-content-name" }, "\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219"),
                                     React.createElement("div", { className: "infoarea-content-bottom", onClick: e => this.spread(index) },
                                         React.createElement("img", { src: "./mpark/image/right.png", className: "infoarea-content-right-img" }))),
                                 React.createElement("div", { className: "infoarea-br" },
                                     index !== 2 ?
-                                        React.createElement("div", { className: "infoarea-br-bt" }, "\uFFFD\u047D\uFFFD\uFFFD") :
-                                        React.createElement("div", { className: "infoarea-br-bt-add" }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"),
+                                        React.createElement("div", { className: "infoarea-br-bt" }, "\u5DF2\u89E3\u51B3") :
+                                        React.createElement("div", { className: "infoarea-br-bt-add" }, "\u53D7\u7406\u4E2D"),
                                     React.createElement("div", { className: "infoarea-br-data" }, "2020-03-06 14:38:15")),
                                 React.createElement("div", { style: { borderTop: "3px solid #F2F2F2", marginTop: "30px", marginRight: "50px" } }),
-                                React.createElement("div", { style: { fontSize: "40px", color: "#949494", marginTop: "20px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD:"),
-                                React.createElement("div", { style: { fontSize: "40px", color: "#333333", marginTop: "20px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u00B5\uFFFD\u01BE\uFFFD\u2E6B\u0522\uFFFD\u0176\u04F9\uFFFD\uFFFD\uDA4E\uDF39\uFFFD\uFFFD\uFFFD\uFFFD\u00B5\uFFFD\u01BE\uFFFD\u2E6B\u0522\uFFFD\u0176\u04F9\uFFFD\uFFFD\uDA4E\uDF39\uFFFD\uFFFD\uFFFD\uFFFD\u00B5\uFFFD\u01BE\uFFFD\u2E6B\u0522\uFFFD\u0176\u04F9\uFFFD\uFFFD\uDA4E\uDF39\uFFFD\uFFFD\uFFFD\uFFFD\u00B5\uFFFD\u01BE\uFFFD\u2E6B\u0522\uFFFD\u0176\u04F9\uFFFD\uFFFD\uDA4E\uDF39\uFFFD\uFFFD\uFFFD\uFFFD\u00B5\uFFFD\u01BE\uFFFD\u2E6B\u0522\uFFFD\u0176\u04F9\uFFFD\uFFFD\uFFFD"),
-                                React.createElement("div", { style: { fontSize: "40px", color: "#949494", marginTop: "30px" } }, "\uFFFD\uFFFD\uFFFD\u053B\u0638\uFFFD:"),
+                                React.createElement("div", { style: { fontSize: "40px", color: "#949494", marginTop: "20px" } }, "\u7559\u8A00\u5185\u5BB9:"),
+                                React.createElement("div", { style: { fontSize: "40px", color: "#333333", marginTop: "20px" } }, "\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\uFF0C\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\uFF0C\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\uFF0C\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\uFF0C\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\u3002"),
+                                React.createElement("div", { style: { fontSize: "40px", color: "#949494", marginTop: "30px" } }, "\u7559\u8A00\u56DE\u590D:"),
                                 React.createElement("div", { style: { fontSize: "40px", marginTop: "20px" } },
-                                    React.createElement("span", { style: { color: "#949494" } }, "\uFFFD\uFFFD"),
+                                    React.createElement("span", { style: { color: "#949494" } }, "\u7531"),
                                     React.createElement("span", { style: { fontWeight: "600", margin: "0 25px 0 25px" } }, "xxx"),
-                                    React.createElement("span", { style: { color: "#949494" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"),
+                                    React.createElement("span", { style: { color: "#949494" } }, "\u53D7\u7406\u4E8E"),
                                     React.createElement("span", { style: { color: "#333333", marginLeft: "25px" } }, "2020-02-28 17:38:15")),
-                                React.createElement("div", { style: { fontSize: "40px", color: "#949494", marginTop: "20px" } }, "\uFFFD\u0638\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD:"),
-                                React.createElement("div", { style: { fontSize: "40px", color: "#333333", marginTop: "20px", marginBottom: "150px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u00B5\uFFFD\u01BE\uFFFD\u2E6B\u0522\uFFFD\u0176\u04F9\uFFFD\uFFFD\uDA4E\uDF39\uFFFD\uFFFD\uFFFD\uFFFD\u00B5\uFFFD\u01BE\uFFFD\u2E6B\u0522\uFFFD\u0176\u04F9\uFFFD\uFFFD\uDA4E\uDF39\uFFFD\uFFFD\uFFFD\uFFFD\u00B5\uFFFD\u01BE\uFFFD\u2E6B\u0522\uFFFD\u0176\u04F9\uFFFD\uFFFD\uDA4E\uDF39\uFFFD\uFFFD\uFFFD\uFFFD\u00B5\uFFFD\u01BE\uFFFD\u2E6B\u0522\uFFFD\u0176\u04F9\uFFFD\uFFFD\uDA4E\uDF39\uFFFD\uFFFD\uFFFD\uFFFD\u00B5\uFFFD\u01BE\uFFFD\u2E6B\u0522\uFFFD\u0176\u04F9\uFFFD\uFFFD\uFFFD")) :
+                                React.createElement("div", { style: { fontSize: "40px", color: "#949494", marginTop: "20px" } }, "\u56DE\u590D\u5185\u5BB9:"),
+                                React.createElement("div", { style: { fontSize: "40px", color: "#333333", marginTop: "20px", marginBottom: "150px" } }, "\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\uFF0C\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\uFF0C\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\uFF0C\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\uFF0C\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219\u3002")) :
                             React.createElement("div", { style: { width: "100%", height: "100%" } },
                                 React.createElement("div", { style: { height: "50%", width: "100%" } },
-                                    React.createElement("div", { className: "infoarea-content-name" }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u00B5\uFFFD\u01BE\uFFFD\u2E6B\u0522\uFFFD\u0176\u04F9\uFFFD\uFFFD\uFFFD"),
+                                    React.createElement("div", { className: "infoarea-content-name" }, "\u5173\u4E8E\u65B0\u7684\u51ED\u79DF\u516C\u5BD3\u6392\u961F\u89C4\u5219"),
                                     React.createElement("div", { className: "infoarea-content-right", onClick: e => this.spread(index) },
                                         React.createElement("img", { src: "./mpark/image/right.png", className: "infoarea-content-right-img" }))),
                                 React.createElement("div", { className: "infoarea-br" },
                                     index !== 2 ?
-                                        React.createElement("div", { className: "infoarea-br-bt" }, "\uFFFD\u047D\uFFFD\uFFFD") :
-                                        React.createElement("div", { className: "infoarea-br-bt-add" }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"),
+                                        React.createElement("div", { className: "infoarea-br-bt" }, "\u5DF2\u89E3\u51B3") :
+                                        React.createElement("div", { className: "infoarea-br-bt-add" }, "\u53D7\u7406\u4E2D"),
                                     React.createElement("div", { className: "infoarea-br-data" }, "2020-03-06 14:38:15"))));
                     }),
-                    React.createElement("div", { style: { width: "100%", height: "30%", textAlign: "center", fontSize: "40px", lineHeight: "60px", margin: "20px 0 0 -25px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD~")),
+                    React.createElement("div", { style: { width: "100%", height: "30%", textAlign: "center", fontSize: "40px", lineHeight: "60px", margin: "20px 0 0 -25px" } }, "\u5230\u5E95\u5566~")),
                 React.createElement(react_router_dom_2.Link, { to: "/isay" },
                     React.createElement("div", { className: "infoarea-add-c" },
                         React.createElement("img", { src: "./mpark/image/add.png", width: "60px", height: "60px" })))));
@@ -2518,19 +2518,19 @@ define("information", ["require", "exports", "react", "css!./styles/information.
             super(...arguments);
             this.state = {
                 informationList: [
-                    { name: "�Ż�����", imgUrl: "./mpark/image/preferentialPolicy.png" }, { name: "԰����ѯ", imgUrl: "./mpark/image/information.png" },
-                    { name: "԰���", imgUrl: "./mpark/image/activity.png" }, { name: "����������", imgUrl: "./mpark/image/thirdParty.png" }
+                    { name: "优惠政策", imgUrl: "./mpark/image/preferentialPolicy.png" }, { name: "园区咨询", imgUrl: "./mpark/image/information.png" },
+                    { name: "园区活动", imgUrl: "./mpark/image/activity.png" }, { name: "第三方服务", imgUrl: "./mpark/image/thirdParty.png" }
                 ]
             };
         }
         render() {
             return (React.createElement("div", { className: "information" },
                 React.createElement("div", { className: "information-top" },
-                    React.createElement("div", { className: "information-title" }, "\uFFFD\uFFFD\uFFFD\uFFFD\u0530\uFFFD\uFFFD")),
+                    React.createElement("div", { className: "information-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "information-headline" },
                     React.createElement("div", { style: { float: "left", width: "25%", height: "100%" } },
                         React.createElement("img", { src: "./mpark/image/headline.png", style: { marginBottom: "14px" } })),
-                    React.createElement("div", { style: { float: "left", width: "75%", height: "100%", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" } }, "\uFFFD\uFFFD\uFFFD\u06B9\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u03E2\uFFFD\uFFFD\u04B5\u0530\u0530\uFFFD\uFFFD\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u04AA\u0368\u05AA\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD")),
+                    React.createElement("div", { style: { float: "left", width: "75%", height: "100%", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" } }, "\u5173\u4E8E\u6842\u6797\u4FE1\u606F\u4EA7\u4E1A\u56ED\u56ED\u533A\u4F01\u4E1A\u590D\u5DE5\u7684\u91CD\u8981\u901A\u77E5\u4F60\u4F60\u4F60\u4F60\u4F60")),
                 React.createElement("div", { className: "information-content" }, this.state.informationList.map((item, index) => {
                     return React.createElement("div", { className: "information-content-child", key: index },
                         React.createElement("img", { src: item.imgUrl, width: "130px", height: "130px" }),
@@ -2684,10 +2684,10 @@ define("narrate", ["require", "exports", "react", "react-router-dom", "css!./sty
                 paused: true,
                 activeType: 0,
                 parkAudio: [
-                    { name: "԰����ͨ", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-                    { name: "԰������", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
-                    { name: "԰����ͨ", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-                    { name: "԰������", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
+                    { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+                    { name: "园区配套", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
+                    { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+                    { name: "园区建筑", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
                 ],
                 currentAudio: 0
             };
@@ -2698,7 +2698,7 @@ define("narrate", ["require", "exports", "react", "react-router-dom", "css!./sty
             let audio = document.getElementById("audioTool");
             let audioN = 0;
             audio.onended = function () {
-                console.log("��ǰ��Ƶ�����Ž���", audio.paused);
+                console.log("当前音频，播放结束", audio.paused);
                 audioN = audioN + 1;
                 Narrate.selfPlay(audioN);
             };
@@ -2761,7 +2761,7 @@ define("narrate", ["require", "exports", "react", "react-router-dom", "css!./sty
                 React.createElement("p", { className: "companyInfotit" },
                     React.createElement(RouterDOM.Link, { to: "/home" },
                         React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B")),
-                    React.createElement("span", null, "\uFFFD\u0536\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD")),
+                    React.createElement("span", null, "\u81EA\u52A8\u8BB2\u89E3")),
                 React.createElement("div", { className: "audioBox" },
                     React.createElement("ul", { className: "flex-layout category-head" }, this.state.parkAudio.map((i, index) => {
                         return (React.createElement("li", { className: this.state.activeType == index ? "flex-active" : "flex", onClick: this.audioClick.bind(this, index, i.name, i.url), "data-index": index }, i.name));
@@ -2781,33 +2781,33 @@ define("isay", ["require", "exports", "react", "css!./styles/isay.css"], functio
         constructor() {
             super(...arguments);
             this.state = {
-                tagArray: [{ name: "��ѯ" }, { name: "����" }, { name: "Ͷ��" }, { name: "����" }],
+                tagArray: [{ name: "咨询" }, { name: "建议" }, { name: "投诉" }, { name: "其它" }],
                 tagIndex: 0,
-                inputValue: "��������3�����Ҳ��ܴ���33����",
-                textareaValue: "�뽫������������������200���ڣ�"
+                inputValue: "不能少于3个字且不能大于33个字",
+                textareaValue: "请将留言内容描述出来（200字内）"
             };
         }
         inputFoucus() {
-            if (this.state.inputValue === "��������3�����Ҳ��ܴ���33����") {
+            if (this.state.inputValue === "不能少于3个字且不能大于33个字") {
                 this.setState({ inputValue: "" });
             }
         }
         inputBlur() {
             if (this.state.inputValue === "") {
-                this.setState({ inputValue: "��������3�����Ҳ��ܴ���33����" });
+                this.setState({ inputValue: "不能少于3个字且不能大于33个字" });
             }
         }
         inputChange(event) {
             this.setState({ inputValue: event.target.value });
         }
         textareaFoucus() {
-            if (this.state.textareaValue === "�뽫������������������200���ڣ�") {
+            if (this.state.textareaValue === "请将留言内容描述出来（200字内）") {
                 this.setState({ textareaValue: "" });
             }
         }
         textareaBlur() {
             if (this.state.textareaValue === "") {
-                this.setState({ textareaValue: "�뽫������������������200���ڣ�" });
+                this.setState({ textareaValue: "请将留言内容描述出来（200字内）" });
             }
         }
         textareaChange(event) {
@@ -2819,13 +2819,13 @@ define("isay", ["require", "exports", "react", "css!./styles/isay.css"], functio
         render() {
             return (React.createElement("div", { className: "isay" },
                 React.createElement("div", { className: "isay-top" },
-                    React.createElement("div", { className: "isay-title" }, "\uFFFD\uFFFD\uFFFD\uFFFD\u0530\uFFFD\uFFFD")),
+                    React.createElement("div", { className: "isay-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "isay-back" },
                     React.createElement("img", { src: "./mpark/image/back.png", style: { marginBottom: "25px" }, onClick: this.goBack.bind(this) }),
-                    React.createElement("span", { style: { color: "#6C6C6C", fontSize: "40px", marginLeft: "15px" } }, "\uFFFD\uFFFD\uFFFD\u043B\uFFFD\u02F5")),
+                    React.createElement("span", { style: { color: "#6C6C6C", fontSize: "40px", marginLeft: "15px" } }, "\u6211\u6709\u8BDD\u8BF4")),
                 React.createElement("div", { style: { fontSize: "40px", color: "#949494", margin: "20px 0 0 35px", overflow: "hidden" } },
                     React.createElement("div", { className: "isay-star" }),
-                    React.createElement("div", { style: { float: "left", marginLeft: "15px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD:")),
+                    React.createElement("div", { style: { float: "left", marginLeft: "15px" } }, "\u7559\u8A00\u7C7B\u522B:")),
                 React.createElement("div", { className: "isay-tag" }, this.state.tagArray.map((item, index) => {
                     return React.createElement("div", { className: "isay-tag-child", key: index },
                         React.createElement("img", { src: "./mpark/image/checked.png", style: { margin: "-22px 20px 0 0" } }),
@@ -2834,15 +2834,15 @@ define("isay", ["require", "exports", "react", "css!./styles/isay.css"], functio
                 React.createElement("div", { style: { borderTop: "3px solid #F2F2F2", marginTop: "30px", margin: "0 30px 0 30px" } }),
                 React.createElement("div", { style: { fontSize: "40px", color: "#949494", margin: "20px 0 0 35px", overflow: "hidden" } },
                     React.createElement("div", { className: "isay-star" }),
-                    React.createElement("div", { style: { float: "left", marginLeft: "15px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD:")),
+                    React.createElement("div", { style: { float: "left", marginLeft: "15px" } }, "\u7559\u8A00\u4E3B\u9898:")),
                 React.createElement("div", { className: "isay-theme" },
                     React.createElement("input", { className: "isay-theme-input", value: this.state.inputValue, onFocus: this.inputFoucus.bind(this), onBlur: this.inputBlur.bind(this), onChange: this.inputChange.bind(this) })),
                 React.createElement("div", { style: { fontSize: "40px", color: "#949494", margin: "30px 0 0 35px", overflow: "hidden" } },
                     React.createElement("div", { className: "isay-star" }),
-                    React.createElement("div", { style: { float: "left", marginLeft: "15px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD:")),
+                    React.createElement("div", { style: { float: "left", marginLeft: "15px" } }, "\u7559\u8A00\u5185\u5BB9:")),
                 React.createElement("div", { className: "isay-content" },
                     React.createElement("textarea", { className: "isay-content-textarea", value: this.state.textareaValue, onFocus: this.textareaFoucus.bind(this), onBlur: this.textareaBlur.bind(this), onChange: this.textareaChange.bind(this) })),
-                React.createElement("div", { className: "isay-submit" }, "\uFFFD\u1F7B")));
+                React.createElement("div", { className: "isay-submit" }, "\u63D0\u4EA4")));
         }
     }
     exports.default = Isay;
@@ -2854,7 +2854,7 @@ define("workOrder", ["require", "exports", "react", "react-router-dom", "css!./s
         constructor() {
             super(...arguments);
             this.state = {
-                tagList: ["ȫ��", "��ҵ��֤", "����Ԥ��", "�ڵ�����", "���߱���"],
+                tagList: ["全部", "企业认证", "场地预定", "摆点申请", "在线保修"],
                 tagIndex: 0,
                 workOrderArray: [1, 2, 3, 4, 5, 6, 7, 8, 9]
             };
@@ -2868,10 +2868,10 @@ define("workOrder", ["require", "exports", "react", "react-router-dom", "css!./s
         render() {
             return (React.createElement("div", { className: "work-order" },
                 React.createElement("div", { className: "work-order-top" },
-                    React.createElement("div", { className: "work-order-title" }, "\uFFFD\uFFFD\uFFFD\uFFFD\u0530\uFFFD\uFFFD")),
+                    React.createElement("div", { className: "work-order-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "work-order-back", onClick: this.goBack.bind(this) },
                     React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
-                    React.createElement("span", null, "\uFFFD\u04B5\u0139\uFFFD\uFFFD\uFFFD")),
+                    React.createElement("span", null, "\u6211\u7684\u5DE5\u5355")),
                 React.createElement("div", { className: "work-order-tag" }, this.state.tagList.map((item, index) => {
                     return React.createElement("div", { key: index, className: index === this.state.tagIndex ? "work-order-tag-child-add" : "work-order-tag-child", onClick: e => this.changeTag(index) }, item);
                 })),
@@ -2880,17 +2880,17 @@ define("workOrder", ["require", "exports", "react", "react-router-dom", "css!./s
                         return React.createElement(react_router_dom_4.Link, { to: "/workOrderDetail" },
                             React.createElement("div", { key: index, className: "work-order-list-child" },
                                 React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 40px" } },
-                                    React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, "\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\u05A4\uFFFD\uFFFD\uFFFD\uFFFD1"),
+                                    React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, "\u4F01\u4E1A\u8BA4\u8BC1\u5DE5\u53551"),
                                     React.createElement("img", { style: { float: "right", marginRight: "40px" }, src: "./mpark/image/right.png" })),
-                                React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u02E3\uFFFD\u012AXX"),
+                                React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" } }, "\u7533\u8BF7\u4EBA\uFF1A\u83ABXX"),
                                 React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "10px 0 0 40px", overflow: "hidden" } },
-                                    React.createElement("div", { style: { float: "left" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\u02B1\uFFFD\u48FA2020-02-28 14:38:15"),
+                                    React.createElement("div", { style: { float: "left" } }, "\u7533\u8BF7\u65F6\u95F4\uFF1A2020-02-28 14:38:15"),
                                     React.createElement("div", { style: {
                                             float: "right", backgroundColor: "#0BC491", color: "#ffffff", width: "130px", height: "55px", borderRadius: "50px",
                                             marginRight: "40px", fontSize: "32px", textAlign: "center", lineHeight: "55px"
-                                        } }, "\uFFFD\uFFFD\u0368\uFFFD\uFFFD"))));
+                                        } }, "\u5DF2\u901A\u8FC7"))));
                     }),
-                    React.createElement("div", { style: { width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "30px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD~"))));
+                    React.createElement("div", { style: { width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "30px" } }, "\u5230\u5E95\u5566~"))));
         }
     }
     exports.default = WorkOrder;
@@ -2909,58 +2909,58 @@ define("workOrderDetail", ["require", "exports", "react", "css!./styles/workOrde
         render() {
             return (React.createElement("div", { className: "work-order-detail" },
                 React.createElement("div", { className: "work-order-detail-top" },
-                    React.createElement("div", { className: "work-order-detail-title" }, "\uFFFD\uFFFD\uFFFD\uFFFD\u0530\uFFFD\uFFFD")),
+                    React.createElement("div", { className: "work-order-detail-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "work-order-detail-back", onClick: this.goBack.bind(this) },
                     React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
-                    React.createElement("span", null, "\uFFFD\u04B5\u0139\uFFFD\uFFFD\uFFFD")),
+                    React.createElement("span", null, "\u6211\u7684\u5DE5\u5355")),
                 React.createElement("div", { style: { padding: "40px 0 0 50px", borderBottom: "4px solid #F2F2F2", width: "100%", height: "140px" } },
-                    React.createElement("span", { style: { fontSize: "40px", fontWeight: "600" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\u0524\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"),
+                    React.createElement("span", { style: { fontSize: "40px", fontWeight: "600" } }, "\u573A\u5730\u9884\u5B9A\u5DE5\u5355"),
                     React.createElement("span", { style: {
                             float: "right", backgroundColor: "#D50202", color: "#ffffff", width: "130px", height: "55px", borderRadius: "50px",
                             marginRight: "40px", fontSize: "32px", textAlign: "center", lineHeight: "55px"
-                        } }, "\u03B4\u0368\uFFFD\uFFFD")),
+                        } }, "\u672A\u901A\u8FC7")),
                 React.createElement("div", { style: { margin: "30px 0 0 50px" } },
-                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"),
-                    React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "60px" } }, "\u0421\uFFFD\uFFFD")),
+                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u7533\u8BF7\u4EBA"),
+                    React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "60px" } }, "\u5C0F\u660E")),
                 React.createElement("div", { style: { margin: "30px 0 0 50px" } },
-                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\uFFFD\u05BB\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"),
+                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u624B\u673A\u53F7\u7801"),
                     React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "60px" } }, "15578383040")),
                 React.createElement("div", { style: { margin: "30px 0 0 50px" } },
-                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u04B5"),
-                    React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "60px" } }, "\uFFFD\u3F6D\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u03E2\uFFFD\u01BC\uFFFD\uFFFD\uFFFD\uFFFD\u07B9\uFFFD\u02FE")),
+                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u7533\u8BF7\u4F01\u4E1A"),
+                    React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "60px" } }, "\u6D59\u6C5F\u6C38\u62D3\u4FE1\u606F\u79D1\u6280\u6709\u9650\u516C\u53F8")),
                 React.createElement("div", { style: { margin: "30px 0 0 50px" } },
-                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u02B9\uFFFD\u00F3\uFFFD\uFFFD\uFFFD"),
-                    React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "60px" } }, "A\uFFFD\uFFFD\uFFFD\uFFFD\u00A5217\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD")),
+                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u4F7F\u7528\u573A\u5730"),
+                    React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "60px" } }, "A\u5EA7\u4E8C\u697C217\u4F1A\u8BAE\u5BA4")),
                 React.createElement("div", { style: { margin: "30px 0 0 50px" } },
-                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\uFFFD\uFFFD\u02BC\uFFFD\uFFFD\uFFFD\uFFFD"),
+                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u5F00\u59CB\u65E5\u671F"),
                     React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "60px" } }, "2020-2-20")),
                 React.createElement("div", { style: { margin: "30px 0 0 50px" } },
-                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\uFFFD\uFFFD\u02BC\u02B1\uFFFD\uFFFD"),
+                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u5F00\u59CB\u65F6\u95F4"),
                     React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "60px" } }, "9:30")),
                 React.createElement("div", { style: { margin: "30px 0 0 50px" } },
-                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"),
+                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u7ED3\u675F\u65E5\u671F"),
                     React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "60px" } }, "2020-2-20")),
                 React.createElement("div", { style: { margin: "30px 0 0 50px" } },
-                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\u02B1\uFFFD\uFFFD"),
+                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u7ED3\u675F\u65F6\u95F4"),
                     React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "60px" } }, "17:30")),
                 React.createElement("div", { style: { margin: "30px 0 0 50px" } },
-                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"),
-                    React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "60px" } }, "\uFFFD\uFFFD\u02FE\uFFFD\uFFFD\u0475\uFFFD\uFFFD\uFFFD\uFFFD")),
+                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u4F1A\u8BAE\u4E3B\u9898"),
+                    React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "60px" } }, "\u516C\u53F8\u57F9\u8BAD\u4F1A\u8BAE")),
                 React.createElement("div", { style: { margin: "30px 0 0 50px", overflow: "hidden" } },
-                    React.createElement("div", { style: { color: "#949494", fontSize: "40px", float: "left" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"),
-                    React.createElement("div", { style: { color: "#333333", fontSize: "40px", marginLeft: "60px", float: "left", width: "70%" } }, "2020\uFFFD\uFFFD\u02FE\u0531\uFFFD\uFFFD\uFFFD\uFFFD\u0475\uFFFD\uFFFD\uFFFD\u9E6B\u02FE\u0531\uFFFD\uFFFD\uFFFD\uFFFD\u0475\uFFFD\uFFFD\uFFFD\u9E6B\u02FE\u0531\uFFFD\uFFFD\uFFFD\uFFFD\u0475\uFFFD\uFFFD\uFFFD\u9E6B\u02FE\u0531")),
-                React.createElement("div", { style: { fontSize: "40px", color: "#949494", float: "right", margin: "30px 50px 0 0" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u02B1\uFFFD\u48FA2020-02-28 14:38:15"),
+                    React.createElement("div", { style: { color: "#949494", fontSize: "40px", float: "left" } }, "\u5177\u4F53\u9700\u6C42"),
+                    React.createElement("div", { style: { color: "#333333", fontSize: "40px", marginLeft: "60px", float: "left", width: "70%" } }, "2020\u516C\u53F8\u5458\u5DE5\u57F9\u8BAD\u4F1A\u8BAE\u516C\u53F8\u5458\u5DE5\u57F9\u8BAD\u4F1A\u8BAE\u516C\u53F8\u5458\u5DE5\u57F9\u8BAD\u4F1A\u8BAE\u516C\u53F8\u5458")),
+                React.createElement("div", { style: { fontSize: "40px", color: "#949494", float: "right", margin: "30px 50px 0 0" } }, "\u5DE5\u5355\u7533\u8BF7\u65F6\u95F4\uFF1A2020-02-28 14:38:15"),
                 React.createElement("div", { style: { width: "100%", overflow: "hidden", textAlign: "center" } },
                     React.createElement("div", { style: { border: "2px solid #F2F2F2", width: "90%", margin: "30px 0 0 5%" } })),
                 React.createElement("div", { style: { margin: "30px 0 0 50px" } },
-                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\uFFFD\uFFFD"),
-                    React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "25px", fontWeight: "600" } }, "\u0421\uFFFD\uFFFD"),
-                    React.createElement("span", { style: { color: "#949494", fontSize: "40px", marginLeft: "25px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"),
+                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u7531"),
+                    React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "25px", fontWeight: "600" } }, "\u5C0F\u738B"),
+                    React.createElement("span", { style: { color: "#949494", fontSize: "40px", marginLeft: "25px" } }, "\u5BA1\u6838\u4E8E"),
                     React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "25px" } }, "2020-02-28 17:38:15")),
                 React.createElement("div", { style: { margin: "20px 0 0 50px" } },
-                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\uFFFD\uFFFD\u02FB\u0638\uFFFD:")),
+                    React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u5BA1\u6838\u56DE\u590D:")),
                 React.createElement("div", { style: { margin: "20px 0 0 50px" } },
-                    React.createElement("span", { style: { color: "#333333", fontSize: "40px" } }, "\uFFFD\uFFFD\uFFFD\u0635\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u04AA\u03AC\uFFFD\uFFFD\u02A9\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u07B7\uFFFD\u02B9\uFFFD\uFFFD"))));
+                    React.createElement("span", { style: { color: "#333333", fontSize: "40px" } }, "\u573A\u5730\u5F53\u5929\u9700\u8981\u7EF4\u4FEE\u65BD\u5DE5\uFF0C\u65E0\u6CD5\u4F7F\u7528"))));
         }
     }
     exports.default = workOrderDetail;
@@ -2972,17 +2972,17 @@ define("modificationAuthentication", ["require", "exports", "react", "css!./styl
         constructor() {
             super(...arguments);
             this.state = {
-                inputValue: "�û��ǳ�XXX"
+                inputValue: "用户昵称XXX"
             };
         }
         focus() {
-            if (this.state.inputValue === "�û��ǳ�XXX") {
+            if (this.state.inputValue === "用户昵称XXX") {
                 this.setState({ inputValue: "" });
             }
         }
         blur() {
             if (this.state.inputValue === "") {
-                this.setState({ inputValue: "�û��ǳ�XXX" });
+                this.setState({ inputValue: "用户昵称XXX" });
             }
         }
         change(event) {
@@ -2994,21 +2994,21 @@ define("modificationAuthentication", ["require", "exports", "react", "css!./styl
         render() {
             return (React.createElement("div", { className: "modification-authentication" },
                 React.createElement("div", { className: "modification-authentication-top" },
-                    React.createElement("div", { className: "modification-authentication-title" }, "\uFFFD\uFFFD\uFFFD\uFFFD\u0530\uFFFD\uFFFD")),
+                    React.createElement("div", { className: "modification-authentication-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "personal-center-tag" },
                     React.createElement("div", { style: { paddingLeft: "30px", float: "left" }, onClick: this.goBack.bind(this) },
                         React.createElement("img", { src: "./mpark/image/right.png", style: { transform: "rotate(180deg)", marginBottom: "10px" } }),
-                        React.createElement("span", { style: { color: "#6C6C6C" } }, "\uFFFD\u07B8\uFFFD\uFFFD\uFFFD\u05A4"))),
+                        React.createElement("span", { style: { color: "#6C6C6C" } }, "\u4FEE\u6539\u8BA4\u8BC1"))),
                 React.createElement("div", { className: "modification-authentication-tag", style: { marginTop: "15px" } },
                     React.createElement("div", { style: { paddingLeft: "40px", float: "left" } },
-                        React.createElement("span", { style: { color: "#333333", fontSize: "42px" } }, "\uFFFD\u00FB\uFFFD\uFFFD\u01F3\uFFFD"),
+                        React.createElement("span", { style: { color: "#333333", fontSize: "42px" } }, "\u7528\u6237\u6635\u79F0"),
                         React.createElement("input", { value: this.state.inputValue, className: "modification-authentication-input", onFocus: this.focus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) })),
-                    React.createElement("div", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\uFFFD\u07B8\uFFFD")),
+                    React.createElement("div", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u4FEE\u6539")),
                 React.createElement("div", { className: "modification-authentication-tag" },
                     React.createElement("div", { style: { paddingLeft: "40px", float: "left" } },
-                        React.createElement("span", { style: { color: "#333333", fontSize: "42px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u05A4"),
-                        React.createElement("span", { style: { color: "#949494", fontSize: "42px", marginLeft: "50px" } }, "\uFFFD\uFFFD\u05A4\uFFFD\uFFFD\u03AA\uFFFD\uFFFD\uFFFD\uFFFD\u0531")),
-                    React.createElement("div", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\uFFFD\uFFFD\u05A4"))));
+                        React.createElement("span", { style: { color: "#333333", fontSize: "42px" } }, "\u8EAB\u4EFD\u8BA4\u8BC1"),
+                        React.createElement("span", { style: { color: "#949494", fontSize: "42px", marginLeft: "50px" } }, "\u8BA4\u8BC1\u6210\u4E3A\u7BA1\u7406\u5458")),
+                    React.createElement("div", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u8BA4\u8BC1"))));
         }
     }
     exports.default = ModificationAuthentication;
@@ -3020,7 +3020,7 @@ define("message", ["require", "exports", "react", "css!./styles/message.css"], f
         constructor() {
             super(...arguments);
             this.state = {
-                tagList: ["ȫ��", "�������޵���", "��λ����", "����"],
+                tagList: ["全部", "房屋租赁到期", "车位到期", "参与活动"],
                 tagIndex: 0,
                 workOrderArray: [1, 2, 3, 4, 5, 6, 7, 8, 9]
             };
@@ -3034,10 +3034,10 @@ define("message", ["require", "exports", "react", "css!./styles/message.css"], f
         render() {
             return (React.createElement("div", { className: "work-order" },
                 React.createElement("div", { className: "work-order-top" },
-                    React.createElement("div", { className: "work-order-title" }, "\uFFFD\uFFFD\uFFFD\uFFFD\u0530\uFFFD\uFFFD")),
+                    React.createElement("div", { className: "work-order-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "work-order-back", onClick: this.goBack.bind(this) },
                     React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
-                    React.createElement("span", null, "\uFFFD\u04B5\uFFFD\uFFFD\uFFFD\u03E2")),
+                    React.createElement("span", null, "\u6211\u7684\u6D88\u606F")),
                 React.createElement("div", { className: "work-order-tag" }, this.state.tagList.map((item, index) => {
                     return React.createElement("div", { key: index, className: index === this.state.tagIndex ? "work-order-tag-child-add" : "work-order-tag-child", onClick: e => this.changeTag(index) }, item);
                 })),
@@ -3045,11 +3045,11 @@ define("message", ["require", "exports", "react", "css!./styles/message.css"], f
                     this.state.workOrderArray.map((item, index) => {
                         return React.createElement("div", { key: index, className: "work-order-list-child" },
                             React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 40px" } },
-                                React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u07BC\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD")),
-                            React.createElement("div", { style: { fontSize: "38px", color: "#DB0A0A", margin: "30px 0 0 40px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\u03BB\uFFFD\u00E3\uFFFD\uFFFD\uFFFD\u03E2\uFFFD\uFFFD\u04B5\u0530A\uFFFD\uFFFD215\uFFFD\uFFFD"),
-                            React.createElement("div", { style: { fontSize: "38px", color: "#DB0A0A", margin: "10px 0 0 40px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\u02B1\uFFFD\u48FA2020-03-28 14:38:15"));
+                                React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, "\u623F\u5C4B\u79DF\u8D41\u5373\u5C06\u5230\u671F")),
+                            React.createElement("div", { style: { fontSize: "38px", color: "#DB0A0A", margin: "30px 0 0 40px" } }, "\u623F\u95F4\u4F4D\u7F6E\uFF1A\u4FE1\u606F\u4EA7\u4E1A\u56EDA\u5EA7215\u5BA4"),
+                            React.createElement("div", { style: { fontSize: "38px", color: "#DB0A0A", margin: "10px 0 0 40px" } }, "\u5230\u671F\u65F6\u95F4\uFF1A2020-03-28 14:38:15"));
                     }),
-                    React.createElement("div", { style: { width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "30px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD~"))));
+                    React.createElement("div", { style: { width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "30px" } }, "\u5230\u5E95\u5566~"))));
         }
     }
     exports.default = Message;
@@ -3061,7 +3061,7 @@ define("rentRoom", ["require", "exports", "react", "react-router-dom", "css!./st
         constructor() {
             super(...arguments);
             this.state = {
-                workOrderArray: ["A��-1F-201��", "A��-1F-202��", "A��-1F-203��"],
+                workOrderArray: ["A座-1F-201室", "A座-1F-202室", "A座-1F-203室"],
                 defaultIndex: 0
             };
         }
@@ -3071,11 +3071,11 @@ define("rentRoom", ["require", "exports", "react", "react-router-dom", "css!./st
         render() {
             return (React.createElement("div", { className: "rent-room" },
                 React.createElement("div", { className: "rent-room-top" },
-                    React.createElement("div", { className: "rent-room-title" }, "\uFFFD\uFFFD\uFFFD\uFFFD\u0530\uFFFD\uFFFD")),
+                    React.createElement("div", { className: "rent-room-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "rent-room-back" },
                     React.createElement("div", { style: { float: "left" }, onClick: this.goBack.bind(this) },
                         React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
-                        React.createElement("span", null, "\uFFFD\uFFFD\uFFFD\u00F7\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"))),
+                        React.createElement("span", null, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"))),
                 React.createElement("div", { className: "rent-room-list" },
                     this.state.workOrderArray.map((item, index) => {
                         return React.createElement(react_router_dom_5.Link, { to: "/rentRoomDetail" },
@@ -3084,20 +3084,20 @@ define("rentRoom", ["require", "exports", "react", "react-router-dom", "css!./st
                                     React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, item),
                                     React.createElement("img", { style: { float: "right", marginRight: "40px" }, src: "./mpark/image/right.png" })),
                                 React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" } },
-                                    "\u02B9\uFFFD\uFFFD\u05F4\u032C\uFFFD\uFFFD",
-                                    React.createElement("span", { style: { marginLeft: "30px", color: "#333333" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD")),
+                                    "\u4F7F\u7528\u72B6\u6001\uFF1A",
+                                    React.createElement("span", { style: { marginLeft: "30px", color: "#333333" } }, "\u79DF\u7528\u4E2D")),
                                 React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "10px 0 0 40px", overflow: "hidden" } },
                                     React.createElement("div", { style: { float: "left" } },
-                                        "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u06A3\uFFFD",
+                                        "\u79DF\u7528\u65E5\u671F\uFF1A",
                                         React.createElement("span", { style: { color: "#F53636", marginLeft: "28px" } }, "2020-03-20 ~ 2021-03-20")),
                                     this.state.defaultIndex === index ?
                                         React.createElement("div", { style: {
                                                 float: "right", backgroundColor: "#0BC491", color: "#ffffff", width: "160px", height: "55px", borderRadius: "50px",
                                                 marginRight: "40px", fontSize: "32px", textAlign: "center", lineHeight: "55px"
-                                            } }, "\u012C\uFFFD\uFFFD\u0579\u02BE") : null)));
+                                            } }, "\u9ED8\u8BA4\u5C55\u793A") : null)));
                     }),
                     React.createElement(react_router_dom_5.Link, { to: "/defaultRentRoom" },
-                        React.createElement("div", { style: { width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "50px", color: "#0B8BF0" } }, "\u0461\uFFFD\uFFFD\u012C\uFFFD\uFFFD\u0579\u02BE\uFFFD\uFFFD\uFFFD\uFFFD")))));
+                        React.createElement("div", { style: { width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "50px", color: "#0B8BF0" } }, "\u9009\u62E9\u9ED8\u8BA4\u5C55\u793A\u623F\u95F4")))));
         }
     }
     exports.default = RentRoom;
@@ -3116,29 +3116,29 @@ define("rentRoomDetail", ["require", "exports", "react", "css!./styles/rentRoomD
         render() {
             return (React.createElement("div", { className: "rent-room-detail" },
                 React.createElement("div", { className: "rent-room-top" },
-                    React.createElement("div", { className: "rent-room-title" }, "\uFFFD\uFFFD\uFFFD\uFFFD\u0530\uFFFD\uFFFD")),
+                    React.createElement("div", { className: "rent-room-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "rent-room-back" },
                     React.createElement("div", { style: { float: "left" }, onClick: this.goBack.bind(this) },
                         React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
-                        React.createElement("span", null, "\uFFFD\uFFFD\uFFFD\u00F7\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"))),
+                        React.createElement("span", null, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"))),
                 React.createElement("div", { className: "rent-room-detail-content" },
                     React.createElement("div", { style: { overflow: "hidden", marginBottom: "20px" } },
-                        React.createElement("div", { style: { float: "left", width: "22%" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"),
-                        React.createElement("div", { style: { color: "#333333", marginLeft: "30px", float: "left", width: "60%" } }, "A\uFFFD\uFFFD-1F-201\uFFFD\uFFFD")),
+                        React.createElement("div", { style: { float: "left", width: "22%" } }, "\u623F\u95F4\u540D\u79F0"),
+                        React.createElement("div", { style: { color: "#333333", marginLeft: "30px", float: "left", width: "60%" } }, "A\u5EA7-1F-201\u5BA4")),
                     React.createElement("div", { style: { overflow: "hidden", marginBottom: "20px" } },
-                        React.createElement("div", { style: { float: "left", width: "22%" } }, "\u02B9\uFFFD\uFFFD\u05F4\u032C"),
-                        React.createElement("div", { style: { color: "#333333", marginLeft: "30px", float: "left", width: "60%" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD")),
+                        React.createElement("div", { style: { float: "left", width: "22%" } }, "\u4F7F\u7528\u72B6\u6001"),
+                        React.createElement("div", { style: { color: "#333333", marginLeft: "30px", float: "left", width: "60%" } }, "\u79DF\u7528\u4E2D")),
                     React.createElement("div", { style: { overflow: "hidden", marginBottom: "20px" } },
-                        React.createElement("div", { style: { float: "left", width: "22%" } }, "\uFFFD\uFFFD\uFFFD\u00F5\uFFFD\u03BB"),
-                        React.createElement("div", { style: { color: "#333333", marginLeft: "30px", float: "left", width: "60%" } }, "\uFFFD\u3F6D\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u03E2\uFFFD\u01BC\uFFFD\uFFFD\uFFFD\uFFFD\u07B9\uFFFD\u02FE")),
+                        React.createElement("div", { style: { float: "left", width: "22%" } }, "\u79DF\u7528\u5355\u4F4D"),
+                        React.createElement("div", { style: { color: "#333333", marginLeft: "30px", float: "left", width: "60%" } }, "\u6D59\u6C5F\u6C38\u62D3\u4FE1\u606F\u79D1\u6280\u6709\u9650\u516C\u53F8")),
                     React.createElement("div", { style: { overflow: "hidden", marginBottom: "20px" } },
-                        React.createElement("div", { style: { float: "left", width: "22%" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"),
-                        React.createElement("div", { style: { color: "#333333", marginLeft: "30px", float: "left", width: "60%" } }, "\u0421\uFFFD\uFFFD")),
+                        React.createElement("div", { style: { float: "left", width: "22%" } }, "\u79DF\u7528\u4EBA"),
+                        React.createElement("div", { style: { color: "#333333", marginLeft: "30px", float: "left", width: "60%" } }, "\u5C0F\u660E")),
                     React.createElement("div", { style: { overflow: "hidden", marginBottom: "20px" } },
-                        React.createElement("div", { style: { float: "left", width: "22%" } }, "\uFFFD\uFFFD\u03F5\uFFFD\u7EF0"),
+                        React.createElement("div", { style: { float: "left", width: "22%" } }, "\u8054\u7CFB\u7535\u8BDD"),
                         React.createElement("div", { style: { color: "#333333", marginLeft: "30px", float: "left", width: "60%" } }, "123456789")),
                     React.createElement("div", { style: { overflow: "hidden", marginBottom: "20px" } },
-                        React.createElement("div", { style: { float: "left", width: "22%" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"),
+                        React.createElement("div", { style: { float: "left", width: "22%" } }, "\u79DF\u7528\u65E5\u671F"),
                         React.createElement("div", { style: { color: "#F53636", marginLeft: "30px", float: "left", width: "60%" } }, "2020-03-20 ~ 2021-03-20")))));
         }
     }
@@ -3151,7 +3151,7 @@ define("parkWorkOrder", ["require", "exports", "react", "react-router-dom", "css
         constructor() {
             super(...arguments);
             this.state = {
-                tagList: ["ȫ��", "�����", "��ͨ��", "δͨ��", "��ת��"],
+                tagList: ["全部", "审核中", "已通过", "未通过", "已转单"],
                 tagIndex: 0,
                 workOrderArray: [1, 2, 3, 4, 5, 6, 7, 8, 9]
             };
@@ -3165,10 +3165,10 @@ define("parkWorkOrder", ["require", "exports", "react", "react-router-dom", "css
         render() {
             return (React.createElement("div", { className: "work-order" },
                 React.createElement("div", { className: "work-order-top" },
-                    React.createElement("div", { className: "work-order-title" }, "\uFFFD\uFFFD\uFFFD\uFFFD\u0530\uFFFD\uFFFD")),
+                    React.createElement("div", { className: "work-order-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "work-order-back", onClick: this.goBack.bind(this) },
                     React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
-                    React.createElement("span", null, "\uFFFD\u04B5\u0139\uFFFD\uFFFD\uFFFD")),
+                    React.createElement("span", null, "\u6211\u7684\u5DE5\u5355")),
                 React.createElement("div", { className: "work-order-tag" }, this.state.tagList.map((item, index) => {
                     return React.createElement("div", { key: index, className: index === this.state.tagIndex ? "work-order-tag-child-add" : "work-order-tag-child", onClick: e => this.changeTag(index) }, item);
                 })),
@@ -3177,17 +3177,17 @@ define("parkWorkOrder", ["require", "exports", "react", "react-router-dom", "css
                         return React.createElement(react_router_dom_6.Link, { to: "/workOrderDetail" },
                             React.createElement("div", { key: index, className: "work-order-list-child" },
                                 React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 40px" } },
-                                    React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, "\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\u05A4\uFFFD\uFFFD\uFFFD\uFFFD1"),
+                                    React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, "\u4F01\u4E1A\u8BA4\u8BC1\u5DE5\u53551"),
                                     React.createElement("img", { style: { float: "right", marginRight: "40px" }, src: "./mpark/image/right.png" })),
-                                React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u02E3\uFFFD\u012AXX"),
+                                React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" } }, "\u7533\u8BF7\u4EBA\uFF1A\u83ABXX"),
                                 React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "10px 0 0 40px", overflow: "hidden" } },
-                                    React.createElement("div", { style: { float: "left" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\u02B1\uFFFD\u48FA2020-02-28 14:38:15"),
+                                    React.createElement("div", { style: { float: "left" } }, "\u7533\u8BF7\u65F6\u95F4\uFF1A2020-02-28 14:38:15"),
                                     React.createElement("div", { style: {
                                             float: "right", backgroundColor: "#0BC491", color: "#ffffff", width: "130px", height: "55px", borderRadius: "50px",
                                             marginRight: "40px", fontSize: "32px", textAlign: "center", lineHeight: "55px"
-                                        } }, "\uFFFD\uFFFD\u0368\uFFFD\uFFFD"))));
+                                        } }, "\u5DF2\u901A\u8FC7"))));
                     }),
-                    React.createElement("div", { style: { width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "30px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD~"))));
+                    React.createElement("div", { style: { width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "30px" } }, "\u5230\u5E95\u5566~"))));
         }
     }
     exports.default = ParkWorkOrder;
@@ -3206,15 +3206,15 @@ define("serviceTel", ["require", "exports", "react", "css!./styles/serviceTel.cs
         render() {
             return (React.createElement("div", { className: "rent-room" },
                 React.createElement("div", { className: "rent-room-top" },
-                    React.createElement("div", { className: "rent-room-title" }, "\uFFFD\uFFFD\uFFFD\uFFFD\u0530\uFFFD\uFFFD")),
+                    React.createElement("div", { className: "rent-room-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "rent-room-back" },
                     React.createElement("div", { style: { float: "left" }, onClick: this.goBack.bind(this) },
                         React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
-                        React.createElement("span", null, "\uFFFD\u0377\uFFFD\uFFFD\u7EF0"))),
+                        React.createElement("span", null, "\u5BA2\u670D\u7535\u8BDD"))),
                 React.createElement("div", { className: "service-tel" },
-                    React.createElement("span", null, "\uFFFD\u0377\uFFFD\uFFFD\u7EF0"),
+                    React.createElement("span", null, "\u5BA2\u670D\u7535\u8BDD"),
                     React.createElement("span", { style: { marginLeft: "90px" } }, "0773-123456"),
-                    React.createElement("span", { style: { float: "right", color: "#0B8BF0", marginRight: "50px" } }, "\uFFFD\u07B8\uFFFD"))));
+                    React.createElement("span", { style: { float: "right", color: "#0B8BF0", marginRight: "50px" } }, "\u4FEE\u6539"))));
         }
     }
     exports.default = ServiceTel;
@@ -3226,19 +3226,19 @@ define("searchUser", ["require", "exports", "react", "css!./styles/searchUser.cs
         constructor() {
             super(...arguments);
             this.state = {
-                inputValue: "������Ա",
+                inputValue: "搜索人员",
                 listArr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
                 tagIndex: 0,
             };
         }
         foucus() {
-            if (this.state.inputValue === "������Ա") {
+            if (this.state.inputValue === "搜索人员") {
                 this.setState({ inputValue: "" });
             }
         }
         blur() {
             if (this.state.inputValue === "") {
-                this.setState({ inputValue: "������Ա" });
+                this.setState({ inputValue: "搜索人员" });
             }
         }
         change(event) {
@@ -3253,23 +3253,23 @@ define("searchUser", ["require", "exports", "react", "css!./styles/searchUser.cs
         render() {
             return (React.createElement("div", { className: "infoarea" },
                 React.createElement("div", { className: "infoarea-top" },
-                    React.createElement("div", { className: "infoarea-title" }, "\uFFFD\uFFFD\uFFFD\uFFFD\u0530\uFFFD\uFFFD"),
+                    React.createElement("div", { className: "infoarea-title" }, "\u6570\u5B57\u56ED\u533A"),
                     React.createElement("div", { className: "infoarea-child-top" },
                         React.createElement("img", { src: "./mpark/image/whiteBack.png", style: { margin: "0 10px 30px -15px", padding: "15px 15px 15px 15px" }, onClick: this.goBack.bind(this) }),
                         React.createElement("input", { className: "infoarea-input", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) }),
                         React.createElement("img", { src: "./mpark/image/search.png", className: "infoarea-search-img" }),
-                        React.createElement("span", { className: "infoarea-sreach-bt" }, "\uFFFD\uFFFD\uFFFD\uFFFD"))),
+                        React.createElement("span", { className: "infoarea-sreach-bt" }, "\u641C\u7D22"))),
                 React.createElement("div", { className: "search-user-list" },
                     this.state.listArr.map((item, index) => {
                         return (React.createElement("div", { key: index, className: "search-user-list-child", onClick: e => this.clickTag(index) },
-                            React.createElement("span", { style: { float: "left" } }, "\u0421\uFFFD\uFFFD"),
+                            React.createElement("span", { style: { float: "left" } }, "\u5C0F\u660E"),
                             React.createElement("div", { style: { float: "right" } },
                                 React.createElement("img", { src: this.state.tagIndex === index ? "./mpark/image/checked.png" : "./mpark/image/unchecked.png" }))));
                     }),
-                    React.createElement("div", { style: { width: "100%", height: "350px", textAlign: "center", fontSize: "40px", lineHeight: "100px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD~")),
+                    React.createElement("div", { style: { width: "100%", height: "350px", textAlign: "center", fontSize: "40px", lineHeight: "100px" } }, "\u5230\u5E95\u5566~")),
                 React.createElement("div", { className: "rent-room-detail-bottom" },
-                    React.createElement("div", { style: { float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", color: "#6C6C6C", backgroundColor: "#F2F2F2" } }, "\u0221\uFFFD\uFFFD"),
-                    React.createElement("div", { style: { float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", backgroundColor: "#0B8BF0", color: "#ffffff" } }, "\uFFFD\u1F7B"))));
+                    React.createElement("div", { style: { float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", color: "#6C6C6C", backgroundColor: "#F2F2F2" } }, "\u53D6\u6D88"),
+                    React.createElement("div", { style: { float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", backgroundColor: "#0B8BF0", color: "#ffffff" } }, "\u63D0\u4EA4"))));
         }
     }
     exports.default = SearchUser;
@@ -3285,13 +3285,17 @@ define("ring", ["require", "exports", "react", "css!./styles/ring.css"], functio
                 ringRadius: this.props.ringRadius,
                 ringWidth: this.props.ringWidth,
                 fontSize: this.props.fontSize,
-                RingName: this.props.RingName,
-                RingNumber: this.props.RingNumber
+                ringName: this.props.ringName,
+                ringNumber: this.props.ringNumber,
+                label: true
             };
             this.state = {
                 ringList: [],
                 innerRingRadius: 0,
-                fontTop: 0
+                fontTop: 0,
+                label: false,
+                ringName: "",
+                ringNumber: 0,
             };
         }
         componentDidMount() {
@@ -3309,33 +3313,42 @@ define("ring", ["require", "exports", "react", "css!./styles/ring.css"], functio
             this.props.ringList.map(item => {
                 if (item.percentage / 0.25 > 1) {
                     for (let i = 1; i <= item.percentage / 0.25; i++) {
-                        ringList.push({ color: item.color, percentage: 0.25, position: position, length: 91 });
+                        ringList.push({ color: item.color, percentage: 0.25, position: position, length: 91, name: item.name, number: item.number });
                         position = position + 90;
                     }
                     if (item.percentage % 0.25 !== 0) {
                         percentageFloat = parseFloat("0." + (item.percentage / 0.25).toString().replace(/\d+\.(\d*)/, "$1"));
-                        ringList.push({ color: item.color, percentage: percentageFloat * 0.25, position: position, length: percentageFloat * 0.25 * 360 });
+                        ringList.push({ color: item.color, percentage: percentageFloat * 0.25, position: position, length: percentageFloat * 0.25 * 360, name: item.name, number: item.number });
                         position = position + percentageFloat * 90;
                     }
                 }
                 else {
-                    ringList.push({ color: item.color, percentage: item.percentage, position: position, length: item.percentage * 360 });
+                    ringList.push({ color: item.color, percentage: item.percentage, position: position, length: item.percentage * 360, name: item.name, number: item.number });
                     position = position + item.percentage * 360;
                 }
             });
-            this.setState({ ringList: ringList });
+            this.setState({ ringList: ringList, label: this.props.label ? true : this.props.label, ringName: this.props.ringName, ringNumber: this.props.ringNumber });
+        }
+        choiceType(index) {
+            this.setState({ ringName: this.state.ringList[index].name, ringNumber: this.state.ringList[index].number });
         }
         render() {
             return (React.createElement("div", { className: "ring" },
                 React.createElement("div", { className: "ring-a", style: { width: this.props.ringRadius * 2, height: this.props.ringRadius * 2 } },
                     React.createElement("div", { className: "inner-ring", style: { width: this.state.innerRingRadius * 2, height: this.state.innerRingRadius * 2, margin: this.props.ringRadius - this.state.innerRingRadius, fontSize: this.props.fontSize } },
                         React.createElement("div", { style: { width: "100%", height: "50%", paddingTop: this.state.fontTop } },
-                            React.createElement("div", null, this.props.RingName)),
+                            React.createElement("div", null, this.state.ringName)),
                         React.createElement("div", { style: { width: "100%", height: "50%" } },
-                            React.createElement("div", null, this.props.RingNumber))),
+                            React.createElement("div", null, this.state.ringNumber))),
                     this.state.ringList.map((item, index) => {
-                        return (React.createElement("div", { key: index, className: "ring-common", style: { backgroundColor: item.color, transform: "rotate(" + item.position + "deg)" + " " + "skewY(" + (item.length - 90) + "deg)" } }));
-                    }))));
+                        return (React.createElement("div", { key: index, className: "ring-common", style: { backgroundColor: item.color, transform: "rotate(" + item.position + "deg)" + " " + "skewY(" + (item.length - 90) + "deg)" }, onClick: e => this.choiceType(index) }));
+                    })),
+                this.state.label ?
+                    React.createElement("div", { style: { float: "left", height: this.props.ringRadius * 2, paddingTop: (this.props.ringRadius * 2 - this.props.ringRadius * 2 / 1.5 + (this.props.ringRadius * 2 / 1.5 / 4)) / 2 } }, this.props.ringList.map((item, index) => {
+                        return (React.createElement("div", { style: { width: "100%", height: this.props.ringRadius * 2 / this.state.ringList.length / 1.5, overflow: "hidden", marginLeft: "60px" }, key: index },
+                            React.createElement("div", { style: { height: "30px", width: "30px", border: "5px solid " + item.color, borderRadius: "50%", float: "left", marginTop: "10px" } }),
+                            React.createElement("div", { style: { float: "left", color: "#333333", fontSize: "32px", marginLeft: "30px" } }, item.name)));
+                    })) : null));
         }
     }
     exports.default = Ring;
@@ -3351,14 +3364,14 @@ define("statisticalStatement", ["require", "exports", "react", "ring", "css!./st
             };
             this.state = {
                 ringList: [
-                    { color: "pink", percentage: 0.5, position: 0, length: 0 }, { color: "yellow", percentage: 0.1, position: 0, length: 0 }, { color: "greenyellow", percentage: 0.25, position: 0, length: 0 },
-                    { color: "lavenderblush", percentage: 0.15, position: 0, length: 0 }
+                    { color: "#55D8FE", percentage: 0.5, name: "厂房", number: 200 }, { color: "#FF8373", percentage: 0.1, name: "套间", number: 1000 }, { color: "#FFDA83", percentage: 0.25, name: "单间", number: 500 },
+                    { color: "#A3A0FB", percentage: 0.15, name: "房间", number: 300 }
                 ],
-                ringRadius: 300,
+                ringRadius: 250,
                 ringWidth: 100,
                 fontSize: 50,
-                RingName: "房间",
-                RingNumber: 1200
+                ringName: "总数",
+                ringNumber: 2000
             };
         }
         goBack() {
@@ -3366,14 +3379,18 @@ define("statisticalStatement", ["require", "exports", "react", "ring", "css!./st
         }
         render() {
             return (React.createElement("div", { className: "rent-room" },
-                React.createElement("div", { className: "rent-room-top" },
-                    React.createElement("div", { className: "rent-room-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "rent-room-back" },
                     React.createElement("div", { style: { float: "left" }, onClick: this.goBack.bind(this) },
                         React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
                         React.createElement("span", null, "\u5BA2\u670D\u7535\u8BDD"))),
-                React.createElement("div", { className: "statistical-statementl-a" },
-                    React.createElement(ring_1.default, { ringList: this.state.ringList, ringRadius: this.state.ringRadius, ringWidth: this.state.ringWidth, fontSize: this.state.fontSize, RingName: this.state.RingName, RingNumber: this.state.RingNumber }))));
+                ["房屋面积统计", "出租统计", "入驻分类统计"].map((item, index) => {
+                    return (React.createElement("div", { className: "statistical-statementl-child", key: index },
+                        React.createElement("div", { className: "statistical-statement-sign" },
+                            React.createElement("div", { style: { height: "100%", width: "12px", backgroundColor: "#0B8BF0", float: "left", marginRight: "25px" } }),
+                            React.createElement("div", { style: { float: "left" } }, item)),
+                        React.createElement("div", { style: { width: "100%", padding: "90px 20px 20px 80px" } },
+                            React.createElement(ring_1.default, { ringList: this.state.ringList, ringRadius: this.state.ringRadius, ringWidth: this.state.ringWidth, fontSize: this.state.fontSize, ringName: this.state.ringName, ringNumber: this.state.ringNumber, label: true }))));
+                })));
         }
     }
     exports.default = StatisticalStatement;
@@ -3423,10 +3440,10 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         constructor(props) {
             super(props);
             this.state = {
-                inputValue: "������԰������",
+                inputValue: "请输入园区名称",
                 city: "",
                 parkArr: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-                tagArr: ["������Ϣ", "���¼���", "���̷���"]
+                tagArr: ["电子信息", "高新技术", "电商服务"]
             };
             this.props = {
                 history: this.props.history
@@ -3443,22 +3460,22 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
                 }
                 else {
                     if (this.getStatus() === 6) {
-                        console.log("û��Ȩ��");
+                        console.log("没有权限");
                     }
                     if (this.getStatus() === 8) {
-                        console.log("���ӳ�ʱ");
+                        console.log("连接超时");
                     }
                 }
             });
         }
         foucus() {
-            if (this.state.inputValue === "������԰������") {
+            if (this.state.inputValue === "请输入园区名称") {
                 this.setState({ inputValue: "" });
             }
         }
         blur() {
             if (this.state.inputValue === "") {
-                this.setState({ inputValue: "������԰������" });
+                this.setState({ inputValue: "请输入园区名称" });
             }
         }
         change(event) {
@@ -3466,7 +3483,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         }
         render() {
             return (React.createElement("div", { className: "index" },
-                React.createElement("div", { className: "index-top" }, "\uFFFD\uFFFD\uFFFD\uFFFD\u0530\uFFFD\uFFFD"),
+                React.createElement("div", { className: "index-top" }, "\u6570\u5B57\u56ED\u533A"),
                 React.createElement("div", { className: "index-input-div" },
                     React.createElement("div", { className: "index-child-left" },
                         React.createElement("input", { className: "index-input", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) }),
@@ -3476,9 +3493,9 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
                         React.createElement("img", { src: "./mpark/image/bottom.png", width: "50px", height: "50px", style: { marginTop: "-10px" } }))),
                 React.createElement("div", { className: "index-number" },
                     React.createElement("img", { src: "./mpark/image/tower.png", className: "tower-img" }),
-                    "\uFFFD\uFFFD\uFFFD\uFFFD",
+                    "\u5DF2\u6709",
                     React.createElement("span", { style: { color: "#0B8BF0", margin: "0 15px 0 15px" } }, "15"),
-                    "\uFFFD\uFFFD\u0530\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"),
+                    "\u5BB6\u56ED\u533A\u4E0A\u7EBF"),
                 React.createElement("div", { className: "index-park" },
                     this.state.parkArr.map((item, index) => {
                         return React.createElement(react_router_dom_8.Link, { to: "/home" },
@@ -3486,17 +3503,17 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
                                 React.createElement("div", { className: "index-child-park-left" },
                                     React.createElement("img", { src: "./mpark/image/a.jpg", className: "park-img" })),
                                 React.createElement("div", { className: "index-child-park-right" },
-                                    React.createElement("div", { className: "index-park-name" }, "\uFFFD\uFFFD\uFFFD\u05B9\uFFFD\uFFFD\u04B8\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u03E2\uFFFD\uFFFD\u04B5\u0530"),
+                                    React.createElement("div", { className: "index-park-name" }, "\u6842\u6797\u56FD\u5BB6\u9AD8\u65B0\u533A\u4FE1\u606F\u4EA7\u4E1A\u56ED"),
                                     React.createElement("div", { className: "index-park-position" },
                                         React.createElement("img", { src: "./mpark/image/position.png", width: "45px", height: "40px", style: { marginTop: "-18px" } }),
-                                        React.createElement("span", { className: "index-park-position-name" }, "\uFFFD\uFFFD\uFFFD\u05B8\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u00B7D-12\uFFFD\uFFFD")),
+                                        React.createElement("span", { className: "index-park-position-name" }, "\u6842\u6797\u9AD8\u65B0\u533A\u671D\u9633\u8DEFD-12\u53F7")),
                                     React.createElement("div", { className: "index-tag" }, this.state.tagArr.map((item, index) => {
                                         return React.createElement("div", { key: index, className: "index-tag-child" }, item);
                                     }))),
                                 React.createElement("div", { className: "index-child-park-end" },
                                     React.createElement("div", { className: "index-distance" }, "10.5km"))));
                     }),
-                    React.createElement("div", { style: { width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginLeft: "-25px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD~")),
+                    React.createElement("div", { style: { width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginLeft: "-25px" } }, "\u5230\u5E95\u5566~")),
                 React.createElement("div", { className: "index-bottom-logo" },
                     React.createElement("img", { src: "./mpark/image/bottomLogo.png", className: "index-bottom-logo-img" }))));
         }

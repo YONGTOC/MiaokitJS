@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import "css!./styles/rentRoom.css"
 import { Link } from 'react-router-dom';
 
@@ -12,11 +12,11 @@ interface IState {
 
 class RentRoom extends React.Component {
   public readonly state: Readonly<IState> = {
-    workOrderArray: ["A×ù-1F-201ÊÒ", "A×ù-1F-202ÊÒ", "A×ù-1F-203ÊÒ"],
+    workOrderArray: ["Aåº§-1F-201å®¤", "Aåº§-1F-202å®¤", "Aåº§-1F-203å®¤"],
     defaultIndex: 0
   }
 
-  // ·µ»Ø
+  // è¿”å›
   goBack() {
     this.props.history.goBack()
   }
@@ -26,13 +26,13 @@ class RentRoom extends React.Component {
       <div className="rent-room">
         <div className="rent-room-top">
           <div className="rent-room-title">
-            Êı×ÖÔ°Çø
+            æ•°å­—å›­åŒº
           </div>
         </div>
         <div className="rent-room-back">
           <div style={{ float: "left" }} onClick={this.goBack.bind(this)}>
             <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
-            <span>×âÓÃ·¿¼ä¹ÜÀí</span>
+            <span>ç§Ÿç”¨æˆ¿é—´ç®¡ç†</span>
           </div>
         </div>
         <div className="rent-room-list">
@@ -45,15 +45,15 @@ class RentRoom extends React.Component {
                     <img style={{ float: "right", marginRight: "40px" }} src="./mpark/image/right.png" />
                   </div>
                   <div style={{ fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" }}>
-                    Ê¹ÓÃ×´Ì¬£º<span style={{ marginLeft: "30px", color: "#333333" }}>×âÓÃÖĞ</span>
+                    ä½¿ç”¨çŠ¶æ€ï¼š<span style={{ marginLeft: "30px", color: "#333333" }}>ç§Ÿç”¨ä¸­</span>
                   </div>
                   <div style={{ fontSize: "38px", color: "#949494", margin: "10px 0 0 40px", overflow: "hidden" }}>
-                    <div style={{ float: "left" }}>×âÓÃÈÕÆÚ£º<span style={{ color: "#F53636", marginLeft: "28px" }}>2020-03-20 ~ 2021-03-20</span></div>
+                    <div style={{ float: "left" }}>ç§Ÿç”¨æ—¥æœŸï¼š<span style={{ color: "#F53636", marginLeft: "28px" }}>2020-03-20 ~ 2021-03-20</span></div>
                     {this.state.defaultIndex === index ?
                       <div style={{
                         float: "right", backgroundColor: "#0BC491", color: "#ffffff", width: "160px", height: "55px", borderRadius: "50px",
                         marginRight: "40px", fontSize: "32px", textAlign: "center", lineHeight: "55px"
-                      }}>Ä¬ÈÏÕ¹Ê¾</div> : null
+                      }}>é»˜è®¤å±•ç¤º</div> : null
                     }
                   </div>
                 </div>
@@ -61,7 +61,7 @@ class RentRoom extends React.Component {
             })
           }
           <Link to="/defaultRentRoom">
-            <div style={{ width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "50px", color: "#0B8BF0" }}>Ñ¡ÔñÄ¬ÈÏÕ¹Ê¾·¿¼ä</div>
+            <div style={{ width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "50px", color: "#0B8BF0" }}>é€‰æ‹©é»˜è®¤å±•ç¤ºæˆ¿é—´</div>
           </Link>
         </div>
       </div>

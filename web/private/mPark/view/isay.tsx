@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import "css!./styles/isay.css"
 
 interface IProps {
@@ -13,52 +13,52 @@ interface IState {
 
 class Isay extends React.Component {
   public readonly state: Readonly<IState> = {
-    tagArray: [{ name: "×ÉÑ¯" }, { name: "½¨Òé" }, { name: "Í¶Ëß" }, { name: "ÆäËü" }],
+    tagArray: [{ name: "å’¨è¯¢" }, { name: "å»ºè®®" }, { name: "æŠ•è¯‰" }, { name: "å…¶å®ƒ" }],
     tagIndex: 0,
-    inputValue: "²»ÄÜÉÙÓÚ3¸ö×ÖÇÒ²»ÄÜ´óÓÚ33¸ö×Ö", // Ö÷ÌâÄ¬ÈÏÖµ
-    textareaValue: "Çë½«ÁôÑÔÄÚÈİÃèÊö³öÀ´£¨200×ÖÄÚ£©"
+    inputValue: "ä¸èƒ½å°‘äº3ä¸ªå­—ä¸”ä¸èƒ½å¤§äº33ä¸ªå­—", // ä¸»é¢˜é»˜è®¤å€¼
+    textareaValue: "è¯·å°†ç•™è¨€å†…å®¹æè¿°å‡ºæ¥ï¼ˆ200å­—å†…ï¼‰"
   }
 
 
-  // ¾Û½¹
+  // èšç„¦
   inputFoucus() {
-    if (this.state.inputValue === "²»ÄÜÉÙÓÚ3¸ö×ÖÇÒ²»ÄÜ´óÓÚ33¸ö×Ö") {
+    if (this.state.inputValue === "ä¸èƒ½å°‘äº3ä¸ªå­—ä¸”ä¸èƒ½å¤§äº33ä¸ªå­—") {
       this.setState({ inputValue: "" })
     }
   }
 
-  // Ê§½¹
+  // å¤±ç„¦
   inputBlur() {
     if (this.state.inputValue === "") {
-      this.setState({ inputValue: "²»ÄÜÉÙÓÚ3¸ö×ÖÇÒ²»ÄÜ´óÓÚ33¸ö×Ö" })
+      this.setState({ inputValue: "ä¸èƒ½å°‘äº3ä¸ªå­—ä¸”ä¸èƒ½å¤§äº33ä¸ªå­—" })
     }
   }
 
-  // ÊäÈë
+  // è¾“å…¥
   inputChange(event) {
     this.setState({ inputValue: event.target.value })
   }
 
-  // ¾Û½¹
+  // èšç„¦
   textareaFoucus() {
-    if (this.state.textareaValue === "Çë½«ÁôÑÔÄÚÈİÃèÊö³öÀ´£¨200×ÖÄÚ£©") {
+    if (this.state.textareaValue === "è¯·å°†ç•™è¨€å†…å®¹æè¿°å‡ºæ¥ï¼ˆ200å­—å†…ï¼‰") {
       this.setState({ textareaValue: "" })
     }
   }
 
-  // Ê§½¹
+  // å¤±ç„¦
   textareaBlur() {
     if (this.state.textareaValue === "") {
-      this.setState({ textareaValue: "Çë½«ÁôÑÔÄÚÈİÃèÊö³öÀ´£¨200×ÖÄÚ£©" })
+      this.setState({ textareaValue: "è¯·å°†ç•™è¨€å†…å®¹æè¿°å‡ºæ¥ï¼ˆ200å­—å†…ï¼‰" })
     }
   }
 
-  // ÊäÈë
+  // è¾“å…¥
   textareaChange(event) {
     this.setState({ textareaValue: event.target.value })
   }
 
-  // ·µ»Ø
+  // è¿”å›
   goBack() {
     this.props.history.goBack()
   }
@@ -67,14 +67,14 @@ class Isay extends React.Component {
     return (
       <div className="isay">
         <div className="isay-top">
-          <div className="isay-title">Êı×ÖÔ°Çø</div>
+          <div className="isay-title">æ•°å­—å›­åŒº</div>
         </div>
         <div className="isay-back">
           <img src="./mpark/image/back.png" style={{ marginBottom: "25px" }} onClick={this.goBack.bind(this)} />
-          <span style={{ color: "#6C6C6C", fontSize: "40px", marginLeft: "15px"}}>ÎÒÓĞ»°Ëµ</span>
+          <span style={{ color: "#6C6C6C", fontSize: "40px", marginLeft: "15px"}}>æˆ‘æœ‰è¯è¯´</span>
         </div>
         <div style={{ fontSize: "40px", color: "#949494", margin: "20px 0 0 35px", overflow: "hidden" }}>
-          <div className="isay-star"></div><div style={{ float: "left", marginLeft: "15px" }}>ÁôÑÔÀà±ğ:</div>
+          <div className="isay-star"></div><div style={{ float: "left", marginLeft: "15px" }}>ç•™è¨€ç±»åˆ«:</div>
         </div>
         <div className="isay-tag">
           {this.state.tagArray.map((item, index) => {
@@ -87,18 +87,18 @@ class Isay extends React.Component {
         </div>
         <div style={{ borderTop: "3px solid #F2F2F2", marginTop: "30px", margin: "0 30px 0 30px" }}></div>
         <div style={{ fontSize: "40px", color: "#949494", margin: "20px 0 0 35px", overflow: "hidden" }}>
-          <div className="isay-star"></div><div style={{ float: "left", marginLeft: "15px" }}>ÁôÑÔÖ÷Ìâ:</div>
+          <div className="isay-star"></div><div style={{ float: "left", marginLeft: "15px" }}>ç•™è¨€ä¸»é¢˜:</div>
         </div>
         <div className="isay-theme">
           <input className="isay-theme-input" value={this.state.inputValue} onFocus={this.inputFoucus.bind(this)} onBlur={this.inputBlur.bind(this)} onChange={this.inputChange.bind(this)} />
         </div>
         <div style={{ fontSize: "40px", color: "#949494", margin: "30px 0 0 35px", overflow: "hidden" }}>
-          <div className="isay-star"></div><div style={{ float: "left", marginLeft: "15px" }}>ÁôÑÔÄÚÈİ:</div>
+          <div className="isay-star"></div><div style={{ float: "left", marginLeft: "15px" }}>ç•™è¨€å†…å®¹:</div>
         </div>
         <div className="isay-content">
           <textarea className="isay-content-textarea" value={this.state.textareaValue} onFocus={this.textareaFoucus.bind(this)} onBlur={this.textareaBlur.bind(this)} onChange={this.textareaChange.bind(this)} />
         </div>
-        <div className="isay-submit">Ìá½»</div>
+        <div className="isay-submit">æäº¤</div>
       </div>
     )
   }

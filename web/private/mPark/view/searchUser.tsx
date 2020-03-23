@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import "css!./styles/searchUser.css"
 
 interface IProps {
@@ -12,36 +12,36 @@ interface IState {
 
 class SearchUser extends React.Component {
   public readonly state: Readonly<IState> = {
-    inputValue: "ËÑË÷ÈËÔ±", // ÊäÈë¿òÄ¬ÈÏÖµ
+    inputValue: "æœç´¢äººå‘˜", // è¾“å…¥æ¡†é»˜è®¤å€¼
     listArr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-    tagIndex: 0, // Ñ¡ÖĞµÄ±êÇ©
+    tagIndex: 0, // é€‰ä¸­çš„æ ‡ç­¾
   }
 
-  // ¾Û½¹
+  // èšç„¦
   foucus() {
-    if (this.state.inputValue === "ËÑË÷ÈËÔ±") {
+    if (this.state.inputValue === "æœç´¢äººå‘˜") {
       this.setState({ inputValue: "" })
     }
   }
 
-  // Ê§½¹
+  // å¤±ç„¦
   blur() {
     if (this.state.inputValue === "") {
-      this.setState({ inputValue: "ËÑË÷ÈËÔ±" })
+      this.setState({ inputValue: "æœç´¢äººå‘˜" })
     }
   }
 
-  // ÊäÈë
+  // è¾“å…¥
   change(event) {
     this.setState({ inputValue: event.target.value })
   }
 
-  // Ñ¡ÖĞ±êÇ©
+  // é€‰ä¸­æ ‡ç­¾
   clickTag(index) {
     this.setState({ tagIndex: index })
   }
 
-  // ·µ»Ø
+  // è¿”å›
   goBack() {
     this.props.history.goBack()
   }
@@ -50,19 +50,19 @@ class SearchUser extends React.Component {
     return (
       <div className="infoarea">
         <div className="infoarea-top">
-          <div className="infoarea-title">Êı×ÖÔ°Çø</div>
+          <div className="infoarea-title">æ•°å­—å›­åŒº</div>
           <div className="infoarea-child-top">
             <img src="./mpark/image/whiteBack.png" style={{ margin: "0 10px 30px -15px", padding: "15px 15px 15px 15px" }} onClick={this.goBack.bind(this)} />
             <input className="infoarea-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
             <img src="./mpark/image/search.png" className="infoarea-search-img" />
-            <span className="infoarea-sreach-bt">ËÑË÷</span>
+            <span className="infoarea-sreach-bt">æœç´¢</span>
           </div>
         </div>
         <div className="search-user-list">
           {this.state.listArr.map((item, index) => {
             return (
               <div key={index} className="search-user-list-child" onClick={e => this.clickTag(index)}>
-                <span style={{ float: "left" }}>Ğ¡Ã÷</span>
+                <span style={{ float: "left" }}>å°æ˜</span>
                 <div style={{ float: "right" }} >
                   <img src={this.state.tagIndex === index ? "./mpark/image/checked.png" : "./mpark/image/unchecked.png"} />
                 </div>
@@ -70,11 +70,11 @@ class SearchUser extends React.Component {
             )
           })
           }
-          <div style={{ width: "100%", height: "350px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>µ½µ×À²~</div>
+          <div style={{ width: "100%", height: "350px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>åˆ°åº•å•¦~</div>
         </div>
         <div className="rent-room-detail-bottom">
-          <div style={{ float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", color: "#6C6C6C", backgroundColor: "#F2F2F2" }}>È¡Ïû</div>
-          <div style={{ float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", backgroundColor: "#0B8BF0", color: "#ffffff" }}>Ìá½»</div>
+          <div style={{ float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", color: "#6C6C6C", backgroundColor: "#F2F2F2" }}>å–æ¶ˆ</div>
+          <div style={{ float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", backgroundColor: "#0B8BF0", color: "#ffffff" }}>æäº¤</div>
         </div>
       </div>
     )

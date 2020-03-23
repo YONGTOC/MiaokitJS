@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import * as ReactDOM from "react-dom";
 import "css!./styles/index.css"
 import { Link } from 'react-router-dom';
@@ -27,10 +27,10 @@ class Index extends React.Component {
   public static g_pIns: Index = null;
 
   public readonly state: Readonly<IState> = {
-    inputValue: "ÇëÊäÈëÔ°ÇøÃû³Æ", // ÊäÈë¿òÄ¬ÈÏÖµ
-    city: "", // ³ÇÊĞ
-    parkArr: [1, 2, 3, 4, 5, 6, 7, 8, 9], // Ô°Çø
-    tagArr: ["µç×ÓĞÅÏ¢", "¸ßĞÂ¼¼Êõ", "µçÉÌ·şÎñ"] // ±êÇ©
+    inputValue: "è¯·è¾“å…¥å›­åŒºåç§°", // è¾“å…¥æ¡†é»˜è®¤å€¼
+    city: "", // åŸå¸‚
+    parkArr: [1, 2, 3, 4, 5, 6, 7, 8, 9], // å›­åŒº
+    tagArr: ["ç”µå­ä¿¡æ¯", "é«˜æ–°æŠ€æœ¯", "ç”µå•†æœåŠ¡"] // æ ‡ç­¾
   }
 
   public readonly props: Readonly<IProps> = {
@@ -48,30 +48,30 @@ class Index extends React.Component {
       }
       else {
         if (this.getStatus() === 6) {
-          console.log("Ã»ÓĞÈ¨ÏŞ")
+          console.log("æ²¡æœ‰æƒé™")
         }
         if (this.getStatus() === 8) {
-          console.log("Á¬½Ó³¬Ê±")
+          console.log("è¿æ¥è¶…æ—¶")
         }
       }
     });
   }
 
-  // ¾Û½¹
+  // èšç„¦
   foucus() {
-    if (this.state.inputValue === "ÇëÊäÈëÔ°ÇøÃû³Æ") {
+    if (this.state.inputValue === "è¯·è¾“å…¥å›­åŒºåç§°") {
       this.setState({inputValue: ""})
     }
   }
 
-  // Ê§½¹
+  // å¤±ç„¦
   blur() {
     if (this.state.inputValue === "") {
-      this.setState({ inputValue: "ÇëÊäÈëÔ°ÇøÃû³Æ" })
+      this.setState({ inputValue: "è¯·è¾“å…¥å›­åŒºåç§°" })
     }
   }
 
-  // ÊäÈë
+  // è¾“å…¥
   change(event) {
     this.setState({inputValue: event.target.value})
   }
@@ -79,7 +79,7 @@ class Index extends React.Component {
   render() {
     return (
       <div className="index">
-        <div className="index-top">Êı×ÖÔ°Çø</div>
+        <div className="index-top">æ•°å­—å›­åŒº</div>
         <div className="index-input-div">
           <div className="index-child-left">
             <input className="index-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)}/>
@@ -91,16 +91,16 @@ class Index extends React.Component {
           </div>
         </div>
         <div className="index-number">
-          <img src="./mpark/image/tower.png" className="tower-img" />ÒÑÓĞ<span style={{color: "#0B8BF0", margin: "0 15px 0 15px"}}>15</span>¼ÒÔ°ÇøÉÏÏß
+          <img src="./mpark/image/tower.png" className="tower-img" />å·²æœ‰<span style={{color: "#0B8BF0", margin: "0 15px 0 15px"}}>15</span>å®¶å›­åŒºä¸Šçº¿
         </div>
         <div className="index-park">
           {this.state.parkArr.map((item, index) => {
             return <Link to="/home"><div className="index-child-park" key={index}>
               <div className="index-child-park-left"><img src="./mpark/image/a.jpg" className="park-img" /></div>
               <div className="index-child-park-right">
-                <div className="index-park-name">¹ğÁÖ¹ú¼Ò¸ßĞÂÇøĞÅÏ¢²úÒµÔ°</div>
+                <div className="index-park-name">æ¡‚æ—å›½å®¶é«˜æ–°åŒºä¿¡æ¯äº§ä¸šå›­</div>
                 <div className="index-park-position"><img src="./mpark/image/position.png" width="45px" height="40px" style={{ marginTop: "-18px" }} />
-                  <span className="index-park-position-name">¹ğÁÖ¸ßĞÂÇø³¯ÑôÂ·D-12ºÅ</span>
+                  <span className="index-park-position-name">æ¡‚æ—é«˜æ–°åŒºæœé˜³è·¯D-12å·</span>
                 </div>
                 <div className="index-tag">
                   {this.state.tagArr.map((item, index) => {
@@ -115,7 +115,7 @@ class Index extends React.Component {
             </div></Link>
             })
           }
-          <div style={{width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginLeft: "-25px"}}>µ½µ×À²~</div>
+          <div style={{width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginLeft: "-25px"}}>åˆ°åº•å•¦~</div>
         </div>
         <div className="index-bottom-logo">
           <img src="./mpark/image/bottomLogo.png" className="index-bottom-logo-img" />
@@ -124,7 +124,7 @@ class Index extends React.Component {
       )
   }
 
-  //¹©Íâ²¿µ÷ÓÃ -- ´«ÈëÆóÒµid£¬Ë¢ĞÂÊ÷ÆóÒµĞÅÏ¢Êı¾İ£»
+  //ä¾›å¤–éƒ¨è°ƒç”¨ -- ä¼ å…¥ä¼ä¸šidï¼Œåˆ·æ–°æ ‘ä¼ä¸šä¿¡æ¯æ•°æ®ï¼›
   public refreshCompanyinfo(id) {
     this.props.history.push('/parkCompany');
     ParkCompany.getCompanyinfo(id);

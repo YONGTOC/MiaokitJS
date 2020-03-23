@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import "css!./styles/infoArea.css"
 import { Link } from 'react-router-dom';
 
@@ -14,37 +14,37 @@ interface IState {
 
 class InfoArea extends React.Component {
   public readonly state: Readonly<IState> = {
-    inputValue: "ÇëÊäÈëÖ÷Ìâ", // ÊäÈë¿òÄ¬ÈÏÖµ
-    tagArr: ["×ÉÑ¯", "½¨Òé", "Í¶Ëß", "ÆäËû"],
+    inputValue: "è¯·è¾“å…¥ä¸»é¢˜", // è¾“å…¥æ¡†é»˜è®¤å€¼
+    tagArr: ["å’¨è¯¢", "å»ºè®®", "æŠ•è¯‰", "å…¶ä»–"],
     listArr: [{ spread: true }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }],
-    tagIndex: 0, // Ñ¡ÖĞµÄ±êÇ©
+    tagIndex: 0, // é€‰ä¸­çš„æ ‡ç­¾
   }
 
-  // ¾Û½¹
+  // èšç„¦
   foucus() {
-    if (this.state.inputValue === "ÇëÊäÈëÖ÷Ìâ") {
+    if (this.state.inputValue === "è¯·è¾“å…¥ä¸»é¢˜") {
       this.setState({ inputValue: "" })
     }
   }
 
-  // Ê§½¹
+  // å¤±ç„¦
   blur() {
     if (this.state.inputValue === "") {
-      this.setState({ inputValue: "ÇëÊäÈëÖ÷Ìâ" })
+      this.setState({ inputValue: "è¯·è¾“å…¥ä¸»é¢˜" })
     }
   }
 
-  // ÊäÈë
+  // è¾“å…¥
   change(event) {
     this.setState({ inputValue: event.target.value })
   }
 
-  // Ñ¡ÖĞ±êÇ©
+  // é€‰ä¸­æ ‡ç­¾
   clickTag(index) {
     this.setState({tagIndex: index})
   }
 
-  // Õ¹¿ª
+  // å±•å¼€
   spread(index) {
     let listArr = this.state.listArr
     listArr[index].spread = !listArr[index].spread
@@ -55,11 +55,11 @@ class InfoArea extends React.Component {
     return (
       <div className="infoarea">
         <div className="infoarea-top">
-          <div className="infoarea-title">Êı×ÖÔ°Çø</div>
+          <div className="infoarea-title">æ•°å­—å›­åŒº</div>
           <div className="infoarea-child-top">
             <input className="infoarea-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
             <img src="./mpark/image/search.png" className="infoarea-search-img" />
-            <span className="infoarea-sreach-bt">ËÑË÷</span>
+            <span className="infoarea-sreach-bt">æœç´¢</span>
           </div>
         </div>
         <div className="infoarea-tag">
@@ -74,44 +74,44 @@ class InfoArea extends React.Component {
               {item.spread ?
                 <div style={{width: "100%", height: "100%"}}>
                   <div style={{ height: "50%", width: "100%" }}>
-                    <div className="infoarea-content-name">¹ØÓÚĞÂµÄÆ¾×â¹«Ô¢ÅÅ¶Ó¹æÔò</div>
+                    <div className="infoarea-content-name">å…³äºæ–°çš„å‡­ç§Ÿå…¬å¯“æ’é˜Ÿè§„åˆ™</div>
                     <div className="infoarea-content-bottom" onClick={e=>this.spread(index)}>
                       <img src="./mpark/image/right.png" className="infoarea-content-right-img" />
                     </div>
                   </div>
                   <div className="infoarea-br">
                     {index !== 2 ?
-                      <div className="infoarea-br-bt">ÒÑ½â¾ö</div> :
-                      <div className="infoarea-br-bt-add">ÊÜÀíÖĞ</div>
+                      <div className="infoarea-br-bt">å·²è§£å†³</div> :
+                      <div className="infoarea-br-bt-add">å—ç†ä¸­</div>
                     }
                     <div className="infoarea-br-data">2020-03-06 14:38:15</div>
                   </div>
                   <div style={{ borderTop: "3px solid #F2F2F2", marginTop: "30px", marginRight: "50px" }}></div>
-                  <div style={{ fontSize: "40px", color: "#949494", marginTop: "20px" }}>ÁôÑÔÄÚÈİ:</div>
+                  <div style={{ fontSize: "40px", color: "#949494", marginTop: "20px" }}>ç•™è¨€å†…å®¹:</div>
                   <div style={{ fontSize: "40px", color: "#333333", marginTop: "20px" }}>
-                    ¹ØÓÚĞÂµÄÆ¾×â¹«Ô¢ÅÅ¶Ó¹æÔò£¬¹ØÓÚĞÂµÄÆ¾×â¹«Ô¢ÅÅ¶Ó¹æÔò£¬¹ØÓÚĞÂµÄÆ¾×â¹«Ô¢ÅÅ¶Ó¹æÔò£¬¹ØÓÚĞÂµÄÆ¾×â¹«Ô¢ÅÅ¶Ó¹æÔò£¬¹ØÓÚĞÂµÄÆ¾×â¹«Ô¢ÅÅ¶Ó¹æÔò¡£
+                    å…³äºæ–°çš„å‡­ç§Ÿå…¬å¯“æ’é˜Ÿè§„åˆ™ï¼Œå…³äºæ–°çš„å‡­ç§Ÿå…¬å¯“æ’é˜Ÿè§„åˆ™ï¼Œå…³äºæ–°çš„å‡­ç§Ÿå…¬å¯“æ’é˜Ÿè§„åˆ™ï¼Œå…³äºæ–°çš„å‡­ç§Ÿå…¬å¯“æ’é˜Ÿè§„åˆ™ï¼Œå…³äºæ–°çš„å‡­ç§Ÿå…¬å¯“æ’é˜Ÿè§„åˆ™ã€‚
                   </div>
-                  <div style={{ fontSize: "40px", color: "#949494", marginTop: "30px" }}>ÁôÑÔ»Ø¸´:</div>
+                  <div style={{ fontSize: "40px", color: "#949494", marginTop: "30px" }}>ç•™è¨€å›å¤:</div>
                   <div style={{ fontSize: "40px", marginTop: "20px" }}>
-                    <span style={{ color: "#949494" }}>ÓÉ</span><span style={{ fontWeight: "600", margin: "0 25px 0 25px" }}>xxx</span>
-                    <span style={{ color: "#949494" }}>ÊÜÀíÓÚ</span><span style={{ color: "#333333", marginLeft: "25px"}}>2020-02-28 17:38:15</span>
+                    <span style={{ color: "#949494" }}>ç”±</span><span style={{ fontWeight: "600", margin: "0 25px 0 25px" }}>xxx</span>
+                    <span style={{ color: "#949494" }}>å—ç†äº</span><span style={{ color: "#333333", marginLeft: "25px"}}>2020-02-28 17:38:15</span>
                   </div>
-                  <div style={{ fontSize: "40px", color: "#949494", marginTop: "20px" }}>»Ø¸´ÄÚÈİ:</div>
+                  <div style={{ fontSize: "40px", color: "#949494", marginTop: "20px" }}>å›å¤å†…å®¹:</div>
                   <div style={{ fontSize: "40px", color: "#333333", marginTop: "20px", marginBottom: "150px" }}>
-                    ¹ØÓÚĞÂµÄÆ¾×â¹«Ô¢ÅÅ¶Ó¹æÔò£¬¹ØÓÚĞÂµÄÆ¾×â¹«Ô¢ÅÅ¶Ó¹æÔò£¬¹ØÓÚĞÂµÄÆ¾×â¹«Ô¢ÅÅ¶Ó¹æÔò£¬¹ØÓÚĞÂµÄÆ¾×â¹«Ô¢ÅÅ¶Ó¹æÔò£¬¹ØÓÚĞÂµÄÆ¾×â¹«Ô¢ÅÅ¶Ó¹æÔò¡£
+                    å…³äºæ–°çš„å‡­ç§Ÿå…¬å¯“æ’é˜Ÿè§„åˆ™ï¼Œå…³äºæ–°çš„å‡­ç§Ÿå…¬å¯“æ’é˜Ÿè§„åˆ™ï¼Œå…³äºæ–°çš„å‡­ç§Ÿå…¬å¯“æ’é˜Ÿè§„åˆ™ï¼Œå…³äºæ–°çš„å‡­ç§Ÿå…¬å¯“æ’é˜Ÿè§„åˆ™ï¼Œå…³äºæ–°çš„å‡­ç§Ÿå…¬å¯“æ’é˜Ÿè§„åˆ™ã€‚
                   </div>
                 </div> :
                 <div style={{ width: "100%", height: "100%" }}>
                   <div style={{ height: "50%", width: "100%" }}>
-                    <div className="infoarea-content-name">¹ØÓÚĞÂµÄÆ¾×â¹«Ô¢ÅÅ¶Ó¹æÔò</div>
+                    <div className="infoarea-content-name">å…³äºæ–°çš„å‡­ç§Ÿå…¬å¯“æ’é˜Ÿè§„åˆ™</div>
                     <div className="infoarea-content-right" onClick={e => this.spread(index)}>
                       <img src="./mpark/image/right.png" className="infoarea-content-right-img" />
                     </div>
                   </div>
                   <div className="infoarea-br">
                     {index !== 2 ?
-                      <div className="infoarea-br-bt">ÒÑ½â¾ö</div> :
-                      <div className="infoarea-br-bt-add">ÊÜÀíÖĞ</div>
+                      <div className="infoarea-br-bt">å·²è§£å†³</div> :
+                      <div className="infoarea-br-bt-add">å—ç†ä¸­</div>
                     }
                     <div className="infoarea-br-data">2020-03-06 14:38:15</div>
                   </div>
@@ -120,7 +120,7 @@ class InfoArea extends React.Component {
               </div>
           })
           }
-          <div style={{ width: "100%", height: "30%", textAlign: "center", fontSize: "40px", lineHeight: "60px", margin: "20px 0 0 -25px" }}>µ½µ×À²~</div>
+          <div style={{ width: "100%", height: "30%", textAlign: "center", fontSize: "40px", lineHeight: "60px", margin: "20px 0 0 -25px" }}>åˆ°åº•å•¦~</div>
         </div>
         <Link to="/isay">
           <div className="infoarea-add-c">

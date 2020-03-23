@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import "css!./styles/personalCenter.css"
 import { Link } from 'react-router-dom';
 
@@ -8,44 +8,44 @@ interface IProps {
 
 interface IState {
   parkList: Array<any>,
-  isSpread: boolean, // ÊÇ·ñÕ¹¿ª
+  isSpread: boolean, // æ˜¯å¦å±•å¼€
   userInfo: string
 }
 
 class PersonalCenter extends React.Component {
   public readonly state: Readonly<IState> = {
     parkList: [
-      { name: "Í³¼Æ±¨±í", imgUrl: "./mpark/image/statistics.png", url: "/statisticalStatement" }, { name: "·¿¼ä¹ÜÀí", imgUrl: "./mpark/image/room.png", url: "" },
-      { name: "¹¤µ¥ÅÉ·¢¹ÜÀí", imgUrl: "./mpark/image/distribute.png", url: "/distribute" }, { name: "¿Í·şµç»°", imgUrl: "./mpark/image/service.png", url: "/serviceTel" },
-      { name: "ÕĞÉÌ¹ÜÀí", imgUrl: "./mpark/image/attractInvestment.png", url: "" }
+      { name: "ç»Ÿè®¡æŠ¥è¡¨", imgUrl: "./mpark/image/statistics.png", url: "/statisticalStatement" }, { name: "æˆ¿é—´ç®¡ç†", imgUrl: "./mpark/image/room.png", url: "" },
+      { name: "å·¥å•æ´¾å‘ç®¡ç†", imgUrl: "./mpark/image/distribute.png", url: "/distribute" }, { name: "å®¢æœç”µè¯", imgUrl: "./mpark/image/service.png", url: "/serviceTel" },
+      { name: "æ‹›å•†ç®¡ç†", imgUrl: "./mpark/image/attractInvestment.png", url: "" }
     ],
     isSpread: false,
-    userInfo: "Ô°Çø³ÉÔ±"
+    userInfo: "å›­åŒºæˆå‘˜"
   }
 
   componentDidMount() {
-    sessionStorage.setItem("userInfo", "Ô°Çø³ÉÔ±")
+    sessionStorage.setItem("userInfo", "å›­åŒºæˆå‘˜")
   }
 
-  // Õ¹¿ª
+  // å±•å¼€
   spread() {
     this.setState({ isSpread: !this.state.isSpread })
   }
 
-  // ÇĞ»»³ÉÔ±
+  // åˆ‡æ¢æˆå‘˜
   switchMember() {
     switch (this.state.userInfo) {
-      case "Ô°Çø³ÉÔ±":
-        this.setState({ userInfo: "ÆóÒµ¹ÜÀíÔ±" })
-        sessionStorage.setItem("userInfo", "ÆóÒµ¹ÜÀíÔ±")
+      case "å›­åŒºæˆå‘˜":
+        this.setState({ userInfo: "ä¼ä¸šç®¡ç†å‘˜" })
+        sessionStorage.setItem("userInfo", "ä¼ä¸šç®¡ç†å‘˜")
         break;
-      case "ÆóÒµ¹ÜÀíÔ±":
-        this.setState({ userInfo: "Ô°Çø¹ÜÀíÔ±" })
-        sessionStorage.setItem("userInfo", "Ô°Çø¹ÜÀíÔ±")
+      case "ä¼ä¸šç®¡ç†å‘˜":
+        this.setState({ userInfo: "å›­åŒºç®¡ç†å‘˜" })
+        sessionStorage.setItem("userInfo", "å›­åŒºç®¡ç†å‘˜")
         break;
       default:
-        this.setState({ userInfo: "Ô°Çø³ÉÔ±" })
-        sessionStorage.setItem("userInfo", "Ô°Çø³ÉÔ±")
+        this.setState({ userInfo: "å›­åŒºæˆå‘˜" })
+        sessionStorage.setItem("userInfo", "å›­åŒºæˆå‘˜")
     } 
   }
 
@@ -53,13 +53,13 @@ class PersonalCenter extends React.Component {
     return (
       <div className="personal-center">
         <div className="personal-center-top">
-          <div className="personal-center-title">Êı×ÖÔ°Çø</div>
+          <div className="personal-center-title">æ•°å­—å›­åŒº</div>
           <div className="personal-center-info">
             <div className="personal-center-tx">
               <img src="./mpark/image/tx.jpg" className="personal-center-tx-img" />
             </div>
             <div style={{ float: "left", color: "#FFFFFF", fontSize: "42px", margin: "10px 0 0 36px"}}>
-              <div>ÓÃ»§Ãû×Ö</div>
+              <div>ç”¨æˆ·åå­—</div>
               <div style={{
                 color: "#83d5ff", fontSize: "27px", backgroundColor: "#2e9cf3", width: "160px",
                 height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
@@ -73,19 +73,19 @@ class PersonalCenter extends React.Component {
           </div>
         </div>
         <div className="personal-center-tag">
-          <span style={{ margin: "0 50px 0 50px" }}>ÊÖ»úºÅÂë</span><span>15578383040</span><span style={{ float: "right", marginRight: "50px", color: "#0B8BF0"}}>ĞŞ¸Ä</span>
+          <span style={{ margin: "0 50px 0 50px" }}>æ‰‹æœºå·ç </span><span>15578383040</span><span style={{ float: "right", marginRight: "50px", color: "#0B8BF0"}}>ä¿®æ”¹</span>
         </div>
         <div className="personal-center-tag">
-          <span style={{ margin: "0 50px 0 50px" }}>¹ØÁªÆóÒµ</span><span>Õã½­ÓÀÍØĞÅÏ¢¿Æ¼¼ÓĞÏŞ¹«Ë¾</span><span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>ĞŞ¸Ä</span>
+          <span style={{ margin: "0 50px 0 50px" }}>å…³è”ä¼ä¸š</span><span>æµ™æ±Ÿæ°¸æ‹“ä¿¡æ¯ç§‘æŠ€æœ‰é™å…¬å¸</span><span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>ä¿®æ”¹</span>
         </div>
         <div className="personal-center-tag">
-          <span style={{ margin: "0 50px 0 50px" }}>¿Í·şµç»°</span><span>0773-123456</span>
+          <span style={{ margin: "0 50px 0 50px" }}>å®¢æœç”µè¯</span><span>0773-123456</span>
         </div>
         <div className="personal-center-my">
-          <Link to={sessionStorage.getItem("userInfo") === "Ô°Çø¹ÜÀíÔ±" ? "/parkWorkOrder" : "/workOrder"}>
+          <Link to={sessionStorage.getItem("userInfo") === "å›­åŒºç®¡ç†å‘˜" ? "/parkWorkOrder" : "/workOrder"}>
             <div className="personal-center-my-left">
               <div style={{ fontSize: "40px", marginTop: "30px", color: "#333333" }}>5</div>
-              <div style={{ fontSize: "40px", marginTop: "5px", color: "#6C6C6C" }}>ÎÒµÄ¹¤µ¥</div>
+              <div style={{ fontSize: "40px", marginTop: "5px", color: "#6C6C6C" }}>æˆ‘çš„å·¥å•</div>
             </div>
           </Link>
           <div className="personal-center-my-middle">
@@ -93,16 +93,16 @@ class PersonalCenter extends React.Component {
           <Link to="/message">
             <div className="personal-center-my-right">
               <div style={{ fontSize: "40px", marginTop: "30px", color: "#333333"}}>6</div>
-              <div style={{ fontSize: "40px", marginTop: "5px", color: "#6C6C6C" }}>ÎÒµÄÏûÏ¢</div>
+              <div style={{ fontSize: "40px", marginTop: "5px", color: "#6C6C6C" }}>æˆ‘çš„æ¶ˆæ¯</div>
             </div>
           </Link>
         </div>
-        {sessionStorage.getItem("userInfo") === "ÆóÒµ¹ÜÀíÔ±" ?
+        {sessionStorage.getItem("userInfo") === "ä¼ä¸šç®¡ç†å‘˜" ?
           <div className="personal-center-enterprise">
             <Link to="/enterpriseInformation">
               <div className="personal-center-enterprise-child">
                 <img src="./mpark/image/enterprise.png" width="70px" height="70px" style={{marginBottom: "10px"}} />
-                <span style={{ fontSize: "40px", color: "#333333", marginLeft: "30px" }}>ÆóÒµĞÅÏ¢¹ÜÀí</span>
+                <span style={{ fontSize: "40px", color: "#333333", marginLeft: "30px" }}>ä¼ä¸šä¿¡æ¯ç®¡ç†</span>
                 <div style={{ float: "right", height: "100%", width: "120px", textAlign: "center" }}>
                   <img src="./mpark/image/right.png" />
                 </div>
@@ -111,7 +111,7 @@ class PersonalCenter extends React.Component {
             <Link to="/rentRoom">
               <div className="personal-center-enterprise-child">
                 <img src="./mpark/image/let.png" width="70px" height="70px" style={{ marginBottom: "10px" }} />
-                <span style={{ fontSize: "40px", color: "#333333", marginLeft: "30px" }}>×âÓÃ·¿¼ä¹ÜÀí</span>
+                <span style={{ fontSize: "40px", color: "#333333", marginLeft: "30px" }}>ç§Ÿç”¨æˆ¿é—´ç®¡ç†</span>
                 <div style={{ float: "right", height: "100%", width: "120px", textAlign: "center" }}>
                   <img src="./mpark/image/right.png" />
                 </div>
@@ -120,11 +120,11 @@ class PersonalCenter extends React.Component {
           </div> : null
         }
 
-        {sessionStorage.getItem("userInfo") === "Ô°Çø¹ÜÀíÔ±" ?
+        {sessionStorage.getItem("userInfo") === "å›­åŒºç®¡ç†å‘˜" ?
           <div className="personal-center-park">
             <div className="personal-center-enterprise-child" onClick={this.spread.bind(this)}>
               <img src="./mpark/image/park.png" width="60px" height="60px" style={{ marginBottom: "10px" }}/>
-              <span style={{ fontSize: "40px", color: "#333333", marginLeft: "30px" }}>Ô°Çø¹ÜÀí</span>
+              <span style={{ fontSize: "40px", color: "#333333", marginLeft: "30px" }}>å›­åŒºç®¡ç†</span>
               <div style={{ float: "right", height: "100%", width: "120px", textAlign: "center" }}>
                 <img src="./mpark/image/right.png" className={this.state.isSpread ? "personal-center-bottom-img" : ""} />
               </div>

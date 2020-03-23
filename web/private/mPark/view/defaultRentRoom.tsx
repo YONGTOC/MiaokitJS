@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import "css!./styles/defaultRentRoom.css"
 
 interface IProps {
@@ -11,11 +11,11 @@ interface IState {
 
 class DetaultRentRoom extends React.Component {
   public readonly state: Readonly<IState> = {
-    workOrderArray: ["A×ù-1F-201ÊÒ", "A×ù-1F-202ÊÒ", "A×ù-1F-203ÊÒ"],
+    workOrderArray: ["Aåº§-1F-201å®¤", "Aåº§-1F-202å®¤", "Aåº§-1F-203å®¤"],
     defaultIndex: 0
   }
 
-  // ·µ»Ø
+  // è¿”å›
   goBack() {
     this.props.history.goBack()
   }
@@ -29,13 +29,13 @@ class DetaultRentRoom extends React.Component {
       <div className="rent-room-detail">
         <div className="rent-room-top">
           <div className="rent-room-title">
-            Êı×ÖÔ°Çø
+            æ•°å­—å›­åŒº
           </div>
         </div>
         <div className="rent-room-back">
           <div style={{ float: "left" }} onClick={this.goBack.bind(this)}>
             <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
-            <span>×âÓÃ·¿¼ä¹ÜÀí</span>
+            <span>ç§Ÿç”¨æˆ¿é—´ç®¡ç†</span>
           </div>
         </div>
         <div className="rent-room-list">
@@ -55,10 +55,10 @@ class DetaultRentRoom extends React.Component {
                       <img style={{ float: "right", marginRight: "40px" }} src="./mpark/image/right.png" />
                     </div>
                     <div style={{ fontSize: "38px", color: "#949494", margin: "30px 0 0 0" }}>
-                      Ê¹ÓÃ×´Ì¬£º<span style={{ marginLeft: "30px", color: "#333333" }}>×âÓÃÖĞ</span>
+                      ä½¿ç”¨çŠ¶æ€ï¼š<span style={{ marginLeft: "30px", color: "#333333" }}>ç§Ÿç”¨ä¸­</span>
                     </div>
                     <div style={{ fontSize: "38px", color: "#949494", margin: "10px 0 0 0", overflow: "hidden" }}>
-                      <div style={{ float: "left" }}>×âÓÃÈÕÆÚ£º<span style={{ color: "#F53636" }}>2020-03-20 ~ 2021-03-20</span></div>
+                      <div style={{ float: "left" }}>ç§Ÿç”¨æ—¥æœŸï¼š<span style={{ color: "#F53636" }}>2020-03-20 ~ 2021-03-20</span></div>
                     </div>
                   </div>
                 </div>
@@ -67,8 +67,8 @@ class DetaultRentRoom extends React.Component {
           }
         </div>
         <div className="rent-room-detail-bottom">
-          <div style={{ float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", color: "#6C6C6C" }}>È¡Ïû</div>
-          <div style={{ float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", backgroundColor: "#0B8BF0", color: "#ffffff" }}>Ìá½»</div>
+          <div style={{ float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", color: "#6C6C6C" }}>å–æ¶ˆ</div>
+          <div style={{ float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", backgroundColor: "#0B8BF0", color: "#ffffff" }}>æäº¤</div>
         </div>
       </div>
     )

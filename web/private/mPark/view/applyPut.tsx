@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
 
 class ApplyPut extends React.Component {
@@ -36,11 +36,11 @@ class ApplyPut extends React.Component {
 
   }
 
-  //  Ìí¼Ó°ÚµãĞÅÏ¢;
+  //  æ·»åŠ æ‘†ç‚¹ä¿¡æ¯;
   static addapplyPut(a) { };
   public addapplyPut(a) {
     let arr = this.state.applyList;
-    arr.push({ address: "ÇëÊäÈëÉêÇë°Ú·ÅµØµã", startTime: "2020-03-14", endTime: "2020-03-17" });
+    arr.push({ address: "è¯·è¾“å…¥ç”³è¯·æ‘†æ”¾åœ°ç‚¹", startTime: "2020-03-14", endTime: "2020-03-17" });
     this.setState({
       applyList: arr
     })
@@ -55,7 +55,7 @@ class ApplyPut extends React.Component {
           <RouterDOM.Link to="/home" >
             <span className="iconfont companyInfoicon">&#xe83b;</span>
           </RouterDOM.Link>
-          <span>ÉêÇë°Úµã</span>
+          <span>ç”³è¯·æ‘†ç‚¹</span>
         </p>
 
         <div className={this.state.applyPutcss}>
@@ -64,28 +64,28 @@ class ApplyPut extends React.Component {
           </div>
           <form className={this.state.applyPutfrom}>
             <p>
-              <span className="redStar">*</span>  ÉêÇëÈË
-              <input type="text" value="" className="getillNum" placeholder="ÇëÊäÈëÉêÇëµ¥Î»" />
+              <span className="redStar">*</span>  ç”³è¯·äºº
+              <input type="text" value="" className="getillNum" placeholder="è¯·è¾“å…¥ç”³è¯·å•ä½" />
             </p>
-            <p><span className="redStar">*</span> ÊÖ»úºÅÂë
-                <input type="number" value="" className="getillNum" placeholder="ÇëÊäÈëÊÖ»úºÅÂë" />
+            <p><span className="redStar">*</span> æ‰‹æœºå·ç 
+                <input type="number" value="" className="getillNum" placeholder="è¯·è¾“å…¥æ‰‹æœºå·ç " />
             </p>
             <p>
-              <span className="redStar">*</span> ÉêÇëµ¥Î»
-               <input type="text" value="" className="getillNum" placeholder="ÇëÊäÈëÉêÇëµ¥Î»" />
+              <span className="redStar">*</span> ç”³è¯·å•ä½
+               <input type="text" value="" className="getillNum" placeholder="è¯·è¾“å…¥ç”³è¯·å•ä½" />
             </p>
-            <p><span className="redStar">*</span> ¾ßÌåÄÚÈİ£º</p>
+            <p><span className="redStar">*</span> å…·ä½“å†…å®¹ï¼š</p>
             <div>
-              <textarea className="getapplyPuttextarea" value="" placeholder="Çë½«¾ßÌåÄÚÈİÃèÊö³öÀ´¡££¨200×ÖÄÚ£©"></textarea>
+              <textarea className="getapplyPuttextarea" value="" placeholder="è¯·å°†å…·ä½“å†…å®¹æè¿°å‡ºæ¥ã€‚ï¼ˆ200å­—å†…ï¼‰"></textarea>
             </div>
 
             <div className="applyList">
-              <p className="theapplyP">ÇëÔÚËùĞèÍ¶·ÅµØµãºóÉèÖÃÍ¶·Å¿ªÊ¼¼°½áÊøÊ±¼ä</p>
+              <p className="theapplyP">è¯·åœ¨æ‰€éœ€æŠ•æ”¾åœ°ç‚¹åè®¾ç½®æŠ•æ”¾å¼€å§‹åŠç»“æŸæ—¶é—´</p>
               <ul style={{"margin":"0"}}>
                 <li>
-                  <div className="applyAddress">¹ã¸æ·ÅÖÃµØµã</div>
-                  <div className="applytime">¿ªÊ¼Ê±¼ä</div>
-                  <div className="applytime">½áÊøÊ±¼ä</div>
+                  <div className="applyAddress">å¹¿å‘Šæ”¾ç½®åœ°ç‚¹</div>
+                  <div className="applytime">å¼€å§‹æ—¶é—´</div>
+                  <div className="applytime">ç»“æŸæ—¶é—´</div>
                   <div className="applyicom"> <i className="iconfont" style={{ "color": "#fff" }}>&#xe82d;</i></div>
                 </li>
                  {
@@ -93,7 +93,7 @@ class ApplyPut extends React.Component {
                     return (
                       <li key={index}>
                         <div className="applyAddress"><span className="applyIndexof">{index + 1}</span>
-                          <input className="applyAddressInput" type="text" value={i.address} placeholder="ÇëÊäÈëÉêÇë°Ú·ÅµØµã" />
+                          <input className="applyAddressInput" type="text" value={i.address} placeholder="è¯·è¾“å…¥ç”³è¯·æ‘†æ”¾åœ°ç‚¹" />
                         </div>
                         <div className="applytime" style={{ "color":"#158CE8"}}>{i.startTime}</div>
                         <div className="applytime" style={{ "color": "#158CE8" }}>{i.endTime}</div>
@@ -105,7 +105,7 @@ class ApplyPut extends React.Component {
               </ul>
             </div>
 
-            <div className="applyPutSumbit" onClick={this.sumbitApplyputfrom.bind(this)}>Ìá½»</div>
+            <div className="applyPutSumbit" onClick={this.sumbitApplyputfrom.bind(this)}>æäº¤</div>
           </form>
         </div>
       </div>
@@ -117,7 +117,7 @@ class ApplyPut extends React.Component {
     iconfont: "iconfont iconfont-unturn",
     applyPutfrom: "applyPutfrom-part applyPutfrom",
     applyList: [
-      { address: "ÇëÊäÈëÉêÇë°Ú·ÅµØµã", startTime: "2020-03-14", endTime:"2020-03-17"  }
+      { address: "è¯·è¾“å…¥ç”³è¯·æ‘†æ”¾åœ°ç‚¹", startTime: "2020-03-14", endTime:"2020-03-17"  }
     ]
   }
 }
