@@ -1,7 +1,9 @@
-import * as React from "react";
+﻿import * as React from "react";
 import "css!./styles/information.css"
+import { Link } from 'react-router-dom';
 
 interface IProps {
+  history: any
 
 }
 
@@ -17,23 +19,30 @@ class Information extends React.Component {
     ]
   }
 
+  public readonly props: Readonly<IProps> = {
+    history: this.props.history
+  }
+
+  goChild(index) {
+    this.props.history.push({ pathname: "/informationChild",  state: { index: index } })
+  }
+
   render() {
     return (
       <div className="information">
-        <div className="information-top">
-          <div className="information-title">数字园区</div>
-        </div>
         <div className="information-headline">
           <div style={{ float: "left", width: "25%", height: "100%" }}><img src="./park_m/image/headline.png" style={{marginBottom: "14px"}} /></div>
           <div style={{ float: "left", width: "75%", height: "100%", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}>关于桂林信息产业园园区企业复工的重要通知你你你你你</div>
         </div>
         <div className="information-content">
           {this.state.informationList.map((item, index) => {
-            return <div className="information-content-child" key={index}>
-              <img src={item.imgUrl} width="130px" height="130px" />
-              <div style={{ marginTop: "20px" }}>{item.name}</div>
-            </div>
-            })
+            return (
+              <div className="information-content-child" key={index} onClick={e => this.goChild(index)}>
+                <img src={item.imgUrl} width="130px" height="130px" />
+                <div style={{ marginTop: "20px" }}>{item.name}</div>
+              </div>
+            )
+          })
           }
         </div>
       </div>

@@ -12,9 +12,9 @@ interface IState {
   workOrderArray: Array<any>
 }
 
-class WorkOrder extends React.Component<{ history: any }>{
+class ParkWorkOrder extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
-    tagList: ["全部", "企业认证", "场地预定", "摆点申请", "在线保修"],
+    tagList: ["全部", "审核中", "已通过", "未通过", "已转单"],
     tagIndex: 0,
     workOrderArray: [1, 2, 3, 4, 5, 6, 7, 8, 9]
   }
@@ -32,13 +32,13 @@ class WorkOrder extends React.Component<{ history: any }>{
     return (
       <div className="work-order">
         <div className="work-order-back" onClick={this.goBack.bind(this)}>
-          <img src="./park_m/image/back.png" style={{ margin: "-10px 10px 0 0" }}/>
+          <img src="./park_m/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
           <span>我的工单</span>
         </div>
         <div className="work-order-tag">
           {
             this.state.tagList.map((item, index) => {
-              return <div key={index} className={index === this.state.tagIndex ? "work-order-tag-child-add" : "work-order-tag-child"} onClick={e=>this.changeTag(index)}>
+              return <div key={index} className={index === this.state.tagIndex ? "work-order-tag-child-add" : "work-order-tag-child"} onClick={e => this.changeTag(index)}>
                 {item}
               </div>
             })
@@ -51,7 +51,7 @@ class WorkOrder extends React.Component<{ history: any }>{
                 <div key={index} className="work-order-list-child">
                   <div style={{ overflow: "hidden", margin: "30px 0 0 40px" }}>
                     <div style={{ float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" }}>企业认证工单1</div>
-                    <img style={{ float: "right", marginRight: "40px"}} src="./park_m/image/right.png"/>
+                    <img style={{ float: "right", marginRight: "40px" }} src="./park_m/image/right.png" />
                   </div>
                   <div style={{ fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" }}>
                     申请人：莫XX
@@ -74,4 +74,4 @@ class WorkOrder extends React.Component<{ history: any }>{
   }
 }
 
-export default WorkOrder;
+export default ParkWorkOrder;

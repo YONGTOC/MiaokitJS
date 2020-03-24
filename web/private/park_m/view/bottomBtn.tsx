@@ -4,7 +4,7 @@ import GlobalAction from "compat";
 import "css!./styles/view.css";
 
 interface IProps {
-  history: any
+  history: any  
 }
 
 //底部按钮区

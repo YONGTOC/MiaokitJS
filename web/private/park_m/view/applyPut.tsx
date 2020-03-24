@@ -1,15 +1,17 @@
 import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
- 
 import DataService from "dataService";
+import GlobalAction from "compat";  
 
 class ApplyPut extends React.Component {
   public constructor(props) {
     super(props);
-
     ApplyPut.addapplyPut = this.addapplyPut.bind(this);
     this.delApply = this.delApply.bind(this);
   }
+
+  public dataService: DataService = new DataService();
+  public globalAction: GlobalAction = new GlobalAction();
 
   public toggleFold() {
     console.log("tftft")
@@ -18,11 +20,15 @@ class ApplyPut extends React.Component {
         applyPutcss: "applyPut-part",
         applyPutfrom: "applyPutfrom-part applyPutfrom"
       })
+      //通知3d，继续加载模型  
+      this.globalAction.web_call_webgl_continueloadModuler();
     } else {
       this.setState({
         applyPutcss: "applyPut-all",
         applyPutfrom: "applyPutfrom-all applyPutfrom"
       })
+      // 通知3d，暂停加载模型
+      this.globalAction.web_call_webgl_pauseloadModuler();
     }
     if (this.state.iconfont == "iconfont iconfont-unturn") {
       this.setState({
@@ -33,6 +39,11 @@ class ApplyPut extends React.Component {
         iconfont: "iconfont iconfont-unturn",
       })
     }
+  }
+
+  public mapReturnpark() {
+    //通知3d，返回园区视角
+    this.globalAction.web_call_webgl_mapReturnpark();
   }
 
   //  添加摆点信息;
@@ -70,7 +81,6 @@ class ApplyPut extends React.Component {
     });
   }
 
-
   //修改摆点地址
   public changeAddress(event) {
    let index = event.target.getAttribute("data-index");
@@ -93,14 +103,11 @@ class ApplyPut extends React.Component {
     //通知3d，删除定位点
     let longitude = event.target.getAttribute("data-longitude");
     let latitude = event.target.getAttribute("data-latitude");
-      
   }
 
-  public dataService: DataService = new DataService();
   //提交
   public sumbitApplyput() {
-    console.log("提交", this);
-    console.log("提交2", this.state);
+    console.log("提交摆点申请", this.state);
     this.dataService.postAdvertisementPoint(this.sumbitApplyputsucceed, this.state);
   }
 
@@ -115,7 +122,7 @@ class ApplyPut extends React.Component {
       <div>
         <p className="companyInfotit">
           <RouterDOM.Link to="/home" >
-            <span className="iconfont companyInfoicon">&#xe83b;</span>
+            <span className="iconfont companyInfoicon" onClick={this.mapReturnpark.bind(this)} >&#xe83b;</span>
           </RouterDOM.Link>
           <span>申请摆点</span>
         </p>
@@ -169,7 +176,6 @@ class ApplyPut extends React.Component {
                     )
                   })
                 }
-         
               </ul>
             </div>
             <div className="applyPutSumbit" onClick={this.sumbitApplyput.bind(this)}>提交</div>
@@ -188,7 +194,9 @@ class ApplyPut extends React.Component {
     //申请企业
     company: "永拓信息科技",
     applyPutcss: "applyPut-part ",
+    // 折叠按钮状态
     iconfont: "iconfont iconfont-unturn",
+    // 内容框状态
     applyPutul: "applyPutul-part applyPutul",
     // 摆点列表
     applyList: [ ],

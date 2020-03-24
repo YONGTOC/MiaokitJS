@@ -10,7 +10,7 @@ interface IState {
   workOrderArray: Array<any>
 }
 
-class Message extends React.Component<{ history: any }>  {
+class Message extends React.Component<{ history: any }> {
   public readonly state: Readonly<IState> = {
     tagList: ["全部", "房屋租赁到期", "车位到期", "参与活动"],
     tagIndex: 0,
@@ -20,7 +20,7 @@ class Message extends React.Component<{ history: any }>  {
   changeTag(index) {
     this.setState({ tagIndex: index })
   }
-  
+
   // 返回
   goBack() {
     this.props.history.goBack()
@@ -29,9 +29,6 @@ class Message extends React.Component<{ history: any }>  {
   render() {
     return (
       <div className="work-order">
-        <div className="work-order-top">
-          <div className="work-order-title">数字园区</div>
-        </div>
         <div className="work-order-back" onClick={this.goBack.bind(this)}>
           <img src="./park_m/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
           <span>我的消息</span>
@@ -48,7 +45,7 @@ class Message extends React.Component<{ history: any }>  {
         <div className="work-order-list">
           {
             this.state.workOrderArray.map((item, index) => {
-              return  <div key={index} className="work-order-list-child">
+              return <div key={index} className="work-order-list-child">
                 <div style={{ overflow: "hidden", margin: "30px 0 0 40px" }}>
                   <div style={{ float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" }}>房屋租赁即将到期</div>
                 </div>

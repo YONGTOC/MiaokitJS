@@ -5,7 +5,7 @@ class DataService {
   public componentDidMount() {
     console.log(localStorage.getItem("token"));
 
-   // this.setToken = this.setToken.bind(this);
+    // this.setToken = this.setToken.bind(this);
   }
 
   // 点击地图点，获取回调
@@ -25,21 +25,21 @@ class DataService {
 
   // 2.(注册登录模块)用户登陆接口 ### email:test@test.com password:123456 
   public login(pBack) {
-    console.log("login");
-        $.ajax({
-          url: this.state.rooturl + '/api/login',
-          data: {
-            "email": "test@test.com",
-            "password":123456
-          },
-      type: "post",    
-      success: function (data) {
-       // console.log("login",data);
-        //pBackajax(data);
-        console.log("login-getToken", data);
-        localStorage.setItem("token", data.token);
-        }
-    })
+    //console.log("login");
+    //    $.ajax({
+    //      url: this.state.rooturl + '/api/login',
+    //      data: {
+    //        "email": "test@test.com",
+    //        "password":123456
+    //      },
+    //  type: "post",    
+    //  success: function (data) {
+    //   // console.log("login",data);
+    //    //pBackajax(data);
+    //    console.log("login-getToken", data);
+    //    localStorage.setItem("token", data.token);
+    //    }
+    //})
   }
 
   //  原有token过期，换取新 token
@@ -49,7 +49,7 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/refresh',
       data: {
-        "token": ytoken ,
+        "token": ytoken,
       },
       type: "post",
       success: function (data) {
@@ -61,8 +61,91 @@ class DataService {
     })
   }
 
+  //4.(园区信息-3D显示)获取园区详细信息
+  public getParkInfo(pBack, park_id) {
+    let thetoken = localStorage.getItem("token");
+    //$.ajax({
+    //  url: this.state.rooturl + '/api/getParkInfo',
+    //  data: {
+    //    "park_id": 1,
+    //    "token": thetoken,
+    //  },
+    //  type: "get",
+    //  success: function (data) {
+    //    console.log("getParkInfo", data);
+    //    if (data.status == 113) {
+    //      // 113 token到期，跳转登录页面
+    //      // console.log(window.location.pathname);
+    //      //  window.location.href = window.location.pathname+"#/"
+    //    } else {
+    //     // pBack(data);
+    //      console.log("getParkInfo", data);
+    //    }
+    //  }
+    // })
+
+
+    var data = {
+      //错误码
+      "return_code": "100",
+      "response": [
+        {
+          //id
+          "id": "1009",
+          //园区图像url
+          "headimgurl": "http://xxx.jpg",
+          //所在城市
+          "province": "桂林",
+          //经度
+          "longitude": "10.55",
+          //纬度
+          "latitude": "66.666",
+          //园区名字
+          "name": "桂林国家高新",
+          //地址
+          "address": "桂林七星朝阳路D-11",
+          //工程列表，列表内为园区使用的工程。
+          "project": [
+            {
+              //id
+              "id": "1009",
+              //工程名。
+              "name": "电子信息",
+              //工程类型 1为普通模型 2为航拍实景图 3为sve工程 4为其它
+              "type": 1,
+              //使用类型 1为完整场景 2为单独内景
+              "use_type": 0,
+              //工程地址
+              "project_url": "http://xxx.bin",
+              //经度
+              "longitude": "10.55",
+              //纬度
+              "latitude": "66.666",
+              //偏移值
+              "offset": "10,20,10",
+              //旋转角度
+              "rotate": "10",
+            }
+          ],
+          //园区讲解列表
+          "audio": [
+            { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+            { name: "园区配套", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
+            { name: "园区建筑", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+          ]
+        }
+
+      ],
+      //错误代码信息
+      "err_msg": ""
+    }
+
+    pBack(data);
+  }
+
   // 5. (企业园区模块-搜索类型)获取园区下面企业类型列表
   public getCompanyType(pBack, park_id) {
+    // id =1
     let thetoken = localStorage.getItem("token");
     //$.ajax({
     //  url: this.state.rooturl + '/api/getCompanyType',
@@ -103,13 +186,14 @@ class DataService {
 
   //6 通过园区id，企业类型，关键词搜索园区下面企业列表
   public findCompany(pBack, park_id, company_type_id, name) {
-    console.log("findCompany", park_id, company_type_id, name);
-    let thetoken =  localStorage.getItem("token");
+    // id=1
+    // console.log("findCompany", park_id, company_type_id, name);
+    let thetoken = localStorage.getItem("token");
     //$.ajax({
     //  url: this.state.rooturl + '/api/findCompany',
     //  data: {
     //    "park_id": 1,
-    //    "company_type_id": 1,
+    //    "company_type_id": ,
     //    "token": thetoken,
     //  },
     //  type: "get",
@@ -131,7 +215,7 @@ class DataService {
       "return_code": "100",
       "response": [
         {
-          //id
+          //id  
           "id": "1009",
           //公司名字
           "name": "桂林国家高新",
@@ -177,7 +261,27 @@ class DataService {
 
   //7 通过企业id, 获企业详细信息
   public getCompanyInfo(pBack, id) {
+    // id=2 模拟id
     console.log("getCompanyInfo", pBack, id);
+    let thetoken = localStorage.getItem("token");
+    //$.ajax({
+    //  url: this.state.rooturl + '/api/getCompanyInfo',
+    //  data: {
+    //    "id": 2,
+    //    "token": thetoken,
+    //  },
+    //  type: "get",
+    //  success: function (data) {
+    //    if (data.status == 113) {
+    //      // 113 token到期，跳转登录页面
+    //     // console.log(window.location.pathname);
+    //     //  window.location.href = window.location.pathname+"#/"
+    //    } else {
+    //      pBack(data);
+    //      console.log("CompanyInfo_ajax", data);
+    //    }
+    //  }
+    //})
     var data = {
       //错误码
       "return_code": "100",
@@ -197,7 +301,7 @@ class DataService {
         //地址
         "address": "桂林市七星区信息产业园E座B区三楼",
         //联系人
-        "Contacts": "莫xxx",
+        "contact": "莫xxx",
         //电话
         "phone": "15266666666",
         //企业官网
@@ -273,32 +377,45 @@ class DataService {
   //8 通过园区id, 获取面积分类
   public getRoomRentSquareType(pBack, park_id) {
     console.log("init-AllareaType", pBack, park_id);
-   // console.log("findCompany", park_id, company_type_id, name, token);
+    // console.log("findCompany", park_id, company_type_id, name, token);
     let thetoken = localStorage.getItem("token");
-    $.ajax({
-      url: this.state.rooturl + '/api/getRoomRentSquareType',
-      data: {
-        "park_id": park_id,
-        "token": thetoken,
-      },
-      type: "get",
-      success: function (data) {
-        console.log("getRoomRentSquareType", data);
-        if (data.status == 113) {
-          // 113 token到期，跳转登录页面
-          // console.log(window.location.pathname);
-          //  window.location.href = window.location.pathname+"#/"
-        } else {
-          pBack(data);
-          console.log("getRoomRentSquareType", data);
-        }
-      }
-    })
+    //$.ajax({
+    //  url: this.state.rooturl + '/api/getRoomRentSquareType',
+    //  data: {
+    //    "park_id": 1,
+    //    "token": thetoken,
+    //  },
+    //  type: "get",
+    //  success: function (data) {
+    //    //  console.log("getRoomRentSquareType", data);
+    //    if (data.status == 113) {
+    //      // 113 token到期，跳转登录页面
+    //      // console.log(window.location.pathname);
+    //      //  window.location.href = window.location.pathname+"#/"
+    //    } else {
+    //      pBack(data);
+    //      //console.log("getRoomRentSquareType", data);
+    //    }
+    //  }
+    // });
+
+    let data = {
+      //错误码
+      "return_code": "100",
+      "response": [
+        "0-100",
+        "100-200"
+      ],
+      //错误代码信息
+      "err_msg": ""
+    }
+    pBack(data);
 
   }
 
   //9 通过园区id, 获取招租的场地列表接口(findRoomRent);
   public findRoomRentByparkid(pBack, park_id, square) {
+    // id =1
     console.log("findRoomRentByparkid", pBack, park_id, square);
     let thetoken = localStorage.getItem("token");
     //$.ajax({
@@ -327,6 +444,23 @@ class DataService {
       "response": [
         {
           //id
+          "id": "1001",
+          //头像url
+          "headimgurl": "./park_m/image/i.png",
+          //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
+          "building_id": "a座",
+          //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
+          "floor_id": "1F",
+          //使用场地房间id，模型编号(用于匹配对应3d房间)
+          "room_id": "201-1",
+          //招租发布时间
+          "date": "2019-07-05",
+          //面积m²
+          "square": "45",
+          //价格元/m²/天。
+          "price": "2.8"
+        }, {
+          //id
           "id": "1009",
           //头像url
           "headimgurl": "./park_m/image/i.png",
@@ -353,6 +487,26 @@ class DataService {
   //10 通过招租id,获取租房信息列表接口(getRoomRentInfo)
   public findRoomRentByroomid(pBack, id) {
     console.log("findRoomRentByroomid", pBack, id);
+    let thetoken = localStorage.getItem("token");
+    //$.ajax({
+    //  url: this.state.rooturl + '/api/getRoomRentInfo',
+    //  data: {
+    //    "id": 1,
+    //    "token": thetoken,
+    //  },
+    //  type: "get",
+    //  success: function (data) {
+    //    //console.log("getRoomRentSquareType", data);
+    //    if (data.status == 113) {
+    //      // 113 token到期，跳转登录页面
+    //      // console.log(window.location.pathname);
+    //      //  window.location.href = window.location.pathname+"#/"
+    //    } else {
+    //      pBack(data);
+    //      console.log("findRoomRentByroomid", data);
+    //    }
+    //  }
+    //})
     var data = {
       //错误码
       "return_code": "100",
@@ -372,7 +526,7 @@ class DataService {
         //面积
         "square": "45m²",
         //价格。
-        "price": "2.8元/m²/天",
+        "price": "2.8",
         //建筑面积
         "squre": "150",
         //所在楼层
@@ -380,7 +534,7 @@ class DataService {
         //是否有电梯
         "lift": "有",
         //联系人
-        "Contacts": "莫xxx",
+        "contact": "莫xxx",
         //电话
         "phone": "135000000",
         //看房时间
@@ -471,7 +625,7 @@ class DataService {
   }
 
   //12.(随手拍模块-列表)通过园区id获取随手拍列表 
-  public getTakingPhotos(pBack,park_id,name) {
+  public getTakingPhotos(pBack, park_id, name) {
     console.log("随手拍list", park_id, name);
     let data = {
       //错误码
@@ -520,7 +674,7 @@ class DataService {
   }
 
   //13.(随手拍模块-列表-详情) 通过随手拍id获取随手拍详细信息 
-  public getTakingPhotoInfo(pBack,id) {
+  public getTakingPhotoInfo(pBack, id) {
     console.log("随手拍list", id);
     let data = {
       //错误码
@@ -552,20 +706,42 @@ class DataService {
   }
 
   // 14.(随手拍模块-提交)提交随手拍信息
-  public postTakingPhotoInfo(pBack,data) {
+  public postTakingPhotoInfo(pBack, data) {
     console.log("postTakingPhotoInfo", data);
     pBack("随手拍提交完成");
   }
 
   // 15(摆点申请模块)提交摆点申请接口 
-  public postAdvertisementPoint(pBack, data){
+  public postAdvertisementPoint(pBack, data) {
     console.log("postAdvertisementPoint", data);
     pBack("摆点申请提交完成");
-}
+  }
 
   //16.(场地预定模块-搜索)通过园区id获取园区内可以预定的场地列表接口
-  public getRoomBook(pBack,park_id,name) {
+  public getRoomBook(pBack, park_id, name) {
     console.log("getRoomBook", pBack, park_id, name);
+
+    //$.ajax({
+    //  url: this.state.rooturl + '/api/getRoomBook',
+    // // url: this.state.rooturl + '/api/getRoomBook/'+id+'/'+name,
+    //  data: {
+    //      id:1,
+    //      name:1
+    //  },
+    //  type: "get",
+    //  success: function (data) {
+    //    //  console.log("getRoomRentSquareType", data);
+    //    if (data.status == 113) {
+    //      // 113 token到期，跳转登录页面
+    //      // console.log(window.location.pathname);
+    //      //  window.location.href = window.location.pathname+"#/"
+    //    } else {
+    //      pBack(data);
+    //      //console.log("getRoomRentSquareType", data);
+    //    }
+    //  }
+    // });
+
     var data = {
       //错误码
       "return_code": "100",
@@ -585,19 +761,19 @@ class DataService {
             {
               //内容
               "content": "4小时内",
-                    //价格
+              //价格
               "price": "1000元"
             },
             {
               //内容
               "content": "8小时内",
-                    //价格
+              //价格
               "price": "1600元"
             }
           ]
         }, {
           //id
-          "id": "1009",
+          "id": "1010",
           //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
           "building_id": "a座",
           //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
@@ -631,7 +807,7 @@ class DataService {
 
   //##17.(场地预单模块-详细信息)通过场地预定id,获取预定相关详情接口 ###
   public getRoomBookInfo(pBack, id) {
-    console.log("getRoomBookInfo",id);
+    console.log("getRoomBookInfo", id);
     let data = {
       //错误码
       "return_code": "100",
@@ -662,14 +838,14 @@ class DataService {
           {
             //内容
             "content": "4小时内",
-                //价格
-                "price": "1000元"
+            //价格
+            "price": "1000元"
           },
           {
             //内容
             "content": "8小时内",
-                //价格
-                "price": "1600元"
+            //价格
+            "price": "1600元"
           }
         ]
       },
@@ -713,15 +889,99 @@ class DataService {
   }
 
   //20.(在线报修模块-提交)提交在线报修信息
-  public saveRepairInfo(pBack,data) {
+  public saveRepairInfo(pBack, data) {
     console.log("saveRepairInfo", data);
     pBack("提交成功！");
   }
 
+  //22.(停车业务模块-地下停车场列表)通过园区id获取停车场列表
+  public getParkingList(pBack, park_id) {
+    let data = {
+      //错误码
+      "return_code": "100",
+      "response": [
+        {
+          //id
+          "id": "100001",
+          //名称。
+          "name": "a座地下停车场",
+          //经度
+          "longitude": "10.55",
+          //纬度
+          "latitude": "66.666",
+        },
+        {
+          //id
+          "id": "100002",
+          //名称。
+          "name": "b座地下停车场",
+          //经度
+          "longitude": "10.55",
+          //纬度
+          "latitude": "66.666",
+        }
+      ],
+      //错误代码信息
+      "err_msg": ""
+    }
+
+    pBack(data);
+  }
+
+  //23.(停车业务模块-车辆类型)通过园区id获取车辆类型 
+  public getCarType(pBack, park_id) {
+    console.log("显示车辆类型列表");
+    let data = {
+      //错误码
+      "return_code": "100",
+      "response": [
+        {
+          //id
+          "id": "1009",
+          //名称。
+          "name": "中小型车",
+        },
+        {
+          //id
+          "id": "1009",
+          //名称。
+          "name": "大型车",
+        }
+      ],
+      //错误代码信息
+      "err_msg": ""
+    }
+    pBack(data);
+  }
+
+  // 24.(停车业务模块-车位申请)提交车位申请信息
+  public saveParkingApply(pBack, data) {
+    console.log("24提交车位申请信息", data);
+    pBack("车位，提交成功！");
+  }
+
+  // 25.(停车业务模块-地库车位预约)提交地库车位预约
+  public saveParkingAppointment(pBack, data) {
+    console.log("25提交地库申请信息", data);
+    pBack("地库，提交成功！");
+  }
+
+  // 26.(停车业务模块-车位变更)提交车位变更（目前：变更车辆，不变更车位） 
+  public changeParkingCarInfo(pBack, data) {
+    console.log("26 提交车位变更", data);
+    pBack("提交车位变更,成功！")
+  }
+
+  //27.(停车业务模块-来访车辆预约)提交来访车辆预约
+  public saveVisitorParkingAppointment(pBack, data) {
+    console.log("27 提交来访车辆预约", data);
+    pBack("提交来访车辆预约,成功！")
+  }
+
   public state = {
     rooturl: "http://192.168.1.13:90",
-    token:"", 
-  
+    token: "",
+
   }
 }
 

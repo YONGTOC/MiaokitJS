@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
-
 import DataService from "dataService";
+import GlobalAction from "compat";
 
-class RepairsOnline extends React.Component<{ history:any}>{
+class RepairsOnline extends React.Component<{ history: any }>{
   public constructor(props) {
     super(props);
 
@@ -12,13 +12,15 @@ class RepairsOnline extends React.Component<{ history:any}>{
   }
 
   public componentDidMount() {
-    //19.(在线报修模块-报修类型)通过园区id获取在线报修类型
+    // 19.(在线报修模块-报修类型)通过园区id获取在线报修类型
     this.dataService.getRepairType(this.setTypeUL);
   }
 
   public dataService: DataService = new DataService();
+  public globalAction: GlobalAction = new GlobalAction();
+
   public setTypeUL(data) {
-    console.log("getRepairType",data);
+    console.log("getRepairType", data);
     this.setState({
       typeUL: data.response,
     })
@@ -31,11 +33,15 @@ class RepairsOnline extends React.Component<{ history:any}>{
         reqairscss: "reqairs-part",
         reqairscssul: "reqairsul-part reqairsul"
       })
+      // 通知3d，继续加载模型  
+      this.globalAction.web_call_webgl_continueloadModuler();
     } else {
       this.setState({
         reqairscss: "reqairs-all",
         reqairsul: "reqairsul-all reqairsul"
       })
+      // 通知3d，暂停加载模型
+      this.globalAction.web_call_webgl_pauseloadModuler();
     }
     if (this.state.iconfont == "iconfont iconfont-unturn") {
       this.setState({
@@ -48,17 +54,21 @@ class RepairsOnline extends React.Component<{ history:any}>{
     }
   }
 
+  public mapReturnpark() {
+    //通知3d，返回园区视角
+    this.globalAction.web_call_webgl_mapReturnpark();
+  }
 
-  static getReqairstpostion(x, y,building_id, floor_id, room_id){ };
+  static getReqairstpostion(x, y, building_id, floor_id, room_id) { };
   public getReqairstpostion(x, y, building_id, floor_id, room_id) {
-    console.log("getReqairstpostion", x, y, building_id, floor_id, room_id )
+    console.log("getReqairstpostion", x, y, building_id, floor_id, room_id)
     this.setState({
       building_id: building_id,
       floor_id: floor_id,
       room_id: room_id,
       position: "请输入报修位置",
       longitude: x,
-      latitude: y ,
+      latitude: y,
     })
   }
 
@@ -121,7 +131,7 @@ class RepairsOnline extends React.Component<{ history:any}>{
   //报修联系人
   public reqairsContacts(event) {
     this.setState({
-      contacts: event.target.value,
+      contact: event.target.value,
     })
   }
 
@@ -142,20 +152,20 @@ class RepairsOnline extends React.Component<{ history:any}>{
   //提交报修单
   public sumbitReqairs() {
     console.log("提交报修", this.state);
-    this.dataService.saveRepairInfo(this.sumbitReqairssucceed,this.state);
+    this.dataService.saveRepairInfo(this.sumbitReqairssucceed, this.state);
   }
 
   //提交报修单 -- 成功
   public sumbitReqairssucceed(data) {
     alert(data);
-    window.history.back();
+    window.history.back(); 
   }
 
   public render() {
     return (
       <div className="repairsOnline">
         <p className="companyInfotit">
-          <RouterDOM.Link to="/home" >
+          <RouterDOM.Link to="/home" onClick={this.mapReturnpark.bind(this)}>
             <span className="iconfont companyInfoicon">&#xe83b;</span>
           </RouterDOM.Link>
           <span>在线报修</span>
@@ -174,15 +184,15 @@ class RepairsOnline extends React.Component<{ history:any}>{
               </li>
               <li>
                 <span className="redStar">*</span>报修类型
-                 <input type="text" className="getillType" value={this.state.type_name} placeholder="请选择报修类型"  />
+                 <input type="text" className="getillType" value={this.state.type_name} placeholder="请选择报修类型" />
                 <span className="iconfont" style={{ "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" }}
                   onClick={this.showTypeUL.bind(this)}>&#xe827;</span>
               </li>
               <li>
                 <span className="redStar">*</span>报修位置
-                  <input type="text" value={this.state.position} placeholder="请点击地图选择报修点" style={{ "margin-left": "4rem","border": "0"}}
-                    onChange={this.getPosition.bind(this)}/>
-                  <i className="iconfont" style={{ "fontSize": "3rem", "color": "#0B8BF0", "float": "right", "padding": " 0 0 0 4rem" }}>&#xe82c;</i>
+                  <input type="text" value={this.state.position} placeholder="请输入报修位置" style={{ "margin-left": "4rem", "border": "0" }}
+                  onChange={this.getPosition.bind(this)} />
+                <i className="iconfont" style={{ "fontSize": "3rem", "color": "#0B8BF0", "float": "right", "padding": " 0 0 0 4rem" }}>&#xe82c;</i>
               </li>
               <li>
                 <span className="redStar">*</span>报修企业
@@ -191,11 +201,11 @@ class RepairsOnline extends React.Component<{ history:any}>{
               </li>
               <li>
                 <span className="redStar">*</span>联系人
-                <input type="text" value={this.state.contacts} placeholder="请填写联系人" style={{ "margin-left": "6rem", "border": "0" }}
+                <input type="text" value={this.state.contact} placeholder="请填写联系人" style={{ "margin-left": "6rem", "border": "0" }}
                   onChange={this.reqairsContacts.bind(this)} />
               </li>
               <li>
-                <span className="redStar">*</span>电话号码 
+                <span className="redStar">*</span>电话号码
                 <input type="text" value={this.state.phone} placeholder="请填写联系电话号码 " style={{ "margin-left": "4rem", "border": "0" }}
                   onChange={this.reqairsPhone.bind(this)} />
               </li>
@@ -237,12 +247,12 @@ class RepairsOnline extends React.Component<{ history:any}>{
       //{ id: "1009",  name: "水管报修"},
       //{ id: "1009",  name: "磁砖报修" }
     ],
-    indexOf:0,
+    indexOf: 0,
     //园区id
     park_id: 1001,
     //类型id (水管报修等对应的id)
     type_id: 1,
-    type_name: "",
+    type_name: "", 
     //位置
     position: "",
     //经度
@@ -258,8 +268,8 @@ class RepairsOnline extends React.Component<{ history:any}>{
     //报修企业
     company: "",
     //联系人
-    contacts: "",
-    phone:"",
+    contact: "",
+    phone: "",
     //描述
     descript: "",
     //照片

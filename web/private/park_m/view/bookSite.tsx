@@ -1,14 +1,23 @@
 import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
-
-
 import DataService from "dataService";
+import GlobalAction from "compat";
 
 class BookSite extends React.Component {
   public constructor(props) {
     super(props);
-
     BookSite.toggleView = this.toggleView.bind(this);
+    BookSite.getSiteinfo = this.getSiteinfo.bind(this);
+  }
+
+  public globalAction: GlobalAction = new GlobalAction();
+
+  static getSiteinfo(id) { }
+  public getSiteinfo(id) {
+    console.log("getCompanyinfo", id);
+
+    this.toggleView("Info", id);
+    BookInfo.getRoomdata(id);
   }
 
   static toggleView(a, id) { };
@@ -28,11 +37,17 @@ class BookSite extends React.Component {
     }
   }
 
+  public mapReturnpark() {
+    //通知3d，返回园区视角  
+    this.globalAction.web_call_webgl_mapReturnpark();
+  }
+
+
   public render() {
     return (
       <div className={this.state.BookSitecss}>
         <p className="companyInfotit">
-          <RouterDOM.Link to="/home" >
+          <RouterDOM.Link to="/home" onClick={this.mapReturnpark.bind(this)}>
             <i className="iconfont companyInfoicon">&#xe83b;</i>
           </RouterDOM.Link>
           <span>场地预约</span>
@@ -49,8 +64,11 @@ class BookSite extends React.Component {
 
   public state = {
     BookSitecss: "bookSite",
+    // 场地列表页
     showList: true,
+    // 场地内容页
     showInfo: false,
+    // 场地预约页
     showBook: false,
   }
 }
@@ -69,10 +87,11 @@ class BookList extends React.Component {
   public componentDidMount() {
     //##16.(场地预定模块-搜索)通过园区id获取园区内可以预定的场地列表接口 ###
     this.dataService.getRoomBook(this.getRoomBook, this.state.park_id, name);
-
   }
 
   public dataService: DataService = new DataService();
+  public globalAction: GlobalAction = new GlobalAction();
+ 
   //获取园区内可以预定的场地列表
   public getRoomBook(data) {
     console.log("returnRoomBook", data);
@@ -86,13 +105,17 @@ class BookList extends React.Component {
     if (this.state.bookListcss == "bookList-all") {
       this.setState({
         bookListcss: "bookList-part",
-        //leaseul: "leaseul"
+        bookul: "bookul"
       })
+      //通知3d，继续加载模型  
+      this.globalAction.web_call_webgl_continueloadModuler();
     } else {
       this.setState({
         bookListcss: "bookList-all",
-        // leaseul: "leaseul-all"
+        bookul: "bookul-all"
       })
+      // 通知3d，暂停加载模型
+      this.globalAction.web_call_webgl_pauseloadModuler();
     }
     if (this.state.iconfont == "iconfont iconfont-unturn") {
       this.setState({
@@ -119,7 +142,9 @@ class BookList extends React.Component {
       indexOf: index,
       roomId: id
     });
-    console.log("bookActive", this.state)
+    console.log("bookActive", this.state);
+    //通知webgl 跳转到 选中房间；
+    this.globalAction.web_call_webgl_switchRoom(id);
   }
 
   // 聚焦
@@ -198,13 +223,17 @@ class BookList extends React.Component {
   }
 
   public state = {
+    // 场地列表页样式
     bookListcss: "bookList-part",
     iconfont: "iconfont iconfont-unturn",
+    // 场地列表样式
     bookul: "bookul",
+    // 当前序列号
     indexOf: 0,
     park_id: 1,
     // 搜索框内容
     inputValue: "搜索",
+    // 场地列表数据
     bookData: []
   }
 }
@@ -335,12 +364,19 @@ class BookInfo extends React.Component {
   }
 
   public state = {
+    // 场地信息页样式
     bookInfocss: "bookInfos",
+    // 折叠按钮样式
     iconfont: "iconfont iconfont-unturn",
+    // 楼宇
     building: "A",
+    // 楼层
     floor: "1F",
+    // 房间
     room: "206",
+    // 当前序列
     infoli: 0,
+    // 场地信息ul样式
     bookInfoul: "bookInfoul",
     leaseInfoul: "leaseInfoul_br",
   }
@@ -357,6 +393,8 @@ class BookRoom extends React.Component {
   public componentDidMount() {
     console.log("NotesNotesNotes")
   }
+
+  public globalAction: GlobalAction = new GlobalAction();
 
   static getRoomdata(data) { };
   public getRoomdata(data) {
@@ -385,11 +423,15 @@ class BookRoom extends React.Component {
         bookRoom: "bookRoom-all",
         bookformcss:"bookform-all "
       })
+      // 通知3d，暂停加载模型
+      this.globalAction.web_call_webgl_pauseloadModuler();
     } else {
       this.setState({
         bookRoom: "bookRoom-part",
         bookformcss:"bookform-part"
       })
+      //通知3d，继续加载模型  
+      this.globalAction.web_call_webgl_continueloadModuler();
     }
   }
 
