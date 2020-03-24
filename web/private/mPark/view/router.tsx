@@ -27,6 +27,8 @@ import ServiceTel from "serviceTel";
 import Distribute from "distribute";
 import SearchUser from "searchUser";
 import StatisticalStatement from "statisticalStatement";
+import InformationChild from "informationChild";
+import InformationDetail from "informationDetail";
 
 //园区企业--parkCompany; 随手拍 -- photograph；招租查询--findLease； 摆点申请-- applyPut； 
 //场地预定-- bookSite；在线报修-- repairsOnline；停车服务-- parking
@@ -68,6 +70,8 @@ class Router extends React.Component {
           <Route path="/distribute" component={Distribute} />
           <Route path="/searchUser" component={SearchUser} />
           <Route path="/statisticalStatement" component={StatisticalStatement} />
+          <Route path="/informationChild" component={InformationChild} />
+          <Route path="/informationDetail" component={InformationDetail} />
         </Switch>
       </HashRouter>
   )}

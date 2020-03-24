@@ -40,9 +40,6 @@ class ModificationAuthentication extends React.Component {
   render() {
     return (
       <div className="modification-authentication">
-        <div className="modification-authentication-top">
-          <div className="modification-authentication-title">数字园区</div>
-        </div>
         <div className="personal-center-tag">
           <div style={{ paddingLeft: "30px", float: "left" }} onClick={this.goBack.bind(this)}>
             <img src="./mpark/image/right.png" style={{ transform: "rotate(180deg)", marginBottom: "10px" }} />

@@ -11,16 +11,6 @@
 .enterprise-information::-webkit-scrollbar {
 	display: none;
 }
-.enterprise-information-top {
-	background-color: #0B8BF0;
-	width: 100%;
-	height: 150px;
-	padding: 50px 0 0 50px;
-}
-.enterprise-information-title {
-	color: #FFFFFF;
-	font-size: 40px;
-}
 .enterprise-information-back {
 	font-size: 40px;
 	color: #6C6C6C;

@@ -53,7 +53,6 @@ class PersonalCenter extends React.Component {
     return (
       <div className="personal-center">
         <div className="personal-center-top">
-          <div className="personal-center-title">数字园区</div>
           <div className="personal-center-info">
             <div className="personal-center-tx">
               <img src="./mpark/image/tx.jpg" className="personal-center-tx-img" />

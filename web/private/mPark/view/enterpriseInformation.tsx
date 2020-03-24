@@ -155,9 +155,6 @@ class EnterpriseInformation extends React.Component {
   render() {
     return (
       <div className="enterprise-information">
-        <div className="enterprise-information-top">
-          <div className="enterprise-information-title">数字园区</div>
-        </div>
         <div className="enterprise-information-back">
           <div style={{ float: "left" }} onClick={this.goBack.bind(this)}>
             <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }} />

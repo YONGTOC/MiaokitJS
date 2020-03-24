@@ -66,9 +66,6 @@ class Isay extends React.Component {
   render() {
     return (
       <div className="isay">
-        <div className="isay-top">
-          <div className="isay-title">数字园区</div>
-        </div>
         <div className="isay-back">
           <img src="./mpark/image/back.png" style={{ marginBottom: "25px" }} onClick={this.goBack.bind(this)} />
           <span style={{ color: "#6C6C6C", fontSize: "40px", marginLeft: "15px"}}>我有话说</span>

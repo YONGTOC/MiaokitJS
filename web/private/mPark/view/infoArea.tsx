@@ -55,7 +55,6 @@ class InfoArea extends React.Component {
     return (
       <div className="infoarea">
         <div className="infoarea-top">
-          <div className="infoarea-title">数字园区</div>
           <div className="infoarea-child-top">
             <input className="infoarea-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
             <img src="./mpark/image/search.png" className="infoarea-search-img" />

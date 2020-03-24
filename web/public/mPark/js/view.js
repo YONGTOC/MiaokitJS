@@ -907,8 +907,6 @@ define("defaultRentRoom", ["require", "exports", "react", "css!./styles/defaultR
         }
         render() {
             return (React.createElement("div", { className: "rent-room-detail" },
-                React.createElement("div", { className: "rent-room-top" },
-                    React.createElement("div", { className: "rent-room-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "rent-room-back" },
                     React.createElement("div", { style: { float: "left" }, onClick: this.goBack.bind(this) },
                         React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
@@ -956,8 +954,6 @@ define("distribute", ["require", "exports", "react", "react-router-dom", "css!./
         }
         render() {
             return (React.createElement("div", { className: "rent-room" },
-                React.createElement("div", { className: "rent-room-top" },
-                    React.createElement("div", { className: "rent-room-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "rent-room-back" },
                     React.createElement("div", { style: { float: "left" }, onClick: this.goBack.bind(this) },
                         React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
@@ -1086,8 +1082,6 @@ define("enterpriseInformation", ["require", "exports", "react", "css!./styles/en
         }
         render() {
             return (React.createElement("div", { className: "enterprise-information" },
-                React.createElement("div", { className: "enterprise-information-top" },
-                    React.createElement("div", { className: "enterprise-information-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "enterprise-information-back" },
                     React.createElement("div", { style: { float: "left" }, onClick: this.goBack.bind(this) },
                         React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
@@ -2459,7 +2453,6 @@ define("infoArea", ["require", "exports", "react", "react-router-dom", "css!./st
         render() {
             return (React.createElement("div", { className: "infoarea" },
                 React.createElement("div", { className: "infoarea-top" },
-                    React.createElement("div", { className: "infoarea-title" }, "\u6570\u5B57\u56ED\u533A"),
                     React.createElement("div", { className: "infoarea-child-top" },
                         React.createElement("input", { className: "infoarea-input", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) }),
                         React.createElement("img", { src: "./mpark/image/search.png", className: "infoarea-search-img" }),
@@ -2522,19 +2515,23 @@ define("information", ["require", "exports", "react", "css!./styles/information.
                     { name: "园区活动", imgUrl: "./mpark/image/activity.png" }, { name: "第三方服务", imgUrl: "./mpark/image/thirdParty.png" }
                 ]
             };
+            this.props = {
+                history: this.props.history
+            };
+        }
+        goChild(index) {
+            this.props.history.push({ pathname: "/informationChild", state: { index: index } });
         }
         render() {
             return (React.createElement("div", { className: "information" },
-                React.createElement("div", { className: "information-top" },
-                    React.createElement("div", { className: "information-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "information-headline" },
                     React.createElement("div", { style: { float: "left", width: "25%", height: "100%" } },
                         React.createElement("img", { src: "./mpark/image/headline.png", style: { marginBottom: "14px" } })),
                     React.createElement("div", { style: { float: "left", width: "75%", height: "100%", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" } }, "\u5173\u4E8E\u6842\u6797\u4FE1\u606F\u4EA7\u4E1A\u56ED\u56ED\u533A\u4F01\u4E1A\u590D\u5DE5\u7684\u91CD\u8981\u901A\u77E5\u4F60\u4F60\u4F60\u4F60\u4F60")),
                 React.createElement("div", { className: "information-content" }, this.state.informationList.map((item, index) => {
-                    return React.createElement("div", { className: "information-content-child", key: index },
+                    return (React.createElement("div", { className: "information-content-child", key: index, onClick: e => this.goChild(index) },
                         React.createElement("img", { src: item.imgUrl, width: "130px", height: "130px" }),
-                        React.createElement("div", { style: { marginTop: "20px" } }, item.name));
+                        React.createElement("div", { style: { marginTop: "20px" } }, item.name)));
                 }))));
         }
     }
@@ -2580,7 +2577,6 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "cs
         render() {
             return (React.createElement("div", { className: "personal-center" },
                 React.createElement("div", { className: "personal-center-top" },
-                    React.createElement("div", { className: "personal-center-title" }, "\u6570\u5B57\u56ED\u533A"),
                     React.createElement("div", { className: "personal-center-info" },
                         React.createElement("div", { className: "personal-center-tx" },
                             React.createElement("img", { src: "./mpark/image/tx.jpg", className: "personal-center-tx-img" })),
@@ -2818,8 +2814,6 @@ define("isay", ["require", "exports", "react", "css!./styles/isay.css"], functio
         }
         render() {
             return (React.createElement("div", { className: "isay" },
-                React.createElement("div", { className: "isay-top" },
-                    React.createElement("div", { className: "isay-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "isay-back" },
                     React.createElement("img", { src: "./mpark/image/back.png", style: { marginBottom: "25px" }, onClick: this.goBack.bind(this) }),
                     React.createElement("span", { style: { color: "#6C6C6C", fontSize: "40px", marginLeft: "15px" } }, "\u6211\u6709\u8BDD\u8BF4")),
@@ -2867,8 +2861,6 @@ define("workOrder", ["require", "exports", "react", "react-router-dom", "css!./s
         }
         render() {
             return (React.createElement("div", { className: "work-order" },
-                React.createElement("div", { className: "work-order-top" },
-                    React.createElement("div", { className: "work-order-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "work-order-back", onClick: this.goBack.bind(this) },
                     React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
                     React.createElement("span", null, "\u6211\u7684\u5DE5\u5355")),
@@ -2908,8 +2900,6 @@ define("workOrderDetail", ["require", "exports", "react", "css!./styles/workOrde
         }
         render() {
             return (React.createElement("div", { className: "work-order-detail" },
-                React.createElement("div", { className: "work-order-detail-top" },
-                    React.createElement("div", { className: "work-order-detail-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "work-order-detail-back", onClick: this.goBack.bind(this) },
                     React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
                     React.createElement("span", null, "\u6211\u7684\u5DE5\u5355")),
@@ -2993,8 +2983,6 @@ define("modificationAuthentication", ["require", "exports", "react", "css!./styl
         }
         render() {
             return (React.createElement("div", { className: "modification-authentication" },
-                React.createElement("div", { className: "modification-authentication-top" },
-                    React.createElement("div", { className: "modification-authentication-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "personal-center-tag" },
                     React.createElement("div", { style: { paddingLeft: "30px", float: "left" }, onClick: this.goBack.bind(this) },
                         React.createElement("img", { src: "./mpark/image/right.png", style: { transform: "rotate(180deg)", marginBottom: "10px" } }),
@@ -3033,8 +3021,6 @@ define("message", ["require", "exports", "react", "css!./styles/message.css"], f
         }
         render() {
             return (React.createElement("div", { className: "work-order" },
-                React.createElement("div", { className: "work-order-top" },
-                    React.createElement("div", { className: "work-order-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "work-order-back", onClick: this.goBack.bind(this) },
                     React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
                     React.createElement("span", null, "\u6211\u7684\u6D88\u606F")),
@@ -3070,8 +3056,6 @@ define("rentRoom", ["require", "exports", "react", "react-router-dom", "css!./st
         }
         render() {
             return (React.createElement("div", { className: "rent-room" },
-                React.createElement("div", { className: "rent-room-top" },
-                    React.createElement("div", { className: "rent-room-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "rent-room-back" },
                     React.createElement("div", { style: { float: "left" }, onClick: this.goBack.bind(this) },
                         React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
@@ -3115,8 +3099,6 @@ define("rentRoomDetail", ["require", "exports", "react", "css!./styles/rentRoomD
         }
         render() {
             return (React.createElement("div", { className: "rent-room-detail" },
-                React.createElement("div", { className: "rent-room-top" },
-                    React.createElement("div", { className: "rent-room-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "rent-room-back" },
                     React.createElement("div", { style: { float: "left" }, onClick: this.goBack.bind(this) },
                         React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
@@ -3205,8 +3187,6 @@ define("serviceTel", ["require", "exports", "react", "css!./styles/serviceTel.cs
         }
         render() {
             return (React.createElement("div", { className: "rent-room" },
-                React.createElement("div", { className: "rent-room-top" },
-                    React.createElement("div", { className: "rent-room-title" }, "\u6570\u5B57\u56ED\u533A")),
                 React.createElement("div", { className: "rent-room-back" },
                     React.createElement("div", { style: { float: "left" }, onClick: this.goBack.bind(this) },
                         React.createElement("img", { src: "./mpark/image/back.png", style: { margin: "-10px 10px 0 0" } }),
@@ -3253,12 +3233,11 @@ define("searchUser", ["require", "exports", "react", "css!./styles/searchUser.cs
         render() {
             return (React.createElement("div", { className: "infoarea" },
                 React.createElement("div", { className: "infoarea-top" },
-                    React.createElement("div", { className: "infoarea-title" }, "\u6570\u5B57\u56ED\u533A"),
                     React.createElement("div", { className: "infoarea-child-top" },
                         React.createElement("img", { src: "./mpark/image/whiteBack.png", style: { margin: "0 10px 30px -15px", padding: "15px 15px 15px 15px" }, onClick: this.goBack.bind(this) }),
                         React.createElement("input", { className: "infoarea-input", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) }),
                         React.createElement("img", { src: "./mpark/image/search.png", className: "infoarea-search-img" }),
-                        React.createElement("span", { className: "infoarea-sreach-bt" }, "\u641C\u7D22"))),
+                        React.createElement("span", { className: "search-user-bt" }, "\u641C\u7D22"))),
                 React.createElement("div", { className: "search-user-list" },
                     this.state.listArr.map((item, index) => {
                         return (React.createElement("div", { key: index, className: "search-user-list-child", onClick: e => this.clickTag(index) },
@@ -3395,7 +3374,116 @@ define("statisticalStatement", ["require", "exports", "react", "ring", "css!./st
     }
     exports.default = StatisticalStatement;
 });
-define("router", ["require", "exports", "react-router-dom", "react", "index", "home", "parkCompany", "photograph", "infoArea", "information", "personalCenter", "findLease", "applyPut", "bookSite", "repairsOnline", "parking", "narrate", "isay", "workOrder", "workOrderDetail", "modificationAuthentication", "message", "enterpriseInformation", "rentRoom", "rentRoomDetail", "defaultRentRoom", "parkWorkOrder", "serviceTel", "distribute", "searchUser", "statisticalStatement"], function (require, exports, react_router_dom_7, React, index_1, home_1, parkCompany_1, photograph_1, infoArea_1, information_1, personalCenter_1, findLease_1, applyPut_1, bookSite_1, repairsOnline_1, parking_1, narrate_1, isay_1, workOrder_1, workOrderDetail_1, modificationAuthentication_1, message_1, enterpriseInformation_1, rentRoom_1, rentRoomDetail_1, defaultRentRoom_1, parkWorkOrder_1, serviceTel_1, distribute_1, searchUser_1, statisticalStatement_1) {
+define("informationChild", ["require", "exports", "react", "css!./styles/informationChild.css"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class InformationChild extends React.Component {
+        constructor() {
+            super(...arguments);
+            this.state = {
+                inputValue: "搜索人员",
+                listArr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                tagIndex: 0,
+                tagArr: [
+                    { tagList: ["国家级", "省级", "市级", "区级"] }, { tagList: ["通知公告", "园区动态", "办事指南", "其他"] }, { tagList: ["全部", "户外活动", "行业会议", "交友聚会", "促销活动"] },
+                    { tagList: ["全部", "宽带服务", "绿植服务", "企业采购", "其他"] }
+                ],
+            };
+            this.props = {
+                history: this.props.history,
+                location: this.props.location
+            };
+        }
+        componentWillMount() {
+            if (this.props.location.state) {
+                sessionStorage.setItem("informationId", this.props.location.state.index);
+            }
+        }
+        foucus() {
+            if (this.state.inputValue === "搜索人员") {
+                this.setState({ inputValue: "" });
+            }
+        }
+        blur() {
+            if (this.state.inputValue === "") {
+                this.setState({ inputValue: "搜索人员" });
+            }
+        }
+        change(event) {
+            this.setState({ inputValue: event.target.value });
+        }
+        clickTag(index) {
+            this.setState({ tagIndex: index });
+        }
+        goBack() {
+            this.props.history.goBack();
+        }
+        goDetail(index) {
+            this.props.history.push({ pathname: "informationDetail", state: { index: index } });
+        }
+        render() {
+            return (React.createElement("div", { className: "information-child" },
+                React.createElement("div", { className: "infoarea-top" },
+                    React.createElement("div", { className: "infoarea-child-top" },
+                        React.createElement("img", { src: "./mpark/image/whiteBack.png", style: { margin: "0 10px 30px -15px", padding: "15px 15px 15px 15px" }, onClick: this.goBack.bind(this) }),
+                        React.createElement("input", { className: "infoarea-input", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) }),
+                        React.createElement("img", { src: "./mpark/image/search.png", className: "infoarea-search-img" }),
+                        React.createElement("span", { className: "search-user-bt" }, "\u641C\u7D22"))),
+                React.createElement("div", { className: "information-child-tag" }, this.state.tagArr[sessionStorage.getItem("informationId")].tagList.map((item, index) => {
+                    return (React.createElement("div", { key: index, className: index !== this.state.tagIndex ? "information-child-c" : "information-child-add-c", onClick: e => this.clickTag(index), style: { width: 100 / this.state.tagArr[sessionStorage.getItem("informationId")].tagList.length + "%" } }, item));
+                })),
+                React.createElement("div", { className: "information-child-List" },
+                    [1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => {
+                        return (React.createElement("div", { key: index, className: "information-child-List-child", onClick: e => this.goDetail(index) },
+                            React.createElement("div", { style: { fontSize: "42px", color: "#333333", width: "90%", margin: "auto", paddingTop: "30px" } }, "\u6842\u6797\u5E02\u79D1\u6280\u5C40\u5173\u4E8E 2020\u5E74\u5EA6\u56FD\u5BB6\u5916\u56FD\u4E13\u5BB6\u9879\u76EE\u7533\u62A5\u7684\u901A\u77E5"),
+                            React.createElement("div", { style: {
+                                    color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", display: "-webkit-box", webkitLineClamp: "3", overflow: "hidden",
+                                    webkitBoxOrient: "vertical"
+                                } }, "\u5404\u76F8\u5173\u5355\u4F4D\uFF1A\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48 \u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48 \u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48\u6839\u636E\u4EC0\u4E48\u4EC0\u4E48"),
+                            React.createElement("div", { style: { color: "#949494", fontSize: "34px", margin: "30px 0 0 50px" } },
+                                React.createElement("div", { style: { float: "left" } }, "200\u6B21\u6D4F\u89C8"),
+                                React.createElement("div", { style: { float: "right", marginRight: "50px" } }, "2020-02-28 14:38:15 \u53D1\u5E03"))));
+                    }),
+                    React.createElement("div", { style: { width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" } }, "\u5230\u5E95\u5566~"))));
+        }
+    }
+    exports.default = InformationChild;
+});
+define("informationDetail", ["require", "exports", "react", "css!./styles/informationDetail.css"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class informationDetail extends React.Component {
+        constructor() {
+            super(...arguments);
+            this.state = {};
+            this.props = {
+                history: this.props.history
+            };
+        }
+        componentWillMount() {
+        }
+        goBack() {
+            this.props.history.goBack();
+        }
+        render() {
+            return (React.createElement("div", { className: "isay" }, parseInt(sessionStorage.getItem("informationId")) === 0 ?
+                React.createElement("div", null,
+                    React.createElement("div", { className: "isay-back" },
+                        React.createElement("img", { src: "./mpark/image/back.png", style: { marginBottom: "25px" }, onClick: this.goBack.bind(this) }),
+                        React.createElement("span", { style: { color: "#6C6C6C", fontSize: "40px", marginLeft: "15px" } }, "\u8BE6\u60C5\u5185\u5BB9")),
+                    React.createElement("div", { style: { fontSize: "40px", width: "90%", color: "#333333", margin: "20px auto" } }, "\u6842\u6797\u5E02\u79D1\u6280\u5C40\u5173\u4E8E 2020\u5E74\u5EA6\u56FD\u5BB6\u5916\u56FD\u4E13\u5BB6\u9879\u76EE\u7533\u62A5\u7684\u901A\u77E5"),
+                    React.createElement("div", { style: { color: "#949494", fontSize: "34px", margin: "30px 0 0 50px", overflow: "hidden" } },
+                        React.createElement("div", { style: { float: "left" } }, "200\u6B21\u6D4F\u89C8"),
+                        React.createElement("div", { style: { float: "right", marginRight: "50px" } }, "2020-02-28 14:38:15 \u53D1\u5E03")),
+                    React.createElement("div", { style: { border: "2px solid #F2F2F2", marginTop: "25px" } }),
+                    React.createElement("div", { style: { fontSize: "40px", color: "#333333", width: "90%", margin: "30px auto" } },
+                        React.createElement("p", { style: { fontSize: "40px" } }, "\u5404\u76F8\u5173\u5355\u4F4D\uFF1A"),
+                        "\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185 \u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185 \u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5\u5185\u5BB9\u8BE6\u60C5")) : null));
+        }
+    }
+    exports.default = informationDetail;
+});
+define("router", ["require", "exports", "react-router-dom", "react", "index", "home", "parkCompany", "photograph", "infoArea", "information", "personalCenter", "findLease", "applyPut", "bookSite", "repairsOnline", "parking", "narrate", "isay", "workOrder", "workOrderDetail", "modificationAuthentication", "message", "enterpriseInformation", "rentRoom", "rentRoomDetail", "defaultRentRoom", "parkWorkOrder", "serviceTel", "distribute", "searchUser", "statisticalStatement", "informationChild", "informationDetail"], function (require, exports, react_router_dom_7, React, index_1, home_1, parkCompany_1, photograph_1, infoArea_1, information_1, personalCenter_1, findLease_1, applyPut_1, bookSite_1, repairsOnline_1, parking_1, narrate_1, isay_1, workOrder_1, workOrderDetail_1, modificationAuthentication_1, message_1, enterpriseInformation_1, rentRoom_1, rentRoomDetail_1, defaultRentRoom_1, parkWorkOrder_1, serviceTel_1, distribute_1, searchUser_1, statisticalStatement_1, informationChild_1, informationDetail_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Router extends React.Component {
@@ -3428,7 +3516,9 @@ define("router", ["require", "exports", "react-router-dom", "react", "index", "h
                     React.createElement(react_router_dom_7.Route, { path: "/serviceTel", component: serviceTel_1.default }),
                     React.createElement(react_router_dom_7.Route, { path: "/distribute", component: distribute_1.default }),
                     React.createElement(react_router_dom_7.Route, { path: "/searchUser", component: searchUser_1.default }),
-                    React.createElement(react_router_dom_7.Route, { path: "/statisticalStatement", component: statisticalStatement_1.default }))));
+                    React.createElement(react_router_dom_7.Route, { path: "/statisticalStatement", component: statisticalStatement_1.default }),
+                    React.createElement(react_router_dom_7.Route, { path: "/informationChild", component: informationChild_1.default }),
+                    React.createElement(react_router_dom_7.Route, { path: "/informationDetail", component: informationDetail_1.default }))));
         }
     }
     exports.default = Router;
@@ -3450,23 +3540,25 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             };
             Index.g_pIns = this;
         }
-        componentDidMount() {
+        componentWillMount() {
             let _this = this;
-            var geolocation = new BMap.Geolocation();
-            geolocation.getCurrentPosition(function (r) {
-                if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-                    console.log(r.address.city);
-                    _this.setState({ city: r.address.city });
-                }
-                else {
-                    if (this.getStatus() === 6) {
-                        console.log("没有权限");
+            if (!sessionStorage.getItem("city")) {
+                var geolocation = new BMap.Geolocation();
+                geolocation.getCurrentPosition(function (r) {
+                    if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                        sessionStorage.setItem("city", r.address.city);
+                        _this.setState({ city: r.address.city });
                     }
-                    if (this.getStatus() === 8) {
-                        console.log("连接超时");
+                    else {
+                        if (this.getStatus() === 6) {
+                            console.log("没有权限");
+                        }
+                        if (this.getStatus() === 8) {
+                            console.log("连接超时");
+                        }
                     }
-                }
-            });
+                });
+            }
         }
         foucus() {
             if (this.state.inputValue === "请输入园区名称") {
@@ -3483,13 +3575,12 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         }
         render() {
             return (React.createElement("div", { className: "index" },
-                React.createElement("div", { className: "index-top" }, "\u6570\u5B57\u56ED\u533A"),
                 React.createElement("div", { className: "index-input-div" },
                     React.createElement("div", { className: "index-child-left" },
                         React.createElement("input", { className: "index-input", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) }),
                         React.createElement("img", { src: "./mpark/image/search.png", className: "index-search-img" })),
                     React.createElement("div", { className: "index-child-right" },
-                        React.createElement("span", null, this.state.city),
+                        React.createElement("span", null, sessionStorage.getItem("city")),
                         React.createElement("img", { src: "./mpark/image/bottom.png", width: "50px", height: "50px", style: { marginTop: "-10px" } }))),
                 React.createElement("div", { className: "index-number" },
                     React.createElement("img", { src: "./mpark/image/tower.png", className: "tower-img" }),

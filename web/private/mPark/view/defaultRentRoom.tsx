@@ -27,11 +27,6 @@ class DetaultRentRoom extends React.Component {
   render() {
     return (
       <div className="rent-room-detail">
-        <div className="rent-room-top">
-          <div className="rent-room-title">
-            数字园区
-          </div>
-        </div>
         <div className="rent-room-back">
           <div style={{ float: "left" }} onClick={this.goBack.bind(this)}>
             <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
