@@ -8,7 +8,7 @@ interface IState {
   
 }
 
-class RentRoomDetail extends React.Component {
+class RentRoomDetail extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
    
   }

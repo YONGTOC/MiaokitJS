@@ -10,7 +10,7 @@ interface IState {
   tagIndex: number,
 }
 
-class SearchUser extends React.Component {
+class SearchUser extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
     inputValue: "搜索人员", // 输入框默认值
     listArr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],

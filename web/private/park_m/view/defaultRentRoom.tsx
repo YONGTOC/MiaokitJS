@@ -9,7 +9,7 @@ interface IState {
   defaultIndex: number
 }
 
-class DetaultRentRoom extends React.Component {
+class DetaultRentRoom extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
     workOrderArray: ["A座-1F-201室", "A座-1F-202室", "A座-1F-203室"],
     defaultIndex: 0

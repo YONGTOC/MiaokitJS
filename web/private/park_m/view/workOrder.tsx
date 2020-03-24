@@ -12,7 +12,7 @@ interface IState {
   workOrderArray: Array<any>
 }
 
-class WorkOrder extends React.Component {
+class WorkOrder extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
     tagList: ["全部", "企业认证", "场地预定", "摆点申请", "在线保修"],
     tagIndex: 0,

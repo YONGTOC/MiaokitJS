@@ -8,7 +8,7 @@ interface IProps {
 interface IState {
 }
 
-class workOrderDetail extends React.Component {
+class workOrderDetail extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
 
   }
