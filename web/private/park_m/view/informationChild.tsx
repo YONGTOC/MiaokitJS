@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import "css!./styles/informationChild.css"
 import { Link } from 'react-router-dom';
 
@@ -16,12 +16,12 @@ interface IState {
 
 export default class InformationChild extends React.Component {
   public readonly state: Readonly<IState> = {
-    inputValue: "ËÑË÷ÈËÔ±", // ÊäÈë¿òÄ¬ÈÏÖµ
+    inputValue: "æœç´¢äººå‘˜", // è¾“å…¥æ¡†é»˜è®¤å€¼
     listArr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-    tagIndex: 0, // Ñ¡ÖĞµÄ±êÇ©
+    tagIndex: 0, // é€‰ä¸­çš„æ ‡ç­¾
     tagArr: [
-      { tagList: ["¹ú¼Ò¼¶", "Ê¡¼¶", "ÊĞ¼¶", "Çø¼¶"] }, { tagList: ["Í¨Öª¹«¸æ", "Ô°Çø¶¯Ì¬", "°ìÊÂÖ¸ÄÏ", "ÆäËû"] }, { tagList: ["È«²¿", "»§Íâ»î¶¯", "ĞĞÒµ»áÒé", "½»ÓÑ¾Û»á", "´ÙÏú»î¶¯"] },
-      { tagList: ["È«²¿", "¿í´ø·şÎñ", "ÂÌÖ²·şÎñ", "ÆóÒµ²É¹º", "ÆäËû"]}
+      { tagList: ["å›½å®¶çº§", "çœçº§", "å¸‚çº§", "åŒºçº§"] }, { tagList: ["é€šçŸ¥å…¬å‘Š", "å›­åŒºåŠ¨æ€", "åŠäº‹æŒ‡å—", "å…¶ä»–"] }, { tagList: ["å…¨éƒ¨", "æˆ·å¤–æ´»åŠ¨", "è¡Œä¸šä¼šè®®", "äº¤å‹èšä¼š", "ä¿ƒé”€æ´»åŠ¨"] },
+      { tagList: ["å…¨éƒ¨", "å®½å¸¦æœåŠ¡", "ç»¿æ¤æœåŠ¡", "ä¼ä¸šé‡‡è´­", "å…¶ä»–"]}
     ],
   }
 
@@ -36,36 +36,36 @@ export default class InformationChild extends React.Component {
     }
   }
 
-  // ¾Û½¹
+  // èšç„¦
   foucus() {
-    if (this.state.inputValue === "ËÑË÷ÈËÔ±") {
+    if (this.state.inputValue === "æœç´¢äººå‘˜") {
       this.setState({ inputValue: "" })
     }
   }
 
-  // Ê§½¹
+  // å¤±ç„¦
   blur() {
     if (this.state.inputValue === "") {
-      this.setState({ inputValue: "ËÑË÷ÈËÔ±" })
+      this.setState({ inputValue: "æœç´¢äººå‘˜" })
     }
   }
 
-  // ÊäÈë
+  // è¾“å…¥
   change(event) {
     this.setState({ inputValue: event.target.value })
   }
 
-  // Ñ¡ÖĞ±êÇ©
+  // é€‰ä¸­æ ‡ç­¾
   clickTag(index) {
     this.setState({ tagIndex: index })
   }
 
-  // ·µ»Ø
+  // è¿”å›
   goBack() {
     this.props.history.goBack()
   }
 
-  // ÏêÇé
+  // è¯¦æƒ…
   goDetail(index) {
     this.props.history.push({ pathname: "informationDetail", state: { index: index } })
   }
@@ -78,7 +78,7 @@ export default class InformationChild extends React.Component {
             <img src="./park_m/image/whiteBack.png" style={{ margin: "0 10px 30px -15px", padding: "15px 15px 15px 15px" }} onClick={this.goBack.bind(this)} />
             <input className="infoarea-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
             <img src="./park_m/image/search.png" className="infoarea-search-img" />
-            <span className="search-user-bt">ËÑË÷</span>
+            <span className="search-user-bt">æœç´¢</span>
           </div>
         </div>
         <div className="information-child-tag">
@@ -95,24 +95,24 @@ export default class InformationChild extends React.Component {
             return (
               <div key={index} className="information-child-List-child" onClick={e => this.goDetail(index)} >
                 <div style={{ fontSize: "42px", color: "#333333", width: "90%", margin: "auto", paddingTop: "30px" }}>
-                  ¹ğÁÖÊĞ¿Æ¼¼¾Ö¹ØÓÚ 2020Äê¶È¹ú¼ÒÍâ¹ú×¨¼ÒÏîÄ¿Éê±¨µÄÍ¨Öª
+                  æ¡‚æ—å¸‚ç§‘æŠ€å±€å…³äº 2020å¹´åº¦å›½å®¶å¤–å›½ä¸“å®¶é¡¹ç›®ç”³æŠ¥çš„é€šçŸ¥
                 </div>
                 <div style={{
                   color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", display: "-webkit-box", webkitLineClamp: "3", overflow: "hidden",
                   webkitBoxOrient: "vertical" }}>
-                              ¸÷Ïà¹Øµ¥Î»£º¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´
-                              ¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´
-                              ¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´¸ù¾İÊ²Ã´Ê²Ã´
+                              å„ç›¸å…³å•ä½ï¼šæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆ
+                              æ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆ
+                              æ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆæ ¹æ®ä»€ä¹ˆä»€ä¹ˆ
                 </div>
                 <div style={{ color: "#949494", fontSize: "34px", margin: "30px 0 0 50px" }}>
-                  <div style={{ float: "left" }}>200´Îä¯ÀÀ</div>
-                  <div style={{ float: "right", marginRight: "50px" }}>2020-02-28 14:38:15 ·¢²¼</div>
+                  <div style={{ float: "left" }}>200æ¬¡æµè§ˆ</div>
+                  <div style={{ float: "right", marginRight: "50px" }}>2020-02-28 14:38:15 å‘å¸ƒ</div>
                 </div>
               </div>  
             )
           })
           }
-          < div style={{ width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>µ½µ×À²~</div>
+          < div style={{ width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>åˆ°åº•å•¦~</div>
         </div>
       </div>
     )
