@@ -1,0 +1,24 @@
+.search-user-list {
+  width: 100%;
+  height: 100%;
+  white-space: pre-line;
+  overflow-y: auto;
+  padding-bottom: 150px;
+}
+.search-user-list::-webkit-scrollbar {
+  display: none;
+}
+.search-user-list-child {
+  width: 90%;
+  height: 150px;
+  font-size: 42px;
+  color: #6C6C6C;
+  border-bottom: 1px solid #F2F2F2;
+  line-height: 150px;
+  margin: auto;
+  overflow: hidden;
+}
+.search-user-bt {
+  font-size: 42px;
+  color: #FFFFFF;
+}

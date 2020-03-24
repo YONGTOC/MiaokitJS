@@ -323,6 +323,7 @@ class TopBtn extends React.Component {
             </div>
           </div>
         </RouterDOM.Link>
+       
       </div>
 
     )
@@ -393,7 +394,6 @@ class FoldBtn extends React.Component {
             </div>
           </RouterDOM.Link>
         
-
           <RouterDOM.Link to="/applyPut" >
             <div className={this.state.foleIcon} >
               <i className="iconfont" style={{ "fontSize": "5rem", "color": "#208FE6", "height": "6rem" }}>&#xe81f;</i>
@@ -411,16 +411,31 @@ class FoldBtn extends React.Component {
               <i className="iconfont" style={{ "fontSize": "5rem", "color": "#26AC8F", "height": "6rem" }}>&#xe822;</i>
               <p>在线报修</p>
             </div>
+
           </RouterDOM.Link>
-         
+               //<RouterDOM.Link to="/photograph" >
+            <div className={this.state.foleIcon} >
+              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#F0594C", "height": "6rem" }}>&#xe821;</i>
+              <p>随手拍</p>
+            </div>
+          </RouterDOM.Link>
+          <RouterDOM.Link to="/parking" >
+            <div className={this.state.foleIcon} >
+              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#208FE6", "height": "6rem" }}>&#xe823;</i>
+              <p>停车业务</p>
+            </div>
+          </RouterDOM.Link>
         </div>
       </div>
     )
   }
 
   public state = {
+    // 按钮
     foleIcon: "foleIcon",
+   // 折叠框样式
     foldView: "foldView-part",
+    // 折叠按钮
     iconfont: "iconfont iconfont-unturn",
   }
 }

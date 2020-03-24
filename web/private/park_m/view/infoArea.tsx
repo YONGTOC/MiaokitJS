@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 import "css!./styles/infoArea.css"
 import { Link } from 'react-router-dom';
 
@@ -17,7 +17,7 @@ class InfoArea extends React.Component {
     inputValue: "请输入主题", // 输入框默认值
     tagArr: ["咨询", "建议", "投诉", "其他"],
     listArr: [{ spread: true }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }],
-    tagIndex: 0, // 选中的标签   
+    tagIndex: 0, // 选中的标签
   }
 
   // 聚焦
@@ -55,7 +55,6 @@ class InfoArea extends React.Component {
     return (
       <div className="infoarea">
         <div className="infoarea-top">
-          <div className="infoarea-title">数字园区</div>
           <div className="infoarea-child-top">
             <input className="infoarea-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
             <img src="./park_m/image/search.png" className="infoarea-search-img" />

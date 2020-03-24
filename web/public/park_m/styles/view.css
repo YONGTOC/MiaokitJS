@@ -58,10 +58,10 @@ i{
     position: fixed;
     width: 100%;
     height: 100%;
-    z-index: 101;
+    z-index: 1000;
     background: rgba(0,0,0,0.5);
+    top: 0;
 }
-
 .iconBox {
     width: 6rem;
     height: 9rem;
@@ -2164,4 +2164,22 @@ border-bottom: 0.2rem solid #f2f2f2;
 }
 .contentUL p{
 
+}
+.contentUL-part {
+    height: 42rem;
+    overflow-y: scroll;
+}
+.contentUL-all {
+    height: 98rem;
+    overflow-y: scroll;
+}
+.alterationTitle {
+    width: 30rem;
+    display: inline-block;
+    border-left: 0.7rem solid #0B8BF0;
+    line-height: 2.3rem;
+    height: 3rem;
+    padding-left: 1rem;
+    font-weight: bold;
+    font-size: 2.3rem;
 }

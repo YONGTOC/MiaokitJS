@@ -1,0 +1,25 @@
+.ring-a {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  float: left;
+}
+
+.ring-common {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 50%;
+  transform-origin: 0% 100%;
+}
+
+.inner-ring {
+  position: absolute;
+  background-color: #ffffff;
+  z-index: 100;
+  border-radius: 50%;
+  font-weight: 600;
+  text-align: center;
+}

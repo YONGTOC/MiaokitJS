@@ -1,13 +1,14 @@
-import * as React from "react";
+﻿import * as React from "react";
 import "css!./styles/workOrderDetail.css"
 
 interface IProps {
+
 }
 
 interface IState {
 }
 
-class workOrderDetail extends React.Component<{ history:any}> {
+class workOrderDetail extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
 
   }
@@ -19,11 +20,8 @@ class workOrderDetail extends React.Component<{ history:any}> {
 
 
   render() {
-    return ( 
+    return (
       <div className="work-order-detail">
-        <div className="work-order-detail-top">
-          <div className="work-order-detail-title">数字园区</div>
-        </div>
         <div className="work-order-detail-back" onClick={this.goBack.bind(this)}>
           <img src="./park_m/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
           <span>我的工单</span>

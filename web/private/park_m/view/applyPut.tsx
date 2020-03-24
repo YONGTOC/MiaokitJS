@@ -194,7 +194,9 @@ class ApplyPut extends React.Component {
     //申请企业
     company: "永拓信息科技",
     applyPutcss: "applyPut-part ",
+    // 折叠按钮状态
     iconfont: "iconfont iconfont-unturn",
+    // 内容框状态
     applyPutul: "applyPutul-part applyPutul",
     // 摆点列表
     applyList: [ ],

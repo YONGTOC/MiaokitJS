@@ -12,9 +12,7 @@ class FindLease extends React.Component {
     FindLease.getLeaseinfoByroomid = this.getLeaseinfoByroomid.bind(this);
   }
 
-  public componentDidMount() {
-
-  }
+  public componentDidMount() {}
 
   public globalAction: GlobalAction = new GlobalAction();
 
@@ -75,7 +73,9 @@ class FindLease extends React.Component {
 
   public state = {
     FindLeasecss: "findLease",
+    // 招租列表
     showList: true,
+    // 招租信息
     showInfo: false,
   }
 
@@ -251,7 +251,7 @@ class LeaseList extends React.Component {
                         <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
                     </p>
                     <p className={this.state.indexOf == index ? "leaseType-active" : "leaseType"} >
-                      <span className={this.state.indexOf == index ? "leasePrice-active" : "leasePrice"}>{i.price}</span></p>
+                      <span className={this.state.indexOf == index ? "leasePrice-active" : "leasePrice"}>{i.price}</span>元/m²/天</p>
                   </div>
                 </li>
               )
@@ -461,7 +461,7 @@ class LeaseInfos extends React.Component {
             <span style={{ "font-weight": "600" }}>{this.state.elevator}</span></li>
           <li>
             <span style={{ "padding-right": "7rem" }}>租金</span>
-            <span style={{ "color": "#F53636" }}>{this.state.price}</span></li>
+            <span style={{ "color": "#F53636" }}>{this.state.price}元/m²/天</span></li>
           <li>
             <span style={{ "padding-right": "5rem" }}>联系人</span>
             <span style={{ "font-weight": "600" }}>{this.state.man}</span></li>

@@ -431,11 +431,15 @@ class CompanyInfo extends React.Component {
   }
 
   public state = {
+    // 企业信息样式
     companyInfocss: "companyInfo",
     //  companyId:"",
     companyName: "浙江永拓信息科技有限公司",
+     // 企业信息ul样式
     companyInfoul: "companyInfoul",
+    // 当前选中li
     infoli: 0,
+    // 折叠按钮
     iconfont: "iconfont iconfont-unturn",
   }
 
@@ -499,9 +503,12 @@ class CompanyInfos extends React.Component {
 
   public state = {
     imgurl: "",
+    // 企业名称
     name: "",
     address: "",
+    // 企业类型
     type: "",
+    // 联系人
     man: "",
     tel: "",
     http: ""

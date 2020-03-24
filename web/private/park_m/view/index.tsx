@@ -7,6 +7,8 @@ import ParkCompany from "parkCompany";
 import FindLease from "findLease";
 import ApplyPut from "applyPut";
 import Photograph from "photograph";
+import BookSite from "bookSite";
+import Parking from "parking";
 import Home from "home";
 import RepairsOnline from "repairsOnline";
 import DataService from "dataService";
@@ -86,7 +88,7 @@ class Index extends React.Component {
     this.setState({inputValue: event.target.value})
   }
 
-
+  // 加载园区地图
   public initPark(park_id) {
     this.globalAction.web_call_webgl_initPark(park_id);
     console.log(park_id);
@@ -97,7 +99,6 @@ class Index extends React.Component {
   render() {
     return (
       <div className="index">
-        <div className="index-top">数字园区</div>
         <div className="index-input-div">
           <div className="index-child-left">
             <input className="index-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)}/>
@@ -167,11 +168,24 @@ class Index extends React.Component {
     Photograph.getXY(x, y);
   }
 
-  //添加保修点
+  //添加报修点
   public addReqairs(x, y,building_id, floor_id,room_id) {
     this.props.history.push('/repairsOnline');
     RepairsOnline.getReqairstpostion(x, y,building_id, floor_id, room_id);
   }
+
+  //添加场地预约
+  public refreshBooksite(id) {
+    this.props.history.push('/bookSite');
+    BookSite.getSiteinfo(id);
+  }
+
+  //添加地下车库
+  public refreshParking(data) {
+    this.props.history.push('/parking');
+    Parking.inParkingList(data);
+  }
+ 
 }
 
 

@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 import "css!./styles/modificationAuthentication.css"
 
 interface IProps {
@@ -8,12 +8,12 @@ interface IState {
   inputValue: string
 }
 
-class ModificationAuthentication extends React.Component<{ history:any}> {
+class ModificationAuthentication extends React.Component<{ history: any }>  {
   public readonly state: Readonly<IState> = {
     inputValue: "用户昵称XXX"
   }
 
-  // 聚焦   
+  // 聚焦
   focus() {
     if (this.state.inputValue === "用户昵称XXX") {
       this.setState({ inputValue: "" })
@@ -40,9 +40,6 @@ class ModificationAuthentication extends React.Component<{ history:any}> {
   render() {
     return (
       <div className="modification-authentication">
-        <div className="modification-authentication-top">
-          <div className="modification-authentication-title">数字园区</div>
-        </div>
         <div className="personal-center-tag">
           <div style={{ paddingLeft: "30px", float: "left" }} onClick={this.goBack.bind(this)}>
             <img src="./park_m/image/right.png" style={{ transform: "rotate(180deg)", marginBottom: "10px" }} />

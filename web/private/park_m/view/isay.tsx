@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 import "css!./styles/isay.css"
 
 interface IProps {
@@ -15,7 +15,7 @@ class Isay extends React.Component<{ history:any}>{
   public readonly state: Readonly<IState> = {
     tagArray: [{ name: "咨询" }, { name: "建议" }, { name: "投诉" }, { name: "其它" }],
     tagIndex: 0,
-    inputValue: "不能少于3个字且不能大于33个字", // 主题默认值   
+    inputValue: "不能少于3个字且不能大于33个字", // 主题默认值
     textareaValue: "请将留言内容描述出来（200字内）"
   }
 
@@ -66,12 +66,9 @@ class Isay extends React.Component<{ history:any}>{
   render() {
     return (
       <div className="isay">
-        <div className="isay-top">
-          <div className="isay-title">数字园区</div>
-        </div>
         <div className="isay-back">
           <img src="./park_m/image/back.png" style={{ marginBottom: "25px" }} onClick={this.goBack.bind(this)} />
-          <span style={{ color: "#6C6C6C", fontSize: "40px", marginLeft: "15px"}}>我有话说</span>
+          <span style={{ color: "#6C6C6C", fontSize: "40px", marginLeft: "15px" }}>我有话说</span>
         </div>
         <div style={{ fontSize: "40px", color: "#949494", margin: "20px 0 0 35px", overflow: "hidden" }}>
           <div className="isay-star"></div><div style={{ float: "left", marginLeft: "15px" }}>留言类别:</div>
@@ -82,7 +79,7 @@ class Isay extends React.Component<{ history:any}>{
               <img src="./park_m/image/checked.png" style={{ margin: "-22px 20px 0 0" }} />
               <span style={{ fontSize: "40px", color: "#6C6C6C" }}>{item.name}</span>
             </div>
-            })
+          })
           }
         </div>
         <div style={{ borderTop: "3px solid #F2F2F2", marginTop: "30px", margin: "0 30px 0 30px" }}></div>

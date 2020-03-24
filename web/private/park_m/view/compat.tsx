@@ -48,6 +48,16 @@ class GlobalAction {
     console.log("web_call_webgl_continueloadModuler");
   }
 
+  //通知3d，显示停车场标识
+  public web_call_webgl_showParkingList(data) {
+    console.log("web_call_webgl_showParkingList", data);
+  }
+
+  //通知3d，点亮对应停车场标识
+  public web_call_webgl_onParking(data) {
+    console.log("web_call_webgl_onParking",data);
+  }
+
   //  over
 }
 
