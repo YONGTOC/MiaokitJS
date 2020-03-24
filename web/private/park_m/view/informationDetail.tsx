@@ -49,10 +49,27 @@ export default class informationDetail extends React.Component {
                   容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情内
                   容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情
             </div>
-          </div> : 
-          <div>
-            <div style={{ width: "100%", height: "300px" }}>
-              <img src="./park_m/image/discounts_bg.png" />
+          </div> :
+          <div style={{ fontSize: "30px", color: "#333333" }}>
+            <div style={{ width: "100%", height: "600px" }}>
+              <img src="./park_m/image/discounts_bg.png" style={{ width: "100%", height: "100%" }} />
+              <div style={{
+                position: "absolute", left: "50px", top: "30px", backgroundColor: "#000000", background: "rgba(0, 0, 0, 0.3)",
+                borderRadius: "50px", width: "260px", height: "75px", lineHeight: "75px", textAlign: "center", opacity: "0.8" }}>
+                <img src="./park_m/image/w-right.png" style={{ transform: "rotate(180deg)", margin: "0px 18px 22px 0px" }} />
+                <span style={{ fontSize: "40px", color: "#ffffff", marginRight: "15px" }}>详情内容</span>
+              </div>
+            </div>
+            <div style={{ width: "100%", height: "120px", fontSize: "42px", color: "#333333", fontWeight: "600", borderBottom: "5px solid #F2F2F2", lineHeight: "120px", textAlign: "center" }}>
+              信息产业园惠企政策宣讲会
+            </div>
+            <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" }}>
+              <div style={{ height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" }}></div>
+              <div style={{ color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px"}}>活动信息</div>
+            </div>
+            <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" }}>
+              <span>活动时间</span>
+              <span>2020-3-15 13:00~2020-3-15 15:00</span>
             </div>
           </div>
         }
