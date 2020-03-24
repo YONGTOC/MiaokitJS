@@ -28,7 +28,7 @@ class Distribute extends React.Component {
       <div className="rent-room">
         <div className="rent-room-back">
           <div style={{ float: "left" }} onClick={this.goBack.bind(this)}>
-            <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
+            <img src="./park_m/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
             <span>工单派发管理</span>
           </div>
         </div>
@@ -45,7 +45,7 @@ class Distribute extends React.Component {
                     float: "left", height: "70px", backgroundColor: "#E8F5FE", borderRadius: "5px", border: "3px solid #C3E3FA", overflow: "hidden", lineHright: "70px", textAlign: "center",
                     minWidth: "150px"}}>
                     <div style={{ height: "100%", width: "60px", float: "left", lineHeight: "52px" }}>
-                      <img src="./mpark/image/user.png" width="40px" height="40px"/>
+                      <img src="./park_m/image/user.png" width="40px" height="40px"/>
                     </div>
                     <div style={{ float: "left", lineHeight: "61px", height: "100%", minWidth: "90px", padding: "0 20px 0 15px" }}>小明</div>
                   </div>

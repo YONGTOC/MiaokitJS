@@ -67,7 +67,7 @@ class Isay extends React.Component {
     return (
       <div className="isay">
         <div className="isay-back">
-          <img src="./mpark/image/back.png" style={{ marginBottom: "25px" }} onClick={this.goBack.bind(this)} />
+          <img src="./park_m/image/back.png" style={{ marginBottom: "25px" }} onClick={this.goBack.bind(this)} />
           <span style={{ color: "#6C6C6C", fontSize: "40px", marginLeft: "15px"}}>我有话说</span>
         </div>
         <div style={{ fontSize: "40px", color: "#949494", margin: "20px 0 0 35px", overflow: "hidden" }}>
@@ -76,7 +76,7 @@ class Isay extends React.Component {
         <div className="isay-tag">
           {this.state.tagArray.map((item, index) => {
             return <div className="isay-tag-child" key={index}>
-              <img src="./mpark/image/checked.png" style={{ margin: "-22px 20px 0 0" }} />
+              <img src="./park_m/image/checked.png" style={{ margin: "-22px 20px 0 0" }} />
               <span style={{ fontSize: "40px", color: "#6C6C6C" }}>{item.name}</span>
             </div>
             })

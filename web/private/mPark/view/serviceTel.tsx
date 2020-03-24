@@ -21,7 +21,7 @@ class ServiceTel extends React.Component {
       <div className="rent-room">
         <div className="rent-room-back">
           <div style={{ float: "left" }} onClick={this.goBack.bind(this)}>
-            <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
+            <img src="./park_m/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
             <span>客服电话</span>
           </div>
         </div>

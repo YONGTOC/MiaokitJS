@@ -17,7 +17,7 @@ interface IState {
 
 class EnterpriseInformation extends React.Component {
   public readonly state: Readonly<IState> = {
-    imgList: ["./mpark/image/tx.jpg", "./mpark/image/tx.jpg", "./mpark/image/tx.jpg", "./mpark/image/tx.jpg", "./mpark/image/tx.jpg"],
+    imgList: ["./park_m/image/tx.jpg", "./park_m/image/tx.jpg", "./park_m/image/tx.jpg", "./park_m/image/tx.jpg", "./park_m/image/tx.jpg"],
     modifyState: false, // 修改状态
     inputEnterpriseIDValue: "123456",
     inputEnterpriseNameValue: "请输入企业名称",
@@ -157,7 +157,7 @@ class EnterpriseInformation extends React.Component {
       <div className="enterprise-information">
         <div className="enterprise-information-back">
           <div style={{ float: "left" }} onClick={this.goBack.bind(this)}>
-            <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
+            <img src="./park_m/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
             <span>企业信息管理</span>
           </div>
           {this.state.modifyState ? null :
@@ -181,7 +181,7 @@ class EnterpriseInformation extends React.Component {
               <div className="enterprise-information-photograph-star"></div>
               <div style={{ color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left", width: "25%" }}>企业logo</div>
               <div style={{ backgroundColor: "#F2F2F2", height: "120px", width: "120px", float: "left", lineHeight: "120px", textAlign: "center", marginTop: "20px" }}>
-                <img src="./mpark/image/photograph.png" width="110px" height="110px" />
+                <img src="./park_m/image/photograph.png" width="110px" height="110px" />
               </div>
             </div>
             <div className="enterprise-information-modify-tag">
@@ -201,7 +201,7 @@ class EnterpriseInformation extends React.Component {
               <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "25%" }}>企业分类</div>
               <div style={{ color: "#6C6C6C", fontSize: "40px", lineHeight: "120px", width: "50%", float: "left" }}>请选择企业分类</div>
               <div style={{ float: "right", lineHeight: "120px", textAlign: "center", width: "60px" }}>
-                <img src="./mpark/image/right.png" />
+                <img src="./park_m/image/right.png" />
               </div>
             </div>
             <div className="enterprise-information-modify-tag">
@@ -218,21 +218,21 @@ class EnterpriseInformation extends React.Component {
             <div className="enterprise-information-upload-a">
               <div>企业风采</div>
               <div style={{ width: "200px", height: "200px", backgroundColor: "#F2F2F2", textAlign: "center", marginTop: "30px" }}>
-                <img src="./mpark/image/addPicture.png" width="70px" height="70px" style={{ marginTop: "35px" }} />
+                <img src="./park_m/image/addPicture.png" width="70px" height="70px" style={{ marginTop: "35px" }} />
                 <div style={{ marginTop: "10px" }}>添加</div>
               </div>
             </div>
             <div className="enterprise-information-upload-a">
               <div>产品展示</div>
               <div style={{ width: "200px", height: "200px", backgroundColor: "#F2F2F2", textAlign: "center", marginTop: "30px" }}>
-                <img src="./mpark/image/addPicture.png" width="70px" height="70px" style={{ marginTop: "35px" }} />
+                <img src="./park_m/image/addPicture.png" width="70px" height="70px" style={{ marginTop: "35px" }} />
                 <div style={{ marginTop: "10px" }}>添加</div>
               </div>
             </div>
             <div className="enterprise-information-upload-b">
               <div>全景展示</div>
               <div style={{ width: "200px", height: "200px", backgroundColor: "#F2F2F2", textAlign: "center", marginTop: "30px" }}>
-                <img src="./mpark/image/addPicture.png" width="70px" height="70px" style={{ marginTop: "35px" }} />
+                <img src="./park_m/image/addPicture.png" width="70px" height="70px" style={{ marginTop: "35px" }} />
                 <div style={{ marginTop: "10px" }}>添加</div>
               </div>
             </div>
@@ -250,7 +250,7 @@ class EnterpriseInformation extends React.Component {
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
               <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>企业logo</div>
               <div style={{ color: "#333333", fontSize: "40px", float: "left" }}>
-                <img src="./mpark/image/logo.png" />
+                <img src="./park_m/image/logo.png" />
               </div>
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>

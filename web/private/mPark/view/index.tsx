@@ -84,23 +84,23 @@ class Index extends React.Component {
         <div className="index-input-div">
           <div className="index-child-left">
             <input className="index-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)}/>
-            <img src="./mpark/image/search.png" className="index-search-img" />
+            <img src="./park_m/image/search.png" className="index-search-img" />
           </div>
           <div className="index-child-right">
             <span >{sessionStorage.getItem("city")}</span>
-            <img src="./mpark/image/bottom.png" width="50px" height="50px" style={{marginTop: "-10px"}} />
+            <img src="./park_m/image/bottom.png" width="50px" height="50px" style={{marginTop: "-10px"}} />
           </div>
         </div>
         <div className="index-number">
-          <img src="./mpark/image/tower.png" className="tower-img" />已有<span style={{color: "#0B8BF0", margin: "0 15px 0 15px"}}>15</span>家园区上线
+          <img src="./park_m/image/tower.png" className="tower-img" />已有<span style={{color: "#0B8BF0", margin: "0 15px 0 15px"}}>15</span>家园区上线
         </div>
         <div className="index-park">
           {this.state.parkArr.map((item, index) => {
             return <Link to="/home"><div className="index-child-park" key={index}>
-              <div className="index-child-park-left"><img src="./mpark/image/a.jpg" className="park-img" /></div>
+              <div className="index-child-park-left"><img src="./park_m/image/a.jpg" className="park-img" /></div>
               <div className="index-child-park-right">
                 <div className="index-park-name">桂林国家高新区信息产业园</div>
-                <div className="index-park-position"><img src="./mpark/image/position.png" width="45px" height="40px" style={{ marginTop: "-18px" }} />
+                <div className="index-park-position"><img src="./park_m/image/position.png" width="45px" height="40px" style={{ marginTop: "-18px" }} />
                   <span className="index-park-position-name">桂林高新区朝阳路D-12号</span>
                 </div>
                 <div className="index-tag">
@@ -119,7 +119,7 @@ class Index extends React.Component {
           <div style={{width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginLeft: "-25px"}}>到底啦~</div>
         </div>
         <div className="index-bottom-logo">
-          <img src="./mpark/image/bottomLogo.png" className="index-bottom-logo-img" />
+          <img src="./park_m/image/bottomLogo.png" className="index-bottom-logo-img" />
         </div>
       </div>
       )

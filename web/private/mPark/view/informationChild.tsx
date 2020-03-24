@@ -75,9 +75,9 @@ export default class InformationChild extends React.Component {
       <div className="information-child">
         <div className="infoarea-top">
           <div className="infoarea-child-top">
-            <img src="./mpark/image/whiteBack.png" style={{ margin: "0 10px 30px -15px", padding: "15px 15px 15px 15px" }} onClick={this.goBack.bind(this)} />
+            <img src="./park_m/image/whiteBack.png" style={{ margin: "0 10px 30px -15px", padding: "15px 15px 15px 15px" }} onClick={this.goBack.bind(this)} />
             <input className="infoarea-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
-            <img src="./mpark/image/search.png" className="infoarea-search-img" />
+            <img src="./park_m/image/search.png" className="infoarea-search-img" />
             <span className="search-user-bt">ËÑË÷</span>
           </div>
         </div>

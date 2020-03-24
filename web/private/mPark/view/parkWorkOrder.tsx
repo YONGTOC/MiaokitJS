@@ -35,7 +35,7 @@ class ParkWorkOrder extends React.Component {
           <div className="work-order-title">数字园区</div>
         </div>
         <div className="work-order-back" onClick={this.goBack.bind(this)}>
-          <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
+          <img src="./park_m/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
           <span>我的工单</span>
         </div>
         <div className="work-order-tag">
@@ -54,7 +54,7 @@ class ParkWorkOrder extends React.Component {
                 <div key={index} className="work-order-list-child">
                   <div style={{ overflow: "hidden", margin: "30px 0 0 40px" }}>
                     <div style={{ float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" }}>企业认证工单1</div>
-                    <img style={{ float: "right", marginRight: "40px" }} src="./mpark/image/right.png" />
+                    <img style={{ float: "right", marginRight: "40px" }} src="./park_m/image/right.png" />
                   </div>
                   <div style={{ fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" }}>
                     申请人：莫XX

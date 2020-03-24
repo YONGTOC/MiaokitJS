@@ -514,12 +514,12 @@ class Picshow extends React.Component {
 
   public state = {
     roomImg: [
-      //{ url: "./mPark/image/i.png" },
-      //{ url: "./mPark/image/i.png" },
-      //{ url: "./mPark/image/i.png" },
-      //{ url: "./mPark/image/i.png" },
-      //{ url: "./mPark/image/i.png" },
-      //{ url: "./mPark/image/i.png" },
+      //{ url: "./park_m/image/i.png" },
+      //{ url: "./park_m/image/i.png" },
+      //{ url: "./park_m/image/i.png" },
+      //{ url: "./park_m/image/i.png" },
+      //{ url: "./park_m/image/i.png" },
+      //{ url: "./park_m/image/i.png" },
     ]
   }
 }

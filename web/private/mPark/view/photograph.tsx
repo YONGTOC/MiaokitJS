@@ -177,58 +177,58 @@ class IllegalList extends React.Component {
     illegalul: "illegalul",
     illegalList: [
       {
-        url: "./mPark/image/i.png",
+        url: "./park_m/image/i.png",
         type: "非停车位路侧停车1",
         name: "桂C123456",
         time: "2020-01-21 10:59:15",
         address: "A座大门旁",
       },
       {
-        url: "./mPark/image/i.png",
+        url: "./park_m/image/i.png",
         type: "非停车位路侧停车2",
         name: "桂C123456",
         time: "2020-01-21 10:59:15",
         address: "A座大门旁",
       },
       {
-        url: "./mPark/image/i.png",
+        url: "./park_m/image/i.png",
         type: "非停车位路侧停车3",
         name: "桂C123456",
         time: "2020-01-21 10:59:15",
         address: "A座大门旁",
       },
       {
-        url: "./mPark/image/i.png",
+        url: "./park_m/image/i.png",
         type: "非停车位路侧停车4",
         name: "桂C123456",
         time: "2020-01-21 10:59:15",
         address: "A座大门旁",
       }, {
-        url: "./mPark/image/i.png",
+        url: "./park_m/image/i.png",
         type: "非停车位路侧停车1",
         name: "桂C123456",
         time: "2020-01-21 10:59:15",
         address: "A座大门旁",
       }, {
-        url: "./mPark/image/i.png",
+        url: "./park_m/image/i.png",
         type: "非停车位路侧停车1",
         name: "桂C123456",
         time: "2020-01-21 10:59:15",
         address: "A座大门旁",
       }, {
-        url: "./mPark/image/i.png",
+        url: "./park_m/image/i.png",
         type: "非停车位路侧停车1",
         name: "桂C123456",
         time: "2020-01-21 10:59:15",
         address: "A座大门旁",
       }, {
-        url: "./mPark/image/i.png",
+        url: "./park_m/image/i.png",
         type: "非停车位路侧停车1",
         name: "桂C123456",
         time: "2020-01-21 10:59:15",
         address: "A座大门旁",
       }, {
-        url: "./mPark/image/i.png",
+        url: "./park_m/image/i.png",
         type: "非停车位路侧停车1",
         name: "桂C123456",
         time: "2020-01-21 10:59:15",
@@ -400,7 +400,7 @@ class IllegalUpload extends React.Component {
     illegalLoadcss: "illegalLoad-part",
     illfrom: "illfrom-part illfrom",
     illTime: "",
-    illImg: "./mPark/image/i.png",
+    illImg: "./park_m/image/i.png",
     illcauseUL:[
       {name:"非停车位路侧停车",id:"原因01"},
       { name: "阻挡正常车位出入", id: "原因02" },
@@ -527,7 +527,7 @@ class IllegalImg extends React.Component {
 
 
   public state = {
-    illegalImg: "./mPark/image/i.png",
+    illegalImg: "./park_m/image/i.png",
   }
 
   //over

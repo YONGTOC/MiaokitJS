@@ -23,7 +23,7 @@ class RentRoomDetail extends React.Component {
       <div className="rent-room-detail">
         <div className="rent-room-back">
           <div style={{ float: "left" }} onClick={this.goBack.bind(this)}>
-            <img src="./mpark/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
+            <img src="./park_m/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
             <span>租用房间管理</span>
           </div>
         </div>

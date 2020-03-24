@@ -151,7 +151,7 @@ class DataService {
         //公司名字
         "name": "桂林国家高新",
         //企业图像url
-        "headimgurl": "./mPark/image/i.png",
+        "headimgurl": "./park_m/image/i.png",
         //场地对应大楼id(用于匹配对应3d大楼)
         "building_id": "a座",
         //场地对应大楼id(用于匹配对应3d大楼)
@@ -185,14 +185,14 @@ class DataService {
             //图片名字
             "name": "xxx图片",
             //图片地址
-            "pic_url": "./mPark/image/i.png",
+            "pic_url": "./park_m/image/i.png",
           }, {
             //id
             "id": "1009",
             //图片名字
             "name": "xxx图片",
             //图片地址
-            "pic_url": "./mPark/image/i.png",
+            "pic_url": "./park_m/image/i.png",
           }
         ],
         //产品展示
@@ -203,14 +203,14 @@ class DataService {
             //图片名字
             "name": "xxx图片",
             //图片地址
-            "pic_url": "./mPark/image/i.png",
+            "pic_url": "./park_m/image/i.png",
           }, {
             //id
             "id": "1009",
             //图片名字
             "name": "xxx图片",
             //图片地址
-            "pic_url": "./mPark/image/i.png",
+            "pic_url": "./park_m/image/i.png",
           }
         ],
         //全景图
@@ -267,7 +267,7 @@ class DataService {
           //id
           "id": "10091",
           //头像url
-          "headimgurl": "./mPark/image/i.png",
+          "headimgurl": "./park_m/image/i.png",
           //使用场地对应大楼id(用于匹配对应3d大楼)
           "building_id": "a座",
           //使用场地对应大楼id(用于匹配对应3d大楼)
@@ -284,7 +284,7 @@ class DataService {
           //id
           "id": "10092",
           //头像url
-          "headimgurl": "./mPark/image/i.png",
+          "headimgurl": "./park_m/image/i.png",
           //使用场地对应大楼id(用于匹配对应3d大楼)
           "building_id": "a座",
           //使用场地对应大楼id(用于匹配对应3d大楼)
@@ -315,7 +315,7 @@ class DataService {
         //id
         "id": "1009",
         //头像url
-        "headimgurl": "./mPark/image/i.png",
+        "headimgurl": "./park_m/image/i.png",
         //使用场地对应大楼id(用于匹配对应3d大楼)
         "building_id": "a座",
         //使用场地对应大楼id(用于匹配对应3d大楼)
@@ -349,21 +349,21 @@ class DataService {
             //图片名字
             "name": "xxx图片",
             //图片地址
-            "url": "./mPark/image/i.png",
+            "url": "./park_m/image/i.png",
           }, {
             //id
             "id": "1009",
             //图片名字
             "name": "xxx图片",
             //图片地址
-            "url": "./mPark/image/i.png",
+            "url": "./park_m/image/i.png",
           }, {
             //id
             "id": "1009",
             //图片名字
             "name": "xxx图片",
             //图片地址
-            "url": "./mPark/image/i.png",
+            "url": "./park_m/image/i.png",
           }
         ],
         //全景图

@@ -57,7 +57,7 @@ class InfoArea extends React.Component {
         <div className="infoarea-top">
           <div className="infoarea-child-top">
             <input className="infoarea-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
-            <img src="./mpark/image/search.png" className="infoarea-search-img" />
+            <img src="./park_m/image/search.png" className="infoarea-search-img" />
             <span className="infoarea-sreach-bt">搜索</span>
           </div>
         </div>
@@ -75,7 +75,7 @@ class InfoArea extends React.Component {
                   <div style={{ height: "50%", width: "100%" }}>
                     <div className="infoarea-content-name">关于新的凭租公寓排队规则</div>
                     <div className="infoarea-content-bottom" onClick={e=>this.spread(index)}>
-                      <img src="./mpark/image/right.png" className="infoarea-content-right-img" />
+                      <img src="./park_m/image/right.png" className="infoarea-content-right-img" />
                     </div>
                   </div>
                   <div className="infoarea-br">
@@ -104,7 +104,7 @@ class InfoArea extends React.Component {
                   <div style={{ height: "50%", width: "100%" }}>
                     <div className="infoarea-content-name">关于新的凭租公寓排队规则</div>
                     <div className="infoarea-content-right" onClick={e => this.spread(index)}>
-                      <img src="./mpark/image/right.png" className="infoarea-content-right-img" />
+                      <img src="./park_m/image/right.png" className="infoarea-content-right-img" />
                     </div>
                   </div>
                   <div className="infoarea-br">
@@ -123,7 +123,7 @@ class InfoArea extends React.Component {
         </div>
         <Link to="/isay">
           <div className="infoarea-add-c">
-            <img src="./mpark/image/add.png" width="60px" height="60px" />
+            <img src="./park_m/image/add.png" width="60px" height="60px" />
           </div>
         </Link>
       </div>

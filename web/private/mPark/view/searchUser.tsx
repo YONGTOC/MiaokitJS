@@ -51,9 +51,9 @@ class SearchUser extends React.Component {
       <div className="infoarea">
         <div className="infoarea-top">
           <div className="infoarea-child-top">
-            <img src="./mpark/image/whiteBack.png" style={{ margin: "0 10px 30px -15px", padding: "15px 15px 15px 15px" }} onClick={this.goBack.bind(this)} />
+            <img src="./park_m/image/whiteBack.png" style={{ margin: "0 10px 30px -15px", padding: "15px 15px 15px 15px" }} onClick={this.goBack.bind(this)} />
             <input className="infoarea-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
-            <img src="./mpark/image/search.png" className="infoarea-search-img" />
+            <img src="./park_m/image/search.png" className="infoarea-search-img" />
             <span className="search-user-bt">搜索</span>
           </div>
         </div>
@@ -63,7 +63,7 @@ class SearchUser extends React.Component {
               <div key={index} className="search-user-list-child" onClick={e => this.clickTag(index)}>
                 <span style={{ float: "left" }}>小明</span>
                 <div style={{ float: "right" }} >
-                  <img src={this.state.tagIndex === index ? "./mpark/image/checked.png" : "./mpark/image/unchecked.png"} />
+                  <img src={this.state.tagIndex === index ? "./park_m/image/checked.png" : "./park_m/image/unchecked.png"} />
                 </div>
               </div>
             )

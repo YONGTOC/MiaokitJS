@@ -32,7 +32,7 @@ export default class informationDetail extends React.Component {
         {parseInt(sessionStorage.getItem("informationId")) === 0 ?
           <div>
             <div className="isay-back">
-              <img src="./mpark/image/back.png" style={{ marginBottom: "25px" }} onClick={this.goBack.bind(this)} />
+              <img src="./park_m/image/back.png" style={{ marginBottom: "25px" }} onClick={this.goBack.bind(this)} />
               <span style={{ color: "#6C6C6C", fontSize: "40px", marginLeft: "15px" }}>详情内容</span>
             </div>
             <div style={{ fontSize: "40px", width: "90%", color: "#333333", margin: "20px auto" }}>
@@ -49,7 +49,12 @@ export default class informationDetail extends React.Component {
                   容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情内
                   容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情内容详情
             </div>
-          </div> : null
+          </div> : 
+          <div>
+            <div style={{ width: "100%", height: "300px" }}>
+              <img src="./park_m/image/discounts_bg.png" />
+            </div>
+          </div>
         }
       </div>
     )
