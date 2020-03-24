@@ -10,7 +10,7 @@ interface IState {
   workOrderArray: Array<any>
 }
 
-class Message extends React.Component {
+class Message extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
     tagList: ["全部", "房屋租赁到期", "车位到期", "参与活动"],
     tagIndex: 0,

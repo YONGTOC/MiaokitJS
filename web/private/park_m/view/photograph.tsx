@@ -1,12 +1,13 @@
 ﻿import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
-
+import DataService from "dataService";
 
 class Photograph extends React.Component {
   public constructor(props) {
     super(props);
 
     Photograph.toggleView = this.toggleView.bind(this);
+    Photograph.getXY = this.getXY.bind(this);
   }
 
 
@@ -39,6 +40,11 @@ class Photograph extends React.Component {
       })
     }
 
+  }
+
+  static getXY(x, y) { };
+  public getXY(x, y) {
+    IllegalUpload.getXY(x, y);
   }
 
   public render() {
@@ -77,16 +83,41 @@ export default Photograph;
 class IllegalList extends React.Component {
   public constructor(props) {
     super(props);
+
+    //initlist
+    this.setillList = this.setillList.bind(this);
   }
 
   public componentDidMount() {
+
+    //12 通过园区id获取随手拍列表 
+    this.dataService.getTakingPhotos(this.setillList, this.state.park_id, "");
   }
 
+  public dataService: DataService = new DataService();
 
-  // 点击更多，显示info;隐藏list；这里需要调用FindLease 的方法；
-  public showPart(a, e, n) {
-    Photograph.toggleView(a, e, n);
-    //  CompanyInfo.companyInfo(e);
+  public setillList(data) {
+    this.setState({
+      illegalList: data.response,
+    })
+  }
+
+  public changeList(event) {
+    this.setState({
+      inputValue: event.target.value,
+    });
+  }
+
+  // 添加搜索添加 
+  public searchList() {
+    this.dataService.getTakingPhotos(this.setillList, this.state.park_id, this.state.inputValue);
+  }
+
+  // 点击更多，显示info;隐藏list；
+  public showPart(a, id, name, e) {
+    Photograph.toggleView(a, id, name);
+    console.log("more", a, id, name);
+    IllegalInfo.getillInfo(id, name);
   }
 
   public toggleFold() {
@@ -101,7 +132,6 @@ class IllegalList extends React.Component {
       this.setState({
         illegalListcss: "illegalList-part",
         illegalul: "illegalul"
-        //fdsfsdfd
       })
     }
     if (this.state.iconfont == "iconfont iconfont-unturn") {
@@ -116,17 +146,14 @@ class IllegalList extends React.Component {
   }
 
   public illegalActive(indexof, name, id) {
-    console.log("illegalActive", indexof);
-    console.log("illegalActive", name);
-    console.log("illegalActive", id);
-
     this.setState({
       indexOf: indexof,
-      //typeName: name,
     })
   }
 
   public render() {
+    //<div className="illAdd" onClick={this.showPart.bind(this, "Load")} > + </div>
+    //onClick = { this.searchList.bind(this) }
     return (
       <div >
         <div className={this.state.illegalListcss}>
@@ -138,16 +165,16 @@ class IllegalList extends React.Component {
               return (
                 <li onClick={this.illegalActive.bind(this, index)} className={this.state.indexOf == index ? "illegalli-active" : "illegalli"} >
                   <div className="illegamgback">
-                    <img src={i.url} />
+                    <img src={i.photo} />
                   </div>
                   <div className="illegalul-middle ">
                     <p className={this.state.indexOf == index ? "illegalType-active" : "illegalType"} style={{ "font-size": "2.4rem" }}>{i.type}</p>
                     <p style={{ "font-size": "2.3rem" }}>{i.time}</p>
-                    <p style={{ "font-size": "2.3rem" }}><i className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe82b;</i>{i.name}</p>
-                    <p style={{ "font-size": "2.3rem" }}><i className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe82c;</i>{i.address}</p>
-                    <p onClick={this.showPart.bind(this, "Info", "i.id")} style={{ "font-size": "2.3rem", "float": "right", "color": "#fff" }}>更多
+                    <p style={{ "font-size": "2.3rem" }}><i className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe82b;</i>{i.car_license}</p>
+                    <p style={{ "font-size": "2.3rem" }}><i className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe82c;</i>{i.position}</p>
+                    <p onClick={this.showPart.bind(this, "Info", i.id, i.car_license)} style={{ "font-size": "2.3rem", "float": "right", "color": "#fff" }}>更多
                          <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
-                      </p>
+                    </p>
                   </div>
                 </li>
               )
@@ -158,7 +185,8 @@ class IllegalList extends React.Component {
             <div className="searchBox">
               <span className="searchBox-text">
                 <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe810;</i>
-                <input className="companySearch" type="text" placeholder="请输入车牌号" />
+                <input className="companySearch" type="text" placeholder="请输入车牌号"
+                  onChange={this.changeList.bind(this)} />
               </span>
             </div>
           </div>
@@ -171,109 +199,55 @@ class IllegalList extends React.Component {
 
 
   public state = {
+    park_id: "1009",
     iconfont: "iconfont iconfont-unturn",
     illegalListcss: "illegalList-part",
     indexOf: 0,
     illegalul: "illegalul",
-    illegalList: [
-      {
-        url: "./park_m/image/i.png",
-        type: "非停车位路侧停车1",
-        name: "桂C123456",
-        time: "2020-01-21 10:59:15",
-        address: "A座大门旁",
-      },
-      {
-        url: "./park_m/image/i.png",
-        type: "非停车位路侧停车2",
-        name: "桂C123456",
-        time: "2020-01-21 10:59:15",
-        address: "A座大门旁",
-      },
-      {
-        url: "./park_m/image/i.png",
-        type: "非停车位路侧停车3",
-        name: "桂C123456",
-        time: "2020-01-21 10:59:15",
-        address: "A座大门旁",
-      },
-      {
-        url: "./park_m/image/i.png",
-        type: "非停车位路侧停车4",
-        name: "桂C123456",
-        time: "2020-01-21 10:59:15",
-        address: "A座大门旁",
-      }, {
-        url: "./park_m/image/i.png",
-        type: "非停车位路侧停车1",
-        name: "桂C123456",
-        time: "2020-01-21 10:59:15",
-        address: "A座大门旁",
-      }, {
-        url: "./park_m/image/i.png",
-        type: "非停车位路侧停车1",
-        name: "桂C123456",
-        time: "2020-01-21 10:59:15",
-        address: "A座大门旁",
-      }, {
-        url: "./park_m/image/i.png",
-        type: "非停车位路侧停车1",
-        name: "桂C123456",
-        time: "2020-01-21 10:59:15",
-        address: "A座大门旁",
-      }, {
-        url: "./park_m/image/i.png",
-        type: "非停车位路侧停车1",
-        name: "桂C123456",
-        time: "2020-01-21 10:59:15",
-        address: "A座大门旁",
-      }, {
-        url: "./park_m/image/i.png",
-        type: "非停车位路侧停车1",
-        name: "桂C123456",
-        time: "2020-01-21 10:59:15",
-        address: "A座大门旁",
-      },
-
-    ],
+    inputValue: "",
+    illegalList: [],
   }
 
   //over
 }
 
-
-
-
 //“随手拍”按钮-》 illegalUpload 违规上传页
 class IllegalUpload extends React.Component {
   public constructor(props) {
     super(props);
+
+    IllegalUpload.getXY = this.getXY.bind(this);
+    this.setillcauseUL = this.setillcauseUL.bind(this);
+    this.showList = this.showList.bind(this);
   }
 
   public componentDidMount() {
+    //12.(随手拍模块-列表)通过园区id获取随手拍列表 
+    this.dataService.getTakingPhotosType(this.setillcauseUL, this.state.park_id);
+  }
 
+  public dataService: DataService = new DataService();
+  public setillcauseUL(data) {
+    this.setState({
+      illcauseUL: data.response,
+    })
   }
 
   public showList(a, e, n) {
     Photograph.toggleView(a, e, n);
-
-    this.setState({
-      // IllegalLoadcss: "illegalLoad-part",
-      // companyul: "companyul"
-    })
   }
 
   public toggleFold() {
     console.log("tftft")
     if (this.state.illegalLoadcss == "illegalLoad-all") {
       this.setState({
-        illegalLoadcss: "illegalLoad-part",
-        illfrom: "illfrom-part illfrom"
+        illegalLoadcss: "illegalLoad-part ",
+        illfromcss: "illfrom-part illfrom"
       })
     } else {
       this.setState({
         illegalLoadcss: "illegalLoad-all",
-        illfrom: "illfrom-all illfrom"
+        illfromcss: "illfrom-all illfrom"
       })
     }
     if (this.state.iconfont == "iconfont iconfont-unturn") {
@@ -287,16 +261,41 @@ class IllegalUpload extends React.Component {
     }
   }
 
-  public illimginputClick(this) {
-    console.log("2323", this);
-  }
-
+  // 选择提交照片
   public illimgClick() {
     this.illimginputClick();
   }
 
+  // 获取提交的照片
+  public illimginputClick(this) {
+    console.log("2323", this);
+  }
+
+  //显示选择曝光类型
+  public showillcauseUL() {
+    this.setState({
+      illcauseBox: "illcauseBox"
+    })
+  }
+
+  // 选中，列表选择违规原因
+  public illCuased(i, id, name) {
+    this.setState({
+      type_id: id,
+      type_name: name,
+      indexOf: i,
+    })
+  }
+
+  //违规原因列表 -- “确认”
+  public getillcause() {
+    this.setState({
+      illcauseBox: "hide"
+    })
+  }
+
+  // 违规原因列表 -- “取消”
   public hideillcauseUL() {
-    console.log("showloadUL");
     this.setState({
       illcauseBox: "hide",
       illcauseInname: "",
@@ -304,32 +303,59 @@ class IllegalUpload extends React.Component {
     })
   }
 
-  public illCuased(i,d, n) {
+  //填写违规地点
+  public illposition(event) {
     this.setState({
-      illcauseInname: n,
-      illcauseInid: d,
-      indexOf:i,
-    })
-  //  console.log("getillCuase", this.state);
-
-  }
-  public getillcause() {
-    this.setState({
-      illcauseBox: "hide"
-    })
-  //  console.log("getillCuase", this.state);
-
-
-  }
-
-  public showillcauseUL() {
-    this.setState({
-      illcauseBox:"illcauseBox"
+      position: event.target.value
     })
   }
 
+  //外部传入map经纬度
+  static getXY(x, y) { };
+  public getXY(x, y) {
+    console.log("外部传入经纬度", x, y);
+    this.setState({
+      longitude: x,
+      latitude: y,
+      position: "请输入位置点名称"
+    });
+  }
+
+  //填写违规车辆车牌
+  public illcarLicense(event) {
+    this.setState({
+      car_license: event.target.value
+    })
+  }
+
+  //填写违规描述
+  public illdescript(event) {
+    this.setState({
+      descript: event.target.value
+    })
+  }
+
+  //提交违规单
   public sumbitIllfrom() {
-    console.log("from", this.state);
+    console.log("sumbit", this.state);
+    this.dataService.postTakingPhotoInfo(this.sumbitIllsuccess, this.state.park_id);
+  }
+
+  ///提交违规单--成功
+  public sumbitIllsuccess(data) {
+    alert(data);
+    this.setState({
+      car_license: "",
+      time: "",
+      position: "请点击地图选择违章点",
+      longitude: "",
+      latitude: "",
+      type_id: "",
+      type_name: "",
+      descript: "",
+      photo: "",
+    })
+    Photograph.toggleView(0, "List", 0);
   }
 
   public render() {
@@ -345,32 +371,43 @@ class IllegalUpload extends React.Component {
           <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
             <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
           </div>
-          <form className={this.state.illfrom}>
-            <p><span className="redStar">*</span> 违规照片
+          <form >
+            <ul className={this.state.illfromcss}>
+              <li>
+                <span className="redStar">*</span> 违规照片
               <input type="file" accept="image/*" className="getillImg" value="" onClick={this.illimginputClick.bind(this)} style={{ "opacity": "0", "position": "absolute", "right": "-16rem" }} />
-              <img src={this.state.illImg} onClick={this.illimgClick.bind(this)} />
-            </p>
-            <p><span className="redStar">*</span> 曝光类型
-              <input type="text" className="getillType" value={this.state.illcauseInname} placeholder="请选择曝光类型" />
-              <span className="iconfont" style={{ "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" }}
-                onClick={this.showillcauseUL.bind(this)}>&#xe827;</span>
-            </p>
-            <p><span className="redStar">*</span>  地址
-               <input type="text" value="" className="getillAdd" placeholder="请点击地图选择违章点" />
-              <span className="iconfont" style={{ "fontSize": "3rem", "color": "#0B8BF0", "float": "right", "padding": " 0 0 0 4rem" }}>&#xe82c;</span>
-            </p>
-            <p><span className="redStar">*</span> 车牌
-                <input type="text" value="" className="getillNum" placeholder="请输入违规车牌号" />
-            </p>
-            <p><span className="redStar">*</span> 曝光时间
-              <input type="datetime" className="getillTime" value="" placeholder="请输入违规时间" />
-            </p>
-           
-            <p><span className="redStar">*</span> 违规描述</p>
-            <div>
-              <textarea className="getilltextarea" value="" placeholder="请将违规问题描述出来。（120字内）"></textarea>
-            </div>
-            <div className="illSumbit" onClick={this.sumbitIllfrom.bind(this)}>提交</div>
+                <img src={this.state.illImg} onClick={this.illimgClick.bind(this)} />
+              </li>
+              <li>
+                <span className="redStar">*</span> 曝光类型
+              <input type="text" className="getillType" value={this.state.type_name} placeholder="请选择曝光类型" />
+                <span className="iconfont" style={{ "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" }}
+                  onClick={this.showillcauseUL.bind(this)}>&#xe827;</span>
+              </li>
+              <li>
+                <span className="redStar">*</span>  地址
+               <input type="text" value={this.state.position} className="getillAdd" placeholder=""
+                  onChange={this.illposition.bind(this)} />
+                <i className="iconfont" style={{ "fontSize": "3rem", "color": "#0B8BF0", "float": "right", "padding": " 0 0 0 4rem" }}>&#xe82c;</i>
+              </li>
+              <li>
+                <span className="redStar">*</span> 车牌
+                <input type="text" value={this.state.car_license} className="getillNum" placeholder="请输入违规车牌号"
+                  onChange={this.illcarLicense.bind(this)} />
+              </li>
+              <li>
+                <span className="redStar">*</span> 曝光时间
+              <input type="datetime" className="getillTime" value={this.state.time} placeholder="请输入违规时间" />
+              </li>
+              <li>
+                <span className="redStar">*</span> 违规描述
+             </li>
+              <li>
+                <textarea className="getilltextarea" value={this.state.descript} placeholder="请将违规问题描述出来。（120字内）"
+                  onChange={this.illdescript.bind(this)}></textarea>
+              </li>
+              <div className="illSumbit" onClick={this.sumbitIllfrom.bind(this)}>提交</div>
+            </ul>
           </form>
         </div>
 
@@ -381,7 +418,7 @@ class IllegalUpload extends React.Component {
                 <li className={this.state.indexOf == index ? "illcauseli-active" : "illcauseli"}
                   onClick={this.illCuased.bind(this, index, i.id, i.name)}
                 >{i.name}</li>
-                )
+              )
             })}
           </ul>
           <div className="illCuasedBtn">
@@ -389,163 +426,83 @@ class IllegalUpload extends React.Component {
             <span className="illConfirm" onClick={this.getillcause.bind(this)}>确认</span>
           </div>
         </div>
-        
+
       </div>
     )
   }
 
 
   public state = {
-    illcauseBox:"hide",
+    illcauseBox: "hide",
     illegalLoadcss: "illegalLoad-part",
-    illfrom: "illfrom-part illfrom",
+    illfromcss: "illfrom-part illfrom",
     illTime: "",
-    illImg: "./park_m/image/i.png",
-    illcauseUL:[
-      {name:"非停车位路侧停车",id:"原因01"},
-      { name: "阻挡正常车位出入", id: "原因02" },
-      { name: "阻塞主要出入口", id: "原因03" },
-      { name: "占用多个车位", id: "原因04" },
-      { name: "非地库占用地库", id: "原因05" },
-      { name: "非地库占用地库2", id: "原因05" },
-      { name: "非地库占用地库3", id: "原因05" },
-      { name: "非地库占用地库4", id: "原因05" },
+    illImg: "./park_m/image/photo.png",
+    illcauseUL: [
+      //{ name: "非停车位路侧停车", type_id: 1 },
+      //{ name: "阻挡正常车位出入", type_id: 2},
+      //{ name: "阻塞主要出入口", type_id: 3},
+      //{ name: "占用多个车位", type_id: 4},
+      //{ name: "非地库占用地库", type_id: 5},
     ],
     indexOf: 0,
     illcauseInname: "",
     illcauseInid: "",
     iconfont: "iconfont iconfont-unturn",
+    //园区id
+    park_id: "1001",
+    //车牌
+    car_license: "",
+    //申请时间
+    time: "2020-02-28 14:38:15",
+    //位置
+    position: "请点击地图选择违章点",
+    //经度
+    longitude: 10.55,
+    //纬度
+    latitude: 66.666,
+    //类型id (非停车位侧停车等对应的id)
+    type_id: 1,
+    //违规类型
+    type_name: "",
+    //描述
+    descript: "",
+    //违规照片
+    photo: "byte文件",
   }
 
   //over
 }
-
-//违规信息
-class IllegalInfos extends React.Component {
-  public constructor(props) {
-    super(props);
-  }
-
-  public componentDidMount() {
-  }
-
-  public showList(a, e, n) {
-    Photograph.toggleView(a, e, n);
-
-    this.setState({
-      IllegalLoadcss: "illegalLoad-part",
-      // companyul: "companyul"
-    })
-  }
-
-  public showLoad(a, e, n) {
-    console.log("tftft")
-    if (this.state.IllegalLoadcss == "illegalLoad") {
-      this.setState({
-        IllegalLoadcss: "illegalLoad-part",
-        // companyul: "companyul"
-      })
-    } else {
-      this.setState({
-        IllegalLoadcss: "illegalLoad",
-        // companyul: "companyul-all"
-        //fdsfsdfd
-      })
-    }
-    Photograph.toggleView(a, e, n);
-  }
-
-
-  public render() {
-    return (
-      <div className="illegalInfos">
-        <p>非停车位路侧停车</p>
-        <p>2020-01-21 10:59:15</p>
-        <p>
-          <span className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe82b;</span>
-          车牌：<span>桂C123456</span></p>
-        <p>
-          <span className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe815;</span>
-          位置：<span>A座大门旁</span></p>
-        <p>横跨斑马线上</p>
-      </div>
-    )
-  }
-
-
-  public state = {
-    IllegalLoadcss: "illegalLoad-part"
-  }
-
-  //over
-}
-
-
-// 违规照片
-class IllegalImg extends React.Component {
-  public constructor(props) {
-    super(props);
-  }
-
-  public componentDidMount() {
-  }
-
-  public showList(a, e, n) {
-    Photograph.toggleView(a, e, n);
-
-    this.setState({
-      IllegalLoadcss: "illegalLoad-part",
-      // companyul: "companyul"
-    })
-  }
-
-  public showLoad(a, e, n) {
-    console.log("tftft")
-    //if (this.state.IllegalLoadcss == "illegalLoad") {
-    //  this.setState({
-    //    IllegalLoadcss: "illegalLoad-part",
-    //    // companyul: "companyul"
-    //  })
-    //} else {
-    //  this.setState({
-    //    IllegalLoadcss: "illegalLoad",
-    //    // companyul: "companyul-all"
-    //    //fdsfsdfd
-    //  })
-    //}
-    Photograph.toggleView(a, e, n);
-  }
-
-
-  public render() {
-    return (
-      <div className="illegalImg">
-        <img src={this.state.illegalImg} />
-      </div>
-    )
-  }
-
-
-  public state = {
-    illegalImg: "./park_m/image/i.png",
-  }
-
-  //over
-}
-
-
 
 //更多-》 illegalInfo 违规信息页
 class IllegalInfo extends React.Component {
   public constructor(props) {
     super(props);
+
+    IllegalInfo.getillInfo = this.getillInfo.bind(this);
   }
 
-  public componentDidMount() {
+  static getillInfo(id, name) { };
+  public getillInfo(id, name) {
+    //通过 违规id，set信息；
+    console.log(" 违规信息页", id, name);
+    this.dataService.getTakingPhotoInfo(this.setillInfo, id);
+    this.setState({
+      name: name,
+    })
+  }
+  public dataService: DataService = new DataService();
+
+  // 获取企业详情，给子组件显示；
+  public setillInfo(data) {
+    console.log("setillInfo", data);
+    IllegalInfos.setIllinofs(data);
+    IllegalImg.setIllimg(data);
   }
 
   public showList(a, e, n) {
     Photograph.toggleView(a, e, n);
+
   }
 
   public infoClick(indexof) {
@@ -566,6 +523,15 @@ class IllegalInfo extends React.Component {
         illegalInfocss: "illegalInfo-part",
       })
     }
+    if (this.state.iconfont == "iconfont iconfont-unturn") {
+      this.setState({
+        iconfont: "iconfont iconfont-turn",
+      })
+    } else {
+      this.setState({
+        iconfont: "iconfont iconfont-unturn",
+      })
+    }
   }
 
   public render() {
@@ -577,10 +543,10 @@ class IllegalInfo extends React.Component {
         </p>
         <div className={this.state.illegalInfocss}>
           <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-            <span style={{ "fontSize": "5rem" }}>--</span>
+            <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
           </div>
           <div className="leaseInfoul_br">
-            <ul className={"leaseInfoul"} style={{"width":"44rem"}}>
+            <ul className={"leaseInfoul"} style={{ "width": "44rem" }}>
               <li className={this.state.infoli == 0 ? "leaseInfoli-active" : "leaseInfoli"}
                 onClick={this.infoClick.bind(this, 0)}
               >违规信息</li>
@@ -604,9 +570,131 @@ class IllegalInfo extends React.Component {
 
 
   public state = {
+    iconfont: "iconfont iconfont-unturn",
     illegalInfocss: "illegalInfo-part",
-    name: "桂C123456",
+    name: "",
     infoli: 0,
+  }
+
+  //over
+}
+
+//违规信息
+class IllegalInfos extends React.Component {
+  public constructor(props) {
+    super(props);
+
+    IllegalInfos.setIllinofs = this.setIllinofs.bind(this);
+  }
+
+  public componentDidMount() { }
+
+  static setIllinofs(data) { };
+  public setIllinofs(data) {
+    this.setState({
+      type_name: data.response.type_name,
+      time: data.response.time,
+      car_license: data.response.car_license,
+      position: data.response.position,
+      descript: data.response.descript,
+    })
+  }
+
+  public showList(a, e, n) {
+    Photograph.toggleView(a, e, n);
+    this.setState({
+      IllegalLoadcss: "illegalLoad-part",
+    })
+  }
+
+  public showLoad(a, e, n) {
+    console.log("tftft")
+    if (this.state.IllegalLoadcss == "illegalLoad") {
+      this.setState({
+        IllegalLoadcss: "illegalLoad-part",
+      })
+    } else {
+      this.setState({
+        IllegalLoadcss: "illegalLoad",
+      })
+    }
+    Photograph.toggleView(a, e, n);
+  }
+
+
+  public render() {
+    return (
+      <div className="illegalInfos">
+        <p>{this.state.type_name}</p>
+        <p>{this.state.time}</p>
+        <p>
+          <span className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe82b;</span>
+          车牌：<span>{this.state.car_license}</span></p>
+        <p>
+          <span className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe815;</span>
+          位置：<span>{this.state.position}</span></p>
+        <p>{this.state.descript}</p>
+      </div>
+    )
+  }
+
+
+  public state = {
+    IllegalLoadcss: "illegalLoad-part",
+    //类型名称
+    type_name: "",
+    //申请时间
+    time: "",
+    //车牌
+    car_license: "",
+    //位置
+    position: "",
+    //描述
+    descript: "",
+  }
+
+  //over
+}
+
+// 违规照片
+class IllegalImg extends React.Component {
+  public constructor(props) {
+    super(props);
+    IllegalImg.setIllimg = this.setIllimg.bind(this);
+  }
+
+  public componentDidMount() { }
+
+  static setIllimg(data) { };
+  public setIllimg(data) {
+    this.setState({
+      illegalImg: data.response.photo
+    })
+  }
+
+  public showList(a, e, n) {
+    Photograph.toggleView(a, e, n);
+    this.setState({
+      IllegalLoadcss: "illegalLoad-part",
+    })
+  }
+
+  public showLoad(a, e, n) {
+    console.log("tftft")
+    Photograph.toggleView(a, e, n);
+  }
+
+  public render() {
+    return (
+      <div className="illegalImg">
+        <img src={this.state.illegalImg} />
+      </div>
+    )
+  }
+
+
+  public state = {
+    illegalImg: "",
   }
 
   //over

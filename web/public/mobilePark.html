@@ -3,32 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <title>移动园区  2020.1</title>
+
     <script src="./common/miaokit/MiaokitLoader.min.js"></script>
-    <script src="./common/jquery.js"></script>
-    <script src="./common/requirejs/require.js"></script>
-    <script src="http://api.map.baidu.com/api?v=3.0&ak=d8tFfHggZfPGG3MHq3AavDVxpjE1bC1Y"></script>
 
-    <link href="./common/antd/dist/antd.min.css" rel="stylesheet" type="text/css" />
     <script>
-        let MiaokitJS = new MiaokitModule({
-            m_bUnity: false,
-            m_pUnityPath: "./common/miaokit/MiaokitU3D/Build/MiaokitU3D.json",
-            m_pModulePath: "./common/miaokit/Miaokit.wasm",
-            m_pServer: "./data/project/"
-        });
-
-        MiaokitJS["m_aTiles"].push({
-            m_pPath: "./data/project/project.lzma.bin",
-            m_pData: null,
-            m_pTile: null,
-            Active: function () {
-                MiaokitJS.App.ActiveTile(this.m_pTile);
-            }
-        });
-
-        MiaokitJS.Preload();
+        let MiaokitJS = new MiaokitModule("Sisyphus", "./data/projects/config.txt");
 
         window.onload = function () {
+            MiaokitJS.Track("Window.onload");
+
             window.oncontextmenu = function (e) {
                 e.preventDefault();
             };
@@ -63,14 +46,20 @@
             require(['index'], function (view) {
                 MiaokitJS.App.UI = view.default.g_pIns;
             });
-
         }
     </script>
+
     <script src="./common/util.js"></script>
+    <script src="./park_m/js/app.js"></script>
+
+    <script src="./common/requirejs/require.js"></script>
+    <script src="./common/jquery.js"></script>
     <script src="./common/iconfont.js"></script>
+    <script src="http://api.map.baidu.com/api?v=3.0&ak=d8tFfHggZfPGG3MHq3AavDVxpjE1bC1Y"></script>
+
+    <link href="./common/antd/dist/antd.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body style="height: 100%; margin: 0; padding: 0;">
-
     <!-- html,body { height: 100%;margin: 0; padding: 0;} div height: 100% 才会起效，因为继承父级高度-->
     <!-- 微信端不能为任意尺寸，否则会崩溃 -->
     <div id="unityContainer" style="width: 100%; height: 100%; background:#808080; margin: auto"></div>
@@ -80,7 +69,7 @@
     <!--测试threejs-->
     <div id="VRcontainer"></div>
 
-    <!--<p   id="go">调用预定义的全景图</p>-->
+    <!--<p id="go">调用预定义的全景图</p>-->
     <ul style="position: absolute;top: 130px;left:0px;z-index: 101;">
         <!--<li>
             <button onclick="roomScene(1)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活房间全景</button>
@@ -89,27 +78,55 @@
             <button onclick="companyScene(2)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业全景</button>
         </li>-->
         <!--<li>
-            <button onclick="addapplyPut(10001)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">添加摆点位置</button>
+            <button onclick="addReqairs(3, 4,'A座','2F','201-2')" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加报修位置34</button>
+        </li>
+        <li>
+            <button onclick="addillegal(1,2)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加随手拍位置</button>
+        </li>
+        <li>
+            <button onclick="addapplyPut(3,4)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加摆点位置34</button>
+        </li>
+        <li>
+            <button onclick="addapplyPut(5,6)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加摆点位置56</button>
         </li>
         <li>
             <button onclick="refreshCompanyinfo(10086)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业显示</button>
         </li>
         <li>
             <button onclick="refreshLeaseinfo(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活招租显示</button>
+        </li>
+        <li>
+            <button onclick="refreshBooksite(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活场地预约</button>
+        </li>
+        <li>
+            <button onclick="refreshParking(120)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活地库</button>
         </li>-->
     </ul>
+
     <script>
-        // 添加摆点信息
-        function addapplyPut(a) {
-            MiaokitJS.App.UI.addapplyPut(a);
+        //添加报修位置
+        function addReqairs(x, y, building_id, floor_id, room_id) {
+            MiaokitJS.App.UI.addReqairs(x, y, building_id, floor_id, room_id);
+        }
+
+        // 添加随手拍信息
+        function addillegal(x, y) {
+            //经度  "longitude": "10.55", //纬度  "latitude": "66.666",
+            MiaokitJS.App.UI.addillegal(x, y);
+        }
+
+        //添加摆点位置
+        function addapplyPut(x, y) {
+            MiaokitJS.App.UI.addapplyPut(x, y);
         }
 
         // 激活房间全景
         function roomScene(a) {
-           // window.open('./park_m/vr-y.html?roomId='+ a);  
-           // location.href = './park_m/vr-y.html?roomId=' + a;
+            // window.open('./park_m/vr-y.html?roomId='+ a);
+            // location.href = './park_m/vr-y.html?roomId=' + a;
             window.open('./park_m/vr-y.html?roomId=' + a, '_blank');
         }
+
         // 激活企业全景
         function companyScene(a) {
             window.open('./park_m/vr.html?companyId=' + a);
@@ -117,18 +134,32 @@
 
         // 激活企业显示
         function refreshCompanyinfo(id) {
-            console.log(MiaokitJS.App.UI.refreshCompanyinfo);
+            //  console.log(MiaokitJS.App.UI.refreshCompanyinfo);
             MiaokitJS.App.UI.refreshCompanyinfo(id)
         }
 
         // 激活招租显示
         function refreshLeaseinfo(id) {
-            console.log(MiaokitJS.App.UI.refreshCompanyinfo);
+            // console.log(MiaokitJS.App.UI.refreshCompanyinfo);
             MiaokitJS.App.UI.refreshLeaseinfo(id)
         }
 
+        //激活场地预约
+        function refreshBooksite(id) {
+            MiaokitJS.App.UI.refreshBooksite(id);
+        }
+
+        //激活地下车库
+        function refreshParking(data) {
+            var data = {
+                i: 1,
+                id: 101,
+                name: "7栋地下停车场"
+            }
+            MiaokitJS.App.UI.refreshParking(data);
+        }
+
+
     </script>
-
 </body>
-
 </html>

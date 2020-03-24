@@ -11,7 +11,7 @@ interface IState {
   textareaValue: string
 }
 
-class Isay extends React.Component {
+class Isay extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
     tagArray: [{ name: "咨询" }, { name: "建议" }, { name: "投诉" }, { name: "其它" }],
     tagIndex: 0,

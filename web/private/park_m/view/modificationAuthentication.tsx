@@ -8,7 +8,7 @@ interface IState {
   inputValue: string
 }
 
-class ModificationAuthentication extends React.Component {
+class ModificationAuthentication extends React.Component<{ history: any }> {
   public readonly state: Readonly<IState> = {
     inputValue: "用户昵称XXX"
   }

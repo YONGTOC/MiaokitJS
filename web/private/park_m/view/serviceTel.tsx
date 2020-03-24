@@ -7,7 +7,7 @@ interface IProps {
 interface IState {
 }
 
-class ServiceTel extends React.Component {
+class ServiceTel extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
   }
 

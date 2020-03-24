@@ -13,8 +13,8 @@ class ParkCompany extends React.Component {
   }
 
   public componentDidMount() {
-    console.log(12313123);
-   
+    console.log("ParkCompany");
+
   }
 
   // 定义静态类，需要绑定到this的方法上，供外部调用;
@@ -30,7 +30,7 @@ class ParkCompany extends React.Component {
   static toggleView(a, id) { };
   public toggleView(a, id) {
     console.log("ff", a);
-    //企业id
+    // 企业id
     console.log("ff", id);
     if (a == "Info") {
       this.setState({
@@ -46,12 +46,19 @@ class ParkCompany extends React.Component {
     //over
   }
 
+  public globalAction: GlobalAction = new GlobalAction();
+  //返回园区map
+  public mapReturnpark() {
+    //通知3d，返回园区视角
+    this.globalAction.web_call_webgl_mapReturnpark();
+  }
+
   public render() {
     return (
       <div className={this.state.parkCompanycss}>
         <p className="companyInfotit">
           <RouterDOM.Link to="/home" >
-            <i className="iconfont companyInfoicon">&#xe83b;</i>
+            <i className="iconfont companyInfoicon" onClick={this.mapReturnpark.bind(this)}>&#xe83b;</i>
           </RouterDOM.Link>
           <span>园区企业</span>
         </p>
@@ -71,7 +78,7 @@ class ParkCompany extends React.Component {
     parkCompanycss: "parkCompany",
     showList: true,
     showInfo: false,
-    token:"",
+    token: "",
   }
 
 
@@ -79,33 +86,36 @@ class ParkCompany extends React.Component {
 }
 
 // 公司列表页
-class CompanyList extends React.Component{
+class CompanyList extends React.Component {
   public constructor(props) {
     super(props);
 
     this.showInfo = this.showInfo.bind(this);
     this.setCompany = this.setCompany.bind(this);
-    this.setCompanys = this.setCompanys.bind(this);
+    this.setCompanyType = this.setCompanyType.bind(this);
   }
 
   public componentWillMount() {
-    const token = localStorage.getItem('token');
-    this.setState({
-      token: token,
-    });
-    console.log("token",this.state)
-  }
-
-  public componentDidMount() {
-    //获取园区下面企业类型列表
-    this.dataService.getCompanys(this.setCompanys, this.state.park_id);
-    //通过园区id搜索园区下面企业列表
-    this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.typeName, this.state.token);
+    //const token = localStorage.getItem('token');
+    //this.setState({
+    //  token: token,
+    //});
+    //console.log("token",this.state)
   }
 
   public dataService: DataService = new DataService();
+
+  public componentDidMount() {
+    //获取园区下面企业类型列表
+    this.dataService.getCompanyType(this.setCompanyType, this.state.park_id);
+    //通过园区id搜索园区下面企业列表
+    this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.typeName);
+  }
+
+
   // set企业类型列表
-  public setCompanys(data) {
+  public setCompanyType(data) {
+    console.log("set企业类型列表", data.response);
     this.setState({
       companyType: data.response,
     });
@@ -114,7 +124,7 @@ class CompanyList extends React.Component{
   // set企业列表
   public setCompany(data) {
     console.log("setCompany", data.response)
-  //  console.log("setCompany", data.response[0].name)
+    //  console.log("setCompany", data.response[0].name)
     this.setState({
       companyData: data.response,
     })
@@ -135,11 +145,15 @@ class CompanyList extends React.Component{
         companyListcss: "companyList-part",
         companyul: "companyul"
       })
+      //通知3d，继续加载模型  
+      this.globalAction.web_call_webgl_continueloadModuler();
     } else {
       this.setState({
         companyListcss: "companyList-all",
         companyul: "companyul-all"
       })
+      // 通知3d，暂停加载模型
+      this.globalAction.web_call_webgl_pauseloadModuler();
     }
     if (this.state.iconfont == "iconfont iconfont-unturn") {
       this.setState({
@@ -174,7 +188,7 @@ class CompanyList extends React.Component{
       indexOf: data,
     });
     // 通知3d，切换公司定位（web获取的是 公司id）
-    this.globalAction.switchCompany(id);
+    this.globalAction.web_call_webgl_switchCompany(id);
     // 
   }
 
@@ -217,7 +231,7 @@ class CompanyList extends React.Component{
       this.setState({ inputValue: "" })
     };
     console.log("searchBtn", this.state.inputValue, this.state.company_type_id);
-    this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.inputValue,this.state.token);
+    this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.inputValue);
   }
 
   public render() {
@@ -235,7 +249,7 @@ class CompanyList extends React.Component{
                 </div>
                 <div className="companyul-middle">
                   <p className={this.state.indexOf == index ? "companyName-active" : "companyName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.name}</p>
-                  <p style={{ "font-size": "2.5rem" }}>
+                  <p style={{ "font-size": "2.5rem", "overflow": "hidden", "text-overflow": "ellipsis", "white-space": "nowrap" }}>
                     <i className="iconfont" style={{ "fontSize": "2.5rem" }}>&#xe815;</i>
                     {i.address}</p>
                 </div>
@@ -301,7 +315,7 @@ class CompanyList extends React.Component{
     // 输入框默认值
     inputValue: "",
     iconfont: "iconfont iconfont-unturn",
-    token:"",
+    token: "",
   }
 
 
@@ -417,11 +431,15 @@ class CompanyInfo extends React.Component {
   }
 
   public state = {
+    // 企业信息样式
     companyInfocss: "companyInfo",
     //  companyId:"",
     companyName: "浙江永拓信息科技有限公司",
+    // 企业信息ul样式
     companyInfoul: "companyInfoul",
+    // 当前选中li
     infoli: 0,
+    // 折叠按钮
     iconfont: "iconfont iconfont-unturn",
   }
 
@@ -447,9 +465,9 @@ class CompanyInfos extends React.Component {
       imgurl: data.response.headimgurl,
       name: data.response.name,
       address: data.response.address,
-     // type: data.response.service[0].name,
+      // type: data.response.service[0].name,
       type: data.response.company_type,
-      man: data.response.Contacts,
+      man: data.response.contact,
       tel: data.response.phone,
       http: data.response.website,
     })
@@ -485,9 +503,12 @@ class CompanyInfos extends React.Component {
 
   public state = {
     imgurl: "",
+    // 企业名称
     name: "",
     address: "",
+    // 企业类型
     type: "",
+    // 联系人
     man: "",
     tel: "",
     http: ""

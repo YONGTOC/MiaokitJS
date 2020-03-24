@@ -15,7 +15,7 @@ interface IState {
   descriptionValue: string
 }
 
-class EnterpriseInformation extends React.Component {
+class EnterpriseInformation extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
     imgList: ["./park_m/image/tx.jpg", "./park_m/image/tx.jpg", "./park_m/image/tx.jpg", "./park_m/image/tx.jpg", "./park_m/image/tx.jpg"],
     modifyState: false, // 修改状态

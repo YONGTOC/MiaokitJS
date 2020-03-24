@@ -9,7 +9,7 @@ interface IState {
   distributeList: Array<any>
 }
 
-class Distribute extends React.Component {
+class Distribute extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
     distributeList: [
       { title: "身份认证工单管理", userName: "小明" }, { title: "场地预定工单管理", userName: "小明" }, { title: "摆点申请工单管理", userName: "小明" }, 
