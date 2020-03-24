@@ -1,8 +1,44 @@
 
 declare var MiaokitJS: any;
 
+class Indoor {
+    /// æ„é€ å‡½æ•°ã€‚
+    public constructor(pTile, pScene) {
+        this.m_pTile = pTile;
+        this.m_pScene = pScene;
+        this.m_pBuilding = pScene.m_pScene.binding;
+    }
+
+    /// åœºæ™¯ä¸­å¿ƒç‚¹å±å¹•åæ ‡ã€‚
+    public get screenPoint() {
+        if (this.m_pBuilding) {
+            let pBuildingObj = this.m_pBuilding.object3D;
+            if (pBuildingObj) {
+                let pPosition = pBuildingObj.transform.regionPosition;
+                let pPoint = MiaokitJS.Miaokit.WorldToScreenPoint(pPosition);
+
+                return pPoint;
+            }
+        }
+
+        return null;
+    }
+
+
+    /// ç“¦ç‰‡å¯¹è±¡ã€‚
+    public m_pTile: any = null;
+    /// åœºæ™¯å¯¹è±¡ã€‚
+    public m_pScene: any = null;
+    /// å»ºç­‘ç±»å‹ï¼š0-æ— æ¨¡å‹ã€1-å»ºæ¨¡æ¨¡å‹ã€2-å®æ™¯æ¨¡å‹ã€3-GISæ¨¡å‹
+    public m_nBuildingType: number = 0;
+    /// å»ºç­‘å¯¹è±¡ã€‚
+    public m_pBuilding: any = null;
+    /// å±å¹•æ˜¾ç¤ºåæ ‡ã€‚
+    public m_pScreenPos: any = null;
+}
+
 class Main {
-    /// ¹¹Ôìº¯Êı¡£
+    /// æ„é€ å‡½æ•°ã€‚
     public constructor() {
         let pThis = this;
 
@@ -10,7 +46,7 @@ class Main {
         pThis.m_pApp.m_pProject = this;
     }
 
-    /// Êı¾İÔ¤¼ÓÔØ¡£
+    /// æ•°æ®é¢„åŠ è½½ã€‚
     public Preload() {
         let pThis = this;
 
@@ -21,14 +57,14 @@ class Main {
         pThis.LoadNavData();
     }
 
-    /// ¿ªÊ¼Ö÷³ÌĞò¡£
+    /// å¼€å§‹ä¸»ç¨‹åºã€‚
     public Start(): void {
         let pThis = this;
 
         if (!pThis.m_pCity) {
-            /// ¸ù¾İ¶¨Î»»ñÈ¡³ÇÊĞĞÅÏ¢£¬Ä¬ÈÏÉèÖÃ¹ğÁÖÊĞ
+            /// æ ¹æ®å®šä½è·å–åŸå¸‚ä¿¡æ¯ï¼Œé»˜è®¤è®¾ç½®æ¡‚æ—å¸‚
             pThis.m_pCity = {
-                m_pName: "¹ğÁÖ",
+                m_pName: "æ¡‚æ—",
                 m_nLng: 110.258422,
                 m_nLat: 25.266594
             };
@@ -45,12 +81,12 @@ class Main {
             m_nYaw: 0.0
         });
 
-        MiaokitJS.ShaderLab.SetSunlight(0.0, 90.0, 1.0);
+        MiaokitJS.ShaderLab.SetSunlight(0.0, 90.0, 0.1);
     }
 
 
     private iii = 0;
-    /// Ö¡¸üĞÂ·½·¨¡£
+    /// å¸§æ›´æ–°æ–¹æ³•ã€‚
     public Update(): void {
         if ((this.iii++) % 180 === 0) {
             console.log(this.m_pApp.m_pCameraCtrl);
@@ -72,25 +108,71 @@ class Main {
         }
 
         let nTaskCount = MiaokitJS.Miaokit.progress;
+
+        if (0 === nTaskCount) {
+            // è·å±å¹•ä¸­å¿ƒ1000åƒç´ è·ç¦»å†…ï¼Œå“ªä¸ªè·ç¦»å°é”å®šé‚£ä¸ªåœºæ™¯ï¼Œå¦‚æœå®¤å†…å®Œå…¨æ˜¾ç¤ºå°±ä¸å†åˆ‡æ¢
+            let pCanvas = MiaokitJS.App.m_pCanvas2D;
+            let nCenter = { x: 0.5 * pCanvas.width, y: 0.5 * pCanvas.height };
+            let pNearest = null;
+            let nDistance = 1000.0;
+
+            for (let pTile of this.m_aTile) {
+                for (let pIndoor of pTile.m_aIndoor) {
+                    let pPoint = pIndoor.screenPoint;
+                    pPoint.x = pPoint.x * pCanvas.width;
+                    pPoint.y = pPoint.y * pCanvas.height;
+
+                    let x = pPoint.x - nCenter.x; x *= x;
+                    let y = pPoint.y - nCenter.y; y *= y;
+
+                    let nDistance_  = Math.sqrt(x + y);
+                    if (nDistance > nDistance_) {
+                        nDistance = nDistance_;
+                        pNearest = pIndoor;
+                    }
+                }
+            }
+
+            if (pNearest && pNearest !== this.m_pIndoor) {
+                if (this.m_pIndoor) {
+                    if (this.m_pIndoor.m_pBuilding) {
+                        let pBuildingObj = this.m_pIndoor.m_pBuilding.object3D;
+                        if (pBuildingObj) {
+                            pBuildingObj.highlight = false;
+                        }
+                    }
+                }
+
+                this.m_pIndoor = pNearest;
+
+                if (pNearest.m_pBuilding) {
+                    let pBuildingObj = pNearest.m_pBuilding.object3D;
+                    if (pBuildingObj) {
+                        pBuildingObj.highlight = true;
+                    }
+                }
+            }
+        }
+
         if (this.m_nLoading || 0 < nTaskCount) {
             this.m_nTaskMax = this.m_nTaskMax < nTaskCount ? nTaskCount : this.m_nTaskMax;
 
-            /// Ë¢ĞÂÖ÷½ø¶ÈÌõ
+            /// åˆ·æ–°ä¸»è¿›åº¦æ¡
             if (this.m_nLoading || this["InitComplete"]) {
             }
-            /// Ë¢ĞÂ¸¨½ø¶ÈÌõ
+            /// åˆ·æ–°è¾…è¿›åº¦æ¡
             else {
             }
         }
         else {
-            /// ¹Ø±ÕÖ÷½ø¶ÈÌõ£¬Æô¶¯Íê³É
+            /// å…³é—­ä¸»è¿›åº¦æ¡ï¼Œå¯åŠ¨å®Œæˆ
             if (this["InitComplete"]) {
                 this.m_nTaskMax = 0;
                 this["InitComplete"]();
             }
-            /// ÔÚÔËĞĞ¹ı³ÌÖĞ¿ÉÄÜËæÊ±´¥·¢¼ÓÔØÈÎÎñ£¬´ËÊ±ÏÔÊ¾¸¨½ø¶ÈÌõ
+            /// åœ¨è¿è¡Œè¿‡ç¨‹ä¸­å¯èƒ½éšæ—¶è§¦å‘åŠ è½½ä»»åŠ¡ï¼Œæ­¤æ—¶æ˜¾ç¤ºè¾…è¿›åº¦æ¡
             else {
-                /// Èç¹ûÉÏÒ»Ö¡ÓĞÏÔÊ¾½ø¶ÈÌõ£¬ÔÚ´ËÒş²Ø½ø¶ÈÌõ
+                /// å¦‚æœä¸Šä¸€å¸§æœ‰æ˜¾ç¤ºè¿›åº¦æ¡ï¼Œåœ¨æ­¤éšè—è¿›åº¦æ¡
                 if (0 < this.m_nTaskMax) {
                     MiaokitJS.Track("Loaded Tasks");
                     this.m_nTaskMax = 0;
@@ -99,24 +181,54 @@ class Main {
         }
     }
 
-    /// ½øÈëÔ°Çø¡£
-    public EnterPark(pPark): void {
-        let pThis = this;
+    /// å“åº”UIç»˜åˆ¶ã€‚
+    public OnGUI(pCanvas, pCanvasCtx): void {
+        let nTaskCount = MiaokitJS.Miaokit.progress;
+        if (0 !== nTaskCount) {
+            return;
+        }
 
-        pThis.m_pApp.m_pCameraCtrl.Fly(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, pPark.m_pView, 0.05);
+        pCanvas.font = "16px Microsoft YaHei";
+        pCanvas.strokeStyle = "black";
+        pCanvas.lineWidth = 2;
+        pCanvas.fillStyle = "#FFFFFF";
+
+        for (let pTile of this.m_aTile) {
+            for (let pIndoor of pTile.m_aIndoor) {
+                let pPoint = pIndoor.screenPoint;
+                let pText = pIndoor.m_pScene.building_id;
+                let pRect = pCanvasCtx.measureText(pText);
+
+                pPoint.x = pPoint.x * pCanvas.width;
+                pPoint.y = pPoint.y * pCanvas.height;
+
+                pCanvasCtx.strokeText(pText, pPoint.x - pRect.width / 2, pPoint.y);
+                pCanvasCtx.fillText(pText, pPoint.x - pRect.width / 2, pPoint.y);
+            }
+        }
     }
 
-    /// ½øÈëÆóÒµ¡£
+    /// è¿›å…¥å›­åŒºã€‚
+    public EnterPark(pPark): void {
+        this.m_pApp.m_pCameraCtrl.Fly(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, pPark.m_pView, 0.05);
+    }
+
+    /// é”å®šå…·æœ‰å®¤å†…çš„å»ºç­‘ã€‚
+    public LockBuilding(): void {
+
+    }
+
+    /// è¿›å…¥ä¼ä¸šã€‚
     public EnterCompany(pCompany): void {
-        // ·ÖÁ½²½Ö´ĞĞ¡£¾Û½¹°ëÍ¸Ã÷Â¥¶°£¬µş¼ÓÂ¥²ã²¢¸ßÁÁÆóÒµ¶ÔÓ¦ÇøÓò
-        // Èç¹ûÉĞÎ´Íê³É½øÈëÔ°Çø£¬ÔòÁ¢¼´ÇĞ»»µ½Ô°Çø
+        // åˆ†ä¸¤æ­¥æ‰§è¡Œã€‚èšç„¦åŠé€æ˜æ¥¼æ ‹ï¼Œå åŠ æ¥¼å±‚å¹¶é«˜äº®ä¼ä¸šå¯¹åº”åŒºåŸŸ
+        // å¦‚æœå°šæœªå®Œæˆè¿›å…¥å›­åŒºï¼Œåˆ™ç«‹å³åˆ‡æ¢åˆ°å›­åŒº
 
         //if (pCamera.m_pFlyTask) {
         //}
 
     }
 
-    /// ³õÊ¼»¯¿ªÊ¼¶¯»­¡£
+    /// åˆå§‹åŒ–å¼€å§‹åŠ¨ç”»ã€‚
     private InitStartMovie(): void {
         let pThis: any = this;
         let pCamera = this.m_pApp.m_pCameraCtrl;
@@ -325,11 +437,11 @@ class Main {
             //},
         ];
 
-        /// Ìí¼Ó¿ªÊ¼¶¯»­
+        /// æ·»åŠ å¼€å§‹åŠ¨ç”»
         pThis.m_pStartMovie = (function () {
             let nIndex = 0;
             let pFlash = function () {
-                /// µÈ´ı³ÌĞò³õÊ¼»¯µ½×î¸ßĞÔÄÜ
+                /// ç­‰å¾…ç¨‹åºåˆå§‹åŒ–åˆ°æœ€é«˜æ€§èƒ½
                 if (0 < nIndex && 120 > pThis.m_nTick) {
                     return false;
                 }
@@ -368,7 +480,7 @@ class Main {
         })();
     }
 
-    /// ¼ÓÔØµ¼º½ºóÌ¨Êı¾İ¡£
+    /// åŠ è½½å¯¼èˆªåå°æ•°æ®ã€‚
     private LoadNavData(): void {
         let pThis = this;
 
@@ -419,10 +531,10 @@ class Main {
 
                                         for (let pSite of aSite) {
                                             pSite.HyID = parseInt(pSite.HyID);
-                                            pSite.buildingID = "Ä¬ÈÏÖµ";
+                                            pSite.buildingID = "é»˜è®¤å€¼";
                                             pSite.layer = null;
 
-                                            // ÒÑ¾­½«·Ç¹«¹²ÉèÊ©Í¼±êÀàĞÍIDÉèÎª0
+                                            // å·²ç»å°†éå…¬å…±è®¾æ–½å›¾æ ‡ç±»å‹IDè®¾ä¸º0
                                             if (2 > pSite.HyID) {
                                                 pSite.HyID = 0;
                                             }
@@ -453,7 +565,8 @@ class Main {
                     }
                 }
                 else {
-                    pCallback(null);
+                    console.error("åŠ è½½åå°æ•°æ®å¤±è´¥ï¼");
+                    pCallback(pTile);
                 }
             });
         }
@@ -479,7 +592,7 @@ class Main {
         }
     }
 
-    /// SVEÍßÆ¬¼¤»î·½·¨¡£
+    /// SVEç“¦ç‰‡æ¿€æ´»æ–¹æ³•ã€‚
     private ActiveTile(pTile): void {
         let pThis = this;
 
@@ -493,6 +606,10 @@ class Main {
 
         if (!pTile.m_aScene) {
             pTile.m_aScene = [];
+        }
+
+        if (!pTile.m_aIndoor) {
+            pTile.m_aIndoor = [];
         }
 
         if (!pTile.m_aLayer) {
@@ -579,6 +696,9 @@ class Main {
             if (pTile.m_pOutdoorID === pScene.building_id) {
                 pTile.m_pOutdoor = pScene;
             }
+            else {
+                pTile.m_aIndoor.push(new Indoor(pTile, pScene));
+            }
         }
 
         for (let pScene of pTile.m_aScene) {
@@ -586,11 +706,9 @@ class Main {
             let pObject = pScene.m_pScene.object3D;
             let bOutdoor = pScene.building_id === pTile.m_pOutdoor.building_id;
 
-            pObject.transform.localPosition = pTile.m_nOffset;
-            pObject.transform.euler = pTile.m_mRotate;
             pObject.active = bOutdoor ? true : false;
 
-            /// µş¼Óµ±Ç°³¡¾°Â¥²ã
+            /// å åŠ å½“å‰åœºæ™¯æ¥¼å±‚
             for (let pLayerA of pScene.m_pScene.layers) {
                 if (pAdjust) {
                     let pObject = pLayerA.object3D;
@@ -609,7 +727,7 @@ class Main {
                     pLayerA._Draw();
                 }
 
-                /// Ç°ºó¶ËÂ¥²ã¶ÔÏó°ó¶¨
+                /// å‰åç«¯æ¥¼å±‚å¯¹è±¡ç»‘å®š
                 for (let pLayerB of pScene.layerList) {
                     if (pLayerB.floor_id === pLayerA.id) {
                         pLayerB.m_pLayer = pLayerA;
@@ -640,7 +758,7 @@ class Main {
         }
     }
 
-    /// ÏÔÊ¾ÊÒÄÚ¡£
+    /// æ˜¾ç¤ºå®¤å†…ã€‚
     private ShowIndoor(nTile, nScene, nType): void {
         let pTile = this.m_aTile[nTile];
         if (pTile) {
@@ -681,7 +799,7 @@ class Main {
         }
     }
 
-    /// Òş²ØÊÒÄÚ¡£
+    /// éšè—å®¤å†…ã€‚
     private HideIndoor(nTile, nScene): void {
         let pTile = this.m_aTile[nTile];
         if (pTile) {
@@ -701,23 +819,25 @@ class Main {
     }
 
 
-    /// Ó¦ÓÃ¿ò¼Ü¶ÔÏó¡£
+    /// åº”ç”¨æ¡†æ¶å¯¹è±¡ã€‚
     private m_pApp: any = null;
-    /// GIS¶ÔÏó¡£
+    /// GISå¯¹è±¡ã€‚
     private m_pGis: any = null;
-    /// Êµ¾°¶ÔÏóÊı×é¡£
+    /// å®æ™¯å¯¹è±¡æ•°ç»„ã€‚
     private m_aDioramas: any[] = null;
-    /// SVEÍßÆ¬Êı×é¡£
+    /// SVEç“¦ç‰‡æ•°ç»„ã€‚
     private m_aTile: any[] = null;
-    /// µ±Ç°ÍßÆ¬¼ÓÔØ½ø¶È¡£
+    /// å½“å‰ç“¦ç‰‡åŠ è½½è¿›åº¦ã€‚
     private m_nLoading: number = 0;
-    /// µ±Ç°½ø¶ÈÌõ×î´óÖµ¡£
+    /// å½“å‰è¿›åº¦æ¡æœ€å¤§å€¼ã€‚
     private m_nTaskMax: number = 0;
 
-    /// µ±Ç°¾Û½¹³ÇÊĞ¡£
+    /// å½“å‰èšç„¦åŸå¸‚ã€‚
     private m_pCity: any = null;
+    /// å½“å‰é”å®šå®¤å†…åœºæ™¯ã€‚
+    private m_pIndoor: any = null;
 
-    /// ¿ªÊ¼¶¯»­¡£
+    /// å¼€å§‹åŠ¨ç”»ã€‚
     private m_pStartMovie: any = null;
 }
 

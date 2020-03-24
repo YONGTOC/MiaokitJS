@@ -1,3 +1,26 @@
+class Indoor {
+    constructor(pTile, pScene) {
+        this.m_pTile = null;
+        this.m_pScene = null;
+        this.m_nBuildingType = 0;
+        this.m_pBuilding = null;
+        this.m_pScreenPos = null;
+        this.m_pTile = pTile;
+        this.m_pScene = pScene;
+        this.m_pBuilding = pScene.m_pScene.binding;
+    }
+    get screenPoint() {
+        if (this.m_pBuilding) {
+            let pBuildingObj = this.m_pBuilding.object3D;
+            if (pBuildingObj) {
+                let pPosition = pBuildingObj.transform.regionPosition;
+                let pPoint = MiaokitJS.Miaokit.WorldToScreenPoint(pPosition);
+                return pPoint;
+            }
+        }
+        return null;
+    }
+}
 class Main {
     constructor() {
         this.iii = 0;
@@ -8,6 +31,7 @@ class Main {
         this.m_nLoading = 0;
         this.m_nTaskMax = 0;
         this.m_pCity = null;
+        this.m_pIndoor = null;
         this.m_pStartMovie = null;
         let pThis = this;
         pThis.m_pApp = MiaokitJS.App;
@@ -38,7 +62,7 @@ class Main {
             m_nPitch: 30.0,
             m_nYaw: 0.0
         });
-        MiaokitJS.ShaderLab.SetSunlight(0.0, 90.0, 1.0);
+        MiaokitJS.ShaderLab.SetSunlight(0.0, 90.0, 0.1);
     }
     Update() {
         if ((this.iii++) % 180 === 0) {
@@ -54,6 +78,45 @@ class Main {
             }
         }
         let nTaskCount = MiaokitJS.Miaokit.progress;
+        if (0 === nTaskCount) {
+            let pCanvas = MiaokitJS.App.m_pCanvas2D;
+            let nCenter = { x: 0.5 * pCanvas.width, y: 0.5 * pCanvas.height };
+            let pNearest = null;
+            let nDistance = 1000.0;
+            for (let pTile of this.m_aTile) {
+                for (let pIndoor of pTile.m_aIndoor) {
+                    let pPoint = pIndoor.screenPoint;
+                    pPoint.x = pPoint.x * pCanvas.width;
+                    pPoint.y = pPoint.y * pCanvas.height;
+                    let x = pPoint.x - nCenter.x;
+                    x *= x;
+                    let y = pPoint.y - nCenter.y;
+                    y *= y;
+                    let nDistance_ = Math.sqrt(x + y);
+                    if (nDistance > nDistance_) {
+                        nDistance = nDistance_;
+                        pNearest = pIndoor;
+                    }
+                }
+            }
+            if (pNearest && pNearest !== this.m_pIndoor) {
+                if (this.m_pIndoor) {
+                    if (this.m_pIndoor.m_pBuilding) {
+                        let pBuildingObj = this.m_pIndoor.m_pBuilding.object3D;
+                        if (pBuildingObj) {
+                            pBuildingObj.highlight = false;
+                        }
+                    }
+                }
+                this.m_pIndoor = pNearest;
+                if (pNearest.m_pBuilding) {
+                    let pBuildingObj = pNearest.m_pBuilding.object3D;
+                    if (pBuildingObj) {
+                        pBuildingObj.highlight = true;
+                    }
+                }
+            }
+        }
         if (this.m_nLoading || 0 < nTaskCount) {
             this.m_nTaskMax = this.m_nTaskMax < nTaskCount ? nTaskCount : this.m_nTaskMax;
             if (this.m_nLoading || this["InitComplete"]) {
@@ -74,9 +137,31 @@ class Main {
             }
         }
     }
+    OnGUI(pCanvas, pCanvasCtx) {
+        let nTaskCount = MiaokitJS.Miaokit.progress;
+        if (0 !== nTaskCount) {
+            return;
+        }
+        pCanvas.font = "16px Microsoft YaHei";
+        pCanvas.strokeStyle = "black";
+        pCanvas.lineWidth = 2;
+        pCanvas.fillStyle = "#FFFFFF";
+        for (let pTile of this.m_aTile) {
+            for (let pIndoor of pTile.m_aIndoor) {
+                let pPoint = pIndoor.screenPoint;
+                let pText = pIndoor.m_pScene.building_id;
+                let pRect = pCanvasCtx.measureText(pText);
+                pPoint.x = pPoint.x * pCanvas.width;
+                pPoint.y = pPoint.y * pCanvas.height;
+                pCanvasCtx.strokeText(pText, pPoint.x - pRect.width / 2, pPoint.y);
+                pCanvasCtx.fillText(pText, pPoint.x - pRect.width / 2, pPoint.y);
+            }
+        }
+    }
     EnterPark(pPark) {
-        let pThis = this;
-        pThis.m_pApp.m_pCameraCtrl.Fly(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, pPark.m_pView, 0.05);
+        this.m_pApp.m_pCameraCtrl.Fly(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, pPark.m_pView, 0.05);
+    }
+    LockBuilding() {
     }
     EnterCompany(pCompany) {
     }
@@ -373,7 +458,8 @@ class Main {
                     }
                 }
                 else {
-                    pCallback(null);
+                    console.error("加载后台数据失败！");
+                    pCallback(pTile);
                 }
             });
         };
@@ -404,6 +490,9 @@ class Main {
         }
         if (!pTile.m_aScene) {
             pTile.m_aScene = [];
+        }
+        if (!pTile.m_aIndoor) {
+            pTile.m_aIndoor = [];
         }
         if (!pTile.m_aLayer) {
             pTile.m_aLayer = [];
@@ -475,13 +564,14 @@ class Main {
             if (pTile.m_pOutdoorID === pScene.building_id) {
                 pTile.m_pOutdoor = pScene;
             }
+            else {
+                pTile.m_aIndoor.push(new Indoor(pTile, pScene));
+            }
         }
         for (let pScene of pTile.m_aScene) {
             let pAdjust = pTile.m_aAdjust[pScene.building_id];
             let pObject = pScene.m_pScene.object3D;
             let bOutdoor = pScene.building_id === pTile.m_pOutdoor.building_id;
-            pObject.transform.localPosition = pTile.m_nOffset;
-            pObject.transform.euler = pTile.m_mRotate;
             pObject.active = bOutdoor ? true : false;
             for (let pLayerA of pScene.m_pScene.layers) {
                 if (pAdjust) {

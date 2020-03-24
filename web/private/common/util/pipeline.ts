@@ -261,7 +261,7 @@ vec4 SPHERE(float nTessell)
     v_Normal.w = 0.0;
     v_Position.w = 0.0;
 
-    return ObjectToClipPos(v_Normal.xyz);
+    return u_MatVP * a_MatW * vec4(v_Normal.xyz, 1.0);
 }
 `;
 
@@ -583,7 +583,16 @@ vec4 vs()
     //vec3 mLightDir = normalize(u_Sunlight.xyz);
     //Atmosphere(mLightDir, ObjectToWorldPos(mPos));
     
-    return u_MatVP * u_MatG * vec4(mPosition.xyz, 1.0);
+    // GIS的变换矩阵值包含旋转信息，未包含位移信息，避免精度不足造成画面抖动
+    // return u_MatVP * u_MatG * vec4(mPosition.xyz, 1.0);
+    
+    vec4 mPosition_ = vec4(mPosition.xyz, 1.0);
+    mPosition_ = u_MatG * mPosition_;
+    mPosition_.y = mPosition_.y - 6378137.0;
+
+    return u_MatVP * mPosition_;
+
+    
 }
         `,
     fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
@@ -785,7 +794,7 @@ vec4 fs()
     ///计算素描线条==================================================
     _Color0.a = _LumaM / (_LumaMax - _LumaMin);
     ///叠加选中对象轮廓==============================================
-    _Color0.rgb += vec3(5.0, 0.7, 0.0) * _Diff;
+    _Color0.rgb += vec3(3.0, 0.5, 0.0) * _Diff;
     
     return _Color0;
 }

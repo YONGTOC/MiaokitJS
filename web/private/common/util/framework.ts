@@ -73,6 +73,12 @@ class App {
 
     /// SVE瓦片激活。
     public ActiveTile(pTile): void {
+        let pObject = pTile.m_pTile.object3D;
+        this.m_pGis.AddGameObject(pObject, pTile.m_nLng, pTile.m_nLat);
+
+        pObject.transform.Translate(pTile.m_nOffset, 1);
+        pObject.transform.localEuler = pTile.m_mRotate;
+
         this.m_pProject.ActiveTile(pTile);
     }
 
@@ -80,6 +86,8 @@ class App {
     private Draw2D(): void {
         this.m_pCanvasCtx2D.clearRect(0, 0, this.m_pCanvas2D.clientWidth, this.m_pCanvas2D.clientHeight);
         this.Analyze();
+
+        this.m_pProject.OnGUI(this.m_pCanvas2D, this.m_pCanvasCtx2D);
 
         if (this.OnGUI) {
             this.OnGUI(this.m_pCanvas2D, this.m_pCanvasCtx2D);

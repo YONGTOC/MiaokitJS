@@ -1,7 +1,7 @@
 
 declare var MiaokitJS: any;
 
-// TODO
+
 class GlobalAction {
     //通知3d，要加载的园区模型  
     public web_call_webgl_initPark(pInfo) {
@@ -9,10 +9,10 @@ class GlobalAction {
             m_pView: {
                 m_nLng: 110.344301,
                 m_nLat: 25.272208,
-                m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
-                m_nDistance: 300.0,
-                m_nPitch: 19.0,
-                m_nYaw: 90.0
+                m_mTarget: { x: 140.0, y: 170.0, z: 96.0 },
+                m_nDistance: 530.0,
+                m_nPitch: 33.0,
+                m_nYaw: -128.0
             }
         });
         console.log("web_call_webgl_initPark", pInfo);
@@ -20,6 +20,16 @@ class GlobalAction {
 
     //切换公司
     public web_call_webgl_switchCompany(pName) {
+        MiaokitJS.App.m_pProject.EnterPark({
+            m_pView: {
+                m_nLng: 110.344301,
+                m_nLat: 25.272208,
+                m_mTarget: { x: 218.0, y: 170.0, z: 5.0 },
+                m_nDistance: 112.0,
+                m_nPitch: 15.0,
+                m_nYaw: -225.0
+            }
+        });
         console.log("web_call_webgl_switchCompany", pName);
     }
 
