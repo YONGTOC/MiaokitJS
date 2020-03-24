@@ -46,24 +46,25 @@ class Index extends React.Component {
     history: this.props.history
   }
 
-
-  componentDidMount() {
+  componentWillMount() {
     let _this = this
-    var geolocation = new BMap.Geolocation();
-    geolocation.getCurrentPosition(function (r) {
-      if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-        console.log(r.address.city)
-        _this.setState({ city: r.address.city })
-      }
-      else {
-        if (this.getStatus() === 6) {
-          console.log("没有权限")
+    if (!sessionStorage.getItem("city")) {
+      var geolocation = new BMap.Geolocation();
+      geolocation.getCurrentPosition(function (r) {
+        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+          sessionStorage.setItem("city", r.address.city)
+          _this.setState({ city: r.address.city })
         }
-        if (this.getStatus() === 8) {
-          console.log("连接超时")
+        else {
+          if (this.getStatus() === 6) {
+            console.log("没有权限")
+          }
+          if (this.getStatus() === 8) {
+            console.log("连接超时")
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   public dataService: DataService = new DataService();
@@ -99,14 +100,13 @@ class Index extends React.Component {
   render() {
     return (
       <div className="index">
-        <div className="index-top">数字园区</div>
         <div className="index-input-div">
           <div className="index-child-left">
             <input className="index-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
             <img src="./park_m/image/search.png" className="index-search-img" />
           </div>
           <div className="index-child-right">
-            <span >{this.state.city}</span>
+            <span >{sessionStorage.getItem("city")}</span>
             <img src="./park_m/image/bottom.png" width="50px" height="50px" style={{ marginTop: "-10px" }} />
           </div>
         </div>
