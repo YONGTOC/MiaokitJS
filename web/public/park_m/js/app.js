@@ -82,22 +82,26 @@ class Main {
             let pCanvas = MiaokitJS.App.m_pCanvas2D;
             let nCenter = { x: 0.5 * pCanvas.width, y: 0.5 * pCanvas.height };
             let pNearest = null;
-            let nDistance = 1000.0;
-            for (let pTile of this.m_aTile) {
-                for (let pIndoor of pTile.m_aIndoor) {
-                    let pPoint = pIndoor.screenPoint;
-                    pPoint.x = pPoint.x * pCanvas.width;
-                    pPoint.y = pPoint.y * pCanvas.height;
-                    let x = pPoint.x - nCenter.x;
-                    x *= x;
-                    let y = pPoint.y - nCenter.y;
-                    y *= y;
-                    let nDistance_ = Math.sqrt(x + y);
-                    if (nDistance > nDistance_) {
-                        nDistance = nDistance_;
-                        pNearest = pIndoor;
-                    }
+          let nDistance = 1000.0;
+       
+          for (let pTile of this.m_aTile) {
+            if (pTile.m_aIndoor) {
+              for (let pIndoor of pTile.m_aIndoor) {
+                let pPoint = pIndoor.screenPoint;
+                pPoint.x = pPoint.x * pCanvas.width;
+                pPoint.y = pPoint.y * pCanvas.height;
+                let x = pPoint.x - nCenter.x;
+                x *= x;
+                let y = pPoint.y - nCenter.y;
+                y *= y;
+                let nDistance_ = Math.sqrt(x + y);
+                if (nDistance > nDistance_) {
+                  nDistance = nDistance_;
+                  pNearest = pIndoor;
                 }
+              }
+            }
+               
             }
             if (pNearest && pNearest !== this.m_pIndoor) {
                 if (this.m_pIndoor) {
