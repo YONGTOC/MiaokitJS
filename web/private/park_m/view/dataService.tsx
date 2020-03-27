@@ -1,4 +1,4 @@
-﻿import FindLease from 'findLease';
+import FindLease from 'findLease';
 
 class DataService {
 
@@ -25,21 +25,21 @@ class DataService {
 
   // 2.(注册登录模块)用户登陆接口 ### email:test@test.com password:123456 
   public login(pBack) {
-    //console.log("login");
-    //    $.ajax({
-    //      url: this.state.rooturl + '/api/login',
-    //      data: {
-    //        "email": "test@test.com",
-    //        "password":123456
-    //      },
-    //  type: "post",    
-    //  success: function (data) {
-    //   // console.log("login",data);
-    //    //pBackajax(data);
-    //    console.log("login-getToken", data);
-    //    localStorage.setItem("token", data.token);
-    //    }
-    //})
+    console.log("login");
+        $.ajax({
+          url: this.state.rooturl + '/api/login',
+          data: {
+            "email": "test@test.com",
+            "password":123456
+          },
+      type: "post",    
+      success: function (data) {
+       // console.log("login",data);
+        //pBackajax(data);
+        console.log("login-getToken", data);
+        localStorage.setItem("token", data.token);
+        }
+    })
   }
 
   //  原有token过期，换取新 token
@@ -147,116 +147,117 @@ class DataService {
   public getCompanyType(pBack, park_id) {
     // id =1
     let thetoken = localStorage.getItem("token");
-    //$.ajax({
-    //  url: this.state.rooturl + '/api/getCompanyType',
-    //  data: {
-    //    "park_id": park_id,
-    //    "token":thetoken,
-    //  },
-    //  type: "get",    
-    //  success: function (data) {
-    //    console.log("TTTTTTTTTT",data);
-    //    pBack(data);
-    //    }
-    //})
-
-    var data = {
-      //错误码
-      "return_code": "100",
-      "response": [
-        {
-          //id
-          "id": "1009",
-          //企业类型
-          "name": "科技服务",
-        },
-        {
-          //id
-          "id": "1019",
-          //企业类型
-          "name": "文化创意",
+    $.ajax({
+      url: this.state.rooturl + '/api/getCompanyType',
+      data: {
+        "park_id": park_id,
+        "token":thetoken,
+      },
+      type: "get",    
+      success: function (data) {
+        console.log("5-企业类型列表",data);
+        pBack(data);
         }
-      ],
-      //错误代码信息
-      "err_msg": ""
-    }
+    })
 
-    pBack(data);
+    //var data = {
+    //  //错误码
+    //  "return_code": "100",
+    //  "response": [
+    //    {
+    //      //id
+    //      "id": "1009",
+    //      //企业类型
+    //      "name": "科技服务",
+    //    },
+    //    {
+    //      //id
+    //      "id": "1019",
+    //      //企业类型
+    //      "name": "文化创意",
+    //    }
+    //  ],
+    //  //错误代码信息
+    //  "err_msg": ""
+    //}
+
+    //pBack(data);
   }
 
   //6 通过园区id，企业类型，关键词搜索园区下面企业列表
-  public findCompany(pBack, park_id, company_type_id, name) {
+  public findCompany(pBack, park_id, company_type_id, companyName) {
     // id=1
     // console.log("findCompany", park_id, company_type_id, name);
     let thetoken = localStorage.getItem("token");
-    //$.ajax({
-    //  url: this.state.rooturl + '/api/findCompany',
-    //  data: {
-    //    "park_id": 1,
-    //    "company_type_id": ,
-    //    "token": thetoken,
-    //  },
-    //  type: "get",
-    //  success: function (data) {
-    //    console.log("findCompanyJJJJJJJ", data);
-    //    if (data.status == 113) {
-    //      // 113 token到期，跳转登录页面
-    //     // console.log(window.location.pathname);
-    //     //  window.location.href = window.location.pathname+"#/"
-    //    } else {
-    //      pBack(data);
-    //      console.log("finJJJ", data);
-    //    }
-    //  }
-    //})
-
-    let data = {
-      //错误码
-      "return_code": "100",
-      "response": [
-        {
-          //id  
-          "id": "1009",
-          //公司名字
-          "name": "桂林国家高新",
-          //园区图像url
-          "headimgurl": "./park_m/image/i.png",
-          //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
-          "building_id": "a座",
-          //使用场地对应楼层id，模型编号(用于匹配对应楼层id)
-          "floor_id": "1F",
-          //使用场地，模型编号(用于匹配对应3d房间)
-          "room_id": "201-2",
-          //地址
-          "address": "桂林市七星区民华产业园E座B区三楼",
-          //企业类型
-          "company_type": "科技服务",
-        },
-        {
-          //id
-          "id": "1010",
-          //公司名字
-          "name": "桂林国家高新",
-          //园区图像url
-          "headimgurl": "./park_m/image/i.png",
-          //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
-          "building_id": "a座",
-          //使用场地对应楼层id，模型编号(用于匹配对应楼层id)
-          "floor_id": "1F",
-          //使用场地，模型编号(用于匹配对应3d房间)
-          "room_id": "201-2",
-          //地址
-          "address": "桂林市七星区民华产业园E座B区三楼",
-          //企业类型
-          "company_type": "科技服务",
+    $.ajax({
+      url: this.state.rooturl + '/api/findCompany',
+      data: {
+        "park_id": 1,
+        "company_type_id": company_type_id,
+        "token": thetoken,
+        "name": companyName
+      },
+      type: "get",
+      success: function (data) {
+        console.log("findCompany企业列表", data);
+        if (data.status == 113) {
+          // 113 token到期，跳转登录页面
+         // console.log(window.location.pathname);
+         //  window.location.href = window.location.pathname+"#/"
+        } else {
+          pBack(data);
+          console.log("fin企业列表", data);
         }
+      }
+    })
 
-      ],
-      //错误代码信息
-      "err_msg": ""
-    }
+    //let data = {
+    //  //错误码
+    //  "return_code": "100",
+    //  "response": [
+    //    {
+    //      //id  
+    //      "id": "1009",
+    //      //公司名字
+    //      "name": "桂林国家高新",
+    //      //园区图像url
+    //      "headimgurl": "./park_m/image/i.png",
+    //      //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
+    //      "building_id": "a座",
+    //      //使用场地对应楼层id，模型编号(用于匹配对应楼层id)
+    //      "floor_id": "1F",
+    //      //使用场地，模型编号(用于匹配对应3d房间)
+    //      "room_id": "201-2",
+    //      //地址
+    //      "address": "桂林市七星区民华产业园E座B区三楼",
+    //      //企业类型
+    //      "company_type": "科技服务",
+    //    },
+    //    {
+    //      //id
+    //      "id": "1010",
+    //      //公司名字
+    //      "name": "桂林国家高新",
+    //      //园区图像url
+    //      "headimgurl": "./park_m/image/i.png",
+    //      //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
+    //      "building_id": "a座",
+    //      //使用场地对应楼层id，模型编号(用于匹配对应楼层id)
+    //      "floor_id": "1F",
+    //      //使用场地，模型编号(用于匹配对应3d房间)
+    //      "room_id": "201-2",
+    //      //地址
+    //      "address": "桂林市七星区民华产业园E座B区三楼",
+    //      //企业类型
+    //      "company_type": "科技服务",
+    //    }
 
-    pBack(data);
+    //  ],
+    //  //错误代码信息
+    //  "err_msg": ""
+    //}
+
+    //pBack(data);
   }
 
   //7 通过企业id, 获企业详细信息
@@ -264,114 +265,115 @@ class DataService {
     // id=2 模拟id
     console.log("getCompanyInfo", pBack, id);
     let thetoken = localStorage.getItem("token");
-    //$.ajax({
-    //  url: this.state.rooturl + '/api/getCompanyInfo',
-    //  data: {
-    //    "id": 2,
-    //    "token": thetoken,
-    //  },
-    //  type: "get",
-    //  success: function (data) {
-    //    if (data.status == 113) {
-    //      // 113 token到期，跳转登录页面
-    //     // console.log(window.location.pathname);
-    //     //  window.location.href = window.location.pathname+"#/"
-    //    } else {
-    //      pBack(data);
-    //      console.log("CompanyInfo_ajax", data);
-    //    }
-    //  }
-    //})
-    var data = {
-      //错误码
-      "return_code": "100",
-      "response": {
-        //id
-        "id": "1009",
-        //公司名字
-        "name": "桂林国家高新",
-        //企业图像url
-        "headimgurl": "./park_m/image/i.png",
-        //场地对应大楼id(用于匹配对应3d大楼)
-        "building_id": "a座",
-        //场地对应大楼id(用于匹配对应3d大楼)
-        "floor_id": "1F",
-        //场地(用于匹配对应3d房间)
-        "room_id": "201-2",
-        //地址
-        "address": "桂林市七星区信息产业园E座B区三楼",
-        //联系人
-        "contact": "莫xxx",
-        //电话
-        "phone": "15266666666",
-        //企业官网
-        "website": "www.yongtoc.com",
-        //企业详情详情文字
-        "descript": "xxx公司是由计算机图形学，计算机应用学组方面专家成。",
-        //企业服务内容
-        "service": [
-          {
-            //id
-            "id": "1009",
-            //服务内容名字
-            "name": "科技服务",
-          }
-        ],
-        //企业风采
-        "elegant": [
-          {
-            //id
-            "id": "1009",
-            //图片名字
-            "name": "xxx图片",
-            //图片地址
-            "pic_url": "./park_m/image/i.png",
-          }, {
-            //id
-            "id": "1009",
-            //图片名字
-            "name": "xxx图片",
-            //图片地址
-            "pic_url": "./park_m/image/i.png",
-          }
-        ],
-        //产品展示
-        "product": [
-          {
-            //id
-            "id": "1009",
-            //图片名字
-            "name": "xxx图片",
-            //图片地址
-            "pic_url": "./park_m/image/i.png",
-          }, {
-            //id
-            "id": "1009",
-            //图片名字
-            "name": "xxx图片",
-            //图片地址
-            "pic_url": "./park_m/image/i.png",
-          }
-        ],
-        //全景图
-        "panorama": [
-          {
-            //id
-            "id": "1009",
-            //图片名字
-            "name": "xxx图片",
-            //图片地址
-            "pic_url": "http://xxx.pic",
-            //位置信息待定为string类型
-            "position": "",
-          }
-        ]
+    $.ajax({
+      url: this.state.rooturl + '/api/getCompanyInfo',
+      data: {
+        "id": id,
+        "token": thetoken,
       },
-      //错误代码信息
-      "err_msg": ""
-    }
+      type: "get",
+      success: function (data) {
+        if (data.status == 113) {
+          // 113 token到期，跳转登录页面
+         // console.log(window.location.pathname);
+         //  window.location.href = window.location.pathname+"#/"
+        } else {
+          pBack(data);
+          console.log("CompanyInfo_ajax, 获企业详细信息", data);
+        }
+      }
+    })
 
-    pBack(data);
+    //var data = {
+    //  //错误码
+    //  "return_code": "100",
+    //  "response": {
+    //    //id
+    //    "id": "1009",
+    //    //公司名字
+    //    "name": "桂林国家高新",
+    //    //企业图像url
+    //    "headimgurl": "./park_m/image/i.png",
+    //    //场地对应大楼id(用于匹配对应3d大楼)
+    //    "building_id": "a座",
+    //    //场地对应大楼id(用于匹配对应3d大楼)
+    //    "floor_id": "1F",
+    //    //场地(用于匹配对应3d房间)
+    //    "room_id": "201-2",
+    //    //地址
+    //    "address": "桂林市七星区信息产业园E座B区三楼",
+    //    //联系人
+    //    "contact": "莫xxx",
+    //    //电话
+    //    "phone": "15266666666",
+    //    //企业官网
+    //    "website": "www.yongtoc.com",
+    //    //企业详情详情文字
+    //    "descript": "xxx公司是由计算机图形学，计算机应用学组方面专家成。",
+    //    //企业服务内容
+    //    "service": [
+    //      {
+    //        //id
+    //        "id": "1009",
+    //        //服务内容名字
+    //        "name": "科技服务",
+    //      }
+    //    ],
+    //    //企业风采
+    //    "elegant": [
+    //      {
+    //        //id
+    //        "id": "1009",
+    //        //图片名字
+    //        "name": "xxx图片",
+    //        //图片地址
+    //        "pic_url": "./park_m/image/i.png",
+    //      }, {
+    //        //id
+    //        "id": "1009",
+    //        //图片名字
+    //        "name": "xxx图片",
+    //        //图片地址
+    //        "pic_url": "./park_m/image/i.png",
+    //      }
+    //    ],
+    //    //产品展示
+    //    "product": [
+    //      {
+    //        //id
+    //        "id": "1009",
+    //        //图片名字
+    //        "name": "xxx图片",
+    //        //图片地址
+    //        "pic_url": "./park_m/image/i.png",
+    //      }, {
+    //        //id
+    //        "id": "1009",
+    //        //图片名字
+    //        "name": "xxx图片",
+    //        //图片地址
+    //        "pic_url": "./park_m/image/i.png",
+    //      }
+    //    ],
+    //    //全景图
+    //    "panorama": [
+    //      {
+    //        //id
+    //        "id": "1009",
+    //        //图片名字
+    //        "name": "xxx图片",
+    //        //图片地址
+    //        "pic_url": "http://xxx.pic",
+    //        //位置信息待定为string类型
+    //        "position": "",
+    //      }
+    //    ]
+    //  },
+    //  //错误代码信息
+    //  "err_msg": ""
+    //}
+
+    //pBack(data);
   }
 
   //8 通过园区id, 获取面积分类
@@ -379,37 +381,37 @@ class DataService {
     console.log("init-AllareaType", pBack, park_id);
     // console.log("findCompany", park_id, company_type_id, name, token);
     let thetoken = localStorage.getItem("token");
-    //$.ajax({
-    //  url: this.state.rooturl + '/api/getRoomRentSquareType',
-    //  data: {
-    //    "park_id": 1,
-    //    "token": thetoken,
-    //  },
-    //  type: "get",
-    //  success: function (data) {
-    //    //  console.log("getRoomRentSquareType", data);
-    //    if (data.status == 113) {
-    //      // 113 token到期，跳转登录页面
-    //      // console.log(window.location.pathname);
-    //      //  window.location.href = window.location.pathname+"#/"
-    //    } else {
-    //      pBack(data);
-    //      //console.log("getRoomRentSquareType", data);
-    //    }
-    //  }
-    // });
+    $.ajax({
+      url: this.state.rooturl + '/api/getRoomRentSquareType',
+      data: {
+        "park_id": 1,
+        "token": thetoken,
+      },
+      type: "get",
+      success: function (data) {
+        //  console.log("getRoomRentSquareType", data);
+        if (data.status == 113) {
+          // 113 token到期，跳转登录页面
+          // console.log(window.location.pathname);
+          //  window.location.href = window.location.pathname+"#/"
+        } else {
+          pBack(data);
+          //console.log("getRoomRentSquareType", data);
+        }
+      }
+     });
 
-    let data = {
-      //错误码
-      "return_code": "100",
-      "response": [
-        "0-100",
-        "100-200"
-      ],
-      //错误代码信息
-      "err_msg": ""
-    }
-    pBack(data);
+    //let data = {
+    //  //错误码
+    //  "return_code": "100",
+    //  "response": [
+    //    "0-100",
+    //    "100-200"
+    //  ],
+    //  //错误代码信息
+    //  "err_msg": ""
+    //}
+    //pBack(data);
 
   }
 
@@ -418,184 +420,184 @@ class DataService {
     // id =1
     console.log("findRoomRentByparkid", pBack, park_id, square);
     let thetoken = localStorage.getItem("token");
-    //$.ajax({
-    //  url: this.state.rooturl + '/api/findRoomRent',
-    //  data: {
-    //    "park_id": park_id,
-    //    "token": thetoken,
-    //    "square": square
-    //  },
-    //  type: "get",
-    //  success: function (data) {
-    //    console.log("getRoomRentSquareType", data);
-    //    if (data.status == 113) {
-    //      // 113 token到期，跳转登录页面
-    //      // console.log(window.location.pathname);
-    //      //  window.location.href = window.location.pathname+"#/"
-    //    } else {
-    //      pBack(data);
-    //      console.log("findRoomRentByparkid", data);
-    //    }
-    //  }
-    //})
-    let data = {
-      //错误码
-      "return_code": "100",
-      "response": [
-        {
-          //id
-          "id": "1001",
-          //头像url
-          "headimgurl": "./park_m/image/i.png",
-          //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
-          "building_id": "a座",
-          //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
-          "floor_id": "1F",
-          //使用场地房间id，模型编号(用于匹配对应3d房间)
-          "room_id": "201-1",
-          //招租发布时间
-          "date": "2019-07-05",
-          //面积m²
-          "square": "45",
-          //价格元/m²/天。
-          "price": "2.8"
-        }, {
-          //id
-          "id": "1009",
-          //头像url
-          "headimgurl": "./park_m/image/i.png",
-          //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
-          "building_id": "a座",
-          //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
-          "floor_id": "1F",
-          //使用场地房间id，模型编号(用于匹配对应3d房间)
-          "room_id": "201-2",
-          //招租发布时间
-          "date": "2019-07-05",
-          //面积m²
-          "square": "45",
-          //价格元/m²/天。
-          "price": "2.8"
+    $.ajax({
+      url: this.state.rooturl + '/api/findRoomRent',
+      data: {
+        "park_id": park_id,
+        "token": thetoken,
+        "square": square
+      },
+      type: "get",
+      success: function (data) {
+        console.log("getfindRoomRent", data);
+        if (data.status == 113) {
+          // 113 token到期，跳转登录页面
+          // console.log(window.location.pathname);
+          //  window.location.href = window.location.pathname+"#/"
+        } else {
+          pBack(data);
+          console.log("findRoomRentByparkid", data);
         }
-      ],
-      //错误代码信息
-      "err_msg": ""
-    }
-    pBack(data);
+      }
+    })
+    //let data = {
+    //  //错误码
+    //  "return_code": "100",
+    //  "response": [
+    //    {
+    //      //id
+    //      "id": "1001",
+    //      //头像url
+    //      "headimgurl": "./park_m/image/i.png",
+    //      //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
+    //      "building_id": "a座",
+    //      //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
+    //      "floor_id": "1F",
+    //      //使用场地房间id，模型编号(用于匹配对应3d房间)
+    //      "room_id": "201-1",
+    //      //招租发布时间
+    //      "date": "2019-07-05",
+    //      //面积m²
+    //      "square": "45",
+    //      //价格元/m²/天。
+    //      "price": "2.8"
+    //    }, {
+    //      //id
+    //      "id": "1009",
+    //      //头像url
+    //      "headimgurl": "./park_m/image/i.png",
+    //      //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
+    //      "building_id": "a座",
+    //      //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
+    //      "floor_id": "1F",
+    //      //使用场地房间id，模型编号(用于匹配对应3d房间)
+    //      "room_id": "201-2",
+    //      //招租发布时间
+    //      "date": "2019-07-05",
+    //      //面积m²
+    //      "square": "45",
+    //      //价格元/m²/天。
+    //      "price": "2.8"
+    //    }
+    //  ],
+    //  //错误代码信息
+    //  "err_msg": ""
+    //}
+    //pBack(data);
   }
 
   //10 通过招租id,获取租房信息列表接口(getRoomRentInfo)
   public findRoomRentByroomid(pBack, id) {
-    console.log("findRoomRentByroomid", pBack, id);
+    console.log("findRoomRentByroomid-jxxxxxxxxxxxx", id);
     let thetoken = localStorage.getItem("token");
-    //$.ajax({
-    //  url: this.state.rooturl + '/api/getRoomRentInfo',
-    //  data: {
-    //    "id": 1,
-    //    "token": thetoken,
-    //  },
-    //  type: "get",
-    //  success: function (data) {
-    //    //console.log("getRoomRentSquareType", data);
-    //    if (data.status == 113) {
-    //      // 113 token到期，跳转登录页面
-    //      // console.log(window.location.pathname);
-    //      //  window.location.href = window.location.pathname+"#/"
-    //    } else {
-    //      pBack(data);
-    //      console.log("findRoomRentByroomid", data);
-    //    }
-    //  }
-    //})
-    var data = {
-      //错误码
-      "return_code": "100",
-      "response": {
-        //id
-        "id": "1009",
-        //头像url
-        "headimgurl": "./park_m/image/i.png",
-        //使用场地对应大楼id(用于匹配对应3d大楼)
-        "building_id": "a座",
-        //使用场地对应大楼id(用于匹配对应3d大楼)
-        "floor_id": "1F",
-        //使用场地房间id(用于匹配对应3d房间)
-        "room_id": "201-2",
-        //时间
-        "date": "2019-07-05",
-        //面积
-        "square": "45m²",
-        //价格。
-        "price": "2.8",
-        //建筑面积
-        "squre": "150",
-        //所在楼层
-        "floor": "4楼",
-        //是否有电梯
-        "lift": "有",
-        //联系人
-        "contact": "莫xxx",
-        //电话
-        "phone": "135000000",
-        //看房时间
-        "inspection_time": "80:30-12:00",
-        //租房要求
-        "require": "一年起租",
-        "pic": [
-          {
-            //id
-            "id": "1009",
-            //图片名字
-            "name": "xxx图片",
-            //图片地址
-            "url": "./park_m/image/i.png",
-          }, {
-            //id
-            "id": "1009",
-            //图片名字
-            "name": "xxx图片",
-            //图片地址
-            "url": "./park_m/image/i.png",
-          }, {
-            //id
-            "id": "1009",
-            //图片名字
-            "name": "xxx图片",
-            //图片地址
-            "url": "./park_m/image/i.png",
-          }
-        ],
-        //全景图
-        "panorama": [
-          {
-            //id
-            "id": "1009",
-            //图片名字
-            "name": "xxx图片",
-            //图片地址
-            "url": "http://xxx.pic",
-            //位置信息待定为string类型
-            "position": "",
-          }
-        ],
-        //视频
-        "video": [
-          {
-            //id
-            "id": "1009",
-            //图片名字
-            "name": "xxx图片",
-            //地址
-            "url": "https://www.yongtoc.com/themes/ytyc.mp4",
-            //位置信息待定为string类型
-            "position": "",
-          }
-        ]
+    $.ajax({
+      url: this.state.rooturl + '/api/getRoomRentInfo',
+      data: {
+        "id": id,
+        "token": thetoken,
       },
-      //错误代码信息
-      "err_msg": ""
-    }
-    pBack(data);
+      type: "get",
+      success: function (data) {
+        //console.log("getRoomRentSquareType", data);
+        if (data.status == 113) {
+          // 113 token到期，跳转登录页面
+          // console.log(window.location.pathname);
+          //  window.location.href = window.location.pathname+"#/"
+        } else {
+          pBack(data);
+          console.log("findRoomRentByroomid", data);
+        }
+      }
+    })
+    //var data = {
+    //  //错误码
+    //  "return_code": "100",
+    //  "response": {
+    //    //id
+    //    "id": "1009",
+    //    //头像url
+    //    "headimgurl": "./park_m/image/i.png",
+    //    //使用场地对应大楼id(用于匹配对应3d大楼)
+    //    "building_id": "a座",
+    //    //使用场地对应大楼id(用于匹配对应3d大楼)
+    //    "floor_id": "1F",
+    //    //使用场地房间id(用于匹配对应3d房间)
+    //    "room_id": "201-2",
+    //    //时间
+    //    "date": "2019-07-05",
+    //    //面积
+    //    "square": "45m²",
+    //    //价格。
+    //    "price": "2.8",
+    //    //建筑面积
+    //    "squre": "150",
+    //    //所在楼层
+    //    "floor": "4楼",
+    //    //是否有电梯
+    //    "lift": "有",
+    //    //联系人
+    //    "contact": "莫xxx",
+    //    //电话
+    //    "phone": "135000000",
+    //    //看房时间
+    //    "inspection_time": "80:30-12:00",
+    //    //租房要求
+    //    "require": "一年起租",
+    //    "pic": [
+    //      {
+    //        //id
+    //        "id": "1009",
+    //        //图片名字
+    //        "name": "xxx图片",
+    //        //图片地址
+    //        "url": "./park_m/image/i.png",
+    //      }, {
+    //        //id
+    //        "id": "1009",
+    //        //图片名字
+    //        "name": "xxx图片",
+    //        //图片地址
+    //        "url": "./park_m/image/i.png",
+    //      }, {
+    //        //id
+    //        "id": "1009",
+    //        //图片名字
+    //        "name": "xxx图片",
+    //        //图片地址
+    //        "url": "./park_m/image/i.png",
+    //      }
+    //    ],
+    //    //全景图
+    //    "panorama": [
+    //      {
+    //        //id
+    //        "id": "1009",
+    //        //图片名字
+    //        "name": "xxx图片",
+    //        //图片地址
+    //        "url": "http://xxx.pic",
+    //        //位置信息待定为string类型
+    //        "position": "",
+    //      }
+    //    ],
+    //    //视频
+    //    "video": [
+    //      {
+    //        //id
+    //        "id": "1009",
+    //        //图片名字
+    //        "name": "xxx图片",
+    //        //地址
+    //        "url": "https://www.yongtoc.com/themes/ytyc.mp4",
+    //        //位置信息待定为string类型
+    //        "position": "",
+    //      }
+    //    ]
+    //  },
+    //  //错误代码信息
+    //  "err_msg": ""
+    //}
+    //pBack(data);
   }
 
   //11.(随手拍模块-曝光类型) 通过园区id获取随手拍曝光类型 
@@ -720,6 +722,28 @@ class DataService {
   //16.(场地预定模块-搜索)通过园区id获取园区内可以预定的场地列表接口
   public getRoomBook(pBack, park_id, name) {
     console.log("getRoomBook", pBack, park_id, name);
+
+    //$.ajax({
+    //  url: this.state.rooturl + '/api/getRoomBook',
+    // // url: this.state.rooturl + '/api/getRoomBook/'+id+'/'+name,
+    //  data: {
+    //      id:1,
+    //      name:1
+    //  },
+    //  type: "get",
+    //  success: function (data) {
+    //    //  console.log("getRoomRentSquareType", data);
+    //    if (data.status == 113) {
+    //      // 113 token到期，跳转登录页面
+    //      // console.log(window.location.pathname);
+    //      //  window.location.href = window.location.pathname+"#/"
+    //    } else {
+    //      pBack(data);
+    //      //console.log("getRoomRentSquareType", data);
+    //    }
+    //  }
+    // });
+
     var data = {
       //错误码
       "return_code": "100",

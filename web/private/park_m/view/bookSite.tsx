@@ -1,7 +1,10 @@
-﻿import * as React from "react";
+import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
+import { DatePicker, List } from 'antd-mobile';
 import DataService from "dataService";
 import GlobalAction from "compat";
+import "css!./styles/antd-mobile.css";
+import "css!./styles/resetAntdMobile.css"
 
 class BookSite extends React.Component {
   public constructor(props) {
@@ -91,7 +94,7 @@ class BookList extends React.Component {
 
   public dataService: DataService = new DataService();
   public globalAction: GlobalAction = new GlobalAction();
-
+ 
   //获取园区内可以预定的场地列表
   public getRoomBook(data) {
     console.log("returnRoomBook", data);
@@ -400,10 +403,10 @@ class BookRoom extends React.Component {
   public getRoomdata(data) {
     console.log("getBook", data);
     this.setState({
-      id: data.response.id,
-      building_id: data.response.building_id,
-      floor_id: data.response.floor_id,
-      room_id: data.response.room_id,
+      id: data.response.id ,
+      building_id: data.response.building_id ,
+      floor_id: data.response.floor_id ,
+      room_id: data.response.room_id ,
     })
   }
 
@@ -421,14 +424,14 @@ class BookRoom extends React.Component {
     if (this.state.bookRoom == "bookRoom-part") {
       this.setState({
         bookRoom: "bookRoom-all",
-        bookformcss: "bookform-all "
+        bookformcss:"bookform-all "
       })
       // 通知3d，暂停加载模型
       this.globalAction.web_call_webgl_pauseloadModuler();
     } else {
       this.setState({
         bookRoom: "bookRoom-part",
-        bookformcss: "bookform-part"
+        bookformcss:"bookform-part"
       })
       //通知3d，继续加载模型  
       this.globalAction.web_call_webgl_continueloadModuler();
@@ -449,22 +452,75 @@ class BookRoom extends React.Component {
     });
   }
 
+  //计算时间，个位数填0；
+  public p(s) {
+    return s < 10 ? '0' + s : s
+  }
+
+  public setStartTime(date) {
+    const d = new Date(date)
+    const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate())
+    const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds())
+    const start_date = resDate +" "+ resTime
+    console.log("start输入index656", start_date);
+    this.setState({
+      startTime: date ,
+      start_date: start_date ,
+     // start_time: resTime
+    });
+    console.log("start输入index2", this.state.startTime);
+  }
+
+  public setEndTime(date) {
+    const d = new Date(date)
+    const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate())
+    const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds())
+    const end_date = resDate + " " + resTime
+    console.log("end输入index656", end_date);
+    this.setState({
+      endTime: date,
+      end_date: end_date,
+     // end_time: resTime
+    });
+    console.log("end输入index2", this.state.endTime);
+  }
 
   public dataService: DataService = new DataService();
   // 提交预约申请 
   public bookSumbit() {
-    console.log("bookSumbit", this.state);
-    this.dataService.bookingRoom(this.bookSumbitOK, this.state);
+    console.log("bookSumbit",this.state);
+   // this.dataService.bookingRoom(this.bookSumbitOK, this.state);
   }
 
   //提交成功
   public bookSumbitOK(data) {
     alert(data);
-    //BookInfo.showList("List", "id-01");
+   //BookInfo.showList("List", "id-01");
   }
 
 
   public render() {
+    //<li>
+    //  <span className={"bookformLeft"}><span className="redStar">*</span>开始日期</span>
+    //  <p className={"bookfromliRight"}>
+    //    <input type="text" value={this.state.start_date} placeholder="请选择开始日期" />
+    //    <i className="iconfont" style={{ "color": " #158CE8", "float": "right", "font-size": "3rem" }}>&#xe82d;</i>
+    //  </p>
+    //</li>
+
+    //<li>
+    //  <span className={"bookformLeft"}><span className="redStar">*</span>结束日期</span>
+    //  <p className={"bookfromliRight"}>
+    //    <input type="text" value={this.state.end_date} placeholder="请选择结束日期" />
+    //    <i className="iconfont" style={{ "color": " #158CE8", "float": "right", "font-size": "3rem" }}>&#xe82d;</i>
+    //  </p>
+    //</li>
+
+        //<input type="text" value={this.state.start_time} placeholder="请选择开始时间" />
+    //                  <i className="iconfont" style={{ "color": " #949494", "float": "right", "font-size": "3rem" }}>&#xe827;</i>
+    //<input type="text" value={this.state.end_time} placeholder="请选择结束时间" />
+    //  <i className="iconfont" style={{ "color": " #949494", "float": "right", "font-size": "3rem" }}>&#xe827;</i>
+    // <span className={"bookformLeft"}><span className="redStar">*</span>开始时间</span>
     return (
       <div className={this.state.bookRoom}>
         <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
@@ -472,65 +528,63 @@ class BookRoom extends React.Component {
         </div>
         <form className={this.state.bookformcss}>
           <ul className={"bookfromul"}>
-            <li>
+          <li>
               <span className={"bookformLeft"}><span className="redStar">*</span>申请人</span>
               <p className={"bookfromliRight"}>
                 <input type="text" value={this.state.applicant} placeholder="请输入联系人姓名" />
               </p>
-            </li>
-            <li>
+          </li>
+          <li>
               <span className={"bookformLeft"}> <span className="redStar">*</span>手机号码</span>
               <p className={"bookfromliRight"}>
                 <input type="number" value={this.state.phone} placeholder="请输入联系人姓名" />
               </p>
-            </li>
-            <li>
+          </li>
+          <li>
               <span className={"bookformLeft"}><span className="redStar">*</span>申请企业</span>
               <p className={"bookfromliRight"}>
                 <input type="text" value={this.state.company} placeholder="请输入企业名称" />
               </p>
-            </li>
+          </li>
             <li className={"bookActive"}>
               <span className={"bookformLeft"}><span style={{ "color": "#F2F2F2", "margin-right": "1rem" }}>*</span>使用场地</span>
               <p className={"bookfromliRight"}>
-                {this.state.building_id}-{this.state.floor_id}-{this.state.room_id}
+                {this.state.building_id}-{this.state.floor_id}-{this.state.room_id}  
               </p>
-            </li>
-            <li>
-              <span className={"bookformLeft"}><span className="redStar">*</span>开始日期</span>
-              <p className={"bookfromliRight"}>
-                <input type="text" value={this.state.start_date} placeholder="请选择开始日期" />
-                <i className="iconfont" style={{ "color": " #158CE8", "float": "right", "font-size": "3rem" }}>&#xe82d;</i>
+          </li>
+         
+          <li>
+              <p >
+                <span className="redStar" style={{ "float": "left", "margin-top": "0.8rem"}}>*</span>
+                <div style={{ "fonSize": "2.5rem" }} className={"mDate"}>
+                  <DatePicker style={{ "fonSize": "2.5rem" }}
+                    value={this.state.startTime}
+                    onChange={this.setStartTime.bind(this)} >
+                    <List.Item arrow="horizontal">开始时间</List.Item>
+                  </DatePicker>
+                </div>
               </p>
-            </li>
-            <li>
-              <span className={"bookformLeft"}><span className="redStar">*</span>开始时间</span>
-              <p className={"bookfromliRight"}>
-                <input type="text" value={this.state.start_time} placeholder="请选择开始时间" />
-                <i className="iconfont" style={{ "color": " #949494", "float": "right", "font-size": "3rem" }}>&#xe827;</i>
+          </li>
+      
+          <li>
+              <p>
+                <span className="redStar" style={{ "float": "left","margin-top":"0.8rem" }}>*</span>
+                <div style={{ "fonSize": "2.5rem" }} className={"mDate"}>
+                  <DatePicker style={{ "fonSize": "2.5rem" }}
+                    value={this.state.endTime}
+                    onChange={this.setEndTime.bind(this)} >
+                    <List.Item arrow="horizontal">结束时间</List.Item>
+                  </DatePicker>
+                </div>
               </p>
-            </li>
-            <li>
-              <span className={"bookformLeft"}><span className="redStar">*</span>结束日期</span>
-              <p className={"bookfromliRight"}>
-                <input type="text" value={this.state.end_date} placeholder="请选择结束日期" />
-                <i className="iconfont" style={{ "color": " #158CE8", "float": "right", "font-size": "3rem" }}>&#xe82d;</i>
-              </p>
-            </li>
-            <li>
-              <span className={"bookformLeft"}><span className="redStar">*</span>结束时间</span>
-              <p className={"bookfromliRight"}>
-                <input type="text" value={this.state.end_time} placeholder="请选择结束时间" />
-                <i className="iconfont" style={{ "color": " #949494", "float": "right", "font-size": "3rem" }}>&#xe827;</i>
-              </p>
-            </li>
-            <li>
-              <p><span className="redStar">*</span>会议主题：</p>
+          </li>
+          <li>
+            <p><span className="redStar">*</span>会议主题：</p>
               <textarea className="bookTheme" value={this.state.theme} placeholder="50字内"
                 onChange={this.changebookTheme.bind(this)}></textarea>
-            </li>
-            <li>
-              <p><span className="redStar">*</span>具体需求：</p>
+          </li>
+          <li>
+            <p><span className="redStar">*</span>具体需求：</p>
               <textarea className="bookContent" value={this.state.content}
                 placeholder="50请将具体需求描述出来。（200字内）"
                 onChange={this.changebookContent.bind(this)}></textarea>
@@ -543,37 +597,39 @@ class BookRoom extends React.Component {
   }
 
   public state = {
+    startTime: "",
+    endTime: "",
     iconfont: "iconfont iconfont-unturn",
     bookRoom: "bookRoom-part",
     bookformcss: "bookform-part",
-    //id
-    id: "",
-    //申请人
-    applicant: "赵xxx",
-    //手机号码
-    phone: "15211111111",
-    //申请企业
-    company: "永拓信息科技",
-    //使用场地
-    room: "",
-    //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
-    building_id: "",
-    //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
-    floor_id: "",
-    //使用场地，模型编号(用于匹配对应3d房间)
-    room_id: "",
-    //开始日期
-    start_date: "2020-02-28",
-    //开始时间
-    start_time: "19:30:00",
-    //结束日期
-    end_date: "2020-02-28",
-    //结束时间
-    end_time: "19:30:00",
-    //主题
-    theme: "",
-    //具体需求
-    content: "",
+      //id
+      id: "",
+      //申请人
+      applicant: "赵xxx",
+      //手机号码
+      phone: "15211111111",
+      //申请企业
+      company: "永拓信息科技",
+      //使用场地
+      room: "",
+      //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
+      building_id: "",
+      //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
+      floor_id: "",
+      //使用场地，模型编号(用于匹配对应3d房间)
+      room_id: "",
+      //开始日期
+      start_date: "2020-02-28",
+      //开始时间
+      start_time: "19:30:00",
+      //结束日期
+      end_date: "2020-02-28",
+      //结束时间
+      end_time: "19:30:00",
+      //主题
+      theme: "",
+      //具体需求
+      content: "", 
   }
 
 }

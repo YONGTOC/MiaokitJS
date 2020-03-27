@@ -33,6 +33,7 @@
                     "antd": "../common/antd/dist/antd.min",
                     "index": "js/view",
                     "g2plot": "../common/g2plot",
+                    "antd-mobile": "../common/antd/antd-mobile.min",
                 },
                 // 所有模块(*)中的CSS依赖("css")从指定地址中加载("common/requirejs/css.min.js")
                 // 模块中导入CSS依赖的方式为: import "css!./x.css"。!是插件依赖与样式文件地址的分隔符
@@ -72,35 +73,38 @@
     <!--<p id="go">调用预定义的全景图</p>-->
     <ul style="position: absolute;top: 130px;left:0px;z-index: 101;">
         <!--<li>
-            <button onclick="roomScene(1)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活房间全景</button>
-        </li>
-        <li>
-            <button onclick="companyScene(2)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业全景</button>
-        </li>-->
+        <button onclick="roomScene(1)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活房间全景</button>
+    </li>
+    <li>
+        <button onclick="companyScene(2)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业全景</button>
+    </li>-->
         <!--<li>
-            <button onclick="addReqairs(3, 4,'A座','2F','201-2')" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加报修位置34</button>
-        </li>
-        <li>
-            <button onclick="addillegal(1,2)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加随手拍位置</button>
-        </li>
-        <li>
-            <button onclick="addapplyPut(3,4)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加摆点位置34</button>
-        </li>
+        <button onclick="addReqairs(3, 4,'A座','2F','201-2')" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加报修位置34</button>
+    </li>
+    <li>
+        <button onclick="addillegal(1,2)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加随手拍位置</button>
+    </li>
+    <li>
+        <button onclick="addapplyPut(3,4)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加摆点位置34</button>
+    </li>
+    <li>
+        <button onclick="addapplyPut(5,6)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加摆点位置56</button>
+    </li>
+    <li>
+        <button onclick="refreshCompanyinfo(10086)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业显示</button>
+    </li>
+    <li>
+        <button onclick="refreshLeaseinfo(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活招租显示</button>
+    </li>
+    <li>
+        <button onclick="refreshBooksite(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活场地预约</button>
+    </li>
+    <li>
+        <button onclick="refreshParking(120)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活地库</button>
+    </li>-->
         <li>
             <button onclick="addapplyPut(5,6)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加摆点位置56</button>
         </li>
-        <li>
-            <button onclick="refreshCompanyinfo(10086)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业显示</button>
-        </li>
-        <li>
-            <button onclick="refreshLeaseinfo(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活招租显示</button>
-        </li>
-        <li>
-            <button onclick="refreshBooksite(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活场地预约</button>
-        </li>
-        <li>
-            <button onclick="refreshParking(120)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活地库</button>
-        </li>-->
     </ul>
 
     <script>
