@@ -1,8 +1,9 @@
-﻿import * as React from "react";
+import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
 
 import GlobalAction from "compat";
 import DataService from "dataService";
+
 
 class ParkCompany extends React.Component {
   public constructor(props) {
@@ -123,11 +124,21 @@ class CompanyList extends React.Component {
 
   // set企业列表
   public setCompany(data) {
-    console.log("setCompany", data.response)
+    console.log("set企业列表", data.response)
     //  console.log("setCompany", data.response[0].name)
-    this.setState({
-      companyData: data.response,
-    })
+ 
+    if (data.response.length == 0) {
+      console.log(22222222);
+      this.setState({
+        companyData: data.response,
+        companyNull:"show",
+      })
+    } else {
+      this.setState({
+        companyData: data.response,
+        companyNull: "hide",
+      })
+    }
   }
 
   // 点击更多，显示info;隐藏list；这里需要调用ParkCompany 的方法；
@@ -196,17 +207,17 @@ class CompanyList extends React.Component {
     console.log("typeActive", indexof);
     console.log("typeActive", name);
     console.log("typeActive", id);
-
-    this.setState({
-      typeIndexof: indexof,
-      typeName: name,
-      company_type_id: id,
-    })
+  
+      this.setState({
+        typeIndexof: indexof,
+        typeName: name,
+        company_type_id: id,
+      })
   }
 
   // 聚焦
   public foucus() {
-    if (this.state.inputValue == "请输入企业名称") {
+    if (this.state.inputValue == " ") {
       this.setState({ inputValue: "" })
     }
   }
@@ -214,7 +225,7 @@ class CompanyList extends React.Component {
   // 失焦
   public blur(event) {
     if (this.state.inputValue == "") {
-      this.setState({ inputValue: "请输入企业名称" })
+      this.setState({ inputValue: " " })
     }
   }
 
@@ -227,7 +238,7 @@ class CompanyList extends React.Component {
   //软键盘搜索，获取数据，呈现列表效果；（3.5-未写）；1提交搜索条件。；2-css； 
   public searchCompany() {
 
-    if (this.state.inputValue == "请输入企业名称") {
+    if (this.state.inputValue == "请输入企业名称" || this.state.typeName =="全部 " ) {
       this.setState({ inputValue: "" })
     };
     console.log("searchBtn", this.state.inputValue, this.state.company_type_id);
@@ -235,32 +246,57 @@ class CompanyList extends React.Component {
   }
 
   public render() {
+    // <img src={"./park_m/image/i.png"} />
+
     return (
       <div className={this.state.companyListcss}>
         <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
           <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
         </div>
         <ul className={this.state.companyul}>
+          <p className={this.state.companyNull}>没有符合搜索条件的结果···</p>
           {this.state.companyData.map((i, index) => {
-            return (
-              <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyli-active" : "companyli"} >
-                <div className="companyImgback">
-                  <img src={i.headimgurl} />
-                </div>
-                <div className="companyul-middle">
-                  <p className={this.state.indexOf == index ? "companyName-active" : "companyName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.name}</p>
-                  <p style={{ "font-size": "2.5rem", "overflow": "hidden", "text-overflow": "ellipsis", "white-space": "nowrap" }}>
-                    <i className="iconfont" style={{ "fontSize": "2.5rem" }}>&#xe815;</i>
-                    {i.address}</p>
-                </div>
-                <div className="companyul-right">
-                  <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)} className={this.state.indexOf == index ? "show" : "hide"} >更多
+            if (i.headimgurl == null) {
+              return (
+                <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyli-active" : "companyli"} >
+                  <div className="companyImgback">
+                    <img src={"./park_m/image/i.png"} />
+                  </div>
+                  <div className="companyul-middle">
+                    <p className={this.state.indexOf == index ? "companyName-active" : "companyName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.name}</p>
+                    <p style={{ "font-size": "2.5rem", "overflow": "hidden", "text-overflow": "ellipsis", "white-space": "nowrap" }}>
+                      <i className="iconfont" style={{ "fontSize": "2.5rem" }}>&#xe815;</i>
+                      {i.address}</p>
+                  </div>
+                  <div className="companyul-right">
+                    <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)} className={this.state.indexOf == index ? "show" : "hide"} >更多
                     <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
-                  </p>
-                  <p className={this.state.indexOf == index ? "companyType-active" : "companyType"} >{i.company_type}</p>
-                </div>
-              </li>
-            )
+                    </p>
+                    <p className={this.state.indexOf == index ? "companyType-active" : "companyType"} >{i.company_type}</p>
+                  </div>
+                </li>
+              )
+            } else {
+              return (
+                <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyli-active" : "companyli"} >
+                  <div className="companyImgback">
+                    <img src={i.headimgurl} />
+                  </div>
+                  <div className="companyul-middle">
+                    <p className={this.state.indexOf == index ? "companyName-active" : "companyName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.name}</p>
+                    <p style={{ "font-size": "2.5rem", "overflow": "hidden", "text-overflow": "ellipsis", "white-space": "nowrap" }}>
+                      <i className="iconfont" style={{ "fontSize": "2.5rem" }}>&#xe815;</i>
+                      {i.address}</p>
+                  </div>
+                  <div className="companyul-right">
+                    <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)} className={this.state.indexOf == index ? "show" : "hide"} >更多
+                    <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
+                    </p>
+                    <p className={this.state.indexOf == index ? "companyType-active" : "companyType"} >{i.company_type}</p>
+                  </div>
+                </li>
+              )
+            }
           })}
         </ul>
         <form>
@@ -294,6 +330,7 @@ class CompanyList extends React.Component {
   }
 
   public state = {
+    companyNull:"hide",
     // 园区id
     park_id: 1001,
     companyListcss: "companyList-part",
@@ -309,7 +346,7 @@ class CompanyList extends React.Component {
     //当前选中类型序列号
     typeIndexof: 100,
     //搜索关键词
-    typeName: "全部",
+    typeName: " ",
     //搜索企业类型id
     company_type_id: "",
     // 输入框默认值
@@ -335,7 +372,7 @@ class CompanyInfo extends React.Component {
   public dataService: DataService = new DataService();
   static getCompanyinfo(id) { }
   public getCompanyinfo(id) {
-    // 通过企业id，set企业详情；
+    // 通过企业id，set企业详情； 7#
     this.dataService.getCompanyInfo(this.setCompanyinfo, id);
   }
 
@@ -347,7 +384,6 @@ class CompanyInfo extends React.Component {
     this.setState({
       companyName: data.response.name,
     });
-
     CompanyInfos.setCompanyinfos(data);
     Mien.setCompanymien(data);
     Details.setCompanydetails(data);
@@ -474,31 +510,60 @@ class CompanyInfos extends React.Component {
   }
 
   public render() {
-    return (
-      <div className={"infos"}>
-        <img src={this.state.imgurl} />
-        <div className={"ifosRight"}>
-          <h4 className={"infos-1"}>{this.state.name} </h4>
-          <h5 className={"infos-2"}>
-            <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe815;</i>
-            {this.state.address}
-          </h5>
-          <p className={"infos-3"} >{this.state.type}</p>
-          <p className={"infos-4"} >
-            <span>联系人</span>
-            <span>{this.state.man}</span>
-          </p>
-          <p className={"infos-5"} >
-            <span>联系电话</span>
-            <span>{this.state.tel}</span>
-          </p>
-          <p className={"infos-6"} >
-            <span>企业官网</span>
-            <span >{this.state.http}</span>
-          </p>
+    if (!this.state.imgurl) {
+      return (
+        <div className={"infos"}>
+          <img src={"./park_m/image/i.png"} />
+          <div className={"ifosRight"}>
+            <h4 className={"infos-1"}>{this.state.name} </h4>
+            <h5 className={"infos-2"}>
+              <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe815;</i>
+              {this.state.address}
+            </h5>
+            <p className={"infos-3"} >{this.state.type}</p>
+            <p className={"infos-4"} >
+              <span>联系人</span>
+              <span>{this.state.man}</span>
+            </p>
+            <p className={"infos-5"} >
+              <span>联系电话</span>
+              <span>{this.state.tel}</span>
+            </p>
+            <p className={"infos-6"} >
+              <span>企业官网</span>
+              <span >{this.state.http}</span>
+            </p>
+          </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      return (
+        <div className={"infos"}>
+          <img src={this.state.imgurl} />
+          <div className={"ifosRight"}>
+            <h4 className={"infos-1"}>{this.state.name} </h4>
+            <h5 className={"infos-2"}>
+              <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe815;</i>
+              {this.state.address}
+            </h5>
+            <p className={"infos-3"} >{this.state.type}</p>
+            <p className={"infos-4"} >
+              <span>联系人</span>
+              <span>{this.state.man}</span>
+            </p>
+            <p className={"infos-5"} >
+              <span>联系电话</span>
+              <span>{this.state.tel}</span>
+            </p>
+            <p className={"infos-6"} >
+              <span>企业官网</span>
+              <span >{this.state.http}</span>
+            </p>
+          </div>
+        </div>
+      )
+    }
+   
   }
 
   public state = {
@@ -541,11 +606,19 @@ class Mien extends React.Component {
       <div className={"mien"}>
         <ul>
           {this.state.mienImg.map((i, index) => {
-            return (
-              <li>
-                <img src={i.pic_url} />
-              </li>
-            )
+            if (!i.pic_url) {
+              return (
+                <li>
+                  <p style={{ "color": "#6C6C6C" }}>暂无图片···</p>
+                </li>
+              )
+            } else {
+              return (
+                <li>
+                  <img src={i.pic_url}  />
+                </li>
+              )
+            }
           })}
         </ul>
       </div>
@@ -606,9 +679,22 @@ class Product extends React.Component {
   static setCompanyproduct(data) { }
   public setCompanyproduct(data) {
     console.log("setCompanyproductPPPP", data);
-    this.setState({
-      productImg: data.response.product,
-    })
+    //this.setState({
+    //  productImg: data.response.product,
+    //})
+
+
+    if (data.response.product == 0) {
+      this.setState({
+        productImg: data.response.product,
+        urlNull: "show",
+      })
+    } else {
+      this.setState({
+        productImg: data.response.product,
+        urlNull: "hide",
+      })
+    }
   }
 
 
@@ -616,12 +702,21 @@ class Product extends React.Component {
     return (
       <div className={"product"}>
         <ul>
+          <p className={this.state.urlNull} style={{ "color": "#333333" }}>暂无图片···</p>
           {this.state.productImg.map((i, index) => {
-            return (
-              <li>
-                <img src={i.pic_url} />
-              </li>
-            )
+            if (!i.pic_url) {
+              return (
+                <li>
+                  <p className={this.state.urlNull} style={{ "color": "#6C6C6C" }}>暂无图片···</p>
+                </li>
+              )
+            } else {
+              return (
+                <li>
+                  <img src={i.pic_url}/>
+                </li>
+              )
+            }
           })}
         </ul>
       </div>
@@ -630,7 +725,8 @@ class Product extends React.Component {
   }
 
   public state = {
-    productImg: []
+    productImg: [],
+    urlNull:"hide",
   }
   //over
 }

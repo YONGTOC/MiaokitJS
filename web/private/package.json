@@ -9,6 +9,7 @@
     "@types/react-router": "5.1.2",
     "@types/react-router-dom": "5.1.2",
     "@antv/g2plot": "^0.11.21",
-    "photo-sphere-viewer": "3.5.1"
+    "photo-sphere-viewer": "3.5.1",
+    "antd-mobile": "2.3.1"
   }
 }
