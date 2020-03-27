@@ -47,6 +47,7 @@ class Index extends React.Component {
   }
 
   componentWillMount() {
+    this.dataService.login()
     let _this = this
     if (!sessionStorage.getItem("city")) {
       var geolocation = new BMap.Geolocation();
@@ -69,6 +70,8 @@ class Index extends React.Component {
 
   public dataService: DataService = new DataService();
   public globalAction: GlobalAction = new GlobalAction();
+
+  // 登录
 
   // 聚焦
   foucus() {

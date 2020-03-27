@@ -15,16 +15,19 @@ interface IState {
 class PersonalCenter extends React.Component {
   public readonly state: Readonly<IState> = {
     parkList: [
-      { name: "统计报表", imgUrl: "./park_m/image/statistics.png", url: "/statisticalStatement" }, { name: "房间管理", imgUrl: "./park_m/image/room.png", url: "" },
+      { name: "统计报表", imgUrl: "./park_m/image/statistics.png", url: "/statisticalStatement" }, { name: "房间管理", imgUrl: "./park_m/image/room.png", url: "/room" },
       { name: "工单派发管理", imgUrl: "./park_m/image/distribute.png", url: "/distribute" }, { name: "客服电话", imgUrl: "./park_m/image/service.png", url: "/serviceTel" },
-      { name: "招商管理", imgUrl: "./park_m/image/attractInvestment.png", url: "" }
+      { name: "招商管理", imgUrl: "./park_m/image/attractInvestment.png", url: "/attractInvestment" }
     ],
     isSpread: false,
     userInfo: "园区成员"
   }
 
   componentDidMount() {
-    sessionStorage.setItem("userInfo", "园区成员")
+    if (!sessionStorage.getItem("userInfo")) {
+      sessionStorage.setItem("userInfo", "园区成员")
+    }
+    this.setState({ userInfo: sessionStorage.getItem("userInfo")})
   }
 
   // 展开

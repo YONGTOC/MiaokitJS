@@ -24,22 +24,18 @@ class DataService {
   }
 
   // 2.(注册登录模块)用户登陆接口 ### email:test@test.com password:123456 
-  public login(pBack) {
-    //console.log("login");
-    //    $.ajax({
-    //      url: this.state.rooturl + '/api/login',
-    //      data: {
-    //        "email": "test@test.com",
-    //        "password":123456
-    //      },
-    //  type: "post",    
-    //  success: function (data) {
-    //   // console.log("login",data);
-    //    //pBackajax(data);
-    //    console.log("login-getToken", data);
-    //    localStorage.setItem("token", data.token);
-    //    }
-    //})
+  public login() {
+    $.ajax({
+      url: this.state.rooturl + '/api/login',
+      data: {
+        "email": "test@test.com",
+        "password":123456
+      },
+      type: "post",    
+      success: function (data) {
+        localStorage.setItem("token", data.token);
+        }
+    })
   }
 
   //  原有token过期，换取新 token
@@ -954,6 +950,21 @@ class DataService {
   public saveVisitorParkingAppointment(pBack, data) {
     console.log("27 提交来访车辆预约", data);
     pBack("提交来访车辆预约,成功！")
+  }
+
+  public getParkBuildingInfo(pBack) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getParkBuildingInfo',
+      data: {
+        id: 1001,
+        park_id: 1001,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
   }
 
   public state = {
