@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 import * as ReactDOM from "react-dom";
 import "css!./styles/index.css"
 import { Link } from 'react-router-dom';
@@ -22,7 +22,7 @@ interface IProps {
 interface IState {
   inputValue: string,
   city: string,
-  parkArr: Array<any>,  
+  parkArr: Array<any>,
   tagArr: Array<any>
 }
 
@@ -46,33 +46,37 @@ class Index extends React.Component {
     history: this.props.history
   }
 
-
-  componentDidMount() {
+  componentWillMount() {
+    this.dataService.login()
     let _this = this
-    var geolocation = new BMap.Geolocation();
-    geolocation.getCurrentPosition(function (r) {
-      if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-        console.log(r.address.city)
-        _this.setState({city: r.address.city})
-      }
-      else {
-        if (this.getStatus() === 6) {
-          console.log("没有权限")
+    if (!sessionStorage.getItem("city")) {
+      var geolocation = new BMap.Geolocation();
+      geolocation.getCurrentPosition(function (r) {
+        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+          sessionStorage.setItem("city", r.address.city)
+          _this.setState({ city: r.address.city })
         }
-        if (this.getStatus() === 8) {
-          console.log("连接超时")
+        else {
+          if (this.getStatus() === 6) {
+            console.log("没有权限")
+          }
+          if (this.getStatus() === 8) {
+            console.log("连接超时")
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   public dataService: DataService = new DataService();
   public globalAction: GlobalAction = new GlobalAction();
 
+  // 登录
+
   // 聚焦
   foucus() {
     if (this.state.inputValue === "请输入园区名称") {
-      this.setState({inputValue: ""})
+      this.setState({ inputValue: "" })
     }
   }
 
@@ -85,7 +89,7 @@ class Index extends React.Component {
 
   //  输入
   change(event) {
-    this.setState({inputValue: event.target.value})
+    this.setState({ inputValue: event.target.value })
   }
 
   // 加载园区地图
@@ -93,7 +97,7 @@ class Index extends React.Component {
     this.globalAction.web_call_webgl_initPark(park_id);
     console.log(park_id);
     localStorage.setItem("park_id", park_id);
-  
+
   }
 
   render() {
@@ -101,16 +105,16 @@ class Index extends React.Component {
       <div className="index">
         <div className="index-input-div">
           <div className="index-child-left">
-            <input className="index-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)}/>
+            <input className="index-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
             <img src="./park_m/image/search.png" className="index-search-img" />
           </div>
           <div className="index-child-right">
-            <span >{this.state.city}</span>
-            <img src="./park_m/image/bottom.png" width="50px" height="50px" style={{marginTop: "-10px"}} />
+            <span >{sessionStorage.getItem("city")}</span>
+            <img src="./park_m/image/bottom.png" width="50px" height="50px" style={{ marginTop: "-10px" }} />
           </div>
         </div>
         <div className="index-number">
-          <img src="./park_m/image/tower.png" className="tower-img" />已有<span style={{color: "#0B8BF0", margin: "0 15px 0 15px"}}>15</span>家园区上线
+          <img src="./park_m/image/tower.png" className="tower-img" />已有<span style={{ color: "#0B8BF0", margin: "0 15px 0 15px" }}>15</span>家园区上线
         </div>
         <div className="index-park">
           {this.state.parkArr.map((item, index) => {
@@ -132,15 +136,15 @@ class Index extends React.Component {
                 <div className="index-distance">10.5km</div>
               </div>
             </div></Link>
-            })
+          })
           }
-          <div style={{width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginLeft: "-25px"}}>到底啦~</div>
+          <div style={{ width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginLeft: "-25px" }}>到底啦~</div>
         </div>
         <div className="index-bottom-logo">
           <img src="./park_m/image/bottomLogo.png" className="index-bottom-logo-img" />
         </div>
       </div>
-      )
+    )
   }
 
   //供外部调用 -- 传入企业id，刷新树企业信息数据；
@@ -156,22 +160,22 @@ class Index extends React.Component {
   }
 
   // 添加摆点信息
-  public addapplyPut(x,y) {
+  public addapplyPut(x, y) {
     this.props.history.push('/applyPut');
-    ApplyPut.addapplyPut(x,y);
+    ApplyPut.addapplyPut(x, y);
   }
 
   //添加违规点
   public addillegal(x, y) {
     this.props.history.push('/photograph');
-   // ApplyPut.addapplyPut(x, y);
+    // ApplyPut.addapplyPut(x, y);
     Photograph.getXY(x, y);
   }
 
   //添加报修点
-  public addReqairs(x, y,building_id, floor_id,room_id) {
+  public addReqairs(x, y, building_id, floor_id, room_id) {
     this.props.history.push('/repairsOnline');
-    RepairsOnline.getReqairstpostion(x, y,building_id, floor_id, room_id);
+    RepairsOnline.getReqairstpostion(x, y, building_id, floor_id, room_id);
   }
 
   //添加场地预约
@@ -185,7 +189,7 @@ class Index extends React.Component {
     this.props.history.push('/parking');
     Parking.inParkingList(data);
   }
- 
+
 }
 
 
@@ -193,7 +197,7 @@ class Index extends React.Component {
 export default Index;
 
 ReactDOM.render(
-  <Router/>
+  <Router />
   , document.getElementById('viewContainer'));
 
 

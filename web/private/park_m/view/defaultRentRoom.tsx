@@ -9,7 +9,7 @@ interface IState {
   defaultIndex: number
 }
 
-class DetaultRentRoom extends React.Component<{ history:any }>{
+class DetaultRentRoom extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
     workOrderArray: ["A座-1F-201室", "A座-1F-202室", "A座-1F-203室"],
     defaultIndex: 0
@@ -40,7 +40,7 @@ class DetaultRentRoom extends React.Component<{ history:any }>{
                 <div key={index} className="rent-room-list-child" onClick={e => this.changeDefaultIndex(index)}>
                   <div style={{ float: "left", height: "100%", width: "13%", lineHeight: "286px", textAlign: "center" }}>
                     {this.state.defaultIndex === index ?
-                      <img src="./park_m/image/checked.png" /> :
+                      <img src="./park_m/image/checked.png" /> : 
                       <img src="./park_m/image/unchecked.png" />
                     }
                   </div>

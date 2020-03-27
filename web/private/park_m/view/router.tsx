@@ -1,4 +1,4 @@
-import { HashRouter, Route, Switch } from 'react-router-dom';
+﻿import { HashRouter, Route, Switch } from 'react-router-dom';
 import * as React from "react";
 import Index from "index";
 import Home from "home";
@@ -29,6 +29,13 @@ import SearchUser from "searchUser";
 import StatisticalStatement from "statisticalStatement";
 import InformationChild from "informationChild";
 import InformationDetail from "informationDetail";
+import AttractInvestment from "attractInvestment";
+import AttractInvestmentList from "attractInvestmentList";
+import Room from "room";
+import RoomDetail from "roomDetail";
+import RoomUse from "roomUse";
+import RoomBase from "roomBase";
+import RoomPattern from "roomPattern";
 
 //园区企业--parkCompany; 随手拍 -- photograph；招租查询--findLease； 摆点申请-- applyPut； 
 //场地预定-- bookSite；在线报修-- repairsOnline；停车服务-- parking
@@ -36,7 +43,7 @@ import InformationDetail from "informationDetail";
 
 class Router extends React.Component {
   render() {
-    return (
+    return(
       <HashRouter>
         <Switch>
           <Route exact path="/" component={Index} />
@@ -72,9 +79,16 @@ class Router extends React.Component {
           <Route path="/statisticalStatement" component={StatisticalStatement} />
           <Route path="/informationChild" component={InformationChild} />
           <Route path="/informationDetail" component={InformationDetail} />
+          <Route path="/attractInvestment" component={AttractInvestment} />
+          <Route path="/attractInvestmentList" component={AttractInvestmentList} />
+          <Route path="/room" component={Room} />
+          <Route path="/roomDetail" component={RoomDetail} />
+          <Route path="/roomUse" component={RoomUse} />
+          <Route path="/roomBase" component={RoomBase} />
+          <Route path="/roomPattern" component={RoomPattern} />
         </Switch>
       </HashRouter>
-   )}
+  )}
 }
 
 export default Router;

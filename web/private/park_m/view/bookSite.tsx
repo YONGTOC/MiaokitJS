@@ -1,7 +1,10 @@
 import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
+import { DatePicker, List } from 'antd-mobile';
 import DataService from "dataService";
 import GlobalAction from "compat";
+import "css!./styles/antd-mobile.css";
+import "css!./styles/resetAntdMobile.css"
 
 class BookSite extends React.Component {
   public constructor(props) {
@@ -449,12 +452,44 @@ class BookRoom extends React.Component {
     });
   }
 
+  //计算时间，个位数填0；
+  public p(s) {
+    return s < 10 ? '0' + s : s
+  }
+
+  public setStartTime(date) {
+    const d = new Date(date)
+    const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate())
+    const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds())
+    const start_date = resDate +" "+ resTime
+    console.log("start输入index656", start_date);
+    this.setState({
+      startTime: date ,
+      start_date: start_date ,
+     // start_time: resTime
+    });
+    console.log("start输入index2", this.state.startTime);
+  }
+
+  public setEndTime(date) {
+    const d = new Date(date)
+    const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate())
+    const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds())
+    const end_date = resDate + " " + resTime
+    console.log("end输入index656", end_date);
+    this.setState({
+      endTime: date,
+      end_date: end_date,
+     // end_time: resTime
+    });
+    console.log("end输入index2", this.state.endTime);
+  }
 
   public dataService: DataService = new DataService();
   // 提交预约申请 
   public bookSumbit() {
     console.log("bookSumbit",this.state);
-    this.dataService.bookingRoom(this.bookSumbitOK, this.state);
+   // this.dataService.bookingRoom(this.bookSumbitOK, this.state);
   }
 
   //提交成功
@@ -465,6 +500,27 @@ class BookRoom extends React.Component {
 
 
   public render() {
+    //<li>
+    //  <span className={"bookformLeft"}><span className="redStar">*</span>开始日期</span>
+    //  <p className={"bookfromliRight"}>
+    //    <input type="text" value={this.state.start_date} placeholder="请选择开始日期" />
+    //    <i className="iconfont" style={{ "color": " #158CE8", "float": "right", "font-size": "3rem" }}>&#xe82d;</i>
+    //  </p>
+    //</li>
+
+    //<li>
+    //  <span className={"bookformLeft"}><span className="redStar">*</span>结束日期</span>
+    //  <p className={"bookfromliRight"}>
+    //    <input type="text" value={this.state.end_date} placeholder="请选择结束日期" />
+    //    <i className="iconfont" style={{ "color": " #158CE8", "float": "right", "font-size": "3rem" }}>&#xe82d;</i>
+    //  </p>
+    //</li>
+
+        //<input type="text" value={this.state.start_time} placeholder="请选择开始时间" />
+    //                  <i className="iconfont" style={{ "color": " #949494", "float": "right", "font-size": "3rem" }}>&#xe827;</i>
+    //<input type="text" value={this.state.end_time} placeholder="请选择结束时间" />
+    //  <i className="iconfont" style={{ "color": " #949494", "float": "right", "font-size": "3rem" }}>&#xe827;</i>
+    // <span className={"bookformLeft"}><span className="redStar">*</span>开始时间</span>
     return (
       <div className={this.state.bookRoom}>
         <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
@@ -496,32 +552,30 @@ class BookRoom extends React.Component {
                 {this.state.building_id}-{this.state.floor_id}-{this.state.room_id}  
               </p>
           </li>
+         
           <li>
-              <span className={"bookformLeft"}><span className="redStar">*</span>开始日期</span>
-              <p className={"bookfromliRight"}>
-                <input type="text" value={this.state.start_date} placeholder="请选择开始日期" />
-                <i className="iconfont" style={{ "color":" #158CE8","float": "right","font-size": "3rem"}}>&#xe82d;</i>
+              <p >
+                <span className="redStar" style={{ "float": "left", "margin-top": "0.8rem"}}>*</span>
+                <div style={{ "fonSize": "2.5rem" }} className={"mDate"}>
+                  <DatePicker style={{ "fonSize": "2.5rem" }}
+                    value={this.state.startTime}
+                    onChange={this.setStartTime.bind(this)} >
+                    <List.Item arrow="horizontal">开始时间</List.Item>
+                  </DatePicker>
+                </div>
               </p>
           </li>
+      
           <li>
-              <span className={"bookformLeft"}><span className="redStar">*</span>开始时间</span>
-              <p className={"bookfromliRight"}>
-                <input type="text" value={this.state.start_time} placeholder="请选择开始时间" />
-                <i className="iconfont" style={{ "color": " #949494", "float": "right", "font-size": "3rem" }}>&#xe827;</i>
-              </p>
-          </li>
-          <li>
-              <span className={"bookformLeft"}><span className="redStar">*</span>结束日期</span>
-              <p className={"bookfromliRight"}>
-                <input type="text" value={this.state.end_date} placeholder="请选择结束日期" />
-                <i className="iconfont" style={{ "color": " #158CE8", "float": "right", "font-size": "3rem" }}>&#xe82d;</i>
-              </p>
-          </li>
-          <li>
-              <span className={"bookformLeft"}><span className="redStar">*</span>结束时间</span>
-              <p className={"bookfromliRight"}>
-                <input type="text" value={this.state.end_time} placeholder="请选择结束时间" />
-                <i className="iconfont" style={{ "color": " #949494", "float": "right", "font-size": "3rem" }}>&#xe827;</i>
+              <p>
+                <span className="redStar" style={{ "float": "left","margin-top":"0.8rem" }}>*</span>
+                <div style={{ "fonSize": "2.5rem" }} className={"mDate"}>
+                  <DatePicker style={{ "fonSize": "2.5rem" }}
+                    value={this.state.endTime}
+                    onChange={this.setEndTime.bind(this)} >
+                    <List.Item arrow="horizontal">结束时间</List.Item>
+                  </DatePicker>
+                </div>
               </p>
           </li>
           <li>
@@ -543,6 +597,8 @@ class BookRoom extends React.Component {
   }
 
   public state = {
+    startTime: "",
+    endTime: "",
     iconfont: "iconfont iconfont-unturn",
     bookRoom: "bookRoom-part",
     bookformcss: "bookform-part",
