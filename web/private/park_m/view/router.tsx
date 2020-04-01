@@ -36,6 +36,8 @@ import RoomDetail from "roomDetail";
 import RoomUse from "roomUse";
 import RoomBase from "roomBase";
 import RoomPattern from "roomPattern";
+import IdentityAuthentication from "identityAuthentication";
+
 
 //园区企业--parkCompany; 随手拍 -- photograph；招租查询--findLease； 摆点申请-- applyPut； 
 //场地预定-- bookSite；在线报修-- repairsOnline；停车服务-- parking
@@ -86,6 +88,7 @@ class Router extends React.Component {
           <Route path="/roomUse" component={RoomUse} />
           <Route path="/roomBase" component={RoomBase} />
           <Route path="/roomPattern" component={RoomPattern} />
+          <Route path="/identityAuthentication" component={IdentityAuthentication} />
         </Switch>
       </HashRouter>
   )}

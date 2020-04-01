@@ -1,5 +1,6 @@
 ﻿import * as React from "react";
 import "css!./styles/modificationAuthentication.css"
+import { Link } from 'react-router-dom';
 
 interface IProps {
 }
@@ -59,7 +60,7 @@ class ModificationAuthentication extends React.Component<{ history: any }> {
             <span style={{ color: "#333333", fontSize: "42px" }}>身份认证</span>
             <span style={{ color: "#949494", fontSize: "42px", marginLeft: "50px" }}>认证成为管理员</span>
           </div>
-          <div style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>认证</div>
+          <Link to="/identityAuthentication"><div style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>认证</div></Link>
         </div>
       </div>
     )

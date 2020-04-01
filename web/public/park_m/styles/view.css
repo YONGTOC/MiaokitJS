@@ -957,7 +957,7 @@ i {
 
 .leaseul-middle {
     float: left;
-    width: 21rem;
+    width: 25rem;
     margin-top: 2rem;
     line-height: 4.5rem;
 }
@@ -987,7 +987,7 @@ i {
     border-radius: 0.4rem;
     height: 4rem;
     line-height: 4rem;
-    width: 16rem;
+    width: 11rem;
     margin-top: 9.5rem;
     clear: both;
 }
@@ -997,7 +997,7 @@ i {
     border-radius: 0.4rem;
     height: 4rem;
     line-height: 4rem;
-    width: 16rem;
+    width: 11rem;
     margin-top: 9.5rem;
 }
 
@@ -1540,7 +1540,7 @@ i {
 }
 /**/
 
-.illcauseBox {
+/*.illcauseBox {
     position: fixed;
     width: 100%;
     height: 55rem;
@@ -1598,7 +1598,81 @@ i {
     font-size: 2.3rem;
     color: rgb(242,242,242);
     border-radius: 0.5rem;
+}*/
+
+/*rollSelect -- 共用选择*/
+.illcauseBox {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem 2rem 0 0;
 }
+.rollSelectCauseBox {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem 2rem 0 0;
+}
+
+.rollSelectCauseULcss {
+    width: 96%;
+    height: 27rem;
+    margin-top: 5rem;
+    overflow-y: scroll;
+    height: 37rem;
+}
+
+    .rollSelectCauseULcss li {
+        text-align: center;
+        line-height: 7rem;
+    }
+
+.rollSelectCauseli {
+    color: #ccc;
+}
+
+.rollSelectCauseli-active {
+    border-top: 0.2rem solid #ccc;
+    border-bottom: 0.2rem solid #ccc;
+    color: #333;
+}
+
+.rollSelectCuasedBtn {
+    width: 52%;
+    margin: auto;
+}
+
+.rollSelectCancel {
+    background: rgb(242,242,242);
+    padding: 1rem 5rem;
+    float: left;
+    font-size: 2.3rem;
+    color: rgb(7,193,96);
+    border-radius: 0.5rem;
+}
+
+.rollSelectConfirm {
+    background: rgb(7,193,96);
+    padding: 1rem 5rem;
+    float: right;
+    font-size: 2.3rem;
+    color: rgb(242,242,242);
+    border-radius: 0.5rem;
+}
+/*共用选择  -- over*/
+
 /*applyPut -- 摆点申请*/
 .applyPut-part {
     position: fixed;
@@ -1978,12 +2052,12 @@ i {
     color: #333;
     /*border: 0.2rem solid red;*/
     height: 4rem;
-    line-height: 3rem;
+    line-height:7rem;
 }
 
     .bookfromliRight input {
         border: 0;
-        height: 5rem;
+        height: 7rem;
     }
 
 .bookfromul li {
@@ -2107,7 +2181,8 @@ i {
 }
 
 .reqairsul li:nth-child(1) {
-    line-height: 11rem;
+   // line-height: 11rem;
+   height:19rem;
 }
 
     .reqairsul li:nth-child(1) img {
@@ -2205,7 +2280,9 @@ i {
     margin-right: 2rem;
     line-height: 7rem;
 }
-
+.contentUL li:last-child{
+    margin-bottom:8rem;
+}
 .contentUL p {
 }
 
@@ -2230,4 +2307,27 @@ i {
     font-size: 2.3rem;
 }
 
+/*identityTop*/
+.identityBox {
+    width: 100%;
+    height: 25rem;
+}
+
+.identityTop {
+    width: 100%;
+    height: 25rem;
+    background: #fff;
+}
+.identityTop p{
+    border-bottom: 0.2rem solid #ccc;
+    font-size: 3rem;
+    padding-left: 30px;
+    line-height: 9rem;
+}
+.identityBox li{
+  
+}
+.bookformLeft{
+    color:#333;
+}
 
