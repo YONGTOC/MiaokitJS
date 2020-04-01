@@ -1,6 +1,7 @@
 ﻿import * as React from "react";
 import "css!./styles/personalCenter.css"
 import { Link } from 'react-router-dom';
+import DataService from "dataService";
 
 
 interface IProps {
@@ -23,11 +24,18 @@ class PersonalCenter extends React.Component {
     userInfo: "园区成员"
   }
 
+  public dataService: DataService = new DataService()
+
   componentDidMount() {
+    this.dataService.getRoleType(this.callBackGetRoleType.bind(this))
     if (!sessionStorage.getItem("userInfo")) {
       sessionStorage.setItem("userInfo", "园区成员")
     }
     this.setState({ userInfo: sessionStorage.getItem("userInfo")})
+  }
+
+  callBackGetRoleType(data) {
+    console.log(data)
   }
 
   // 展开

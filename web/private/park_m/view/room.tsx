@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import "css!./styles/room.css"
 import { Link } from 'react-router-dom';
 import DataService from "dataService";
@@ -15,13 +15,14 @@ interface IState {
 
 export default class Room extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
-    inputValue: "ËÑË÷·¿¼ä", // ÊäÈë¿òÄ¬ÈÏÖµ
-    buildingArr: [], // Â¥×ù
+    inputValue: "æœç´¢æˆ¿é—´", // è¾“å…¥æ¡†é»˜è®¤å€¼
+    buildingArr: [], // æ¥¼åº§
     buildingIndex: "",
     floorIndex: ""
   }
 
   public dataService: DataService = new DataService()
+
   componentDidMount() {
     this.dataService.getParkBuildingInfo(this.callBackParkBuildingInfo.bind(this))
   }
@@ -33,45 +34,44 @@ export default class Room extends React.Component<{ history: any }>{
       })
     })
     this.setState({ buildingArr: data.response })
-    console.log("zzzzzzz", data)
   }
 
-  // ¾Û½¹
+  // èšç„¦
   foucus() {
-    if (this.state.inputValue === "ËÑË÷·¿¼ä") {
+    if (this.state.inputValue === "æœç´¢æˆ¿é—´") {
       this.setState({ inputValue: "" })
     }
   }
 
-  // Ê§½¹
+  // å¤±ç„¦
   blur() {
     if (this.state.inputValue === "") {
-      this.setState({ inputValue: "ËÑË÷·¿¼ä" })
+      this.setState({ inputValue: "æœç´¢æˆ¿é—´" })
     }
   }
 
-  // ÊäÈë
+  // è¾“å…¥
   change(event) {
     this.setState({ inputValue: event.target.value })
   }
 
 
-  // ·µ»Ø
+  // è¿”å›
   goBack() {
     this.props.history.goBack()
   }
 
-  // È¥Â¥²ã
+  // å»æ¥¼å±‚
   goFloor(index) {
     this.setState({ buildingIndex: index })
   }
 
-  // ·µ»Ø½¨Öş
+  // è¿”å›å»ºç­‘
   backBuilding() {
     this.setState({ buildingIndex: "" })
   }
 
-  // Õ¹¿ª
+  // å±•å¼€
   spread(index) {
     let buildingArr = this.state.buildingArr
     buildingArr[this.state.buildingIndex].child[index].isSpread = !buildingArr[this.state.buildingIndex].child[index].isSpread
@@ -87,14 +87,14 @@ export default class Room extends React.Component<{ history: any }>{
             <img src="./park_m/image/whiteBack.png" style={{ margin: "0 10px 30px -15px", padding: "15px 15px 15px 15px" }} onClick={this.goBack.bind(this)} />
             <input className="infoarea-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
             <img src="./park_m/image/search.png" className="infoarea-search-img" />
-            <span className="search-user-bt">ËÑË÷</span>
+            <span className="search-user-bt">æœç´¢</span>
           </div>
         </div>
         <div className="room-content">
           {this.state.buildingIndex === "" ?
-            <div style={{ fontSize: "40px", color: "#333333", fontWeight: "600", width: "100%", padding: "30px 0 0 50px" }}>Ô°ÇøÂ¥Óî</div> :
+            <div style={{ fontSize: "40px", color: "#333333", fontWeight: "600", width: "100%", padding: "30px 0 0 50px" }}>å›­åŒºæ¥¼å®‡</div> :
             <div style={{ fontSize: "40px", color: "#0B8BF0", fontWeight: "600", width: "100%", padding: "30px 0 0 50px" }}>
-              <span onClick={this.backBuilding.bind(this)}>Ô°ÇøÂ¥Óî</span>
+              <span onClick={this.backBuilding.bind(this)}>å›­åŒºæ¥¼å®‡</span>
               <img src="./park_m/image/blue_right.png" width="30px" height="30px" style={{ margin: "0 10px 5px 10px" }} />
               <span style={{ color: "#333333", fontWeight: "600" }}>{this.state.buildingArr[this.state.buildingIndex].name}</span>
             </div>
@@ -126,8 +126,8 @@ export default class Room extends React.Component<{ history: any }>{
                     <div style={{ width: "90%", margin: "10px auto", minHeight: "200px", overflow: "hidden" }}>
                       {this.state.buildingArr[this.state.buildingIndex].child[this.state.floorIndex].child.map((it, ind) => {
                         return (
-                          <Link to={{ pathname: "/roomDetail", state: { name: it.name } }}>
-                            <div key={ind} className={ind === 1 ? "room-single-add" : "room-single"}>
+                          <Link to={{ pathname: "/roomDetail", state: { name: it.name, id: it.id } }}>
+                            <div key={ind} className={it.State === 1 ? "room-single-add" : "room-single"}>
                               {it.name}
                             </div>
                           </Link>

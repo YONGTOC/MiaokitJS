@@ -1,5 +1,6 @@
 ﻿import * as React from "react";
 import { Link } from 'react-router-dom';
+import DataService from "dataService";
 
 interface IProps {
   location: any,
@@ -7,7 +8,8 @@ interface IProps {
 }
 
 interface IState {
-  roomName: string
+  roomName: string,
+  roomInfo: Array<any>
 }
 
 export default class RoomDetail extends React.Component<{ history: any }>{
@@ -16,15 +18,26 @@ export default class RoomDetail extends React.Component<{ history: any }>{
     history: this.props.history
   }
 
+  public dataService: DataService = new DataService()
+
+
   public readonly state: Readonly<IState> = {
-    roomName: ""
+    roomName: "",
+    roomInfo: [{ use_info: { state: 1, company_name: "", user: "", phone: "", rent_date: "" } }]
   }
 
   componentDidMount() {
     if (this.props.location.state) {
       sessionStorage.setItem("roomName", this.props.location.state.name)
+      sessionStorage.setItem("roomId", this.props.location.state.id)
     }
     this.setState({ roomName: sessionStorage.getItem("roomName") })
+    this.dataService.getRoomInfo(this.callBackGetRoomInfo.bind(this), sessionStorage.getItem("roomId"))
+  }
+
+  callBackGetRoomInfo(data) {
+    this.setState({ roomInfo: data.response })
+    sessionStorage.setItem("roomInfo", JSON.stringify(data.response))
   }
 
   // 返回
@@ -43,7 +56,7 @@ export default class RoomDetail extends React.Component<{ history: any }>{
           </div>
         </div>
         <div style={{ width: "100%", height: "15px", backgroundColor: "#F2F2F2" }}></div>
-        <Link to="/roomBase">
+        <Link to={{ pathname: "/roomBase", state: { roomInfo: this.state.roomInfo } }}>
           <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
             <img src="./park_m/image/room_base.png" style={{ margin: "0 20px 15px 10px" }} />
             <span>房间基本信息</span>
@@ -57,7 +70,7 @@ export default class RoomDetail extends React.Component<{ history: any }>{
             <span style={{ color: "#0B8BF0", float: "right", marginRight: "50px" }}>修改</span>
           </div>
         </Link>
-        <Link to="/roomUse">
+        <Link to={{ pathname: "/roomUse", state: { roomInfo: this.state.roomInfo } }}>
           <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
             <img src="./park_m/image/room_rent.png" style={{ margin: "0 20px 15px 10px" }} />
             <span>房间使用信息</span>
@@ -67,23 +80,25 @@ export default class RoomDetail extends React.Component<{ history: any }>{
         <div style={{ fontSize: "38px", color: "#949494" }}>
           <div style={{ width: "100%", overflow: "hidden" }}>
             <div style={{ float: "left", width: "300px", margin: "30px 0 0 120px" }}>使用状态</div>
-            <div style={{ float: "left", color: "#333333", marginTop: "30px" }}>租用中</div>
+            <div style={{ float: "left", color: "#333333", marginTop: "30px" }}>
+              {this.state.roomInfo[0].use_info.state == 0 ? "租用中" : this.state.roomInfo[0].use_info.state == 1 ? "招租中" : "不出租"}
+            </div>
           </div>
           <div style={{ width: "100%", overflow: "hidden" }}>
             <div style={{ float: "left", width: "300px", margin: "30px 0 0 120px" }}>租用单位</div>
-            <div style={{ float: "left", color: "#333333", marginTop: "30px" }}>浙江永拓信息科技有限公司</div>
+            <div style={{ float: "left", color: "#333333", marginTop: "30px" }}>{this.state.roomInfo[0].use_info.company_name}</div>
           </div>
           <div style={{ width: "100%", overflow: "hidden" }}>
             <div style={{ float: "left", width: "300px", margin: "30px 0 0 120px" }}>租用人</div>
-            <div style={{ float: "left", color: "#333333", marginTop: "30px" }}>小明</div>
+            <div style={{ float: "left", color: "#333333", marginTop: "30px" }}>{this.state.roomInfo[0].use_info.user}</div>
           </div>
           <div style={{ width: "100%", overflow: "hidden" }}>
             <div style={{ float: "left", width: "300px", margin: "30px 0 0 120px" }}>联系电话</div>
-            <div style={{ float: "left", color: "#333333", marginTop: "30px" }}>15578383040</div>
+            <div style={{ float: "left", color: "#333333", marginTop: "30px" }}>{this.state.roomInfo[0].use_info.phone}</div>
           </div>
           <div style={{ width: "100%", overflow: "hidden" }}>
             <div style={{ float: "left", width: "300px", margin: "30px 0 0 120px" }}>租用日期</div>
-            <div style={{ float: "left", marginTop: "30px", color: "#F53636" }}>2020-03-20 ~ 2021-03-20</div>
+            <div style={{ float: "left", marginTop: "30px", color: "#F53636" }}>{this.state.roomInfo[0].use_info.rent_date}</div>
           </div>
         </div>
       </div>
