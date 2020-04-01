@@ -1,4 +1,5 @@
 ﻿import * as React from "react";
+import DataService from "dataService";
 
 interface IProps {
   location: any,
@@ -6,10 +7,11 @@ interface IProps {
 }
 
 interface IState {
-  inputValuea: string,
-  inputValueb: string,
-  inputValuec: string,
-  inputValued: string
+  companyName: string,
+  user: string,
+  phone: string,
+  rentDate: string,
+  state: number,
 }
 
 export default class RoomUse extends React.Component<{ history: any }>{
@@ -18,92 +20,69 @@ export default class RoomUse extends React.Component<{ history: any }>{
     history: this.props.history
   }
 
+  public dataService: DataService = new DataService()
+
+  componentDidMount() {
+    if (this.props.location.state) {
+      sessionStorage.setItem("roomInfo", JSON.stringify(this.props.location.state.roomInfo))
+    }
+    console.log(JSON.parse(sessionStorage.getItem("roomInfo")))
+  }
+
   public readonly state: Readonly<IState> = {
-    inputValuea: "请输入企业名称",
-    inputValueb: "请输入使用人姓名",
-    inputValuec: "输入联系电话",
-    inputValued: "请选择使用日期"
-  }
-
-  // 聚焦
-  foucusa() {
-    if (this.state.inputValuea === "请输入企业名称") {
-      this.setState({ inputValuea: "" })
-    }
-  }
-
-  // 失焦
-  blura() {
-    if (this.state.inputValuea === "") {
-      this.setState({ inputValuea: "请输入企业名称" })
-    }
+    companyName: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.company_name,
+    user: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.user,
+    phone: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.phone,
+    rentDate: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.rent_date,
+    state: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.state
   }
 
   // 输入
   changea(event) {
-    this.setState({ inputValuea: event.target.value })
-  }
-
-  // 聚焦
-  foucusb() {
-    if (this.state.inputValueb === "请输入使用人姓名") {
-      this.setState({ inputValueb: "" })
-    }
-  }
-
-  // 失焦
-  blurb() {
-    if (this.state.inputValueb === "") {
-      this.setState({ inputValueb: "请输入使用人姓名" })
-    }
+    this.setState({ companyName: event.target.value })
   }
 
   // 输入
   changeb(event) {
-    this.setState({ inputValueb: event.target.value })
-  }
-
-  // 聚焦
-  foucusc() {
-    if (this.state.inputValuec === "输入联系电话") {
-      this.setState({ inputValuec: "" })
-    }
-  }
-
-  // 失焦
-  blurc() {
-    if (this.state.inputValuec === "") {
-      this.setState({ inputValuec: "输入联系电话" })
-    }
+    this.setState({ user: event.target.value })
   }
 
   // 输入
   changec(event) {
-    this.setState({ inputValuec: event.target.value })
-  }
-
-  // 聚焦
-  foucusd() {
-    if (this.state.inputValued === "请选择使用日期") {
-      this.setState({ inputValued: "" })
-    }
-  }
-
-  // 失焦
-  blurd() {
-    if (this.state.inputValued === "") {
-      this.setState({ inputValued: "请选择使用日期" })
-    }
+    this.setState({ phone: event.target.value })
   }
 
   // 输入
   changed(event) {
-    this.setState({ inputValued: event.target.value })
+    this.setState({ rentDate: event.target.value })
   }
 
   // 返回
   goBack() {
     this.props.history.goBack()
+  }
+
+  // 提交
+  submit() {
+    let obj = {
+      state: this.state.state,
+      companyId: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.company_id,
+      companyName: this.state.companyName,
+      user: this.state.user,
+      phone: this.state.phone,
+      rentDate: this.state.rentDate,
+      rentEndDate: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.rent_end_date,
+      defaultRoom: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.default_room
+    }
+    this.dataService.saveRoomRentInfo(this.callBackSaveRoomRentInfo.bind(this), obj)
+  }
+
+  callBackSaveRoomRentInfo(data) {
+    console.log(data)
+  }
+
+  changeState(index) {
+    this.setState({ state: index })
   }
 
   render() {
@@ -120,41 +99,51 @@ export default class RoomUse extends React.Component<{ history: any }>{
           <div className="enterprise-information-star"></div>
           <div style={{ color: "#949494", height: "80px" }}>房间状态</div>
           <div>
-            <img src="./park_m/image/checked.png" style={{ margin: "0 20px 10px 0" }} /><span style={{marginRight: "50px"}}>租用中</span>
-            <img src="./park_m/image/unchecked.png" style={{ margin: "0 20px 10px 0" }} /><span style={{ marginRight: "50px" }}>招租中</span>
-            <img src="./park_m/image/unchecked.png" style={{ margin: "0 20px 10px 0" }} /><span style={{ marginRight: "50px" }}>不出租</span>
+            {["租用中", "招租中", "不出租"].map((item, index) => {
+              return (
+                <div style={{ float: "left" }} onClick={e=> this.changeState(index)}>
+                  <img key={index} style={{ margin: "0 20px 10px 0" }}
+                    src={index == this.state.state ? "./park_m/image/checked.png" : "./park_m/image/unchecked.png"} />
+                  <span style={{ marginRight: "50px" }}>{item}</span>
+                </div>
+              )
+            })
+            }
           </div>
         </div>
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
           <div className="enterprise-information-star"></div>
           <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>租用单位</div>
-          <input onBlur={this.blura.bind(this)} onFocus={this.foucusa.bind(this)} onChange={this.changea.bind(this)} value={this.state.inputValuea}
+          <input onChange={this.changea.bind(this)} value={this.state.companyName}
             style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
           />
         </div>
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
           <div className="enterprise-information-star"></div>
           <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>租用人</div>
-          <input onBlur={this.blurb.bind(this)} onFocus={this.foucusb.bind(this)} onChange={this.changeb.bind(this)} value={this.state.inputValueb}
+          <input onChange={this.changeb.bind(this)} value={this.state.user}
             style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
           />
         </div>
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
           <div className="enterprise-information-star"></div>
           <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>联系电话</div>
-          <input onBlur={this.blurc.bind(this)} onFocus={this.foucusc.bind(this)} onChange={this.changec.bind(this)} value={this.state.inputValuec}
+          <input onChange={this.changec.bind(this)} value={this.state.phone}
             style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
           />
         </div>
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
           <div className="enterprise-information-star"></div>
           <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>租用日期</div>
-          <input onBlur={this.blurd.bind(this)} onFocus={this.foucusd.bind(this)} onChange={this.changed.bind(this)} value={this.state.inputValued}
+          <input onChange={this.changed.bind(this)} value={this.state.rentDate}
             style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
           />
           <img src="./park_m/image/calendar.png" />
         </div>
-        <div style={{ width: "100%", height: "150px", textAlign: "center", lineHeight: "150px", color: "#ffffff", backgroundColor: "#0B8BF0", position: "fixed", bottom: 0, fontSize: "50px" }}>提交</div>
+        <div onClick={this.submit.bind(this)} 
+          style={{ width: "100%", height: "150px", textAlign: "center", lineHeight: "150px", color: "#ffffff", backgroundColor: "#0B8BF0", position: "fixed", bottom: 0, fontSize: "50px" }}>
+          提交
+        </div>
       </div>
     )
   }

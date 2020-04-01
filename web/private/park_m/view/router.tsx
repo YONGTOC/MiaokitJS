@@ -36,6 +36,8 @@ import RoomDetail from "roomDetail";
 import RoomUse from "roomUse";
 import RoomBase from "roomBase";
 import RoomPattern from "roomPattern";
+import RoomPatternUpdate from "roomPatternUpdate";
+import ModificationAuthenticationDetail from "modificationAuthenticationDetail";
 import IdentityAuthentication from "identityAuthentication";
 
 
@@ -88,6 +90,8 @@ class Router extends React.Component {
           <Route path="/roomUse" component={RoomUse} />
           <Route path="/roomBase" component={RoomBase} />
           <Route path="/roomPattern" component={RoomPattern} />
+          <Route path="/roomPatternUpdate" component={RoomPatternUpdate} />
+          <Route path="/modificationAuthenticationDetail" component={ModificationAuthenticationDetail} />
           <Route path="/identityAuthentication" component={IdentityAuthentication} />
         </Switch>
       </HashRouter>

@@ -23,13 +23,30 @@ class DataService {
     pBack("callback")
   }
 
-  // 2.(注册登录模块)用户登陆接口  
+  // 0.文件上传
+  public upload(pBack, file) {
+    console.log("fiffffffffffffffff", file)
+    $.ajax({
+      url: this.state.rooturl + '/api/upload?token=' + localStorage.getItem("token"),
+      data: file,
+      cache: false,         //阻止浏览器缓存
+      dataType: "json",
+      processData: false,   // jQuery不要去处理发送的数据
+      contentType: false,   // jQuery不要去设置Content-Type请求头
+      type: "post",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 2.(注册登录模块)用户登陆接口 ### email:test@test.com password:123456 
   public login() {
     $.ajax({
       url: this.state.rooturl + '/api/login',
       data: {
         "username": "admin",
-        "password": "admin",
+        "password": "admin"
       },
       type: "post",    
       success: function (data) {
@@ -786,7 +803,83 @@ class DataService {
     pBack("提交来访车辆预约,成功！")
   }
 
-  //94.(我的个人中心-房间管理-楼宇楼层房间列表)通过园区的id，获取园区大楼，及大楼下楼层，及楼层下房间列表 
+  // 42.(我的个人中心模块-修改认证)用户修改用户名
+  public modifyUserName(pBack, username) {
+    $.ajax({
+      url: this.state.rooturl + '/api/modifyUserName',
+      data: {
+        id: 3,
+        username: username,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 43.(我的个人中心模块-身份认证类型)获取认证的角色类型列表
+  public getRoleType(pBack) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getRoleType',
+      data: {
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 91.(我的个人中心-我的消息-类型)通过园区id获取我的消息类型
+  public getMyMsgType(pBack) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getMyMsgType',
+      data: {
+        park_id: 1001,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 92.(我的个人中心-我的消息列表)通过我的id，类型id获取我的消息信息
+  public getMyMsgInfo(pBack, typeId) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getMyMsgInfo',
+      data: {
+        id: 1,
+        type_id: typeId,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 93.(我的个人中心-统计报表)通过我的id，获取统计报表
+  public getMyStatistic(pBack) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getMyStatistic',
+      data: {
+        id: 1001,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 94.(我的个人中心-房间管理 - 楼宇楼层房间列表) 通过园区的id，获取园区大楼，及大楼下楼层，及楼层下房间列表
   public getParkBuildingInfo(pBack) {
     $.ajax({
       url: this.state.rooturl + '/api/getParkBuildingInfo',
@@ -802,13 +895,196 @@ class DataService {
     })
   }
 
-  public state = {
-    //rooturl: "http://192.168.1.13:90",  //wl
+  // 95.(我的个人中心-房间管理-房间详细信息)通过园区的id，房间id获取房间详细信息
+  public getRoomInfo(pBack, roomId) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getRoomInfo',
+      data: {
+        id: 1001,
+        park_id: 1001,
+        room_id: roomId,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
 
-    rooturl: "http://parkadmin.yongtoc.com",  //wl
+  // 96.(我的个人中心-房间管理-提交房间基础信息) 提交房间基础信息
+  public saveRoomBaseInfo(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/saveRoomBaseInfo?token=' + localStorage.getItem("token"),
+      data: JSON.stringify({
+        id: 1001,
+        room_id: sessionStorage.getItem("roomId"),
+        squre: obj.squre,
+        price: obj.price,
+        contact: obj.contact,
+        phone: obj.phone,
+        inspectionTime: obj.inspectionTime,
+        require: obj.require,
+        lift: obj.lift,
+        square: obj.square,
+        pic: obj.pic,
+        video: obj.video
+      }),
+      type: "post",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 97.(我的个人中心-房间管理-提交房间租用信息) 提交房间租用信息
+  public saveRoomRentInfo(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/saveRoomRentInfo?token=' + localStorage.getItem("token"),
+      data: JSON.stringify({
+        id: 1001,
+        room_id: sessionStorage.getItem("roomId"),
+        state: obj.state,
+        company_id: obj.companyId,
+        company_name: obj.companyName,
+        user: obj.user,
+        phone: obj.phone,
+        rent_date: obj.rentDate,
+        rent_end_date: obj.rentEndDate,
+        default_room: obj.defaultRoom
+      }),
+      type: "post",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 98.(我的个人中心-房间管理-提交房间格局信息) 提交房间格局基础信息
+  public saveRoomPartBaseInfo(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/saveRoomPartBaseInfo?token=' + localStorage.getItem("token"),
+      data: JSON.stringify({
+        id: 1,
+        park_id: 1,
+        room_id: sessionStorage.getItem("roomId"),
+        part: [{
+          id: obj[0].id,
+          name: obj[0].name,
+          position: obj[0].position,
+          headimageurl: obj[0].headimageurl,
+          panoramaurl: obj[0].panoramaurl
+        },
+        {
+          id: obj[1].id,
+          name: obj[1].name,
+          position: obj[1].position,
+          headimageurl: obj[1].headimageurl,
+          panoramaurl: obj[1].panoramaurl
+        }
+        ]
+      }),
+      type: "post",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 99.(我的个人中心-客服电话修改) 提交园区客服电话修改信息
+  public postParkPhone(pBack, phone) {
+    $.ajax({
+      url: this.state.rooturl + '/api/postParkPhone',
+      data: {
+        id: 1001,
+        park_id: 1001,
+        phone: phone,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 100.(我的个人中心-企业信息添加)添加或者更新企业详细信息 (同47号接口)
+  public saveCompanyInfo(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/saveCompanyInfo?token=' + localStorage.getItem("token"),
+      data: JSON.stringify({
+        //用户id
+        "user_id": "1009",
+        //园区id
+        "park_id": "1009",
+        //企业id（当为添加新企业时，参数为""）
+        "id": "1009",
+        //公司名字
+        "name": "桂林国家高新",
+        //地址
+        "address": "桂林市七星区信息产业园E座B区三楼",
+        //联系人
+        "Contacts": "莫xxx",
+        //电话
+        "phone": "15266666666",
+        //企业官网
+        "website": "www.yongtoc.com",
+        //企业详情详情文字
+        "descript": "xxx公司是由计算机图形学，计算机应用学组方面专家成。",
+        //企业类型id
+        "company_type": "1001",
+        //是否更新企业头像，1为是，0为否
+        "update_headimgurl": 1,
+        //企业风采
+        "elegant": [
+          {
+            //id id为""代表新增
+            "id": "1009",
+            //图片名字
+            "name": "xxx图片",
+            //图片地址
+            "url": "http://xxx.jpg"
+          }
+        ],
+        //产品展示
+        "product": [
+          {
+            //id id为""代表新增
+            "id": "1009",
+            //图片名字
+            "name": "xxx图片",
+            //图片地址
+            "url": "http://xxx.jpg"
+          }
+        ],
+        //全景图
+        "panorama": [
+          {
+            //id id为""代表新增
+            "id": "1009",
+            //图片名字
+            "name": "xxx图片",
+            //位置信息待定为string类型
+            "position": "",
+            //图片地址
+            "url": "http://xxx.jpg"
+          }
+        ]
+      }),
+      type: "post",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+  
+
+
+  public state = {
+    rooturl: "http://parkadmin.yongtoc.com",
+    //rooturl: "http://192.168.1.13:90",  //wl
     rooturl2: "http://192.168.1.30:8002", //qjf
     rooturl3: "http://192.168.1.27:89", //twl
-
     token: "",
 
   }

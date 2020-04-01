@@ -1,5 +1,6 @@
 ﻿import * as React from "react";
 import "css!./styles/enterpriseInformation.css"
+import DataService from "dataService";
 
 interface IProps {
 }
@@ -27,6 +28,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
     descriptionValue: "400字内"
   }
 
+  public dataService: DataService = new DataService()
 
   // 返回
   goBack() {
@@ -35,6 +37,16 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
   // 修改
   modify() {
     this.setState({ modifyState: !this.state.modifyState })
+  }
+
+  // 提交
+  submit() {
+    let obj = {}
+    this.dataService.saveCompanyInfo(this.callBackSaveCompanyInfo.bind(this), obj)
+  }
+
+  callBackSaveCompanyInfo(data) {
+    console.log(data)
   }
 
   // 聚焦企业id
@@ -236,7 +248,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
                 <div style={{ marginTop: "10px" }}>添加</div>
               </div>
             </div>
-            <div className="enterprise-information-submit" onClick={this.modify.bind(this)}>
+            <div className="enterprise-information-submit" onClick={this.submit.bind(this)}>
               提交
             </div>
           </div> :
