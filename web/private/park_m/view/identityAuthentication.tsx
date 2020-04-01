@@ -72,7 +72,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
                 onChange={this.companyChange.bind(this)} />
             </p>
             <p>
-              <span className="redStar">*</span>  角色类型
+              <span className="redStar">*</span>  角色类型  
                  <input type="text" value={this.state.roleType} placeholder="选择认证的角色类型" style={{ "border": "none", "margin-left": "5rem" }}
                 onChange={this.roleTypeChange.bind(this)} />
               <span className="iconfont" onClick={this.roleTypeUL.bind(this)} style={{ "fontSize": "3rem", "float": "right" }} >&#xe827;</span>
