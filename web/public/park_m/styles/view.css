@@ -2315,15 +2315,20 @@ i {
 
 .identityTop {
     width: 100%;
-    height: 25rem;
+    height: 37rem;
     background: #fff;
 }
 .identityTop p{
-    border-bottom: 0.2rem solid #ccc;
-    font-size: 3rem;
+    border-bottom: 0.2rem solid #F2F2F2;
+    font-size: 2.3rem;
     padding-left: 30px;
     line-height: 9rem;
+    color: #333;
 }
+.identityTop p:last-child{
+    border-bottom: 0rem ;
+}
+
 .identityBox li{
   
 }
@@ -2331,3 +2336,19 @@ i {
     color:#333;
 }
 
+.identityBotton {
+    width: 100%;
+    height: 64rem;
+    background-color: #fff;
+    margin-top: 1rem;
+    padding: 2rem 3rem;
+}
+.identityBotton p{
+    font-size:2.3rem;
+}
+.identityBottonBox {
+    width: 100%;
+    height: 30rem;
+    border: 0.2rem solid red;
+    margin: 2rem 0;
+}
