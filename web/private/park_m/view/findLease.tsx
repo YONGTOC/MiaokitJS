@@ -257,7 +257,7 @@ class LeaseList extends React.Component {
                     <img src={i.headimageurl} />
                   </div>
                   <div className="leaseul-middle">
-                    <p className={this.state.indexOf == index ? "leaseName-active" : "leaseName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.building_id}-{i.floor_id}-{i.room_id}室</p>
+                    <p className={this.state.indexOf == index ? "leaseName-active" : "leaseName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.building_name}-{i.floor_name}-{i.room_name}</p>
                     <p style={{ "font-size": "2.5rem" }}><span className="iconfont" style={{ "fontSize": "2.5rem", "margin-right": "1rem" }}>&#xe82a;</span>{i.square}</p>
                     <p style={{ "font-size": "2.5rem" }}><span className="iconfont" style={{ "fontSize": "2.5rem", "margin-right": "1rem" }}>&#xe829;</span>{i.date}</p>
                   </div>
@@ -277,7 +277,7 @@ class LeaseList extends React.Component {
                     <img src={"./park_m/image/i.png"} />
                   </div>
                   <div className="leaseul-middle">
-                    <p className={this.state.indexOf == index ? "leaseName-active" : "leaseName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.building_id}-{i.floor_id}-{i.room_id}室</p>
+                    <p className={this.state.indexOf == index ? "leaseName-active" : "leaseName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.building_name}-{i.floor_name}-{i.room_name}</p>
                     <p style={{ "font-size": "2.5rem" }}><span className="iconfont" style={{ "fontSize": "2.5rem", "margin-right": "1rem" }}>&#xe82a;</span>{i.square}</p>
                     <p style={{ "font-size": "2.5rem" }}><span className="iconfont" style={{ "fontSize": "2.5rem", "margin-right": "1rem" }}>&#xe829;</span>{i.date}</p>
                   </div>
@@ -364,9 +364,9 @@ class LeaseInfo extends React.Component {
     console.log("setLeaseInfo", data);
     //  set房间name
     this.setState({
-      building: data.response.building_id,
-      floor: data.response.floor_id,
-      room: data.response.room_id
+      building_name: data.response.building_name,
+      floor_name: data.response.floor_name,
+      room_name: data.response.room_name,
     });
 
     LeaseInfos.setLeaseInfos(data);
@@ -414,7 +414,7 @@ class LeaseInfo extends React.Component {
       <div>
         <p className="companyInfotit">
           <span className="iconfont companyInfoicon" onClick={this.showList.bind(this, "List", "id-01")}>&#xe83b;</span>
-          <span>{this.state.building}-{this.state.floor}-{this.state.room}</span>
+          <span>{this.state.building_name}-{this.state.floor_name}-{this.state.room_name}</span>
         </p>
         <div className={this.state.leaseInfocss}>
           <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
@@ -449,6 +449,9 @@ class LeaseInfo extends React.Component {
     building: "",
     floor: "",
     room: "",
+    building_name: "",
+    floor_name: "",
+    room_name: "",
     infoli: 0,
     iconfont: "iconfont iconfont-unturn",
   }
@@ -472,7 +475,7 @@ class LeaseInfos extends React.Component {
       this.setState({
         area: data.response.squre,
         time: data.response.inspection_time,
-        floor: data.response.floor_id,
+        floor_name: data.response.floor_name,
         limit: data.response.require,
         elevator: "有",
         price: data.response.price,
@@ -483,7 +486,7 @@ class LeaseInfos extends React.Component {
       this.setState({
         area: data.response.squre,
         time: data.response.inspection_time,
-        floor: data.response.floor_id,
+        floor_name: data.response.floor_name,
         limit: data.response.require,
         elevator: "无",
         price: data.response.price,
@@ -508,7 +511,7 @@ class LeaseInfos extends React.Component {
             </li>
             <li>
               <span style={{ "padding-right": "2rem" }}>所在楼层</span>
-              <span style={{ "font-weight": "600" }} >{this.state.floor}</span>
+              <span style={{ "font-weight": "600" }} >{this.state.floor_name}</span>
             </li>
             <li>
               <span style={{ "padding-right": "7rem" }}>电梯</span>
@@ -544,7 +547,7 @@ class LeaseInfos extends React.Component {
   public state = {
     area: "",
     time: "",
-    floor: "",
+    floor_name: "",
     limit: "",
     elevator: "",
     price: "",

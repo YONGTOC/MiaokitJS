@@ -160,9 +160,9 @@ class Index extends React.Component {
   }
 
   // 添加摆点信息
-  public addapplyPut(x, y) {
+  public addapplyPut(data) {
     this.props.history.push('/applyPut');
-    ApplyPut.addapplyPut(x, y);
+    ApplyPut.addapplyPut(data);
   }
 
   //添加违规点
@@ -173,9 +173,9 @@ class Index extends React.Component {
   }
 
   //添加报修点
-  public addReqairs(x, y, building_id, floor_id, room_id) {
+  public addReqairs(data) {
     this.props.history.push('/repairsOnline');
-    RepairsOnline.getReqairstpostion(x, y, building_id, floor_id, room_id);
+    RepairsOnline.getReqairstpostion(data);
   }
 
   //添加场地预约

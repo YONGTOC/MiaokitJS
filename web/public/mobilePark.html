@@ -79,7 +79,7 @@
         <button onclick="companyScene(2)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业全景</button>
     </li>-->
         <!--<li>
-        <button onclick="addReqairs(3, 4,'A座','2F','201-2')" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加报修位置34</button>
+        <button onclick="addReqairs(2)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加报修位置34</button>
     </li>
     <li>
         <button onclick="addillegal(1,2)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加随手拍位置</button>
@@ -102,15 +102,21 @@
     <li>
         <button onclick="refreshParking(120)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活地库</button>
     </li>-->
-        <li>
-            <button onclick="addapplyPut(5,6)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加摆点位置56</button>
-        </li>
     </ul>
 
     <script>
         //添加报修位置
-        function addReqairs(x, y, building_id, floor_id, room_id) {
-            MiaokitJS.App.UI.addReqairs(x, y, building_id, floor_id, room_id);
+        function addReqairs(x) {
+            var data = {
+                position: "E座b区三楼",
+                longitude: "10.55",
+                latitude: "66.666",
+                building_id: "a座",
+                floor_id: "1F",
+                room_id: "201",
+                room: "201-2"
+            }
+            MiaokitJS.App.UI.addReqairs(data);
         }
 
         // 添加随手拍信息
@@ -121,7 +127,12 @@
 
         //添加摆点位置
         function addapplyPut(x, y) {
-            MiaokitJS.App.UI.addapplyPut(x, y);
+            var data = {
+                id: "1",
+                code: "menko_1",
+                name: "门口1"
+            }
+            MiaokitJS.App.UI.addapplyPut(data);
         }
 
         // 激活房间全景

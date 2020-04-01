@@ -3,7 +3,7 @@ import * as RouterDOM from 'react-router-dom';
 import DataService from "dataService";
 import "css!./styles/resetAntdMobile.css"
 import { ImagePicker, WingBlank, SegmentedControl } from 'antd-mobile';
-
+import { DatePicker, List } from 'antd-mobile';
 
 class Photograph extends React.Component {
   public constructor(props) {
@@ -95,6 +95,8 @@ class IllegalList extends React.Component {
 
     //12 通过园区id获取随手拍列表 
     this.dataService.getTakingPhotos(this.setillList, this.state.park_id, "");
+
+
   }
 
   public dataService: DataService = new DataService();
@@ -105,10 +107,20 @@ class IllegalList extends React.Component {
     })
   }
 
+  // 获取搜索框输入值
   public changeList(event) {
     this.setState({
       inputValue: event.target.value,
     });
+  }
+
+  // 软键盘 搜索
+  public queryKeyDownHandler(e) {
+    switch (e.keyCode) {
+      case 13://回车事件
+        //alert(this.state.inputValue);
+        break
+    }
   }
 
   // 添加搜索添加 
@@ -154,15 +166,12 @@ class IllegalList extends React.Component {
     })
   }
 
-  public submitList() {
-    alert(4343);
-  }
+
 
   public render() {
     //<div className="illAdd" onClick={this.showPart.bind(this, "Load")} > + </div>
     //onClick = { this.searchList.bind(this) }
     return (
-      <div >
         <div className={this.state.illegalListcss}>
           <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
             <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
@@ -192,15 +201,14 @@ class IllegalList extends React.Component {
             <div className="searchBox">
               <span className="searchBox-text">
                 <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe810;</i>
-                <input className="companySearch" type="text" placeholder="请输入车牌号"
-                  onChange={this.changeList.bind(this)} onSubmit={this.submitList.bind(this)}/>
+                <input className="companySearch" type="search" placeholder="请输入车牌号"
+                  onChange={this.changeList.bind(this)} onKeyDown={this.queryKeyDownHandler.bind(this)}/>
               </span>
+        
             </div>
           </div>
           <span className="illegalLoadBtn" onClick={this.showPart.bind(this, "Load")} >随手拍</span>
         </div>
-
-      </div>
     )
   }
 
@@ -226,28 +234,37 @@ class IllegalUpload extends React.Component {
     IllegalUpload.getXY = this.getXY.bind(this);
     this.setillcauseUL = this.setillcauseUL.bind(this);
     this.showList = this.showList.bind(this);
+    this.sumbitIllsuccess = this.sumbitIllsuccess.bind(this);
+    
   }
 
   public componentDidMount() {
     //12.(随手拍模块-列表)通过园区id获取随手拍列表 
     this.dataService.getTakingPhotosType(this.setillcauseUL, this.state.park_id);
 
+    // 获取当前经纬度
     //var geolocation = new BMap.Geolocation();
     //geolocation.getCurrentPosition(function (r) {
     //  if (this.getStatus() == BMAP_STATUS_SUCCESS) {
     //    var mk = new BMap.Marker(r.point);
-    //    alert('您的位置：' + r.point.lng + ',' + r.point.lat);  //success
+    //   // alert('您的位置：' + r.point.lng + ',' + r.point.lat);  //success
+    //    this.setState({
+    //      longitude: r.point.lng,
+    //      latitude: r.point.lat,
+    //    })
     //  }
     //  else {
-    //    alert('failed' + this.getStatus());
+    //   // alert('failed' + this.getStatus());
     //  }
     //});
+
+
   }
 
   public dataService: DataService = new DataService();
   public setillcauseUL(data) {
     this.setState({
-      illcauseUL: data.response ,
+      illcauseUL: data.response,
     })
   }
 
@@ -292,15 +309,17 @@ class IllegalUpload extends React.Component {
   //显示选择曝光类型
   public showillcauseUL() {
     this.setState({
-      illcauseBox: "illcauseBox"
+      illcauseBox: "rollSelectCauseBox",
+      type_id_in: this.state.illcauseUL[this.state.indexOf].id,
+      type_name_in: this.state.illcauseUL[this.state.indexOf].name,
     })
   }
 
   // 选中，列表选择违规原因
   public illCuased(i, id, name) {
     this.setState({
-      type_id: id,
-      type_name: name,
+      type_id_in: id,
+      type_name_in: name,
       indexOf: i,
     })
   }
@@ -308,7 +327,9 @@ class IllegalUpload extends React.Component {
   //违规原因列表 -- “确认”
   public getillcause() {
     this.setState({
-      illcauseBox: "hide"
+      illcauseBox: "hide",
+      type_id: this.state.type_id_in,
+      type_name: this.state.type_name_in,
     })
   }
 
@@ -316,8 +337,6 @@ class IllegalUpload extends React.Component {
   public hideillcauseUL() {
     this.setState({
       illcauseBox: "hide",
-      illcauseInname: "",
-      illcauseInid: "",
     })
   }
 
@@ -331,11 +350,11 @@ class IllegalUpload extends React.Component {
   //外部传入map经纬度
   static getXY(x, y) { };
   public getXY(x, y) {
-    console.log("外部传入经纬度", x,y);
+    console.log("外部传入经纬度", x, y);
     this.setState({
       longitude: x,
-      latitude: y, 
-      position:"请输入位置点名称"
+      latitude: y,
+      position: "请输入位置点名称"
     });
   }
 
@@ -352,37 +371,15 @@ class IllegalUpload extends React.Component {
       descript: event.target.value
     })
   }
- 
-  //提交违规单
-  public sumbitIllfrom() {
-    console.log("sumbit", this.state);
-   // this.dataService.postTakingPhotoInfo(this.sumbitIllsuccess, this.state.park_id);
 
-  }
-
-  ///提交违规单--成功
-  public sumbitIllsuccess(data) {
-    alert(data);
-    this.setState({
-      car_license: "",
-      time: "",
-      position: "请点击地图选择违章点",
-      longitude: "",
-      latitude: "",
-      type_id: "",
-      type_name: "",
-      descript: "",
-      photo: "",
-    })
-    Photograph.toggleView(0, "List", 0);
-  }
-
+  //获取照片
   onChange = (files, type, index) => {
     console.log(files, type, index);
     this.setState({
       files,
-      photo: files[0].url,
+      // photo: files[0].url,
     });
+
 
   }
   onSegChange = (e) => {
@@ -392,11 +389,75 @@ class IllegalUpload extends React.Component {
     });
   }
 
+  //计算时间，个位数填0；
+  public p(s) {
+    return s < 10 ? '0' + s : s
+  }
+
+  // 获取时间
+  public getTime(date) {
+    const d = new Date(date)
+    const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate())
+    const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds())
+    const timeD = resDate + " " + resTime
+    console.log("start输入index656", timeD);
+    this.setState({
+      timeShow: date,
+      time: timeD,
+    });
+  }
+
+
+  //提交违规单
+  public sumbitIllfrom() {
+    console.log("sumbit", this.state);
+    if (this.state.files.length == 0) {
+      alert("请提交违规照片")
+    }else if (this.state.type_id == "") {
+      alert("请选择曝光类型")
+    } else if (this.state.position == "") {
+      alert("请输入曝光位置")
+    } else if (this.state.car_license == "") {
+      alert("请输入违规车牌号")
+    } else if (this.state.time == "") {
+      alert("请填写曝光时间")
+    } else if (this.state.descript == "") {
+      alert("请描述违规问题")
+    } else {
+      this.dataService.postTakingPhotoInfo(this.sumbitIllsuccess, this.state);
+    }
+
+  }
+
+  ///提交违规单--成功
+  public sumbitIllsuccess(data) {
+    alert(data);
+    this.setState({
+      car_license: "",
+      time: "",
+      position: "",
+      longitude: "",
+      latitude: "",
+      type_id: "",
+      type_name: "",
+      descript: "",
+      photo: "",
+      files: [],
+      timeShow:"",
+    })
+   // Photograph.toggleView(0, "List", 0);
+  }
+
+
+
+
   public render() {
     //<div className="illTxt">
     //<div className="getillImg">
     //<input type="file" accept="image/*" className="getillImg" value="" onClick={this.illimginputClick.bind(this)} style={{ "opacity": "0", "position": "absolute", "right": "-16rem" }} />
     //  <img src={this.state.illImg} onClick={this.illimgClick.bind(this)} />
+    //  曝光时间
+    //  <input type="datetime" className="getillTime" value={this.state.time} placeholder="请输入违规时间" />
     return (
       <div>
         <p className="companyInfotit">
@@ -409,11 +470,11 @@ class IllegalUpload extends React.Component {
             <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
           </div>
           <form >
-            <ul   className={this.state.illfromcss}>
+            <ul className={this.state.illfromcss}>
               <li>
-                <span className="redStar">*</span> 违规照片    
+                <span className="redStar">*</span> 违规照片
                 <div className="imgCom">
-                   <WingBlank>
+                  <WingBlank>
                     <ImagePicker
                       files={this.state.files}
                       onChange={this.onChange}
@@ -425,51 +486,59 @@ class IllegalUpload extends React.Component {
                 </div>
               </li>
               <li>
-              <span className="redStar">*</span> 曝光类型
-              <input type="text" className="getillType" value={this.state.type_name} placeholder="请选择曝光类型" />
-              <span className="iconfont" style={{ "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" }}
-                onClick={this.showillcauseUL.bind(this)}>&#xe827;</span>
+                <span className="redStar">*</span> 曝光类型
+                <span onClick={this.showillcauseUL.bind(this)}>
+                  <input type="text" className="getillType" value={this.state.type_name} placeholder="请选择曝光类型" />
+                    <span className="iconfont" style={{ "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" }}
+                       >&#xe827;</span>
+                </span>
               </li>
               <li>
-              <span className="redStar">*</span>  地址
-               <input type="text" value={this.state.position} className="getillAdd" placeholder=""
-                onChange={this.illposition.bind(this)}/>
-              <i className="iconfont" style={{ "fontSize": "3rem", "color": "#0B8BF0", "float": "right", "padding": " 0 0 0 4rem" }}>&#xe82c;</i>
+                <span className="redStar">*</span>  地址
+               <input type="text" value={this.state.position} className="getillAdd" placeholder="请输入曝光位置"
+                  onChange={this.illposition.bind(this)} />
+                <i className="iconfont" style={{ "fontSize": "3rem", "color": "#0B8BF0", "float": "right", "padding": " 0 0 0 4rem" }}>&#xe82c;</i>
               </li>
               <li>
-              <span className="redStar">*</span> 车牌
+                <span className="redStar">*</span> 车牌
                 <input type="text" value={this.state.car_license} className="getillNum" placeholder="请输入违规车牌号"
-                onChange={this.illcarLicense.bind(this)} />
+                  onChange={this.illcarLicense.bind(this)} />
               </li>
               <li>
-              <span className="redStar">*</span> 曝光时间
-              <input type="datetime" className="getillTime" value={this.state.time} placeholder="请输入违规时间" />
+                <span className="redStar">*</span> 
+                <div style={{ "fonSize": "2.5rem", "float": "right", "position": "relative", "top": "-0.5rem", "left": "-0.5rem" }} className={"mDate"}>
+                  <DatePicker
+                    value={this.state.timeShow}
+                    onChange={this.getTime.bind(this)} >
+                    <List.Item arrow="horizontal">曝光时间</List.Item>
+                  </DatePicker>
+                </div>
               </li>
               <li>
-              <span className="redStar">*</span> 违规描述
+                <span className="redStar">*</span> 违规描述
              </li>
               <li>
-              <textarea className="getilltextarea" value={this.state.descript} placeholder="请将违规问题描述出来。（120字内）"
-                onChange={this.illdescript.bind(this)} ></textarea>
+                <textarea className="getilltextarea" value={this.state.descript} placeholder="请将违规问题描述出来。（120字内）"
+                  onChange={this.illdescript.bind(this)} ></textarea>
               </li>
-            <div className="illSumbit" onClick={this.sumbitIllfrom.bind(this)}>提交</div>
+              <div className="illSumbit" onClick={this.sumbitIllfrom.bind(this)}>提交</div>
             </ul>
           </form>
         </div>
 
         <div className={this.state.illcauseBox}>
-          <ul className="illcauseULcss">
+          <ul className="rollSelectCauseULcss">
             {this.state.illcauseUL.map((i, index) => {
               return (
-                <li className={this.state.indexOf == index ? "illcauseli-active" : "illcauseli"}
+                <li className={this.state.indexOf == index ? "rollSelectCauseli-active" : "rollSelectCauseli"}
                   onClick={this.illCuased.bind(this, index, i.id, i.name)}
                 >{i.name}</li>
               )
             })}
           </ul>
-          <div className="illCuasedBtn">
-            <span className="illCancel" onClick={this.hideillcauseUL.bind(this)} >取消</span>
-            <span className="illConfirm" onClick={this.getillcause.bind(this)}>确认</span>
+          <div className="rollSelectCuasedBtn">
+            <span className="rollSelectCancel" onClick={this.hideillcauseUL.bind(this)} >取消</span>
+            <span className="rollSelectConfirm" onClick={this.getillcause.bind(this)}>确认</span>
           </div>
         </div>
 
@@ -479,6 +548,8 @@ class IllegalUpload extends React.Component {
 
 
   public state = {
+    timeShow:"",
+    //照片
     files: [],
     multiple: false,
     illcauseBox: "hide",
@@ -486,13 +557,7 @@ class IllegalUpload extends React.Component {
     illfromcss: "illfrom-part illfrom",
     illTime: "",
     illImg: "./park_m/image/photo.png",
-    illcauseUL: [
-      //{ name: "非停车位路侧停车", type_id: 1 },
-      //{ name: "阻挡正常车位出入", type_id: 2},
-      //{ name: "阻塞主要出入口", type_id: 3},
-      //{ name: "占用多个车位", type_id: 4},
-      //{ name: "非地库占用地库", type_id: 5},
-    ],
+    illcauseUL: [],
     indexOf: 0,
     illcauseInname: "",
     illcauseInid: "",
@@ -502,21 +567,25 @@ class IllegalUpload extends React.Component {
     //车牌
     car_license: "",
     //申请时间
-    time: "2020-02-28 14:38:15",
+    time: "",
     //位置
-    position: "请点击地图选择违章点",
+    position: "",
     //经度
-    longitude: 10.55,
+    longitude: "",
     //纬度
-    latitude: 66.666,
+    latitude: "",
     //类型id (非停车位侧停车等对应的id)
-    type_id: 1,
+    type_id: "",
     //违规类型
     type_name: "",
+    //类型id (非停车位侧停车等对应的id)
+    type_id_in: "",
+    //违规类型
+    type_name_in: "",
     //描述
     descript: "",
     //违规照片
-    photo: "byte文件",
+    photo: "",
   }
 
   //over
