@@ -1012,13 +1012,13 @@ class DataService {
   public saveCompanyInfo(pBack, obj) {
     $.ajax({
       url: this.state.rooturl + '/api/saveCompanyInfo?token=' + localStorage.getItem("token"),
-      data: JSON.stringify({
+      data: {
         //用户id
-        "user_id": "1009",
+        "user_id": 1,
         //园区id
-        "park_id": "1009",
+        "park_id": 1,
         //企业id（当为添加新企业时，参数为""）
-        "id": "1009",
+        "id": 1,
         //公司名字
         "name": "桂林国家高新",
         //地址
@@ -1070,7 +1070,7 @@ class DataService {
             "url": "http://xxx.jpg"
           }
         ]
-      }),
+      },
       type: "post",
       success: function (data) {
         pBack(data)
