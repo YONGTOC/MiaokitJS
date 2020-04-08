@@ -42,7 +42,6 @@ class Main {
         pThis.m_aDioramas = MiaokitJS.m_pConfig.DIORS;
         pThis.m_aTile = MiaokitJS.m_pConfig.SVE;
         pThis.m_nLoading = pThis.m_aTile ? pThis.m_aTile.length : 0;
-        pThis.LoadNavData();
     }
     Start() {
         let pThis = this;
@@ -58,7 +57,7 @@ class Main {
             m_nLng: pThis.m_pCity.m_nLng,
             m_nLat: pThis.m_pCity.m_nLat,
             m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
-            m_nDistance: 50000.0,
+            m_nDistance: 500.000,
             m_nPitch: 30.0,
             m_nYaw: 0.0
         });
@@ -113,6 +112,7 @@ class Main {
                     let pBuildingObj = pNearest.m_pBuilding.object3D;
                     if (pBuildingObj) {
                         pBuildingObj.highlight = true;
+                        pBuildingObj.opacity = 128;
                     }
                 }
             }
@@ -147,14 +147,16 @@ class Main {
         pCanvas.lineWidth = 2;
         pCanvas.fillStyle = "#FFFFFF";
         for (let pTile of this.m_aTile) {
-            for (let pIndoor of pTile.m_aIndoor) {
-                let pPoint = pIndoor.screenPoint;
-                let pText = pIndoor.m_pScene.building_id;
-                let pRect = pCanvasCtx.measureText(pText);
-                pPoint.x = pPoint.x * pCanvas.width;
-                pPoint.y = pPoint.y * pCanvas.height;
-                pCanvasCtx.strokeText(pText, pPoint.x - pRect.width / 2, pPoint.y);
-                pCanvasCtx.fillText(pText, pPoint.x - pRect.width / 2, pPoint.y);
+            if (pTile.m_aIndoor) {
+                for (let pIndoor of pTile.m_aIndoor) {
+                    let pPoint = pIndoor.screenPoint;
+                    let pText = pIndoor.m_pScene.building_id;
+                    let pRect = pCanvasCtx.measureText(pText);
+                    pPoint.x = pPoint.x * pCanvas.width;
+                    pPoint.y = pPoint.y * pCanvas.height;
+                    pCanvasCtx.strokeText(pText, pPoint.x - pRect.width / 2, pPoint.y);
+                    pCanvasCtx.fillText(pText, pPoint.x - pRect.width / 2, pPoint.y);
+                }
             }
         }
     }

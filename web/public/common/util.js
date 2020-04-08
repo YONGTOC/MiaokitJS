@@ -928,6 +928,7 @@ MiaokitJS.ShaderLab.Pipeline = {
                 "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"
             ]
         },
+        { ID: 9, Format: "RGBA16_FLOAT", Width: 640, Height: 1024 },
     ],
     Resource: [null,
         { ID: 1, TYPE: "2D", URL: "./data/star.jpg" },
@@ -961,7 +962,10 @@ MiaokitJS.ShaderLab.Pipeline = {
             Name: "绘制半透明物体",
             Type: "Render",
             Mask: ["Transparent"],
-            RenderTarget: [1, 3],
+            RenderTarget: [2, 3],
+            ClearTarget: {
+                Color: { r: 0.0, g: 0.0, b: 0.0, a: 1.0 },
+            },
             Depth: {
                 Func: "LEQUAL",
                 Write: false
@@ -971,8 +975,20 @@ MiaokitJS.ShaderLab.Pipeline = {
                 ColorSrc: "ONE",
                 ColorDest: "ONE",
                 AlphaFunc: "FUNC_ADD",
-                AlphaSrc: "ONE",
-                AlphaDest: "ONE"
+                AlphaSrc: "ZERO",
+                AlphaDest: "SRC_ALPHA"
+            }
+        },
+        {
+            Name: "混合不透明与半透明缓存",
+            Type: "Postprocess",
+            Mask: [],
+            RenderTarget: [9, 3],
+            Shader: "Combine",
+            SetUniforms: function (aAttr, gl) {
+                let aTarget = MiaokitJS.ShaderLab.Pipeline.RenderTarget;
+                aAttr[8]("u_MainTex", [0, aTarget[1].Handle, 0, 0]);
+                aAttr[8]("u_MinorTex", [0, aTarget[2].Handle, 0, 0]);
             }
         },
         {
@@ -983,8 +999,8 @@ MiaokitJS.ShaderLab.Pipeline = {
             Shader: "EdgeDetection",
             SetUniforms: function (aAttr, gl) {
                 let aTarget = MiaokitJS.ShaderLab.Pipeline.RenderTarget;
-                aAttr[8]("u_MainTex", [0, aTarget[1].Handle, 0, 0]);
-                aAttr[8]("u_InvTexSize", aTarget[1].Size);
+                aAttr[8]("u_MainTex", [0, aTarget[9].Handle, 0, 0]);
+                aAttr[8]("u_InvTexSize", aTarget[9].Size);
             }
         },
         {
@@ -1543,6 +1559,39 @@ vec4 fs()
 }
         `
 };
+MiaokitJS.ShaderLab.Shader["Combine"] = {
+    name: "Present",
+    type: "Postprocess",
+    mark: ["Opaque"],
+    vs_src: `
+varying vec2 v_UV;
+
+vec4 vs()
+{
+    v_UV = a_UV;
+    v_UV.y = 1.0 - v_UV.y;
+    
+    return vec4(a_Position, 1.0);
+}
+        `,
+    fs_src: `
+uniform sampler2D u_MinorTex;
+varying vec2 v_UV;
+
+vec4 fs()
+{
+    vec4 mColor = vec4(0.0, 0.0, 0.0, 0.0);
+    vec4 mColor1 = texture2D(u_MainTex, v_UV);    
+    vec4 mColor2 = texture2D(u_MinorTex, v_UV);    
+    float nGray2 = mColor2.g / clamp(mColor2.b, 0.001, 50000.0);
+
+    mColor.rgb = mColor1.rgb * mColor2.a + vec3(nGray2, nGray2, nGray2) * (1.0 - mColor2.a);
+    mColor.a = 1.0;//mColor1.a + mColor2.r;
+    // 边缘提取时不应再除以混合次数
+    return mColor;
+}
+        `
+};
 MiaokitJS.ShaderLab.Shader["EdgeDetection"] = {
     name: "EdgeDetection",
     type: "Postprocess",
@@ -1644,7 +1693,7 @@ vec4 fs()
     ///计算素描线条==================================================
     _Color0.a = _LumaM / (_LumaMax - _LumaMin);
     ///叠加选中对象轮廓==============================================
-    _Color0.rgb += vec3(3.0, 0.5, 0.0) * _Diff;
+    //_Color0.rgb += vec3(3.0, 0.5, 0.0) * _Diff;
     
     return _Color0;
 }
