@@ -46,7 +46,7 @@ class Index extends React.Component {
   public readonly state: Readonly<IState> = {
     inputValue: "请输入园区名称", // 输入框默认值
     city: "", // 城市
-    parkArr: [1, 2, 3, 4, 5, 6, 7, 8, 9], // 园区
+    parkArr: [{ distance: 0 }], // 园区
     tagArr: ["电子信息", "高新技术", "电商服务"], // 标签
     longitude: "",
     latitude: "",
@@ -63,12 +63,16 @@ class Index extends React.Component {
     this.dataService.getParks(this.setParks);
 
     let _this = this
-    if (!sessionStorage.getItem("city")) {
+    //if (!sessionStorage.getItem("city")) {
       var geolocation = new BMap.Geolocation();
       geolocation.getCurrentPosition(function (r) {
         if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+          let parkArr = _this.state.parkArr
+          parkArr.forEach(item => {
+            item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude))
+          })
           sessionStorage.setItem("city", r.address.city)
-          _this.setState({ city: r.address.city })
+          _this.setState({ city: r.address.city, parkArr: parkArr })
         }
         else {
           if (this.getStatus() === 6) {
@@ -79,7 +83,7 @@ class Index extends React.Component {
           }
         }
       });
-    }
+    //}
   }
 
   // 登录
@@ -106,20 +110,50 @@ class Index extends React.Component {
   // 加载园区地图
   public initPark(park_id) {
     this.globalAction.web_call_webgl_initPark(park_id);
-    console.log(park_id);
     localStorage.setItem("park_id", park_id);
 
   }
 
   //加载园区信息列表
   public setParks(data) {
-    console.log("pppppp", data);
     this.setState({
       parkArr: data
     })
-    console.log(this.state)
   }
 
+
+
+  getRad(d) {
+    return d * Math.PI / 180.0;
+  }
+
+  getFlatternDistance(lat1, lng1, lat2, lng2) {
+  var f = this.getRad((lat1 + lat2) / 2);
+  var g = this.getRad((lat1 - lat2) / 2);
+  var l = this.getRad((lng1 - lng2) / 2);
+
+  var sg = Math.sin(g);
+  var sl = Math.sin(l);
+  var sf = Math.sin(f);
+
+  var s, c, w, r, d, h1, h2;
+  var a = 6378137.0;
+  var fl = 1 / 298.257;
+
+  sg = sg * sg;
+  sl = sl * sl;
+  sf = sf * sf;
+
+  s = sg * (1 - sl) + (1 - sf) * sl;
+  c = (1 - sg) * (1 - sl) + sf * sl;
+
+  w = Math.atan(Math.sqrt(s / c));
+  r = Math.sqrt(s * c) / w;
+  d = 2 * w * a;
+  h1 = (3 * r - 1) / 2 / c;
+  h2 = (3 * r + 1) / 2 / s;
+  return d * (1 + fl * (h1 * sf * (1 - sg) - h2 * (1 - sf) * sg));
+  }
   render() {
     return (
       <div className="index">
@@ -155,7 +189,7 @@ class Index extends React.Component {
                   </div>
                 </div>
                 <div className="index-child-park-end">
-                  <div className="index-distance">10.5km</div>
+                  <div className="index-distance">{(item.distance * 0.001).toFixed(1)}km</div>
                 </div>
               </div></Link>)
             } else {
@@ -174,7 +208,7 @@ class Index extends React.Component {
                   </div>
                 </div>
                 <div className="index-child-park-end">
-                  <div className="index-distance">10.5km</div>
+                  <div className="index-distance">{(item.distance * 0.001).toFixed(1)}km</div>
                 </div>
               </div></Link>)
             }

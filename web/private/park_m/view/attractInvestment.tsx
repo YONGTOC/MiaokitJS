@@ -29,7 +29,7 @@ export default class AttractInvestment extends React.Component<{ history: any }>
         <div className="rent-room-back">
           <div style={{ float: "left" }} onClick={this.goBack.bind(this)}>
             <img src="./park_m/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
-            <span>客服电话</span>
+            <span>招商管理</span>
           </div>
         </div>
         <div style={{backgroundColor: "#ffffff", width: "100%", height: "100%", marginTop: "15px"}}>

@@ -88,7 +88,7 @@ class StatisticalStatement extends React.Component {
         <div className="rent-room-back">
           <div style={{ float: "left" }} onClick={this.goBack.bind(this)}>
             <img src="./park_m/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
-            <span>客服电话</span>
+            <span>统计报表</span>
           </div>
         </div>
         {this.state.squre.length > 0 ?
