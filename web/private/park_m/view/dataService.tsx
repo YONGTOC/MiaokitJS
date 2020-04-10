@@ -230,7 +230,6 @@ class DataService {
   //7 通过企业id, 获企业详细信息
   public getCompanyInfo(pBack, id) {
     // id=2 模拟id
-    console.log("getCompanyInfo", pBack, id);
     let thetoken = localStorage.getItem("token");
     $.ajax({
       url: this.state.rooturl + '/api/getCompanyInfo',
@@ -246,7 +245,6 @@ class DataService {
          //  window.location.href = window.location.pathname+"#/"
         } else {
           pBack(data);
-          console.log("CompanyInfo_ajax, 获企业详细信息", data);
         }
       }
     })
@@ -803,6 +801,255 @@ class DataService {
     pBack("提交来访车辆预约,成功！")
   }
 
+  // 28.(微圈模块-类型列表)通过园区id,获取微圈类型列表
+  public getMicroCircleType(pBack) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getMicroCircleType',
+      data: {
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 29.(微圈模块-微圈列表)获取微圈列表
+  public getMicroCircleList(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getMicroCircleList',
+      data: {
+        park_id: obj.park_id,
+        type_id: obj.type_id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 30.(微圈模块-微圈详情)通过微圈id，获取微圈详情
+  public getMicroCircleInfo(pBack, id) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getMicroCircleInfo',
+      data: {
+        id: id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 31.(微圈-我有话说)提交我有话说
+  public saveMyMicroCircle(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/saveMyMicroCircle',
+      data: JSON.stringify({
+        park_id: obj.park_id,
+        user_id: obj.user_id,
+        type_id: obj.type_id,
+        name: obj.name,
+        content: obj.content,
+        token: localStorage.getItem("token")
+      }),
+      type: "post",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 32.(资讯模块-头条列表)通过园区id获取园区头条列表(内容使用优惠政策或者园区资讯的内容，后台逻辑可用最近的十条信息作为热点)
+  public getHeadlines(pBack, park_id) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getHeadlines',
+      data: {
+        park_id: park_id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 33.(资讯模块-优惠政策类型)通过园区id 获取园区优惠政策类型列表
+  public getPreferentialPolicyType(pBack, park_id) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getPreferentialPolicyType',
+      data: {
+        park_id: park_id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 34.(资讯模块-优惠政策)通过园区id，类型id，获取园区优惠政策列表
+  public getPreferentialPolicies(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getPreferentialPolicies',
+      data: {
+        park_id: obj.park_id,
+        type_id: obj.type_id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 35.(资讯模块-园区资讯类型) 通过园区id 获取园区资讯类型列表
+  public getParkInformationType(pBack, park_id) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getParkInformationType',
+      data: {
+        park_id: park_id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 36.(资讯模块-园区资讯)通过园区id，类型id，获取园区资讯列表
+  public getParkInformationList(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getParkInformationList',
+      data: {
+        park_id: obj.park_id,
+        type_id: obj.type_id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 36.1(资讯模块--优惠政策+园区资讯)通过资讯id 获取资讯详情
+  public getInformation(pBack, id) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getInformation',
+      data: {
+        id: id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 37.(资讯模块-活动类型列表)通过园区id 获取园区活动类型列表
+  public getActivityType(pBack, park_id) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getActivityType',
+      data: {
+        park_id: park_id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 38.(资讯模块-园区活动)通过园区id，类型id，获取园区活动列表
+  public getActivities(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getActivities',
+      data: {
+        park_id: obj.park_id,
+        type_id: obj.type_id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 39.(资讯模块-园区活动详情)通过活动id，获取园区活动详情
+  public getActivitiyInfo(pBack, id) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getActivitiyInfo',
+      data: {
+        id: id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 39.2(资讯模块-园区活动-活动报名)提交园区活动报名
+  public postActivitySign(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/postActivitySign',
+      data: {
+        user_id: obj.user_id,
+        activity_id: obj.activity_id,
+        token: localStorage.getItem("token")
+      },
+      type: "post",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 40.(资讯模块-第三方服务类型列表)通过园区id 获取第三方服务类型列表
+  public getThirdServiceType(pBack, park_id) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getThirdServiceType',
+      data: {
+        park_id: park_id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 41.(资讯模块-第三方服务类型列表)通过园区id 获取第三方服务类型列表
+  public getThirdServices(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getThirdServices',
+      data: {
+        park_id: obj.park_id,
+        type_id: obj.type_id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
   // 42.(我的个人中心模块-修改认证)用户修改用户名
   public modifyUserName(pBack, username) {
     $.ajax({
@@ -824,6 +1071,113 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/getRoleType',
       data: {
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 48.(我的个人中心模块-授权的工单类型)获取授权工单类型类型列表
+  public getMyAuthorityWorkType(pBack, id) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getMyAuthorityWorkType',
+      data: {
+        id: id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 48.2.(我的个人中心模块-授权的工单状态) 获取授权授权的工单状态类型列表
+  public getMyAuthorityStateType(pBack, id) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getMyAuthorityStateType',
+      data: {
+        id: id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 49.(我的个人中心模块-我的工单) 获取我的工单信息列表，全部工单类型的获取
+  public getMyWork(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getMyWork',
+      data: {
+        id: obj.id,
+        work_type: obj.work_type,
+        state_type: obj.state_type,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 50.(我的个人中心模块-我的工单-场地预定详情) 通过工单id，获取场地预定详细信息接口
+  public getBookingRoomInfo(pBack, id) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getBookingRoomInfo',
+      data: {
+        id: id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 54.(我的个人中心模块-我的工单-企业认证) 通过工单id，获取场地企业认证详细信息接口
+  public getRoleAuthenticationInfo(pBack, id) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getRoleAuthenticationInfo',
+      data: {
+        id: id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 58.(我的个人中心模块-我的工单-摆点申请详情) 通过工单id，获取摆点申请详细信息接口
+  public getAdvertisementPointInfo(pBack, id) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getAdvertisementPointInfo',
+      data: {
+        id: id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 62.(我的个人中心模块-我的工单-在线报修详情) 通过工单id，在线报修申请详细信息接口
+  public getRepairInfo(pBack, id) {  
+    $.ajax({
+      url: this.state.rooturl + '/api/getRepairInfo',
+      data: {
+        id: id,
         token: localStorage.getItem("token")
       },
       type: "get",

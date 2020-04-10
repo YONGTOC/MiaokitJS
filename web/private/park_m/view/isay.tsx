@@ -1,5 +1,6 @@
 ﻿import * as React from "react";
 import "css!./styles/isay.css"
+import DataService from "dataService";
 
 interface IProps {
 }
@@ -17,6 +18,13 @@ class Isay extends React.Component<{ history: any }>{
     tagIndex: 0,
     inputValue: "不能少于3个字且不能大于33个字", // 主题默认值
     textareaValue: "请将留言内容描述出来（200字内）"
+  }
+
+  public dataService: DataService = new DataService()
+
+
+  callBackSaveMyMicroCircle(data) {
+    console.log(data)
   }
 
 
@@ -63,6 +71,21 @@ class Isay extends React.Component<{ history: any }>{
     this.props.history.goBack()
   }
 
+  changeIndex(index) {
+    this.setState({ tagIndex: index })
+  }
+
+  submit() {
+    let obj = {
+      park_id: 1,
+      user_id: 1,
+      type_id: this.state.tagIndex,
+      name: this.state.inputValue,
+      content: this.state.textareaValue,
+    }
+    this.dataService.saveMyMicroCircle(this.callBackSaveMyMicroCircle.bind(this), obj)
+  }
+
   render() {
     return (
       <div className="isay">
@@ -75,10 +98,12 @@ class Isay extends React.Component<{ history: any }>{
         </div>
         <div className="isay-tag">
           {this.state.tagArray.map((item, index) => {
-            return <div className="isay-tag-child" key={index}>
-              <img src="./park_m/image/checked.png" style={{ margin: "-22px 20px 0 0" }} />
-              <span style={{ fontSize: "40px", color: "#6C6C6C" }}>{item.name}</span>
-            </div>
+            return (
+              <div className="isay-tag-child" key={index} onClick={()=> this.changeIndex(index)}>
+                <img src={this.state.tagIndex === index ? "./park_m/image/checked.png" : "./park_m/image/unchecked.png"} style={{ margin: "-22px 20px 0 0" }} />
+                <span style={{ fontSize: "40px", color: "#6C6C6C" }}>{item.name}</span>
+              </div>
+              )
             })
           }
         </div>
@@ -95,7 +120,7 @@ class Isay extends React.Component<{ history: any }>{
         <div className="isay-content">
           <textarea className="isay-content-textarea" value={this.state.textareaValue} onFocus={this.textareaFoucus.bind(this)} onBlur={this.textareaBlur.bind(this)} onChange={this.textareaChange.bind(this)} />
         </div>
-        <div className="isay-submit">提交</div>
+        <div className="isay-submit" onClick={this.submit.bind(this)}>提交</div>
       </div>
     )
   }

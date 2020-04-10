@@ -1,6 +1,6 @@
 ﻿import * as React from "react";
 import "css!./styles/information.css"
-import { Link } from 'react-router-dom';
+import DataService from "dataService";
 
 interface IProps {
   history: any
@@ -8,11 +8,13 @@ interface IProps {
 }
 
 interface IState {
-  informationList: Array<any>
+  informationList: Array<any>,
+  headline: Array<any>
 }
 
 class Information extends React.Component {
   public readonly state: Readonly<IState> = {
+    headline: [{name: ""}],
     informationList: [
       { name: "优惠政策", imgUrl: "./park_m/image/preferentialPolicy.png" }, { name: "园区咨询", imgUrl: "./park_m/image/information.png" },
       { name: "园区活动", imgUrl: "./park_m/image/activity.png" }, { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }
@@ -23,6 +25,16 @@ class Information extends React.Component {
     history: this.props.history
   }
 
+  public dataService: DataService = new DataService()
+
+  componentDidMount() {
+    this.dataService.getHeadlines(this.callBackGetHeadlines.bind(this), 1)
+  }
+
+  callBackGetHeadlines(data) {
+    this.setState({ headline: JSON.parse(data).response })
+  }
+
   goChild(index) {
     this.props.history.push({ pathname: "/informationChild",  state: { index: index } })
   }
@@ -31,8 +43,8 @@ class Information extends React.Component {
     return (
       <div className="information">
         <div className="information-headline">
-          <div style={{ float: "left", width: "25%", height: "100%" }}><img src="./park_m/image/headline.png" style={{marginBottom: "14px"}} /></div>
-          <div style={{ float: "left", width: "75%", height: "100%", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}>关于桂林信息产业园园区企业复工的重要通知你你你你你</div>
+          <div style={{ float: "left", width: "25%", height: "100%" }}><img src="./park_m/image/headline.png" style={{ marginBottom: "14px" }} /></div>
+          <div style={{ float: "left", width: "75%", height: "100%", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}>{this.state.headline[0].name}</div>
         </div>
         <div className="information-content">
           {this.state.informationList.map((item, index) => {

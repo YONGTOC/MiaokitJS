@@ -54,3 +54,15 @@
   height: 255px;
   border-bottom: 5px solid #F2F2F2;
 }
+.greenbg {
+  background-color: #0BC491;
+}
+.redbg {
+  background-color: #D50202;
+}
+.bluebg {
+  background-color: #0B8BF0;
+}
+.whitebg {
+  background-color: #ffffff;
+}
