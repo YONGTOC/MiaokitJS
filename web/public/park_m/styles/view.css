@@ -502,6 +502,7 @@ i {
     border-radius: 5rem;
     margin: 1.5rem;
     float: left;
+    background:#fff;
 }
 
     .companyImgback img {
@@ -2181,8 +2182,8 @@ i {
 }
 
 .reqairsul li:nth-child(1) {
-   // line-height: 11rem;
-   height:19rem;
+  
+   height:15rem;
 }
 
     .reqairsul li:nth-child(1) img {
@@ -2349,7 +2350,7 @@ i {
 
 .identityBottonBox {
     width: 100%;
-    height: 30rem;
+    height: 37rem;
     border: 0.2rem solid #D0D0D0;
     margin: 2rem 0;
     border-style: dashed;
@@ -2361,10 +2362,21 @@ i {
     font-size: 15rem !important;
     height: 11rem;
 }
-
-
-
-
-
-
+.companyTypeEnter {
+    position: fixed;
+    bottom: 9rem;
+    width: 100%;
+    background: #fff;
+    font-size: 3rem;
+    height: 56rem;
 }
+.logoChange {
+    position: relative;
+    left: -36rem;
+    width: 71rem;
+}
+
+
+
+
+

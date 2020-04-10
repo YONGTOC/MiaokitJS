@@ -3,7 +3,7 @@
     position: relative;
     margin-right: 5px;
     margin-left: 0;
-    right: -39rem;
+    /*right: -39rem;*/
 }
 
 /*date**/
@@ -68,9 +68,12 @@ am-picker-popup {
 }
 
 .imgCom {
-    position: relative;
+    /*position: relative;
     top: -4rem;
-    height: 0rem;
+    height: 0rem;*/
+    position: relative;
+    top: -5rem;
+    margin-left: 12rem;
 }
 
 .am-list-item .am-list-line .am-list-extra {

@@ -40,6 +40,24 @@ class DataService {
     })
   }
 
+  //0.2上传图片
+  public uploadImgOss(pBack, file) {
+    console.log("uploadImgOss", file)
+    $.ajax({
+      url: this.state.rooturl + '/api/uploadImgOss',
+      type: "post",
+      data: JSON.stringify(file),
+      success: function (data) {
+        console.log(typeof data);
+        let dataJ = JSON.parse(data);
+        console.log("ajax", dataJ);
+        if (dataJ.return_code == 100) {
+          pBack(dataJ.response);
+        }
+      }
+    })
+  }
+
   // 2.(注册登录模块)用户登陆接口 ### email:test@test.com password:123456 
   public login() {
     $.ajax({
@@ -95,6 +113,23 @@ class DataService {
         //pBackajax(data);
         console.log("login-getToken", data);
         //localStorage.setItem("token", data.token);
+      }
+    })
+  }
+
+  //3.(首页模块)获取园区列表
+  public getParks(pBack) {
+    let thetoken = localStorage.getItem("token");
+    $.ajax({
+      url: this.state.rooturl + '/api/getParks',
+      type: "get",
+      data: {
+        "token": thetoken,
+      },
+      success: function (data) {
+        if (data) {
+          pBack(data.response);
+        };
       }
     })
   }
@@ -618,13 +653,21 @@ class DataService {
     let datas = {
       'park_id': localStorage.getItem("park_id"),
       "type_id": data.type_id,
-      "position": data.position,
-      "longitude": data.longitude,
-      "latitude": data.latitude,
-      "building_id": data.building_id,
-      "floor_id": data.floor_id,
-      "room_id": data.room_id,
-      "room": data.room,
+      //"position": data.position,
+      //"longitude": data.longitude,
+      //"latitude": data.latitude,
+      //"building_id": data.building_id,
+      //"floor_id": data.floor_id,
+      //"room_id": data.room_id,
+      //"room": data.room,
+      "position": "E座b区三楼",
+      "longitude": "10.55",
+      "latitude": "66.666",
+      "building_id": "a座",
+      "floor_id": "1F",
+      "room_id": "202",
+      "room": "201-2",
+
       "company_id": data.company_id,
       "company": data.company,
       'staff_id': data.staff_id,
@@ -1080,6 +1123,23 @@ class DataService {
     })
   }
 
+  //44.(我的个人中心模块-身份认证)用户身份认证提交 
+  public userAuthentication(pBack, obj) {
+    console.log("用户身份认证提交 ", obj);
+    $.ajax({
+      url: this.state.rooturl + '/api/userAuthentication',
+      data: obj,
+      type: "post",
+      success: function (data) {
+        console.log(data.err_msg);
+        if (data.err_msg == "提交成功") {
+          pBack(data.err_msg)
+
+        }
+      }
+    })
+  }
+
   // 48.(我的个人中心模块-授权的工单类型)获取授权工单类型类型列表
   public getMyAuthorityWorkType(pBack, id) {
     $.ajax({
@@ -1361,77 +1421,22 @@ class DataService {
       }
     })
   }
-
   // 100.(我的个人中心-企业信息添加)添加或者更新企业详细信息 (同47号接口)
   public saveCompanyInfo(pBack, obj) {
+    // console.log("tjjjj", obj);
+
     $.ajax({
-      url: this.state.rooturl + '/api/saveCompanyInfo?token=' + localStorage.getItem("token"),
-      data: {
-        //用户id
-        "user_id": 1,
-        //园区id
-        "park_id": 1,
-        //企业id（当为添加新企业时，参数为""）
-        "id": 1,
-        //公司名字
-        "name": "桂林国家高新",
-        //地址
-        "address": "桂林市七星区信息产业园E座B区三楼",
-        //联系人
-        "Contacts": "莫xxx",
-        //电话
-        "phone": "15266666666",
-        //企业官网
-        "website": "www.yongtoc.com",
-        //企业详情详情文字
-        "descript": "xxx公司是由计算机图形学，计算机应用学组方面专家成。",
-        //企业类型id
-        "company_type": "1001",
-        //是否更新企业头像，1为是，0为否
-        "update_headimgurl": 1,
-        //企业风采
-        "elegant": [
-          {
-            //id id为""代表新增
-            "id": "1009",
-            //图片名字
-            "name": "xxx图片",
-            //图片地址
-            "url": "http://xxx.jpg"
-          }
-        ],
-        //产品展示
-        "product": [
-          {
-            //id id为""代表新增
-            "id": "1009",
-            //图片名字
-            "name": "xxx图片",
-            //图片地址
-            "url": "http://xxx.jpg"
-          }
-        ],
-        //全景图
-        "panorama": [
-          {
-            //id id为""代表新增
-            "id": "1009",
-            //图片名字
-            "name": "xxx图片",
-            //位置信息待定为string类型
-            "position": "",
-            //图片地址
-            "url": "http://xxx.jpg"
-          }
-        ]
-      },
+      url: this.state.rooturl + '/api/saveCompanyInfo',
+      dataType: "json",
+      data: JSON.stringify(obj),
+      //data: obj ,
       type: "post",
       success: function (data) {
+        console.log(data);
         pBack(data)
       }
     })
   }
-  
 
 
   public state = {
