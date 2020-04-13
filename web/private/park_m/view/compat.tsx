@@ -9,9 +9,9 @@ class GlobalAction {
             m_pView: {
                 m_nLng: 110.344301,
                 m_nLat: 25.272208,
-                m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
+                m_mTarget: { x: 0.0, y: 0.0, z: 0.0 },
                 m_nDistance: 300.0,
-                m_nPitch: 19.0,
+                m_nPitch: 20.0,
                 m_nYaw: 90.0
             }
         });

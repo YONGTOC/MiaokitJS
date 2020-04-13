@@ -77,8 +77,8 @@ class Main {
         if (!pThis.m_pCity) {
             pThis.m_pCity = {
                 m_pName: "桂林",
-                m_nLng: 110.258422,
-                m_nLat: 25.266594
+                m_nLng: 110.344301,
+                m_nLat: 25.272208
             };
         }
         pThis.m_pGis = pThis.m_pApp.m_pGis;

@@ -490,7 +490,8 @@ class App {
                 pDior.m_pDior = new MiaokitJS.Dioramas3MX(pDior.m_pPath, !this.m_pGis ? null : {
                     m_pGis: this.m_pGis,
                     m_mLngLat: pDior.m_mLngLat,
-                    m_mOffset: pDior.m_nOffset
+                    m_mOffset: pDior.m_nOffset,
+                    m_nHeight: pDior.m_nHeight
                 });
             }
         }
@@ -505,7 +506,7 @@ class App {
     }
     ActiveTile(pTile) {
         let pObject = pTile.m_pTile.object3D;
-        this.m_pGis.AddGameObject(pObject, pTile.m_nLng, pTile.m_nLat);
+        this.m_pGis.AddGameObject(pObject, pTile.m_nLng, pTile.m_nLat, pTile.m_nHeight);
         pObject.transform.Translate(pTile.m_nOffset, 1);
         pObject.transform.localEuler = pTile.m_mRotate;
         this.m_pProject.ActiveTile(pTile);
