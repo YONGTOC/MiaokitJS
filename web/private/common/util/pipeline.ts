@@ -2,11 +2,11 @@
 MiaokitJS.ShaderLab.Pipeline = {
     RenderTarget: [null,
         /// 1.绘制不透明物体颜色缓存
-        { ID: 1, Format: "RGBA16_FLOAT", Width: 640, Height: 1024 },
+        { ID: 1, Format: "RGBA16_FLOAT"/*, Width: 640, Height: 1024*/ },
         /// 2.绘制半透明物体颜色缓存/轮廓与高光颜色缓存
-        { ID: 2, Format: "RGBA16_FLOAT", Width: 640, Height: 1024 },
+        { ID: 2, Format: "RGBA16_FLOAT"/*, Width: 640, Height: 1024*/ },
         /// 3.绘制不透明物体深度缓存
-        { ID: 3, Format: "D24_UNORM", Width: 640, Height: 1024 },
+        { ID: 3, Format: "D24_UNORM"/*, Width: 640, Height: 1024*/ },
         /// 4.高光输入缓存，降采样，需生成MIPMAP
         { ID: 4, Format: "RGBA16_FLOAT", Width: 1024, Height: 1024, Params: ["LINEAR_MIPMAP_LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
         /// 5.高光模输出缓存，升采样512->X
@@ -18,7 +18,7 @@ MiaokitJS.ShaderLab.Pipeline = {
         /// 8.高光模糊缓存，升采样64->128
         { ID: 8, Format: "RGBA16_FLOAT", Width: 128, Height: 128, Params: ["LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
         /// 9.半透明与不透明混合颜色缓存
-        { ID: 9, Format: "RGBA16_FLOAT", Width: 640, Height: 1024 },
+        { ID: 9, Format: "RGBA16_FLOAT"/*, Width: 640, Height: 1024*/ },
     ],
 
     Resource: [null,
@@ -666,7 +666,7 @@ vec4 vs()
 {
     vec4 mClip = SPHERE(64.0);
 
-    Atmosphere(normalize(u_Sunlight.xyz), v_Position.xyz);
+    //Atmosphere(normalize(u_Sunlight.xyz), v_Position.xyz);
     
     return mClip;
 }
@@ -676,7 +676,7 @@ vec4 fs()
 {
     vec4 mColor = vec4(0.1019608, 0.2862745, 0.3254902, 1.0);
     
-    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz)) * 0.5;
+    //mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz)) * 0.5;
     mColor.a = 1.0;
     
     //mColor.rgb += BRDF_LIGHT(vec3(1.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0)) * 0.5;

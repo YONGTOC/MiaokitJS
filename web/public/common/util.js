@@ -901,15 +901,15 @@ MiaokitJS.UTIL = MiaokitJS.UTIL || {};
 MiaokitJS.UTIL.EntityPicker = EntityPicker;
 MiaokitJS.ShaderLab.Pipeline = {
     RenderTarget: [null,
-        { ID: 1, Format: "RGBA16_FLOAT", Width: 640, Height: 1024 },
-        { ID: 2, Format: "RGBA16_FLOAT", Width: 640, Height: 1024 },
-        { ID: 3, Format: "D24_UNORM", Width: 640, Height: 1024 },
+        { ID: 1, Format: "RGBA16_FLOAT" },
+        { ID: 2, Format: "RGBA16_FLOAT" },
+        { ID: 3, Format: "D24_UNORM" },
         { ID: 4, Format: "RGBA16_FLOAT", Width: 1024, Height: 1024, Params: ["LINEAR_MIPMAP_LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
         { ID: 5, Format: "RGBA16_FLOAT" },
         { ID: 6, Format: "RGBA16_FLOAT", Width: 512, Height: 512, Params: ["LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
         { ID: 7, Format: "RGBA16_FLOAT", Width: 256, Height: 256, Params: ["LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
         { ID: 8, Format: "RGBA16_FLOAT", Width: 128, Height: 128, Params: ["LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
-        { ID: 9, Format: "RGBA16_FLOAT", Width: 640, Height: 1024 },
+        { ID: 9, Format: "RGBA16_FLOAT" },
     ],
     Resource: [null,
         { ID: 1, TYPE: "2D", URL: "./data/star.jpg" },
@@ -1520,7 +1520,7 @@ vec4 vs()
 {
     vec4 mClip = SPHERE(64.0);
 
-    Atmosphere(normalize(u_Sunlight.xyz), v_Position.xyz);
+    //Atmosphere(normalize(u_Sunlight.xyz), v_Position.xyz);
     
     return mClip;
 }
@@ -1530,7 +1530,7 @@ vec4 fs()
 {
     vec4 mColor = vec4(0.1019608, 0.2862745, 0.3254902, 1.0);
     
-    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz)) * 0.5;
+    //mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz)) * 0.5;
     mColor.a = 1.0;
     
     //mColor.rgb += BRDF_LIGHT(vec3(1.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0)) * 0.5;
