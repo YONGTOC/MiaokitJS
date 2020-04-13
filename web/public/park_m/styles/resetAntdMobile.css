@@ -1,0 +1,90 @@
+/*img*/
+.am-image-picker-list .am-flexbox .am-flexbox-item {
+    position: relative;
+    margin-right: 5px;
+    margin-left: 0;
+    /*right: -39rem;*/
+}
+
+/*date**/
+.mDate {
+    font-size: 2.3rem !important;
+    width:96%;
+}
+
+.am-picker-popup-body {
+    font-size: 2.3rem !important;
+    height: 38rem;
+}
+
+.am-list-item .am-list-line .am-list-content {
+    font-size: 2.3rem !important;
+}
+
+.am-picker-popup-item {
+    font-size: 3rem !important;
+}
+
+.am-picker-col-item {
+    font-size: 3rem !important;
+    height: 8rem !important;
+    line-height: 8rem !important;
+}
+
+am-picker-popup {
+    color: red;
+    font-size: 2.3rem !important;
+    height: 50rem;
+}
+
+.am-picker {
+    font-size: 45rem;
+    height: 33rem;
+}
+
+.am-picker-col {
+    height: 40rem;
+}
+
+.am-list-item .am-list-line .am-list-extra {
+    font-size: 2.3rem !important;
+}
+
+.am-picker-col-indicator {
+    box-sizing: border-box;
+    width: 100%;
+    height: 8rem !important;
+    position: absolute;
+    top: 102px !important;
+    z-index: 3;
+}
+
+.am-picker-col {
+    height: 25rem !important;
+}
+
+.am-picker-popup-header {
+    height: 5rem;
+}
+
+.imgCom {
+    /*position: relative;
+    top: -4rem;
+    height: 0rem;*/
+    position: relative;
+    top: -5rem;
+    margin-left: 12rem;
+}
+
+.am-list-item .am-list-line .am-list-extra {
+    -webkit-flex-basis: 44% !important;
+    -ms-flex-preferred-size: 44% !important;
+    flex-basis: 44% !important;
+}
+
+.am-list-content {
+    color: #949494 !important;
+}
+.am-list-extra{
+    color:#333333 !important;
+}

@@ -16,6 +16,26 @@ class ApplyPut extends React.Component {
   public dataService: DataService = new DataService();
   public globalAction: GlobalAction = new GlobalAction();
 
+  public componentDidMount() {
+    //获取：
+    let enterprises = JSON.parse(localStorage.getItem("enterprises"));
+   // console.log("enterprises--------", enterprises)
+
+    let applicant = localStorage.getItem("userName");
+    let phone = localStorage.getItem("phone");
+    let staff_id = localStorage.getItem("userid");
+   // console.log("--------", applicant, phone, staff_id)
+    this.setState({
+      applicant: applicant,
+      phone: phone,
+      staff_id: staff_id,
+      companyUL: enterprises,
+      company: enterprises[0].name,
+      company_id: enterprises[0].id,
+    })
+
+  }
+
   public toggleFold() {
     console.log("tftft")
     if (this.state.applyPutcss == "applyPut-all") {
@@ -50,16 +70,17 @@ class ApplyPut extends React.Component {
   }
 
   //  添加摆点信息;
-  static addapplyPut(x, y) { };
-  public addapplyPut(x, y) {
+  static addapplyPut(data) { };
+  public addapplyPut(data) {
     let arr = this.state.applyList;
     arr.push({
-      address: "请输入申请摆放地点", startTime: "开始日期", endTime: "结束日期", longitude: x, latitude: y
+      startTime: "开始日期", endTime: "结束日期", id: data.id, name: data.name,
     });
     this.setState({
       applyList: arr
     })
     console.log(this.state)
+    
   }
 
   // 聚焦
@@ -95,9 +116,7 @@ class ApplyPut extends React.Component {
     });
   }
 
-
-
-  // 删除条目-ok
+  // 删除条目
   public delApply(event) {
     let index = event.target.getAttribute("data-index");
      let applyList = this.state.applyList;
@@ -106,41 +125,22 @@ class ApplyPut extends React.Component {
     console.log("删除条目2", this.state.applyList);
 
     //通知3d，删除定位点
-    let longitude = event.target.getAttribute("data-longitude");
-    let latitude = event.target.getAttribute("data-latitude");
-  }
-
-  //提交
-  public sumbitApplyput() {
-    console.log("提交摆点申请", this.state);
-   // console.log("提交摆点申请", this.state.applicant)
-   // console.log("提交摆点申请", typeof this.state.applicant);
- 
-    //console.log("setDate", this.state.date);
-    //console.log("setDate", typeof this.state.date)
-    //var dateStr = JSON.stringify(this.state.date);  
-   // console.log("setDate2",  dateStr)
-   // console.log("setDate2", typeof dateStr)
-   // var dateN = dateStr.slice(1, 11);
-   // console.log("setDate3", dateN);
-   // console.log("setDate3", typeof dateN);
-
-    //this.dataService.postAdvertisementPoint(this.sumbitApplyputsucceed, this.state);
-  }
-
-  // 摆点申请提交 -- 成功
-  public sumbitApplyputsucceed(data) {
-    alert(data);
-    window.history.back();
+   // let longitude = event.target.getAttribute("data-longitude");
+   // let latitude = event.target.getAttribute("data-latitude");
+    let id = event.target.getAttribute("data-id");
+    let data = {
+      id:id
+    }
+    this.globalAction.web_call_webgl_cancelApplyPut(data)
   }
 
   //修改开始时间
   public changeStart(event) {
     let index = event.target.getAttribute("data-index");
     // console.log("start输入index", value);
-    let applyList = this.state.applyList // 给对象赋值出来
+    let applyList = this.state.applyList 
     console.log("start输入index1", this.state.startDate);
-    applyList[index].startTime = this.state.startDate // 在新对象里面修改，然后赋值给需要改变的对象
+    applyList[index].startTime = this.state.startDate 
     this.setState({
       applyList: applyList,
     });
@@ -150,26 +150,23 @@ class ApplyPut extends React.Component {
   //修改结束时间
   public changeEnd(event) {
     let index = event.target.getAttribute("data-index");
-    // console.log("start输入index", value);
-    let applyList = this.state.applyList // 给对象赋值出来
+    let applyList = this.state.applyList 
     console.log("end输入index1", this.state.endDate);
-    applyList[index].endTime = this.state.endDate // 在新对象里面修改，然后赋值给需要改变的对象
+    applyList[index].endTime = this.state.endDate 
     this.setState({
       applyList: applyList,
     });
     console.log("end输入index2", this.state.applyList);
   }
 
+    // 组件获取开始时间
   public setStartDate(date) {
-    //this.setState({
-    //  date: date,
-    //})
     var dateStr = JSON.stringify(date);
     var dateN = dateStr.slice(1, 11);
     var index = this.state.timeIndex;
-    let applyList = this.state.applyList // 给对象赋值出来
+    let applyList = this.state.applyList 
     console.log("start输入index1", dateN);
-    applyList[index].startTime = dateN // 在新对象里面修改，然后赋值给需要改变的对象
+    applyList[index].startTime = dateN 
     this.setState({
       applyList: applyList,
       applyPutStartTimeBox: "hide"
@@ -177,10 +174,8 @@ class ApplyPut extends React.Component {
     console.log("start输入index2", this.state.applyList);
   }
 
+  // 组件获取结束时间
   public setEndDate(date) {
-    //this.setState({
-    //  date: date,
-    //})
     var dateStr = JSON.stringify(date);
     var dateN = dateStr.slice(1, 11);
     var index = this.state.timeIndex;
@@ -194,7 +189,7 @@ class ApplyPut extends React.Component {
     console.log("end输入index2", this.state.applyList);
   }
 
-
+  // 点击开始时间
   public clickStart(event) {
     let index = event.target.getAttribute("data-index");
     console.log("clickStart输入index", index);
@@ -204,6 +199,7 @@ class ApplyPut extends React.Component {
     });
   }
 
+  // 点击结束时间
   public clickEnd(event) {
     let index = event.target.getAttribute("data-index");
     console.log("clickEnd输入index", index);
@@ -211,6 +207,57 @@ class ApplyPut extends React.Component {
       timeIndex: index,
       applyPutEndTimeBox: "show"
     });
+  }
+
+  // 显示公司列表
+  public showCompanyBox() {
+    this.setState({
+      companyBox: "rollSelectCauseBox",
+      company_id_in: this.state.companyUL[this.state.companyIndexof].id,
+      company_name_in: this.state.companyUL[this.state.companyIndexof].name,
+    })
+  }
+
+  // 选中公司
+  public inCompanyeList(i, id, name) {
+   // console.log("选中的公司", i, id, name);
+    this.setState({
+      companyIndexof: i,
+      company_id_in: id,
+      company_name_in: name,
+    })
+  }
+
+  // 隐藏公司列表框
+  public hideCompanyBox() {
+    this.setState({
+      companyBox: "hide",
+    })
+  }
+
+  //确认公司列表选择
+  public getCompanyBox() {
+    this.setState({
+      companyBox: "hide",
+      company_id: this.state.company_id_in,
+      company: this.state.company_name_in,
+    })
+  }
+
+  //提交
+  public sumbitApplyput() {
+   //console.log("提交摆点申请", this.state);
+    if (this.state.content == "") {
+      alert("请描述具体内容")
+    } else {
+      this.dataService.postAdvertisementPoint(this.sumbitApplyputsucceed, this.state);
+    }
+  }
+
+  // 摆点申请提交 -- 成功
+  public sumbitApplyputsucceed(data) {
+    alert(data);
+   // window.history.back();
   }
 
   public render() {
@@ -236,7 +283,8 @@ class ApplyPut extends React.Component {
                 <span className="redStar">*</span>手机号码<p className={"applyRight"}>{this.state.phone}</p>
               </li>
               <li>
-                <span className="redStar">*</span>申请单位<p className={"applyRight"}>{this.state.company}</p>
+                <span className="redStar">*</span>申请单位
+                <p className={"applyRight"} onClick={this.showCompanyBox.bind(this)}>{this.state.company}</p>
               </li>
               <li>
                 <p><span className="redStar">*</span>具体内容：</p>
@@ -280,14 +328,13 @@ class ApplyPut extends React.Component {
                     return (
                       <li key={index}>
                         <div className="applyAddress"><span className="applyIndexof">{index + 1}</span>
-                          <input className="" type="text" placeholder="搜索" style={{ " width": "18rem",  "border": 0 }}
-                            value={i.address} onFocus={this.foucus.bind(this)} data-longitude={i.longitude} data-latitude={i.latitude}
-                            onBlur={this.blur.bind(this)} onChange={this.changeAddress.bind(this)} data-index={index} />
+                          <input className="" type="text" placeholder="" style={{ " width": "18rem", "border": 0 }}
+                            value={i.name} />
                         </div>
                         <div className="applytime" style={{ "color": "#158CE8" }} onClick={this.clickStart.bind(this)} data-index={index}>{i.startTime} </div>
                         <div className="applytime" style={{ "color": "#158CE8" }} onClick={this.clickEnd.bind(this)} data-index={index}>{i.endTime}</div>
                         <div className="applyicom" > <i className="iconfont" onClick={this.delApply}
-                          data-longitude={i.longitude} data-latitude={i.latitude}
+                          data-longitude={i.longitude} data-latitude={i.latitude} data-id={i.id}
                           data-index={index} style={{ "color": "#158CE8" }} >&#xe81c;</i></div>
                       </li>
                     )
@@ -299,6 +346,23 @@ class ApplyPut extends React.Component {
               <div className="applyPutSumbit" onClick={this.sumbitApplyput.bind(this)}>提交</div>
             </ul>
           </form>
+
+          <div className={this.state.companyBox}>
+            <ul className="rollSelectCauseULcss">
+              {this.state.companyUL.map((i, index) => {
+                return (
+                  <li className={this.state.companyIndexof == index ? "rollSelectCauseli-active" : "rollSelectCauseli"}
+                    onClick={this.inCompanyeList.bind(this, index, i.id, i.name)}
+                  >{i.name}</li>
+                )
+              })}
+            </ul>
+            <div className="rollSelectCuasedBtn">
+              <span className="rollSelectCancel" onClick={this.hideCompanyBox.bind(this)} >取消</span>
+              <span className="rollSelectConfirm" onClick={this.getCompanyBox.bind(this)}>确认</span>
+            </div>
+          </div>
+
         </div>
       </div>
     )
@@ -307,17 +371,23 @@ class ApplyPut extends React.Component {
   public state = {
     applyPutStartTimeBox: "hide",
     applyPutEndTimeBox:"hide",
-    timeIndex:"",
+    timeIndex: "",
+    // 公司选择
+    companyBox: "hide",
+    companyUL: [],
+    companyIndexof: 0,
+    company_id_in: "",
+    company_name_in:"",
     //startTime:"",
     startDate: "",
     endDate:"",
     inval:"",
     // 申请人
-    applicant: "莫光宇",
+    applicant: "",
     //phone
-    phone: "13000000000",
+    phone: "",
     //申请企业
-    company: "永拓信息科技",
+    company:  "请选择申请企业",
     applyPutcss: "applyPut-part ",
     // 折叠按钮状态
     iconfont: "iconfont iconfont-unturn",
@@ -327,7 +397,7 @@ class ApplyPut extends React.Component {
     applyList: [ ],
     address: "",
     // 摆点内容
-    content: "ddd",
+    content: "",
     inputValue: "",
     value: '2017-01-25',
   

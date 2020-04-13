@@ -23,23 +23,34 @@ interface IState {
   inputValue: string,
   city: string,
   parkArr: Array<any>,
-  tagArr: Array<any>
+  tagArr: Array<any>,
+  longitude: string,
+  latitude: string,
+  longitudeLocal: string,
+  latitudeLocal: string,
 }
-
 
 class Index extends React.Component {
   constructor(props) {
     super(props);
 
     Index.g_pIns = this;
+    this.setParks = this.setParks.bind(this);
   }
   public static g_pIns: Index = null;
+
+  public dataService: DataService = new DataService();
+  public globalAction: GlobalAction = new GlobalAction();
 
   public readonly state: Readonly<IState> = {
     inputValue: "请输入园区名称", // 输入框默认值
     city: "", // 城市
-    parkArr: [1, 2, 3, 4, 5, 6, 7, 8, 9], // 园区
-    tagArr: ["电子信息", "高新技术", "电商服务"] // 标签
+    parkArr: [{ distance: 0 }], // 园区
+    tagArr: ["电子信息", "高新技术", "电商服务"], // 标签
+    longitude: "",
+    latitude: "",
+    longitudeLocal: "",
+    latitudeLocal: "",
   }
 
   public readonly props: Readonly<IProps> = {
@@ -47,14 +58,20 @@ class Index extends React.Component {
   }
 
   componentWillMount() {
-    this.dataService.login()
+    this.dataService.login();
+    this.dataService.getParks(this.setParks);
+
     let _this = this
-    if (!sessionStorage.getItem("city")) {
+    //if (!sessionStorage.getItem("city")) {
       var geolocation = new BMap.Geolocation();
       geolocation.getCurrentPosition(function (r) {
         if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+          let parkArr = _this.state.parkArr
+          parkArr.forEach(item => {
+            item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude))
+          })
           sessionStorage.setItem("city", r.address.city)
-          _this.setState({ city: r.address.city })
+          _this.setState({ city: r.address.city, parkArr: parkArr })
         }
         else {
           if (this.getStatus() === 6) {
@@ -65,11 +82,8 @@ class Index extends React.Component {
           }
         }
       });
-    }
+    //}
   }
-
-  public dataService: DataService = new DataService();
-  public globalAction: GlobalAction = new GlobalAction();
 
   // 登录
 
@@ -95,9 +109,46 @@ class Index extends React.Component {
   // 加载园区地图
   public initPark(park_id) {
     this.globalAction.web_call_webgl_initPark(park_id);
-    console.log(park_id);
     localStorage.setItem("park_id", park_id);
+  }
 
+  //加载园区信息列表
+  public setParks(data) {
+    this.setState({
+      parkArr: data
+    })
+  }
+
+  getRad(d) {
+    return d * Math.PI / 180.0;
+  }
+
+  getFlatternDistance(lat1, lng1, lat2, lng2) {
+  var f = this.getRad((lat1 + lat2) / 2);
+  var g = this.getRad((lat1 - lat2) / 2);
+  var l = this.getRad((lng1 - lng2) / 2);
+
+  var sg = Math.sin(g);
+  var sl = Math.sin(l);
+  var sf = Math.sin(f);
+
+  var s, c, w, r, d, h1, h2;
+  var a = 6378137.0;
+  var fl = 1 / 298.257;
+
+  sg = sg * sg;
+  sl = sl * sl;
+  sf = sf * sf;
+
+  s = sg * (1 - sl) + (1 - sf) * sl;
+  c = (1 - sg) * (1 - sl) + sf * sl;
+
+  w = Math.atan(Math.sqrt(s / c));
+  r = Math.sqrt(s * c) / w;
+  d = 2 * w * a;
+  h1 = (3 * r - 1) / 2 / c;
+  h2 = (3 * r + 1) / 2 / s;
+  return d * (1 + fl * (h1 * sf * (1 - sg) - h2 * (1 - sf) * sg));
   }
 
   render() {
@@ -114,28 +165,51 @@ class Index extends React.Component {
           </div>
         </div>
         <div className="index-number">
-          <img src="./park_m/image/tower.png" className="tower-img" />已有<span style={{ color: "#0B8BF0", margin: "0 15px 0 15px" }}>15</span>家园区上线
+          <img src="./park_m/image/tower.png" className="tower-img" />已有<span style={{ color: "#0B8BF0", margin: "0 15px 0 15px" }}>{this.state.parkArr.length}</span>家园区上线
         </div>
         <div className="index-park">
           {this.state.parkArr.map((item, index) => {
-            return <Link to="/home"><div className="index-child-park" key={index} onClick={this.initPark.bind(this, 1001)}>
-              <div className="index-child-park-left"><img src="./park_m/image/a.jpg" className="park-img" /></div>
-              <div className="index-child-park-right">
-                <div className="index-park-name">桂林国家高新区信息产业园</div>
-                <div className="index-park-position"><img src="./park_m/image/position.png" width="45px" height="40px" style={{ marginTop: "-18px" }} />
-                  <span className="index-park-position-name">桂林高新区朝阳路D-12号</span>
+            if (item.headimageurl == null) {
+              return (<Link to="/home"><div className="index-child-park" key={index} onClick={this.initPark.bind(this, 1001)}>
+                <div className="index-child-park-left"><img src="./park_m/image/a.jpg" className="park-img" /></div>
+                <div className="index-child-park-right">
+                  <div className="index-park-name">{item.name}</div>
+                  <div className="index-park-position">
+                    <img src="./park_m/image/position.png" width="45px" height="40px" style={{ marginTop: "-18px" }} />
+                    <span className="index-park-position-name">{item.address}</span>
+                  </div>
+                  <div className="index-tag">
+                    {this.state.tagArr.map((item, index) => {
+                      return <div key={index} className="index-tag-child">{item}</div>
+                    })
+                    }
+                  </div>
                 </div>
-                <div className="index-tag">
-                  {this.state.tagArr.map((item, index) => {
-                    return <div key={index} className="index-tag-child">{item}</div>
-                  })
-                  }
+                <div className="index-child-park-end">
+                  <div className="index-distance">{(item.distance * 0.001).toFixed(1)}km</div>
                 </div>
-              </div>
-              <div className="index-child-park-end">
-                <div className="index-distance">10.5km</div>
-              </div>
-            </div></Link>
+              </div></Link>)
+            } else {
+              return (<Link to="/home"><div className="index-child-park" key={index} onClick={this.initPark.bind(this, 1001)}>
+                <div className="index-child-park-left"><img src="./park_m/image/a.jpg" className="park-img" /></div>
+                <div className="index-child-park-right">
+                  <div className="index-park-name">{item.name}</div>
+                  <div className="index-park-position"><img src={item.headimageurl} width="45px" height="40px" style={{ marginTop: "-18px" }} />
+                    <span className="index-park-position-name">{item.address}</span>
+                  </div>
+                  <div className="index-tag">
+                    {this.state.tagArr.map((item, index) => {
+                      return <div key={index} className="index-tag-child">{item}</div>
+                    })
+                    }
+                  </div>
+                </div>
+                <div className="index-child-park-end">
+                  <div className="index-distance">{(item.distance * 0.001).toFixed(1)}km</div>
+                </div>
+              </div></Link>)
+            }
+           
           })
           }
           <div style={{ width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginLeft: "-25px" }}>到底啦~</div>
@@ -160,9 +234,9 @@ class Index extends React.Component {
   }
 
   // 添加摆点信息
-  public addapplyPut(x, y) {
+  public addapplyPut(data) {
     this.props.history.push('/applyPut');
-    ApplyPut.addapplyPut(x, y);
+    ApplyPut.addapplyPut(data);
   }
 
   //添加违规点
@@ -173,9 +247,9 @@ class Index extends React.Component {
   }
 
   //添加报修点
-  public addReqairs(x, y, building_id, floor_id, room_id) {
+  public addReqairs(data) {
     this.props.history.push('/repairsOnline');
-    RepairsOnline.getReqairstpostion(x, y, building_id, floor_id, room_id);
+    RepairsOnline.getReqairstpostion(data);
   }
 
   //添加场地预约

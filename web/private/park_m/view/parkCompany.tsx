@@ -141,6 +141,12 @@ class CompanyList extends React.Component {
     }
   }
 
+  onErrorHeadimageurl() {
+    this.setState({
+      headimageurl: "./park_m/image/tx.jpg"
+    })
+  }
+
   // 点击更多，显示info;隐藏list；这里需要调用ParkCompany 的方法；
   // 通过 公司id，获取详情内容
   public showInfo(a, id, name, e) {
@@ -200,14 +206,12 @@ class CompanyList extends React.Component {
     });
     // 通知3d，切换公司定位（web获取的是 公司id）
     this.globalAction.web_call_webgl_switchCompany(id);
-    // 
   }
 
   public typeActive(indexof, name, id) {
     console.log("typeActive", indexof);
     console.log("typeActive", name);
     console.log("typeActive", id);
-  
       this.setState({
         typeIndexof: indexof,
         typeName: name,
@@ -234,10 +238,8 @@ class CompanyList extends React.Component {
     this.setState({ inputValue: event.target.value })
   }
 
-
   //软键盘搜索，获取数据，呈现列表效果；（3.5-未写）；1提交搜索条件。；2-css； 
   public searchCompany() {
-
     if (this.state.inputValue == "请输入企业名称" || this.state.typeName =="全部 " ) {
       this.setState({ inputValue: "" })
     };
@@ -247,7 +249,6 @@ class CompanyList extends React.Component {
 
   public render() {
     // <img src={"./park_m/image/i.png"} />
-
     return (
       <div className={this.state.companyListcss}>
         <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
@@ -256,7 +257,7 @@ class CompanyList extends React.Component {
         <ul className={this.state.companyul}>
           <p className={this.state.companyNull}>没有符合搜索条件的结果···</p>
           {this.state.companyData.map((i, index) => {
-            if (i.headimgurl == null) {
+            if (i.headimageurl == null) {
               return (
                 <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyli-active" : "companyli"} >
                   <div className="companyImgback">
@@ -280,7 +281,7 @@ class CompanyList extends React.Component {
               return (
                 <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyli-active" : "companyli"} >
                   <div className="companyImgback">
-                    <img src={i.headimgurl} />
+                    <img src={i.headimageurl} onError={this.onErrorHeadimageurl.bind(this)}/>
                   </div>
                   <div className="companyul-middle">
                     <p className={this.state.indexOf == index ? "companyName-active" : "companyName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.name}</p>
@@ -498,7 +499,7 @@ class CompanyInfos extends React.Component {
   public setCompanyinfos(data) {
     console.log("setCompanyinfoCCCCCCCCCCC", data);
     this.setState({
-      imgurl: data.response.headimgurl,
+      imgurl: data.response.headimageurl,
       name: data.response.name,
       address: data.response.address,
       // type: data.response.service[0].name,

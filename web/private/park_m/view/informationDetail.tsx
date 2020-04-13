@@ -1,27 +1,54 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import "css!./styles/informationDetail.css"
+import DataService from "dataService";
 
 interface IProps {
   history: any
 }
 
 interface IState {
-
+  data: { name: string, start_time: string, end_time: string, position: string, sign_end_time: string, contact: string, contact_tel: string, content: string, fee: string, headimgurl: string, visit_amount: string, time: string }
 }
 
 export default class informationDetail extends React.Component {
   public readonly state: Readonly<IState> = {
+    data: { name: "", start_time: "", end_time: "", position: "", sign_end_time: "", contact: "", contact_tel: "", content: "", fee: "", headimgurl: "", visit_amount: "", time: "" }
   }
 
   public readonly props: Readonly<IProps> = {
     history: this.props.history
   }
 
-  // ·µ»Ø
+  public dataService: DataService = new DataService()
+
+  componentDidMount() {
+    if (parseInt(sessionStorage.getItem("informationId")) < 2) {
+      this.dataService.getInformation(this.callBack.bind(this), 2)
+    } else if (parseInt(sessionStorage.getItem("informationId")) === 2){
+      this.dataService.getActivitiyInfo(this.callBack.bind(this), 1)
+    }
+  }
+  callBack(data) {
+    this.setState({ data: JSON.parse(data).response })
+  }
+
+
+  // è¿”å›
   goBack() {
     this.props.history.goBack()
   }
 
+  submit() {
+    let obj = {
+      user_id: 2,
+      activity_id: 1
+    }
+    this.dataService.postActivitySign(this.callBackPostActivitySign.bind(this), obj)
+  }
+
+  callBackPostActivitySign() {
+
+  }
 
   render() {
     return (
@@ -30,112 +57,108 @@ export default class informationDetail extends React.Component {
           <div>
             <div className="isay-back">
               <img src="./park_m/image/back.png" style={{ marginBottom: "25px" }} onClick={this.goBack.bind(this)} />
-              <span style={{ color: "#6C6C6C", fontSize: "40px", marginLeft: "15px" }}>ÏêÇéÄÚÈİ</span>
+              <span style={{ color: "#6C6C6C", fontSize: "40px", marginLeft: "15px" }}>è¯¦æƒ…å†…å®¹</span>
             </div>
             <div style={{ fontSize: "40px", width: "90%", color: "#333333", margin: "20px auto" }}>
-              ¹ğÁÖÊĞ¿Æ¼¼¾Ö¹ØÓÚ 2020Äê¶È¹ú¼ÒÍâ¹ú×¨¼ÒÏîÄ¿Éê±¨µÄÍ¨Öª
+              {this.state.data.name}
             </div>
             <div style={{ color: "#949494", fontSize: "34px", margin: "30px 0 0 50px", overflow: "hidden" }}>
-              <div style={{ float: "left" }}>200´Îä¯ÀÀ</div>
-              <div style={{ float: "right", marginRight: "50px" }}>2020-02-28 14:38:15 ·¢²¼</div>
+              <div style={{ float: "left" }}>{this.state.data.visit_amount}æ¬¡æµè§ˆ</div>
+              <div style={{ float: "right", marginRight: "50px" }}>{this.state.data.time} å‘å¸ƒ</div>
             </div>
             <div style={{ border: "2px solid #F2F2F2", marginTop: "25px" }}></div>
             <div style={{ fontSize: "40px", color: "#333333", width: "90%", margin: "30px auto" }}>
-              <p style={{ fontSize: "40px" }}>¸÷Ïà¹Øµ¥Î»£º</p>
-              ÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚ
-                  ÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚ
-                  ÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇé
+              <p style={{ fontSize: "40px" }}>å„ç›¸å…³å•ä½ï¼š</p>
+              {this.state.data.content}
             </div>
           </div> : parseInt(sessionStorage.getItem("informationId")) === 2 ?
-            <div style={{ fontSize: "36px", color: "#333333" }}>
-              <div style={{ width: "100%", height: "600px" }}>
-                <img src="./park_m/image/discounts_bg.png" style={{ width: "100%", height: "100%" }} />
-                <div style={{
-                  position: "absolute", left: "50px", top: "30px", backgroundColor: "#000000", background: "rgba(0, 0, 0, 0.3)",
-                  borderRadius: "50px", width: "260px", height: "75px", lineHeight: "75px", textAlign: "center", opacity: "0.8"
-                }} onClick={this.goBack.bind(this)}>
-                  <img src="./park_m/image/w-right.png" style={{ transform: "rotate(180deg)", margin: "0px 18px 22px 0px" }} />
-                  <span style={{ fontSize: "40px", color: "#ffffff", marginRight: "15px" }}>ÏêÇéÄÚÈİ</span>
-                </div>
-              </div>
-              <div style={{ width: "100%", height: "120px", fontSize: "42px", color: "#333333", fontWeight: "600", borderBottom: "5px solid #F2F2F2", lineHeight: "120px", textAlign: "center" }}>
-                ĞÅÏ¢²úÒµÔ°»İÆóÕş²ßĞû½²»á
-            </div>
-              <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" }}>
-                <div style={{ height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" }}></div>
-                <div style={{ color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px" }}>»î¶¯ĞÅÏ¢</div>
-              </div>
-              <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" }}>
-                <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>»î¶¯Ê±¼ä</div>
-                <div style={{ float: "left" }}>2020-3-15 13:00~2020-3-15 15:00</div>
-              </div>
-              <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" }}>
-                <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>»î¶¯µØµã</div>
-                <div style={{ float: "left" }}>¹ğÁÖÊĞĞÅÏ¢²úÒµÔ°A×ù2Â¥215»áÒéÊÒ</div>
-              </div>
-              <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" }}>
-                <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>»î¶¯·ÑÓÃ</div>
-                <div style={{ float: "left" }}>Ãâ·Ñ</div>
-              </div>
-              <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" }}>
-                <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>±¨Ãû½ØÖÁÊ±¼ä</div>
-                <div style={{ float: "left" }}>2020-3-14 16:00</div>
-              </div>
-              <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" }}>
-                <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>ÁªÏµÈË</div>
-                <div style={{ float: "left" }}>ÍõĞ¡½ã</div>
-              </div>
-              <div style={{ width: "100%", height: "120px", borderBottom: "5px solid #F2F2F2", lineHeight: "120px" }}>
-                <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>ÁªÏµµç»°</div>
-                <div style={{ float: "left" }}>15578383040</div>
-              </div>
-              <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" }}>
-                <div style={{ height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" }}></div>
-                <div style={{ color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px" }}>»î¶¯ÏêÇé</div>
-              </div>
-              <div style={{ width: "90%", margin: "auto", padding: "30px 0 200px 0" }}>
-                ÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇé
-                ÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇé
-                ÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇéÄÚÈİÏêÇé
-            </div>
+          <div style={{ fontSize: "36px", color: "#333333" }}>
+            <div style={{ width: "100%", height: "600px" }}>
+              <img src={this.state.data.headimgurl} style={{ width: "100%", height: "100%" }} />
               <div style={{
-                backgroundColor: "#0B8BF0", width: "100%", height: "150px", fontSize: "50px", color: "#ffffff", lineHeight: "150px",
-                textAlign: "center", position: "fixed", bottom: "0px"
-              }}>
-                ÎÒÒª±¨Ãû
-            </div>
-            </div> :
-            <div style={{ fontSize: "36px", color: "#333333" }}>
-              <div style={{ width: "100%", height: "600px" }}>
-                <img src="./park_m/image/thirdParty_bg.png" style={{ width: "100%", height: "100%" }} />
-                <div style={{
-                  position: "absolute", left: "50px", top: "30px", backgroundColor: "#000000", background: "rgba(0, 0, 0, 0.3)",
-                  borderRadius: "50px", width: "260px", height: "75px", lineHeight: "75px", textAlign: "center", opacity: "0.8"
-                }} onClick={this.goBack.bind(this)}>
-                  <img src="./park_m/image/w-right.png" style={{ transform: "rotate(180deg)", margin: "0px 18px 22px 0px" }} />
-                  <span style={{ fontSize: "40px", color: "#ffffff", marginRight: "15px" }}>ÏêÇéÄÚÈİ</span>
-                </div>
-              </div>
-              <div style={{ width: "100%", height: "120px", fontSize: "42px", color: "#333333", fontWeight: "600", borderBottom: "5px solid #F2F2F2", lineHeight: "120px", textAlign: "center" }}>
-                ÆóÒµÍ°×°Ë®²É¹º£¬Á¿´ó´ÓÓÅ£¬×¼Ê±ËÍ´ï
-            </div>
-              <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" }}>
-                <div style={{ height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" }}></div>
-                <div style={{ color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px" }}>·şÎñĞÅÏ¢</div>
-              </div>
-              <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", overflow: "hidden" }}>
-                <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px", lineHeight: "120px" }}>·şÎñÄÚÈİ</div>
-                <div style={{ float: "left", height: "100%", width: "60%" }}>1. Æ·ÅÆÍ°×°Ë® 2. ¿ìËÙËÍ´ï 3. Æ·ÖÊ¿É¿¿ »¶Ó­¸÷´óÆóÒµ¶©¹º</div>
-              </div>
-              <div style={{ width: "100%", height: "120px", borderBottom: "5px solid #F2F2F2", lineHeight: "120px" }}>
-                <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>ÁªÏµµç»°</div>
-                <div style={{ float: "left" }}>15578383040</div>
-              </div>
-              <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" }}>
-                <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>ÊÕ·Ñ±ê×¼</div>
-                <div style={{ float: "left" }}>°´Í°×°Ë®Æ·ÅÆ¼Û¸ñ</div>
+                position: "absolute", left: "50px", top: "30px", backgroundColor: "#000000", background: "rgba(0, 0, 0, 0.3)",
+                borderRadius: "50px", width: "260px", height: "75px", lineHeight: "75px", textAlign: "center", opacity: "0.8"
+              }} onClick={this.goBack.bind(this)}>
+                <img src="./park_m/image/w-right.png" style={{ transform: "rotate(180deg)", margin: "0px 18px 22px 0px" }} />
+                <span style={{ fontSize: "40px", color: "#ffffff", marginRight: "15px" }}>è¯¦æƒ…å†…å®¹</span>
               </div>
             </div>
+            <div style={{ width: "100%", height: "120px", fontSize: "42px", color: "#333333", fontWeight: "600", borderBottom: "5px solid #F2F2F2", lineHeight: "120px", textAlign: "center" }}>
+              {this.state.data.name}
+            </div>
+            <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" }}>
+              <div style={{ height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" }}></div>
+              <div style={{ color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px"}}>æ´»åŠ¨ä¿¡æ¯</div>
+            </div>
+            <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" }}>
+              <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>æ´»åŠ¨æ—¶é—´</div>
+              <div style={{ float: "left", width: "60%" }}>{this.state.data.start_time.substring(0, 16)}~{this.state.data.end_time.substring(0, 16)}</div>
+            </div>
+            <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" }}>
+              <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>æ´»åŠ¨åœ°ç‚¹</div>
+              <div style={{ float: "left" }}>{this.state.data.position}</div>
+            </div>
+            <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" }}>
+              <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>æ´»åŠ¨è´¹ç”¨</div>
+              <div style={{ float: "left" }}>{this.state.data.fee}</div>
+            </div>
+            <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" }}>
+              <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>æŠ¥åæˆªè‡³æ—¶é—´</div>
+              <div style={{ float: "left" }}>{this.state.data.sign_end_time}</div>
+            </div>
+            <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" }}>
+              <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>è”ç³»äºº</div>
+              <div style={{ float: "left" }}>{this.state.data.contact}</div>
+            </div>
+            <div style={{ width: "100%", height: "120px", borderBottom: "5px solid #F2F2F2", lineHeight: "120px" }}>
+              <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>è”ç³»ç”µè¯</div>
+              <div style={{ float: "left" }}>{this.state.data.contact_tel}</div>
+            </div>
+            <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" }}>
+              <div style={{ height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" }}></div>
+              <div style={{ color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px" }}>æ´»åŠ¨è¯¦æƒ…</div>
+            </div>
+            <div style={{ width: "90%", margin: "auto", padding: "30px 0 200px 0" }}>
+              {this.state.data.content}
+            </div>
+            <div style={{
+              backgroundColor: "#0B8BF0", width: "100%", height: "150px", fontSize: "50px", color: "#ffffff", lineHeight: "150px",
+              textAlign: "center", position: "fixed", bottom: "0px"
+            }} onClick={this.submit.bind(this)}>
+              æˆ‘è¦æŠ¥å
+            </div>
+          </div> :
+          <div style={{ fontSize: "36px", color: "#333333" }}>
+            <div style={{ width: "100%", height: "600px" }}>
+              <img src="./park_m/image/thirdParty_bg.png" style={{ width: "100%", height: "100%" }} />
+              <div style={{
+                position: "absolute", left: "50px", top: "30px", backgroundColor: "#000000", background: "rgba(0, 0, 0, 0.3)",
+                borderRadius: "50px", width: "260px", height: "75px", lineHeight: "75px", textAlign: "center", opacity: "0.8"
+              }} onClick={this.goBack.bind(this)}>
+                <img src="./park_m/image/w-right.png" style={{ transform: "rotate(180deg)", margin: "0px 18px 22px 0px" }} />
+                <span style={{ fontSize: "40px", color: "#ffffff", marginRight: "15px" }}>è¯¦æƒ…å†…å®¹</span>
+              </div>
+            </div>
+            <div style={{ width: "100%", height: "120px", fontSize: "42px", color: "#333333", fontWeight: "600", borderBottom: "5px solid #F2F2F2", lineHeight: "120px", textAlign: "center" }}>
+                ä¼ä¸šæ¡¶è£…æ°´é‡‡è´­ï¼Œé‡å¤§ä»ä¼˜ï¼Œå‡†æ—¶é€è¾¾
+            </div>
+            <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" }}>
+              <div style={{ height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" }}></div>
+              <div style={{ color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px" }}>æœåŠ¡ä¿¡æ¯</div>
+            </div>
+            <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", overflow: "hidden" }}>
+              <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px", lineHeight: "120px" }}>æœåŠ¡å†…å®¹</div>
+              <div style={{ float: "left", height: "100%", width: "60%" }}>1. å“ç‰Œæ¡¶è£…æ°´ 2. å¿«é€Ÿé€è¾¾ 3. å“è´¨å¯é  æ¬¢è¿å„å¤§ä¼ä¸šè®¢è´­</div>
+            </div>
+            <div style={{ width: "100%", height: "120px", borderBottom: "5px solid #F2F2F2", lineHeight: "120px" }}>
+              <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>è”ç³»ç”µè¯</div>
+              <div style={{ float: "left" }}>15578383040</div>
+            </div>
+            <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" }}>
+              <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>æ”¶è´¹æ ‡å‡†</div>
+              <div style={{ float: "left" }}>æŒ‰æ¡¶è£…æ°´å“ç‰Œä»·æ ¼</div>
+            </div>
+          </div>
         }
       </div>
     )

@@ -1,5 +1,7 @@
 ﻿import * as React from "react";
 import "css!./styles/modificationAuthentication.css"
+import { Link } from 'react-router-dom';
+import DataService from "dataService";
 
 interface IProps {
 }
@@ -8,9 +10,20 @@ interface IState {
   inputValue: string
 }
 
-class ModificationAuthentication extends React.Component<{ history: any }>  {
+class ModificationAuthentication extends React.Component<{ history: any }> {
   public readonly state: Readonly<IState> = {
     inputValue: "用户昵称XXX"
+  }
+
+  public dataService: DataService = new DataService()
+
+  // 修改用户名字
+  modifyUserName() {
+    this.dataService.modifyUserName(this.callBackModifyUserName.bind(this), this.state.inputValue)
+  }
+
+  callBackModifyUserName(data) {
+    alert(data.err_msg)
   }
 
   // 聚焦
@@ -52,14 +65,14 @@ class ModificationAuthentication extends React.Component<{ history: any }>  {
             <input value={this.state.inputValue} className="modification-authentication-input"
               onFocus={this.focus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
           </div>
-          <div style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>修改</div>
+          <div style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }} onClick={this.modifyUserName.bind(this)}>修改</div>
         </div>
         <div className="modification-authentication-tag">
           <div style={{ paddingLeft: "40px", float: "left" }}>
             <span style={{ color: "#333333", fontSize: "42px" }}>身份认证</span>
             <span style={{ color: "#949494", fontSize: "42px", marginLeft: "50px" }}>认证成为管理员</span>
           </div>
-          <div style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>认证</div>
+          <Link to="/identityAuthentication"><div style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>认证</div></Link>
         </div>
       </div>
     )

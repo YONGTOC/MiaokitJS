@@ -78,6 +78,10 @@ i {
     float: left;
 }
 
+.iconBox :nth-child(3) {
+    border-top: 0rem solid #646464;
+}
+
 .iconBoxIn {
     width: 6rem;
     height: 9rem;
@@ -160,9 +164,9 @@ i {
 .foldView {
     position: fixed;
     width: 100%;
-    height: 43rem;
+    height: 38rem;
     z-index: 100;
-    bottom: 9rem;
+    bottom: 8rem;
     background: #fff;
     border-radius: 2rem 2rem 0 0;
 }
@@ -172,6 +176,7 @@ i {
     height: 5rem;
     text-align: center;
     cursor: pointer;
+    line-height:5rem;
 }
 
 .foleIconbox {
@@ -186,7 +191,7 @@ i {
     text-align: center;
     cursor: pointer;
     float: left;
-    margin: 3rem 1.5rem;
+    margin: 1rem 1.5rem;
     color: #646464;
 }
 
@@ -195,7 +200,7 @@ i {
     width: 100%;
     height: 22rem;
     z-index: 100;
-    bottom: 9rem;
+    bottom: 8rem;
     background: #fff;
     border-radius: 2rem 2rem 0 0;
 }
@@ -208,7 +213,7 @@ i {
     bottom: 0;
     /*border: 0.1rem solid red;*/
     background: #fff;
-    border-top: 0.2rem solid #ccc;
+    border-top: 0.1rem solid #cccccc;
 }
 
 .iconBox-bottom {
@@ -344,6 +349,7 @@ i {
     font-size: 2rem;
     text-align: center;
     padding-top: 1rem;
+    line-height: 5rem;
 }
 
 .flex-active {
@@ -356,6 +362,7 @@ i {
     font-size: 2rem;
     text-align: center;
     padding-top: 1rem;
+    line-height:5rem;
 }
 
 .playBtn {
@@ -391,6 +398,15 @@ i {
 
 /*companyList/*/
 .companyList-part {
+    /*position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;*/
     position: fixed;
     width: 100%;
     height: 55rem;
@@ -400,6 +416,7 @@ i {
     background: #fff;
     font-size: 3rem;
     border-radius: 2rem 2rem 0 0;
+    margin-bottom: 8rem;
 }
 
 .companyList-all {
@@ -479,16 +496,22 @@ i {
 }
 
 .companyli {
-    height: 13rem;
+    /*height: 13rem;
     border-bottom: 0.2rem solid #ccc;
     margin: 0 3rem 0rem 0;
     background: #fff;
+    color: #949494;*/
+    height: 13rem;
+    border-bottom: 0.2rem solid #ccc;
+    margin: 0 4rem 0rem 0;
+    background: #fff;
     color: #949494;
+    margin-left: 1.5rem;
 }
 
 .companyli-active {
     height: 13rem;
-    border-bottom: 0.2rem solid #ccc;
+    /*border-bottom: 0.2rem solid #ccc;*/
     margin: 0 3rem 1rem 0;
     border-radius: 1.6rem;
     background: #0B8BF0;
@@ -502,6 +525,7 @@ i {
     border-radius: 5rem;
     margin: 1.5rem;
     float: left;
+    background:#fff;
 }
 
     .companyImgback img {
@@ -512,7 +536,7 @@ i {
 
 .companyul-middle {
     float: left;
-    width: 31rem;
+    width: 30rem;
     margin-top: 2rem;
     line-height: 4.5rem;
 }
@@ -606,7 +630,7 @@ i {
 .companyInfo-part {
     position: fixed;
     width: 100%;
-    height: 12rem;
+    height: 12.2rem;
     z-index: 100;
     bottom: 0;
     right: 0;
@@ -957,7 +981,7 @@ i {
 
 .leaseul-middle {
     float: left;
-    width: 21rem;
+    width: 25rem;
     margin-top: 2rem;
     line-height: 4.5rem;
 }
@@ -987,7 +1011,7 @@ i {
     border-radius: 0.4rem;
     height: 4rem;
     line-height: 4rem;
-    width: 16rem;
+    width: 11rem;
     margin-top: 9.5rem;
     clear: both;
 }
@@ -997,7 +1021,7 @@ i {
     border-radius: 0.4rem;
     height: 4rem;
     line-height: 4rem;
-    width: 16rem;
+    width: 11rem;
     margin-top: 9.5rem;
 }
 
@@ -1079,7 +1103,7 @@ i {
 .leaseInfo-part {
     position: fixed;
     width: 100%;
-    height: 12rem;
+    height: 12.2rem;
     z-index: 100;
     bottom: 0;
     right: 0;
@@ -1256,14 +1280,14 @@ i {
 .illegalInfo-bottom {
     position: fixed;
     width: 100%;
-    height: 7rem;
+    height: 12.2rem;
     z-index: 100;
     bottom: 0;
     right: 0;
     background: #fff;
     font-size: 3rem;
     padding-bottom: 12rem;
-    border-radius: 2rem;
+    border-radius: 2rem 2rem 0 0;
 }
 
 .illegalInfo-all {
@@ -1540,7 +1564,7 @@ i {
 }
 /**/
 
-.illcauseBox {
+/*.illcauseBox {
     position: fixed;
     width: 100%;
     height: 55rem;
@@ -1598,7 +1622,81 @@ i {
     font-size: 2.3rem;
     color: rgb(242,242,242);
     border-radius: 0.5rem;
+}*/
+
+/*rollSelect -- 共用选择*/
+.illcauseBox {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem 2rem 0 0;
 }
+.rollSelectCauseBox {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem 2rem 0 0;
+}
+
+.rollSelectCauseULcss {
+    width: 96%;
+    height: 27rem;
+    margin-top: 5rem;
+    overflow-y: scroll;
+    height: 37rem;
+}
+
+    .rollSelectCauseULcss li {
+        text-align: center;
+        line-height: 7rem;
+    }
+
+.rollSelectCauseli {
+    color: #ccc;
+}
+
+.rollSelectCauseli-active {
+    border-top: 0.2rem solid #ccc;
+    border-bottom: 0.2rem solid #ccc;
+    color: #333;
+}
+
+.rollSelectCuasedBtn {
+    width: 52%;
+    margin: auto;
+}
+
+.rollSelectCancel {
+    background: rgb(242,242,242);
+    padding: 1rem 5rem;
+    float: left;
+    font-size: 2.3rem;
+    color: rgb(7,193,96);
+    border-radius: 0.5rem;
+}
+
+.rollSelectConfirm {
+    background: rgb(7,193,96);
+    padding: 1rem 5rem;
+    float: right;
+    font-size: 2.3rem;
+    color: rgb(242,242,242);
+    border-radius: 0.5rem;
+}
+/*共用选择  -- over*/
+
 /*applyPut -- 摆点申请*/
 .applyPut-part {
     position: fixed;
@@ -1978,12 +2076,12 @@ i {
     color: #333;
     /*border: 0.2rem solid red;*/
     height: 4rem;
-    line-height: 3rem;
+    line-height:7rem;
 }
 
     .bookfromliRight input {
         border: 0;
-        height: 5rem;
+        height: 7rem;
     }
 
 .bookfromul li {
@@ -2107,7 +2205,8 @@ i {
 }
 
 .reqairsul li:nth-child(1) {
-    line-height: 11rem;
+  
+   height:15rem;
 }
 
     .reqairsul li:nth-child(1) img {
@@ -2205,7 +2304,9 @@ i {
     margin-right: 2rem;
     line-height: 7rem;
 }
-
+.contentUL li:last-child{
+    margin-bottom:8rem;
+}
 .contentUL p {
 }
 
@@ -2229,5 +2330,76 @@ i {
     font-weight: bold;
     font-size: 2.3rem;
 }
+
+/*identityTop*/
+.identityBox {
+    width: 100%;
+    height: 25rem;
+}
+
+.identityTop {
+    width: 100%;
+    height: 37rem;
+    background: #fff;
+}
+.identityTop p{
+    border-bottom: 0.2rem solid #F2F2F2;
+    font-size: 2.3rem;
+    padding-left: 30px;
+    line-height: 9rem;
+    color: #333;
+}
+.identityTop p:last-child{
+    border-bottom: 0rem ;
+}
+
+.identityBox li{
+  
+}
+.bookformLeft{
+    color:#333;
+}
+
+.identityBotton {
+    width: 100%;
+    height: 64rem;
+    background-color: #fff;
+    margin-top: 1rem;
+    padding: 2rem 3rem;
+}
+.identityBotton p{
+    font-size:2.3rem;
+}
+
+.identityBottonBox {
+    width: 100%;
+    height: 37rem;
+    border: 0.2rem solid #D0D0D0;
+    margin: 2rem 0;
+    border-style: dashed;
+    text-align: center;
+    color: #D0D0D0;
+}
+.identityBottonIcon {
+    color: #D0D0D0;
+    font-size: 15rem !important;
+    height: 11rem;
+}
+.companyTypeEnter {
+    position: fixed;
+    bottom: 9rem;
+    width: 100%;
+    background: #fff;
+    font-size: 3rem;
+    height: 56rem;
+}
+.logoChange {
+    position: relative;
+    left: -36rem;
+    width: 71rem;
+}
+
+
+
 
 

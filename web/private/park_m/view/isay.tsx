@@ -1,5 +1,6 @@
 ﻿import * as React from "react";
 import "css!./styles/isay.css"
+import DataService from "dataService";
 
 interface IProps {
 }
@@ -11,12 +12,19 @@ interface IState {
   textareaValue: string
 }
 
-class Isay extends React.Component<{ history:any}>{
+class Isay extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
     tagArray: [{ name: "咨询" }, { name: "建议" }, { name: "投诉" }, { name: "其它" }],
     tagIndex: 0,
     inputValue: "不能少于3个字且不能大于33个字", // 主题默认值
     textareaValue: "请将留言内容描述出来（200字内）"
+  }
+
+  public dataService: DataService = new DataService()
+
+
+  callBackSaveMyMicroCircle(data) {
+    console.log(data)
   }
 
 
@@ -63,23 +71,40 @@ class Isay extends React.Component<{ history:any}>{
     this.props.history.goBack()
   }
 
+  changeIndex(index) {
+    this.setState({ tagIndex: index })
+  }
+
+  submit() {
+    let obj = {
+      park_id: 1,
+      user_id: 1,
+      type_id: this.state.tagIndex,
+      name: this.state.inputValue,
+      content: this.state.textareaValue,
+    }
+    this.dataService.saveMyMicroCircle(this.callBackSaveMyMicroCircle.bind(this), obj)
+  }
+
   render() {
     return (
       <div className="isay">
         <div className="isay-back">
           <img src="./park_m/image/back.png" style={{ marginBottom: "25px" }} onClick={this.goBack.bind(this)} />
-          <span style={{ color: "#6C6C6C", fontSize: "40px", marginLeft: "15px" }}>我有话说</span>
+          <span style={{ color: "#6C6C6C", fontSize: "40px", marginLeft: "15px"}}>我有话说</span>
         </div>
         <div style={{ fontSize: "40px", color: "#949494", margin: "20px 0 0 35px", overflow: "hidden" }}>
           <div className="isay-star"></div><div style={{ float: "left", marginLeft: "15px" }}>留言类别:</div>
         </div>
         <div className="isay-tag">
           {this.state.tagArray.map((item, index) => {
-            return <div className="isay-tag-child" key={index}>
-              <img src="./park_m/image/checked.png" style={{ margin: "-22px 20px 0 0" }} />
-              <span style={{ fontSize: "40px", color: "#6C6C6C" }}>{item.name}</span>
-            </div>
-          })
+            return (
+              <div className="isay-tag-child" key={index} onClick={()=> this.changeIndex(index)}>
+                <img src={this.state.tagIndex === index ? "./park_m/image/checked.png" : "./park_m/image/unchecked.png"} style={{ margin: "-22px 20px 0 0" }} />
+                <span style={{ fontSize: "40px", color: "#6C6C6C" }}>{item.name}</span>
+              </div>
+              )
+            })
           }
         </div>
         <div style={{ borderTop: "3px solid #F2F2F2", marginTop: "30px", margin: "0 30px 0 30px" }}></div>
@@ -95,7 +120,7 @@ class Isay extends React.Component<{ history:any}>{
         <div className="isay-content">
           <textarea className="isay-content-textarea" value={this.state.textareaValue} onFocus={this.textareaFoucus.bind(this)} onBlur={this.textareaBlur.bind(this)} onChange={this.textareaChange.bind(this)} />
         </div>
-        <div className="isay-submit">提交</div>
+        <div className="isay-submit" onClick={this.submit.bind(this)}>提交</div>
       </div>
     )
   }
