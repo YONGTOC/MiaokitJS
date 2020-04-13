@@ -61,4 +61,9 @@ class GlobalAction {
   //  over
 }
 
+//http://base.oss.yongtoc.com/park/data/projects/minghuakechuangyuan/diors/%E6%A1%82%E6%9E%97%E4%BF%A1%E6%81%AF%E4%BA%A7%E4%B8%9A%E5%9B%AD/Production_1.3mx
+//http://base.oss.yongtoc.com/park/data/projects/minghuakechuangyuan/diors/%E6%A1%82%E6%9E%97%E4%BF%A1%E6%81%AF%E4%BA%A7%E4%B8%9A%E5%9B%AD/Data/Production_1.3mxb
+
+
+
 export default GlobalAction;

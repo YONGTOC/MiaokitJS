@@ -1,44 +1,24 @@
 
 MiaokitJS.ShaderLab.Pipeline = {
     RenderTarget: [null,
-        /// 1.绘制物体颜色缓存
+        /// 1.绘制不透明物体颜色缓存
         { ID: 1, Format: "RGBA16_FLOAT", Width: 640, Height: 1024 },
         /// 2.绘制半透明物体颜色缓存/轮廓与高光颜色缓存
         { ID: 2, Format: "RGBA16_FLOAT", Width: 640, Height: 1024 },
         /// 3.绘制不透明物体深度缓存
         { ID: 3, Format: "D24_UNORM", Width: 640, Height: 1024 },
         /// 4.高光输入缓存，降采样，需生成MIPMAP
-        {
-            ID: 4, Format: "RGBA16_FLOAT", Width: 1024, Height: 1024, Params: [
-                "LINEAR_MIPMAP_LINEAR"/*MIN_FILTER*/, "LINEAR"/*MAG_FILTER*/,
-                "CLAMP_TO_EDGE"/*WRAP_S*/, "CLAMP_TO_EDGE"/*WRAP_T*/
-            ]
-        },
+        { ID: 4, Format: "RGBA16_FLOAT", Width: 1024, Height: 1024, Params: ["LINEAR_MIPMAP_LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
         /// 5.高光模输出缓存，升采样512->X
         { ID: 5, Format: "RGBA16_FLOAT" },
         /// 6.高光模糊缓存，升采样256->512
-        {
-            ID: 6, Format: "RGBA16_FLOAT", Width: 512, Height: 512, Params: [
-                "LINEAR"/*MIN_FILTER*/, "LINEAR"/*MAG_FILTER*/,
-                "CLAMP_TO_EDGE"/*WRAP_S*/, "CLAMP_TO_EDGE"/*WRAP_T*/
-            ]
-        },
+        { ID: 6, Format: "RGBA16_FLOAT", Width: 512, Height: 512, Params: ["LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
         /// 7.高光模糊缓存，升采样128->256
-        {
-            ID: 7, Format: "RGBA16_FLOAT", Width: 256, Height: 256, Params: [
-                "LINEAR"/*MIN_FILTER*/, "LINEAR"/*MAG_FILTER*/,
-                "CLAMP_TO_EDGE"/*WRAP_S*/, "CLAMP_TO_EDGE"/*WRAP_T*/
-            ]
-        },
+        { ID: 7, Format: "RGBA16_FLOAT", Width: 256, Height: 256, Params: ["LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
         /// 8.高光模糊缓存，升采样64->128
-        {
-            ID: 8, Format: "RGBA16_FLOAT", Width: 128, Height: 128, Params: [
-                "LINEAR"/*MIN_FILTER*/, "LINEAR"/*MAG_FILTER*/,
-                "CLAMP_TO_EDGE"/*WRAP_S*/, "CLAMP_TO_EDGE"/*WRAP_T*/
-            ]
-        },
+        { ID: 8, Format: "RGBA16_FLOAT", Width: 128, Height: 128, Params: ["LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
         /// 9.半透明与不透明混合颜色缓存
-        { ID: 9, Format: "RGBA16_FLOAT", Width: 640, Height: 1024 }, 
+        { ID: 9, Format: "RGBA16_FLOAT", Width: 640, Height: 1024 },
     ],
 
     Resource: [null,
@@ -49,18 +29,17 @@ MiaokitJS.ShaderLab.Pipeline = {
     ],
 
     Pass: [
-        // 0、启用深度测试，启用深度写入，关闭混合。清空画布，绘制天空盒
+        // 0、->1，清空画布，绘制天空盒。
         {
             Name: "绘制天空盒",
             Type: "Clear",
             Mask: ["Opaque"],
             RenderTarget: [1, 0],
             ClearTarget: {
-                Color: { r: 0.198, g: 0.323, b: 0.561, a: 1.0 },
-                Depth: 1.0
+                Color: { r: 0.198, g: 0.323, b: 0.561, a: 1.0 }
             },
         },
-        // 1、启用深度测试，启用深度写入，关闭混合。绘制不透明物体，无轮廓对象A值为1，有轮廓对象A值为0.99
+        // 1、->1，绘制不透明物体。
         {
             Name: "绘制不透明物体",
             Type: "Render",
@@ -74,7 +53,7 @@ MiaokitJS.ShaderLab.Pipeline = {
                 Write: true
             },
         },
-        // 2、启用深度测试，关闭深度写入，开启混合。绘制半透明物体，无轮廓对象A值为1，有轮廓对象A值为0.99
+        // 2、->2，绘制半透明物体。
         {
             Name: "绘制半透明物体",
             Type: "Render",
@@ -93,15 +72,15 @@ MiaokitJS.ShaderLab.Pipeline = {
                 ColorDest: "ONE",
                 AlphaFunc: "FUNC_ADD",
                 AlphaSrc: "ZERO",
-                AlphaDest: "SRC_ALPHA"
+                AlphaDest: "SRC_ALPHA",
             }
         },
-        // 3、混合不透明与半透明缓存。
+        // 3、1+2->9，混合不透明与半透明缓存。
         {
             Name: "混合不透明与半透明缓存",
             Type: "Postprocess",
             Mask: [],
-            RenderTarget: [9, 3],
+            RenderTarget: [9, 0],
             Shader: "Combine",
             SetUniforms: function (aAttr, gl: WebGLRenderingContext) {
                 let aTarget = MiaokitJS.ShaderLab.Pipeline.RenderTarget;
@@ -110,7 +89,7 @@ MiaokitJS.ShaderLab.Pipeline = {
                 aAttr[8]("u_MinorTex", [0, aTarget[2].Handle, 0, 0]);
             }
         },
-        // 3、关闭深度测试，关闭深度写入，关闭混合。后期处理，提取物体轮廓，抗锯齿，颜色混合
+        // 4、9->2，后期处理，提取物体轮廓，抗锯齿，高亮。
         {
             Name: "提取物体轮廓",
             Type: "Postprocess",
@@ -124,7 +103,7 @@ MiaokitJS.ShaderLab.Pipeline = {
                 aAttr[8]("u_InvTexSize", aTarget[9].Size);
             }
         },
-        // 4、关闭深度测试，关闭深度写入，关闭混合。后期处理，提取画面高光部分
+        // 5、2->4，后期处理，提取画面高光部分。
         {
             Name: "提取画面高光部分",
             Type: "Postprocess",
@@ -143,7 +122,7 @@ MiaokitJS.ShaderLab.Pipeline = {
                 gl.bindTexture(gl.TEXTURE_2D, null);
             }
         },
-        // 5、关闭深度测试，关闭深度写入，关闭混合。后期处理，模糊高光
+        // 6、4->8->7->6->5，后期处理，模糊高光（经过4个通道处理）。
         {
             Name: "模糊高光",
             Type: "Postprocess",
@@ -184,7 +163,7 @@ MiaokitJS.ShaderLab.Pipeline = {
                 }
             ]
         },
-        // 6、关闭深度测试，关闭深度写入，关闭混合。后期处理，提交图像
+        // 7、2+5->，后期处理，提交图像。
         {
             Name: "提交图像",
             Type: "Postprocess",
@@ -734,7 +713,11 @@ vec4 fs()
     float nGray2 = mColor2.g / clamp(mColor2.b, 0.001, 50000.0);
 
     mColor.rgb = mColor1.rgb * mColor2.a + vec3(nGray2, nGray2, nGray2) * (1.0 - mColor2.a);
-    mColor.a = 1.0;//mColor1.a + mColor2.r;
+    mColor.a = mColor1.a + mColor2.r;
+    
+    // 标识是否高亮
+    mColor.a = ceil(ceil(mColor.a) - mColor.a);
+    
     // 边缘提取时不应再除以混合次数
     return mColor;
 }
@@ -775,35 +758,21 @@ vec4 fs()
     vec4 _Color3 = texture2D(u_MainTex, v_UV + _OffsetUV.zw); // NE
     vec4 _Color4 = texture2D(u_MainTex, v_UV - _OffsetUV.zw); // SW
     
-    /// 获取中心及周边斜角4个点的颜色混合次数========================
-    float _Count0 = ceil(_Color0.a);
-    float _Count1 = ceil(_Color1.a);
-    float _Count2 = ceil(_Color2.a);
-    float _Count3 = ceil(_Color3.a);
-    float _Count4 = ceil(_Color4.a);
-    
-    _Color0.rgb /= _Count0;
-    
     /// 计算中心及周边斜角4个点的颜色灰度============================
     vec3 _Luma = vec3(0.299, 0.587, 0.114);
     
     float _LumaM  = dot(_Color0.rgb, _Luma);
-    float _LumaNW = dot(_Color1.rgb / _Count1, _Luma);
-    float _LumaNE = dot(_Color3.rgb / _Count3, _Luma);
-    float _LumaSW = dot(_Color4.rgb / _Count4, _Luma);
-    float _LumaSE = dot(_Color2.rgb / _Count2, _Luma);
+    float _LumaNW = dot(_Color1.rgb, _Luma);
+    float _LumaNE = dot(_Color3.rgb, _Luma);
+    float _LumaSW = dot(_Color4.rgb, _Luma);
+    float _LumaSE = dot(_Color2.rgb, _Luma);
     
     float _LumaMin = min(_LumaM, min(min(_LumaNW, _LumaNE), min(_LumaSW, _LumaSE)));
     float _LumaMax = max(_LumaM, max(max(_LumaNW, _LumaNE), max(_LumaSW, _LumaSE)));
     
     ///计算选中对象轮廓==============================================
-    _Count1 = ceil(_Count1 - _Color1.a);
-    _Count2 = ceil(_Count2 - _Color2.a);
-    _Count3 = ceil(_Count3 - _Color3.a);
-    _Count4 = ceil(_Count4 - _Color4.a);
-
-    float _Diff1 = (_Count1 - _Count2) * 0.5;
-	float _Diff2 = (_Count3 - _Count4) * 0.5;
+    float _Diff1 = (_Color1.a - _Color2.a) * 0.5;
+	float _Diff2 = (_Color3.a - _Color4.a) * 0.5;
 	float _Diff = length(vec2(_Diff1, _Diff2));
     
     ///FXAA处理======================================================
@@ -820,13 +789,13 @@ vec4 fs()
     vec4 _Blend3 = texture2D(u_MainTex, v_UV + _Dir *  0.5);
 
     vec3 _ColorA = vec3(0.0, 0.0, 0.0);
-    _ColorA += _Blend0.rgb / _Blend0.a;
-    _ColorA += _Blend1.rgb / _Blend1.a;
+    _ColorA += _Blend0.rgb;
+    _ColorA += _Blend1.rgb;
     _ColorA *= 0.5;
 
     vec3 _ColorB = vec3(0.0, 0.0, 0.0);
-    _ColorB += _Blend2.rgb / _Blend2.a;
-    _ColorB += _Blend3.rgb / _Blend3.a;
+    _ColorB += _Blend2.rgb;
+    _ColorB += _Blend3.rgb;
     _ColorB *= 0.25;
     _ColorB += 0.5 * _ColorA;
 
@@ -842,7 +811,7 @@ vec4 fs()
     ///计算素描线条==================================================
     _Color0.a = _LumaM / (_LumaMax - _LumaMin);
     ///叠加选中对象轮廓==============================================
-    //_Color0.rgb += vec3(3.0, 0.5, 0.0) * _Diff;
+    _Color0.rgb += vec3(3.0, 0.5, 0.0) * _Diff;
     
     return _Color0;
 }
@@ -962,7 +931,8 @@ vec4 fs()
     vec4 mBloom = texture2D(u_MinorTex, v_UV);
 
     mColor += mBloom;
-
+    mColor.a = 1.0;
+    
     return mColor;
 }
         `

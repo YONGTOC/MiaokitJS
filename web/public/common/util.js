@@ -903,31 +903,11 @@ MiaokitJS.ShaderLab.Pipeline = {
         { ID: 1, Format: "RGBA16_FLOAT", Width: 640, Height: 1024 },
         { ID: 2, Format: "RGBA16_FLOAT", Width: 640, Height: 1024 },
         { ID: 3, Format: "D24_UNORM", Width: 640, Height: 1024 },
-        {
-            ID: 4, Format: "RGBA16_FLOAT", Width: 1024, Height: 1024, Params: [
-                "LINEAR_MIPMAP_LINEAR", "LINEAR",
-                "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"
-            ]
-        },
+        { ID: 4, Format: "RGBA16_FLOAT", Width: 1024, Height: 1024, Params: ["LINEAR_MIPMAP_LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
         { ID: 5, Format: "RGBA16_FLOAT" },
-        {
-            ID: 6, Format: "RGBA16_FLOAT", Width: 512, Height: 512, Params: [
-                "LINEAR", "LINEAR",
-                "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"
-            ]
-        },
-        {
-            ID: 7, Format: "RGBA16_FLOAT", Width: 256, Height: 256, Params: [
-                "LINEAR", "LINEAR",
-                "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"
-            ]
-        },
-        {
-            ID: 8, Format: "RGBA16_FLOAT", Width: 128, Height: 128, Params: [
-                "LINEAR", "LINEAR",
-                "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"
-            ]
-        },
+        { ID: 6, Format: "RGBA16_FLOAT", Width: 512, Height: 512, Params: ["LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
+        { ID: 7, Format: "RGBA16_FLOAT", Width: 256, Height: 256, Params: ["LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
+        { ID: 8, Format: "RGBA16_FLOAT", Width: 128, Height: 128, Params: ["LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
         { ID: 9, Format: "RGBA16_FLOAT", Width: 640, Height: 1024 },
     ],
     Resource: [null,
@@ -941,8 +921,7 @@ MiaokitJS.ShaderLab.Pipeline = {
             Mask: ["Opaque"],
             RenderTarget: [1, 0],
             ClearTarget: {
-                Color: { r: 0.198, g: 0.323, b: 0.561, a: 1.0 },
-                Depth: 1.0
+                Color: { r: 0.198, g: 0.323, b: 0.561, a: 1.0 }
             },
         },
         {
@@ -976,14 +955,14 @@ MiaokitJS.ShaderLab.Pipeline = {
                 ColorDest: "ONE",
                 AlphaFunc: "FUNC_ADD",
                 AlphaSrc: "ZERO",
-                AlphaDest: "SRC_ALPHA"
+                AlphaDest: "SRC_ALPHA",
             }
         },
         {
             Name: "混合不透明与半透明缓存",
             Type: "Postprocess",
             Mask: [],
-            RenderTarget: [9, 3],
+            RenderTarget: [9, 0],
             Shader: "Combine",
             SetUniforms: function (aAttr, gl) {
                 let aTarget = MiaokitJS.ShaderLab.Pipeline.RenderTarget;
@@ -1586,7 +1565,11 @@ vec4 fs()
     float nGray2 = mColor2.g / clamp(mColor2.b, 0.001, 50000.0);
 
     mColor.rgb = mColor1.rgb * mColor2.a + vec3(nGray2, nGray2, nGray2) * (1.0 - mColor2.a);
-    mColor.a = 1.0;//mColor1.a + mColor2.r;
+    mColor.a = mColor1.a + mColor2.r;
+    
+    // 标识是否高亮
+    mColor.a = ceil(ceil(mColor.a) - mColor.a);
+    
     // 边缘提取时不应再除以混合次数
     return mColor;
 }
@@ -1626,35 +1609,21 @@ vec4 fs()
     vec4 _Color3 = texture2D(u_MainTex, v_UV + _OffsetUV.zw); // NE
     vec4 _Color4 = texture2D(u_MainTex, v_UV - _OffsetUV.zw); // SW
     
-    /// 获取中心及周边斜角4个点的颜色混合次数========================
-    float _Count0 = ceil(_Color0.a);
-    float _Count1 = ceil(_Color1.a);
-    float _Count2 = ceil(_Color2.a);
-    float _Count3 = ceil(_Color3.a);
-    float _Count4 = ceil(_Color4.a);
-    
-    _Color0.rgb /= _Count0;
-    
     /// 计算中心及周边斜角4个点的颜色灰度============================
     vec3 _Luma = vec3(0.299, 0.587, 0.114);
     
     float _LumaM  = dot(_Color0.rgb, _Luma);
-    float _LumaNW = dot(_Color1.rgb / _Count1, _Luma);
-    float _LumaNE = dot(_Color3.rgb / _Count3, _Luma);
-    float _LumaSW = dot(_Color4.rgb / _Count4, _Luma);
-    float _LumaSE = dot(_Color2.rgb / _Count2, _Luma);
+    float _LumaNW = dot(_Color1.rgb, _Luma);
+    float _LumaNE = dot(_Color3.rgb, _Luma);
+    float _LumaSW = dot(_Color4.rgb, _Luma);
+    float _LumaSE = dot(_Color2.rgb, _Luma);
     
     float _LumaMin = min(_LumaM, min(min(_LumaNW, _LumaNE), min(_LumaSW, _LumaSE)));
     float _LumaMax = max(_LumaM, max(max(_LumaNW, _LumaNE), max(_LumaSW, _LumaSE)));
     
     ///计算选中对象轮廓==============================================
-    _Count1 = ceil(_Count1 - _Color1.a);
-    _Count2 = ceil(_Count2 - _Color2.a);
-    _Count3 = ceil(_Count3 - _Color3.a);
-    _Count4 = ceil(_Count4 - _Color4.a);
-
-    float _Diff1 = (_Count1 - _Count2) * 0.5;
-	float _Diff2 = (_Count3 - _Count4) * 0.5;
+    float _Diff1 = (_Color1.a - _Color2.a) * 0.5;
+	float _Diff2 = (_Color3.a - _Color4.a) * 0.5;
 	float _Diff = length(vec2(_Diff1, _Diff2));
     
     ///FXAA处理======================================================
@@ -1671,13 +1640,13 @@ vec4 fs()
     vec4 _Blend3 = texture2D(u_MainTex, v_UV + _Dir *  0.5);
 
     vec3 _ColorA = vec3(0.0, 0.0, 0.0);
-    _ColorA += _Blend0.rgb / _Blend0.a;
-    _ColorA += _Blend1.rgb / _Blend1.a;
+    _ColorA += _Blend0.rgb;
+    _ColorA += _Blend1.rgb;
     _ColorA *= 0.5;
 
     vec3 _ColorB = vec3(0.0, 0.0, 0.0);
-    _ColorB += _Blend2.rgb / _Blend2.a;
-    _ColorB += _Blend3.rgb / _Blend3.a;
+    _ColorB += _Blend2.rgb;
+    _ColorB += _Blend3.rgb;
     _ColorB *= 0.25;
     _ColorB += 0.5 * _ColorA;
 
@@ -1693,7 +1662,7 @@ vec4 fs()
     ///计算素描线条==================================================
     _Color0.a = _LumaM / (_LumaMax - _LumaMin);
     ///叠加选中对象轮廓==============================================
-    //_Color0.rgb += vec3(3.0, 0.5, 0.0) * _Diff;
+    _Color0.rgb += vec3(3.0, 0.5, 0.0) * _Diff;
     
     return _Color0;
 }
@@ -1810,7 +1779,8 @@ vec4 fs()
     vec4 mBloom = texture2D(u_MinorTex, v_UV);
 
     mColor += mBloom;
-
+    mColor.a = 1.0;
+    
     return mColor;
 }
         `
