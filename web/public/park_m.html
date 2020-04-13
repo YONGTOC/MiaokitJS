@@ -33,6 +33,7 @@
                     "antd": "../common/antd/dist/antd.min",
                     "index": "js/view",
                     "g2plot": "../common/g2plot",
+                    "antd-mobile": "../common/antd/antd-mobile.min"
                 },
                 // 所有模块(*)中的CSS依赖("css")从指定地址中加载("common/requirejs/css.min.js")
                 // 模块中导入CSS依赖的方式为: import "css!./x.css"。!是插件依赖与样式文件地址的分隔符
@@ -101,6 +102,9 @@
     <li>
         <button onclick="refreshParking(120)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活地库</button>
     </li>-->
+        <li>
+            <button onclick="addapplyPut(5,6)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加摆点位置56</button>
+        </li>
     </ul>
 
     <script>

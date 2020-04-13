@@ -12,12 +12,12 @@ class FindLease extends React.Component {
     FindLease.getLeaseinfoByroomid = this.getLeaseinfoByroomid.bind(this);
   }
 
-  public componentDidMount() {}
+  public componentDidMount() { }
 
   public globalAction: GlobalAction = new GlobalAction();
 
   // 外部传入的企业id，传给企业详情组件，刷新企业详情数据；  
-   //(招租查询模块-查询)通过roomid获取招租的场地列表接口
+  //(招租查询模块-查询)通过roomid获取招租的场地列表接口
   static getLeaseinfoByroomid(id) { }
   public getLeaseinfoByroomid(id) {
     console.log("getCompanyinfo", id);
@@ -52,21 +52,21 @@ class FindLease extends React.Component {
 
   public render() {
     return (
-        <div className={this.state.FindLeasecss}>
-          <p className="companyInfotit">
-            <RouterDOM.Link to="/home" >
+      <div className={this.state.FindLeasecss}>
+        <p className="companyInfotit">
+          <RouterDOM.Link to="/home" >
             <i className="iconfont companyInfoicon" onClick={this.mapReturnpark.bind(this)}>&#xe83b;</i>
-            </RouterDOM.Link>
-            <span>招租查询</span>
-          </p>
-          <div className={this.state.showList == true ? "show" : "hide"}>
-            <LeaseList />
-          </div>
-
-          <div className={this.state.showInfo == true ? "show" : "hide"}>
-            <LeaseInfo />
-          </div>
+          </RouterDOM.Link>
+          <span>招租查询</span>
+        </p>
+        <div className={this.state.showList == true ? "show" : "hide"}>
+          <LeaseList />
         </div>
+
+        <div className={this.state.showInfo == true ? "show" : "hide"}>
+          <LeaseInfo />
+        </div>
+      </div>
 
     )
   }
@@ -100,7 +100,7 @@ class LeaseList extends React.Component {
     //(招租查询模块-查询-面积分类)-获取招租查询面积分类列表
     this.dataService.getRoomRentSquareType(this.getRoomRentSquareType, this.state.park_id);
     //(招租查询模块-查询)通过园区id获取招租的场地列表接口
-    this.dataService.findRoomRentByparkid(this.setRoomRent, this.state.park_id, this.state.square);
+    this.dataService.findRoomRentByparkid(this.setRoomRent, this.state.park_id, "" );
   }
 
   public dataService: DataService = new DataService();
@@ -117,9 +117,18 @@ class LeaseList extends React.Component {
   //set 招租查询招租的场地列表
   public setRoomRent(data) {
     console.log("setRoomRent", data);
-    this.setState({
-      roomData: data.response,
-    })
+    if (data.response.length == 0) {
+      this.setState({
+        roomData: data.response,
+        roomNull: "show",
+      })
+    } else {
+      this.setState({
+        roomData: data.response,
+        roomNull: "hide",
+      })
+    }
+  
   }
 
   // 点击更多，显示info;隐藏list；这里需要调用FindLease 的方法；
@@ -170,7 +179,7 @@ class LeaseList extends React.Component {
     }
   }
 
- 
+
   //选中某个房间
   public leaseActive(index, id) {
     console.log("active", index, id);
@@ -221,25 +230,31 @@ class LeaseList extends React.Component {
   //软键盘搜索，获取数据，呈现列表效果；（3.5-未写）；1提交搜索条件。；2-css； 
   public searchRoomRent() {
     if (this.state.square == "全部") {
-      this.dataService.findRoomRentByparkid(this.setRoomRent, this.state.park_id, "0");
+      this.dataService.findRoomRentByparkid(this.setRoomRent, this.state.park_id, " ");
     } else {
-      this.dataService.findRoomRentByparkid(this.setRoomRent, this.state.park_id, this.state.inputValue);
+      this.dataService.findRoomRentByparkid(this.setRoomRent, this.state.park_id, this.state.square);
     }
     console.log("searchBtn", this.state.inputValue, this.state.square);
   }
 
   public render() {
+    //<input className="leaseSearch" type="text" placeholder="搜索"
+    //  value={this.state.inputValue} onFocus={this.foucus.bind(this)}
+    //  onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
+
     return (
-        <div className={this.state.leaseListcss}>
-          <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-            <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
-          </div>
-          <ul className={this.state.leaseul}>
-            {this.state.roomData.map((i, index) => {
+      <div className={this.state.leaseListcss}>
+        <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
+          <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
+        </div>
+        <ul className={this.state.leaseul}>
+          <p className={this.state.roomNull}>没有符合搜索条件的结果···</p>
+          {this.state.roomData.map((i, index) => {
+            if (i.headimageurl !== null) {
               return (
                 <li onClick={this.leaseActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "leaseli-active" : "leaseli"} >
                   <div className="leaseImgback">
-                    <img src={i.headimgurl} />
+                    <img src={i.headimageurl} />
                   </div>
                   <div className="leaseul-middle">
                     <p className={this.state.indexOf == index ? "leaseName-active" : "leaseName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.building_id}-{i.floor_id}-{i.room_id}室</p>
@@ -248,45 +263,64 @@ class LeaseList extends React.Component {
                   </div>
                   <div className="leaseul-right">
                     <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)} className={this.state.indexOf == index ? "show" : "hide"}>更多
-                        <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
+                              <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
                     </p>
                     <p className={this.state.indexOf == index ? "leaseType-active" : "leaseType"} >
                       <span className={this.state.indexOf == index ? "leasePrice-active" : "leasePrice"}>{i.price}</span>元/m²/天</p>
                   </div>
                 </li>
               )
-            })}
-          </ul>
-          <form>
-            <div className={this.state.leaseBtn}>
-              <div className="searchBox">
-                <span className="searchBox-text">
-                  <span className="iconfont" style={{ "fontSize": "3rem" }}>&#xe810;</span>
-                  <input className="leaseSearch" type="text" placeholder="搜索"
-                    value={this.state.inputValue} onFocus={this.foucus.bind(this)}
-                    onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
-                </span>
-                <span onClick={this.foldBtn.bind(this)} className="searchBox-type">
-                  {this.state.square} <span className="iconfont" style={{ "fontSize": "3rem" }}>&#xe828;</span>
-                </span>
-              </div>
-              <ul className="areaTypeul">
-                <li className={this.state.typeIndexof == 100 ? "areaTypeli-active" : "areaTypeli"}
-                  onClick={this.typeActive.bind(this, 100, "全部", "id-全部")} style={{ "width": "12rem" }}>全部</li>
-                {this.state.areaType.map((i, index) => {
-                  return (
-                    <li onClick={this.typeActive.bind(this, index, i)} className={this.state.typeIndexof == index ? "areaTypeli-active" : "areaTypeli"}>{i}</li>
-                  )
-                })}
-              </ul>
-              <span className="searchBtn" onClick={this.searchRoomRent.bind(this)}>搜索</span>
+            } else {
+              return (
+                <li onClick={this.leaseActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "leaseli-active" : "leaseli"} >
+                  <div className="leaseImgback">
+                    <img src={"./park_m/image/i.png"} />
+                  </div>
+                  <div className="leaseul-middle">
+                    <p className={this.state.indexOf == index ? "leaseName-active" : "leaseName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.building_id}-{i.floor_id}-{i.room_id}室</p>
+                    <p style={{ "font-size": "2.5rem" }}><span className="iconfont" style={{ "fontSize": "2.5rem", "margin-right": "1rem" }}>&#xe82a;</span>{i.square}</p>
+                    <p style={{ "font-size": "2.5rem" }}><span className="iconfont" style={{ "fontSize": "2.5rem", "margin-right": "1rem" }}>&#xe829;</span>{i.date}</p>
+                  </div>
+                  <div className="leaseul-right">
+                    <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)} className={this.state.indexOf == index ? "show" : "hide"}>更多
+                       <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
+                    </p>
+                    <p className={this.state.indexOf == index ? "leaseType-active" : "leaseType"} >
+                      <span className={this.state.indexOf == index ? "leasePrice-active" : "leasePrice"}>{i.price}</span>元/m²/天</p>
+                  </div>
+                </li>
+              )
+          }
+          })}
+        </ul>
+        <form>
+          <div className={this.state.leaseBtn}>
+            <div className="searchBox" onClick={this.foldBtn.bind(this)}>
+              <span className="searchBox-text">
+                <span className="iconfont" style={{ "fontSize": "3rem" }}>&#xe810;</span>
+              </span>
+              <span  className="searchBox-type">
+                {this.state.square} <span className="iconfont" style={{ "fontSize": "3rem" }}>&#xe828;</span>
+              </span>
             </div>
-          </form>
-        </div>
+            <ul className="areaTypeul">
+              <li className={this.state.typeIndexof == 100 ? "areaTypeli-active" : "areaTypeli"}
+                onClick={this.typeActive.bind(this, 100, "全部", "id-全部")} style={{ "width": "12rem" }}>全部</li>
+              {this.state.areaType.map((i, index) => {
+                return (
+                  <li onClick={this.typeActive.bind(this, index, i)} className={this.state.typeIndexof == index ? "areaTypeli-active" : "areaTypeli"}>{i}</li>
+                )
+              })}
+            </ul>
+            <span className="searchBtn" onClick={this.searchRoomRent.bind(this)}>搜索</span>
+          </div>
+        </form>
+      </div>
     )
   }
 
   public state = {
+    roomNull:"hide",
     // 园区id
     park_id: "1001",
     // 房间id
@@ -388,9 +422,9 @@ class LeaseInfo extends React.Component {
           </div>
           <div className="leaseInfoul_br">
             <ul className={"leaseInfoul"}>
-              <li className={this.state.infoli == 0 ? "leaseInfoli-active" : "leaseInfoli"}  onClick={this.infoClick.bind(this, 0)} >租房信息</li>
+              <li className={this.state.infoli == 0 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 0)} >租房信息</li>
               <li className={this.state.infoli == 2 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 2)}>视频讲解</li>
-              <li className={this.state.infoli == 1 ? "leaseInfoli-active" : "leaseInfoli"}onClick={this.infoClick.bind(this, 1)} >照片展示</li>
+              <li className={this.state.infoli == 1 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 1)} >照片展示</li>
             </ul>
           </div>
           <div className="leaseContain">
@@ -434,15 +468,31 @@ class LeaseInfos extends React.Component {
   static setLeaseInfos(data) { }
   public setLeaseInfos(data) {
     console.log("setLeaseInfosIIII", data);
+    if (data.response.lift == 1) {
+      this.setState({
+        area: data.response.squre,
+        time: data.response.inspection_time,
+        floor: data.response.floor_id,
+        limit: data.response.require,
+        elevator: "有",
+        price: data.response.price,
+        man: data.response.contact,
+        tel: data.response.phone
+      })
+    } else {
+      this.setState({
+        area: data.response.squre,
+        time: data.response.inspection_time,
+        floor: data.response.floor_id,
+        limit: data.response.require,
+        elevator: "无",
+        price: data.response.price,
+        man: data.response.contact,
+        tel: data.response.phone
+      })
+    }
     this.setState({
-      area: data.response.squre,
-      time: data.response.inspection_time,
-      floor: data.response.floor_id,
-      limit: data.response.require,
-      elevator: data.response.lift,
-      price: data.response.price,
-      man: data.response.contact,
-      tel: data.response.phone
+
     })
   }
 
@@ -450,24 +500,42 @@ class LeaseInfos extends React.Component {
     return (
       <div className={"leaseInfos"}>
         <ul className={"leaseInfosul"}>
-          <li>基本信息</li>
-          <li>看房须知</li>
-          <li>建筑面积<span>{this.state.area}平米</span></li>
-          <li>看房时间<span>{this.state.time}</span></li>
-          <li>所在楼层<span>{this.state.floor}</span></li>
-          <li>租房要求<span>{this.state.limit}</span></li>
-          <li>
-            <span style={{ "padding-right": "7rem" }}>电梯</span>
-            <span style={{ "font-weight": "600" }}>{this.state.elevator}</span></li>
-          <li>
-            <span style={{ "padding-right": "7rem" }}>租金</span>
-            <span style={{ "color": "#F53636" }}>{this.state.price}元/m²/天</span></li>
-          <li>
-            <span style={{ "padding-right": "5rem" }}>联系人</span>
-            <span style={{ "font-weight": "600" }}>{this.state.man}</span></li>
-          <li>
-            <span style={{ "padding-right": "2rem" }}>联系电话</span>
-            <span style={{ "font-weight": "600" }}>{this.state.tel}</span></li>
+          <div className={"leaseInfosliLeft"}>
+            <li>基本信息</li>
+            <li>
+              <span style={{ "padding-right": "2rem" }}>建筑面积</span>
+              <span style={{ "font-weight": "600" }} >{this.state.area}平米</span>
+            </li>
+            <li>
+              <span style={{ "padding-right": "2rem" }}>所在楼层</span>
+              <span style={{ "font-weight": "600" }} >{this.state.floor}</span>
+            </li>
+            <li>
+              <span style={{ "padding-right": "7rem" }}>电梯</span>
+              <span style={{ "font-weight": "600" }}>{this.state.elevator}</span>
+            </li>
+            <li>
+              <span style={{ "padding-right": "7rem" }}>租金</span>
+              <span style={{ "color": "#F53636" }}>{this.state.price}元/m²/天</span>
+            </li>
+            <li>
+              <span style={{ "padding-right": "5rem" }}>联系人</span>
+              <span style={{ "font-weight": "600" }}>{this.state.man}</span>
+            </li>
+            <li>
+              <span style={{ "padding-right": "2rem" }}>联系电话</span>
+              <span style={{ "font-weight": "600" }}>{this.state.tel}</span>
+            </li>
+          </div>
+          <div className={"leaseInfosliRight"}>
+            <li>看房须知</li>
+            <li>看房时间
+              <p style={{ "font-weight": "600", "font-size": "2.3rem", "width": "27rem" }}>{this.state.time}</p>
+            </li>
+            <li>租房要求
+              <p style={{ "font-weight": "600", "font-size": "2.3rem", "width": "27rem" }}>{this.state.limit}</p>
+            </li>
+          </div>
         </ul>
       </div>
     )
@@ -500,22 +568,28 @@ class Picshow extends React.Component {
   static setPicshow(data) { }
   public setPicshow(data) {
     console.log("setPicshowPPPPPP", data);
-    this.setState({
-      roomImg: data.response.pic,
-    })
-    console.log("setPicshowSSSSSSSSSSS", this.state.roomImg);
+    if (data.response.pic.length == 0) {
+      this.setState({
+        roomImg: data.response.pic,
+        urlNull: "show",
+      })
+    } else {
+      this.setState({
+        roomImg: data.response.pic,
+        urlNull: "hide",
+      })
+    }
   }
 
   public render() {
     return (
       <div className={"picshow"}>
         <ul>
+          <p className={this.state.urlNull} style={{ "color": "#333333" }}>暂无图片···</p>
           {this.state.roomImg.map((i, index) => {
-            return (
-              <li>
-                <img src={i.url} />
-              </li>
-            )
+            <li>
+              <img src={i.url} />
+            </li>
           })}
         </ul>
       </div>
@@ -523,12 +597,13 @@ class Picshow extends React.Component {
   }
 
   public state = {
-    roomImg: [ ]
+    roomImg: [],
+    urlNull: "hide",
   }
 }
 
 // 中-》视频讲解 --Videoshow
-class Videoshow extends React.Component{
+class Videoshow extends React.Component {
   public constructor(props) {
     super(props);
 
@@ -540,33 +615,44 @@ class Videoshow extends React.Component{
   // 显示获取的企业视频
   static setVideoshow(data) { }
   public setVideoshow(data) {
-    console.log("setsetVideoshowVVVVVVV", data);
-    this.setState({
-      roomVideo: data.response.video,
-    })
+    if (data.response.video.length == 0) {
+      this.setState({
+        roomVideo: data.response.video,
+        urlNull: "show",
+      })
+    } else {
+      this.setState({
+        roomVideo: data.response.video,
+        urlNull: "hide",
+      })
+    }
+    console.log("66666666666666", this.state)
   }
 
   public render() {
     return (
       <div className={"picshow"}>
         <ul>
+          <p className={this.state.urlNull} style={{ "color": "#333333" }}>暂无视频···</p>
           {this.state.roomVideo.map((i, index) => {
             return (
-              <li style={{  "width": "56rem"," height": "36rem"}}>
-                <video src={i.url} style={{ "width": "100%", "height": "100%"}} controls >
-                  当前浏览器不支持video播放     
-                </video>
+              <li style={{ "width": "56rem", " height": "36rem" }}>
+                <video src={i.url} style={{ "width": "100%", "height": "100%" }} controls >
+                  当前浏览器不支持video播放
+                  </video>
               </li>
             )
           })}
         </ul>
       </div>
     )
+
   }
 
   public state = {
+    urlNull: "hide",
     roomVideo: [
       //{ url: "https://www.yongtoc.com/themes/ytyc.mp4" },
-    ]
+    ],
   }
 }

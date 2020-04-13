@@ -1,6 +1,9 @@
 import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
 import DataService from "dataService";
+import "css!./styles/resetAntdMobile.css"
+import { ImagePicker, WingBlank, SegmentedControl } from 'antd-mobile';
+
 
 class Photograph extends React.Component {
   public constructor(props) {
@@ -151,6 +154,10 @@ class IllegalList extends React.Component {
     })
   }
 
+  public submitList() {
+    alert(4343);
+  }
+
   public render() {
     //<div className="illAdd" onClick={this.showPart.bind(this, "Load")} > + </div>
     //onClick = { this.searchList.bind(this) }
@@ -186,7 +193,7 @@ class IllegalList extends React.Component {
               <span className="searchBox-text">
                 <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe810;</i>
                 <input className="companySearch" type="text" placeholder="请输入车牌号"
-                  onChange={this.changeList.bind(this)} />
+                  onChange={this.changeList.bind(this)} onSubmit={this.submitList.bind(this)}/>
               </span>
             </div>
           </div>
@@ -224,6 +231,17 @@ class IllegalUpload extends React.Component {
   public componentDidMount() {
     //12.(随手拍模块-列表)通过园区id获取随手拍列表 
     this.dataService.getTakingPhotosType(this.setillcauseUL, this.state.park_id);
+
+    //var geolocation = new BMap.Geolocation();
+    //geolocation.getCurrentPosition(function (r) {
+    //  if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+    //    var mk = new BMap.Marker(r.point);
+    //    alert('您的位置：' + r.point.lng + ',' + r.point.lat);  //success
+    //  }
+    //  else {
+    //    alert('failed' + this.getStatus());
+    //  }
+    //});
   }
 
   public dataService: DataService = new DataService();
@@ -338,7 +356,8 @@ class IllegalUpload extends React.Component {
   //提交违规单
   public sumbitIllfrom() {
     console.log("sumbit", this.state);
-    this.dataService.postTakingPhotoInfo(this.sumbitIllsuccess, this.state.park_id);
+   // this.dataService.postTakingPhotoInfo(this.sumbitIllsuccess, this.state.park_id);
+
   }
 
   ///提交违规单--成功
@@ -358,8 +377,26 @@ class IllegalUpload extends React.Component {
     Photograph.toggleView(0, "List", 0);
   }
 
+  onChange = (files, type, index) => {
+    console.log(files, type, index);
+    this.setState({
+      files,
+      photo: files[0].url,
+    });
+
+  }
+  onSegChange = (e) => {
+    const index = e.nativeEvent.selectedSegmentIndex;
+    this.setState({
+      multiple: index === 1,
+    });
+  }
+
   public render() {
     //<div className="illTxt">
+    //<div className="getillImg">
+    //<input type="file" accept="image/*" className="getillImg" value="" onClick={this.illimginputClick.bind(this)} style={{ "opacity": "0", "position": "absolute", "right": "-16rem" }} />
+    //  <img src={this.state.illImg} onClick={this.illimgClick.bind(this)} />
     return (
       <div>
         <p className="companyInfotit">
@@ -373,10 +410,19 @@ class IllegalUpload extends React.Component {
           </div>
           <form >
             <ul   className={this.state.illfromcss}>
-            <li>
-              <span className="redStar">*</span> 违规照片
-              <input type="file" accept="image/*" className="getillImg" value="" onClick={this.illimginputClick.bind(this)} style={{ "opacity": "0", "position": "absolute", "right": "-16rem" }} />
-              <img src={this.state.illImg} onClick={this.illimgClick.bind(this)} />
+              <li>
+                <span className="redStar">*</span> 违规照片    
+                <div className="imgCom">
+                   <WingBlank>
+                    <ImagePicker
+                      files={this.state.files}
+                      onChange={this.onChange}
+                      onImageClick={(index, fs) => console.log(index, fs)}
+                      selectable={this.state.files.length < 1}
+                      multiple={this.state.multiple}
+                    />
+                  </WingBlank>
+                </div>
               </li>
               <li>
               <span className="redStar">*</span> 曝光类型
@@ -404,7 +450,7 @@ class IllegalUpload extends React.Component {
              </li>
               <li>
               <textarea className="getilltextarea" value={this.state.descript} placeholder="请将违规问题描述出来。（120字内）"
-                onChange={this.illdescript.bind(this)}></textarea>
+                onChange={this.illdescript.bind(this)} ></textarea>
               </li>
             <div className="illSumbit" onClick={this.sumbitIllfrom.bind(this)}>提交</div>
             </ul>
@@ -433,6 +479,8 @@ class IllegalUpload extends React.Component {
 
 
   public state = {
+    files: [],
+    multiple: false,
     illcauseBox: "hide",
     illegalLoadcss: "illegalLoad-part",
     illfromcss: "illfrom-part illfrom",
