@@ -78,7 +78,7 @@ class WorkOrder extends React.Component<{ history: any }>{
     let obj = {
       id: this.state.workOrderArray[index].id,
       workType: this.state.workOrderArray[index].work_type,
-      name: this.state.workOrderArray[index].work_type == 1 ? "企业认证工单" : this.state.workOrderArray[index].work_type == 2 ?
+      name: this.state.workOrderArray[index].work_type == 1 ? "身份认证工单" : this.state.workOrderArray[index].work_type == 2 ?
       "场地预定工单" : this.state.workOrderArray[index].work_type == 3 ? "摆点申请工单" : "在线保修工单",
       stateName: this.state.workOrderArray[index].state_name
     }
@@ -109,7 +109,7 @@ class WorkOrder extends React.Component<{ history: any }>{
                 <div key={index} className="work-order-list-child" onClick={e=> this.goWorkOrderDetail(index)}>
                   <div style={{ overflow: "hidden", margin: "30px 0 0 40px" }}>
                     <div style={{ float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" }}>
-                      {item.work_type == 1 ? "企业认证工单" : item.work_type == 2 ? "场地预定工单" : item.work_type == 3 ? "摆点申请工单" : "在线保修工单" }
+                      {item.work_type == 1 ? "身份认证工单" : item.work_type == 2 ? "场地预定工单" : item.work_type == 3 ? "摆点申请工单" : "在线保修工单" }
                     </div>
                     <img style={{ float: "right", marginRight: "40px"}} src="./park_m/image/right.png"/>
                   </div>
