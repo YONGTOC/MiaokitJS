@@ -395,7 +395,7 @@ class DataService {
 
   //12.(随手拍模块-列表)通过园区id获取随手拍列表 
   public getTakingPhotos(pBack, park_id, name) {
-    console.log("随手拍list", park_id, name);
+   // alert(name);
     let data = {
       //错误码
       "return_code": "100",
@@ -506,7 +506,7 @@ class DataService {
     };
     let thedata = JSON.stringify(datas)
       $.ajax({
-        url: this.state.rooturl2 + '/api/postAdvertisementPoint',
+        url: this.state.rooturl + '/api/postAdvertisementPoint',
         data: thedata,
         type: "post",
         dataType: "json",
@@ -532,9 +532,9 @@ class DataService {
     console.log("getRoomBook", pBack, park_id, name);
     let theurl
     if (name && name!=="搜索") {
-       theurl = this.state.rooturl2 + '/api/getRoomBook/' + 1 + '/' + name
+       theurl = this.state.rooturl + '/api/getRoomBook/' + 1 + '/' + name
     } else {
-       theurl= this.state.rooturl2 + '/api/getRoomBook/' + 1 
+       theurl= this.state.rooturl + '/api/getRoomBook/' + 1 
     }
     $.ajax({
       url: theurl,
@@ -559,7 +559,7 @@ class DataService {
   public getRoomBookInfo(pBack, id) {
     //console.log("getRoomBookInfo", id);
     $.ajax({
-      url: this.state.rooturl2 + '/api/getRoomBookInfo'+"/"+id,
+      url: this.state.rooturl + '/api/getRoomBookInfo'+"/"+id,
       type: "get",
       success: function (data) {
         console.log("getRoomBookInfoajax", data);
@@ -602,7 +602,7 @@ class DataService {
     let thedata = JSON.stringify(datas)
    // console.log("提交场地预定", thedata);
     $.ajax({
-      url: this.state.rooturl2 + '/api/BookingRoom',
+      url: this.state.rooturl + '/api/BookingRoom',
       data: thedata,
       type: "post",
       dataType: "json",
@@ -626,7 +626,7 @@ class DataService {
   //19.(在线报修模块-报修类型)通过园区id获取在线报修类型
   public getRepairType(pBack) {
     $.ajax({
-      url: this.state.rooturl2 + '/api/getRepairType',
+      url: this.state.rooturl + '/api/getRepairType',
       type: "get",
       success: function (data) {
         console.log("getRepairType", data);
@@ -679,7 +679,7 @@ class DataService {
     console.log("saveRepairInfo", datas);
     let thedata = JSON.stringify(datas)
     $.ajax({
-      url: this.state.rooturl2 + '/api/saveRepairInfo',
+      url: this.state.rooturl + '/api/saveRepairInfo',
       data: thedata,
       type: "post",
       dataType: "json",
