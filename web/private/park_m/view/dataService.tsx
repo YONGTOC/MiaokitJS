@@ -1172,13 +1172,15 @@ class DataService {
 
   // 49.(我的个人中心模块-我的工单) 获取我的工单信息列表，全部工单类型的获取
   public getMyWork(pBack, obj) {
+    let url = this.state.rooturl + '/api/getMyWork?'
+    if (obj.work_type !== 0) {
+      url = url + "id=" + obj.id + "&work_type=" + obj.work_type
+    } else {
+      url = url + "id=" + obj.id
+    }
     $.ajax({
-      url: this.state.rooturl + '/api/getMyWork',
+      url: url,
       data: {
-        id: obj.id,
-        work_type: obj.work_type,
-        state_type: obj.state_type,
-        token: localStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
