@@ -5,7 +5,7 @@ class DataService {
   public componentDidMount() {
     console.log(localStorage.getItem("token"));
 
-    // this.setToken = this.setToken.bind(this);
+    // this.setToken = this.setToken.bind(this)  ;
   }
 
   // 点击地图点，获取回调
