@@ -82,6 +82,7 @@ class WorkOrder extends React.Component<{ history: any }>{
       "场地预定工单" : this.state.workOrderArray[index].work_type == 3 ? "摆点申请工单" : "在线保修工单",
       stateName: this.state.workOrderArray[index].state_name
     }
+    console.log("看这里", obj)
     sessionStorage.setItem("workOrder", JSON.stringify(obj))
     this.props.history.push("/workOrderDetail")
   }

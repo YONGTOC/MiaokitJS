@@ -1204,12 +1204,48 @@ class DataService {
     })
   }
 
+  // 51.(我的个人中心模块-我的工单-场地预定操作) 场地预定操作通过或者不通过
+  public changeBookingRoomInfo(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/changeBookingRoomInfo',
+      data: {
+        uid: obj.uid,
+        id: obj.id,
+        state: obj.state,
+        reply: obj.reply,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
   // 54.(我的个人中心模块-我的工单-企业认证) 通过工单id，获取场地企业认证详细信息接口
   public getRoleAuthenticationInfo(pBack, id) {
     $.ajax({
       url: this.state.rooturl + '/api/getRoleAuthenticationInfo',
       data: {
         id: id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 55(我的个人中心模块-我的工单-企业认证操作) 企业认证操作通过或者不通过
+  public changeRoleAuthenticationInfo(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/changeRoleAuthenticationInfo',
+      data: {
+        uid: obj.uid,
+        id: obj.id,
+        state: obj.state,
+        reply: obj.reply,
         token: localStorage.getItem("token")
       },
       type: "get",
@@ -1234,12 +1270,48 @@ class DataService {
     })
   }
 
+  // 59(我的个人中心模块-我的工单-摆点申请操作) 摆点申请操作通过或者不通过
+  public changeAdvertisementPointInfo(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/changeAdvertisementPointInfo',
+      data: {
+        uid: obj.uid,
+        id: obj.id,
+        state: obj.state,
+        reply: obj.reply,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
   // 62.(我的个人中心模块-我的工单-在线报修详情) 通过工单id，在线报修申请详细信息接口
   public getRepairInfo(pBack, id) {  
     $.ajax({
       url: this.state.rooturl + '/api/getRepairInfo',
       data: {
         id: id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 63(我的个人中心模块-我的工单-在线报修操作) 在线报修操作通过或者不通过
+  public changeRepairInfo(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/changeRepairInfo',
+      data: {
+        uid: obj.uid,
+        id: obj.id,
+        state: obj.state,
+        reply: obj.reply,
         token: localStorage.getItem("token")
       },
       type: "get",
