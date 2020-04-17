@@ -44,6 +44,10 @@ class App {
             this.m_pGis = MiaokitJS.Miaokit.gis;
             this.m_pGis.imageServer = MiaokitJS.m_pConfig.GIS.m_pImageServer;
 
+            if (MiaokitJS.m_pConfig.GIS.m_pLabelServer) {
+                this.m_pGis.labelServer = MiaokitJS.m_pConfig.GIS.m_pLabelServer;
+            }
+
             if (MiaokitJS.m_pConfig.GIS.m_pTerrainServer) {
                 this.m_pGis.terrainServer = MiaokitJS.m_pConfig.GIS.m_pTerrainServer;
             }

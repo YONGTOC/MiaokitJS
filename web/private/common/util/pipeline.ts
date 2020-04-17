@@ -25,12 +25,12 @@ MiaokitJS.ShaderLab.Pipeline = {
         /// 1.星空背景贴图
         { ID: 1, TYPE: "2D", URL: "./data/star.jpg" },
         /// 2.默认贴图
-        { ID: 2, TYPE: "2D", URL: "./data/default.jpg" }
+        { ID: 2, TYPE: "2D", URL: "./data/default.png" }
     ],
 
     Pass: [
         // 0、->1，清空画布，绘制天空盒。
-        {
+        /*{
             Name: "绘制天空盒",
             Type: "Clear",
             Mask: ["Opaque"],
@@ -38,7 +38,7 @@ MiaokitJS.ShaderLab.Pipeline = {
             ClearTarget: {
                 Color: { r: 0.198, g: 0.323, b: 0.561, a: 1.0 }
             },
-        },
+        },*/
         // 1、->1，绘制不透明物体。
         {
             Name: "绘制不透明物体",
@@ -46,6 +46,7 @@ MiaokitJS.ShaderLab.Pipeline = {
             Mask: ["Opaque"],
             RenderTarget: [1, 3],
             ClearTarget: {
+                Color: { r: 0.198, g: 0.323, b: 0.561, a: 1.0 },
                 Depth: 1.0
             },
             Depth: {
@@ -80,7 +81,7 @@ MiaokitJS.ShaderLab.Pipeline = {
             Name: "混合不透明与半透明缓存",
             Type: "Postprocess",
             Mask: [],
-            RenderTarget: [9, 0],
+            //RenderTarget: [9, 0],
             Shader: "Combine",
             SetUniforms: function (aAttr, gl: WebGLRenderingContext) {
                 let aTarget = MiaokitJS.ShaderLab.Pipeline.RenderTarget;
@@ -88,7 +89,7 @@ MiaokitJS.ShaderLab.Pipeline = {
                 aAttr[8]("u_MainTex", [0, aTarget[1].Handle, 0, 0]);
                 aAttr[8]("u_MinorTex", [0, aTarget[2].Handle, 0, 0]);
             }
-        },
+        },/*
         // 4、9->2，后期处理，提取物体轮廓，抗锯齿，高亮。
         {
             Name: "提取物体轮廓",
@@ -176,7 +177,7 @@ MiaokitJS.ShaderLab.Pipeline = {
                 aAttr[8]("u_MinorTex", [0, aTarget[5].Handle, 0, 0]);
                 aAttr[8]("u_InvTexSize", aTarget[1].Size);
             }
-        }
+        }*/
     ],
 
     Picker: null,
@@ -184,7 +185,7 @@ MiaokitJS.ShaderLab.Pipeline = {
     InternalShader: [
         "Default", /*00*/ "Default", /*01*/ "Default", /*02*/ "Default", /*03*/
         "Default", /*04*/ "Default", /*05*/ "Default", /*06*/ "GIS", /*07*/
-        "Mapbox", /*08*/ "Mapbox2", /*09*/ "Default"/*"Dioramas"*/, /*10*/ "Mapbox2", /*11*/
+        "Mapbox", /*08*/ "Mapbox2", /*09*/ "Dioramas"/*"Dioramas"*/, /*10*/ "Mapbox2", /*11*/
         "Cosmos", /*12*/ "Ground", /*13*/ "Sky", /*14*/ "Present"  /*15*/
     ],
 };
@@ -250,7 +251,7 @@ vec4 SPHERE(float nTessell)
     v_Normal.xyz = vec3(nX, nY, nZ);
     v_Position.xyz = ObjectToWorldPos(v_Normal.xyz);
     v_UV = vec4(a_Position.xy / 64.0, 0.0, 0.0);
-
+    
     v_Normal.w = 0.0;
     v_Position.w = 0.0;
 
@@ -431,6 +432,8 @@ MiaokitJS.ShaderLab.Shader["Dioramas"] = {
     type: "Render",
     mark: ["Opaque"],
     vs_src: PNTT_P + ATMOS_VS + `
+uniform sampler2D _BuildingTex;
+
 vec4 vs()
 {
     //float n = a_Normal.x; 
@@ -441,10 +444,19 @@ vec4 vs()
     ///PNTT(a_Position.xyz, vec3(nx, ny, nz), a_Tangent.xyz);
     
     //Atmosphere(normalize(u_Sunlight.xyz), v_Position.xyz);
-
+    
+    vec4 mBuilding = vec4(0.0, 0.0, 0.0, 0.0);//texture2D(_BuildingTex, a_Normal.xy);
+    
+    v_Object.a = mBuilding.r;    
     v_UV = vec4(a_UV, 0.0, 0.0);
+    v_Normal = vec4(a_Normal.xyz, 0.0);
 
-    return ObjectToClipPos(a_Position.xyz);
+    vec4 mPosition = vec4(a_Position.xyz, 1.0);
+    mPosition = u_MatG * a_MatW * mPosition;
+    mPosition.y = mPosition.y - 6378137.0;    
+    mPosition.y -= mBuilding.r * (mPosition.y - 5.0);
+    
+    return u_MatVP * mPosition;
 }
         `,
     fs_src: BRDF + ATMOS_FS + `
@@ -591,6 +603,7 @@ vec4 vs()
     fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
 uniform sampler2D _TerrainTex;
 uniform sampler2D _PhotoTex;
+uniform sampler2D _LabelTex;
 
 varying vec3 v_Normal;
 varying vec3 v_UV;
@@ -598,6 +611,9 @@ varying vec3 v_UV;
 vec4 fs()
 {
     vec4 mColor = texture(_PhotoTex, v_UV.xy);
+    vec4 mLabel = texture(_LabelTex, v_UV.xy);
+
+    mColor.rgb = (mColor.rgb * (1.0 - mLabel.a)) + (mLabel.rgb * mLabel.a);
     
     //vec3 _ViewDir = normalize(v_ViewDir.xyz);
     //vec3 _Light = normalize(u_Sunlight.xyz);

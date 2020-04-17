@@ -481,9 +481,6 @@ class App {
         if (MiaokitJS.m_pConfig.GIS) {
             this.m_pGis = MiaokitJS.Miaokit.gis;
             this.m_pGis.imageServer = MiaokitJS.m_pConfig.GIS.m_pImageServer;
-            if (MiaokitJS.m_pConfig.GIS.m_pLabelServer) {
-                this.m_pGis.labelServer = MiaokitJS.m_pConfig.GIS.m_pLabelServer;
-            }
             if (MiaokitJS.m_pConfig.GIS.m_pTerrainServer) {
                 this.m_pGis.terrainServer = MiaokitJS.m_pConfig.GIS.m_pTerrainServer;
             }
@@ -904,19 +901,19 @@ MiaokitJS.UTIL = MiaokitJS.UTIL || {};
 MiaokitJS.UTIL.EntityPicker = EntityPicker;
 MiaokitJS.ShaderLab.Pipeline = {
     RenderTarget: [null,
-        { ID: 1, Format: "RGBA16_FLOAT" },
-        { ID: 2, Format: "RGBA16_FLOAT" },
-        { ID: 3, Format: "D24_UNORM" },
+        { ID: 1, Format: "RGBA16_FLOAT", Width: 640, Height: 1024 },
+        { ID: 2, Format: "RGBA16_FLOAT", Width: 640, Height: 1024 },
+        { ID: 3, Format: "D24_UNORM", Width: 640, Height: 1024 },
         { ID: 4, Format: "RGBA16_FLOAT", Width: 1024, Height: 1024, Params: ["LINEAR_MIPMAP_LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
         { ID: 5, Format: "RGBA16_FLOAT" },
         { ID: 6, Format: "RGBA16_FLOAT", Width: 512, Height: 512, Params: ["LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
         { ID: 7, Format: "RGBA16_FLOAT", Width: 256, Height: 256, Params: ["LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
         { ID: 8, Format: "RGBA16_FLOAT", Width: 128, Height: 128, Params: ["LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
-        { ID: 9, Format: "RGBA16_FLOAT" },
+        { ID: 9, Format: "RGBA16_FLOAT", Width: 640, Height: 1024 },
     ],
     Resource: [null,
         { ID: 1, TYPE: "2D", URL: "./data/star.jpg" },
-        { ID: 2, TYPE: "2D", URL: "./data/default.png" }
+        { ID: 2, TYPE: "2D", URL: "./data/default.jpg" }
     ],
     Pass: [
         {
@@ -1373,7 +1370,6 @@ vec4 vs()
     fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
 uniform sampler2D _TerrainTex;
 uniform sampler2D _PhotoTex;
-uniform sampler2D _LabelTex;
 
 varying vec3 v_Normal;
 varying vec3 v_UV;
@@ -1381,9 +1377,6 @@ varying vec3 v_UV;
 vec4 fs()
 {
     vec4 mColor = texture(_PhotoTex, v_UV.xy);
-    vec4 mLabel = texture(_LabelTex, v_UV.xy);
-
-    mColor.rgb = (mColor.rgb * (1.0 - mLabel.a)) + (mLabel.rgb * mLabel.a);
     
     //vec3 _ViewDir = normalize(v_ViewDir.xyz);
     //vec3 _Light = normalize(u_Sunlight.xyz);
