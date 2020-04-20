@@ -1,6 +1,6 @@
 ﻿import * as React from "react";
 import * as ReactDOM from "react-dom";
-import "css!./styles/index.css"
+import "css!./styles/index.css";
 import { Link } from 'react-router-dom';
 import Router from 'router';
 import ParkCompany from "parkCompany";
@@ -11,6 +11,7 @@ import BookSite from "bookSite";
 import Parking from "parking";
 import Home from "home";
 import RepairsOnline from "repairsOnline";
+
 import DataService from "dataService";
 import GlobalAction from "compat";
 
@@ -30,7 +31,6 @@ interface IState {
   latitudeLocal: string,
 }
 
-
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -46,7 +46,28 @@ class Index extends React.Component {
   public readonly state: Readonly<IState> = {
     inputValue: "请输入园区名称", // 输入框默认值
     city: "", // 城市
-    parkArr: [{ distance: 0 }], // 园区
+   //parkArr: [{ distance: 0 }], // 园区
+    parkArr: [
+        {   
+            "id":"1009",
+            "headimgurl":null,
+            "province":"桂林",
+            "longitude":"10.55",
+            "latitude":"66.666",
+            "name":"桂林国家高新",
+            "phone":"0773-123456",
+            "address":"桂林七星朝阳路D-11",
+            "service":[
+                     {   
+                        //id
+                        "id":"1009",
+                        //服务内容名字
+                        "name":"电子信息",
+                    }
+            ]
+        }
+    
+    ],
     tagArr: ["电子信息", "高新技术", "电商服务"], // 标签
     longitude: "",
     latitude: "",
@@ -84,6 +105,11 @@ class Index extends React.Component {
         }
       });
     //}
+
+    console.log(this);
+    console.log(window);
+    console.log(window.ss);
+    window.ss(99);
   }
 
   // 登录
@@ -111,7 +137,6 @@ class Index extends React.Component {
   public initPark(park_id) {
     this.globalAction.web_call_webgl_initPark(park_id);
     localStorage.setItem("park_id", park_id);
-
   }
 
   //加载园区信息列表
@@ -120,8 +145,6 @@ class Index extends React.Component {
       parkArr: data
     })
   }
-
-
 
   getRad(d) {
     return d * Math.PI / 180.0;
@@ -154,6 +177,7 @@ class Index extends React.Component {
   h2 = (3 * r + 1) / 2 / s;
   return d * (1 + fl * (h1 * sf * (1 - sg) - h2 * (1 - sf) * sg));
   }
+
   render() {
     return (
       <div className="index">
@@ -172,9 +196,11 @@ class Index extends React.Component {
         </div>
         <div className="index-park">
           {this.state.parkArr.map((item, index) => {
-            if (item.headimageurl == null) {
-              return (<Link to="/home"><div className="index-child-park" key={index} onClick={this.initPark.bind(this, 1001)}>
-                <div className="index-child-park-left"><img src="./park_m/image/a.jpg" className="park-img" /></div>
+            return (
+              <Link to="/home"><div className="index-child-park" key={index} onClick={this.initPark.bind(this, 1001)}>
+                <div className="index-child-park-left">
+                  <img  className="park-img"  src={item.headimgurl == null ? "./park_m/image/a.jpg" : "item.headimgurl"}  />
+                </div>
                 <div className="index-child-park-right">
                   <div className="index-park-name">{item.name}</div>
                   <div className="index-park-position">
@@ -191,28 +217,8 @@ class Index extends React.Component {
                 <div className="index-child-park-end">
                   <div className="index-distance">{(item.distance * 0.001).toFixed(1)}km</div>
                 </div>
-              </div></Link>)
-            } else {
-              return (<Link to="/home"><div className="index-child-park" key={index} onClick={this.initPark.bind(this, 1001)}>
-                <div className="index-child-park-left"><img src="./park_m/image/a.jpg" className="park-img" /></div>
-                <div className="index-child-park-right">
-                  <div className="index-park-name">{item.name}</div>
-                  <div className="index-park-position"><img src={item.headimageurl} width="45px" height="40px" style={{ marginTop: "-18px" }} />
-                    <span className="index-park-position-name">{item.address}</span>
-                  </div>
-                  <div className="index-tag">
-                    {this.state.tagArr.map((item, index) => {
-                      return <div key={index} className="index-tag-child">{item}</div>
-                    })
-                    }
-                  </div>
-                </div>
-                <div className="index-child-park-end">
-                  <div className="index-distance">{(item.distance * 0.001).toFixed(1)}km</div>
-                </div>
-              </div></Link>)
-            }
-           
+                </div></Link>
+            )
           })
           }
           <div style={{ width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginLeft: "-25px" }}>到底啦~</div>
