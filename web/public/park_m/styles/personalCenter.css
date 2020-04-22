@@ -6,6 +6,7 @@
   width: 100%;
   z-index: 101;
   background-color: #F2F2F2;
+  overflow-y: auto;
 }
 .personal-center-top {
   background-color: #0B8BF0;
@@ -78,6 +79,7 @@
 .personal-center-park {
   margin-top: 10px;
   overflow: hidden;
+  padding-bottom: 200px;
 }
 .personal-center-park-child {
   float: left;

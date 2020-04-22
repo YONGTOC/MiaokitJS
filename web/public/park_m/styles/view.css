@@ -212,13 +212,12 @@ i {
 }
 
 .iconBox-bottom {
-    width: 7rem;
+    width: 10rem;
     height: 10rem;
     margin: 0 5rem 0 5rem;
     cursor: pointer;
     float: left;
     margin-top: 0rem;
-    margin: 0 4rem;
     text-align: center;
     color: #6C6C6C;
 }
@@ -234,13 +233,12 @@ i {
     }
 
 .iconBox-bottomIn {
-    width: 7rem;
+    width: 10rem;
     height: 10rem;
     margin: 0 5rem 0 5rem;
     cursor: pointer;
     float: left;
     margin-top: 0rem;
-    margin: 0 4rem;
     text-align: center;
     color: #0B8BF0;
 }
