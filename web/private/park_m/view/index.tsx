@@ -1,6 +1,6 @@
 ﻿import * as React from "react";
 import * as ReactDOM from "react-dom";
-import "css!./styles/index.css"
+import "css!./styles/index.css";
 import { Link } from 'react-router-dom';
 import Router from 'router';
 import ParkCompany from "parkCompany";
@@ -11,6 +11,7 @@ import BookSite from "bookSite";
 import Parking from "parking";
 import BottomBtn from "bottomBtn";
 import RepairsOnline from "repairsOnline";
+
 import DataService from "dataService";
 import GlobalAction from "compat";
 
@@ -67,7 +68,6 @@ interface IState {
   typeIndex: number
 }
 
-
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -83,7 +83,26 @@ class Index extends React.Component {
   public readonly state: Readonly<IState> = {
     inputValue: "请输入园区名/区域名/商圈名", // 输入框默认值
     city: "", // 城市
-    parkArr: [{ distance: 0 }], // 园区
+    parkArr: [
+      {   
+        "id":"1009",
+        "headimgurl":null,
+        "province":"桂林",
+        "longitude":"10.55",
+        "latitude":"66.666",
+        "name":"桂林国家高新",
+        "phone":"0773-123456",
+        "address":"桂林七星朝阳路D-11",
+        "service":[
+          {   
+            //id
+            "id":"1009",
+            //服务内容名字
+            "name":"电子信息",
+          }
+        ]
+      }
+    ],
     tagArr: ["七星区", "东二环路", "1号线"], // 标签
     longitude: "",
     latitude: "",
@@ -184,6 +203,7 @@ class Index extends React.Component {
         }
       });
     //}
+
   }
 
   // 聚焦
@@ -209,7 +229,6 @@ class Index extends React.Component {
   public initPark(park_id) {
     this.globalAction.web_call_webgl_initPark(park_id);
     localStorage.setItem("park_id", park_id);
-
   }
 
   //加载园区信息列表
@@ -218,8 +237,6 @@ class Index extends React.Component {
       parkArr: data
     })
   }
-
-
 
   getRad(d) {
     return d * Math.PI / 180.0;
@@ -254,14 +271,16 @@ class Index extends React.Component {
   }
 
   changeType() {
-    this.setState({ type: !this.state.type, isPosition: false, _isPosition: false, isAreas: false, isMore: false,  isMask: false })
+    this.setState({ type: !this.state.type, isPosition: false, _isPosition: false, isAreas: false, isPrice: false, isMore: false, isMask: false })
   }
 
   changePosition() {
     this.setState({
       isPosition: !this.state.isPosition,
-      position: this.state.isArea ? this.state.area[this.state.areaIndex].name + this.state.area[this.state.areaIndex].children[this.state.areaChildrenIndex].name :
-      this.state.subway[this.state.subwayIndex].name + this.state.subway[this.state.subwayIndex].children[this.state.subwayChildrenIndex].name,
+      position: this.state.isArea ? this.state.area[this.state.areaIndex].name + (
+      this.state.area[this.state.areaIndex].children.length > 0 ? this.state.area[this.state.areaIndex].children[this.state.areaChildrenIndex].name : null ):
+      this.state.subway[this.state.subwayIndex].name + ( 
+      this.state.subway[this.state.subwayIndex].children.length > 0 ? this.state.subway[this.state.subwayIndex].children[this.state.subwayChildrenIndex].name : null),
       isMask: !this.state.isMask
     })
   }
@@ -269,8 +288,10 @@ class Index extends React.Component {
   changePositions() {
     this.setState({
       _isPosition: !this.state._isPosition, isAreas: false, isPrice: false, isMore: false,
-      _position: this.state._isArea ? this.state._area[this.state._areaIndex].name + this.state._area[this.state._areaIndex].children[this.state._areaChildrenIndex].name :
-      this.state._subway[this.state._subwayIndex].name + this.state._subway[this.state._subwayIndex].children[this.state._subwayChildrenIndex].name,
+      _position: this.state._isArea ? this.state._area[this.state._areaIndex].name + (
+      this.state._area[this.state._areaIndex].children.length > 0 ? this.state._area[this.state._areaIndex].children[this.state._areaChildrenIndex].name : null ) :
+      this.state._subway[this.state._subwayIndex].name + (
+      this.state._subway[this.state._subwayIndex].children.length > 0 ? this.state._subway[this.state._subwayIndex].children[this.state._subwayChildrenIndex].name : null ),
       isMask: !this.state._isPosition
     })
   }
@@ -358,6 +379,10 @@ class Index extends React.Component {
       isMore: !this.state.isMore, _isPosition: false, isAreas: false, isPrice: false, isMask: !this.state.isMore,
       moreName: this.state.typeArr[this.state.typeIndex],
     })
+  }
+
+  clickMask() {
+    this.setState({ isPosition: false, _isPosition: false, isAreas: false, isPrice: false, isMore: false, isMask: false })
   }
 
   render() {
@@ -698,7 +723,7 @@ class Index extends React.Component {
         }
 
         {this.state.isMask ?
-          <div className="mask"></div> : null
+          <div className="mask" onClick={this.clickMask.bind(this)}></div> : null
         }
         <div className="index-park">
           {this.state.parkArr.map((item, index) => {
