@@ -84,7 +84,7 @@ class Main {
         }
         pThis.m_pGis = pThis.m_pApp.m_pGis;
         pThis.m_pPanoramas = pThis.m_pApp.m_pPanoramas;
-        pThis.m_pPanoramas.Open("./data/projects/panors/");
+        pThis.m_pPanoramas.Open(MiaokitJS.m_pConfig.PANORS[0]);
         pThis.m_pApp.m_pCameraCtrl.Jump(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, {
             m_nLng: pThis.m_pCity.m_nLng,
             m_nLat: pThis.m_pCity.m_nLat,
@@ -182,6 +182,18 @@ class Main {
                     pCanvasCtx.strokeText(pText, pPoint.x - pRect.width / 2, pPoint.y);
                     pCanvasCtx.fillText(pText, pPoint.x - pRect.width / 2, pPoint.y);
                 }
+            }
+        }
+        let aPanors = MiaokitJS.m_pConfig.PANORS;
+        if (aPanors) {
+            for (let pPanor of aPanors) {
+                let pPoint = this.m_pPanoramas.ScreenPoint(pPanor);
+                let pText = pPanor.m_pName;
+                let pRect = pCanvasCtx.measureText(pText);
+                pPoint.x = pPoint.x * pCanvas.width;
+                pPoint.y = pPoint.y * pCanvas.height;
+                pCanvasCtx.strokeText(pText, pPoint.x - pRect.width / 2, pPoint.y);
+                pCanvasCtx.fillText(pText, pPoint.x - pRect.width / 2, pPoint.y);
             }
         }
     }

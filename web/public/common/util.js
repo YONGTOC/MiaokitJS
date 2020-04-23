@@ -1514,6 +1514,7 @@ MiaokitJS.Shader["Panoramas"] = {
     vs_src: `
 // X:瓦片缩放、Y:子投影面索引、Z:绕Y轴逆时针旋转弧度、W:绕X轴逆时针旋转弧度
 uniform vec4 u_LngLat;
+uniform vec4 u_Position;
 varying vec4 v_UV;
 
 vec4 vs()
@@ -1533,7 +1534,7 @@ vec4 vs()
     mPosition.y -= a_Position.y * mPosition.w;
 
     // 单位化投影射线
-    mPosition.xyz = normalize(mPosition.xyz) * 1000.0;
+    mPosition.xyz = normalize(mPosition.xyz) * 50.0;
     mPosition.w = 1.0;
 
     // 绕Y轴旋转
@@ -1551,6 +1552,7 @@ vec4 vs()
     nZ = mPosition.z;
     mPosition.y = nY * nCos - nZ * nSin;
     mPosition.z = nY * nSin + nZ * nCos;
+    mPosition.xyz += u_Position.xyz;
     
     // 纹理映射坐标
     v_UV = vec4(a_Position.xy / 31.0, 0.0, 0.0);
