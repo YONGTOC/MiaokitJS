@@ -29,9 +29,7 @@ export default class InformationChild extends React.Component {
   public dataService: DataService = new DataService()
 
   componentWillMount() {
-    if (this.props.location.state) {
-      sessionStorage.setItem("informationId", this.props.location.state.index)
-    }
+    sessionStorage.setItem("informationId", 0)
     this.getTag()
     this.getTagContent()
   }

@@ -7761,9 +7761,7 @@ define("informationChild", ["require", "exports", "react", "dataService", "css!.
             this.dataService = new dataService_22.default();
         }
         componentWillMount() {
-            if (this.props.location.state) {
-                sessionStorage.setItem("informationId", this.props.location.state.index);
-            }
+            sessionStorage.setItem("informationId", 0);
             this.getTag();
             this.getTagContent();
         }
