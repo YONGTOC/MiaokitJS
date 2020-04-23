@@ -6,7 +6,7 @@ import "css!./styles/view.css";
 interface IProps {
   history: any
 }
-
+ 
 //底部按钮区
 class BottomBtn extends React.Component {
   public constructor(props) {

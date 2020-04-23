@@ -694,7 +694,7 @@ class Mien extends React.Component {
   }
 
   public render() {
-    // beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
+    //  beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
     return (
       <div className={"mien"} >
         <p className={this.state.urlNull} style={{ "color": "#333333", "text-align": "center", "font-size": "2.5rem" }}>暂无图片···</p>

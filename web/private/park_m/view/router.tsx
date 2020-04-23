@@ -41,7 +41,7 @@ import ModificationAuthenticationDetail from "modificationAuthenticationDetail";
 import IdentityAuthentication from "identityAuthentication";
 
 
-//园区企业--parkCompany; 随手拍 -- photograph；招租查询--findLease； 摆点申请-- applyPut； 
+//园区企业--parkCompany;  随手拍 -- photograph；招租查询--findLease； 摆点申请-- applyPut； 
 //场地预定-- bookSite；在线报修-- repairsOnline；停车服务-- parking
 //Index，3d沙盘； 微圈 --infoArea； 资讯--information；我的 --personalCenter；
 
