@@ -30,7 +30,8 @@ interface IState {
   company_type: string,
   company_type_id: string,
   website: string,
-  descript: string,
+  //descript: string,
+  descriptArr: Array<any>,
   inputCompanyType: string,
   companyTypeBox: string,
   companyTypeUL: Array<any>,
@@ -76,7 +77,8 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
     company_type: "",
     company_type_id: "",
     website: "",
-    descript: "",
+    //descript: "",
+    descriptArr: [],
     companyTypeBox: "hide",
     companyTypeUL: [],
     companyTypeIndexof: 0,
@@ -113,6 +115,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
     let userid = localStorage.getItem("userId");
     //this.dataService.getCompanyInfo(this.setCompanyinfo, userId);
     this.dataService.getCompanyInfo(this.setCompanyinfo, 2);
+    // this.dataService.getCompanyInfoByUser(this.setCompanyinfo, 2);
     this.dataService.getCompanyType(this.setCompanyType, 1001);
   }
 
@@ -125,14 +128,22 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
     $.each(data.response.elegant, function (index, item) {
       elegantImgs.push({ "id": item.id, "name": item.name, "url": item.pic_url });
     });
+
     var productImgs = []
     $.each(data.response.product, function (index, item) {
       productImgs.push({ "id": item.id, "name": item.name, "url": item.pic_url });
     });
+
     var panoramaImgs = []
     $.each(data.response.panorama, function (index, item) {
       panoramaImgs.push({ "id": item.id, "name": item.name, "url": item.pic_url });
     });
+
+    let descriptN = data.response.descript;
+    //descriptN.replace(/&#10;/, "\n  &nbsp;")
+    descriptN.replace(/&#10;/, "<br />&nbsp;");
+    let descriptArr = descriptN.split("    ");
+
     this.setState({
       ID: data.response.id,
       inputEnterpriseIDValue: data.response.id,
@@ -150,7 +161,8 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
       company_type_id: data.response.company_type_id,
       inputCompanyType: data.response.company_type,
       website: data.response.website,
-      descript: data.response.descript,
+      // descript: descriptN,
+      descriptArr: descriptArr,
       descriptionValue: data.response.descript,
       elegantImgList: data.response.elegant,
       productImgList: data.response.product,
@@ -160,29 +172,13 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
       filesPanorama: panoramaImgs,
 
     })
-    //filesLogo add headimageurl
-    //     elegantImgList: elegantImgList,
-    //productImgList: data.response.product,
-    //  panoramaImgList: data.response.panorama,
-
+    console.log("hhhhhhhhhhhhhhhhhhhh", this.state);
   }
 
   public setCompanyType(data) {
     console.log("ttttttttttt", data);
     this.setState({
       companyTypeUL: data.response,
-      //companyTypeUL: [
-      //  {
-      //    "id": 1,
-      //    "name": "企业1"
-      //  },{
-      //    "id": 2,
-      //    "name": "企业2"
-      //  },,{
-      //    "id":3,
-      //    "name": "企业3"
-      //  },
-      //]
     })
   }
 
@@ -247,29 +243,27 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
 
   // 返回
   goBack() {
-    this.props.history.goBack()
+    this.props.history.goBack();
   }
   // 修改
   modify() {
     this.setState({ modifyState: !this.state.modifyState })
   }
 
-  //// 提交
-  //submit() {
-  //  console.log("objobjobj", this.state);
-  //  let obj = {
-  //    elegant: this.state.elegant,
-  //    product: this.state.product,
-  //    panorama: this.state.panorama,
-  //  };
-  //  console.log("objobjobj2222222", obj);
-  //  this.dataService.saveCompanyInfo(this.callBackSaveCompanyInfo.bind(this), obj);
-  //}
-
-
   // 提交
   submit() {
     console.log("objobjobj", this.state);
+    var reg01 = /^1[3456789]\d{9}$/;  
+    var reg02 = /^(0[0-9]{2,3}\-)([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$/; 
+
+     if(reg01.test(this.state.phoneValue) || reg02.test(this.state.phoneValue) || this.state.phoneValue=="") {
+       console.log("手机号或座机号填写正确")    
+     } else {
+        console.log("手机号码不正确，固话请添加区号")         
+        return;
+     }
+
+
 
     console.log("bobo", this.state.elegant.length);
 
@@ -300,7 +294,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
       "product": this.state.product,
       "panorama": this.state.panorama,
       "headimageurl": this.state.headimageurl,
-    };
+    }
     if (this.state.elegant.length == 0) {
       obj.elegant = this.state.filesElegant;
     };
@@ -313,13 +307,14 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
 
     console.log("objobjobj2222222", obj);
     this.dataService.saveCompanyInfo(this.callBackSaveCompanyInfo.bind(this), obj);
+    //sumbit over;
   }
 
   callBackSaveCompanyInfo(data) {
     console.log(data);
     if (data.err_msg == "更新成功") {
       alert("提交成功");
-      //this.props.history.goBack()
+      this.props.history.goBack()
     }
   }
 
@@ -495,7 +490,6 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
 
   //企业风采
   public onChangeElegant = (files, type, index) => {
-    console.log(files, type, index);
     this.setState({
       filesElegant: files,
       files,
@@ -503,9 +497,12 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
       let elegantArr = [];
       if (this.state.filesElegant.length > 0) {
         $.each(this.state.filesElegant, function (index, item) {
-          if (item.url.indexOf("base64") != -1) {
-            elegantArr.push({ "imgname": "", "imgbase64": item.url });
+          if (item.url.indexOf) {
+            if (item.url.indexOf("base64") != -1) {
+              elegantArr.push({ "imgname": "", "imgbase64": item.url });
+            }
           }
+
         });
       }
       //oss url
@@ -536,8 +533,10 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
       let productArr = [];
       if (this.state.filesProduct.length > 0) {
         $.each(this.state.filesProduct, function (index, item) {
-          if (item.url.indexOf("base64") != -1) {
-            productArr.push({ "imgname": "", "imgbase64": item.url });
+          if (item.url.indexOf) {
+            if (item.url.indexOf("base64") != -1) {
+              productArr.push({ "imgname": "", "imgbase64": item.url });
+            }
           }
         });
       }
@@ -569,9 +568,12 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
       let panoramaArr = [];
       if (this.state.filesPanorama.length > 0) {
         $.each(this.state.filesPanorama, function (index, item) {
-          if (item.url.indexOf("base64") != -1) {
-            panoramaArr.push({ "imgname": "", "imgbase64": item.url });
+          if (item.url.indexOf) {
+            if (item.url.indexOf("base64") != -1) {
+              panoramaArr.push({ "imgname": "", "imgbase64": item.url });
+            }
           }
+
         });
       }
       //oss url
@@ -613,7 +615,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
           <div>
             <div className="enterprise-information-id">
               <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", marginLeft: "30px", float: "left", width: "25%" }}>企业ID</div>
-              <input className="enterprise-information-id-input" value={this.state.inputEnterpriseIDValue} />
+              <input className="enterprise-information-id-input" value={this.state.inputEnterpriseIDValue} readOnly />
             </div>
             <div className="enterprise-information-modify-tag">
               <div className="enterprise-information-star"></div>
@@ -621,7 +623,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
               <input className="enterprise-information-name-input" value={this.state.inputEnterpriseNameValue}
                 onFocus={this.focusEnterpriseName.bind(this)} onBlur={this.blurEnterpriseName.bind(this)} onChange={this.changeEnterpriseName.bind(this)} />
             </div>
-            <div className="" style={{ height: "160px", width: "90%", margin: "auto", "marginTop": "1rem", borderBottom: "3px solid #F2F2F2" }}>
+            <div className="" style={{ height: "180px", width: "90%", margin: "auto", "marginTop": "1rem", borderBottom: "3px solid #F2F2F2" }}>
               <span className="enterprise-information-photograph-star"></span>
               <span style={{ color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left" }}>企业 logo</span>
               <div className="" style={{ "marginLeft": "14rem" }}>
@@ -631,6 +633,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
                     onChange={this.onChangeLogo}
                     onImageClick={(index, fs) => console.log(index, fs)}
                     selectable={files.length < 1}
+                    accept="image/jpg,image/jpge,image/png"
                     multiple={this.state.multiple}
                   />
                 </WingBlank>
@@ -652,7 +655,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
             <div className="enterprise-information-modify-tag">
               <div className="enterprise-information-star"></div>
               <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "25%" }}>联系电话</div>
-              <input className="enterprise-information-name-input" value={this.state.phoneValue} type="Number"
+              <input className="enterprise-information-name-input" value={this.state.phoneValue} type="text"
                 onFocus={this.focusPhone.bind(this)} onBlur={this.blurPhone.bind(this)} onChange={this.changePhone.bind(this)} />
             </div>
             <div className="enterprise-information-modify-tag" onClick={this.showCompanyTypeBox.bind(this)} >
@@ -672,7 +675,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
               <div className="enterprise-information-star"></div>
               <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "35%" }}>企业详情描述:</div>
             </div>
-            <textarea style={{ width: "84%", height: "400px", backgroundColor: "#F2F2F2", fontSize: "40px", color: "#949494", border: "none", outline: "none" }} value={this.state.descriptionValue}
+            <textarea style={{ width: "84%", height: "400px", backgroundColor: "#F2F2F2", fontSize: "40px", color: "#949494", border: "none", outline: "none", "padding": "2rem" }} value={this.state.descriptionValue}
               onFocus={this.focusDescription.bind(this)} onBlur={this.blurDescription.bind(this)} onChange={this.changeDescription.bind(this)}></textarea>
 
             <div className="" style={{ margin: "1rem auto auto", width: "90%", borderBottom: "3px solid #F2F2F2" }}>
@@ -684,6 +687,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
                     onChange={this.onChangeElegant}
                     onImageClick={(index, fs) => console.log(index, fs)}
                     selectable={files.length < 8}
+                    accept="image/jpg,image/jpge,image/png"
                     multiple={this.state.multiple}
                   />
                 </WingBlank>
@@ -699,6 +703,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
                     onChange={this.onChangeProduct}
                     onImageClick={(index, fs) => console.log(index, fs)}
                     selectable={files.length < 8}
+                    accept="image/jpg,image/jpge,image/png"
                     multiple={this.state.multiple}
                   />
                 </WingBlank>
@@ -714,6 +719,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
                     onChange={this.onChangePanorama}
                     onImageClick={(index, fs) => console.log(index, fs)}
                     selectable={files.length < 8}
+                    accept="image/jpg,image/jpge,image/png"
                     multiple={this.state.multiple}
                   />
                 </WingBlank>
@@ -754,15 +760,21 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
               <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>企业介绍</div>
-              <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "70%" }}>{this.state.descript}</div>
+              <div className={"enterpriseDetails"}>
+                {this.state.descriptArr.map((i, index) => {
+                  return (
+                    <p style={{ "white-space": "pre-line", "text-indent": "5rem" }}>{i}</p>
+                  )
+                })}
+              </div>
             </div>
-            <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
+            <div style={{ margin: "0px 0 0 50px", overflow: "hidden" }}>
               <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>企业风采</div>
               <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "70%" }}>
                 {
                   this.state.elegantImgList.map((item, index) => {
                     return (
-                      <div key={index} style={{ float: "left", width: "30%", height: "30%", margin: "0 20px 20px 0" }}>
+                      <div key={index} style={{ float: "left", width: "12rem", height: "12rem", margin: "0 20px 20px 0" }}>
                         <img src={item.pic_url} width="100%" height="100%" onError={this.onErrorElegant.bind(this)} />
                       </div>
                     )
@@ -776,7 +788,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
                 {
                   this.state.productImgList.map((item, index) => {
                     return (
-                      <div key={index} style={{ float: "left", width: "30%", height: "30%", margin: "0 20px 20px 0" }}>
+                      <div key={index} style={{ float: "left", width: "12rem", height: "12rem", margin: "0 20px 20px 0" }}>
                         <img src={item.pic_url} width="100%" height="100%" onError={this.onErrorProduct.bind(this)} />
                       </div>
                     )
@@ -790,7 +802,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
                 {
                   this.state.panoramaImgList.map((item, index) => {
                     return (
-                      <div key={index} style={{ float: "left", width: "30%", height: "30%", margin: "0 20px 20px 0" }}>
+                      <div key={index} style={{ float: "left", width: "12rem", height: "12rem", margin: "0 20px 20px 0" }}>
                         <img src={item.pic_url} width="100%" height="100%" onError={this.onErrorPanorama.bind(this)} />
                       </div>
                     )
@@ -819,6 +831,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
 
       </div>
     )
+    //  <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "70%","white-space": "pre-line" }}>{this.state.descript}</div>
   }
 }
 

@@ -1,27 +1,27 @@
-﻿
+
 declare var MiaokitJS: any;
 
-// TODO
-class GlobalAction {
-  //通知3d，要加载的园区模型  
-  public web_call_webgl_initPark(pInfo) {
-    //MiaokitJS.App.m_pProject.EnterPark({
-    //  m_pView: {
-    //    m_nLng: 110.344301,
-    //    m_nLat: 25.272208,
-    //    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
-    //    m_nDistance: 300.0,
-    //    m_nPitch: 19.0,
-    //    m_nYaw: 90.0
-    //  }
-    //});
-    console.log("web_call_webgl_initPark", pInfo);
-  }
 
-  //切换公司
-  public web_call_webgl_switchCompany(pName) {
-    console.log("web_call_webgl_switchCompany", pName);
-  }
+class GlobalAction {
+    //通知3d，要加载的园区模型  
+    public web_call_webgl_initPark(pInfo) {
+        MiaokitJS.App.m_pProject.EnterPark({
+            m_pView: {
+                m_nLng: 110.344301,
+                m_nLat: 25.272208,
+                m_mTarget: { x: 0.0, y: 0.0, z: 0.0 },
+                m_nDistance: 300.0,
+                m_nPitch: 20.0,
+                m_nYaw: 90.0
+            }
+        });
+        console.log("web_call_webgl_initPark", pInfo);
+    }
+
+    //切换公司
+    public web_call_webgl_switchCompany(pName) {
+        console.log("web_call_webgl_switchCompany", pName);
+    }
 
   // 切换房间
   public web_call_webgl_switchRoom(pName) {
@@ -55,15 +55,19 @@ class GlobalAction {
 
   //通知3d，点亮对应停车场标识
   public web_call_webgl_onParking(data) {
-    console.log("web_call_webgl_onParking", data);
+    console.log("web_call_webgl_onParking",data);
   }
 
-
-  //通知3d，关闭对应摆点标识
+  //通知3d，取消对应摆点标识
   public web_call_webgl_cancelApplyPut(data) {
-    console.log("web_call_webgl_cancelApplyPut", data);
+    console.log("web_call_webgl_cancelApplyPut",data)
   }
   //  over
 }
+
+//http://base.oss.yongtoc.com/park/data/projects/minghuakechuangyuan/diors/%E6%A1%82%E6%9E%97%E4%BF%A1%E6%81%AF%E4%BA%A7%E4%B8%9A%E5%9B%AD/Production_1.3mx
+//http://base.oss.yongtoc.com/park/data/projects/minghuakechuangyuan/diors/%E6%A1%82%E6%9E%97%E4%BF%A1%E6%81%AF%E4%BA%A7%E4%B8%9A%E5%9B%AD/Data/Production_1.3mxb
+
+
 
 export default GlobalAction;

@@ -20,7 +20,7 @@ class InfoArea extends React.Component {
     tagArr: ["咨询", "建议", "投诉", "其他"],
     listArr: [{ spread: true }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }, { spread: false }],
     tagIndex: 0, // 选中的标签
-    content: { content: "", replylist: [{username: "", time: "", content: ""}]}
+    content: { content: "", replylist: [{ username: "", time: "", content: "" }] }
   }
 
   public dataService: DataService = new DataService()
@@ -101,18 +101,18 @@ class InfoArea extends React.Component {
         </div>
         <div className="infoarea-tag">
           {this.state.tagArr.map((item, index) => {
-            return <div key={index} className={index !== this.state.tagIndex ? "infoarea-tag-child" : "infoarea-tag-child-add"} onClick={e=>this.clickTag(index)}>{item.name}</div>
-            })
+            return <div key={index} className={index !== this.state.tagIndex ? "infoarea-tag-child" : "infoarea-tag-child-add"} onClick={e => this.clickTag(index)}>{item.name}</div>
+          })
           }
         </div>
         <div className="infoarea-content">
           {this.state.listArr.map((item, index) => {
             return <div className={item.spread ? "infoarea-content-child-bottom" : "infoarea-content-child"} key={index}>
               {item.spread ?
-                <div style={{width: "100%", height: "100%"}}>
+                <div style={{ width: "100%", height: "100%" }}>
                   <div style={{ height: "50%", width: "100%" }}>
                     <div className="infoarea-content-name">{item.title}</div>
-                    <div className="infoarea-content-bottom" onClick={e=>this.spread(index, item.id)}>
+                    <div className="infoarea-content-bottom" onClick={e => this.spread(index, item.id)}>
                       <img src="./park_m/image/right.png" className="infoarea-content-right-img" />
                     </div>
                   </div>
@@ -154,7 +154,7 @@ class InfoArea extends React.Component {
                   </div>
                 </div>
               }
-              </div>
+            </div>
           })
           }
           <div style={{ width: "100%", height: "30%", textAlign: "center", fontSize: "40px", lineHeight: "60px", margin: "20px 0 0 -25px" }}>到底啦~</div>

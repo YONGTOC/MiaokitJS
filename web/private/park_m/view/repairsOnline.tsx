@@ -165,9 +165,19 @@ class RepairsOnline extends React.Component<{ history: any }>{
 
   //报修问题描述   
   public changeDescript(event) {
+    console.log("2222", event)
     this.setState({
       descript: event.target.value,
     })
+    console.log(this.state)
+  }
+
+  // 输入具体需求
+  public changebookContent(event) {
+    console.log("2222", event)
+    //this.setState({
+    //  content: event.target.value,
+    //});
   }
 
   // 显示公司列表
@@ -243,20 +253,25 @@ class RepairsOnline extends React.Component<{ history: any }>{
     return (
       <div className="repairsOnline">
         <p className="companyInfotit">
-          <RouterDOM.Link to="/home" onClick={this.mapReturnpark.bind(this)}>
-            <span className="iconfont companyInfoicon">&#xe83b;</span>
-          </RouterDOM.Link>
           <span>在线报修</span>
         </p>
 
         <div className={this.state.reqairscss}>
-          <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-            <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
+          <div className={"foleBtn"}>
+            <RouterDOM.Link to="/home" onClick={this.mapReturnpark.bind(this)}>
+            <p className="companyGoHomeLeft" style={{ color: "#949494" }} >
+              <i className="iconfont companyInfoicon">&#xe83b;</i>
+              <span>返回</span>
+              </p>
+            </RouterDOM.Link>
+            <p className="companyGoHomeRight">
+              <i className={this.state.iconfont} style={{ "fontSize": "5rem", "color": "#C0C0C0" }} onClick={this.toggleFold.bind(this)} >&#xe849;</i>
+            </p>
           </div>
           <form >
             <ul className={this.state.reqairsul} >
               <li>
-                <span className="redStar">*</span>报修照片
+                <span className="redStar">*</span><span style={{ "color": "#949494" }}>报修照片</span>
                   <div className="imgCom">
                   <WingBlank>
                     <ImagePicker
@@ -270,36 +285,37 @@ class RepairsOnline extends React.Component<{ history: any }>{
                 </div>
               </li>
               <li>
-                <span className="redStar" >*</span>报修类型
+                <span className="redStar" >*</span><span style={{ "color": "#949494" }}>报修类型</span>
                  <input type="text" className="getillType" value={this.state.type_name} placeholder="请选择报修类型" />
                 <span className="iconfont" onClick={this.showTypeUL.bind(this)} style={{ "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" }} >&#xe827;</span>
               </li>
               <li>
-                <span className="redStar">*</span>报修位置
+                <span className="redStar">*</span><span style={{ "color": "#949494" }}>报修位置</span>
                   <input type="text" value={this.state.position} placeholder="请输入报修位置" style={{ "margin-left": "4rem", "border": "0" }}
                   onChange={this.getPosition.bind(this)} />
                 <i className="iconfont" style={{ "fontSize": "3rem", "color": "#0B8BF0", "float": "right", "padding": " 0 0 0 4rem" }}>&#xe82c;</i>
               </li>
               <li>
-                <span className="redStar">*</span>报修企业
+                <span className="redStar">*</span><span style={{ "color": "#949494" }}>报修企业</span>
                 <span className="iconfont" onClick={this.showCompanyBox.bind(this)} style={{ "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" }} >&#xe827;</span>
                 <p className={"applyRight"}
-                  style={{ "font-size": "2.3rem", "padding-left": "1.5rem", "float":"right","width": "37rem" }}>{this.state.company}</p>
+                  style={{ "font-size": "2.3rem", "padding-left": "2.5rem", "float":"right","width": "37rem" }}>{this.state.company}</p>
                 
               </li>
               <li>
-                <span className="redStar">*</span>联系人
+                <span className="redStar">*</span><span style={{ "color": "#949494" }}>联系人</span>
                 <input type="text" value={this.state.contact} placeholder="请填写联系人" style={{ "margin-left": "6rem", "border": "0" }}
                   onChange={this.reqairsContacts.bind(this)} readOnly/>
               </li>
               <li>
-                <span className="redStar">*</span>电话号码
+                <span className="redStar">*</span><span style={{ "color": "#949494" }}>电话号码</span>
                 <input type="text" value={this.state.phone} placeholder="请填写联系电话号码 " style={{ "margin-left": "4rem", "border": "0" }}
                   onChange={this.reqairsPhone.bind(this)} readOnly />
               </li>
               <li>
-                <p><span className="redStar">*</span>报修描述：</p>
-                <textarea className="bookContent" value={this.state.descript} placeholder="请将报修问题描述出来。（120字内）"
+                <p><span className="redStar">*</span><span style={{ "fontSize": "2.5rem", "color": "#949494" }}>报修描述：</span></p>
+                <textarea className="bookContent" value={this.state.descript}
+                  placeholder="请将报修问题描述出来。（120字内）"
                   onChange={this.changeDescript.bind(this)}></textarea>
               </li>
             </ul>

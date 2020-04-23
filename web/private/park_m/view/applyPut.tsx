@@ -5,6 +5,7 @@ import DataService from "dataService";
 import GlobalAction from "compat";  
 import "css!./styles/antd-mobile.css";
 import "css!./styles/resetAntdMobile.css"
+import { func } from "prop-types";
 
 class ApplyPut extends React.Component {
   public constructor(props) {
@@ -85,7 +86,7 @@ class ApplyPut extends React.Component {
 
   // 聚焦
   public foucus(event) {
-    console.log("聚焦2", event.target.value);
+    console.log("address聚焦2", event.target.value);
     let index = event.target.getAttribute("data-index");
     console.log("address输入index", index);
   }
@@ -103,6 +104,20 @@ class ApplyPut extends React.Component {
     this.setState({
       content: event.target.value,
     });
+  }
+
+  //申请内容聚焦
+  public foucusContent(event) {
+    if (this.state.content === "请将具体内容描述出来。（200字内）") {
+      this.setState({ content: "" })
+    }
+  }
+
+    // 申请内容失焦
+  public blurContent(event) {
+    if (this.state.content == "") {
+      this.setState({ content: "请将具体内容描述出来。（200字内）" })
+    }
   }
 
   //修改摆点地址
@@ -246,11 +261,20 @@ class ApplyPut extends React.Component {
 
   //提交
   public sumbitApplyput() {
-   //console.log("提交摆点申请", this.state);
-    if (this.state.content == "") {
+    //console.log("提交摆点申请", this.state);
+    $.each(this.state.applyList, function (index, item) {
+      if (item.startTime == "开始日期") {
+        alert("请填写开始日期")
+      };
+        if (item.endTime == "结束日期") {
+        alert("请填写结束日期")
+      };
+    })
+    if (this.state.content == "请将具体内容描述出来。（200字内）") {
       alert("请描述具体内容")
     } else {
-      this.dataService.postAdvertisementPoint(this.sumbitApplyputsucceed, this.state);
+      console.log("提交摆点申请",this.state)
+     // this.dataService.postAdvertisementPoint(this.sumbitApplyputsucceed, this.state);
     }
   }
 
@@ -264,15 +288,20 @@ class ApplyPut extends React.Component {
     return (
       <div>
         <p className="companyInfotit">
-          <RouterDOM.Link to="/home" >
-            <span className="iconfont companyInfoicon" onClick={this.mapReturnpark.bind(this)} >&#xe83b;</span>
-          </RouterDOM.Link>
-          <span>申请摆点</span>
+          <span>摆点申请</span>
         </p>
 
         <div className={this.state.applyPutcss}>
-          <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-            <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
+          <div className={"foleBtn"}>
+            <RouterDOM.Link to="/home" >
+            <p className="companyGoHomeLeft" style={{ color: "#949494" }} onClick={this.mapReturnpark.bind(this)}>
+              <i className="iconfont companyInfoicon">&#xe83b;</i>
+              <span>返回</span>
+              </p>
+            </RouterDOM.Link>
+            <p className="companyGoHomeRight">
+              <i className={this.state.iconfont} style={{ "fontSize": "5rem", "color": "#C0C0C0" }} onClick={this.toggleFold.bind(this)} >&#xe849;</i>
+            </p>
           </div>
           <form >
             <ul className={this.state.applyPutul}>
@@ -284,13 +313,13 @@ class ApplyPut extends React.Component {
               </li>
               <li>
                 <span className="redStar">*</span>申请单位
-                <p className={"applyRight"} onClick={this.showCompanyBox.bind(this)}>{this.state.company}</p>
+                <p className={"applyRight"}>{this.state.company}</p>
               </li>
               <li>
-                <p><span className="redStar">*</span>具体内容：</p>
-                <textarea className="getapplyPuttextarea" value={this.state.content} 
-                  placeholder="请将具体内容描述出来。（200字内）"
-                  onChange={this.changeContent.bind(this)}></textarea>
+                <p><span className="redStar">*</span><span style={{"font-size":"2.3rem"}}>具体内容：</span></p>
+                <textarea className="getapplyPuttextarea" value={this.state.content}
+                  placeholder=""
+                  onChange={this.changeContent.bind(this)} onFocus={this.foucusContent.bind(this)} onBlur={this.blurContent.bind(this)} ></textarea>
               </li>
               <div className={this.state.applyPutStartTimeBox}>
                 <DatePicker
@@ -397,7 +426,7 @@ class ApplyPut extends React.Component {
     applyList: [ ],
     address: "",
     // 摆点内容
-    content: "",
+    content: "请将具体内容描述出来。（200字内）",
     inputValue: "",
     value: '2017-01-25',
   

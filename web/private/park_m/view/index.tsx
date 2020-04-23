@@ -756,12 +756,13 @@ class Index extends React.Component {
           }
           <div style={{ width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginLeft: "-25px" }}>到底啦~</div>
         </div>
-        <div className="index-bottom-logo">
-          <img src="./park_m/image/bottomLogo.png" className="index-bottom-logo-img" />
-        </div>
+      
         <BottomBtn history={this.props.history}></BottomBtn>
       </div>
     )
+      //<div className="index-bottom-logo">
+      //    <img src="./park_m/image/bottomLogo.png" className="index-bottom-logo-img" />
+      //  </div>
   }
 
   //供外部调用 -- 传入企业id，刷新树企业信息数据；

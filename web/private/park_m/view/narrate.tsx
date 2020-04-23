@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
 import GlobalAction from "compat";
 import DataService from "dataService";
@@ -42,19 +42,27 @@ class Narrate extends React.Component {
 
   static selfPlay(audioN) { };
   public selfPlay(audioN) {
-    // console.log("selfPlay", audioN);
+    console.log("selfPlay", audioN);
     let audio = document.getElementById("audioTool");
     // console.log("selfPlay2", this.state.parkAudio);
     if (audioN !== this.state.parkAudio.length) {
-      let url = this.state.parkAudio[audioN].url;
-      audio.src = url;
-      audio.play();
+      if (this.state.parkAudio[audioN].url) {
+        let url = this.state.parkAudio[audioN].url;
+        audio.src = url;
+        audio.play();
+        this.setState({
+          activeType: audioN
+        })
+      }
+
     } else {
       // 列表播放结束
       audioN = 0;
       console.log("audioOver", audioN, audio.paused);
       this.playerOver(false);
     };
+
+    console.log(audioN, "audioN", this.state)
   }
 
   public playerOver(a) {
