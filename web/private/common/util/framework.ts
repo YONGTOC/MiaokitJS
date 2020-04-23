@@ -40,6 +40,8 @@ class App {
         this.m_pCameraCtrl = new MiaokitJS.UTIL.CameraCtrl(this.m_pCamera);
         this.m_pPicker = new MiaokitJS.UTIL.EntityPicker(this.m_pCameraCtrl);
 
+        this.m_pPanoramas = MiaokitJS.Miaokit.panoramas;
+
         if (MiaokitJS.m_pConfig.GIS) {
             this.m_pGis = MiaokitJS.Miaokit.gis;
             this.m_pGis.imageServer = MiaokitJS.m_pConfig.GIS.m_pImageServer;
@@ -314,6 +316,8 @@ class App {
     private m_pPicker: any = null;
     /// GIS对象。
     private m_pGis: any = null;
+    /// 全景图对象。
+    private m_pPanoramas: any = null;
     /// 项目逻辑对象。
     private m_pProject: any = null;
 }

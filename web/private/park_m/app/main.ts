@@ -105,6 +105,8 @@ class Main {
         }
 
         pThis.m_pGis = pThis.m_pApp.m_pGis;
+        pThis.m_pPanoramas = pThis.m_pApp.m_pPanoramas;
+        pThis.m_pPanoramas.Open("./data/projects/panors/");
 
         pThis.m_pApp.m_pCameraCtrl.Jump(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, {
             m_nLng: pThis.m_pCity.m_nLng,
@@ -115,7 +117,7 @@ class Main {
             m_nYaw: 90.0
         });
 
-        MiaokitJS.ShaderLab.SetSunlight(0.0, 90.0, 0.1);
+        MiaokitJS.ShaderLab.SetSunlight(0.0, 20.0, 0.1);
     }
 
 
@@ -594,6 +596,8 @@ class Main {
     private m_pApp: any = null;
     /// GIS对象。
     private m_pGis: any = null;
+    /// 全景图对象。
+    private m_pPanoramas: any = null;
     /// 实景对象数组。
     private m_aDioramas: any[] = null;
     /// SVE瓦片数组。

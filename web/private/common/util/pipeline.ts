@@ -2,11 +2,11 @@
 MiaokitJS.ShaderLab.Pipeline = {
     RenderTarget: [null,
         /// 1.绘制不透明物体颜色缓存
-        { ID: 1, Format: "RGBA16_FLOAT"/*, Width: 640, Height: 1024*/ },
+        { ID: 1, Format: "RGBA16_FLOAT" },
         /// 2.绘制半透明物体颜色缓存/轮廓与高光颜色缓存
-        { ID: 2, Format: "RGBA16_FLOAT"/*, Width: 640, Height: 1024*/ },
+        { ID: 2, Format: "RGBA16_FLOAT" },
         /// 3.绘制不透明物体深度缓存
-        { ID: 3, Format: "D24_UNORM"/*, Width: 640, Height: 1024*/ },
+        { ID: 3, Format: "D24_UNORM" },
         /// 4.高光输入缓存，降采样，需生成MIPMAP
         { ID: 4, Format: "RGBA16_FLOAT", Width: 1024, Height: 1024, Params: ["LINEAR_MIPMAP_LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
         /// 5.高光模输出缓存，升采样512->X
@@ -18,7 +18,7 @@ MiaokitJS.ShaderLab.Pipeline = {
         /// 8.高光模糊缓存，升采样64->128
         { ID: 8, Format: "RGBA16_FLOAT", Width: 128, Height: 128, Params: ["LINEAR", "LINEAR", "CLAMP_TO_EDGE", "CLAMP_TO_EDGE"] },
         /// 9.半透明与不透明混合颜色缓存
-        { ID: 9, Format: "RGBA16_FLOAT"/*, Width: 640, Height: 1024*/ },
+        { ID: 9, Format: "RGBA16_FLOAT" },
     ],
 
     Resource: [null,
@@ -28,9 +28,9 @@ MiaokitJS.ShaderLab.Pipeline = {
         { ID: 2, TYPE: "2D", URL: "./data/default.png" }
     ],
 
-    Pass: [
+    PassList: [
         // 0、->1，清空画布，绘制天空盒。
-        /*{
+        {
             Name: "绘制天空盒",
             Type: "Clear",
             Mask: ["Opaque"],
@@ -38,7 +38,7 @@ MiaokitJS.ShaderLab.Pipeline = {
             ClearTarget: {
                 Color: { r: 0.198, g: 0.323, b: 0.561, a: 1.0 }
             },
-        },*/
+        },
         // 1、->1，绘制不透明物体。
         {
             Name: "绘制不透明物体",
@@ -46,7 +46,6 @@ MiaokitJS.ShaderLab.Pipeline = {
             Mask: ["Opaque"],
             RenderTarget: [1, 3],
             ClearTarget: {
-                Color: { r: 0.198, g: 0.323, b: 0.561, a: 1.0 },
                 Depth: 1.0
             },
             Depth: {
@@ -81,7 +80,7 @@ MiaokitJS.ShaderLab.Pipeline = {
             Name: "混合不透明与半透明缓存",
             Type: "Postprocess",
             Mask: [],
-            //RenderTarget: [9, 0],
+            RenderTarget: [9, 0],
             Shader: "Combine",
             SetUniforms: function (aAttr, gl: WebGLRenderingContext) {
                 let aTarget = MiaokitJS.ShaderLab.Pipeline.RenderTarget;
@@ -89,7 +88,7 @@ MiaokitJS.ShaderLab.Pipeline = {
                 aAttr[8]("u_MainTex", [0, aTarget[1].Handle, 0, 0]);
                 aAttr[8]("u_MinorTex", [0, aTarget[2].Handle, 0, 0]);
             }
-        },/*
+        },
         // 4、9->2，后期处理，提取物体轮廓，抗锯齿，高亮。
         {
             Name: "提取物体轮廓",
@@ -115,7 +114,6 @@ MiaokitJS.ShaderLab.Pipeline = {
                 let aTarget = MiaokitJS.ShaderLab.Pipeline.RenderTarget;
 
                 aAttr[8]("u_MainTex", [0, aTarget[2].Handle, 0, 0]);
-                aAttr[8]("u_InvTexSize", aTarget[2].Size);
             },
             Postprocess: (gl: WebGLRenderingContext) => {
                 gl.bindTexture(gl.TEXTURE_2D, MiaokitJS.ShaderLab.Pipeline.RenderTarget[4].Texture);
@@ -175,61 +173,83 @@ MiaokitJS.ShaderLab.Pipeline = {
 
                 aAttr[8]("u_MainTex", [0, aTarget[2].Handle, 0, 0]);
                 aAttr[8]("u_MinorTex", [0, aTarget[5].Handle, 0, 0]);
-                aAttr[8]("u_InvTexSize", aTarget[1].Size);
             }
-        }*/
+        }
     ],
-
-    Picker: null,
 
     InternalShader: [
         "Default", /*00*/ "Default", /*01*/ "Default", /*02*/ "Default", /*03*/
         "Default", /*04*/ "Default", /*05*/ "Default", /*06*/ "GIS", /*07*/
-        "Mapbox", /*08*/ "Mapbox2", /*09*/ "Dioramas"/*"Dioramas"*/, /*10*/ "Mapbox2", /*11*/
+        "Mapbox", /*08*/ "Mapbox2", /*09*/ "Dioramas", /*10*/ "Panoramas", /*11*/
         "Cosmos", /*12*/ "Ground", /*13*/ "Sky", /*14*/ "Present"  /*15*/
     ],
+
+    Init: function () {
+        let nQuality = MiaokitJS.m_pConfig.QUALITY;
+        let pPipeline = MiaokitJS.ShaderLab.Pipeline;
+
+        // 高品质
+        if (2 === nQuality) {
+            let aPass = pPipeline.PassList;
+            pPipeline.HighQuality = [
+                aPass[0],
+                aPass[1],
+                aPass[2],
+                aPass[3],
+                aPass[4],
+                aPass[5],
+                aPass[6],
+                aPass[7]
+            ];
+            pPipeline.Pass = pPipeline.HighQuality;
+
+        }
+        // 中品质
+        else if (1 === nQuality) {
+            let aPass = pPipeline.PassList;
+            pPipeline.MediumQuality = [
+                aPass[0],
+                aPass[1],
+                aPass[2],
+                aPass[3],
+                aPass[4],
+                aPass[5],
+                aPass[6],
+                aPass[7]
+            ];
+            pPipeline.Pass = pPipeline.MediumQuality;
+        }
+        // 低品质
+        else {
+            let aTarget = pPipeline.RenderTarget;
+            aTarget[1].Width = 640;
+            aTarget[1].Height = 1024;
+            aTarget[2].Width = 640;
+            aTarget[2].Height = 1024;
+            aTarget[3].Width = 640;
+            aTarget[3].Height = 1024;
+            aTarget[9].Width = 640;
+            aTarget[9].Height = 1024;
+
+            let aPass = pPipeline.PassList;
+            aPass[3].RenderTarget = undefined;
+            pPipeline.LowQuality = [
+                aPass[0],
+                aPass[1],
+                aPass[2],
+                aPass[3]
+            ];
+            pPipeline.Pass = pPipeline.LowQuality;
+        }
+    },
+
+    HighQuality: null,
+    MediumQuality: null,
+    LowQuality: null,
+    Pass: null,
+    Picker: null
 };
 
-
-let PNTT = `
-varying vec4 v_Position;
-varying vec4 v_Normal;
-varying vec4 v_Tangent;
-varying vec4 v_UV;
-
-void PNTT()
-{
-    v_Position.xyz = ObjectToWorldPos(a_Position.xyz);
-    v_Normal.xyz = ObjectToWorldNormal(a_Normal.xyz);
-    v_Tangent.xyz = ObjectToWorldNormal(a_Tangent.xyz);
-    v_UV = vec4(a_UV, 0.0, 0.0);
-    
-    vec3 mBinormal = normalize(cross(v_Tangent.xyz, v_Normal.xyz));
-    v_Position.w = mBinormal.x;
-    v_Normal.w = mBinormal.y;
-    v_Tangent.w = mBinormal.z;
-}
-`;
-
-let PNTT_P = `
-varying vec4 v_Position;
-varying vec4 v_Normal;
-varying vec4 v_Tangent;
-varying vec4 v_UV;
-
-void PNTT(vec3 mPosition, vec3 mNormal, vec3 mTangent)
-{
-    v_Position.xyz = ObjectToWorldPos(mPosition.xyz);
-    v_Normal.xyz = ObjectToWorldNormal(mNormal.xyz);
-    v_Tangent.xyz = ObjectToWorldNormal(mTangent.xyz);
-    v_UV = vec4(a_UV, 0.0, 0.0);
-
-    vec3 mBinormal = normalize(cross(v_Tangent.xyz, v_Normal.xyz));
-    v_Position.w = mBinormal.x;
-    v_Normal.w = mBinormal.y;
-    v_Tangent.w = mBinormal.z;
-}
-`;
 
 let PNT_SPHERE = `
 // 左上角经度、左上角纬度、经度跨距、纬度跨距
@@ -259,97 +279,114 @@ vec4 SPHERE(float nTessell)
 }
 `;
 
-let BRDF = MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + `
-varying vec4 v_Position;
-varying vec4 v_Normal;
-varying vec4 v_Tangent;
-varying vec4 v_UV;
+let LIGHT_VS = `
+#ifdef HIGH_QUALITY
+varying vec3 v_Position;
+varying vec3 v_Normal;
 
-vec3 BRDF_LIGHT()
+void LightVS(vec3 mPosition, vec3 mNormal)
 {
-    // 当前切线计算有漏洞，会导致插值出0
-    if(0.3 < length(v_Tangent.xyz))
-    {
-        vec3 _Light = normalize(u_Sunlight.xyz);
-        vec3 _ViewDir = normalize(u_EyePos.xyz - v_Position.xyz);
-        
-        return BRDF(_Light, _ViewDir, v_Normal.xyz, v_Tangent.xyz, vec3(v_Position.w, v_Normal.w, v_Tangent.w)) * 0.4;
-    }
-
-    return vec3(0.0, 0.0, 0.0);
+    v_Normal = mNormal;
+    v_Position = mPosition.xyz;
+    
+    Atmosphere(normalize(u_Sunlight.xyz), mPosition.xyz);
 }
+#endif
 `;
 
-let BRDF_P = MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + `
-varying vec4 v_Position;
-varying vec4 v_Normal;
-varying vec4 v_Tangent;
-varying vec4 v_UV;
+let LIGHT_FS = `
+#ifdef HIGH_QUALITY
+varying vec3 v_Position;
+varying vec3 v_Normal;
 
-vec3 BRDF_LIGHT(vec3 mTangent, vec3 mBinormal)
+vec4 LightFS(vec4 mColor)
 {
-    vec3 _Light = normalize(u_Sunlight.xyz);
     vec3 _ViewDir = normalize(u_EyePos.xyz - v_Position.xyz);
-        
-    return BRDF(_Light, _ViewDir, v_Normal.xyz, mTangent, mBinormal) * 0.4;
+    vec3 _Light = normalize(u_Sunlight.xyz);
+    
+    // 实景模型法线计算不严谨，会有非法值出现
+    vec3 _Normal = normalize(vec3(v_Normal.x, v_Normal.y + 0.1, v_Normal.z));
+    vec3 _Tangent = vec3(0.0, 0.0, 1.0);
+    vec3 _Binormal = vec3(1.0, 0.0, 0.0);
+    if(0.7 > _Normal.y)
+    {
+        _Tangent = normalize(cross(_Normal, vec3(0.0, 1.0, 0.0)));
+        _Binormal =  normalize(cross(_Tangent, _Normal));
+    }
+    
+    mColor.rgb += BRDF(_Light, _ViewDir, _Normal, _Tangent, _Binormal) * 0.4;
+    
+    mColor = AtmosphereLight(mColor, _Light);
+    mColor.a = 1.0;
+
+    return mColor;
 }
+#endif
 `;
 
-let ATMOS_VS = MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereVS"];
-let ATMOS_FS = MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"];
 
-
-MiaokitJS.ShaderLab.Shader["Default"] = {
+MiaokitJS.Shader["Default"] = {
     name: "Default",
     type: "Render",
     mark: ["Opaque"],
-    vs_src: PNTT + `
+    include: [
+        null,
+        null,
+        ["ATOM", "BRDF"],
+    ],
+    vs_src: LIGHT_VS + `
+varying vec4 v_UV;
+
 vec4 vs()
 {
-    //PNTT();
-    //v_Normal = a_Object;
     v_UV = vec4(a_UV, 0.0, 0.0);
     
-    return ObjectToClipPos(a_Position.xyz);
+    vec4 mPosition = vec4(a_Position.xyz, 1.0);
+    mPosition = u_MatG * a_MatW * mPosition;
+    mPosition.y = mPosition.y - 6378137.0;
+    
+    #ifdef HIGH_QUALITY
+    LightVS(mPosition.xyz, ObjectToWorldNormal(a_Normal));
+    #endif
+
+    return u_MatVP * mPosition;
 }
         `,
-    fs_src: BRDF + `
+    fs_src: LIGHT_FS + `
+varying vec4 v_UV;
+
 vec4 fs()
 {
     vec4 mColor = Tex2D(u_MainTex, v_UV.xy);
     
-    //mColor.rgb += BRDF_LIGHT();
+    #ifdef HIGH_QUALITY
+    mColor = LightFS(mColor);
+    #endif
     
     return mColor;
 }
         `
 };
 
-MiaokitJS.ShaderLab.Shader["Wall"] = {
+MiaokitJS.Shader["Wall"] = {
     name: "Wall",
     type: "Render",
     mark: ["Transparent"],
-    vs_src: PNTT + `
+    vs_src: `
 vec4 vs()
 {
-    PNTT();
-
     return ObjectToClipPos(a_Position.xyz);
 }
         `,
-    fs_src: BRDF + `
+    fs_src: `
 vec4 fs()
 {
-    vec4 mColor = vec4(0.3, 0.3, 0.3, 1.0);
-
-    //mColor.rgb += BRDF_LIGHT();
-    
-    return mColor;
+    return vec4(0.3, 0.3, 0.3, 1.0);
 }
         `
 };
 
-MiaokitJS.ShaderLab.Shader["Corner"] = {
+MiaokitJS.Shader["Corner"] = {
     name: "Corner",
     type: "Render",
     mark: ["Transparent"],
@@ -362,124 +399,112 @@ vec4 vs()
     fs_src: `
 vec4 fs()
 {
-    vec4 mColor = vec4(1.98, 3.23, 5.61, 1.0);
-
-    return mColor;
+    return vec4(1.98, 3.23, 5.61, 1.0);
 }
         `
 };
 
-MiaokitJS.ShaderLab.Shader["Mapbox"] = {
+MiaokitJS.Shader["Mapbox"] = {
     name: "Mapbox",
     type: "Render",
     mark: ["Opaque"],
-    vs_src: PNTT_P + ATMOS_VS + `
+    vs_src: `
 vec4 vs()
 {
-    PNTT();
-    
-    Atmosphere(normalize(u_Sunlight.xyz), v_Position.xyz);
-    
     return ObjectToClipPos(a_Position.xyz);
 }
         `,
-    fs_src: BRDF + ATMOS_FS + `
+    fs_src: `
 vec4 fs()
 {
-    vec4 mColor = vec4(0.6019608, 0.7862745, 0.8254902, 1.0);
-    
-    mColor.rgb += BRDF_LIGHT();
-
-    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
-    mColor.a = 1.0;
-
-    return mColor;
+    return vec4(0.6019608, 0.7862745, 0.8254902, 1.0);
 }
         `
 };
 
-MiaokitJS.ShaderLab.Shader["Mapbox2"] = {
+MiaokitJS.Shader["Mapbox2"] = {
     name: "Mapbox2",
     type: "Render",
     mark: ["Opaque"],
-    vs_src: PNTT_P + ATMOS_VS + `
+    vs_src: `
 vec4 vs()
 {
-    PNTT();
-    
-    Atmosphere(normalize(u_Sunlight.xyz), v_Position.xyz);
-    
     return ObjectToClipPos(a_Position.xyz);
 }
         `,
-    fs_src: BRDF + ATMOS_FS + `
+    fs_src: `
 vec4 fs()
 {
-    vec4 mColor = vec4(0.6019608, 0.7862745, 0.8254902, 1.0);
-    
-    mColor.rgb += BRDF_LIGHT();
-
-    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
-    mColor.a = 1.0;
-
-    return mColor;
+    return vec4(0.6019608, 0.7862745, 0.8254902, 1.0);
 }
         `
 };
 
-MiaokitJS.ShaderLab.Shader["Dioramas"] = {
+MiaokitJS.Shader["Dioramas"] = {
     name: "Dioramas",
     type: "Render",
     mark: ["Opaque"],
-    vs_src: PNTT_P + ATMOS_VS + `
+    include: [
+        null,
+        null,
+        ["ATOM", "BRDF"],
+    ],
+    vs_src: LIGHT_VS + `
 uniform sampler2D _BuildingTex;
+
+varying vec4 v_UV;
 
 vec4 vs()
 {
-    //float n = a_Normal.x; 
-    //float nx = n / 8.0;  n = floor(nx); nx = (nx - n) * 4.0 - 1.0;
-    //float ny = n / 8.0;  n = floor(ny); ny = (ny - n) * 4.0 - 1.0;
-    //float nz = (n - 2.0) * 0.5;
-
-    ///PNTT(a_Position.xyz, vec3(nx, ny, nz), a_Tangent.xyz);
-    
-    //Atmosphere(normalize(u_Sunlight.xyz), v_Position.xyz);
-    
     vec4 mBuilding = vec4(0.0, 0.0, 0.0, 0.0);//texture2D(_BuildingTex, a_Normal.xy);
     
     v_Object.a = mBuilding.r;    
     v_UV = vec4(a_UV, 0.0, 0.0);
-    v_Normal = vec4(a_Normal.xyz, 0.0);
-
+    
     vec4 mPosition = vec4(a_Position.xyz, 1.0);
     mPosition = u_MatG * a_MatW * mPosition;
     mPosition.y = mPosition.y - 6378137.0;    
     mPosition.y -= mBuilding.r * (mPosition.y - 5.0);
-    
+
+    // 高品质下，计算法线，计算大气散射
+    #ifdef HIGH_QUALITY
+    float n = a_Normal.z; 
+    float nx = n / 8.0;  n = floor(nx); nx = (nx - n) * 4.0 - 1.0;
+    float ny = n / 8.0;  n = floor(ny); ny = (ny - n) * 4.0 - 1.0;
+    float nz = (n - 2.0) * 0.5;
+
+    LightVS(mPosition.xyz, vec3(nx, ny, nz));
+    #endif
+
     return u_MatVP * mPosition;
 }
         `,
-    fs_src: BRDF + ATMOS_FS + `
+    fs_src: LIGHT_FS + `
+varying vec4 v_UV;
+
 vec4 fs()
 {
     vec4 mColor = Tex2D(u_MainTex, v_UV.xy);
     
-    //mColor.rgb += BRDF_LIGHT();
-    //mColor.rgb = clamp(mColor.rgb, 0.0, 1.0);
-    
-    //mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
-    //mColor.a = 1.0;
+    #ifdef HIGH_QUALITY
+    mColor = LightFS(mColor);
+    #endif
     
     return mColor;
 }
         `
 };
 
-MiaokitJS.ShaderLab.Shader["GIS"] = {
+MiaokitJS.Shader["GIS"] = {
     name: "GIS",
     type: "Render",
     mark: ["Opaque"],
-    vs_src: MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereVS"] + `
+    include: [
+        null,
+        null,
+        ["ATOM", "BRDF"],
+    ],
+    vs_src: `
 uniform sampler2D _TerrainTex;
 uniform vec4 _LngLat;
 uniform vec4 _Terrain;
@@ -487,19 +512,22 @@ uniform vec4 _Terrain;
 varying vec3 v_Normal;
 varying vec3 v_UV;
 
-vec4 CalNormal(float nTexU, float nTexV, vec4 mLngLat, vec4 mTerrain)
+vec3 CalNormal(float nTexU, float nTexV, vec4 mLngLat, vec4 mTerrain)
 {
-	vec4 aUV[5];
-	aUV[0] = vec4(nTexU, nTexV, 0.0, 0.0);
-	aUV[1] = vec4(nTexU - mLngLat.w, nTexV, 0.0, 0.0);
-	aUV[2] = vec4(nTexU + mLngLat.w, nTexV, 0.0, 0.0);
-	aUV[3] = vec4(nTexU, nTexV - mLngLat.w, 0.0, 0.0);
-	aUV[4] = vec4(nTexU, nTexV + mLngLat.w, 0.0, 0.0);
+    float aHeight[4];
+	vec4 aUV[4];
     
-	float aHeight[5];
-	aHeight[0] = 0.0; aHeight[1] = 0.0; aHeight[2] = 0.0; aHeight[3] = 0.0; aHeight[4] = 0.0;
+	aUV[0] = vec4(nTexU - mLngLat.w, nTexV, 0.0, 0.0);
+	aUV[1] = vec4(nTexU + mLngLat.w, nTexV, 0.0, 0.0);
+	aUV[2] = vec4(nTexU, nTexV - mLngLat.w, 0.0, 0.0);
+	aUV[3] = vec4(nTexU, nTexV + mLngLat.w, 0.0, 0.0);
     
-	for (int i = 0; i < 5; i++)
+	aHeight[0] = 0.0;
+    aHeight[1] = 0.0; 
+    aHeight[2] = 0.0; 
+    aHeight[3] = 0.0;
+    
+	for (int i = 0; i < 4; i++)
 	{
         // 约束到[0,1]范围
 		aUV[i].xy /= mLngLat.z;
@@ -507,36 +535,25 @@ vec4 CalNormal(float nTexU, float nTexV, vec4 mLngLat, vec4 mTerrain)
 		aUV[i].y = aUV[i].y * mTerrain.z + mTerrain.y;
         
 		vec4 mHeight = texture2D(_TerrainTex, aUV[i].xy);
-		float nHeight = ((mHeight.r * 256.0 * 256.0 * 256.0) + (mHeight.g * 256.0 * 256.0) + (mHeight.b * 256.0)) * 0.001;
-        
-		aHeight[i] = nHeight;
+        float nHeight = ((mHeight.r * 256.0 * 256.0 * 256.0) + (mHeight.g * 256.0 * 256.0) + (mHeight.b * 256.0)) * 0.001;
+
+		aHeight[i] = nHeight - 1000.0;
 	}
     
 	float nLng = (mLngLat.x + nTexU) / 131072.0 * 3.141592654;
 	float nLat = (mLngLat.y - nTexV) / 131072.0 * 3.141592654;
     
-	vec3 mNormal = vec3(0.0, 0.0, 0.0);
-	vec3 mBinormal = vec3(0.0, 0.0, 0.0);
-	vec3 mTangent = vec3(0.0, 0.0, 0.0);
+	vec3 mNormal = vec3(0.0, 1.0, 0.0);
+	vec3 mBinormal = vec3(1.0, 0.0, 0.0);
+	vec3 mTangent = vec3(0.0, 0.0, 1.0);
     
-	mNormal.y = sin(nLat);
-	mNormal.x = cos(nLat) * cos(nLng);
-	mNormal.z = cos(nLat) * sin(nLng);
-    
-	mBinormal.y = sin(nLat);
-	mBinormal.x = cos(nLat) * cos(nLng + 1.57079633);
-	mBinormal.z = cos(nLat) * sin(nLng + 1.57079633);
-    
-	mTangent.y = sin(nLat + 1.57079633);
-	mTangent.x = cos(nLat + 1.57079633) * cos(nLng);
-	mTangent.z = cos(nLat + 1.57079633) * sin(nLng);
-    
-	float nScale = 1.0 / ((mLngLat.w / 131072.0 *  3.141592654) * 6378137.0);
+	float nScale = 1.0 / ((mLngLat.w / 131072.0 * 3.141592654) * 6378137.0);
     nScale *= 2.0;
-	mNormal += mBinormal * (aHeight[1] - aHeight[2]) * nScale + mTangent * (-aHeight[3] + aHeight[4]) * nScale;
+    
+	mNormal = mNormal +  mBinormal * (aHeight[0] - aHeight[1]) * nScale + mTangent * (-aHeight[2] + aHeight[3]) * nScale;
 	normalize(mNormal);
     
-	return vec4(mNormal, aHeight[0]);
+	return mNormal;
 }
 
 vec4 vs()
@@ -560,8 +577,8 @@ vec4 vs()
     
     vec3 mPosition = vec3(nVecX, nVecY, nVecZ);
     
-    // TODO: 需要世界变换矩阵做变换
     v_Normal = vec3(nVecX, nVecY, nVecZ);
+    v_Normal = normalize((u_MatG * vec4(v_Normal, 0.0)).xyz);
 
     float nHeight = 0.0;
     if(7.9 < mTerrain.w)
@@ -575,6 +592,11 @@ vec4 vs()
         
 		nHeight = ((mHeight.r * 256.0 * 256.0 * 256.0) + (mHeight.g * 256.0 * 256.0) + (mHeight.b * 256.0)) * 0.001;
         nHeight -= 1000.0;
+        
+        // 高品质下，计算地形法线
+        #ifdef HIGH_QUALITY
+        v_Normal = CalNormal(nTexU, nTexV, mLngLat, mTerrain);
+        #endif
     }
     
     mPosition = mPosition * (6378137.0 + nHeight);
@@ -585,22 +607,22 @@ vec4 vs()
 	// 网格从左上角开始，影像贴图从左下角开始  
     v_UV = vec3(nTexU, nTexV, mMap.y);
     
-    //vec3 mLightDir = normalize(u_Sunlight.xyz);
-    //Atmosphere(mLightDir, ObjectToWorldPos(mPos));
-    
-    // GIS的变换矩阵值包含旋转信息，未包含位移信息，避免精度不足造成画面抖动
+    // GIS的变换矩阵只包含旋转信息，未包含位移信息，避免精度不足造成画面抖动
     // return u_MatVP * u_MatG * vec4(mPosition.xyz, 1.0);
     
     vec4 mPosition_ = vec4(mPosition.xyz, 1.0);
     mPosition_ = u_MatG * mPosition_;
     mPosition_.y = mPosition_.y - 6378137.0;
-
-    return u_MatVP * mPosition_;
-
     
+    // 高品质下，计算大气散射
+    #ifdef HIGH_QUALITY
+    Atmosphere(normalize(u_Sunlight.xyz), mPosition_.xyz);
+    #endif
+    
+    return u_MatVP * mPosition_; 
 }
         `,
-    fs_src: MiaokitJS.ShaderLab.Shader["Common"]["BRDF"] + MiaokitJS.ShaderLab.Shader["Common"]["AtmosphereFS"] + `
+    fs_src: `
 uniform sampler2D _TerrainTex;
 uniform sampler2D _PhotoTex;
 uniform sampler2D _LabelTex;
@@ -614,20 +636,85 @@ vec4 fs()
     vec4 mLabel = texture(_LabelTex, v_UV.xy);
 
     mColor.rgb = (mColor.rgb * (1.0 - mLabel.a)) + (mLabel.rgb * mLabel.a);
-    
-    //vec3 _ViewDir = normalize(v_ViewDir.xyz);
-    //vec3 _Light = normalize(u_Sunlight.xyz);
-    //mColor.rgb += BRDF(_Light, _ViewDir, v_Normal, vec3(1.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0)) * 0.4;
-    
-    //mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
-    //mColor.a = 1.0;
+
+    // 高品质下，计算BRDF光照，计算大气散射
+    #ifdef HIGH_QUALITY    
+    mColor.rgb += BRDF(normalize(u_Sunlight.xyz), normalize(v_ViewDir.xyz), v_Normal, vec3(0.0, 0.0, 1.0), vec3(1.0, 0.0, 0.0)) * 0.4;
+
+    mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz));
+    mColor.a = 1.0;
+    #endif
     
     return mColor;
 }
         `
 };
 
-MiaokitJS.ShaderLab.Shader["Cosmos"] = {
+MiaokitJS.Shader["Panoramas"] = {
+    name: "Panoramas",
+    type: "Clear",
+    mark: ["Opaque"],
+    vs_src: `
+// X:瓦片缩放、Y:子投影面索引、Z:绕Y轴逆时针旋转弧度、W:绕X轴逆时针旋转弧度
+uniform vec4 u_LngLat;
+varying vec4 v_UV;
+
+vec4 vs()
+{
+    // 中心投影法：设定球心位于原点处，令124*124的正方形立于X=62处，球心到正方形各个顶点的射线投影出一个弧面
+    
+    // 左上角基准点坐标，从左上角向右下角扫描
+    vec4 mPosition = vec4(62.0, 62.0, -62.0, 4.0);
+    
+    // 投影面可以细分为16个子投影面，修改子投影面左上角基准点坐标
+    mPosition.w *= u_LngLat.x;
+    mPosition.z += 31.0 * mod(u_LngLat.y, 4.0);
+    mPosition.y -= 31.0 * floor(u_LngLat.y / 4.0);
+
+    // 当前投影点坐标
+    mPosition.z += a_Position.x * mPosition.w;
+    mPosition.y -= a_Position.y * mPosition.w;
+
+    // 单位化投影射线
+    mPosition.xyz = normalize(mPosition.xyz) * 1000.0;
+    mPosition.w = 1.0;
+
+    // 绕Y轴旋转
+    float nCos = cos(u_LngLat.z);
+    float nSin = sin(u_LngLat.z);
+    float nX = mPosition.x;
+    float nY = mPosition.y;
+    float nZ = mPosition.z;
+    mPosition.x = nX * nCos - nZ * nSin;
+    mPosition.z = nX * nSin + nZ * nCos;
+    
+    // 绕X轴旋转
+    nCos = cos(u_LngLat.w);
+    nSin = sin(u_LngLat.w);
+    nZ = mPosition.z;
+    mPosition.y = nY * nCos - nZ * nSin;
+    mPosition.z = nY * nSin + nZ * nCos;
+    
+    // 纹理映射坐标
+    v_UV = vec4(a_Position.xy / 31.0, 0.0, 0.0);
+    
+    return u_MatVP * mPosition;
+}
+        `,
+    fs_src: `
+varying vec4 v_UV;
+
+vec4 fs()
+{
+    vec4 mColor = texture(u_MainTex, vec2(1.0 - v_UV.x, v_UV.y));
+    mColor.a = 1.0;
+    
+    return mColor;
+}
+        `
+};
+
+MiaokitJS.Shader["Cosmos"] = {
     name: "Cosmos",
     type: "Clear",
     mark: ["Opaque"],
@@ -651,11 +738,16 @@ vec4 fs()
         `
 };
 
-MiaokitJS.ShaderLab.Shader["Sky"] = {
+MiaokitJS.Shader["Sky"] = {
     name: "Sky",
     type: "Clear",
     mark: ["Opaque"],
-    vs_src: PNT_SPHERE + ATMOS_VS + `
+    include: [
+        ["ATOM"],
+        ["ATOM"],
+        ["ATOM"],
+    ],
+    vs_src: PNT_SPHERE + `
 vec4 vs()
 {
     vec4 mClip = SPHERE(64.0);
@@ -665,7 +757,7 @@ vec4 vs()
     return mClip;
 }
         `,
-    fs_src: ATMOS_FS + `
+    fs_src: `
 vec4 fs()
 {
     return AtmosphereColor(vec4(1.0, 1.0, 1.0, 1.0), normalize(u_Sunlight.xyz));
@@ -673,36 +765,25 @@ vec4 fs()
         `
 };
 
-MiaokitJS.ShaderLab.Shader["Ground"] = {
+MiaokitJS.Shader["Ground"] = {
     name: "Ground",
     type: "Clear",
     mark: ["Opaque"],
-    vs_src: PNT_SPHERE + ATMOS_VS + `
+    vs_src: PNT_SPHERE + `
 vec4 vs()
 {
-    vec4 mClip = SPHERE(64.0);
-
-    //Atmosphere(normalize(u_Sunlight.xyz), v_Position.xyz);
-    
-    return mClip;
+    return SPHERE(64.0);
 }
         `,
-    fs_src: BRDF_P + ATMOS_FS + `
+    fs_src: `
 vec4 fs()
 {
-    vec4 mColor = vec4(0.1019608, 0.2862745, 0.3254902, 1.0);
-    
-    //mColor = AtmosphereLight(mColor, normalize(u_Sunlight.xyz)) * 0.5;
-    mColor.a = 1.0;
-    
-    //mColor.rgb += BRDF_LIGHT(vec3(1.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0)) * 0.5;
-
-    return mColor;
+    return vec4(0.1019608, 0.2862745, 0.3254902, 1.0);
 }
         `
 };
 
-MiaokitJS.ShaderLab.Shader["Combine"] = {
+MiaokitJS.Shader["Combine"] = {
     name: "Present",
     type: "Postprocess",
     mark: ["Opaque"],
@@ -719,6 +800,7 @@ vec4 vs()
         `,
     fs_src: `
 uniform sampler2D u_MinorTex;
+
 varying vec2 v_UV;
 
 vec4 fs()
@@ -731,16 +813,20 @@ vec4 fs()
     mColor.rgb = mColor1.rgb * mColor2.a + vec3(nGray2, nGray2, nGray2) * (1.0 - mColor2.a);
     mColor.a = mColor1.a + mColor2.r;
     
-    // 标识是否高亮
+    // 标识是否高亮，边缘提取时不应再除以混合次数
     mColor.a = ceil(ceil(mColor.a) - mColor.a);
+
+    // 低品质下，合成颜色直接输出，叠加高亮区域颜色
+    #ifdef LOW_QUALITY
+    mColor.rgb *= vec3(0.2, 0.4, 0.6) + (vec3(0.8, 0.6, 0.4) * (1.0 - mColor.a));
+    #endif
     
-    // 边缘提取时不应再除以混合次数
     return mColor;
 }
         `
 };
 
-MiaokitJS.ShaderLab.Shader["EdgeDetection"] = {
+MiaokitJS.Shader["EdgeDetection"] = {
     name: "EdgeDetection",
     type: "Postprocess",
     mark: ["Opaque"],
@@ -834,7 +920,7 @@ vec4 fs()
         `
 };
 
-MiaokitJS.ShaderLab.Shader["HDR"] = {
+MiaokitJS.Shader["HDR"] = {
     name: "HDR",
     type: "Postprocess",
     mark: ["Opaque"],
@@ -850,7 +936,6 @@ vec4 vs()
 }
         `,
     fs_src: `
-uniform vec4 u_InvTexSize;
 varying vec2 v_UV;
 
 vec4 fs()
@@ -881,7 +966,7 @@ vec4 fs()
         `
 };
 
-MiaokitJS.ShaderLab.Shader["Upsampling"] = {
+MiaokitJS.Shader["Upsampling"] = {
     name: "Upsampling",
     type: "Postprocess",
     mark: ["Opaque"],
@@ -921,7 +1006,7 @@ vec4 fs()
         `
 };
 
-MiaokitJS.ShaderLab.Shader["Present"] = {
+MiaokitJS.Shader["Present"] = {
     name: "Present",
     type: "Postprocess",
     mark: ["Opaque"],
@@ -938,7 +1023,7 @@ vec4 vs()
         `,
     fs_src: `
 uniform sampler2D u_MinorTex;
-uniform vec4 u_InvTexSize;
+
 varying vec2 v_UV;
 
 vec4 fs()

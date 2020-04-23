@@ -55,6 +55,7 @@ class Main {
         this.iii = 0;
         this.m_pApp = null;
         this.m_pGis = null;
+        this.m_pPanoramas = null;
         this.m_aDioramas = null;
         this.m_aTile = null;
         this.m_nLoading = 0;
@@ -82,6 +83,8 @@ class Main {
             };
         }
         pThis.m_pGis = pThis.m_pApp.m_pGis;
+        pThis.m_pPanoramas = pThis.m_pApp.m_pPanoramas;
+        pThis.m_pPanoramas.Open("./data/projects/panors/");
         pThis.m_pApp.m_pCameraCtrl.Jump(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, {
             m_nLng: pThis.m_pCity.m_nLng,
             m_nLat: pThis.m_pCity.m_nLat,
@@ -90,7 +93,7 @@ class Main {
             m_nPitch: 20.0,
             m_nYaw: 90.0
         });
-        MiaokitJS.ShaderLab.SetSunlight(0.0, 90.0, 0.1);
+        MiaokitJS.ShaderLab.SetSunlight(0.0, 20.0, 0.1);
     }
     Update() {
         if ((this.iii++) % 180 === 0) {
