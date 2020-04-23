@@ -83,30 +83,16 @@ class PersonalCenter extends React.Component {
           </div>
         </div>
         <div className="personal-center-tag">
-         我的收藏
+          我的收藏 <img src="./park_m/image/right.png" style={{marginTop: "40px", float: "right"}} />
         </div>
         <div className="personal-center-tag">
-          <span style={{ margin: "0 50px 0 50px" }}>关联企业</span><span>浙江永拓信息科技有限公司</span><span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>修改</span>
+          浏览记录 <img src="./park_m/image/right.png" style={{ marginTop: "40px", float: "right" }} />
         </div>
         <div className="personal-center-tag">
-          <span style={{ margin: "0 50px 0 50px" }}>客服电话</span><span>0773-123456</span>
+          客服电话 <span style={{float: "right"}}>400-808-3066</span>
         </div>
-        <div className="personal-center-my">
-          <Link to={sessionStorage.getItem("userInfo") === "园区管理员" ? "/parkWorkOrder" : "/workOrder"}>
-            <div className="personal-center-my-left">
-              <div style={{ fontSize: "40px", marginTop: "30px", color: "#333333" }}>5</div>
-              <div style={{ fontSize: "40px", marginTop: "5px", color: "#6C6C6C" }}>我的工单</div>
-            </div>
-          </Link>
-          <div className="personal-center-my-middle">
-          </div>
-          <Link to="/message">
-            <div className="personal-center-my-right">
-              <div style={{ fontSize: "40px", marginTop: "30px", color: "#333333"}}>6</div>
-              <div style={{ fontSize: "40px", marginTop: "5px", color: "#6C6C6C" }}>我的消息</div>
-            </div>
-          </Link>
-        </div>
+ 
+    
         {sessionStorage.getItem("userInfo") === "企业管理员" ?
           <div className="personal-center-enterprise">
             <Link to="/enterpriseInformation">
