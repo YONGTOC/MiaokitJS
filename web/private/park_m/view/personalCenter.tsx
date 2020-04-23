@@ -83,7 +83,7 @@ class PersonalCenter extends React.Component {
           </div>
         </div>
         <div className="personal-center-tag">
-          <span style={{ margin: "0 50px 0 50px" }}>手机号码</span><span>15578383040</span><span style={{ float: "right", marginRight: "50px", color: "#0B8BF0"}}>修改</span>
+         我的收藏
         </div>
         <div className="personal-center-tag">
           <span style={{ margin: "0 50px 0 50px" }}>关联企业</span><span>浙江永拓信息科技有限公司</span><span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>修改</span>
