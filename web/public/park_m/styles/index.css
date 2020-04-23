@@ -75,7 +75,7 @@
 .index-park {
   height: 100%;
   width: 100%;
-  margin: 25px 0 0 50px;
+  padding: 25px 0 0 50px;
   white-space: pre-line;
   overflow-y: auto;
   padding-bottom: 700px;

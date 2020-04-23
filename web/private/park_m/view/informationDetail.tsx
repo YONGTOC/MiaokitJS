@@ -1,18 +1,43 @@
 ﻿import * as React from "react";
 import "css!./styles/informationDetail.css"
 import DataService from "dataService";
+import { Link } from 'react-router-dom';
 
 interface IProps {
   history: any
 }
 
 interface IState {
-  data: { name: string, start_time: string, end_time: string, position: string, sign_end_time: string, contact: string, contact_tel: string, content: string, fee: string, headimgurl: string, visit_amount: string, time: string }
+  data: { name: string, start_time: string, end_time: string, position: string, sign_end_time: string, contact: string, contact_tel: string, content: string, fee: string, headimgurl: string, visit_amount: string, time: string }，
+  parkArr: Array<any>,
+  tagArr: Array<any>,
+
 }
 
 export default class informationDetail extends React.Component {
   public readonly state: Readonly<IState> = {
-    data: { name: "", start_time: "", end_time: "", position: "", sign_end_time: "", contact: "", contact_tel: "", content: "", fee: "", headimgurl: "", visit_amount: "", time: "" }
+    data: { name: "", start_time: "", end_time: "", position: "", sign_end_time: "", contact: "", contact_tel: "", content: "", fee: "", headimgurl: "", visit_amount: "", time: "" }，
+    parkArr: [
+      {
+        "id": "1009",
+        "headimgurl": null,
+        "province": "桂林",
+        "longitude": "10.55",
+        "latitude": "66.666",
+        "name": "桂林国家高新",
+        "phone": "0773-123456",
+        "address": "桂林七星朝阳路D-11",
+        "service": [
+          {
+            //id
+            "id": "1009",
+            //服务内容名字
+            "name": "电子信息",
+          }
+        ]
+      }
+    ],
+    tagArr: ["七星区", "东二环路", "1号线"], // 标签
   }
 
   public readonly props: Readonly<IProps> = {
@@ -36,6 +61,12 @@ export default class informationDetail extends React.Component {
   // 返回
   goBack() {
     this.props.history.goBack()
+  }
+
+  // 加载园区地图
+  public initPark(park_id) {
+    this.globalAction.web_call_webgl_initPark(park_id);
+    localStorage.setItem("park_id", park_id);
   }
 
   submit() {
@@ -71,6 +102,42 @@ export default class informationDetail extends React.Component {
               <p style={{ fontSize: "40px" }}>各相关单位：</p>
               {this.state.data.content}
             </div>
+            <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" }}>
+              <div style={{ height: "50px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "36px 30px 0 50px" }}></div>
+              <div style={{ color: "#333333", fontSize: "40px", fontWeight: "600", lineHeight: "120px" }}>服务信息</div>
+            </div>
+
+            <div className="index-park">
+              {this.state.parkArr.map((item, index) => {
+                return (
+                  <Link to="/home">
+                    <div className="index-child-park" key={index} onClick={this.initPark.bind(this, 1001)}>
+                      <div className="index-child-park-left"><img src={"./park_m/image/a.jpg"} className="park-img" /></div>
+                      <div className="index-child-park-right">
+                        <div className="index-park-name">{item.name}</div>
+                        <div className="index-tag">
+                          {this.state.tagArr.map((item, index) => {
+                            return (
+                              index < 3 ?
+                                <div key={index} className="index-tag-child">{item}</div>
+                                : null
+                            )
+                          })
+                          }
+                          {this.state.tagArr.length > 3 ? <div className="index-tag-child-add">...</div> : null}
+                        </div>
+                        <div style={{ color: "#949494", fontSize: "36px", margin: "20px 0 0 25px" }}>{item.address}</div>
+                      </div>
+                      <div className="index-child-park-end">
+                        <div className="index-distance">{(item.distance * 0.001).toFixed(1)}km</div>
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })
+              }
+            </div>
+
           </div> : parseInt(sessionStorage.getItem("informationId")) === 2 ?
           <div style={{ fontSize: "36px", color: "#333333" }}>
             <div style={{ width: "100%", height: "600px" }}>

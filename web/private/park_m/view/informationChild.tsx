@@ -16,7 +16,7 @@ interface IState {
 
 export default class InformationChild extends React.Component {
   public readonly state: Readonly<IState> = {
-    inputValue: "搜索人员", // 输入框默认值
+    inputValue: "搜索政策信息", // 输入框默认值
     listArr: [],
     tagIndex: 0, // 选中的标签
     tagArr: []
@@ -106,7 +106,7 @@ export default class InformationChild extends React.Component {
 
   // 聚焦
   foucus() {
-    if (this.state.inputValue === "搜索人员") {
+    if (this.state.inputValue === "搜索政策信息") {
       this.setState({ inputValue: "" })
     }
   }
@@ -114,7 +114,7 @@ export default class InformationChild extends React.Component {
   // 失焦
   blur() {
     if (this.state.inputValue === "") {
-      this.setState({ inputValue: "搜索人员" })
+      this.setState({ inputValue: "搜索政策信息" })
     }
   }
 
@@ -137,18 +137,16 @@ export default class InformationChild extends React.Component {
 
   // 详情
   goDetail(index) {
-    this.props.history.push({ pathname: "informationDetail", state: { index: index } })
+    this.props.history.push({ pathname: "/informationDetail", state: { index: index } })
   }
 
   render() {
     return (
       <div className="information-child">
-        <div className="infoarea-top">
-          <div className="infoarea-child-top">
-            <img src="./park_m/image/whiteBack.png" style={{ margin: "0 10px 30px -15px", padding: "15px 15px 15px 15px" }} onClick={this.goBack.bind(this)} />
-            <input className="infoarea-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
-            <img src="./park_m/image/search.png" className="infoarea-search-img" />
-            <span className="search-user-bt">搜索</span>
+        <div className="information-child-top">
+          <div style={{width: "90%", margin: "auto"}}>
+            <input className="information-child-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)}/>
+            <img src="./park_m/image/search.png" className="information-childa-search-img" />
           </div>
         </div>
         <div className="information-child-tag">
@@ -165,7 +163,7 @@ export default class InformationChild extends React.Component {
             return (
               parseInt(sessionStorage.getItem("informationId")) < 2 ?
               <div key={index} className="information-child-List-child" onClick={e => this.goDetail(index)} >
-                <div style={{ fontSize: "42px", color: "#333333", width: "90%", margin: "auto", paddingTop: "30px", color: "#333333" }}>
+                <div style={{ fontSize: "42px", color: "#333333", width: "90%", margin: "auto", paddingTop: "30px" }}>
                   {item.name}
                 </div>
                 <div style={{
@@ -174,7 +172,7 @@ export default class InformationChild extends React.Component {
                   {item.content}
                 </div>
                 <div style={{ color: "#949494", fontSize: "34px", margin: "30px 0 0 50px" }}>
-                  <div style={{ float: "left" }}>{item.visit_amount}</div>
+                  <div style={{ float: "left" }}>{item.visit_amount}次浏览</div>
                   <div style={{ float: "right", marginRight: "50px" }}>{item.time} 发布</div>
                 </div>
               </div> :

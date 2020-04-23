@@ -65,7 +65,7 @@ class Router extends React.Component {
           <Route path="/home" render={(props) => (
             <Home {...props}>
               <Route path="/home/infoArea" component={InfoArea} />
-              <Route path="/home/information" component={Information} />
+              <Route path="/home/informationChild" component={InformationChild} />
               <Route path="/home/personalCenter" component={PersonalCenter} />
             </Home>
           )}>

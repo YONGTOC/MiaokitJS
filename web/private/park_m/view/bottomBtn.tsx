@@ -26,7 +26,7 @@ class BottomBtn extends React.Component {
       this.setState({ index: 1 }, () => {
         this.toggleIcon(this.state.index)
       });
-    } else if (this.props.history.location.pathname === "/home/information") {
+    } else if (this.props.history.location.pathname === "/home/informationChild") {
       this.setState({ index: 3 }, () => {
         this.toggleIcon(this.state.index)
       })
@@ -59,7 +59,7 @@ class BottomBtn extends React.Component {
             <p>首页</p>
           </div>
         </RouterDOM.Link  >
-        <RouterDOM.Link to="/home/information" >
+        <RouterDOM.Link to="/home/informationChild" >
           <div className={this.state.index == 3 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 3)}>
             <img src={this.state.index == 3 ? this.state.iconImg3In : this.state.iconImg3Un} />
             <p>政策</p>
