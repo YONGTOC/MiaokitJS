@@ -2994,53 +2994,6 @@ define("bottomBtn", ["require", "exports", "react", "react-router-dom", "compat"
     }
     exports.default = BottomBtn;
 });
-define("compat_online", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class GlobalAction {
-        web_call_webgl_initPark(pInfo) {
-            MiaokitJS.App.m_pProject.EnterPark({
-                m_pView: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
-                    m_nDistance: 300.0,
-                    m_nPitch: 19.0,
-                    m_nYaw: 90.0
-                }
-            });
-            console.log("web_call_webgl_initPark", pInfo);
-        }
-        web_call_webgl_switchCompany(pName) {
-            console.log("web_call_webgl_switchCompany", pName);
-        }
-        web_call_webgl_switchRoom(pName) {
-            console.log("web_call_webgl_SwitchRoom", pName);
-        }
-        web_call_webgl_switchMark(pName, pInfo) {
-            console.log("web_call_webgl_switchMark", pName, pInfo);
-        }
-        web_call_webgl_mapReturnpark() {
-            console.log("web_call_webgl_mapReturnpark");
-        }
-        web_call_webgl_pauseloadModuler() {
-            console.log("web_call_webgl_pauseloadModuler");
-        }
-        web_call_webgl_continueloadModuler() {
-            console.log("web_call_webgl_continueloadModuler");
-        }
-        web_call_webgl_showParkingList(data) {
-            console.log("web_call_webgl_showParkingList", data);
-        }
-        web_call_webgl_onParking(data) {
-            console.log("web_call_webgl_onParking", data);
-        }
-        web_call_webgl_cancelApplyPut(data) {
-            console.log("web_call_webgl_cancelApplyPut", data);
-        }
-    }
-    exports.default = GlobalAction;
-});
 define("defaultRentRoom", ["require", "exports", "react", "css!./styles/defaultRentRoom.css"], function (require, exports, React) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -3736,15 +3689,15 @@ define("homeBottom", ["require", "exports", "react", "react-router-dom", "compat
                 React.createElement(RouterDOM.Link, { to: "/home" },
                     React.createElement("div", { className: this.state.index == 1 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 1) },
                         React.createElement("img", { src: this.state.index == 1 ? this.state.iconImg1In : this.state.iconImg1Un }),
-                        React.createElement("p", null, "\u9996\u9875"))),
+                        React.createElement("p", null, "\uFFFD\uFFFD\u04B3"))),
                 React.createElement(RouterDOM.Link, { to: "/home/information" },
                     React.createElement("div", { className: this.state.index == 3 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 3) },
                         React.createElement("img", { src: this.state.index == 3 ? this.state.iconImg3In : this.state.iconImg3Un }),
-                        React.createElement("p", null, "\u8D44\u8BAF"))),
+                        React.createElement("p", null, "\uFFFD\uFFFD\u0476"))),
                 React.createElement(RouterDOM.Link, { to: "/home/personalCenter" },
                     React.createElement("div", { className: this.state.index == 4 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 4) },
                         React.createElement("img", { src: this.state.index == 4 ? this.state.iconImg4In : this.state.iconImg4Un }),
-                        React.createElement("p", null, "\u6211\u7684")))));
+                        React.createElement("p", null, "\uFFFD\u04B5\uFFFD")))));
         }
         ;
     }
@@ -4292,7 +4245,7 @@ define("identityAuthentication", ["require", "exports", "react", "dataService", 
     }
     exports.default = IdentityAuthentication;
 });
-define("parkCompany", ["require", "exports", "react", "react-router-dom", "compat", "dataService"], function (require, exports, React, RouterDOM, compat_7, dataService_7) {
+define("parkCompany", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_7, dataService_7, antd_mobile_6) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParkCompany extends React.Component {
@@ -5771,7 +5724,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
     }
     exports.default = PersonalCenter;
 });
-define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dataService", "compat", "antd-mobile", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, dataService_12, compat_8, antd_mobile_7) {
+define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dataService", "compat", "antd-mobile", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, dataService_12, compat_8, antd_mobile_9) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RepairsOnline extends React.Component {
@@ -6063,7 +6016,7 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
     }
     exports.default = RepairsOnline;
 });
-define("parking", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_9, dataService_13, antd_mobile_8) {
+define("parking", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_9, dataService_13, antd_mobile_10) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Parking extends React.Component {
@@ -9141,7 +9094,7 @@ define("modificationAuthenticationDetail", ["require", "exports", "react", "data
     }
     exports.default = modificationAuthenticationDetail;
 });
-define("router", ["require", "exports", "react-router-dom", "react", "index", "home", "parkCompany", "photograph", "infoArea", "information", "personalCenter", "findLease", "applyPut", "bookSite", "repairsOnline", "parking", "narrate", "isay", "workOrder", "workOrderDetail", "modificationAuthentication", "message", "enterpriseInformation", "rentRoom", "rentRoomDetail", "defaultRentRoom", "parkWorkOrder", "serviceTel", "distribute", "searchUser", "statisticalStatement", "informationChild", "informationDetail", "attractInvestment", "attractInvestmentList", "room", "roomDetail", "roomUse", "roomBase", "roomPattern", "roomPatternUpdate", "modificationAuthenticationDetail"], function (require, exports, react_router_dom_12, React, index_1, home_1, parkCompany_1, photograph_1, infoArea_1, information_1, personalCenter_1, findLease_1, applyPut_1, bookSite_1, repairsOnline_1, parking_1, narrate_1, isay_1, workOrder_1, workOrderDetail_1, modificationAuthentication_1, message_1, enterpriseInformation_1, rentRoom_1, rentRoomDetail_1, defaultRentRoom_1, parkWorkOrder_1, serviceTel_1, distribute_1, searchUser_1, statisticalStatement_1, informationChild_1, informationDetail_1, attractInvestment_1, attractInvestmentList_1, room_1, roomDetail_1, roomUse_1, roomBase_1, roomPattern_1, roomPatternUpdate_1, modificationAuthenticationDetail_1) {
+define("router", ["require", "exports", "react-router-dom", "react", "index", "home", "parkCompany", "photograph", "infoArea", "information", "personalCenter", "findLease", "applyPut", "bookSite", "repairsOnline", "parking", "narrate", "isay", "workOrder", "workOrderDetail", "modificationAuthentication", "message", "enterpriseInformation", "rentRoom", "rentRoomDetail", "defaultRentRoom", "parkWorkOrder", "serviceTel", "distribute", "searchUser", "statisticalStatement", "informationChild", "informationDetail", "attractInvestment", "attractInvestmentList", "room", "roomDetail", "roomUse", "roomBase", "roomPattern", "roomPatternUpdate", "modificationAuthenticationDetail", "identityAuthentication"], function (require, exports, react_router_dom_12, React, index_1, home_1, parkCompany_1, photograph_1, infoArea_1, information_1, personalCenter_1, findLease_1, applyPut_1, bookSite_1, repairsOnline_1, parking_1, narrate_1, isay_1, workOrder_1, workOrderDetail_1, modificationAuthentication_1, message_1, enterpriseInformation_1, rentRoom_1, rentRoomDetail_1, defaultRentRoom_1, parkWorkOrder_1, serviceTel_1, distribute_1, searchUser_1, statisticalStatement_1, informationChild_1, informationDetail_1, attractInvestment_1, attractInvestmentList_1, room_1, roomDetail_1, roomUse_1, roomBase_1, roomPattern_1, roomPatternUpdate_1, modificationAuthenticationDetail_1, identityAuthentication_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Router extends React.Component {
@@ -9655,4 +9608,51 @@ define("app", ["require", "exports", "react", "css!./styles/app.css"], function 
             return (React.createElement("div", { className: "app" }));
         }
     }
+});
+define("compat_online", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class GlobalAction {
+        web_call_webgl_initPark(pInfo) {
+            MiaokitJS.App.m_pProject.EnterPark({
+                m_pView: {
+                    m_nLng: 110.344301,
+                    m_nLat: 25.272208,
+                    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
+                    m_nDistance: 300.0,
+                    m_nPitch: 19.0,
+                    m_nYaw: 90.0
+                }
+            });
+            console.log("web_call_webgl_initPark", pInfo);
+        }
+        web_call_webgl_switchCompany(pName) {
+            console.log("web_call_webgl_switchCompany", pName);
+        }
+        web_call_webgl_switchRoom(pName) {
+            console.log("web_call_webgl_SwitchRoom", pName);
+        }
+        web_call_webgl_switchMark(pName, pInfo) {
+            console.log("web_call_webgl_switchMark", pName, pInfo);
+        }
+        web_call_webgl_mapReturnpark() {
+            console.log("web_call_webgl_mapReturnpark");
+        }
+        web_call_webgl_pauseloadModuler() {
+            console.log("web_call_webgl_pauseloadModuler");
+        }
+        web_call_webgl_continueloadModuler() {
+            console.log("web_call_webgl_continueloadModuler");
+        }
+        web_call_webgl_showParkingList(data) {
+            console.log("web_call_webgl_showParkingList", data);
+        }
+        web_call_webgl_onParking(data) {
+            console.log("web_call_webgl_onParking", data);
+        }
+        web_call_webgl_cancelApplyPut(data) {
+            console.log("web_call_webgl_cancelApplyPut", data);
+        }
+    }
+    exports.default = GlobalAction;
 });
