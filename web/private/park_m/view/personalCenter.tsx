@@ -33,13 +33,13 @@ class PersonalCenter extends React.Component {
   public dataService: DataService = new DataService()
 
   componentDidMount() {
-    console.log("aaaaa", this.props.history)
     this.dataService.getRoleType(this.callBackGetRoleType.bind(this))
     if (!sessionStorage.getItem("userInfo")) {
       sessionStorage.setItem("userInfo", "园区成员")
     }
     this.setState({ userInfo: sessionStorage.getItem("userInfo"), pathname: this.props.history.location.pathname })
   }
+
 
   callBackGetRoleType(data) {
     console.log(data)

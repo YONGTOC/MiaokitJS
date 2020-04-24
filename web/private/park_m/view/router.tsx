@@ -62,28 +62,13 @@ class Router extends React.Component {
           <Route path="/isay" component={Isay} />
           <Route path="/workOrder" component={WorkOrder} />
           <Route path="/workOrderDetail" component={WorkOrderDetail} />
-          <Route path="/home" render={(props) => (
-            <Home {...props}>
-              <Route path="/home/infoArea" component={InfoArea} />
-              <Route path="/home/information" component={Information} />
-              <Route path="/home/personalCenter" component={PersonalCenter} />
-            </Home>
-          )}>
-          </Route>
-          <Route path="/" render={(props) => (
-            <Index {...props}>
-              <Route path="/informationChild" component={InformationChild} />
-              <Route path="/personalCenter" component={PersonalCenter} />
-            </Index>
-          )}>
-          </Route>
+          <Route path="/parkworkOrder" component={ParkWorkOrder} />
           <Route path="/modificationAuthentication" component={ModificationAuthentication} />
           <Route path="/message" component={Message} />
           <Route path="/enterpriseInformation" component={EnterpriseInformation} />
           <Route path="/rentRoom" component={RentRoom} />
           <Route path="/rentRoomDetail" component={RentRoomDetail} />
           <Route path="/defaultRentRoom" component={DefaultRentRoom} />
-          <Route path="/parkworkOrder" component={ParkWorkOrder} />
           <Route path="/serviceTel" component={ServiceTel} />
           <Route path="/distribute" component={Distribute} />
           <Route path="/searchUser" component={SearchUser} />
@@ -99,6 +84,21 @@ class Router extends React.Component {
           <Route path="/roomPatternUpdate" component={RoomPatternUpdate} />
           <Route path="/modificationAuthenticationDetail" component={ModificationAuthenticationDetail} />
           <Route path="/identityAuthentication" component={IdentityAuthentication} />
+          <Route path="/home" render={(props) => (
+            <Home {...props}>
+              <Route path="/home/infoArea" component={InfoArea} />
+              <Route path="/home/information" component={Information} />
+              <Route path="/home/personalCenter" component={PersonalCenter} />
+            </Home>
+          )}>
+          </Route>
+          <Route path="/" render={(props) => (
+            <Index {...props}>
+              <Route path="/informationChild" component={InformationChild} />
+              <Route path="/personalCenter" component={PersonalCenter} />
+            </Index>
+          )}>
+          </Route>
         </Switch>
       </HashRouter>
   )}
