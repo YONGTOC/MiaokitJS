@@ -6,7 +6,7 @@ import "css!./styles/view.css";
 interface IProps {
   history: any
 }
-
+ 
 //底部按钮区
 class BottomBtn extends React.Component {
   public constructor(props) {
@@ -26,7 +26,7 @@ class BottomBtn extends React.Component {
       this.setState({ index: 1 }, () => {
         this.toggleIcon(this.state.index)
       });
-    } else if (this.props.history.location.pathname === "/home/informationChild") {
+    } else if (this.props.history.location.pathname === "/informationChild") {
       this.setState({ index: 3 }, () => {
         this.toggleIcon(this.state.index)
       })
@@ -59,13 +59,13 @@ class BottomBtn extends React.Component {
             <p>首页</p>
           </div>
         </RouterDOM.Link  >
-        <RouterDOM.Link to="/home/informationChild" >
+        <RouterDOM.Link to="/informationChild" >
           <div className={this.state.index == 3 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 3)}>
             <img src={this.state.index == 3 ? this.state.iconImg3In : this.state.iconImg3Un} />
             <p>政策</p>
           </div>
         </RouterDOM.Link>
-        <RouterDOM.Link to="/home/personalCenter" >
+        <RouterDOM.Link to="/personalCenter" >
           <div className={this.state.index == 4 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 4)}>
             <img src={this.state.index == 4 ? this.state.iconImg4In : this.state.iconImg4Un} />
             <p>我的</p>

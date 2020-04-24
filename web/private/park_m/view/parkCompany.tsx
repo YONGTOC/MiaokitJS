@@ -310,7 +310,7 @@ class CompanyList extends React.Component {
               return (
                 <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyli-active" : "companyli"} >
                   <div className={this.state.indexOf == index ? "companyImgback-active" : "companyImgback"}>
-                    <img src={"./park_m/image/i.png"} onError={this.onErrorHeadimageurl.bind(this)} />
+                    <img src={i.headimageurl == null ? i.headimageurl : "./park_m/image/i.png"} />
                   </div>
                   <div className="companyul-middle">
                     <p className={this.state.indexOf == index ? "companyName-active" : "companyName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.name}</p>
@@ -319,9 +319,11 @@ class CompanyList extends React.Component {
                       {i.address}</p>
                   </div>
                   <div className="companyul-right">
+                       <RouterDOM.Link to="/home" style={{ color: "#949494" }}>
                     <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)} className={this.state.indexOf == index ? "show" : "hide"} >更多
                     <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
-                    </p>
+                      </p>
+                    </RouterDOM.Link>
                     <p className={this.state.indexOf == index ? "companyType-active" : "companyType"} >{i.company_type}</p>
                   </div>
                 </li>

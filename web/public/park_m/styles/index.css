@@ -13,7 +13,7 @@
   margin-top: 30px;
 }
 .index-input {
-  width: 95%;
+  width: 95%; 
   height: 100%;
   background: rgba(243,243,243,1);
   opacity: 1;
@@ -75,7 +75,7 @@
 .index-park {
     /*height: 100%;
   width: 100%;
-  padding: 25px 0 0 50px;
+  padding-left: 50px;
   white-space: pre-line;
   overflow-y: auto;
   padding-bottom: 700px;*/

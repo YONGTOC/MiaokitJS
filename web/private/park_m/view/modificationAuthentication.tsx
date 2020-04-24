@@ -53,7 +53,7 @@ class ModificationAuthentication extends React.Component<{ history: any }> {
   render() {
     return (
       <div className="modification-authentication">
-        <div className="personal-center-tag">
+        <div className="personal-center-tag-c">
           <div style={{ paddingLeft: "30px", float: "left" }} onClick={this.goBack.bind(this)}>
             <img src="./park_m/image/right.png" style={{ transform: "rotate(180deg)", marginBottom: "10px" }} />
             <span style={{ color: "#6C6C6C" }}>修改认证</span>

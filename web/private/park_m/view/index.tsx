@@ -11,14 +11,14 @@ import BookSite from "bookSite";
 import Parking from "parking";
 import BottomBtn from "bottomBtn";
 import RepairsOnline from "repairsOnline";
-import FullView from "fullView";
 
 import DataService from "dataService";
 import GlobalAction from "compat";
-import { List, Radio, Flex, WhiteSpace } from 'antd-mobile';
+
 
 interface IProps {
   history: any
+  children: any
 }
 
 interface IState {
@@ -88,21 +88,21 @@ class Index extends React.Component {
     inputValue: "请输入园区名/区域名/商圈名", // 输入框默认值
     city: "", // 城市
     parkArr: [
-      {
-        "id": "1009",
-        "headimgurl": null,
-        "province": "桂林",
-        "longitude": "10.55",
-        "latitude": "66.666",
-        "name": "桂林国家高新",
-        "phone": "0773-123456",
-        "address": "桂林七星朝阳路D-11",
-        "service": [
-          {
+      {   
+        "id":"1009",
+        "headimgurl":null,
+        "province":"桂林",
+        "longitude":"10.55",
+        "latitude":"66.666",
+        "name":"桂林国家高新",
+        "phone":"0773-123456",
+        "address":"桂林七星朝阳路D-11",
+        "service":[
+          {   
             //id
-            "id": "1009",
+            "id":"1009",
             //服务内容名字
-            "name": "电子信息",
+            "name":"电子信息",
           }
         ]
       }
@@ -145,7 +145,7 @@ class Index extends React.Component {
     totalPrice: [{ name: "不限" }, { name: "0-0.5万元/月" }, { name: "1.5-3万元/月" }, { name: "3-5万元/月" }, { name: "5-10万元/月" }, { name: "10万元/月以上" }],
     unitPrice: [{ name: "不限" }, { name: "1-0.5万元/月" }, { name: "1.5-3万元/月" }, { name: "3-5万元/月" }, { name: "5-10万元/月" }, { name: "10万元/月以上" }],
     isPosition: false, // 园区弹出
-    position: "", // 园区位置名字
+    position: "", // 园区位置名字 
     isArea: true, // 园区区域和地铁切换
     areaIndex: 0, // 园区区域下标
     subwayIndex: 0, // 园区地铁下标
@@ -173,8 +173,8 @@ class Index extends React.Component {
     typeIndex: 0,
     moreName: "",
     isMask: false, // 遮罩
-    isCompanyArr: false,  //判断是否拥有多个企业
-
+        isCompanyArr: false,  //判断是否拥有多个企业
+   
   }
 
   public readonly props: Readonly<IProps> = {
@@ -187,31 +187,31 @@ class Index extends React.Component {
 
     let _this = this
     //if (!sessionStorage.getItem("city")) {
-    var geolocation = new BMap.Geolocation();
-    geolocation.getCurrentPosition(function (r) {
-      if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-        let parkArr = _this.state.parkArr
-        parkArr.forEach(item => {
-          item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude))
-        })
-        sessionStorage.setItem("city", r.address.city)
-        _this.setState({ city: r.address.city, parkArr: parkArr })
-      }
-      else {
-        if (this.getStatus() === 6) {
-          console.log("没有权限")
+      var geolocation = new BMap.Geolocation();
+      geolocation.getCurrentPosition(function (r) {
+        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+          let parkArr = _this.state.parkArr
+          parkArr.forEach(item => {
+            item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude))
+          })
+          sessionStorage.setItem("city", r.address.city)
+          _this.setState({ city: r.address.city, parkArr: parkArr })
         }
-        if (this.getStatus() === 8) {
-          console.log("连接超时")
+        else {
+          if (this.getStatus() === 6) {
+            console.log("没有权限")
+          }
+          if (this.getStatus() === 8) {
+            console.log("连接超时")
+          }
         }
-      }
-    });
+      });
     //}
 
-    curtainHide();
+        curtainHide();
   }
 
-  // 判断所属企业
+    // 判断所属企业
   public isLoginData(data) {
     console.log("LoginData", data);
        IsCompanys.getCompanyArr(data.enterprises);
@@ -230,8 +230,6 @@ class Index extends React.Component {
       isCompanyArr: false,
     })
   }
-
-
 
   // 聚焦
   foucus() {
@@ -270,31 +268,31 @@ class Index extends React.Component {
   }
 
   getFlatternDistance(lat1, lng1, lat2, lng2) {
-    var f = this.getRad((lat1 + lat2) / 2);
-    var g = this.getRad((lat1 - lat2) / 2);
-    var l = this.getRad((lng1 - lng2) / 2);
+  var f = this.getRad((lat1 + lat2) / 2);
+  var g = this.getRad((lat1 - lat2) / 2);
+  var l = this.getRad((lng1 - lng2) / 2);
 
-    var sg = Math.sin(g);
-    var sl = Math.sin(l);
-    var sf = Math.sin(f);
+  var sg = Math.sin(g);
+  var sl = Math.sin(l);
+  var sf = Math.sin(f);
 
-    var s, c, w, r, d, h1, h2;
-    var a = 6378137.0;
-    var fl = 1 / 298.257;
+  var s, c, w, r, d, h1, h2;
+  var a = 6378137.0;
+  var fl = 1 / 298.257;
 
-    sg = sg * sg;
-    sl = sl * sl;
-    sf = sf * sf;
+  sg = sg * sg;
+  sl = sl * sl;
+  sf = sf * sf;
 
-    s = sg * (1 - sl) + (1 - sf) * sl;
-    c = (1 - sg) * (1 - sl) + sf * sl;
+  s = sg * (1 - sl) + (1 - sf) * sl;
+  c = (1 - sg) * (1 - sl) + sf * sl;
 
-    w = Math.atan(Math.sqrt(s / c));
-    r = Math.sqrt(s * c) / w;
-    d = 2 * w * a;
-    h1 = (3 * r - 1) / 2 / c;
-    h2 = (3 * r + 1) / 2 / s;
-    return d * (1 + fl * (h1 * sf * (1 - sg) - h2 * (1 - sf) * sg));
+  w = Math.atan(Math.sqrt(s / c));
+  r = Math.sqrt(s * c) / w;
+  d = 2 * w * a;
+  h1 = (3 * r - 1) / 2 / c;
+  h2 = (3 * r + 1) / 2 / s;
+  return d * (1 + fl * (h1 * sf * (1 - sg) - h2 * (1 - sf) * sg));
   }
 
   changeType() {
@@ -305,9 +303,9 @@ class Index extends React.Component {
     this.setState({
       isPosition: !this.state.isPosition,
       position: this.state.isArea ? this.state.area[this.state.areaIndex].name + (
-        this.state.area[this.state.areaIndex].children.length > 0 ? this.state.area[this.state.areaIndex].children[this.state.areaChildrenIndex].name : null) :
-        this.state.subway[this.state.subwayIndex].name + (
-          this.state.subway[this.state.subwayIndex].children.length > 0 ? this.state.subway[this.state.subwayIndex].children[this.state.subwayChildrenIndex].name : null),
+      this.state.area[this.state.areaIndex].children.length > 0 ? this.state.area[this.state.areaIndex].children[this.state.areaChildrenIndex].name : null ):
+      this.state.subway[this.state.subwayIndex].name + ( 
+      this.state.subway[this.state.subwayIndex].children.length > 0 ? this.state.subway[this.state.subwayIndex].children[this.state.subwayChildrenIndex].name : null),
       isMask: !this.state.isMask
     })
   }
@@ -316,9 +314,9 @@ class Index extends React.Component {
     this.setState({
       _isPosition: !this.state._isPosition, isAreas: false, isPrice: false, isMore: false,
       _position: this.state._isArea ? this.state._area[this.state._areaIndex].name + (
-        this.state._area[this.state._areaIndex].children.length > 0 ? this.state._area[this.state._areaIndex].children[this.state._areaChildrenIndex].name : null) :
-        this.state._subway[this.state._subwayIndex].name + (
-          this.state._subway[this.state._subwayIndex].children.length > 0 ? this.state._subway[this.state._subwayIndex].children[this.state._subwayChildrenIndex].name : null),
+      this.state._area[this.state._areaIndex].children.length > 0 ? this.state._area[this.state._areaIndex].children[this.state._areaChildrenIndex].name : null ) :
+      this.state._subway[this.state._subwayIndex].name + (
+      this.state._subway[this.state._subwayIndex].children.length > 0 ? this.state._subway[this.state._subwayIndex].children[this.state._subwayChildrenIndex].name : null ),
       isMask: !this.state._isPosition
     })
   }
@@ -412,16 +410,14 @@ class Index extends React.Component {
     this.setState({ isPosition: false, _isPosition: false, isAreas: false, isPrice: false, isMore: false, isMask: false })
   }
 
-
-  //        <div className={this.state.isCompanyArr == true ? "show" : "hide"}>
-
   render() {
+    
+        //<div className={this.state.isCompanyArr == true ? "show" : "hide"}>
+        //  <IsCompanys />
+        //</div>
     return (
       <div className="index">
 
-       <div className={this.state.isCompanyArr == true ? "show" : "hide"}>
-          <IsCompanys />
-        </div>
 
         <div className="index-input-div">
           <div className="index-child-right">
@@ -453,33 +449,33 @@ class Index extends React.Component {
             </div> : null
           }
           {
-            this.state.type ?
-              <div style={{ float: "right", marginRight: "50px" }}>
+            this.state.type ? 
+            <div style={{ float: "right", marginRight: "50px" }}>
                 已有<span style={{ color: "#0B8BF0", margin: "0 15px 0 15px" }}>{this.state.parkArr.length}</span>家园区上线
             </div> :
-              <div style={{ overflow: "hidden", float: "left", width: "100%" }}>
-                <div onClick={this.changePositions.bind(this)} style={{ overflow: "hidden", float: "left", width: "25%", textAlign: "center" }}>
-                  <div style={{ float: "left", fontSize: "42px", fontWeight: "600", color: this.state._position ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state._position ? this.state._position : "位置"}</div>
-                  <div className={this.state._position ? "corner-add" : "corner"} style={{ transform: this.state._isPosition ? "rotate(180deg)" : "", margin: this.state._isPosition ? "15px 0 0 0" : "" }}></div>
-                </div>
-                <div onClick={this.clickAreas.bind(this)} style={{ overflow: "hidden", float: "left", width: "25%", textAlign: "center" }}>
-                  <div style={{ float: "left", fontSize: "42px", fontWeight: "600", color: this.state.areasName ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state.areasName ? this.state.areasName : "面积"}</div>
-                  <div className={this.state.areasName ? "corner-add" : "corner"} style={{ transform: this.state.isAreas ? "rotate(180deg)" : "", margin: this.state.isAreas ? "15px 0 0 0" : "" }}></div>
-                </div>
-                <div onClick={this.clickPrice.bind(this)} style={{ overflow: "hidden", float: "left", width: "25%", textAlign: "center" }}>
-                  <div style={{ float: "left", fontSize: "42px", fontWeight: "600", color: this.state.priceName ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state.priceName ? this.state.priceName : "价格"}</div>
-                  <div className={this.state.priceName ? "corner-add" : "corner"} style={{ transform: this.state.isPrice ? "rotate(180deg)" : "", margin: this.state.isPrice ? "15px 0 0 0" : "" }}></div>
-                </div>
-                <div onClick={this.clickMore.bind(this)} style={{ overflow: "hidden", float: "left", width: "25%", textAlign: "center" }}>
-                  <div style={{ float: "left", fontSize: "42px", fontWeight: "600", color: this.state.moreName ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state.moreName ? this.state.moreName : "更多"}</div>
-                  <div className={this.state.moreName ? "corner-add" : "corner"} style={{ transform: this.state.isMore ? "rotate(180deg)" : "", margin: this.state.isMore ? "15px 0 0 0" : "" }}></div>
-                </div>
+            <div style={{ overflow: "hidden", float: "left", width: "100%" }}>
+              <div onClick={this.changePositions.bind(this)} style={{ overflow: "hidden", float: "left", width: "25%", textAlign: "center" }}>
+                <div style={{ float: "left", fontSize: "42px", fontWeight: "600", color: this.state._position ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state._position ? this.state._position : "位置"}</div>
+                <div className={this.state._position ? "corner-add" : "corner"} style={{ transform: this.state._isPosition ? "rotate(180deg)" : "", margin: this.state._isPosition ? "15px 0 0 0" : "" }}></div>
               </div>
+              <div onClick={this.clickAreas.bind(this)} style={{ overflow: "hidden", float: "left", width: "25%", textAlign: "center" }}>
+                <div style={{ float: "left", fontSize: "42px", fontWeight: "600", color: this.state.areasName ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state.areasName ? this.state.areasName : "面积"}</div>
+                <div className={this.state.areasName ? "corner-add" : "corner"} style={{ transform: this.state.isAreas ? "rotate(180deg)" : "", margin: this.state.isAreas ? "15px 0 0 0" : "" }}></div>
+              </div>
+              <div onClick={this.clickPrice.bind(this)} style={{ overflow: "hidden", float: "left", width: "25%", textAlign: "center" }}>
+                <div style={{ float: "left", fontSize: "42px", fontWeight: "600", color: this.state.priceName ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state.priceName ? this.state.priceName : "价格"}</div>
+                <div className={this.state.priceName ? "corner-add" : "corner"} style={{ transform: this.state.isPrice ? "rotate(180deg)" : "", margin: this.state.isPrice ? "15px 0 0 0" : "" }}></div>
+              </div>
+              <div onClick={this.clickMore.bind(this)} style={{ overflow: "hidden", float: "left", width: "25%", textAlign: "center" }}>
+                <div style={{ float: "left", fontSize: "42px", fontWeight: "600", color: this.state.moreName ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state.moreName ? this.state.moreName : "更多"}</div>
+                <div className={this.state.moreName ? "corner-add" : "corner"} style={{ transform: this.state.isMore ? "rotate(180deg)" : "", margin: this.state.isMore ? "15px 0 0 0" : "" }}></div>
+              </div>
+            </div>
           }
         </div>
-        {this.state.isPosition ?
+        { this.state.isPosition ? 
           <div className="index-position">
-            <div style={{ overflow: "hidden" }}>
+            <div style={{overflow: "hidden"}}>
               <div onClick={this.ckArea.bind(this)}
                 style={{ float: "left", backgroundColor: this.state.isArea ? "#0B8BF0" : "#F2F2F2", width: "230px", borderRadius: "5px", height: "75px", lineHeight: "75px", textAlign: "center", color: this.state.isArea ? "#ffffff" : "#6C6C6C" }}
               >
@@ -492,7 +488,7 @@ class Index extends React.Component {
               </div>
             </div>
             {this.state.isArea ?
-              <div style={{ height: "100%" }}>
+              <div style={{height: "100%"}}>
                 <div className="index-area">
                   {
                     this.state.area.map((item, index) => {
@@ -520,9 +516,9 @@ class Index extends React.Component {
                       )
                     })
                   }
-                </div>
-              </div>
-              :
+                </div> 
+              </div>  
+                :
               <div style={{ height: "100%" }}>
                 <div className="index-subway">
                   {
@@ -640,22 +636,22 @@ class Index extends React.Component {
 
         {this.state.isAreas ?
           <div className="index-position">
-            <div style={{ height: "100%" }}>
-              <div className="index-area">
-                {
-                  this.state.areas.map((item, index) => {
-                    return (
-                      <div key={index}
-                        style={{ height: "100px", lineHeight: "100px", fontWeight: "600", color: index === this.state.areasIndex ? "#0B8BF0" : "#333333" }}
-                        onClick={e => this.changeAreas(index)}
-                      >
-                        {item.name}{index !== 0 ? <span>&sup2;</span> : null}
-                      </div>
-                    )
-                  })
-                }
+              <div style={{ height: "100%" }}>
+                <div className="index-area">
+                  {
+                    this.state.areas.map((item, index) => {
+                      return (
+                        <div key={index}
+                          style={{ height: "100px", lineHeight: "100px", fontWeight: "600", color: index === this.state.areasIndex ? "#0B8BF0" : "#333333" }}
+                          onClick={e => this.changeAreas(index)}
+                        >
+                          {item.name}{index !== 0 ? <span>&sup2;</span> : null}
+                        </div>
+                      )
+                    })
+                  }
+                </div>
               </div>
-            </div>
           </div> : null
         }
 
@@ -723,10 +719,10 @@ class Index extends React.Component {
                         float: "left", backgroundColor: this.state.decorationIndex === index ? "#0B8BF0" : "#F2F2F2", color: this.state.decorationIndex === index ? "#FFFFFF" : "#6C6C6C", width: "200px", height: "70px", textAlign: "center", lineHeight: "70px",
                         fontSize: "40px", borderRadius: "5px", margin: "0 30px 30px 0"
                       }}
-                      onClick={e => this.changeDecorationIndex(index)}
+                      onClick={e=>this.changeDecorationIndex(index)}
                     >
                       {item}
-                    </div>
+                    </div>  
                   )
                 })
               }
@@ -742,7 +738,7 @@ class Index extends React.Component {
                         float: "left", backgroundColor: this.state.typeIndex === index ? "#0B8BF0" : "#F2F2F2", color: this.state.typeIndex === index ? "#FFFFFF" : "#6C6C6C", width: "200px", height: "70px", textAlign: "center", lineHeight: "70px",
                         fontSize: "40px", borderRadius: "5px", margin: "0 30px 30px 0"
                       }}
-                      onClick={e => this.changeTypeIndex(index)}
+                      onClick={e=>this.changeTypeIndex(index)}
                     >
                       {item}
                     </div>
@@ -751,8 +747,8 @@ class Index extends React.Component {
               }
             </div>
             <div style={{ overflow: "hidden", position: "absolute", bottom: "100px", width: "90%" }}>
-              <div style={{ float: "left", width: "400px", height: "110px", color: "#707589", backgroundColor: "#F2F2F2", borderRadius: "5px", textAlign: "center", lineHeight: "110px", marginLeft: "20px" }}>重置</div>
-              <div style={{ float: "right", width: "400px", height: "110px", color: "#ffffff", backgroundColor: "#0B8BF0", borderRadius: "5px", textAlign: "center", lineHeight: "120px", marginRight: "20px" }}>确定</div>
+              <div style={{ float: "left", width: "400px", height: "110px", color: "#707589", backgroundColor: "#F2F2F2", borderRadius: "5px", textAlign: "center", lineHeight: "110px", marginLeft: "20px"  }}>重置</div>
+              <div style={{ float: "right", width: "400px", height: "110px", color: "#ffffff", backgroundColor: "#0B8BF0", borderRadius: "5px", textAlign: "center", lineHeight: "120px", marginRight: "20px"  }}>确定</div>
             </div>
           </div> : null
         }
@@ -791,13 +787,13 @@ class Index extends React.Component {
           }
           <div style={{ width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginLeft: "-25px" }}>到底啦~</div>
         </div>
-
+        <div className="index-bottom-logo">
+          <img src="./park_m/image/bottomLogo.png" className="index-bottom-logo-img" />
+        </div>
+        {this.props.children}
         <BottomBtn history={this.props.history}></BottomBtn>
       </div>
     )
-    //<div className="index-bottom-logo">
-    //    <img src="./park_m/image/bottomLogo.png" className="index-bottom-logo-img" />
-    //  </div>
   }
 
   //供外部调用 -- 传入企业id，刷新树企业信息数据；
@@ -843,14 +839,7 @@ class Index extends React.Component {
     Parking.inParkingList(data);
   }
 
-  // 显示全景页面
-  public showshowFullView() {
-    this.props.history.push('/fullView');
-   FullView.isShow();
-  }
 }
-
-const RadioItem = Radio.RadioItem;
 
 class IsCompanys extends React.Component {
   public constructor(props) {
@@ -912,7 +901,6 @@ class IsCompanys extends React.Component {
     indexOf: 100,
   };
 }
-
 
 export default Index;
 
