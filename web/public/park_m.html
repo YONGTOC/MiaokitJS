@@ -8,6 +8,8 @@
     <script>
         let MiaokitJS = new MiaokitModule("Sisyphus", "./data/projects/config.txt");
 
+         
+
         window.onload = function () {
             // 在onload 之前 requir。config
 
@@ -51,6 +53,8 @@
                 MiaokitJS.App.UI = view.default.g_pIns;
             });
         }
+
+       
     </script>
 
     <script src="./common/util.js"></script>
@@ -86,7 +90,7 @@
 </head>
 <body style="height: 100%; margin: 0; padding: 0;">
     <!--幕布，遮挡3d的提前加载-->
-    <div class="curtain" style="background: #fff; margin: auto; width: 100%; height: 100%;
+    <div class="curtain hide" style="background: #fff; margin: auto; width: 100%; height: 100%;
     top: 0rem; bottom: 0rem; left: 0rem; right: 0rem; position: absolute; z-index: 103;">
         <div class="loadEffect">
             <span></span>
@@ -182,8 +186,9 @@
 
         </li>-->
         <li>
-            <button onclick="showFullView()" style="width: 18rem;height: 4rem;font-size: 2.3rem;">显示全景图</button>
-            <button onclick="hideFullView()" style="width: 18rem;height: 4rem;font-size: 2.3rem;">隐藏全景图</button>
+            <!--<button onclick="changeFullView()" style="width: 18rem;height: 4rem;font-size: 2.3rem;">全景图</button>
+            <button onclick="hideFullView()" style="width: 18rem;height: 4rem;font-size: 2.3rem;">隐藏全景图</button>-->
+            <div class="fullView" onclick="changeFullView()">显示</div>
         </li>
     </ul>
 
@@ -192,15 +197,29 @@
         function showFullView() {
             $('#viewContainer').addClass("hide");
             $('#3Dbuttons').addClass("hide");
-
+            $('.fullView').html("全景");
             console.log("显示全景")
         }
 
         //隐藏全景图
         function hideFullView() {
             $('#viewContainer').removeClass("hide");
-            $('#viewContainer').removeClass("hide");
+            $('#3Dbuttons').removeClass("hide");
+            $('.fullView').html("显示");
             console.log("隐藏全景")
+        }
+
+
+        // 显示/隐藏 全景图切换
+        var v = 0;
+        function changeFullView() {
+            if (v == 0) {
+                v = 1
+                showFullView();
+            } else {
+                v = 0
+                hideFullView();
+            }
         }
 
         var floorIndex;
