@@ -183,14 +183,24 @@
         </li>-->
         <li>
             <button onclick="showFullView()" style="width: 18rem;height: 4rem;font-size: 2.3rem;">显示全景图</button>
+            <button onclick="hideFullView()" style="width: 18rem;height: 4rem;font-size: 2.3rem;">隐藏全景图</button>
         </li>
     </ul>
 
     <script>
         //显示全景图
         function showFullView() {
-            MiaokitJS.App.UI.showshowFullView();
-            hide3dBut();
+            $('#viewContainer').addClass("hide");
+            $('#3Dbuttons').addClass("hide");
+
+            console.log("显示全景")
+        }
+
+        //隐藏全景图
+        function hideFullView() {
+            $('#viewContainer').removeClass("hide");
+            $('#viewContainer').removeClass("hide");
+            console.log("隐藏全景")
         }
 
         var floorIndex;
