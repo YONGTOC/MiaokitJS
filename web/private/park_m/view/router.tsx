@@ -38,7 +38,8 @@ import RoomBase from "roomBase";
 import RoomPattern from "roomPattern";
 import RoomPatternUpdate from "roomPatternUpdate";
 import ModificationAuthenticationDetail from "modificationAuthenticationDetail";
-//import IdentityAuthentication from "identityAuthentication";
+import IdentityAuthentication from "identityAuthentication";
+import FullView from "fullView";
 
 
 //园区企业--parkCompany; 随手拍 -- photograph；招租查询--findLease； 摆点申请-- applyPut； 
@@ -65,7 +66,7 @@ class Router extends React.Component {
           <Route path="/home" render={(props) => (
             <Home {...props}>
               <Route path="/home/infoArea" component={InfoArea} />
-              <Route path="/home/information" component={Information} />
+              <Route path="/home/informationChild" component={InformationChild} />
               <Route path="/home/personalCenter" component={PersonalCenter} />
             </Home>
           )}>
@@ -92,6 +93,8 @@ class Router extends React.Component {
           <Route path="/roomPattern" component={RoomPattern} />
           <Route path="/roomPatternUpdate" component={RoomPatternUpdate} />
           <Route path="/modificationAuthenticationDetail" component={ModificationAuthenticationDetail} />
+          <Route path="/identityAuthentication" component={IdentityAuthentication} />
+          <Route path="/fullView" component={FullView} />
         </Switch>
       </HashRouter>
   )}

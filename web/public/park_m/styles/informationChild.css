@@ -7,6 +7,30 @@
   z-index: 101;
   background-color: #F2F2F2;
 }
+.information-child-top {
+  background-color: #ffffff;
+  width: 100%;
+  height: 200px;
+  padding-top: 50px;
+}
+.information-child-input {
+  width: 100%;
+  height: 90px;
+  background-color: #F3F3F3;
+  opacity: 1;
+  border-radius: 50px;
+  padding-left: 12%;
+  font-size: 40px;
+  outline: none;
+  border: none;
+}
+.information-childa-search-img {
+  position: relative;
+  top: -65px;
+  left: 5%;
+  width: 40px;
+  height: 40px;
+}
 .information-child-List {
   width: 100%;
   height: 100%;
@@ -15,10 +39,11 @@
   padding-bottom: 500px;
 }
 .information-child-tag {
-  height: 100px;
+  height: 115px;
   width: 100%;
-  border-bottom: 8px solid #F2F2F2;
+  border-bottom: 15px solid #F2F2F2;
   background-color: #ffffff;
+  margin-top: -5px;
 }
 .information-child-List-child {
   width: 100%;

@@ -37,24 +37,32 @@ class Narrate extends React.Component {
       parkAudio: data.response[0].audio,
     }, () => {   //使用setState第二个参数来处理set后的数据
       this.selfPlay(0);
-    }) 
+    })
   }
 
   static selfPlay(audioN) { };
   public selfPlay(audioN) {
-   // console.log("selfPlay", audioN);
+    console.log("selfPlay", audioN);
     let audio = document.getElementById("audioTool");
-   // console.log("selfPlay2", this.state.parkAudio);
+    // console.log("selfPlay2", this.state.parkAudio);
     if (audioN !== this.state.parkAudio.length) {
-      let url = this.state.parkAudio[audioN].url;
-      audio.src = url;
-      audio.play();
+      if (this.state.parkAudio[audioN].url) {
+        let url = this.state.parkAudio[audioN].url;
+        audio.src = url;
+        audio.play();
+        this.setState({
+          activeType: audioN
+        })
+      }
+
     } else {
       // 列表播放结束
       audioN = 0;
       console.log("audioOver", audioN, audio.paused);
       this.playerOver(false);
     };
+
+    console.log(audioN, "audioN", this.state)
   }
 
   public playerOver(a) {
@@ -119,8 +127,8 @@ class Narrate extends React.Component {
             {this.state.paused ?
               <span className="iconfont" style={{ "fontSize": "5rem", "color": "#fff" }}>&#xe84a;</span>
               :
-            <span className="iconfont" style={{ "fontSize": "5rem", "color": "#fff" }}>&#xe84b;</span>
-              }
+              <span className="iconfont" style={{ "fontSize": "5rem", "color": "#fff" }}>&#xe84b;</span>
+            }
           </div>
         </div>
       </div>
@@ -130,13 +138,13 @@ class Narrate extends React.Component {
 
   public state = {
     // 当前播放状态，true：播放；false：暂停
-    paused: true,   
+    paused: true,
     //当前播放的列表序列
     activeType: 0,
     // 讲解音频列表
     parkAudio: [],
     // 当前音频 
-    currentAudio: 0 
+    currentAudio: 0
   }
   //over
 }

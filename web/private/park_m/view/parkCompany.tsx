@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
-
 import GlobalAction from "compat";
 import DataService from "dataService";
+import { Carousel, WingBlank } from 'antd-mobile';
 
 
 class ParkCompany extends React.Component {
@@ -16,6 +16,8 @@ class ParkCompany extends React.Component {
   public componentDidMount() {
     console.log("ParkCompany");
 
+    //3dBut-up
+    move3dBut("up");
   }
 
   // 定义静态类，需要绑定到this的方法上，供外部调用;
@@ -37,30 +39,24 @@ class ParkCompany extends React.Component {
       this.setState({
         showList: false,
         showInfo: true,
+        companyInfotit: "hide"
       })
     } else {
       this.setState({
         showList: true,
         showInfo: false,
+        companyInfotit: "companyInfotit"
       })
     }
     //over
   }
 
   public globalAction: GlobalAction = new GlobalAction();
-  //返回园区map
-  public mapReturnpark() {
-    //通知3d，返回园区视角
-    this.globalAction.web_call_webgl_mapReturnpark();
-  }
 
   public render() {
     return (
       <div className={this.state.parkCompanycss}>
-        <p className="companyInfotit">
-          <RouterDOM.Link to="/home" >
-            <i className="iconfont companyInfoicon" onClick={this.mapReturnpark.bind(this)}>&#xe83b;</i>
-          </RouterDOM.Link>
+        <p className={this.state.companyInfotit}>
           <span>园区企业</span>
         </p>
         <div className={this.state.showList == true ? "show" : "hide"}>
@@ -80,6 +76,7 @@ class ParkCompany extends React.Component {
     showList: true,
     showInfo: false,
     token: "",
+    companyInfotit: "companyInfotit"
   }
 
 
@@ -94,6 +91,8 @@ class CompanyList extends React.Component {
     this.showInfo = this.showInfo.bind(this);
     this.setCompany = this.setCompany.bind(this);
     this.setCompanyType = this.setCompanyType.bind(this);
+    this.change = this.change.bind(this);
+    this.typeActive = this.typeActive.bind(this);
   }
 
   public componentWillMount() {
@@ -126,12 +125,12 @@ class CompanyList extends React.Component {
   public setCompany(data) {
     console.log("set企业列表", data.response)
     //  console.log("setCompany", data.response[0].name)
- 
+
     if (data.response.length == 0) {
       console.log(22222222);
       this.setState({
         companyData: data.response,
-        companyNull:"show",
+        companyNull: "show",
       })
     } else {
       this.setState({
@@ -142,10 +141,28 @@ class CompanyList extends React.Component {
   }
 
   onErrorHeadimageurl() {
-    this.setState({
-      headimageurl: "./park_m/image/tx.jpg"
-    })
+    // var _this = this;
+    //this.setState({
+    // // headimageurl: "./park_m/image/tx.jpg"
+    //  companyData: [{ headimageurl: "./park_m/image/tx.jpg" }]
+    //})
+
+    //$.each(this.state.companyData, function (index, item) {
+    //   _this.setState({
+    //  headimageurl: "./park_m/image/tx.jpg"
+    //})
+    //});
+    //var errorHead = "./park_m/image/tx.jpg"
+    //$.each(this.state.companyData, function (index, item) {
+
+    //})
+
+
+    console.log(this.state.companyData)
+    // console.log(_this.state.companyData)
   }
+
+
 
   // 点击更多，显示info;隐藏list；这里需要调用ParkCompany 的方法；
   // 通过 公司id，获取详情内容
@@ -171,6 +188,7 @@ class CompanyList extends React.Component {
       })
       // 通知3d，暂停加载模型
       this.globalAction.web_call_webgl_pauseloadModuler();
+
     }
     if (this.state.iconfont == "iconfont iconfont-unturn") {
       this.setState({
@@ -178,7 +196,7 @@ class CompanyList extends React.Component {
       })
     } else {
       this.setState({
-        iconfont: "iconfont iconfont-unturn",
+        iconfont: "iconfont iconfont-turn",
       })
     }
   }
@@ -187,11 +205,13 @@ class CompanyList extends React.Component {
     console.log("foldBtn");
     if (this.state.companyBtn == "companyBtn-part") {
       this.setState({
-        companyBtn: "companyBtn-all"
+        companyBtn: "companyBtn-all",
+        searchBoxTypeIcon: "iconfont iconfont-turn",
       })
     } else {
       this.setState({
-        companyBtn: "companyBtn-part"
+        companyBtn: "companyBtn-part",
+        searchBoxTypeIcon: "iconfont iconfont-unturn",
       })
     }
 
@@ -208,15 +228,20 @@ class CompanyList extends React.Component {
     this.globalAction.web_call_webgl_switchCompany(id);
   }
 
+  // 选中企业类型；
   public typeActive(indexof, name, id) {
     console.log("typeActive", indexof);
     console.log("typeActive", name);
     console.log("typeActive", id);
-      this.setState({
-        typeIndexof: indexof,
-        typeName: name,
-        company_type_id: id,
-      })
+    this.setState({
+      typeIndexof: indexof,
+      typeName: name,
+      company_type_id: id,
+    }, () => {
+      // 提交企业类型id；
+      this.searchCompany();
+    });
+
   }
 
   // 聚焦
@@ -235,33 +260,57 @@ class CompanyList extends React.Component {
 
   // 输入
   public change(event) {
-    this.setState({ inputValue: event.target.value })
+    this.setState({ inputValue: event.target.value });
   }
 
-  //软键盘搜索，获取数据，呈现列表效果；（3.5-未写）；1提交搜索条件。；2-css； 
+  // 软键盘 搜索
+  public queryKeyDownHandler(e) {
+    switch (e.keyCode) {
+      case 13://回车事件
+        this.searchCompany();
+        break
+    }
+  }
+
+  //软键盘搜索 
   public searchCompany() {
-    if (this.state.inputValue == "请输入企业名称" || this.state.typeName =="全部 " ) {
+    if (this.state.inputValue == "请输入企业名称" || this.state.typeName == "全部 ") {
       this.setState({ inputValue: "" })
     };
     console.log("searchBtn", this.state.inputValue, this.state.company_type_id);
     this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.inputValue);
   }
 
+  //返回园区map
+  public mapReturnpark() {
+    //通知3d，返回园区视角
+    this.globalAction.web_call_webgl_mapReturnpark();
+    //3dBut-down
+    move3dBut("down")
+  }
+
   public render() {
-    // <img src={"./park_m/image/i.png"} />
     return (
       <div className={this.state.companyListcss}>
-        <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-          <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
+        <div className={"foleBtn"} >
+          <p className="companyGoHomeLeft" onClick={this.mapReturnpark.bind(this)}>
+            <RouterDOM.Link to="/home" style={{ color: "#949494" }}>
+              <i className="iconfont companyInfoicon">&#xe83b;</i>
+              <span>返回</span>
+            </RouterDOM.Link>
+          </p>
+          <p className="companyGoHomeRight">
+            <i className={this.state.iconfont} style={{ "fontSize": "5rem", "color": "#C0C0C0" }} onClick={this.toggleFold.bind(this)} >&#xe849;</i>
+          </p>
         </div>
         <ul className={this.state.companyul}>
-          <p className={this.state.companyNull}>没有符合搜索条件的结果···</p>
+          <p className={this.state.companyNull} style={{ "text-align": "center" }} >没有符合搜索条件的结果···</p>
           {this.state.companyData.map((i, index) => {
             if (i.headimageurl == null) {
               return (
                 <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyli-active" : "companyli"} >
-                  <div className="companyImgback">
-                    <img src={"./park_m/image/i.png"} />
+                  <div className={this.state.indexOf == index ? "companyImgback-active" : "companyImgback"}>
+                    <img src={"./park_m/image/i.png"} onError={this.onErrorHeadimageurl.bind(this)} />
                   </div>
                   <div className="companyul-middle">
                     <p className={this.state.indexOf == index ? "companyName-active" : "companyName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.name}</p>
@@ -280,8 +329,8 @@ class CompanyList extends React.Component {
             } else {
               return (
                 <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyli-active" : "companyli"} >
-                  <div className="companyImgback">
-                    <img src={i.headimageurl} onError={this.onErrorHeadimageurl.bind(this)}/>
+                  <div className={this.state.indexOf == index ? "companyImgback-active" : "companyImgback"}>
+                    <img src={i.headimageurl} onError={this.onErrorHeadimageurl.bind(this)} />
                   </div>
                   <div className="companyul-middle">
                     <p className={this.state.indexOf == index ? "companyName-active" : "companyName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.name}</p>
@@ -300,17 +349,17 @@ class CompanyList extends React.Component {
             }
           })}
         </ul>
-        <form>
+        <form action='' target="rfFrame">
           <div className={this.state.companyBtn}>
             <div className="searchBox">
               <span className="searchBox-text">
-                <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe810;</i>
-                <input className="companySearch" type="text" placeholder="请输入企业名称"
+                <i className="iconfont" style={{ "fontSize": "2.3rem" }}>&#xe810;</i>
+                <input className="companySearch" type="search" placeholder="请输入企业名称"
                   value={this.state.inputValue} onFocus={this.foucus.bind(this)}
-                  onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
+                  onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} onKeyDown={this.queryKeyDownHandler.bind(this)} />
               </span>
               <span onClick={this.foldBtn.bind(this)} className="searchBox-type">
-                {this.state.typeName} <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe828;</i>
+                {this.state.typeName} <i className={this.state.searchBoxTypeIcon} style={{ "fontSize": "3rem", position: "relative", top: "0.3rem" }}>&#xe828;</i>
               </span>
             </div>
             <ul className="companyTypeul">
@@ -322,22 +371,24 @@ class CompanyList extends React.Component {
                 )
               })}
             </ul>
-
-            <span className="searchBtn" onClick={this.searchCompany.bind(this)}>搜索</span>
           </div>
         </form>
+        <iframe id="rfFrame" name="rfFrame" src={this.state.src} style={{ display: "none" }}>   </iframe>
       </div>
     )
+    //<span className="searchBtn" onClick={this.searchCompany.bind(this)} >搜索</span>
+    //onKeyDown={this.searchCompany.bind(this)}
   }
 
   public state = {
-    companyNull:"hide",
+    companyNull: "hide",
     // 园区id
     park_id: 1001,
     companyListcss: "companyList-part",
     foleBtn: "foleBtn",
     companyBtn: "companyBtn-part",
     companyul: "companyul",
+    searchBoxTypeIcon: "iconfont iconfont-unturn",
     //企业列表
     companyData: [],
     // 企业类型
@@ -354,6 +405,8 @@ class CompanyList extends React.Component {
     inputValue: "",
     iconfont: "iconfont iconfont-unturn",
     token: "",
+    //设置 点击软键盘搜索，页面不刷新
+    src: "about:'blank'",
   }
 
 
@@ -421,19 +474,26 @@ class CompanyInfo extends React.Component {
     console.log("infoClick", indexof);
     this.setState({
       infoli: indexof,
-    })
+    });
+
   }
 
   public render() {
+    //<i className="iconfont companyInfoicon" onClick={this.showList.bind(this, "List", "id-01")}>&#xe83b;</i>
     return (
       <div>
         <p className="companyInfotit">
-          <i className="iconfont companyInfoicon" onClick={this.showList.bind(this, "List", "id-01")}>&#xe83b;</i>
           <span>{this.state.companyName}</span>
         </p>
         <div className={this.state.companyInfocss}>
-          <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-            <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
+          <div className={"foleBtn"}>
+            <p className="companyGoHomeLeft" style={{ color: "#949494" }} onClick={this.showList.bind(this, "List", "id-01")}>
+              <i className="iconfont companyInfoicon">&#xe83b;</i>
+              <span>返回</span>
+            </p>
+            <p className="companyGoHomeRight">
+              <i className={this.state.iconfont} style={{ "fontSize": "5rem", "color": "#C0C0C0" }} onClick={this.toggleFold.bind(this)} >&#xe849;</i>
+            </p>
           </div>
           <ul className={this.state.companyInfoul}>
             <li className={this.state.infoli == 0 ? "companyInfoli-active" : "companyInfoli"}
@@ -477,7 +537,7 @@ class CompanyInfo extends React.Component {
     // 当前选中li
     infoli: 0,
     // 折叠按钮
-    iconfont: "iconfont iconfont-unturn",
+    iconfont: "iconfont iconfont-turn",
   }
 
   //over
@@ -544,7 +604,7 @@ class CompanyInfos extends React.Component {
           <div className={"ifosRight"}>
             <h4 className={"infos-1"}>{this.state.name} </h4>
             <h5 className={"infos-2"}>
-              <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe815;</i>
+              <i className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe815;</i>
               {this.state.address}
             </h5>
             <p className={"infos-3"} >{this.state.type}</p>
@@ -564,7 +624,7 @@ class CompanyInfos extends React.Component {
         </div>
       )
     }
-   
+
   }
 
   public state = {
@@ -583,51 +643,98 @@ class CompanyInfos extends React.Component {
   //over
 }
 
+
+
 //企业风采;
 class Mien extends React.Component {
+
   public constructor(props) {
     super(props);
 
     Mien.setCompanymien = this.setCompanymien.bind(this);
   }
 
-  public componentDidMount() { }
+  public componentDidMount() {
+    // simulate img loading
+    setTimeout(() => {
+      this.setState({
+        data: ['1', '2', '3', '4', '5', '6', '7'],
+      });
+    }, 100);
+  }
 
-  // 显示获取的企业详情
+  // 显示获取的企业照片
   static setCompanymien(data) { }
   public setCompanymien(data) {
+    let picurl = [];
     console.log("setCompanyMienMMMMM", data);
-    this.setState({
-      mienImg: data.response.elegant,
-    })
+    $.each(data.response.elegant, function (index, item) {
+      picurl.push(item.pic_url)
+    });
+    //this.setState({
+    //  mienImg: data.response.elegant,
+    //  mienImgLength: data.response.elegant.length,
+    //  data: picurl,
+    //})
+    if (data.response.elegant.length == 0) {
+      this.setState({
+        urlNull: "show",
+        urlShow: "hide",
+      })
+    } else {
+      this.setState({
+        mienImg: data.response.elegant,
+        mienImgLength: data.response.elegant.length,
+        data: picurl,
+        urlNull: "hide",
+        urlShow: "show"
+      })
+    }
+    console.log("ssss", this.state);
   }
 
   public render() {
+    // beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
     return (
-      <div className={"mien"}>
-        <ul>
-          {this.state.mienImg.map((i, index) => {
-            if (!i.pic_url) {
-              return (
-                <li>
-                  <p style={{ "color": "#6C6C6C" }}>暂无图片···</p>
-                </li>
-              )
-            } else {
-              return (
-                <li>
-                  <img src={i.pic_url}  />
-                </li>
-              )
-            }
-          })}
-        </ul>
+      <div className={"mien"} >
+        <p className={this.state.urlNull} style={{ "color": "#333333", "text-align": "center", "font-size": "2.5rem" }}>暂无图片···</p>
+        <div className={this.state.urlShow}>
+          <WingBlank>
+            <Carousel className="space-carousel"
+              frameOverflow="visible"
+              cellSpacing={10}
+              slideWidth={0.8}
+              autoplay
+              infinite
+              afterChange={index => this.setState({ slideIndex: index })}
+            >
+              {this.state.data.map((val, index) => (
+                <img
+                  src={val}
+                  alt=""
+                  style={{ width: '100%', verticalAlign: 'top' }}
+                  onLoad={() => {
+                    // fire window resize event to change height
+                    window.dispatchEvent(new Event('resize'));
+                    this.setState({ imgHeight: 'auto' });
+                  }}
+                />
+              ))}
+            </Carousel>
+          </WingBlank>
+        </div>
+
       </div>
     )
   }
 
   public state = {
-    mienImg: []
+    mienImg: [],
+    data: ['1', '2', '3', '4', '5', '6', '7'],
+    imgHeight: 176,
+    slideIndex: 0,
+    urlNull: "hide",
+    urlShow: "hide",
   }
 
   //over
@@ -647,22 +754,45 @@ class Details extends React.Component {
   static setCompanydetails(data) { }
   public setCompanydetails(data) {
     console.log("setCompanyDetailsDDDDD", data);
-    this.setState({
-      text: data.response.descript,
-    })
+    if (data.response.descript) {
+      let descriptN = data.response.descript;
+      descriptN.replace(/&#10;/, "<br />&nbsp;");
+      let descriptArr = descriptN.split("    ");
+      this.setState({
+        text: descriptN,
+        textArr: descriptArr,
+        detailsNull: "hide",
+        detailsShow: "show"
+      })
+    } else {
+      this.setState({
+        detailsNull: "show",
+        detailsShow: "hide"
+      })
+    }
+    console.log(this.state)
   }
-
   public render() {
     return (
       <div className={"details"}>
-        <p>
-          {this.state.text}
-        </p>
+        <p className={this.state.detailsNull} style={{ "color": "#333333", "text-align": "center" }}>暂无企业详情信息···</p>
+        <div className={this.state.detailsShow}>
+          {this.state.textArr.map((i, index) => {
+            return (
+              <p style={{ "white-space": "pre-line", "text-indent": "5rem" }}>{i}</p>
+            )
+          })}
+        </div>
       </div>
     )
   }
 
-  public state = { text: "" }
+  public state = {
+    text: "",
+    textArr: [],
+    detailsNull: "hide",
+    detailsShow: "hide"
+  }
   //over
 }
 
@@ -674,60 +804,87 @@ class Product extends React.Component {
     Product.setCompanyproduct = this.setCompanyproduct.bind(this);
   }
 
-  public componentDidMount() { }
+  public componentDidMount() {
+    // simulate img loading
+    setTimeout(() => {
+      this.setState({
+        data: ['1', '2', '3', '4', '5', '6', '7'],
+      });
+    }, 100);
+  }
 
-  // 显示获取的企业详情
+  // 显示获取的产品照片
   static setCompanyproduct(data) { }
   public setCompanyproduct(data) {
     console.log("setCompanyproductPPPP", data);
+    let picurl = [];
+    $.each(data.response.product, function (index, item) {
+      console.log("ddddddddddd", item.pic_url);
+      picurl.push(item.pic_url)
+    });
     //this.setState({
-    //  productImg: data.response.product,
-    //})
-
-
-    if (data.response.product == 0) {
+    //   productImg: data.response.product,
+    //   urlNull: "hide",
+    //   data: picurl,
+    // })
+    if (data.response.product.length == 0) {
       this.setState({
         productImg: data.response.product,
         urlNull: "show",
+        urlShow: "hide",
       })
     } else {
       this.setState({
         productImg: data.response.product,
         urlNull: "hide",
+        urlShow: "show",
+        data: picurl,
       })
     }
+    console.log("666666666", this.state);
   }
 
 
   public render() {
     return (
       <div className={"product"}>
-        <ul>
-          <p className={this.state.urlNull} style={{ "color": "#333333" }}>暂无图片···</p>
-          {this.state.productImg.map((i, index) => {
-            if (!i.pic_url) {
-              return (
-                <li>
-                  <p className={this.state.urlNull} style={{ "color": "#6C6C6C" }}>暂无图片···</p>
-                </li>
-              )
-            } else {
-              return (
-                <li>
-                  <img src={i.pic_url}/>
-                </li>
-              )
-            }
-          })}
-        </ul>
+        <p className={this.state.urlNull} style={{ "color": "#333333", "text-align": "center", "font-size": "2.5rem" }}>暂无图片···</p>
+        <div className={this.state.urlShow}>
+          <WingBlank>
+            <Carousel className="space-carousel"
+              frameOverflow="visible"
+              cellSpacing={10}
+              slideWidth={0.8}
+              autoplay
+              infinite
+              afterChange={index => this.setState({ slideIndex: index })}
+            >
+              {this.state.data.map((val, index) => (
+                <img
+                  src={val}
+                  alt=""
+                  style={{ width: '100%', verticalAlign: 'top' }}
+                  onLoad={() => {
+                    // fire window resize event to change height
+                    window.dispatchEvent(new Event('resize'));
+                    this.setState({ imgHeight: 'auto' });
+                  }}
+                />
+              ))}
+            </Carousel>
+          </WingBlank>
+        </div>
       </div>
-
     )
   }
 
   public state = {
     productImg: [],
-    urlNull:"hide",
+    urlNull: "hide",
+    data: ['1', '2', '3', '4', '5', '6', '7'],
+    imgHeight: 176,
+    slideIndex: 0,
+    urlShow: "hide",
   }
   //over
 }

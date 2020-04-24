@@ -59,27 +59,36 @@ class DataService {
   }
 
   // 2.(注册登录模块)用户登陆接口 ### email:test@test.com password:123456 
-  public login() {
+  // admin admin (超级管理员)
+  // twl01 123456(园区管理员) 
+  // twl02 123456(企业管理员) 
+  public login(pBack) {
     $.ajax({
       url: this.state.rooturl + '/api/login',
       data: {
-        "username": "admin",
-        "password": "admin"
+        "username": "twl02",
+        "password": "123456",
+        //"username": "admin",
+        //"password": "admin",
       },
       type: "post",    
       success: function (data) {
         localStorage.setItem("token", data.token);
+        pBack(data);
         }
     })
 
     //返回数据存储
+    let park_id = "1"
+    localStorage.setItem("park_id", park_id);
+
     let userName = "王铁柱"
     localStorage.setItem("userName", userName);
 
     let phone = "15296811111"
     localStorage.setItem("phone", phone);
 
-    let userid = "1008112"
+    let userid = "1"
     localStorage.setItem("userid", userid);
 
     let enterprises = [
@@ -280,6 +289,7 @@ class DataService {
          //  window.location.href = window.location.pathname+"#/"
         } else {
           pBack(data);
+          console.log("77777777777",data)
         }
       }
     })
@@ -395,7 +405,7 @@ class DataService {
 
   //12.(随手拍模块-列表)通过园区id获取随手拍列表 
   public getTakingPhotos(pBack, park_id, name) {
-    console.log("随手拍list", park_id, name);
+   // alert(name);
     let data = {
       //错误码
       "return_code": "100",
@@ -506,7 +516,7 @@ class DataService {
     };
     let thedata = JSON.stringify(datas)
       $.ajax({
-        url: this.state.rooturl2 + '/api/postAdvertisementPoint',
+        url: this.state.rooturl + '/api/postAdvertisementPoint',
         data: thedata,
         type: "post",
         dataType: "json",
@@ -532,9 +542,9 @@ class DataService {
     console.log("getRoomBook", pBack, park_id, name);
     let theurl
     if (name && name!=="搜索") {
-       theurl = this.state.rooturl2 + '/api/getRoomBook/' + 1 + '/' + name
+       theurl = this.state.rooturl + '/api/getRoomBook/' + 1 + '/' + name
     } else {
-       theurl= this.state.rooturl2 + '/api/getRoomBook/' + 1 
+       theurl= this.state.rooturl + '/api/getRoomBook/' + 1 
     }
     $.ajax({
       url: theurl,
@@ -559,7 +569,7 @@ class DataService {
   public getRoomBookInfo(pBack, id) {
     //console.log("getRoomBookInfo", id);
     $.ajax({
-      url: this.state.rooturl2 + '/api/getRoomBookInfo'+"/"+id,
+      url: this.state.rooturl + '/api/getRoomBookInfo'+"/"+id,
       type: "get",
       success: function (data) {
         console.log("getRoomBookInfoajax", data);
@@ -602,7 +612,7 @@ class DataService {
     let thedata = JSON.stringify(datas)
    // console.log("提交场地预定", thedata);
     $.ajax({
-      url: this.state.rooturl2 + '/api/BookingRoom',
+      url: this.state.rooturl + '/api/BookingRoom',
       data: thedata,
       type: "post",
       dataType: "json",
@@ -626,7 +636,7 @@ class DataService {
   //19.(在线报修模块-报修类型)通过园区id获取在线报修类型
   public getRepairType(pBack) {
     $.ajax({
-      url: this.state.rooturl2 + '/api/getRepairType',
+      url: this.state.rooturl + '/api/getRepairType',
       type: "get",
       success: function (data) {
         console.log("getRepairType", data);
@@ -679,7 +689,7 @@ class DataService {
     console.log("saveRepairInfo", datas);
     let thedata = JSON.stringify(datas)
     $.ajax({
-      url: this.state.rooturl2 + '/api/saveRepairInfo',
+      url: this.state.rooturl + '/api/saveRepairInfo',
       data: thedata,
       type: "post",
       dataType: "json",
@@ -1140,6 +1150,19 @@ class DataService {
     })
   }
 
+  //46.(我的个人中心模块-企业详细信息)通过用户id获取它处理的企业详细信息（参照7号接口）###
+  //http://192.168.1.27:89/api/getCompanyInfoByUser?user_id=2
+  public getCompanyInfoByUser(pBack, id) {
+    $.ajax({
+      url: this.state.rooturl3 + '/api/getCompanyInfoByUser?user_id='+id,
+      type: "get",
+      success: function (data) {
+        console.log(data);
+        pBack(data)
+      }
+    })
+  }
+
   // 48.(我的个人中心模块-授权的工单类型)获取授权工单类型类型列表
   public getMyAuthorityWorkType(pBack, id) {
     $.ajax({
@@ -1186,7 +1209,6 @@ class DataService {
       }
     })
   }
-
   // 50.(我的个人中心模块-我的工单-场地预定详情) 通过工单id，获取场地预定详细信息接口
   public getBookingRoomInfo(pBack, id) {
     $.ajax({
@@ -1202,12 +1224,47 @@ class DataService {
     })
   }
 
+  // 51.(我的个人中心模块-我的工单-场地预定操作) 场地预定操作通过或者不通过
+  public changeBookingRoomInfo(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/changeBookingRoomInfo',
+      data: {
+        uid: obj.uid,
+        id: obj.id,
+        state: obj.state,
+        reply: obj.reply,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
   // 54.(我的个人中心模块-我的工单-企业认证) 通过工单id，获取场地企业认证详细信息接口
   public getRoleAuthenticationInfo(pBack, id) {
     $.ajax({
       url: this.state.rooturl + '/api/getRoleAuthenticationInfo',
       data: {
         id: id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 55(我的个人中心模块-我的工单-企业认证操作) 企业认证操作通过或者不通过
+  public changeRoleAuthenticationInfo(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/changeRoleAuthenticationInfo',
+      data: {
+        uid: obj.uid,
+        id: obj.id,
+        state: obj.state,
+        reply: obj.reply,
         token: localStorage.getItem("token")
       },
       type: "get",
@@ -1232,12 +1289,48 @@ class DataService {
     })
   }
 
+  // 59(我的个人中心模块-我的工单-摆点申请操作) 摆点申请操作通过或者不通过
+  public changeAdvertisementPointInfo(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/changeAdvertisementPointInfo',
+      data: {
+        uid: obj.uid,
+        id: obj.id,
+        state: obj.state,
+        reply: obj.reply,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
   // 62.(我的个人中心模块-我的工单-在线报修详情) 通过工单id，在线报修申请详细信息接口
   public getRepairInfo(pBack, id) {  
     $.ajax({
       url: this.state.rooturl + '/api/getRepairInfo',
       data: {
         id: id,
+        token: localStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 63(我的个人中心模块-我的工单-在线报修操作) 在线报修操作通过或者不通过
+  public changeRepairInfo(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/changeRepairInfo',
+      data: {
+        uid: obj.uid,
+        id: obj.id,
+        state: obj.state,
+        reply: obj.reply,
         token: localStorage.getItem("token")
       },
       type: "get",
@@ -1424,12 +1517,14 @@ class DataService {
   // 100.(我的个人中心-企业信息添加)添加或者更新企业详细信息 (同47号接口)
   public saveCompanyInfo(pBack, obj) {
     // console.log("tjjjj", obj);
-
+   //let objs = { "user_id": "1", "park_id": "1", "id": "2", "name": "桂林国家高新", "address": "桂林市七星区信息产业园E座B区三楼", "contact": "莫111", "phone": "15266666666", "website": "请输入企业官方网址", "descript": "xxx公司是由计算机图\n形学，计算机应用学组fdsfds方面专家成。", "company_type": 1, "elegant": [{ "url": "http://park.oss.yongtoc.com/images/temp/2020/04/17/1587092082_5e991a72b92ea.png", "id": "", "name": "XXimg" }], "product": [{ "url": "http://park.oss.yongtoc.com/images/temp/2020/04/17/1587092085_5e991a7583aea.png", "id": "", "name": "XXimg" }], "panorama": [{ "url": "http://park.oss.yongtoc.com/images/temp/2020/04/17/1587092090_5e991a7acef8e.png", "id": "", "name": "XXimg" }], "headimageurl": "http://xxx.jpg" }
+    
     $.ajax({
       url: this.state.rooturl + '/api/saveCompanyInfo',
       dataType: "json",
-      data: JSON.stringify(obj),
-      //data: obj ,
+     data: JSON.stringify(obj),
+      
+      //data: objs ,
       type: "post",
       success: function (data) {
         console.log(data);

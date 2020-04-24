@@ -58,6 +58,10 @@ class GlobalAction {
     console.log("web_call_webgl_onParking",data);
   }
 
+  //通知3d，取消对应摆点标识
+  public web_call_webgl_cancelApplyPut(data) {
+    console.log("web_call_webgl_cancelApplyPut",data)
+  }
   //  over
 }
 

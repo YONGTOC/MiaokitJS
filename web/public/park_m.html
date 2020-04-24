@@ -3,13 +3,16 @@
 <head>
     <meta charset="utf-8" />
     <title>移动园区  2020.1</title>
-
     <script src="./common/miaokit/MiaokitLoader.min.js"></script>
 
     <script>
         let MiaokitJS = new MiaokitModule("Sisyphus", "./data/projects/config.txt");
 
         window.onload = function () {
+            // 在onload 之前 requir。config
+
+
+
             MiaokitJS.Track("Window.onload");
 
             window.oncontextmenu = function (e) {
@@ -33,7 +36,7 @@
                     "antd": "../common/antd/dist/antd.min",
                     "index": "js/view",
                     "g2plot": "../common/g2plot",
-                    "antd-mobile": "../common/antd/antd-mobile.min"
+                    "antd-mobile": "../common/antd/antd-mobile.min",
                 },
                 // 所有模块(*)中的CSS依赖("css")从指定地址中加载("common/requirejs/css.min.js")
                 // 模块中导入CSS依赖的方式为: import "css!./x.css"。!是插件依赖与样式文件地址的分隔符
@@ -59,55 +62,274 @@
     <script src="http://api.map.baidu.com/api?v=3.0&ak=d8tFfHggZfPGG3MHq3AavDVxpjE1bC1Y"></script>
 
     <link href="./common/antd/dist/antd.min.css" rel="stylesheet" type="text/css" />
+    <style>
+
+        .parent {
+            width: 300px;
+            height: 200px;
+            margin: 0 auto;
+            background: #242424;
+            overflow-y: scroll;
+        }
+        /*设置的子盒子高度大于父盒子，产生溢出效果*/
+        .child {
+            height: auto;
+        }
+
+        .child li {
+            height: 50px;
+            margin: 2px 0;
+            background: #009678;
+        }
+    </style>
+
 </head>
 <body style="height: 100%; margin: 0; padding: 0;">
+    <!--幕布，遮挡3d的提前加载-->
+    <div class="curtain" style="background: #fff; margin: auto; width: 100%; height: 100%;
+    top: 0rem; bottom: 0rem; left: 0rem; right: 0rem; position: absolute; z-index: 103;">
+        <div class="loadEffect">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
     <!-- html,body { height: 100%;margin: 0; padding: 0;} div height: 100% 才会起效，因为继承父级高度-->
     <!-- 微信端不能为任意尺寸，否则会崩溃 -->
-    <div id="unityContainer" style="width: 100%; height: 100%; background:#808080; margin: auto"></div>
+    <div id="unityContainer" style="width: 100%; height: 89%; background:#808080; margin: auto"></div>
     <!--<div id="viewContainer" style="width: 100%; height: 100%; background:blue; margin: auto"></div>-->
+
     <div id="viewContainer"></div>
 
-    <!--测试threejs-->
-    <div id="VRcontainer"></div>
+    <!--3d交互按钮-->
+    <div id="3Dbuttons">
+        <div class="floor_box">
+            <p class="floor_box_up" onclick="floorUp()">
+                <i class="iconfont" style="font-size: 2.6rem">&#xe83a;</i>
+            </p>
+            <div class="floor_box_ul">
+                <ul> </ul>
+            </div>
+            <div class="activeBoxLeft">
+                <div class="trangleLeft"></div>
+            </div>
+            <div class="activeBoxRight">
+                <div class="trangleRight"></div>
+            </div>
+            <p class="floor_box_down" onclick="floorDown()">
+                <i class="iconfont" style="font-size: 2.6rem">&#xe828;</i>
+            </p>
+        </div>
+
+        <div class="changeD" onclick="changeD()">2D</div>
+        <div class="reset" onclick="reset()">复位</div>
+        <div class="selectDoor">进入室内</div>
+        <div class="selectAdd">+</div>
+        <div class="selectPop">-</div>
+    </div>
 
     <!--<p id="go">调用预定义的全景图</p>-->
     <ul style="position: absolute;top: 130px;left:0px;z-index: 101;">
         <!--<li>
-        <button onclick="roomScene(1)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活房间全景</button>
-    </li>
-    <li>
-        <button onclick="companyScene(2)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业全景</button>
-    </li>-->
+            <button onclick="roomScene(1)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活房间全景</button>
+        </li>
+        <li>
+            <button onclick="companyScene(2)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业全景</button>
+        </li>-->
         <!--<li>
-        <button onclick="addReqairs(3, 4,'A座','2F','201-2')" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加报修位置34</button>
-    </li>
-    <li>
-        <button onclick="addillegal(1,2)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加随手拍位置</button>
-    </li>
-    <li>
-        <button onclick="addapplyPut(3,4)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加摆点位置34</button>
-    </li>
-    <li>
-        <button onclick="addapplyPut(5,6)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加摆点位置56</button>
-    </li>
-    <li>
-        <button onclick="refreshCompanyinfo(10086)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业显示</button>
-    </li>
-    <li>
-        <button onclick="refreshLeaseinfo(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活招租显示</button>
-    </li>
-    <li>
-        <button onclick="refreshBooksite(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活场地预约</button>
-    </li>
-    <li>
-        <button onclick="refreshParking(120)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活地库</button>
-    </li>-->
+            <button onclick="addReqairs(3, 4,'A座','2F','201-2')" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加报修位置34</button>
+        </li>
+        <li>
+            <button onclick="addillegal(1,2)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加随手拍位置</button>
+        </li>
+        <li>
+            <button onclick="addapplyPut(3,4)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加摆点位置34</button>
+        </li>
+        <li>
+            <button onclick="addapplyPut(5,6)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加摆点位置56</button>
+        </li>
+        <li>
+            <button onclick="refreshCompanyinfo(10086)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业显示</button>
+        </li>
+        <li>
+            <button onclick="refreshLeaseinfo(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活招租显示</button>
+        </li>
+        <li>
+            <button onclick="refreshBooksite(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活场地预约</button>
+        </li>
+        <li>
+            <button onclick="refreshParking(120)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活地库</button>
+        </li>-->
         <!--<li>
             <button onclick="addapplyPut(0000)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加摆点位置56</button>
         </li>-->
+        <!--<li>
+            <button onclick="inFloor('id-1f')" style="width: 18rem;height: 4rem;font-size: 2.3rem;">inFloorid1</button>
+            <button onclick="inFloor('id-2f')" style="width: 18rem;height: 4rem;font-size: 2.3rem;">inFloorid2</button>
+            <button onclick="inFloor('id-3f')" style="width: 18rem;height: 4rem;font-size: 2.3rem;">inFloorid3</button>
+            <button onclick="inFloor('id-4f')" style="width: 18rem;height: 4rem;font-size: 2.3rem;">inFloorid4</button>
+        </li>-->
+        <!--<li>
+            <button onclick="activeLi(0)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">inFloorindex0</button>
+            <button onclick="activeLi(1)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">inFloorindex1</button>
+            <button onclick="activeLi(2)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">inFloorindex2</button>
+            <button onclick="activeLi(3)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">inFloorindex3</button>
+
+        </li>-->
+        <li>
+            <button onclick="showFullView()" style="width: 18rem;height: 4rem;font-size: 2.3rem;">显示全景图</button>
+        </li>
     </ul>
 
     <script>
+        //显示全景图
+        function showFullView() {
+            MiaokitJS.App.UI.showshowFullView();
+            hide3dBut();
+        }
+
+        var floorIndex;
+        var floorIndexMax;
+        var floorId;
+
+        function floorUp() {
+            console.log("up", floorIndex);
+            if (floorIndex > 0) {
+                activeLi(floorIndex - 1);
+            } else {
+                console.log("upover")
+            }
+        }
+        function floorDown() {
+            console.log("down", floorIndex);
+
+            if (floorIndex + 1 < floorIndexMax) {
+                activeLi(floorIndex + 1);
+            } else {
+                console.log("downover")
+            }
+        }
+
+        // 外部传floorId，列表变化
+        function inFloor(id) {
+            console.log(id);
+            $.each(floorData, function (index, item) {
+                if (id == item.id) {
+                    console.log(index);
+                    activeLi(index);
+                }
+                floorIndex = index;
+            })
+        }
+
+        //传递 floorId给 3d；
+        function getFloorIdTo3d(index) {
+            $.each(floorData, function (index, item) {
+                if (floorIndex == index) {
+                    console.log("getFloorIdTo3d", index);
+                    console.log("getFloorIdTo3d--", floorData[index].id);
+                }
+            })
+        }
+
+        // 外部传floorIndex，列表变化
+        function activeLi(index) {
+            $(".floor_box ul li").eq(index).addClass("current-active-floor").siblings().removeClass("current-active-floor");
+            console.log(index);
+            if (index < 1) {
+                $(".floor_box ul").css("top", "6rem");
+            }
+            if (index == 1) {
+                $(".floor_box ul").css("top", "0rem");
+            }
+            if (index > 1) {
+                var x;
+                var i = index - 1;
+                x = -(6 * i);
+                $(".floor_box ul").css("top", x + "rem");
+            }
+            floorIndex = index;
+            //传递 floorId给 3d；
+            getFloorIdTo3d(index);
+        }
+
+        // 写入floor列表
+        var floorData = [
+            { id: "id-1f", name: "1F" },
+            { id: "id-2f", name: "2F" },
+            { id: "id-3f", name: "3F" },
+            { id: "id-4f", name: "4F" },
+            { id: "id-5f", name: "5F" },
+            { id: "id-6f", name: "6F" },
+            { id: "id-7f", name: "7F" },
+        ]
+
+        var html = "";
+        $.each(floorData, function (index, item) {
+            html += '<li data-id="' + item.id + '" onclick="activeLi(' + index + ')">' + item.name + '</li>';
+            console.log(floorData.length);
+            floorIndexMax = floorData.length
+        });
+        $(".floor_box_ul ul").html(html);
+
+
+        //react加载完成，隐藏幕布
+        function curtainHide() {
+            $('.curtain').addClass("hide");
+        }
+
+        //隐藏3d交互按钮
+        function hide3dBut() {
+            console.log("隐藏3d交互按钮");
+            $('#3Dbuttons').addClass("hide");
+        }
+
+        //显示3d交互按钮
+        function show3dBut() {
+            console.log("显示3d交互按钮");
+            $('#3Dbuttons').removeClass("hide");
+        }
+
+        // 2/3D 按钮切换
+        var d = 0;
+        function changeD() {
+            if (d == 0) {
+                d = 1
+                $('.changeD').html("3D");
+                console.log("地图显示2D模式");
+            } else {
+                d = 0
+                $('.changeD').html("2D");
+                console.log("地图显示3D模式");
+            }
+        }
+
+        // 移动3d交互按钮
+        function move3dBut(a) {
+            console.log("3d3d", a)
+            if (a == "up") {
+                $('.changeD').addClass("changeDUp");
+                $('.reset').addClass("resetUp");
+                $('.floor_box').addClass("floor_box_up");
+
+            };
+            if (a == "down") {
+                $('.changeD').removeClass("changeDUp");
+                $('.reset').removeClass("resetUp");
+                $('.floor_box').removeClass("floor_box_up");
+            }
+        }
+
+        //回复当前最佳视角
+        function reset() {
+            console.log("3D回复当前最佳视角");
+        }
+
         //添加报修位置
         function addReqairs(x, y, building_id, floor_id, room_id) {
             MiaokitJS.App.UI.addReqairs(x, y, building_id, floor_id, room_id);
@@ -161,9 +383,9 @@
         //激活地下车库
         function refreshParking(data) {
             var data = {
-                i:1,
-                id:101,
-                name:"7栋地下停车场"
+                i: 1,
+                id: 101,
+                name: "7栋地下停车场"
             }
             MiaokitJS.App.UI.refreshParking(data);
         }

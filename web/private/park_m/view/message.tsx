@@ -61,7 +61,7 @@ class Message extends React.Component<{ history: any }>{
       <div className="work-order">
         <div className="work-order-back" onClick={this.goBack.bind(this)}>
           <img src="./park_m/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
-          <span>我的消息</span>
+          <span style={{ color: "#333333" }}>我的消息</span>
         </div>
         <div className="work-order-tag">
           {
@@ -80,10 +80,10 @@ class Message extends React.Component<{ history: any }>{
                   <div style={{ float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" }}>{item.name}</div>
                 </div>
                 <div style={{ fontSize: "38px", color: "#DB0A0A", margin: "30px 0 0 40px" }}>
-                  {item.info}
+                  房间位置：{item.position}
                 </div>
                 <div style={{ fontSize: "38px", color: "#DB0A0A", margin: "10px 0 0 40px" }}>
-                  {item.time}
+                  到期时间：{item.time}
                 </div>
               </div>
             })

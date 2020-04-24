@@ -31,11 +31,13 @@ class BookSite extends React.Component {
       this.setState({
         showList: false,
         showInfo: true,
+        companyInfotit:"hide",
       })
     } else {
       this.setState({
         showList: true,
         showInfo: false,
+        companyInfotit:"companyInfotit",
       })
     }
   }
@@ -49,10 +51,7 @@ class BookSite extends React.Component {
   public render() {
     return (
       <div className={this.state.BookSitecss}>
-        <p className="companyInfotit">
-          <RouterDOM.Link to="/home" onClick={this.mapReturnpark.bind(this)}>
-            <i className="iconfont companyInfoicon">&#xe83b;</i>
-          </RouterDOM.Link>
+        <p className={this.state.companyInfotit}>
           <span>场地预约</span>
         </p>
         <div className={this.state.showList == true ? "show" : "hide"}>
@@ -73,6 +72,7 @@ class BookSite extends React.Component {
     showInfo: false,
     // 场地预约页
     showBook: false,
+    companyInfotit:"companyInfotit",
   }
 }
 
@@ -182,6 +182,14 @@ class BookList extends React.Component {
     });
   }
 
+  // 软键盘 搜索
+  public queryKeyDownHandler(e) {
+    switch (e.keyCode) {
+      case 13://回车事件
+        this.searchRoomBook();
+        break
+    }
+  }
 
   public searchRoomBook() {
     console.log("搜索", this.state);
@@ -196,12 +204,26 @@ class BookList extends React.Component {
     })
   }
 
+  //返回园区map
+  public mapReturnpark() {
+    //通知3d，返回园区视角
+    this.globalAction.web_call_webgl_mapReturnpark();
+  }
+
   public render() {
     //<p onClick={this.showInfo.bind(this, "Info", "id", "name")} >更多 </p>
     return (
       <div className={this.state.bookListcss}>
-        <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-          <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
+        <div className={"foleBtn"} >
+          <p className="companyGoHomeLeft" onClick={this.mapReturnpark.bind(this)}>
+            <RouterDOM.Link to="/home" style={{ color: "#949494" }}>
+              <i className="iconfont companyInfoicon">&#xe83b;</i>
+              <span>返回</span>
+            </RouterDOM.Link>
+          </p>
+          <p className="companyGoHomeRight">
+            <i className={this.state.iconfont} style={{ "fontSize": "5rem", "color": "#C0C0C0" }} onClick={this.toggleFold.bind(this)} >&#xe849;</i>
+          </p>
         </div>
         <ul className={this.state.bookul}>
           <li className={this.state.nullBookData}><p>没有符合条件的结果</p></li>
@@ -209,14 +231,14 @@ class BookList extends React.Component {
             if (!i.pic_url ) {
               return (
                 <li onClick={this.bookActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "bookli-active" : "bookli"}>
-                  <div className="bookImgback">
+                  <div  className={this.state.indexOf == index ? "bookImgback-active" : "bookImgback"}>
                     <img src={i.headimgurl} onError={this.onError.bind(this)} />
                   </div>
                   <div className="bookul-middle">
                     <p style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.building_name}-{i.floor_name}-{i.room_name}</p>
                     {i.price.map((it, index) => {
                       return (
-                        <p style={{ "font-size": "2.5rem" }}>{it.content}：<span className={"bookPrice"}>{it.price}</span> </p>
+                        <p style={{ "font-size": "2.5rem" }}>{it.content}：<span className={"bookPrice"}>{it.price}</span>  <span className="priceYuan">元</span></p>
                       )
                     })}
                   </div>
@@ -230,14 +252,14 @@ class BookList extends React.Component {
             } else {
               return (
                 <li onClick={this.bookActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "bookli-active" : "bookli"}>
-                  <div className="bookImgback">
+                  <div className={this.state.indexOf == index ? "bookImgback-active" : "bookImgback"}>
                     <img src={this.state.imgurlNull} />
                   </div>
                   <div className="bookul-middle">
                     <p style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.building_name}-{i.floor_name}-{i.room_name}</p>
                     {i.price.map((it, index) => {
                       return (
-                        <p style={{ "font-size": "2.5rem" }}>{it.content}：<span className={"bookPrice"}>{it.price}</span> </p>
+                        <p style={{ "font-size": "2.5rem" }}>{it.content}：<span className={"bookPrice"}>{it.price}</span> <span className="priceYuan">元</span></p>
                       )
                     })}
                   </div>
@@ -252,20 +274,23 @@ class BookList extends React.Component {
          
           })}
         </ul>
+        <form action='' target="rfFrame">
         <div className={"bookBtn"}>
           <div className="searchBox">
             <span className="searchBox-text">
-              <span className="iconfont" style={{ "fontSize": "3rem" }}>&#xe810;</span>
-              <input className="leaseSearch" type="text" placeholder="搜索"
+              <span className="iconfont" style={{ "fontSize": "2.3rem" }}>&#xe810;</span>
+                <input className="leaseSearch" type="search" placeholder="搜索"
                 value={this.state.inputValue} onFocus={this.foucus.bind(this)}
-                onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
+                onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} onKeyDown={this.queryKeyDownHandler.bind(this)} />
             </span>
           </div>
-          <span className="searchBtn" onClick={this.searchRoomBook.bind(this)}>搜索</span>
-        </div>
+         
+          </div>
+        </form>
+        <iframe id="rfFrame" name="rfFrame" src={this.state.src} style={{ display: "none" }}>   </iframe>
       </div>
     )
-
+    // <span className="searchBtn" onClick={this.searchRoomBook.bind(this)}>搜索</span>
   }
 
   public state = {
@@ -282,7 +307,10 @@ class BookList extends React.Component {
     inputValue: "搜索",
     // 场地列表数据
     bookData: [],
-    nullBookData:"hide",
+    nullBookData: "hide",
+    //设置 点击软键盘搜索，页面不刷新
+    src: "about:'blank'",
+    bookImgback:"bookImgback",
   }
 }
 
@@ -378,15 +406,21 @@ class BookInfo extends React.Component {
   }
 
   public render() {
+    // <span className="iconfont companyInfoicon" onClick={this.showList.bind(this, "List", "id-01")}>&#xe83b;</span>
     return (
       <div className={this.state.bookInfocss}>
         <p className="companyInfotit">
-          <span className="iconfont companyInfoicon" onClick={this.showList.bind(this, "List", "id-01")}>&#xe83b;</span>
           <span className={this.state.infoli !== 2 ? "show" : "hide"}>{this.state.building_name}-{this.state.floor_name}-{this.state.room_name}</span>
           <span className={this.state.infoli == 2 ? "show" : "hide"}>预定申请</span>
         </p>
-        <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-          <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
+        <div className={"foleBtn"} >
+          <p className="companyGoHomeLeft" onClick={this.showList.bind(this, "List", "id-01")}>
+              <i className="iconfont companyInfoicon">&#xe83b;</i>
+              <span>返回</span>
+          </p>
+          <p className="companyGoHomeRight">
+            <i className={this.state.iconfont} style={{ "fontSize": "5rem", "color": "#C0C0C0" }} onClick={this.toggleFold.bind(this)} >&#xe849;</i>
+          </p>
         </div>
         <div className={this.state.infoli !== 2 ? "leaseInfoul" : "hide"}>
           <ul className={this.state.bookInfoul}>
@@ -415,7 +449,7 @@ class BookInfo extends React.Component {
     // 场地信息页样式
     bookInfocss: "bookInfos",
     // 折叠按钮样式
-    iconfont: "iconfont iconfont-unturn",
+    iconfont: "iconfont iconfont-turn",
     // 楼宇
     building_name: "",
     // 楼层
@@ -514,6 +548,13 @@ class BookRoom extends React.Component {
     });
   }
 
+  // 聚焦主题
+  public foucusbookTheme() {
+    if (this.state.theme === "50字内") {
+      this.setState({ theme: "" })
+    }
+  }
+
   //计算时间，个位数填0；
   public p(s) {
     return s < 10 ? '0' + s : s
@@ -601,6 +642,15 @@ class BookRoom extends React.Component {
   
   }
 
+  static showList(a, id) { };
+  public showList(a, id) {
+    console.log("showList", a);
+    BookSite.toggleView(a, id);
+    this.setState({
+      infoli: 0,
+      bookInfocss: "bookInfos",
+    })
+  }
 
   //提交成功
   public bookSumbitOK(data) {
@@ -611,18 +661,29 @@ class BookRoom extends React.Component {
 
 
   public render() {
+    //<div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
+    //  <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
+    //</div>
     return (
       <div className={this.state.bookRoom}>
-        <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-          <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
+        <div className={"foleBtn"} >
+          <p className="companyGoHomeLeft" onClick={this.showList.bind(this, "List", "id-01")}>
+            <i className="iconfont companyInfoicon">&#xe83b;</i>
+            <span>返回</span>
+          </p>
+          <p className="companyGoHomeRight">
+            <i className={this.state.iconfont} style={{ "fontSize": "5rem", "color": "#C0C0C0" }} onClick={this.toggleFold.bind(this)} >&#xe849;</i>
+          </p>
         </div>
         <form className={this.state.bookformcss}>
           <ul className={"bookfromul"}>
             <li>
-              <span className={"applySpanleft"}><span className="redStar">*</span>申请人</span><p className={"applyRight"} style={{ "padding-left": "1rem", "padding-top": "0.5rem"  }} >{this.state.applicant}</p>
+              <span className={"applySpanleft"}><span className="redStar">*</span>申请人</span>
+              <p className={"bookRight"} style={{ "padding-left": "1rem", "padding-top": "0.5rem" }} >{this.state.applicant}</p>
             </li>
             <li>
-              <span className="redStar">*</span>手机号码<p className={"applyRight"} style={{ "padding-left": "1rem" , "padding-top": "0.5rem"}}>{this.state.phone}</p>
+              <span className="redStar">*</span>手机号码
+              <p className={"bookRight"} style={{ "padding-left": "1rem", "padding-top": "0.5rem" }}>{this.state.phone}</p>
             </li>
           <li>
               <span className="redStar">*</span>申请企业
@@ -630,7 +691,7 @@ class BookRoom extends React.Component {
           </li>
             <li className={"bookActive"}>
               <span className={"bookformLeft"}><span style={{ "color": "#F2F2F2", "margin-right": "1rem" }}>*</span>使用场地</span>
-              <p className={"bookfromliRight"} style={{ "line-height": " 4rem" }}>
+              <p className={"bookfromliRight"} style={{ "line-height": "3.5rem" }}>
                 {this.state.room_name} 
               </p>
           </li>
@@ -660,15 +721,15 @@ class BookRoom extends React.Component {
                 </div>
               </p>
           </li>
-          <li>
-            <p><span className="redStar">*</span>会议主题：</p>
-              <textarea className="bookTheme" value={this.state.theme} placeholder="50字内"
-                onChange={this.changebookTheme.bind(this)} ></textarea>
+            <li style={{ "border": "0", "padding": "1rem 0 0 0" }}>
+              <p><span className="redStar">*</span><span style={{ "font-size": "2.3rem","margin-": "1rem"}}>会议主题：</span></p>
+              <textarea className="bookTheme" value={this.state.theme} 
+                onChange={this.changebookTheme.bind(this)} onFocus={this.foucusbookTheme.bind(this)} ></textarea>
           </li>
-          <li>
-            <p><span className="redStar">*</span>具体需求：</p>
-              <textarea className="bookContent" value={this.state.content}
-                placeholder="50请将具体需求描述出来。（200字内）"
+            <li>
+              <p><span className="redStar">*</span><span style={{ "font-size": "2.3rem" }}>具体需求：</span></p>
+              <textarea className="bookContent" value={this.state.content} style={{ "margin-bottom": "10rem" }}
+                placeholder="请将具体需求描述出来。（200字内）"
                 onChange={this.changebookContent.bind(this)}></textarea>
             </li>
           </ul>
@@ -735,7 +796,7 @@ class BookRoom extends React.Component {
       //结束时间
       end_time: "",
       //主题
-      theme: "",
+    theme: "50字内",
       //具体需求
       content: "", 
   }

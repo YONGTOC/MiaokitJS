@@ -30,7 +30,7 @@ class Home extends React.Component {
 
   public componentDidMount() {
     //2  登录获取 token
-    this.dataService.login(this.setToken);
+   // this.dataService.login(0);
   }
 
 
@@ -342,10 +342,15 @@ class FoldBtn extends React.Component {
       this.setState({
         foldView: " foldView-part"
       })
+       //3dBut-down
+      window.move3dBut("down");
+
     } else {
       this.setState({
         foldView: "foldView"
       })
+      //3dBut-up
+      window.move3dBut("up");
     }
     if (this.state.iconfont == "iconfont iconfont-unturn") {
       this.setState({
@@ -356,7 +361,7 @@ class FoldBtn extends React.Component {
         iconfont: "iconfont iconfont-unturn",
       })
     }
-
+    console.log(this.state.foldView)
   }
 
   public render() {
@@ -376,7 +381,7 @@ class FoldBtn extends React.Component {
     return (
       <div className={this.state.foldView}>
         <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-          <i className={this.state.iconfont} style={{ "fontSize": "4.5rem" }}>&#xe849;</i>
+          <i className={this.state.iconfont} style={{ "fontSize": "4.5rem", "color":"#C0C0C0"}}>&#xe849;</i>
         </div>
 
         <div className={"foleIconbox"}>

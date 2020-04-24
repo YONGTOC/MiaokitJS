@@ -21,25 +21,29 @@ class Photograph extends React.Component {
     console.log("fp", n);
 
     if (a == "Info") {
-      console.log("INFO")
+      //console.log("INFO")
       this.setState({
         showList: false,
         showInfo: true,
         showLoad: false,
+        companyInfotit:"hide"
       })
     } else if (a == "Load") {
-      console.log("LOAD")
+      //console.log("LOAD")
       this.setState({
         showList: false,
         showInfo: false,
         showLoad: true,
+        companyInfotit:"companyInfotit",
       })
     } else {
-      console.log("other")
+      //console.log("other")
       this.setState({
         showList: true,
         showInfo: false,
         showLoad: false,
+        companyInfotit: "companyInfotit",
+
       })
     }
 
@@ -53,10 +57,7 @@ class Photograph extends React.Component {
   public render() {
     return (
       <div className={this.state.Photographcss}>
-        <p className="companyInfotit">
-          <RouterDOM.Link to="/home" >
-            <span className="iconfont companyInfoicon">&#xe83b;</span>
-          </RouterDOM.Link>
+        <p className={this.state.companyInfotit}>
           <span>随手拍</span>
         </p>
         <div className={this.state.showList == true ? "show" : "hide"}>
@@ -77,6 +78,7 @@ class Photograph extends React.Component {
     showList: true,
     showInfo: false,
     showLoad: false,
+    companyInfotit:"companyInfotit",
   }
 }
 
@@ -118,14 +120,16 @@ class IllegalList extends React.Component {
   public queryKeyDownHandler(e) {
     switch (e.keyCode) {
       case 13://回车事件
-        //alert(this.state.inputValue);
+       // alert(this.state.inputValue);
+        //  提交违章查询
+        this.dataService.getTakingPhotos(this.setillList, this.state.park_id, this.state.inputValue);
         break
     }
   }
 
   // 添加搜索添加 
   public searchList() {
-    this.dataService.getTakingPhotos(this.setillList, this.state.park_id, this.state.inputValue);
+   // this.dataService.getTakingPhotos(this.setillList, this.state.park_id, this.state.inputValue);
   }
 
   // 点击更多，显示info;隐藏list；
@@ -172,10 +176,18 @@ class IllegalList extends React.Component {
     //<div className="illAdd" onClick={this.showPart.bind(this, "Load")} > + </div>
     //onClick = { this.searchList.bind(this) }
     return (
-        <div className={this.state.illegalListcss}>
-          <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-            <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
-          </div>
+      <div className={this.state.illegalListcss}>
+        <div className={"foleBtn"} >
+          <RouterDOM.Link to="/home" >
+          <p className="companyGoHomeLeft" style={{ color: "#949494" }} >
+            <i className="iconfont companyInfoicon">&#xe83b;</i>
+            <span>返回</span>
+            </p>
+          </RouterDOM.Link>
+          <p className="companyGoHomeRight">
+            <i className={this.state.iconfont} style={{ "fontSize": "5rem", "color": "#C0C0C0" }} onClick={this.toggleFold.bind(this)} >&#xe849;</i>
+          </p>
+        </div>
           <ul className={this.state.illegalul} >
             {this.state.illegalList.map((i, index) => {
               return (
@@ -184,10 +196,10 @@ class IllegalList extends React.Component {
                     <img src={i.photo} />
                   </div>
                   <div className="illegalul-middle ">
-                    <p className={this.state.indexOf == index ? "illegalType-active" : "illegalType"} style={{ "font-size": "2.4rem" }}>{i.type}</p>
+                    <p className={this.state.indexOf == index ? "illegalType-active" : "illegalType"} style={{ "font-size": "2.4rem","overflow": "hidden","text-overflow": "ellipsis","white-space": "nowrap" }}>{i.type}</p>
                     <p style={{ "font-size": "2.3rem" }}>{i.time}</p>
                     <p style={{ "font-size": "2.3rem" }}><i className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe82b;</i>{i.car_license}</p>
-                    <p style={{ "font-size": "2.3rem" }}><i className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe82c;</i>{i.position}</p>
+                    <p style={{ "font-size": "2.3rem", "overflow": "hidden", "text-overflow": "ellipsis", "white-space": "nowrap"  }}><i className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe82c;</i>{i.position}</p>
                     <p onClick={this.showPart.bind(this, "Info", i.id, i.car_license)} style={{ "font-size": "2.3rem", "float": "right", "color": "#fff" }}>更多
                          <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
                     </p>
@@ -198,9 +210,9 @@ class IllegalList extends React.Component {
           </ul>
 
           <div className="illBottombox">
-            <div className="searchBox">
+            <div className="illegalBox">
               <span className="searchBox-text">
-                <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe810;</i>
+                <i className="iconfont" style={{ "fontSize": "2.3rem" }}>&#xe810;</i>
                 <input className="companySearch" type="search" placeholder="请输入车牌号"
                   onChange={this.changeList.bind(this)} onKeyDown={this.queryKeyDownHandler.bind(this)}/>
               </span>
@@ -461,13 +473,18 @@ class IllegalUpload extends React.Component {
     return (
       <div>
         <p className="companyInfotit">
-          <span className="iconfont companyInfoicon" onClick={this.showList.bind(this, "List", "i.id")}>&#xe83b;</span>
           <span>随手拍</span>
         </p>
 
         <div className={this.state.illegalLoadcss}>
-          <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-            <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
+          <div className={"foleBtn"} >
+            <p className="companyGoHomeLeft" style={{ color: "#949494" }} onClick={this.showList.bind(this, "List", "i.id")}>
+              <i className="iconfont companyInfoicon">&#xe83b;</i>
+              <span>返回</span>
+            </p>
+            <p className="companyGoHomeRight">
+              <i className={this.state.iconfont} style={{ "fontSize": "5rem", "color": "#C0C0C0" }} onClick={this.toggleFold.bind(this)} >&#xe849;</i>
+            </p>
           </div>
           <form >
             <ul className={this.state.illfromcss}>
@@ -519,7 +536,7 @@ class IllegalUpload extends React.Component {
              </li>
               <li>
                 <textarea className="getilltextarea" value={this.state.descript} placeholder="请将违规问题描述出来。（120字内）"
-                  onChange={this.illdescript.bind(this)} ></textarea>
+                  onChange={this.illdescript.bind(this)} style={{ "margin-bottom": "10rem" }}></textarea>
               </li>
               <div className="illSumbit" onClick={this.sumbitIllfrom.bind(this)}>提交</div>
             </ul>
@@ -655,12 +672,17 @@ class IllegalInfo extends React.Component {
     return (
       <div>
         <p className="companyInfotit">
-          <span className="iconfont companyInfoicon" onClick={this.showList.bind(this, "List", "id-01")}>&#xe83b;</span>
           <span>{this.state.name}违规</span>
         </p>
         <div className={this.state.illegalInfocss}>
-          <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-            <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
+          <div className={"foleBtn"} >
+            <p className="companyGoHomeLeft" style={{ color: "#949494" }} onClick={this.showList.bind(this, "List", "id-01")}>
+              <i className="iconfont companyInfoicon">&#xe83b;</i>
+              <span>返回</span>
+            </p>
+            <p className="companyGoHomeRight">
+              <i className={this.state.iconfont} style={{ "fontSize": "5rem", "color": "#C0C0C0" }} onClick={this.toggleFold.bind(this)} >&#xe849;</i>
+            </p>
           </div>
           <div className="leaseInfoul_br">
             <ul className={"leaseInfoul"} style={{ "width": "44rem" }}>
@@ -687,7 +709,7 @@ class IllegalInfo extends React.Component {
 
 
   public state = {
-    iconfont: "iconfont iconfont-unturn",
+    iconfont: "iconfont iconfont-turn",
     illegalInfocss: "illegalInfo-part",
     name: "",
     infoli: 0,
@@ -748,8 +770,9 @@ class IllegalInfos extends React.Component {
           <span className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe82b;</span>
           车牌：<span>{this.state.car_license}</span></p>
         <p>
-          <span className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe815;</span>
-          位置：<span>{this.state.position}</span></p>
+          <p style={{ "float": "left", "font-weight": "normal" }}><span className="iconfont" style={{ "fontSize": "3rem", "margin-right": "1rem" }}>&#xe815;</span>位置：</p>
+          <p style={{ "width": "auto","margin-left": "12rem" }}>{this.state.position}</p>
+        </p>
         <p>{this.state.descript}</p>
       </div>
     )
