@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
 import GlobalAction from "compat";
 import "css!./styles/view.css";
@@ -7,7 +7,7 @@ interface IProps {
   history: any
 }
 
-//µ×²¿°´Å¥Çø
+//åº•éƒ¨æŒ‰é’®åŒº
 class HomeBottom extends React.Component {
   public constructor(props) {
     super(props)
@@ -42,10 +42,10 @@ class HomeBottom extends React.Component {
       index: data
     });
     if (data == 1) {
-      //Í¨Öª3d£¬¼ÌĞø¼ÓÔØÄ£ĞÍ  
+      //é€šçŸ¥3dï¼Œç»§ç»­åŠ è½½æ¨¡å‹  
       this.globalAction.web_call_webgl_continueloadModuler();
     } else {
-      //Í¨Öª3d£¬ÔİÍ£¼ÓÔØÄ£ĞÍ
+      //é€šçŸ¥3dï¼Œæš‚åœåŠ è½½æ¨¡å‹
       this.globalAction.web_call_webgl_pauseloadModuler();
     }
   }
@@ -56,19 +56,19 @@ class HomeBottom extends React.Component {
         <RouterDOM.Link to="/home" >
           <div className={this.state.index == 1 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 1)}>
             <img src={this.state.index == 1 ? this.state.iconImg1In : this.state.iconImg1Un} />
-            <p>Ê×Ò³</p>
+            <p>é¦–é¡µ</p>
           </div>
         </RouterDOM.Link  >
         <RouterDOM.Link to="/home/information" >
           <div className={this.state.index == 3 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 3)}>
             <img src={this.state.index == 3 ? this.state.iconImg3In : this.state.iconImg3Un} />
-            <p>×ÊÑ¶</p>
+            <p>èµ„è®¯</p>
           </div>
         </RouterDOM.Link>
         <RouterDOM.Link to="/home/personalCenter" >
           <div className={this.state.index == 4 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 4)}>
             <img src={this.state.index == 4 ? this.state.iconImg4In : this.state.iconImg4Un} />
-            <p>ÎÒµÄ</p>
+            <p>æˆ‘çš„</p>
           </div>
         </RouterDOM.Link>
       </div>
