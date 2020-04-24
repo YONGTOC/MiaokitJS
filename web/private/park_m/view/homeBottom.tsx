@@ -1,4 +1,4 @@
-ï»¿import * as React from "react";
+import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
 import GlobalAction from "compat";
 import "css!./styles/view.css";
@@ -7,8 +7,8 @@ interface IProps {
   history: any
 }
 
-//åº•éƒ¨æŒ‰é’®åŒº
-class BottomBtn extends React.Component {
+//µ×²¿°´Å¥Çø
+class HomeBottom extends React.Component {
   public constructor(props) {
     super(props)
     this.toggleIcon = this.toggleIcon.bind(this);
@@ -26,7 +26,7 @@ class BottomBtn extends React.Component {
       this.setState({ index: 1 }, () => {
         this.toggleIcon(this.state.index)
       });
-    } else if (this.props.history.location.pathname === "/informationChild") {
+    } else if (this.props.history.location.pathname === "/home/informationChild") {
       this.setState({ index: 3 }, () => {
         this.toggleIcon(this.state.index)
       })
@@ -42,10 +42,10 @@ class BottomBtn extends React.Component {
       index: data
     });
     if (data == 1) {
-      //é€šçŸ¥3dï¼Œç»§ç»­åŠ è½½æ¨¡å‹  
+      //Í¨Öª3d£¬¼ÌĞø¼ÓÔØÄ£ĞÍ  
       this.globalAction.web_call_webgl_continueloadModuler();
     } else {
-      //é€šçŸ¥3dï¼Œæš‚åœåŠ è½½æ¨¡å‹
+      //Í¨Öª3d£¬ÔİÍ£¼ÓÔØÄ£ĞÍ
       this.globalAction.web_call_webgl_pauseloadModuler();
     }
   }
@@ -53,22 +53,22 @@ class BottomBtn extends React.Component {
   public render() {
     return (
       <div className={"bottomView"}>
-        <RouterDOM.Link to="/" >
+        <RouterDOM.Link to="/home" >
           <div className={this.state.index == 1 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 1)}>
             <img src={this.state.index == 1 ? this.state.iconImg1In : this.state.iconImg1Un} />
-            <p>é¦–é¡µ</p>
+            <p>Ê×Ò³</p>
           </div>
         </RouterDOM.Link  >
-        <RouterDOM.Link to="/informationChild" >
+        <RouterDOM.Link to="/home/information" >
           <div className={this.state.index == 3 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 3)}>
             <img src={this.state.index == 3 ? this.state.iconImg3In : this.state.iconImg3Un} />
-            <p>æ”¿ç­–</p>
+            <p>×ÊÑ¶</p>
           </div>
         </RouterDOM.Link>
-        <RouterDOM.Link to="/personalCenter" >
+        <RouterDOM.Link to="/home/personalCenter" >
           <div className={this.state.index == 4 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 4)}>
             <img src={this.state.index == 4 ? this.state.iconImg4In : this.state.iconImg4Un} />
-            <p>æˆ‘çš„</p>
+            <p>ÎÒµÄ</p>
           </div>
         </RouterDOM.Link>
       </div>
@@ -87,4 +87,4 @@ class BottomBtn extends React.Component {
   //over
 }
 
-export default BottomBtn;
+export default HomeBottom;

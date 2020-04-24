@@ -37,13 +37,21 @@
   line-height: 120px;
   background-color: #ffffff;
   color: #333333;
+}
+.personal-center-tag-c {
+  height: 120px;
+  border-bottom: 2px solid #F2F2F2;
+  font-size: 40px;
+  line-height: 120px;
+  background-color: #ffffff;
+  color: #333333;
   font-weight: 600;
-  margin: 0 50px 0 50px;
 }
 .personal-center-my {
   height: 200px;
   width: 100%;
   border-top: 10px solid #F2F2F2;
+  border-bottom: 10px solid #F2F2F2;
   background-color: #ffffff;
 }
 .personal-center-my-left {

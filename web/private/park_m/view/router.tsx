@@ -65,9 +65,16 @@ class Router extends React.Component {
           <Route path="/home" render={(props) => (
             <Home {...props}>
               <Route path="/home/infoArea" component={InfoArea} />
-              <Route path="/home/informationChild" component={InformationChild} />
+              <Route path="/home/information" component={Information} />
               <Route path="/home/personalCenter" component={PersonalCenter} />
             </Home>
+          )}>
+          </Route>
+          <Route path="/" render={(props) => (
+            <Index {...props}>
+              <Route path="/informationChild" component={InformationChild} />
+              <Route path="/personalCenter" component={PersonalCenter} />
+            </Index>
           )}>
           </Route>
           <Route path="/modificationAuthentication" component={ModificationAuthentication} />
@@ -81,7 +88,6 @@ class Router extends React.Component {
           <Route path="/distribute" component={Distribute} />
           <Route path="/searchUser" component={SearchUser} />
           <Route path="/statisticalStatement" component={StatisticalStatement} />
-          <Route path="/informationChild" component={InformationChild} />
           <Route path="/informationDetail" component={InformationDetail} />
           <Route path="/attractInvestment" component={AttractInvestment} />
           <Route path="/attractInvestmentList" component={AttractInvestmentList} />

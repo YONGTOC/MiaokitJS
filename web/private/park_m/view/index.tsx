@@ -18,6 +18,7 @@ import GlobalAction from "compat";
 
 interface IProps {
   history: any
+  children: any
 }
 
 interface IState {
@@ -759,6 +760,7 @@ class Index extends React.Component {
         <div className="index-bottom-logo">
           <img src="./park_m/image/bottomLogo.png" className="index-bottom-logo-img" />
         </div>
+        {this.props.children}
         <BottomBtn history={this.props.history}></BottomBtn>
       </div>
     )

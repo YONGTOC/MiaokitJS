@@ -1,7 +1,7 @@
 ﻿import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
 
-import BottomBtn from "bottomBtn";
+import HomeBottom from "homeBottom";
 
 import DataService from "dataService";
 import GlobalAction from "compat";
@@ -54,7 +54,7 @@ class Home extends React.Component {
         <TopBtn />
         <FoldBtn />
         {this.props.children}
-        <BottomBtn history={this.props.history} />
+        <HomeBottom history={this.props.history} />
       </div>
     )
   }
