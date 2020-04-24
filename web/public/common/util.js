@@ -51,6 +51,7 @@ class CameraCtrl {
     constructor(pCamera) {
         this.m_pCamera = null;
         this.m_pTransform = null;
+        this.m_nEnabled = true;
         this.m_eCtrlMode = CTRL_MODE.REMOTE;
         this.m_nViewMode = 3;
         this.m_nLng = 0.0;
@@ -263,6 +264,9 @@ class CameraCtrl {
         this.distance = nDistance;
     }
     Update() {
+        if (!this.m_nEnabled) {
+            return;
+        }
         if (this.m_pFlyTask) {
             if (this.m_pFlyTask.Update()) {
                 this.m_pFlyTask = null;
@@ -337,6 +341,9 @@ class CameraCtrl {
         else {
             console.log("未实现漫游模式");
         }
+    }
+    set enabled(enabled) {
+        this.m_nEnabled = enabled;
     }
     get ctrlMode() {
         return this.m_eCtrlMode;
@@ -629,6 +636,9 @@ class App {
             };
             if (0 === nDrag) {
                 pThis.m_pCameraCtrl.Move(-e.movementX, e.movementY, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
+                if (pThis.m_pProject.OnDrag) {
+                    pThis.m_pProject.OnDrag(-e.movementX, e.movementY, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
+                }
             }
             else if (1 === nDrag) {
                 pThis.m_pCameraCtrl.Rotate(e.movementX, e.movementY, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
@@ -656,6 +666,9 @@ class App {
                 let nDeltaY = e.touches[0].clientY - pStartEvent.touches[0].clientY;
                 pStartEvent = e;
                 pThis.m_pCameraCtrl.Move(nDeltaX * -2, nDeltaY * 2, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
+                if (pThis.m_pProject.OnDrag) {
+                    pThis.m_pProject.OnDrag(nDeltaX * -2, nDeltaY * 2, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
+                }
             }
             else if (2 == e.touches.length && 2 == pStartEvent.touches.length) {
                 let mStartPoint = { x: (pStartEvent.touches[0].clientX + pStartEvent.touches[1].clientX) * 0.5, y: (pStartEvent.touches[0].clientY + pStartEvent.touches[1].clientY) * 0.5 };

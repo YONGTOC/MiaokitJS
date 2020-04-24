@@ -232,6 +232,10 @@ class App {
 
             if (0 === nDrag) {
                 pThis.m_pCameraCtrl.Move(-e.movementX, e.movementY, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
+
+                if (pThis.m_pProject.OnDrag) {
+                    pThis.m_pProject.OnDrag(-e.movementX, e.movementY, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
+                }
             }
             else if (1 === nDrag) {
                 pThis.m_pCameraCtrl.Rotate(e.movementX, e.movementY, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
@@ -265,6 +269,10 @@ class App {
                 pStartEvent = e;
 
                 pThis.m_pCameraCtrl.Move(nDeltaX * -2, nDeltaY * 2, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
+
+                if (pThis.m_pProject.OnDrag) {
+                    pThis.m_pProject.OnDrag(nDeltaX * -2, nDeltaY * 2, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
+                }
             }
             else if (2 == e.touches.length && 2 == pStartEvent.touches.length) {
                 let mStartPoint = { x: (pStartEvent.touches[0].clientX + pStartEvent.touches[1].clientX) * 0.5, y: (pStartEvent.touches[0].clientY + pStartEvent.touches[1].clientY) * 0.5 };
@@ -280,6 +288,7 @@ class App {
                 pStartEvent = e;
 
                 pThis.m_pCameraCtrl.Rotate(mMoveDelta.x * -5, mMoveDelta.y * 5, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
+
                 if (Math.abs(nScaleDelta) > 10) {
                     pThis.m_pCameraCtrl.Scale(-nScaleDelta / Math.abs(nScaleDelta), pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
                 }

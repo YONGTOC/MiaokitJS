@@ -106,12 +106,11 @@ class Main {
 
         pThis.m_pGis = pThis.m_pApp.m_pGis;
         pThis.m_pPanoramas = pThis.m_pApp.m_pPanoramas;
-        pThis.m_pPanoramas.Open(MiaokitJS.m_pConfig.PANORS[0]);
 
         pThis.m_pApp.m_pCameraCtrl.Jump(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, {
             m_nLng: pThis.m_pCity.m_nLng,
             m_nLat: pThis.m_pCity.m_nLat,
-            m_mTarget: { x: 0.0, y: 0.0, z: 0.0 },
+            m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
             m_nDistance: 300.000,
             m_nPitch: 20.0,
             m_nYaw: 90.0
@@ -126,6 +125,16 @@ class Main {
     public Update(): void {
         if ((this.iii++) % 180 === 0) {
             console.log(this.m_pApp.m_pCameraCtrl);
+        }
+
+        if (this.m_pPanoramas.panor) {
+            let nState = this.m_pPanoramas.panor.m_nState;
+
+            this.m_pPanoramas.Update();
+
+            if (2 < nState) {
+                return;
+            }
         }
 
         if (this.m_pGis) {
@@ -254,6 +263,29 @@ class Main {
     /// 进入园区。
     public EnterPark(pPark): void {
         this.m_pApp.m_pCameraCtrl.Fly(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, pPark.m_pView, 0.05);
+    }
+
+    /// 进入全景图。
+    public EnterPanoramas(pPanor): void {
+        let pCamera = this.m_pApp.m_pCameraCtrl;
+        let mTarget = pCamera.target;
+
+        this.m_pPanoramas.Open(MiaokitJS.m_pConfig.PANORS[0], {
+            m_pTransform: pCamera.m_pTransform,
+            m_mTarget: { x: mTarget.x, y: mTarget.y, z: mTarget.z },
+            m_nDistance: pCamera.distance,
+            m_nPitch: pCamera.pitch,
+            m_nYaw: pCamera.yaw,
+            m_nField: 60.0
+        });
+
+        pCamera.enabled = false;
+    }
+
+    /// 关闭全景图。
+    public ClosePanoramas(): void {
+        this.m_pPanoramas.Close();
+        this.m_pApp.m_pCameraCtrl.enabled = true;
     }
 
     /// 进入企业。
@@ -604,6 +636,11 @@ class Main {
                 pScene.object3D.active = false;
             }
         }
+    }
+
+    /// 响应拖拽事件。
+    private OnDrag(nOffsetX, nOffsetY, nWidth, nHeight): void {
+        this.m_pPanoramas.Rotate(nOffsetX, nOffsetY, nWidth, nHeight);
     }
 
 

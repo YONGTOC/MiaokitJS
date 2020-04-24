@@ -321,6 +321,10 @@ class CameraCtrl {
 
     /// 应用最新设置的参数，更新摄像机状态
     public Update(): void {
+        if (!this.m_nEnabled) {
+            return;
+        }
+
         if (this.m_pFlyTask) {
             if (this.m_pFlyTask.Update()) {
                 this.m_pFlyTask = null;
@@ -409,6 +413,12 @@ class CameraCtrl {
         else {
             console.log("未实现漫游模式");
         }
+    }
+
+
+    /// 设置摄像机控制器可控状态。
+    public set enabled(enabled: boolean) {
+        this.m_nEnabled = enabled;
     }
 
     /// 获取当前摄像机控制模式。
@@ -537,6 +547,8 @@ class CameraCtrl {
     private m_pCamera: any = null;
     /// 摄像机变换组件。
     private m_pTransform: any = null;
+    /// 摄像机控制启用状态。
+    private m_nEnabled: boolean = true;
 
     /// 当前控制模式。
     private m_eCtrlMode: CTRL_MODE = CTRL_MODE.REMOTE;
