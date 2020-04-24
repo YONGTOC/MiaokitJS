@@ -3689,15 +3689,15 @@ define("homeBottom", ["require", "exports", "react", "react-router-dom", "compat
                 React.createElement(RouterDOM.Link, { to: "/home" },
                     React.createElement("div", { className: this.state.index == 1 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 1) },
                         React.createElement("img", { src: this.state.index == 1 ? this.state.iconImg1In : this.state.iconImg1Un }),
-                        React.createElement("p", null, "\uFFFD\uFFFD\u04B3"))),
+                        React.createElement("p", null, "\u9996\u9875"))),
                 React.createElement(RouterDOM.Link, { to: "/home/information" },
                     React.createElement("div", { className: this.state.index == 3 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 3) },
                         React.createElement("img", { src: this.state.index == 3 ? this.state.iconImg3In : this.state.iconImg3Un }),
-                        React.createElement("p", null, "\uFFFD\uFFFD\u0476"))),
+                        React.createElement("p", null, "\u8D44\u8BAF"))),
                 React.createElement(RouterDOM.Link, { to: "/home/personalCenter" },
                     React.createElement("div", { className: this.state.index == 4 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 4) },
                         React.createElement("img", { src: this.state.index == 4 ? this.state.iconImg4In : this.state.iconImg4Un }),
-                        React.createElement("p", null, "\uFFFD\u04B5\uFFFD")))));
+                        React.createElement("p", null, "\u6211\u7684")))));
         }
         ;
     }
