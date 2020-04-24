@@ -5,7 +5,7 @@ class DataService {
   public componentDidMount() {
     console.log(localStorage.getItem("token"));
 
-    // this.setToken = this.setToken.bind(this)  ;
+    // this.setToken = this.setToken.bind(this);
   }
 
   // 点击地图点，获取回调
@@ -73,6 +73,9 @@ class DataService {
     })
 
     //返回数据存储
+    let park_id = "1"
+    localStorage.setItem("park_id", park_id);
+
     let userName = "王铁柱"
     localStorage.setItem("userName", userName);
 
@@ -280,6 +283,7 @@ class DataService {
          //  window.location.href = window.location.pathname+"#/"
         } else {
           pBack(data);
+          console.log("77777777777",data)
         }
       }
     })
@@ -1140,6 +1144,19 @@ class DataService {
     })
   }
 
+  //46.(我的个人中心模块-企业详细信息)通过用户id获取它处理的企业详细信息（参照7号接口）###
+  //http://192.168.1.27:89/api/getCompanyInfoByUser?user_id=2
+  public getCompanyInfoByUser(pBack, id) {
+    $.ajax({
+      url: this.state.rooturl3 + '/api/getCompanyInfoByUser?user_id='+id,
+      type: "get",
+      success: function (data) {
+        console.log(data);
+        pBack(data)
+      }
+    })
+  }
+
   // 48.(我的个人中心模块-授权的工单类型)获取授权工单类型类型列表
   public getMyAuthorityWorkType(pBack, id) {
     $.ajax({
@@ -1172,15 +1189,13 @@ class DataService {
 
   // 49.(我的个人中心模块-我的工单) 获取我的工单信息列表，全部工单类型的获取
   public getMyWork(pBack, obj) {
-    let url = this.state.rooturl + '/api/getMyWork?'
-    if (obj.work_type !== 0) {
-      url = url + "id=" + obj.id + "&work_type=" + obj.work_type
-    } else {
-      url = url + "id=" + obj.id
-    }
     $.ajax({
-      url: url,
+      url: this.state.rooturl + '/api/getMyWork',
       data: {
+        id: obj.id,
+        work_type: obj.work_type,
+        state_type: obj.state_type,
+        token: localStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1188,7 +1203,6 @@ class DataService {
       }
     })
   }
-
   // 50.(我的个人中心模块-我的工单-场地预定详情) 通过工单id，获取场地预定详细信息接口
   public getBookingRoomInfo(pBack, id) {
     $.ajax({
@@ -1221,7 +1235,6 @@ class DataService {
       }
     })
   }
-
   // 54.(我的个人中心模块-我的工单-企业认证) 通过工单id，获取场地企业认证详细信息接口
   public getRoleAuthenticationInfo(pBack, id) {
     $.ajax({
@@ -1498,12 +1511,14 @@ class DataService {
   // 100.(我的个人中心-企业信息添加)添加或者更新企业详细信息 (同47号接口)
   public saveCompanyInfo(pBack, obj) {
     // console.log("tjjjj", obj);
-
+   //let objs = { "user_id": "1", "park_id": "1", "id": "2", "name": "桂林国家高新", "address": "桂林市七星区信息产业园E座B区三楼", "contact": "莫111", "phone": "15266666666", "website": "请输入企业官方网址", "descript": "xxx公司是由计算机图\n形学，计算机应用学组fdsfds方面专家成。", "company_type": 1, "elegant": [{ "url": "http://park.oss.yongtoc.com/images/temp/2020/04/17/1587092082_5e991a72b92ea.png", "id": "", "name": "XXimg" }], "product": [{ "url": "http://park.oss.yongtoc.com/images/temp/2020/04/17/1587092085_5e991a7583aea.png", "id": "", "name": "XXimg" }], "panorama": [{ "url": "http://park.oss.yongtoc.com/images/temp/2020/04/17/1587092090_5e991a7acef8e.png", "id": "", "name": "XXimg" }], "headimageurl": "http://xxx.jpg" }
+    
     $.ajax({
       url: this.state.rooturl + '/api/saveCompanyInfo',
       dataType: "json",
-      data: JSON.stringify(obj),
-      //data: obj ,
+     data: JSON.stringify(obj),
+      
+      //data: objs ,
       type: "post",
       success: function (data) {
         console.log(data);

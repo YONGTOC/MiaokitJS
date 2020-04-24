@@ -47,7 +47,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
 
   public dataService: DataService = new DataService();
 
-  // ·µ»Ø
+  //  ·µ»Ø
   public goBack() {
     this.props.history.goBack()
   }

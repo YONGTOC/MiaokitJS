@@ -142,7 +142,7 @@ class Index extends React.Component {
     totalPrice: [{ name: "不限" }, { name: "0-0.5万元/月" }, { name: "1.5-3万元/月" }, { name: "3-5万元/月" }, { name: "5-10万元/月" }, { name: "10万元/月以上" }],
     unitPrice: [{ name: "不限" }, { name: "1-0.5万元/月" }, { name: "1.5-3万元/月" }, { name: "3-5万元/月" }, { name: "5-10万元/月" }, { name: "10万元/月以上" }],
     isPosition: false, // 园区弹出
-    position: "", // 园区位置名字
+    position: "", // 园区位置名字 
     isArea: true, // 园区区域和地铁切换
     areaIndex: 0, // 园区区域下标
     subwayIndex: 0, // 园区地铁下标

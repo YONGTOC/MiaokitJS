@@ -16,7 +16,7 @@ interface IState {
 
 export default class InformationChild extends React.Component {
   public readonly state: Readonly<IState> = {
-    inputValue: "搜索政策信息", // 输入框默认值
+    inputValue: "搜索政策信息", //  输入框默认值
     listArr: [],
     tagIndex: 0, // 选中的标签
     tagArr: []

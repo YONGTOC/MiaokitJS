@@ -5,7 +5,7 @@
   height: 100%;
   width: 100%;
   z-index: 101;
-  background-color: #ffffff;
+  background-color: #ffffff; 
   overflow-y: auto;
 }
 .personal-center-top {

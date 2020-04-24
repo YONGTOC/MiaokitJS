@@ -18,12 +18,105 @@ i {
 .iconfont-turn {
     transform: rotate(180deg);
     transition: 0.5s;
-    color: #C0C0C0;
 }
 
 .iconfont-unturn {
     transition: 0.5s;
-    color: #C0C0C0;
+}
+
+.loadEffect {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    margin: 0 auto;
+    /*margin-top: 100px;*/
+    margin-top: 38rem;
+}
+
+.loadEffect span {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    /*background: lightgreen;*/
+    background: #62b0f5;
+    position: absolute;
+    -webkit-animation: load 1.04s ease infinite;
+}
+
+@-webkit-keyframes load {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.2;
+    }
+}
+
+.loadEffect span:nth-child(1) {
+    left: 0;
+    top: 50%;
+    margin-top: -8px;
+    -webkit-animation-delay: 0.13s;
+}
+
+.loadEffect span:nth-child(2) {
+    left: 14px;
+    top: 14px;
+    -webkit-animation-delay: 0.26s;
+}
+
+.loadEffect span:nth-child(3) {
+    left: 50%;
+    top: 0;
+    margin-left: -8px;
+    -webkit-animation-delay: 0.39s;
+}
+
+.loadEffect span:nth-child(4) {
+    top: 14px;
+    right: 14px;
+    -webkit-animation-delay: 0.52s;
+}
+
+.loadEffect span:nth-child(5) {
+    right: 0;
+    top: 50%;
+    margin-top: -8px;
+    -webkit-animation-delay: 0.65s;
+}
+
+.loadEffect span:nth-child(6) {
+    right: 14px;
+    bottom: 14px;
+    -webkit-animation-delay: 0.78s;
+}
+
+.loadEffect span:nth-child(7) {
+    bottom: 0;
+    left: 50%;
+    margin-left: -8px;
+    -webkit-animation-delay: 0.91s;
+}
+
+.loadEffect span:nth-child(8) {
+    bottom: 14px;
+    left: 14px;
+    -webkit-animation-delay: 1.04s;
+}
+ 
+/** {
+    white-space: pre-line;
+}*/
+/*viewShade*/
+.viewShade {
+    width: 100%;
+    height: 100%;
+    background-color: #ccc;
+    position: fixed;
+    top: 0px;
+    z-index: 100;
 }
 /*home*/
 .web {
@@ -76,6 +169,10 @@ i {
     margin: 0 0.5rem;
     cursor: pointer;
     float: left;
+}
+
+.iconBox :nth-child(3) {
+    border-top: 0rem solid #646464;
 }
 
 .iconBoxIn {
@@ -160,18 +257,19 @@ i {
 .foldView {
     position: fixed;
     width: 100%;
-    height: 43rem;
+    height: 38rem;
     z-index: 100;
-    bottom: 9rem;
+    bottom: 8rem;
     background: #fff;
     border-radius: 2rem 2rem 0 0;
 }
 
 .foleBtn {
     width: 100%;
-    height: 5rem;
+    height: 6rem;
     text-align: center;
     cursor: pointer;
+    line-height: 6rem;
 }
 
 .foleIconbox {
@@ -186,7 +284,7 @@ i {
     text-align: center;
     cursor: pointer;
     float: left;
-    margin: 3rem 1.5rem;
+    margin: 1rem 1.5rem;
     color: #646464;
 }
 
@@ -195,7 +293,7 @@ i {
     width: 100%;
     height: 22rem;
     z-index: 100;
-    bottom: 9rem;
+    bottom: 8rem;
     background: #fff;
     border-radius: 2rem 2rem 0 0;
 }
@@ -208,13 +306,23 @@ i {
     bottom: 0;
     /*border: 0.1rem solid red;*/
     background: #fff;
-    border-top: 0.2rem solid #ccc;
+    border-top: 0.1rem solid #cccccc;
 }
 
 .iconBox-bottom {
+    /*width: 7rem;
+    height: 10rem;
+    margin: 0 5rem 0 5rem;
+    cursor: pointer;
+    float: left;
+    margin-top: 0rem;
+    margin: 0 4rem;
+    text-align: center;
+    color: #6C6C6C;*/
     width: 10rem;
     height: 10rem;
     margin: 0 5rem 0 5rem;
+    margin-top: 0px;
     cursor: pointer;
     float: left;
     margin-top: 0rem;
@@ -222,20 +330,30 @@ i {
     color: #6C6C6C;
 }
 
-    .iconBox-bottom img {
-        width: 4rem;
-        height: 4rem;
-        display: inline-flex;
-        margin-top: 1rem;
-    }
+.iconBox-bottom img {
+    width: 4rem;
+    height: 4rem;
+    display: inline-flex;
+    margin-top: 1rem;
+}
 
-    .iconBox-bottom p {
-    }
+.iconBox-bottom p {
+}
 
 .iconBox-bottomIn {
+    /*width: 7rem;
+    height: 10rem;
+    margin: 0 5rem 0 5rem;
+    cursor: pointer;
+    float: left;
+    margin-top: 0rem;
+    margin: 0 4rem;
+    text-align: center;
+    color: #0B8BF0;*/
     width: 10rem;
     height: 10rem;
     margin: 0 5rem 0 5rem;
+    margin-top: 0px;
     cursor: pointer;
     float: left;
     margin-top: 0rem;
@@ -243,16 +361,16 @@ i {
     color: #0B8BF0;
 }
 
-    .iconBox-bottomIn img {
-        width: 4rem;
-        height: 4rem;
-        display: inline-flex;
-        margin-top: 1rem;
-    }
+.iconBox-bottomIn img {
+    width: 4rem;
+    height: 4rem;
+    display: inline-flex;
+    margin-top: 1rem;
+}
 
-    .iconBox-bottomIn p {
-        /*margin-top: -0.5rem;*/
-    }
+.iconBox-bottomIn p {
+    /*margin-top: -0.5rem;*/
+}
 
 
 
@@ -342,6 +460,7 @@ i {
     font-size: 2rem;
     text-align: center;
     padding-top: 1rem;
+    line-height: 5rem;
 }
 
 .flex-active {
@@ -354,6 +473,7 @@ i {
     font-size: 2rem;
     text-align: center;
     padding-top: 1rem;
+    line-height: 5rem;
 }
 
 .playBtn {
@@ -389,7 +509,7 @@ i {
 
 /*companyList/*/
 .companyList-part {
-    position: fixed;
+    /*position: fixed;
     width: 100%;
     height: 55rem;
     z-index: 100;
@@ -397,7 +517,17 @@ i {
     right: 0;
     background: #fff;
     font-size: 3rem;
+    border-radius: 2rem 2rem 0 0;*/
+    position: fixed;
+    width: 100%;
+    /*height: 55rem;*/
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
     border-radius: 2rem 2rem 0 0;
+    margin-bottom: 8rem;
 }
 
 .companyList-all {
@@ -464,34 +594,53 @@ i {
     outline: none;
     color: #333333;
     width: 25rem;
+    margin-left: 1rem;
 }
 /**companyul*/
 .companyul {
-    height: 40rem;
+    height: 30rem;
     overflow: scroll;
+    clear: both;
 }
 
 .companyul-all {
     height: 100%;
     overflow: scroll;
+    clear: both;
 }
 
 .companyli {
-    height: 13rem;
+    /*height: 13rem;
     border-bottom: 0.2rem solid #ccc;
     margin: 0 3rem 0rem 0;
     background: #fff;
+    color: #949494;*/
+    height: 13rem;
+    border-bottom: 0.1rem solid #ccc;
+    /* margin: 0 4rem 0rem 0; */
+    margin: 0 4rem 0rem 1.5rem;
+    background: #fff;
     color: #949494;
+    margin-left: 1.5rem;
+    width: 53rem;
 }
 
 .companyli-active {
     height: 13rem;
-    border-bottom: 0.2rem solid #ccc;
+    /*border-bottom: 0.2rem solid #ccc;*/
     margin: 0 3rem 1rem 0;
     border-radius: 1.6rem;
     background: #0B8BF0;
     box-shadow: 0rem 0.3rem 0.6rem rgba(0,0,0,0.3);
     color: #fff;
+}
+
+.companyul :last-child {
+    border-bottom: 0rem;
+}
+
+.companyul-all :last-child {
+    border-bottom: 0rem;
 }
 
 .companyImgback {
@@ -500,18 +649,27 @@ i {
     border-radius: 5rem;
     margin: 1.5rem;
     float: left;
-    background:#fff;
+    background: #fff;
 }
 
-    .companyImgback img {
-        width: 100%;
-        height: 100%;
-        border-radius: 5rem;
-    }
+.companyImgback-active {
+    width: 9.8rem;
+    height: 9.8rem;
+    border-radius: 5rem;
+    margin: 1.5rem 1.5rem 1.5rem 3rem;
+    float: left;
+    background: #fff;
+}
+
+.companyImgback img, .companyImgback-active img {
+    width: 100%;
+    height: 100%;
+    border-radius: 5rem;
+}
 
 .companyul-middle {
     float: left;
-    width: 31rem;
+    width: 30rem;
     margin-top: 2rem;
     line-height: 4.5rem;
 }
@@ -537,10 +695,10 @@ i {
     text-align: center;
 }
 
-    .companyul-right p:nth-child(1) {
-        color: #fff;
-        margin-left: 4rem;
-    }
+.companyul-right p:nth-child(1) {
+    color: #fff;
+    margin-left: 4rem;
+}
 
 .companyType {
     background: #F5F5F5;
@@ -566,6 +724,8 @@ i {
 .companyTypeul {
     position: absolute;
     top: 10rem;
+    overflow-y: scroll;
+    height: 22rem;
 }
 
 .companyTypeli {
@@ -574,18 +734,28 @@ i {
     margin: 1rem;
     text-align: center;
     font-size: 2.3rem;
-    padding: 0.6rem 1.6rem 0.6rem 1.6rem;
+    padding: 0.6rem 0rem 0.6rem 0rem;
     border-radius: 0.8rem;
     color: #707589;
+    width: 12rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .companyTypeli-active {
     float: left;
+    background: #F2F2F2;
     margin: 1rem;
     text-align: center;
     font-size: 2.3rem;
-    padding: 0.6rem 1.6rem 0.6rem 1.6rem;
+    padding: 0.6rem 0rem 0.6rem 0rem;
     border-radius: 0.8rem;
+    color: #707589;
+    width: 12rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     background: #E5F3FC;
     color: #0B8BF0;
 }
@@ -605,7 +775,7 @@ i {
 .companyInfo-part {
     position: fixed;
     width: 100%;
-    height: 12rem;
+    height: 12.2rem;
     z-index: 100;
     bottom: 0;
     right: 0;
@@ -617,7 +787,7 @@ i {
 .companyInfotit {
     position: fixed;
     width: 100%;
-    height: 5rem;
+    height: 7rem;
     z-index: 100;
     top: 0;
     right: 0;
@@ -625,28 +795,49 @@ i {
     background: rgba(0, 0, 0, 0.6);
     text-align: center;
     color: #fff;
+    line-height: 7rem;
+    letter-spacing: 0.2rem;
+}
+
+.companyGoHomeLeft {
+    width: 27%;
+    float: left;
+    font-size: 2.3rem;
+}
+
+.companyGoHomeRight {
+    /*width: 45%;
+    float: left;
+    height:5.4rem;
+    line-height:5.4rem;*/
+    width: 45%;
+    float: left;
+    height: 5rem;
 }
 
 .companyInfoicon {
-    font-size: 3rem !important;
-    color: rgb(255, 255, 255);
+    font-size: 2.3rem !important;
+    /*color: rgb(255, 255, 255);*/
+    color: #707070;
     position: absolute;
-    /*top: -1rem;*/
+    top: 0.1rem;
     left: 3rem;
 }
 
 .companyInfoul {
     background: #fff;
     width: 100%;
-    height: 7rem;
+    height: 6rem;
     border-bottom: 0.2rem solid #f2f2f2;
+    clear: both;
+    line-height: 4.5rem;
 }
 
 .companyInfoli {
     list-style: none;
     float: left;
     color: #6C6C6C;
-    margin: 2rem;
+    margin: 0 2rem;
     padding-bottom: 1rem;
     font-size: 2.5rem;
 }
@@ -656,7 +847,7 @@ i {
     float: left;
     color: #333333;
     font-weight: bold;
-    margin: 2rem;
+    margin: 0 2rem;
     border-bottom: 0.5rem solid #0B8BF0;
     padding-bottom: 1rem;
     font-size: 2.5rem;
@@ -666,19 +857,20 @@ i {
 .infos {
 }
 
-    .infos img {
-        background: #fff;
-        width: 14rem;
-        height: 14rem;
-        margin-left: 2rem;
-    }
+.infos img {
+    background: #fff;
+    width: 14rem;
+    height: 14rem;
+    margin-left: 2rem;
+}
 
 .ifosRight {
     float: right;
     width: 40rem;
     /*border: 0.2rem solid red;*/
     margin: 0 3rem 0 2rem;
-    height: 31rem;
+    height: 36rem;
+    overflow-y: scroll;
 }
 
 .infos-1 {
@@ -705,56 +897,56 @@ i {
     color: #949494;
 }
 
-    .infos-4 span:nth-child(1) {
-        margin-right: 5.5rem
-    }
+.infos-4 span:nth-child(1) {
+    margin-right: 5.5rem
+}
 
-    .infos-4 span:nth-child(2) {
-        color: #000;
-    }
+.infos-4 span:nth-child(2) {
+    color: #000;
+}
 
 .infos-5 {
     font-size: 2.5rem;
     line-height: 6rem;
 }
 
-    .infos-5 span:nth-child(1) {
-        font-size: 2.5rem;
-        color: #949494;
-        margin-right: 3rem;
-    }
+.infos-5 span:nth-child(1) {
+    font-size: 2.5rem;
+    color: #949494;
+    margin-right: 3rem;
+}
 
-    .infos-5 span:nth-child(2) {
-        color: #000;
-    }
+.infos-5 span:nth-child(2) {
+    color: #000;
+}
 
 .infos-6 {
     font-size: 2.5rem;
     color: #949494;
 }
 
-    .infos-6 span:nth-child(1) {
-        margin-right: 3rem;
-    }
+.infos-6 span:nth-child(1) {
+    margin-right: 3rem;
+}
 
-    .infos-6 span:nth-child(2) {
-        color: #0B8BF0;
-    }
+.infos-6 span:nth-child(2) {
+    color: #0B8BF0;
+}
 
 /*企业详情 --details*/
 .details {
+    height: 35rem;
+    overflow-y: scroll;
 }
 
-    .details p {
-        font-size: 2.5rem;
-        width: 54rem;
-        height: 35rem;
-        font-weight: 400;
-        color: rgba(51,51,51,1);
-        margin: auto;
-        line-height: 4.5rem;
-        overflow-y: scroll;
-    }
+.details p {
+    font-size: 2.5rem;
+    width: 54rem;
+    font-weight: 400;
+    color: rgba(51,51,51,1);
+    margin: auto;
+    line-height: 4.5rem;
+}
 /*mien -- 风采*/
 .mien {
     width: 100%;
@@ -763,26 +955,41 @@ i {
     color: #fff;
 }
 
-    .mien ul {
-        width: 100%;
-        white-space: nowrap;
-        overflow-x: scroll;
-        float: left;
-        overflow-y: hidden;
-    }
+.mien ul {
+    width: 100%;
+    white-space: nowrap;
+    overflow-x: scroll;
+    float: left;
+    overflow-y: hidden;
+    padding: 0;
+}
 
-    .mien li {
+/*.mien li {
         display: inline-block;
         width: 43rem;
         height: 33rem;
         margin-right: 2rem;
-    }
+    }*/
+.mien li {
+    display: inline-block;
+    width: 100%;
+    height: 33rem;
+    margin-right: 2rem;
+    /* left: -200%;*/
+}
 
-    .mien img {
+/*.mien img {
         width: 44rem;
         height: 33rem;
-    }
+    }*/
+.mien img {
+    width: 100%;
+    height: 33rem;
+}
 
+.mienImgOne {
+    margin-left: 5.5rem;
+}
 /*product -- */
 .product {
     width: 100%;
@@ -791,25 +998,25 @@ i {
     color: #fff;
 }
 
-    .product ul {
-        width: 100%;
-        white-space: nowrap;
-        overflow-x: scroll;
-        float: left;
-        overflow-y: hidden;
-    }
+.product ul {
+    width: 100%;
+    white-space: nowrap;
+    overflow-x: scroll;
+    float: left;
+    overflow-y: hidden;
+}
 
-    .product li {
-        display: inline-block;
-        width: 43rem;
-        height: 33rem;
-        margin-right: 2rem;
-    }
+.product li {
+    display: inline-block;
+    width: 43rem;
+    height: 33rem;
+    margin-right: 2rem;
+}
 
-    .product img {
-        width: 44rem;
-        height: 33rem;
-    }
+.product img {
+    width: 44rem;
+    height: 33rem;
+}
 
 /*招租查询*/
 .findLease {
@@ -826,7 +1033,7 @@ i {
 .leaseList-part {
     position: fixed;
     width: 100%;
-    height: 55rem;
+    /*height: 55rem;*/
     z-index: 100;
     bottom: 0;
     right: 0;
@@ -872,7 +1079,7 @@ i {
 
 .searchBox {
     background: #F3F3F3;
-    width: 45rem;
+    width: 55rem;
     height: 6.5rem;
     border-radius: 3.8rem;
     position: absolute;
@@ -886,6 +1093,7 @@ i {
     float: left;
     margin-left: 2rem;
     font-size: 2.3rem;
+    line-height: 6.5rem;
 }
 
 .searchBox-type {
@@ -912,29 +1120,47 @@ i {
     outline: none;
     color: #333333;
     width: 25rem;
+    margin-left: 1rem;
 }
 /**companyul*/
 .leaseul {
-    height: 45rem;
+    height: 30rem;
     overflow: scroll;
+    clear: both;
+    margin-bottom: 11rem;
+}
+
+.leaseul :last-child {
+    border-bottom: 0rem;
 }
 
 .leaseul-all {
     height: 100%;
     overflow: scroll;
+    clear: both;
+}
+
+.leaseul-all :last-child {
+    border-bottom: 0rem;
 }
 
 .leaseli {
-    height: 17rem;
+    /*height: 17rem;
     border-bottom: 0.2rem solid #ccc;
     margin: 0 3rem 0rem 0;
     background: #fff;
+    color: #949494;*/
+    height: 17rem;
+    border-bottom: 0.2rem solid #ccc;
+    margin: 0 3rem 0rem 1rem;
+    background: #fff;
     color: #949494;
+    width: 54rem;
 }
 
 .leaseli-active {
     height: 17rem;
-    border-bottom: 0.2rem solid #ccc;
+    /*border-bottom: 0.2rem solid #ccc;*/
     margin: 0 3rem 1rem 0;
     border-radius: 1.6rem;
     background: #0B8BF0;
@@ -948,11 +1174,16 @@ i {
     float: left;
 }
 
-    .leaseImgback img {
-        width: 14rem;
-        height: 14rem;
-        border-radius: 1rem;
-    }
+.leaseImgback-active {
+    margin: 1.5rem 1.5rem 1.5rem 2.5rem;
+    float: left;
+}
+
+.leaseImgback-active img, .leaseImgback img {
+    width: 14rem;
+    height: 14rem;
+    border-radius: 1rem;
+}
 
 .leaseul-middle {
     float: left;
@@ -976,17 +1207,17 @@ i {
     text-align: center;
 }
 
-    .leaseul-right p:nth-child(1) {
-        color: #fff;
-        float: right;
-    }
+.leaseul-right p:nth-child(1) {
+    color: #fff;
+    float: right;
+}
 
 .leaseType {
     color: #949494;
     border-radius: 0.4rem;
     height: 4rem;
     line-height: 4rem;
-    width: 11rem;
+    width: 12rem;
     margin-top: 9.5rem;
     clear: both;
 }
@@ -996,7 +1227,7 @@ i {
     border-radius: 0.4rem;
     height: 4rem;
     line-height: 4rem;
-    width: 11rem;
+    width: 12rem;
     margin-top: 9.5rem;
 }
 
@@ -1010,9 +1241,10 @@ i {
     margin-right: 0.6rem;*/
     width: 56px;
     height: 53px;
-    font-size: 2.4rem;
+    font-size: 3rem;
     font-weight: 600;
     line-height: 53px;
+    color: #F53636;
 }
 
 .leasePrice-active {
@@ -1023,7 +1255,7 @@ i {
     line-height: 53px;
     color: rgb(255, 255, 255);
     margin-right: 0.6rem;*/
-    font-size: 2.4rem;
+    font-size: 3rem;
     font-weight: bold;
     line-height: 53px;
     color: rgb(255, 255, 255);
@@ -1034,6 +1266,8 @@ i {
 .areaTypeul {
     position: absolute;
     top: 10rem;
+    height: 12rem;
+    overflow-y: scroll;
 }
 
 .areaTypeli {
@@ -1044,7 +1278,7 @@ i {
     font-size: 2.2rem;
     border-radius: 0.8rem;
     color: #707589;
-    width: 12rem;
+    width: 15rem;
     height: 4rem;
     line-height: 4rem;
 }
@@ -1057,7 +1291,7 @@ i {
     font-size: 2.2rem;
     border-radius: 0.8rem;
     color: #0B8BF0;
-    width: 12rem;
+    width: 15rem;
     height: 4rem;
     line-height: 4rem;
 }
@@ -1078,7 +1312,7 @@ i {
 .leaseInfo-part {
     position: fixed;
     width: 100%;
-    height: 12rem;
+    height: 11.2rem;
     z-index: 100;
     bottom: 0;
     right: 0;
@@ -1116,16 +1350,17 @@ i {
 .leaseInfoul {
     background: #fff;
     width: 60rem;
-    height: 7rem;
-    /*border-bottom: 0.2rem solid #f2f2f2;*/
+    height: 5rem;
+    border-bottom: 0.1rem solid #f2f2f2;
     margin: auto;
+    line-height: 3rem;
 }
 
 .leaseInfoli {
     list-style: none;
     float: left;
     color: #6C6C6C;
-    margin: 2rem 4.5rem;
+    margin: 0rem 4.5rem;
     padding-bottom: 1rem;
     font-size: 2.5rem;
 }
@@ -1135,10 +1370,11 @@ i {
     float: left;
     color: #333333;
     font-weight: bold;
-    margin: 2rem 4.5rem;
+    margin: 0rem 4.5rem;
     border-bottom: 0.5rem solid #0B8BF0;
     padding-bottom: 1rem;
     font-size: 2.5rem;
+    line-height: 3.5rem;
 }
 /*leaseInfos*/
 .leaseInfos {
@@ -1163,15 +1399,15 @@ i {
     line-height: 5rem;
 }
 
-    .leaseInfosul li:nth-child(1) {
-        width: 30rem;
-        display: inline-block;
-        border-left: 0.7rem solid #0B8BF0;
-        line-height: 2.1rem;
-        height: 3rem;
-        padding-left: 1rem;
-        font-weight: bold;
-    }
+.leaseInfosul li:nth-child(1) {
+    width: 30rem;
+    display: inline-block;
+    border-left: 0.7rem solid #0B8BF0;
+    line-height: 2.1rem;
+    height: 3rem;
+    padding-left: 1rem;
+    font-weight: bold;
+}
 
 /*roomImg -- 照片展示*/
 .picshow {
@@ -1181,25 +1417,26 @@ i {
     color: #fff;
 }
 
-    .picshow ul {
-        width: 100%;
-        white-space: nowrap;
-        overflow-x: scroll;
-        float: left;
-        overflow-y: hidden;
-    }
+.picshow ul {
+    width: 100%;
+    white-space: nowrap;
+    overflow-x: scroll;
+    float: left;
+    overflow-y: hidden;
+    padding: 0;
+}
 
-    .picshow li {
-        display: inline-block;
-        width: 43rem;
-        height: 33rem;
-        margin-right: 2rem;
-    }
+.picshow li {
+    display: inline-block;
+    width: 43rem;
+    height: 33rem;
+    margin-right: 2rem;
+}
 
-    .picshow img {
-        width: 44rem;
-        height: 33rem;
-    }
+.picshow img {
+    width: 44rem;
+    height: 33rem;
+}
 
 /*Photograph -- 随手拍*/
 .photograph {
@@ -1252,17 +1489,27 @@ i {
     border-radius: 2rem 2rem 0 0;
 }
 
+.illegalBox {
+    background: #F3F3F3;
+    width: 44rem;
+    height: 6.5rem;
+    border-radius: 3.8rem;
+    position: absolute;
+    text-align: center;
+    margin: 2rem 3rem auto;
+    line-height: 6rem
+}
+
 .illegalInfo-bottom {
     position: fixed;
     width: 100%;
-    height: 7rem;
+    height: 10.2rem;
     z-index: 100;
     bottom: 0;
     right: 0;
     background: #fff;
     font-size: 3rem;
-    padding-bottom: 12rem;
-    border-radius: 2rem;
+    border-radius: 2rem 2rem 0 0;
 }
 
 .illegalInfo-all {
@@ -1282,37 +1529,39 @@ i {
     clear: both;
     padding: 0 3rem;
     line-height: 5rem;
+    height: 42rem;
+    overflow-y: scroll;
 }
 
-    .illegalInfos p {
-        color: #333333;
-        font-size: 2.5rem;
-    }
+.illegalInfos p {
+    color: #333333;
+    font-size: 2.5rem;
+}
 
-        .illegalInfos p:nth-child(1) {
-            font-weight: bold;
-        }
+.illegalInfos p:nth-child(1) {
+    font-weight: bold;
+}
 
-        .illegalInfos p:nth-child(4) {
-            margin-bottom: 1rem;
-        }
+.illegalInfos p:nth-child(4) {
+    margin-bottom: 1rem;
+}
 
-        .illegalInfos p:nth-child(5) {
-            color: #F53636;
-            border-top: 0.3rem solid #F2F2F2;
-            height: 22rem;
-            overflow-y: scroll;
-        }
+.illegalInfos p:nth-child(5) {
+    color: #F53636;
+    border-top: 0.3rem solid #F2F2F2;
+    /*height: 22rem;*/
+    overflow-y: scroll;
+}
 
 .illegalImg {
     clear: both;
 }
 
-    .illegalImg img {
-        width: 56rem;
-        height: 39rem;
-        margin: 0 2.5rem;
-    }
+.illegalImg img {
+    width: 56rem;
+    height: 39rem;
+    margin: 0 2.5rem;
+}
 
 .illBottombox {
     position: fixed;
@@ -1340,13 +1589,14 @@ i {
     right: 0;
     background: #0B8BF0;
     color: #fff;
-    padding: 1rem 2rem;
+    padding: 1.3rem 2rem;
     margin: 1rem 2rem 2rem 1rem;
-    border-radius: 1rem;
+    border-radius: 3rem;
     position: fixed;
     font-size: 2.3rem;
     bottom: 0rem;
     z-index: 101;
+    letter-spacing: 0.1rem;
 }
 
 .illegalul {
@@ -1354,21 +1604,25 @@ i {
     height: 40rem;
     overflow-y: scroll;
     margin-bottom: 0;
+    clear: both;
 }
 
 .illegalul-all {
     height: 100%;
     overflow-y: scroll;
+    clear: both;
 }
 
 
 .illegalli {
     height: 23rem;
     border-bottom: 0.2rem solid #ccc;
-    margin: 0 3rem 0rem 0;
+    margin: 0 3rem 0rem 1rem;
     background: #fff;
     color: #949494;
+    width: 54rem;
 }
+
 
 .illegalli-active {
     height: 23rem;
@@ -1381,16 +1635,21 @@ i {
     /*clear: both;*/
 }
 
+.illegalli .illegamgback {
+    margin: 1.5rem 0 1.5rem 0.5rem;
+    float: left;
+}
+
 .illegamgback {
     margin: 1.5rem;
     float: left;
 }
 
-    .illegamgback img {
-        width: 24rem;
-        height: 20rem;
-        border-radius: 1.5rem;
-    }
+.illegamgback img {
+    width: 24rem;
+    height: 20rem;
+    border-radius: 1.5rem;
+}
 
 .illegalul-middle {
     float: left;
@@ -1467,21 +1726,21 @@ i {
     font-size: 2.3rem;
 }
 
-    .illfrom li:nth-child(1) {
-        height: 15rem;
-        /*line-height: 10rem;*/
-    }
+.illfrom li:nth-child(1) {
+    height: 15rem;
+    /*line-height: 10rem;*/
+}
 
-        .illfrom li:nth-child(1) img {
-            height: 10rem;
-            width: 10rem;
-            position: relative;
-            right: -34rem;
-        }
+.illfrom li:nth-child(1) img {
+    height: 10rem;
+    width: 10rem;
+    position: relative;
+    right: -34rem;
+}
 
-    .illfrom li:nth-child(6), .illfrom li:nth-child(7) {
-        border: none;
-    }
+.illfrom li:nth-child(6), .illfrom li:nth-child(7) {
+    border: none;
+}
 
 .redStar {
     color: #E50000;
@@ -1511,9 +1770,9 @@ i {
 .illTxt {
 }
 
-    .illTxt p {
-        border: 0;
-    }
+.illTxt p {
+    border: 0;
+}
 
 .getilltextarea {
     background: #F2F2F2;
@@ -1612,6 +1871,7 @@ i {
     padding-bottom: 15rem;
     border-radius: 2rem 2rem 0 0;
 }
+
 .rollSelectCauseBox {
     position: fixed;
     width: 100%;
@@ -1633,10 +1893,10 @@ i {
     height: 37rem;
 }
 
-    .rollSelectCauseULcss li {
-        text-align: center;
-        line-height: 7rem;
-    }
+.rollSelectCauseULcss li {
+    text-align: center;
+    line-height: 7rem;
+}
 
 .rollSelectCauseli {
     color: #ccc;
@@ -1728,10 +1988,10 @@ i {
     font-size: 2.3rem;
 }
 
-    .applyPutul li {
-        line-height: 7rem;
-        border-bottom: 0.2rem solid #f2f2f2;
-    }
+.applyPutul li {
+    line-height: 7rem;
+    border-bottom: 0.2rem solid #f2f2f2;
+}
 
 .applyList ul li {
     display: flex;
@@ -1744,12 +2004,17 @@ i {
     width: 100%;
     height: 20rem;
     border: 0;
-    font-size: 2rem;
+    font-size: 2.3rem;
+    padding: 2rem;
 }
 
 .applyRight {
     float: right;
     width: 44rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 2.3rem;
 }
 
 .applyAddress {
@@ -1777,9 +2042,9 @@ i {
     line-height: 4rem;
 }
 
-    .applyicom i {
-        font-size: 3rem;
-    }
+.applyicom i {
+    font-size: 3rem;
+}
 
 .applyAddressInput {
     border: 0;
@@ -1845,21 +2110,24 @@ i {
 }
 
 .bookul {
-    height: 45rem;
+    height: 40rem;
     overflow: scroll;
+    clear: both;
 }
 
 .bookul-all {
     height: 100%;
     overflow: scroll;
+    clear: both;
 }
 
 .bookli {
     height: 17rem;
     border-bottom: 0.2rem solid #ccc;
-    margin: 0 3rem 0rem 0;
+    margin: 0 3rem 0rem 1.5rem;
     background: #fff;
     color: #949494;
+    width: 53rem;
 }
 
 .bookli-active {
@@ -1873,6 +2141,23 @@ i {
     clear: both;
 }
 
+.bookli-active .bookPrice {
+    color: #E4F3FF;
+    font-weight: 2rem;
+    font-size: 3.5rem;
+}
+
+.bookli .bookPrice {
+    color: #F53636;
+    font-weight: 2rem;
+    font-size: 3.5rem;
+}
+
+.bookli .priceYuan {
+    color: #F53636;
+    font-size: 2.5rem;
+}
+
 .bookImgback img {
     width: 15rem;
     height: 15rem;
@@ -1881,9 +2166,17 @@ i {
     float: left;
 }
 
+.bookImgback-active img {
+    width: 15rem;
+    height: 15rem;
+    margin: 1rem 1rem 1rem 2.5rem;
+    border-radius: 1.5rem;
+    float: left;
+}
+
 .bookul-middle {
     float: left;
-    width: 25rem;
+    width: 26rem;
     margin-top: 1rem;
     line-height: 4.5rem;
 }
@@ -1894,12 +2187,6 @@ i {
     line-height: 5rem;
     text-align: center;
     margin-right: 2rem;
-}
-
-.bookPrice-active {
-    color: #F53636;
-    font-weight: bold;
-    font-size: 3.5rem;
 }
 
 .bookBtn {
@@ -1985,6 +2272,8 @@ i {
     font-weight: 400;
     letter-spacing: 0.3rem;
     padding-right: 1rem;
+    overflow-y: scroll;
+    height: 32rem;
 }
 
 .notesBox {
@@ -1995,6 +2284,8 @@ i {
     letter-spacing: 0.2rem;
     width: 57rem;
     margin: auto;
+    overflow-y: scroll;
+    height: 32rem;
 }
 
 .bookSumbit {
@@ -2012,12 +2303,20 @@ i {
 }
 
 .bookRoom-all {
-    position: fixed;
-    top: 79px;
+    /*position: fixed;
+    top: 112px;
     background: #fff;
     width: 100%;
-    height: 104rem;
+    height: 96rem;
+    border-radius: 2rem 2rem 0 0;*/
+    position: fixed;
+    top: 0px;
+    background: #fff;
+    width: 100%;
+    /*height: 102rem;*/
+    height: 100%;
     border-radius: 2rem 2rem 0 0;
+    z-index: 101;
 }
 
 .bookRoom-part {
@@ -2032,11 +2331,13 @@ i {
 .bookform-part {
     height: 42rem;
     overflow-y: scroll;
+    clear: both;
 }
 
 .bookform-all {
     height: 100%;
     overflow-y: scroll;
+    clear: both;
 }
 
 .bookfromul {
@@ -2045,19 +2346,24 @@ i {
     color: #949494;
 }
 
+.bookfromul :last-child {
+    border: 0rem;
+}
+
 .bookfromliRight {
     float: right;
     width: 43rem;
     color: #333;
-    /*border: 0.2rem solid red;*/
+    /*border: 0.2rem solid red;*/ 
     height: 4rem;
-    line-height:7rem;
+    line-height: 7rem;
+    font-size: 2.3rem;
 }
 
-    .bookfromliRight input {
-        border: 0;
-        height: 7rem;
-    }
+.bookfromliRight input {
+    border: 0;
+    height: 7rem;
+}
 
 .bookfromul li {
     border-bottom: 0.2rem solid #F2F2F2;
@@ -2072,11 +2378,11 @@ i {
 .bookTheme {
     width: 100%;
     background-color: #F2F2F2;
-    border: 0 none;
     height: 6rem;
     overflow-y: scroll;
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     margin: 1rem 0;
+    line-height: 5rem;
 }
 
 .bookContent {
@@ -2085,10 +2391,19 @@ i {
     border: 0 none;
     height: 15rem;
     overflow-y: scroll;
-    padding: 1rem;
+    padding: 2rem;
     margin: 1rem 0
 }
 
+.bookRight {
+    float: right;
+    width: 44rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 2.3rem;
+    line-height: 2.5rem;
+}
 /*在线报修 -- RepairsOnline*/
 .repairsOnline {
     position: fixed;
@@ -2138,16 +2453,17 @@ i {
     width: 100%;
     overflow-y: scroll;
     padding: 0 2rem;
-    font-size: 2.3rem;
+    font-size: 2.5rem;
 }
 
-.reqairsul {
+.reqairsul :last-child {
+    border-bottom: 0rem;
 }
 
-    .reqairsul li {
-        line-height: 7rem;
-        border-bottom: 0.2rem solid #f2f2f2;
-    }
+.reqairsul li {
+    line-height: 7rem;
+    border-bottom: 0.2rem solid #f2f2f2;
+}
 
 .reqairsSumbit {
     width: 100%;
@@ -2180,15 +2496,14 @@ i {
 }
 
 .reqairsul li:nth-child(1) {
-  
-   height:15rem;
+    height: 15rem;
 }
 
-    .reqairsul li:nth-child(1) img {
-        height: 10rem;
-        width: 10rem;
-        float: right;
-    }
+.reqairsul li:nth-child(1) img {
+    height: 10rem;
+    width: 10rem;
+    float: right;
+}
 
 /**停车服务 parking/*/
 .parkingBox {
@@ -2222,17 +2537,17 @@ i {
     margin-top: 2rem;
 }
 
-    .parkingul li {
-        margin-right: 3rem;
-    }
+.parkingul li {
+    margin-right: 3rem;
+}
 
-    .parkingul p {
-        float: right;
-        text-align: left;
-        border-bottom: 0.2rem solid #F2F2F2;
-        width: 49rem;
-        line-height: 7rem;
-    }
+.parkingul p {
+    float: right;
+    text-align: left;
+    border-bottom: 0.2rem solid #F2F2F2;
+    width: 49rem;
+    line-height: 7rem;
+}
 
 .componentBox {
     position: fixed;
@@ -2279,9 +2594,11 @@ i {
     margin-right: 2rem;
     line-height: 7rem;
 }
-.contentUL li:last-child{
-    margin-bottom:8rem;
+
+.contentUL li:last-child {
+    margin-bottom: 8rem;
 }
+
 .contentUL p {
 }
 
@@ -2317,22 +2634,24 @@ i {
     height: 37rem;
     background: #fff;
 }
-.identityTop p{
+
+.identityTop p {
     border-bottom: 0.2rem solid #F2F2F2;
     font-size: 2.3rem;
     padding-left: 30px;
     line-height: 9rem;
     color: #333;
 }
-.identityTop p:last-child{
-    border-bottom: 0rem ;
+
+.identityTop p:last-child {
+    border-bottom: 0rem;
 }
 
-.identityBox li{
-  
+.identityBox li {
 }
-.bookformLeft{
-    color:#333;
+
+.bookformLeft {
+    color: #333;
 }
 
 .identityBotton {
@@ -2342,8 +2661,9 @@ i {
     margin-top: 1rem;
     padding: 2rem 3rem;
 }
-.identityBotton p{
-    font-size:2.3rem;
+
+.identityBotton p {
+    font-size: 2.3rem;
 }
 
 .identityBottonBox {
@@ -2355,11 +2675,13 @@ i {
     text-align: center;
     color: #D0D0D0;
 }
+
 .identityBottonIcon {
     color: #D0D0D0;
     font-size: 15rem !important;
     height: 11rem;
 }
+
 .companyTypeEnter {
     position: fixed;
     bottom: 9rem;
@@ -2368,13 +2690,155 @@ i {
     font-size: 3rem;
     height: 56rem;
 }
+
 .logoChange {
     position: relative;
     left: -36rem;
     width: 71rem;
 }
 
+/**/
+.space-carousel {
+    padding: 16px;
+    /*background: #DEF1E5;*/
+    overflow: hidden;
+}
 
+.mienImg img {
+    width: 100%;
+    height: 100%;
+}
+/**/
+.enterpriseDetails {
+    float: left;
+}
 
+.enterpriseDetails p {
+    font-size: 2.5rem;
+    width: 42rem;
+    font-weight: 400;
+    color: rgba(51,51,51,1);
+    margin: auto;
+    line-height: 4.5rem;
+}
 
+/*3Dactions*/
+.changeD {
+    position: fixed;
+    width: 6rem;
+    height: 6rem;
+    z-index: 99;
+    bottom: 42rem;
+    right: 2.4rem;
+    background: rgba(247,247,247,1);
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+    border-radius: 50%;
+    text-align: center;
+    font-size: 2.3rem;
+    line-height: 6rem;
+    color: rgb(108, 108, 108);
+}
+.changeDUp {
+    bottom: 58rem;
+}
+.reset {
+    position: fixed;
+    width: 6rem;
+    height: 6rem;
+    z-index: 99;
+    bottom: 32rem;
+    right: 2.4rem;
+    background: rgba(247,247,247,1);
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+    border-radius: 50%;
+    text-align: center;
+    font-size: 2.3rem;
+    line-height: 6rem;
+    color: rgb(108, 108, 108);
+}
+.resetUp {
+    bottom: 49rem;
+}
+.floor_box {
+    width: 6rem;
+    position: absolute;
+    z-index: 99;
+    bottom: 32rem;
+    left: 2.4rem;
+    color: rgb(108, 108, 108);
+    text-align: center;
+    overflow: hidden;
+    height: 25rem;
+    background: #fff;
+    border-radius: 4rem;
+}
+.floor_box_ul {
+    height: 18rem;
+    /*overflow-y: scroll;*/
+    overflow-y: hidden;
+    /*border: 0.2rem solid;*/
+    margin-top: -1rem;
+}
+.floor_box ul {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    /*border: 0.2rem solid;*/
+}
+.floor_box ul li {
+    width: 6rem;
+    height: 6rem;
+    font-size: 3rem;
+    line-height: 6rem;
+    text-align: center;
+    background: #fff;
+    color: #666666;
+}
 
+.current-active-floor {
+    color: #4187FF !important;
+    background: #E9F5FF !important;
+
+}
+
+.activeBoxLeft {
+    width: 0.1rem;
+    height: 6rem;
+    position: relative;
+    top: -12rem;
+    background: #4187FF;
+    float: left;
+}
+.activeBoxRight {
+    width: 0.1rem;
+    height: 6rem;
+    position: relative;
+    top: -12rem;
+    background: #4187FF;
+    right: -5.8rem;
+    float: left;
+}
+
+.trangleLeft {
+    width: 0;
+    height: 0;
+    border-top: 1rem solid transparent;
+    border-left: 1rem solid #4187FF;
+    border-bottom: 1rem solid transparent;
+    position: relative;
+    top: 2rem;
+    left: -0.4rem;
+}
+.trangleRight {
+    width: 0;
+    height: 0;
+    border-top: 1rem solid transparent;
+    border-right: 1rem solid #4187FF;
+    border-bottom: 1rem solid transparent;
+    position: relative;
+    right: 0.5rem;
+    top: 2rem;
+}
+.floor_box_up {
+    bottom: 49rem;
+}

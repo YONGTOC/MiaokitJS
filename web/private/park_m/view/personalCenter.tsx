@@ -45,7 +45,7 @@ class PersonalCenter extends React.Component {
     console.log(data)
   }
 
-  // 展开
+  // 展开 
   spread() {
     this.setState({ isSpread: !this.state.isSpread })
   }

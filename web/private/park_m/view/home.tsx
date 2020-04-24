@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
 
 import HomeBottom from "homeBottom";
@@ -30,7 +30,7 @@ class Home extends React.Component {
 
   public componentDidMount() {
     //2  登录获取 token
-    this.dataService.login(this.setToken);
+    this.dataService.login();
   }
 
 
@@ -286,7 +286,7 @@ class TopBtn extends React.Component {
     return (
       <div className={this.state.topViewBack}>
         <div className={this.state.topView}>
-          <div className={this.state.topIcon1} onClick={this.switchMark.bind(this, "交通")}>
+          <div className={this.state.topIcon1} onClick={this.switchMark.bind(this, "交通")} style={{ "border-top": "0rem solid #646464" }}>
             <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe816;</i>
             <p>交通</p>
           </div>
@@ -294,11 +294,11 @@ class TopBtn extends React.Component {
             <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe81a;</i>
             <p>商圈</p>
           </div>
-          <div className={this.state.moreIcon} onClick={this.moreIcon.bind(this, 10)}>
+          <div className={this.state.moreIcon} onClick={this.moreIcon.bind(this, 10)} >
             <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe819;</i>
             <p>更多</p>
           </div>
-          <div className={this.state.topIcon3} onClick={this.switchMark.bind(this, "公交车")}>
+          <div className={this.state.topIcon3} onClick={this.switchMark.bind(this, "公交车")} style={{ "border-top":"0rem solid #646464"}}>
             <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe817;</i>
             <p>公交车</p>
           </div>
@@ -316,9 +316,9 @@ class TopBtn extends React.Component {
         </div>
 
         <RouterDOM.Link to="/narrate" >
-          <div className="playIconbox" style={{ "color": "#707070" }}>
-            <div className={this.state.playIcon}>
-              <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe81d;</i>
+          <div className="playIconbox" style={{ "color": "#707070" }} >
+            <div className={this.state.playIcon} style={{ "border-top": "0rem solid #646464" }}>
+              <i className="iconfont" style={{ "fontSize": "5rem" }} >&#xe81d;</i>
               <p>讲解</p>
             </div>
           </div>
@@ -342,10 +342,15 @@ class FoldBtn extends React.Component {
       this.setState({
         foldView: " foldView-part"
       })
+       //3dBut-down
+      window.move3dBut("down");
+
     } else {
       this.setState({
         foldView: "foldView"
       })
+      //3dBut-up
+      window.move3dBut("up");
     }
     if (this.state.iconfont == "iconfont iconfont-unturn") {
       this.setState({
@@ -356,7 +361,7 @@ class FoldBtn extends React.Component {
         iconfont: "iconfont iconfont-unturn",
       })
     }
-
+    console.log(this.state.foldView)
   }
 
   public render() {
@@ -376,52 +381,52 @@ class FoldBtn extends React.Component {
     return (
       <div className={this.state.foldView}>
         <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-          <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
+          <i className={this.state.iconfont} style={{ "fontSize": "4.5rem", "color":"#C0C0C0"}}>&#xe849;</i>
         </div>
 
         <div className={"foleIconbox"}>
           <RouterDOM.Link to="/parkCompany" >
             <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#1C90E2", "height": "6rem" }}>&#xe81e;</i>
+              <i className="iconfont" style={{ "fontSize": "6rem", "color": "#1C90E2", "height": "6rem" }}>&#xe81e;</i>
               <p>园区企业</p>
             </div>
 
           </RouterDOM.Link>
           <RouterDOM.Link to="/findLease" >
             <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#866FF1", "height": "6rem" }}>&#xe824;</i>
+              <i className="iconfont" style={{ "fontSize": "6rem", "color": "#866FF1", "height": "6rem" }}>&#xe824;</i>
               <p>招租查询</p>
             </div>
           </RouterDOM.Link>
         
           <RouterDOM.Link to="/applyPut" >
             <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#208FE6", "height": "6rem" }}>&#xe81f;</i>
+              <i className="iconfont" style={{ "fontSize": "6rem", "color": "#208FE6", "height": "6rem" }}>&#xe81f;</i>
               <p>摆点申请</p>
             </div>
           </RouterDOM.Link>
           <RouterDOM.Link to="/bookSite" >
             <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#208FE6", "height": "6rem" }}>&#xe820;</i>
+              <i className="iconfont" style={{ "fontSize": "6rem", "color": "#208FE6", "height": "6rem" }}>&#xe820;</i>
               <p>场地预定</p>
             </div>
           </RouterDOM.Link>
           <RouterDOM.Link to="/repairsOnline" >
             <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#26AC8F", "height": "6rem" }}>&#xe822;</i>
+              <i className="iconfont" style={{ "fontSize": "6rem", "color": "#26AC8F", "height": "6rem" }}>&#xe822;</i>
               <p>在线报修</p>
             </div>
 
           </RouterDOM.Link>
-               //<RouterDOM.Link to="/photograph" >
+               <RouterDOM.Link to="/photograph" >
             <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#F0594C", "height": "6rem" }}>&#xe821;</i>
+              <i className="iconfont" style={{ "fontSize": "6rem", "color": "#F0594C", "height": "6rem" }}>&#xe821;</i>
               <p>随手拍</p>
             </div>
           </RouterDOM.Link>
           <RouterDOM.Link to="/parking" >
             <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "5rem", "color": "#208FE6", "height": "6rem" }}>&#xe823;</i>
+              <i className="iconfont" style={{ "fontSize": "6rem", "color": "#208FE6", "height": "6rem" }}>&#xe823;</i>
               <p>停车业务</p>
             </div>
           </RouterDOM.Link>
