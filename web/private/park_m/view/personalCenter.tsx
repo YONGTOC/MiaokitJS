@@ -11,7 +11,7 @@ interface IProps {
 interface IState {
   parkList: Array<any>,
   isSpread: boolean, // 是否展开
-  userInfo: { name: string, roles: { role_name: string } },
+  userInfo: { name: string, avatar: string, roles: { role_name: string } },
   pathname: string,
 }
 
@@ -27,7 +27,7 @@ class PersonalCenter extends React.Component {
     ],
     isSpread: false,
     userInfo: {
-      name: "", roles: { role_name: "" }
+      name: "", avatar: "", roles: { role_name: "" }
     },
     pathname: ""
   }
@@ -46,7 +46,7 @@ class PersonalCenter extends React.Component {
   }
 
   callBackGetUserInfo(data) {
-    console.log("userInfo", data)
+    console.log("userInfoss", data)
     this.setState({ userInfo: data })
     sessionStorage.setItem("userInfo", this.state.userInfo.roles.role_name)
   }
@@ -62,7 +62,7 @@ class PersonalCenter extends React.Component {
         <div className="personal-center-top">
           <div className="personal-center-info">
             <div className="personal-center-tx">
-              <img src="./park_m/image/tx.jpg" className="personal-center-tx-img" />
+              <img src={this.state.userInfo.avatar} className="personal-center-tx-img" />
             </div>
             <div style={{ float: "left", color: "#FFFFFF", fontSize: "42px", margin: "10px 0 0 36px" }}>
               <div>{this.state.userInfo.name}</div>

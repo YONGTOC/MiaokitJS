@@ -5698,7 +5698,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
             console.log(data);
         }
         callBackGetUserInfo(data) {
-            console.log("userInfo", data);
+            console.log("userInfoss", data);
             this.setState({ userInfo: data });
             sessionStorage.setItem("userInfo", this.state.userInfo.roles.role_name);
         }
