@@ -689,7 +689,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                             role_id: data.roles[0].role_id, role_name: data.roles[0].role_name
                         }
                     };
-                    localStorage.setItem("token", data.token);
+                    sessionStorage.setItem("token", data.token);
                     sessionStorage.setItem("userInfos", JSON.stringify(userInfo));
                     pBack(data);
                 }
@@ -1706,7 +1706,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getRoomInfo',
                 data: {
                     id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
-                    park_id: localStorage.getItem("park_id"),
+                    park_id: sessionStorage.getItem("park_id"),
                     room_id: roomId,
                     token: sessionStorage.getItem("token")
                 },
@@ -7612,7 +7612,6 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
                 state: index,
                 reply: this.state.reply
             };
-            console.log("这里呢", obj);
             if (JSON.parse(sessionStorage.getItem("workOrder")).workType == 1) {
                 this.dataService.changeRoleAuthenticationInfo(this.callBack.bind(this), obj);
             }
