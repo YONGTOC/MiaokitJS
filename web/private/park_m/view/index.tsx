@@ -66,7 +66,9 @@ interface IState {
   typeArr: Array<any>,
   decorationIndex: number,
   moreName: string,
-  typeIndex: number
+  typeIndex: number,
+  isCompanyArr: boolean,
+  isLoginBox: boolean,
 }
 
 class Index extends React.Component {
@@ -75,6 +77,9 @@ class Index extends React.Component {
 
     Index.g_pIns = this;
     this.setParks = this.setParks.bind(this);
+    this.isLoginData = this.isLoginData.bind(this);
+    Index.hideCompanyArr = this.hideCompanyArr.bind(this);
+    Index.hideLoginBox = this.hideLoginBox.bind(this);
   }
   public static g_pIns: Index = null;
 
@@ -170,16 +175,21 @@ class Index extends React.Component {
     typeIndex: 0,
     moreName: "",
     isMask: false, // 遮罩
-    
+    isCompanyArr: false,  //判断是否拥有多个企业
+    isLoginBox:true,
    
   }
 
+  public readonly props: Readonly<IProps> = {
+    history: this.props.history
+  }
+
   componentWillMount() {
-    this.dataService.login();
+   // this.dataService.login(this.isLoginData);
     this.dataService.getParks(this.setParks);
 
     let _this = this
-    if (!sessionStorage.getItem("city")) {
+    //if (!sessionStorage.getItem("city")) {
       var geolocation = new BMap.Geolocation();
       geolocation.getCurrentPosition(function (r) {
         if (this.getStatus() == BMAP_STATUS_SUCCESS) {
@@ -199,10 +209,38 @@ class Index extends React.Component {
           }
         }
       });
-    }
+    //}
 
+        curtainHide();
   }
 
+    // 判断所属企业
+  public isLoginData(data) {
+    console.log("LoginData", data);
+       IsCompanys.getCompanyArr(data.enterprises);
+    if (data.enterprises.length > 1) {
+      this.setState({
+        isCompanyArr: true,
+      })
+
+     }
+  }
+
+  //隐藏企业选择列表
+  static hideCompanyArr() { }
+  public hideCompanyArr() {
+    this.setState({
+      isCompanyArr: false,
+    })
+  }
+
+  //隐藏登录列表
+  static hideLoginBox() { }
+  public hideLoginBox() {
+    this.setState({
+      isLoginBox: false,
+    })
+  }
 
   // 聚焦
   foucus() {
@@ -384,8 +422,19 @@ class Index extends React.Component {
   }
 
   render() {
+    
+        //<div className={this.state.isCompanyArr == true ? "show" : "hide"}>
+        //  <IsCompanys />
+        //</div>
+    
+
     return (
       <div className="index">
+
+        <div className={this.state.isLoginBox == true ? "show" : "hide"}>
+          <LoginTest />
+        </div>
+
         <div className="index-input-div">
           <div className="index-child-right">
             <span style={{ fontWeight: "600" }}>{sessionStorage.getItem("city")}</span>
@@ -808,7 +857,146 @@ class Index extends React.Component {
 
 }
 
+//显示企业列表
+class IsCompanys extends React.Component {
+  public constructor(props) {
+    super(props);
 
+    IsCompanys.getCompanyArr = this.getCompanyArr.bind(this);
+    this.setCompanyArr = this.setCompanyArr.bind(this);
+  }
+
+  public componentDidMount() {
+    console.log(444, this.state)
+  }
+
+
+  // 获取企业列表
+  static getCompanyArr(data) { }
+  public getCompanyArr(data) {
+    this.setCompanyArr(data);
+  }
+
+  //
+  public setCompanyArr(data) {
+    console.log(99, data)
+    this.setState({
+      companyArr: data
+    })
+    console.log(888, this.state.companyArr)
+  }
+
+  // 显示选择的企业,并隐藏列表 
+  public companyActive(data, id) {
+    console.log("active", data);
+    this.setState({
+      indexOf: data,
+    });
+ 
+   setTimeout(function (){ Index.hideCompanyArr()},1000);
+
+  }
+
+ 
+  public render() {
+    return (
+      <div className="isCompanyBox">
+        <ul className="isCompanyBox_ul">
+          {this.state.companyArr.map((i, index) => {
+            return (
+              <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyIn" : "companyUn"}>{i.name}</li>
+            )
+          })}
+        </ul>
+      </div>
+    )
+
+  }
+
+  public state = {
+    companyArr: [ ],
+    indexOf: 100,
+  };
+}
+
+//显示登录框
+class LoginTest extends React.Component {
+  public constructor(props) {
+    super(props);
+
+  }
+
+    public dataService: DataService = new DataService();
+  public globalAction: GlobalAction = new GlobalAction();
+
+  public componentDidMount() {
+    console.log(444, this.state);
+  }
+
+  //正常登录
+  public doLogin() {
+    console.log(this.state.username,this.state.password)
+      this.dataService.login(this.state.username,this.state.password,this.hideLogin);
+  }
+  //admin 登录
+  public adminLogin() {
+    console.log(this.state.username,this.state.password)
+      this.dataService.login("admin","admin",this.hideLogin);
+  }
+  //园区管理员登录
+  public parkLogin() {
+   // console.log(this.state.username,this.state.password)
+      this.dataService.login("twl01","123456",this.hideLogin);
+  }
+  // 企业管理员登录
+  public companyLogin() {
+    console.log(this.state.username,this.state.password)
+      this.dataService.login("twl02","123456",this.hideLogin);
+  }
+  // 企业管理员登录
+  public ptLogin() {
+    console.log(this.state.username,this.state.password)
+      this.dataService.login("twl03","123456",this.hideLogin);
+  }
+
+  public hideLogin() {
+     setTimeout(function (){ Index.hideLoginBox()},1000);
+  }
+
+  public usernameChange(event) {
+      this.setState({
+      username: event.target.value,
+    })
+  }
+
+  public passwordChange(event) {
+      this.setState({
+      password: event.target.value,
+    })
+  }
+
+ 
+  public render() {
+    return (
+      <div className="userBox">
+        <ul className="userBox_ul">
+          <li>用户名：<input type="text" value={this.state.username} onChange={this.usernameChange.bind(this)} /></li>
+          <li>密码：<input type="text" value={this.state.password}  onChange={this.passwordChange.bind(this)}/></li>
+          <li><button onClick={this.doLogin.bind(this)} >登录</button></li>
+          <li>  // admin admin (超级管理员)<button onClick={this.adminLogin.bind(this)} >admin登录</button></li>
+          <li>  // twl01    123456(园区管理员)<button onClick={this.parkLogin.bind(this)} >园区管理员</button> </li>
+          <li>  // twl02    123456(企业管理员)<button onClick={this.companyLogin.bind(this)} >企业管理员</button> </li>
+          <li>  // twl03    123456(普通用户)<button onClick={this.ptLogin.bind(this)} >普通用户</button> </li>
+        </ul>
+      </div>
+    )
+  }
+
+  public state = {
+    username: "",
+    password:"",
+  };
+}
 
 export default Index;
 

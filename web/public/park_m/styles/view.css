@@ -105,7 +105,7 @@ i {
     left: 14px;
     -webkit-animation-delay: 1.04s;
 }
- 
+
 /** {
     white-space: pre-line;
 }*/
@@ -304,7 +304,6 @@ i {
     height: 9rem;
     z-index: 999;
     bottom: 0;
-    /*border: 0.1rem solid red;*/
     background: #fff;
     border-top: 0.1rem solid #cccccc;
 }
@@ -2354,7 +2353,7 @@ i {
     float: right;
     width: 43rem;
     color: #333;
-    /*border: 0.2rem solid red;*/ 
+    /*border: 0.2rem solid red;*/
     height: 4rem;
     line-height: 7rem;
     font-size: 2.3rem;
@@ -2738,9 +2737,11 @@ i {
     line-height: 6rem;
     color: rgb(108, 108, 108);
 }
+
 .changeDUp {
     bottom: 58rem;
 }
+
 .reset {
     position: fixed;
     width: 6rem;
@@ -2756,9 +2757,11 @@ i {
     line-height: 6rem;
     color: rgb(108, 108, 108);
 }
+
 .resetUp {
     bottom: 49rem;
 }
+
 .floor_box {
     width: 6rem;
     position: absolute;
@@ -2772,6 +2775,7 @@ i {
     background: #fff;
     border-radius: 4rem;
 }
+
 .floor_box_ul {
     height: 18rem;
     /*overflow-y: scroll;*/
@@ -2779,12 +2783,14 @@ i {
     /*border: 0.2rem solid;*/
     margin-top: -1rem;
 }
+
 .floor_box ul {
     margin: 0;
     padding: 0;
     position: relative;
     /*border: 0.2rem solid;*/
 }
+
 .floor_box ul li {
     width: 6rem;
     height: 6rem;
@@ -2798,7 +2804,6 @@ i {
 .current-active-floor {
     color: #4187FF !important;
     background: #E9F5FF !important;
-
 }
 
 .activeBoxLeft {
@@ -2809,6 +2814,7 @@ i {
     background: #4187FF;
     float: left;
 }
+
 .activeBoxRight {
     width: 0.1rem;
     height: 6rem;
@@ -2829,6 +2835,7 @@ i {
     top: 2rem;
     left: -0.4rem;
 }
+
 .trangleRight {
     width: 0;
     height: 0;
@@ -2839,6 +2846,93 @@ i {
     right: 0.5rem;
     top: 2rem;
 }
+
 .floor_box_up {
     bottom: 49rem;
+}
+
+/*login企业选择框*/
+.isCompanyBox {
+    background: rgba(0,0,0,.65);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1000;
+    font-size: 5rem;
+}
+
+.isCompanyBox_ul {
+    padding: 0 !important;
+    border: 0.2rem solid;
+    background: orange;
+    margin: 0 auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.companyUn {
+    background: #fff;
+    text-align: center;
+}
+
+.companyIn {
+    background: #ccc;
+    color: #fff;
+    text-align: center;
+}
+
+/*logintest 测试用户角色选择框*/
+.userBox {
+    background: rgba(0,0,0,.65);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1000;
+    font-size: 3rem;
+}
+
+.userBox_ul {
+    padding: 0 !important;
+    border: 0.2rem solid;
+    background: #ccc;
+    margin: 0 auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/*720*/
+.fullViewBox {
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    z-index: 100;
+}
+
+.fullViewHide {
+    font-size: 4rem !important;
+    color: rgb(108, 108, 108);
+    background: #fff;
+    position: absolute;
+    top: 1rem;
+    left: 2rem;
+    z-index: 100;
+}
+
+.fullView {
+    position: fixed;
+    width: 6rem;
+    height: 6rem;
+    z-index: 100;
+    top: 3rem;
+    left: 12.4rem;
+    background: rgba(247,247,247,1);
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+    border-radius: 50%;
+    text-align: center;
+    font-size: 2.5rem;
+    line-height: 6rem;
 }

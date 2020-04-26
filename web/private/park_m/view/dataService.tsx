@@ -59,16 +59,27 @@ class DataService {
   }
 
   // 2.(注册登录模块)用户登陆接口 ### email:test@test.com password:123456 
-  public login() {
+  public login(username, password, pBack) {
     $.ajax({
       url: this.state.rooturl + '/api/login',
+    //  url:"minghuakejiyuan.3dparkcloud.com/login?url=/web/public/park_m.html ",
       data: {
-        "username": "admin",
-        "password": "admin"
+        "username": username,
+        "password": password,
+        //"username": "admin",
+        //"password": "admin",
       },
       type: "post",    
       success: function (data) {
+        console.log(data)
         localStorage.setItem("token", data.token);
+        console.log(data.roles[0].role_name)
+         sessionStorage.setItem("userInfo", data.roles[0].role_name);
+         sessionStorage.setItem("userName", data.name);
+         sessionStorage.setItem("phone", data.name);
+         sessionStorage.setItem("userid", data.id);
+        pBack(data);
+    
         }
     })
 
@@ -76,14 +87,14 @@ class DataService {
     let park_id = "1"
     localStorage.setItem("park_id", park_id);
 
-    let userName = "王铁柱"
-    localStorage.setItem("userName", userName);
+    //let userName = "王铁柱"
+    //localStorage.setItem("userName", userName);
 
-    let phone = "15296811111"
-    localStorage.setItem("phone", phone);
+    //let phone = "15296811111"
+    //localStorage.setItem("phone", phone);
 
-    let userid = "1"
-    localStorage.setItem("userid", userid);
+    //let userid = "1"
+    //localStorage.setItem("userid", userid);
 
     let enterprises = [
       {
