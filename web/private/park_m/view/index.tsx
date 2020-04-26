@@ -217,22 +217,26 @@ class Index extends React.Component {
 
     // 判断所属企业
   public isLoginData() {
-    let data =  sessionStorage.getItem("enterprises");
-    console.log("LoginData", data);
-    console.log(" LoginData",typeof  data);
-    let dataObj = JSON.parse(data);
+    let data = sessionStorage.getItem("userInfos");
+    let dataO = JSON.parse(data)
+
+    console.log("LoginData", dataO);
+    console.log(" LoginData", typeof dataO);
+    console.log("LoginData21", dataO.enterprises);
+    console.log(" LoginData22",typeof   dataO.enterprises);
+  //  let dataObj = JSON.parse( dataObj.enterprises);
     //   console.log(" LoginData1", typeof dataObj);
     //console.log(" LoginData2", dataObj);
     //console.log(" LoginData2", dataObj.length);
-    IsCompanys.getCompanyArr(dataObj);
-    if (dataObj.length > 1) {
+    IsCompanys.getCompanyArr(dataO.enterprises);
+    if (dataO.enterprises.length > 1) {
       this.setState({
         isCompanyArr: true,
       })
 
     } else {
-       sessionStorage.setItem("enterprise",dataObj[0].name);
-       sessionStorage.setItem("enterpriseId",dataObj[0].id);
+       sessionStorage.setItem("enterprise",dataO.enterprises[0].name);
+       sessionStorage.setItem("enterpriseId",dataO.enterprises[0].id);
     }
   }
 

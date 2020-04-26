@@ -77,7 +77,8 @@ class DataService {
           userId: data.id, name: data.name, phone: data.phone, avatar: data.avatar, enterprise: data.enterprise,
           roles: {
             role_id: data.roles[0].role_id, role_name: data.roles[0].role_name
-          }
+          },
+          enterprises:data.enterprises,
         }
         sessionStorage.setItem("token", data.token);
         sessionStorage.setItem("userInfos", JSON.stringify(userInfo));
