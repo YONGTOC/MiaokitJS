@@ -114,9 +114,11 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
   componentDidMount() {
     let userid = localStorage.getItem("userId");
     //this.dataService.getCompanyInfo(this.setCompanyinfo, userId);
-    this.dataService.getCompanyInfo(this.setCompanyinfo, 2);
+        let enterpriseId= sessionStorage.getItem("enterpriseId");
+    this.dataService.getCompanyInfo(this.setCompanyinfo, enterpriseId);
     // this.dataService.getCompanyInfoByUser(this.setCompanyinfo, 2);
-    this.dataService.getCompanyType(this.setCompanyType, 1001);
+        let park_id= sessionStorage.getItem("park_id");
+    this.dataService.getCompanyType(this.setCompanyType, park_id);
   }
 
   public setCompanyinfo(data) {
@@ -139,10 +141,15 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
       panoramaImgs.push({ "id": item.id, "name": item.name, "url": item.pic_url });
     });
 
-    let descriptN = data.response.descript;
-    //descriptN.replace(/&#10;/, "\n  &nbsp;")
-    descriptN.replace(/&#10;/, "<br />&nbsp;");
-    let descriptArr = descriptN.split("    ");
+    let descriptArr;
+    if (data.response.descript) {
+      let descriptN = data.response.descript;
+      //descriptN.replace(/&#10;/, "\n  &nbsp;")
+      descriptN.replace(/&#10;/, "<br />&nbsp;");
+       descriptArr = descriptN.split("    ");
+    } else {
+      descriptArr = [];
+    }
 
     this.setState({
       ID: data.response.id,
@@ -259,23 +266,25 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
      if(reg01.test(this.state.phoneValue) || reg02.test(this.state.phoneValue) || this.state.phoneValue=="") {
        console.log("手机号或座机号填写正确")    
      } else {
-        console.log("手机号码不正确，固话请添加区号")         
+        alert("手机号码不正确，固话请添加区号")         
         return;
      }
 
-
+     let userid= sessionStorage.getItem("userid");
+     let park_id= sessionStorage.getItem("park_id");
+     let enterpriseId= sessionStorage.getItem("enterpriseId");
+     let token= sessionStorage.getItem("token");
 
     console.log("bobo", this.state.elegant.length);
 
     //let elegants = [];
     let obj = {
       //用户id
-      "user_id": "1",
+      "user_id": userid,
       //园区id
-
-      "park_id": "1",
+      "park_id": park_id,
       //企业id（当为添加新企业时，参数为""）
-      "id": "2",
+      "id": enterpriseId,
       //公司名字
       "name": this.state.inputEnterpriseNameValue,
       //地址
@@ -294,6 +303,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
       "product": this.state.product,
       "panorama": this.state.panorama,
       "headimageurl": this.state.headimageurl,
+   
     }
     if (this.state.elegant.length == 0) {
       obj.elegant = this.state.filesElegant;

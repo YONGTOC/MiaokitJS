@@ -15,6 +15,7 @@ interface IState {
   pathname: string,
   userName: string,
   enterprise: string,
+  phone: string,
 }
 
 class PersonalCenter extends React.Component {
@@ -31,7 +32,8 @@ class PersonalCenter extends React.Component {
     userInfo: "",
     pathname: "",
     userName: "",
-    enterprise:"",
+    enterprise: "",
+    phone:"",
   }
 
   public dataService: DataService = new DataService()
@@ -41,6 +43,7 @@ class PersonalCenter extends React.Component {
     let userInfo = sessionStorage.getItem("userInfo");
     let userName= sessionStorage.getItem("userName");
     let enterprise= sessionStorage.getItem("enterprise");
+    let phone= sessionStorage.getItem("phone");
 
     
       console.log("userInfo222",userInfo)
@@ -54,6 +57,7 @@ class PersonalCenter extends React.Component {
         pathname: this.props.history.location.pathname,
         userName: userName,
         enterprise:enterprise,
+        phone:phone,
     })
     console.log("userInfo",this.state)
   }
@@ -128,10 +132,12 @@ class PersonalCenter extends React.Component {
         {this.state.pathname !== "/personalCenter" ?
           <div>
             <div className="personal-center-tag">
-              <span style={{ margin: "0 50px 0 50px" }}>手机号码</span><span>15578383040</span><span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>修改</span>
+              <span style={{ margin: "0 50px 0 50px" }}>手机号码</span><span>{this.state.phone}</span>
+              <span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>修改</span>
             </div>
             <div className="personal-center-tag">
-              <span style={{ margin: "0 50px 0 50px" }}>关联企业</span><span>{this.state.enterprise}</span><span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>修改</span>
+              <span style={{ margin: "0 50px 0 50px" }}>关联企业</span><span>{this.state.enterprise}</span>
+              <span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>修改</span>
             </div>
             <div className="personal-center-tag">
               <span style={{ margin: "0 50px 0 50px" }}>客服电话</span><span>0773-123456</span>

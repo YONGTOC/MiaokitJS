@@ -273,9 +273,10 @@ class Index extends React.Component {
   }
 
   // 加载园区地图
-  public initPark(park_id) {
+  public initPark(this,park_id) {
+    console.log("initPark", park_id)
+    sessionStorage.setItem("park_id", park_id);
     this.globalAction.web_call_webgl_initPark(park_id);
-    localStorage.setItem("park_id", park_id);
   }
 
   //加载园区信息列表
@@ -783,7 +784,7 @@ class Index extends React.Component {
           {this.state.parkArr.map((item, index) => {
             return (
               <Link to="/home">
-                <div className="index-child-park" key={index} onClick={this.initPark.bind(this, 1001)}>
+                <div className="index-child-park" key={index} onClick={this.initPark.bind(this, item.id)}>
                   <div className="index-child-park-left"><img src={this.state.type ? "./park_m/image/a.jpg" : "./park_m/image/b.jpg"} className="park-img" /></div>
                   <div className="index-child-park-right">
                     <div className="index-park-name">{item.name}</div>

@@ -637,7 +637,6 @@ define("dataService", ["require", "exports"], function (require, exports) {
             };
         }
         componentDidMount() {
-            console.log(localStorage.getItem("token"));
         }
         callback(a, pBack) {
             console.log("callback1", a);
@@ -684,7 +683,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 type: "post",
                 success: function (data) {
                     console.log(data);
-                    localStorage.setItem("token", data.token);
+                    sessionStorage.setItem("token", data.token);
                     console.log(data.roles[0].role_name);
                     sessionStorage.setItem("userInfo", data.roles[0].role_name);
                     sessionStorage.setItem("userName", data.name);
@@ -694,8 +693,6 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     pBack(data);
                 }
             });
-            let park_id = "1";
-            localStorage.setItem("park_id", park_id);
         }
         refreshToken(ytoken) {
             $.ajax({
@@ -1764,7 +1761,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         saveRoomPartBaseInfo(pBack, obj) {
             $.ajax({
-                url: this.state.rooturl + '/api/saveRoomPartBaseInfo?token=' + localStorage.getItem("token"),
+                url: this.state.rooturl + '/api/saveRoomPartBaseInfo?token=' + sessionStorage.getItem("token"),
                 data: JSON.stringify({
                     id: 1,
                     park_id: 1,
@@ -1807,8 +1804,9 @@ define("dataService", ["require", "exports"], function (require, exports) {
             });
         }
         saveCompanyInfo(pBack, obj) {
+            console.log("tjjjj", obj);
             $.ajax({
-                url: this.state.rooturl + '/api/saveCompanyInfo',
+                url: this.state.rooturl + '/api/saveCompanyInfo?token=' + sessionStorage.getItem("token"),
                 dataType: "json",
                 data: JSON.stringify(obj),
                 type: "post",
@@ -3281,8 +3279,10 @@ define("enterpriseInformation", ["require", "exports", "react", "dataService", "
         }
         componentDidMount() {
             let userid = localStorage.getItem("userId");
-            this.dataService.getCompanyInfo(this.setCompanyinfo, 2);
-            this.dataService.getCompanyType(this.setCompanyType, 1001);
+            let enterpriseId = sessionStorage.getItem("enterpriseId");
+            this.dataService.getCompanyInfo(this.setCompanyinfo, enterpriseId);
+            let park_id = sessionStorage.getItem("park_id");
+            this.dataService.getCompanyType(this.setCompanyType, park_id);
         }
         setCompanyinfo(data) {
             console.log("rrrrrrrrrrrrr", data);
@@ -3300,9 +3300,15 @@ define("enterpriseInformation", ["require", "exports", "react", "dataService", "
             $.each(data.response.panorama, function (index, item) {
                 panoramaImgs.push({ "id": item.id, "name": item.name, "url": item.pic_url });
             });
-            let descriptN = data.response.descript;
-            descriptN.replace(/&#10;/, "<br />&nbsp;");
-            let descriptArr = descriptN.split("    ");
+            let descriptArr;
+            if (data.response.descript) {
+                let descriptN = data.response.descript;
+                descriptN.replace(/&#10;/, "<br />&nbsp;");
+                descriptArr = descriptN.split("    ");
+            }
+            else {
+                descriptArr = [];
+            }
             this.setState({
                 ID: data.response.id,
                 inputEnterpriseIDValue: data.response.id,
@@ -3400,14 +3406,18 @@ define("enterpriseInformation", ["require", "exports", "react", "dataService", "
                 console.log("手机号或座机号填写正确");
             }
             else {
-                console.log("手机号码不正确，固话请添加区号");
+                alert("手机号码不正确，固话请添加区号");
                 return;
             }
+            let userid = sessionStorage.getItem("userid");
+            let park_id = sessionStorage.getItem("park_id");
+            let enterpriseId = sessionStorage.getItem("enterpriseId");
+            let token = sessionStorage.getItem("token");
             console.log("bobo", this.state.elegant.length);
             let obj = {
-                "user_id": "1",
-                "park_id": "1",
-                "id": "2",
+                "user_id": userid,
+                "park_id": park_id,
+                "id": enterpriseId,
                 "name": this.state.inputEnterpriseNameValue,
                 "address": this.state.inputEnterprisePositionValue,
                 "contact": this.state.contactsValue,
@@ -3783,7 +3793,6 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
             this.setToken = this.setToken.bind(this);
         }
         componentDidMount() {
-            this.dataService.login();
         }
         setToken(data) {
             console.log("setToken", data);
@@ -4170,10 +4179,11 @@ define("identityAuthentication", ["require", "exports", "react", "dataService", 
         }
         componentDidMount() {
             this.dataService.getRoleType(this.setRoleTypeUL);
-            this.state.applicant = localStorage.getItem("userName");
-            this.state.phone = localStorage.getItem("phone");
-            this.state.company = "永拓科技公司";
-            this.state.park_id = localStorage.getItem("park_id");
+            this.state.applicant = sessionStorage.getItem("userName");
+            this.state.phone = sessionStorage.getItem("phone");
+            this.state.company = sessionStorage.getItem("enterprise");
+            ;
+            this.state.park_id = sessionStorage.getItem("park_id");
         }
         goBack() {
             this.props.history.goBack();
@@ -5677,6 +5687,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                 pathname: "",
                 userName: "",
                 enterprise: "",
+                phone: "",
             };
             this.dataService = new dataService_11.default();
         }
@@ -5685,6 +5696,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
             let userInfo = sessionStorage.getItem("userInfo");
             let userName = sessionStorage.getItem("userName");
             let enterprise = sessionStorage.getItem("enterprise");
+            let phone = sessionStorage.getItem("phone");
             console.log("userInfo222", userInfo);
             if (!sessionStorage.getItem("userInfo")) {
                 sessionStorage.setItem("userInfo", "园区成员");
@@ -5695,6 +5707,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                 pathname: this.props.history.location.pathname,
                 userName: userName,
                 enterprise: enterprise,
+                phone: phone,
             });
             console.log("userInfo", this.state);
         }
@@ -5754,7 +5767,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                     React.createElement("div", null,
                         React.createElement("div", { className: "personal-center-tag" },
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u624B\u673A\u53F7\u7801"),
-                            React.createElement("span", null, "15578383040"),
+                            React.createElement("span", null, this.state.phone),
                             React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u4FEE\u6539")),
                         React.createElement("div", { className: "personal-center-tag" },
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5173\u8054\u4F01\u4E1A"),
@@ -9408,8 +9421,9 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             this.setState({ inputValue: event.target.value });
         }
         initPark(park_id) {
+            console.log("initPark", park_id);
+            sessionStorage.setItem("park_id", park_id);
             this.globalAction.web_call_webgl_initPark(park_id);
-            localStorage.setItem("park_id", park_id);
         }
         setParks(data) {
             this.setState({
@@ -9663,7 +9677,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
                 React.createElement("div", { className: "index-park" },
                     this.state.parkArr.map((item, index) => {
                         return (React.createElement(react_router_dom_13.Link, { to: "/home" },
-                            React.createElement("div", { className: "index-child-park", key: index, onClick: this.initPark.bind(this, 1001) },
+                            React.createElement("div", { className: "index-child-park", key: index, onClick: this.initPark.bind(this, item.id) },
                                 React.createElement("div", { className: "index-child-park-left" },
                                     React.createElement("img", { src: this.state.type ? "./park_m/image/a.jpg" : "./park_m/image/b.jpg", className: "park-img" })),
                                 React.createElement("div", { className: "index-child-park-right" },

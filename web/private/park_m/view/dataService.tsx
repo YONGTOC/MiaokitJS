@@ -3,7 +3,7 @@ import FindLease from 'findLease';
 class DataService {
 
   public componentDidMount() {
-    console.log(localStorage.getItem("token"));
+   // console.log(localStorage.getItem("token"));
 
     // this.setToken = this.setToken.bind(this);
   }
@@ -72,7 +72,7 @@ class DataService {
       type: "post",    
       success: function (data) {
         console.log(data)
-        localStorage.setItem("token", data.token);
+        sessionStorage.setItem("token", data.token);
         console.log(data.roles[0].role_name)
          sessionStorage.setItem("userInfo", data.roles[0].role_name);
          sessionStorage.setItem("userName", data.name);
@@ -84,9 +84,9 @@ class DataService {
         }
     })
 
-    //返回数据存储
-    let park_id = "1"
-    localStorage.setItem("park_id", park_id);
+    ////返回数据存储
+    //let park_id = "1"
+    //localStorage.setItem("park_id", park_id);
 
     //let userName = "王铁柱"
     //localStorage.setItem("userName", userName);
@@ -1476,7 +1476,7 @@ class DataService {
   // 98.(我的个人中心-房间管理-提交房间格局信息) 提交房间格局基础信息
   public saveRoomPartBaseInfo(pBack, obj) {
     $.ajax({
-      url: this.state.rooturl + '/api/saveRoomPartBaseInfo?token=' + localStorage.getItem("token"),
+      url: this.state.rooturl + '/api/saveRoomPartBaseInfo?token=' + sessionStorage.getItem("token"),
       data: JSON.stringify({
         id: 1,
         park_id: 1,
@@ -1522,11 +1522,11 @@ class DataService {
   }
   // 100.(我的个人中心-企业信息添加)添加或者更新企业详细信息 (同47号接口)
   public saveCompanyInfo(pBack, obj) {
-    // console.log("tjjjj", obj);
+     console.log("tjjjj", obj);
    //let objs = { "user_id": "1", "park_id": "1", "id": "2", "name": "桂林国家高新", "address": "桂林市七星区信息产业园E座B区三楼", "contact": "莫111", "phone": "15266666666", "website": "请输入企业官方网址", "descript": "xxx公司是由计算机图\n形学，计算机应用学组fdsfds方面专家成。", "company_type": 1, "elegant": [{ "url": "http://park.oss.yongtoc.com/images/temp/2020/04/17/1587092082_5e991a72b92ea.png", "id": "", "name": "XXimg" }], "product": [{ "url": "http://park.oss.yongtoc.com/images/temp/2020/04/17/1587092085_5e991a7583aea.png", "id": "", "name": "XXimg" }], "panorama": [{ "url": "http://park.oss.yongtoc.com/images/temp/2020/04/17/1587092090_5e991a7acef8e.png", "id": "", "name": "XXimg" }], "headimageurl": "http://xxx.jpg" }
     
     $.ajax({
-      url: this.state.rooturl + '/api/saveCompanyInfo',
+      url: this.state.rooturl + '/api/saveCompanyInfo?token=' + sessionStorage.getItem("token"),
       dataType: "json",
      data: JSON.stringify(obj),
       
