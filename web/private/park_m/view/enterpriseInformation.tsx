@@ -273,7 +273,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
      let userid= sessionStorage.getItem("userid");
      let park_id= sessionStorage.getItem("park_id");
      let enterpriseId= sessionStorage.getItem("enterpriseId");
-     let token= sessionStorage.getItem("token");
+    // let token= sessionStorage.getItem("token");
 
     console.log("bobo", this.state.elegant.length);
 
