@@ -9312,25 +9312,27 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             this.dataService.login();
             this.dataService.getParks(this.setParks);
             let _this = this;
-            var geolocation = new BMap.Geolocation();
-            geolocation.getCurrentPosition(function (r) {
-                if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-                    let parkArr = _this.state.parkArr;
-                    parkArr.forEach(item => {
-                        item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude));
-                    });
-                    sessionStorage.setItem("city", r.address.city);
-                    _this.setState({ city: r.address.city, parkArr: parkArr });
-                }
-                else {
-                    if (this.getStatus() === 6) {
-                        console.log("没有权限");
+            if (!sessionStorage.getItem("city")) {
+                var geolocation = new BMap.Geolocation();
+                geolocation.getCurrentPosition(function (r) {
+                    if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                        let parkArr = _this.state.parkArr;
+                        parkArr.forEach(item => {
+                            item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude));
+                        });
+                        sessionStorage.setItem("city", r.address.city);
+                        _this.setState({ city: r.address.city, parkArr: parkArr });
                     }
-                    if (this.getStatus() === 8) {
-                        console.log("连接超时");
+                    else {
+                        if (this.getStatus() === 6) {
+                            console.log("没有权限");
+                        }
+                        if (this.getStatus() === 8) {
+                            console.log("连接超时");
+                        }
                     }
-                }
-            });
+                });
+            }
         }
         foucus() {
             if (this.state.inputValue === "请输入园区名/区域名/商圈名") {
