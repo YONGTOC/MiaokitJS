@@ -7890,23 +7890,70 @@ define("rentRoomDetail", ["require", "exports", "react", "css!./styles/rentRoomD
     }
     exports.default = RentRoomDetail;
 });
-define("parkWorkOrder", ["require", "exports", "react", "react-router-dom", "css!./styles/workOrder.css"], function (require, exports, React, react_router_dom_7) {
+define("parkWorkOrder", ["require", "exports", "react", "dataService", "css!./styles/workOrder.css"], function (require, exports, React, dataService_20) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class ParkWorkOrder extends React.Component {
+    class parkWorkOrder extends React.Component {
         constructor() {
             super(...arguments);
             this.state = {
-                tagList: ["全部", "审核中", "已通过", "未通过", "已转单"],
+                tagList: [{ id: 0, name: "全部" }, { id: 1, name: "审核中" }, { id: 2, name: "已通过" }, { id: 3, name: "未通过" }, { id: 4, name: "已转单" }],
                 tagIndex: 0,
-                workOrderArray: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                workOrderArray: [
+                    { id: "", applicant: [{ Name: "" }], state_name: "", time: "" }
+                ]
             };
+            this.dataService = new dataService_20.default();
+        }
+        componentDidMount() {
+            this.dataService.getMyAuthorityWorkType(this.callBackGetMyAuthorityWorkType.bind(this), 8);
+            this.dataService.getMyAuthorityStateType(this.callBackGetMyAuthorityStateType.bind(this), 1);
+            this.getMyWork();
+        }
+        callBackGetMyAuthorityWorkType(data) {
+            let tagList = this.state.tagList;
+            data.response.forEach(item => {
+                tagList.push(item);
+            });
+            this.setState({ tagList: tagList });
+        }
+        callBackGetMyAuthorityStateType(data) {
+            console.log(data);
+        }
+        callBackGetMyWork(data) {
+            if (data.response) {
+                this.setState({ workOrderArray: data.response });
+            }
+            else {
+                this.setState({ workOrderArray: [] });
+            }
+        }
+        getMyWork() {
+            let obj = {
+                id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+                work_type: this.state.tagIndex,
+                state_type: 1
+            };
+            this.dataService.getMyWork(this.callBackGetMyWork.bind(this), obj);
         }
         changeTag(index) {
-            this.setState({ tagIndex: index });
+            this.setState({ tagIndex: index }, () => {
+                this.getMyWork();
+            });
         }
         goBack() {
             this.props.history.goBack();
+        }
+        goWorkOrderDetail(index) {
+            let obj = {
+                id: this.state.workOrderArray[index].id,
+                workType: this.state.workOrderArray[index].work_type,
+                name: this.state.workOrderArray[index].work_type == 1 ? "身份认证工单" : this.state.workOrderArray[index].work_type == 2 ?
+                    "场地预定工单" : this.state.workOrderArray[index].work_type == 3 ? "摆点申请工单" : "在线保修工单",
+                stateName: this.state.workOrderArray[index].state_name
+            };
+            sessionStorage.setItem("workOrder", JSON.stringify(obj));
+            this.props.history.push("/workOrderDetail");
         }
         render() {
             return (React.createElement("div", { className: "work-order" },
@@ -7914,29 +7961,32 @@ define("parkWorkOrder", ["require", "exports", "react", "react-router-dom", "css
                     React.createElement("img", { src: "./park_m/image/back.png", style: { margin: "-10px 10px 0 0" } }),
                     React.createElement("span", null, "\u6211\u7684\u5DE5\u5355")),
                 React.createElement("div", { className: "work-order-tag" }, this.state.tagList.map((item, index) => {
-                    return React.createElement("div", { key: index, className: index === this.state.tagIndex ? "work-order-tag-child-add" : "work-order-tag-child", onClick: e => this.changeTag(index) }, item);
+                    return React.createElement("div", { key: index, className: index === this.state.tagIndex ? "work-order-tag-child-add" : "work-order-tag-child", onClick: e => this.changeTag(index) }, item.name);
                 })),
                 React.createElement("div", { className: "work-order-list" },
                     this.state.workOrderArray.map((item, index) => {
-                        return React.createElement(react_router_dom_7.Link, { to: "/workOrderDetail" },
-                            React.createElement("div", { key: index, className: "work-order-list-child" },
-                                React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 40px" } },
-                                    React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, "\u4F01\u4E1A\u8BA4\u8BC1\u5DE5\u53551"),
-                                    React.createElement("img", { style: { float: "right", marginRight: "40px" }, src: "./park_m/image/right.png" })),
-                                React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" } }, "\u7533\u8BF7\u4EBA\uFF1A\u83ABXX"),
-                                React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "10px 0 0 40px", overflow: "hidden" } },
-                                    React.createElement("div", { style: { float: "left" } }, "\u7533\u8BF7\u65F6\u95F4\uFF1A2020-02-28 14:38:15"),
-                                    React.createElement("div", { style: {
-                                            float: "right", backgroundColor: "#0BC491", color: "#ffffff", width: "130px", height: "55px", borderRadius: "50px",
-                                            marginRight: "40px", fontSize: "32px", textAlign: "center", lineHeight: "55px"
-                                        } }, "\u5DF2\u901A\u8FC7"))));
+                        return (React.createElement("div", { key: index, className: "work-order-list-child", onClick: e => this.goWorkOrderDetail(index) },
+                            React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 40px" } },
+                                React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, item.work_type == 1 ? "身份认证工单" : item.work_type == 2 ? "场地预定工单" : item.work_type == 3 ? "摆点申请工单" : "在线保修工单"),
+                                React.createElement("img", { style: { float: "right", marginRight: "40px" }, src: "./park_m/image/right.png" })),
+                            React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" } },
+                                "\u7533\u8BF7\u4EBA\uFF1A",
+                                item.applicant[0].Name),
+                            React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "10px 0 0 40px", overflow: "hidden" } },
+                                React.createElement("div", { style: { float: "left" } },
+                                    "\u7533\u8BF7\u65F6\u95F4\uFF1A",
+                                    item.time),
+                                React.createElement("div", { style: {
+                                        float: "right", color: "#ffffff", width: "130px", height: "55px", borderRadius: "50px",
+                                        marginRight: "40px", fontSize: "32px", textAlign: "center", lineHeight: "55px"
+                                    }, className: item.state_name == "审核中" ? "bluebg" : item.state_name == "已通过" ? "greenbg" : item.state_name == "已通过" ? "redbg" : "whitebg" }, item.state_name))));
                     }),
                     React.createElement("div", { style: { width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "30px" } }, "\u5230\u5E95\u5566~"))));
         }
     }
-    exports.default = ParkWorkOrder;
+    exports.default = parkWorkOrder;
 });
-define("serviceTel", ["require", "exports", "react", "dataService", "css!./styles/serviceTel.css"], function (require, exports, React, dataService_20) {
+define("serviceTel", ["require", "exports", "react", "dataService", "css!./styles/serviceTel.css"], function (require, exports, React, dataService_21) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ServiceTel extends React.Component {
@@ -7945,7 +7995,7 @@ define("serviceTel", ["require", "exports", "react", "dataService", "css!./style
             this.state = {
                 inputValue: "0773-123456"
             };
-            this.dataService = new dataService_20.default();
+            this.dataService = new dataService_21.default();
         }
         componentDidMount() {
         }
@@ -8123,7 +8173,7 @@ define("ring", ["require", "exports", "react", "css!./styles/ring.css"], functio
     }
     exports.default = Ring;
 });
-define("statisticalStatement", ["require", "exports", "react", "ring", "dataService", "css!./styles/statisticalStatement.css"], function (require, exports, React, ring_1, dataService_21) {
+define("statisticalStatement", ["require", "exports", "react", "ring", "dataService", "css!./styles/statisticalStatement.css"], function (require, exports, React, ring_1, dataService_22) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class StatisticalStatement extends React.Component {
@@ -8147,7 +8197,7 @@ define("statisticalStatement", ["require", "exports", "react", "ring", "dataServ
                     { array: [], name: "入驻分类统计", sum: 0 }
                 ]
             };
-            this.dataService = new dataService_21.default();
+            this.dataService = new dataService_22.default();
         }
         componentDidMount() {
             this.dataService.getMyStatistic(this.callBackGetMyStatistic.bind(this));
@@ -8202,7 +8252,7 @@ define("statisticalStatement", ["require", "exports", "react", "ring", "dataServ
     }
     exports.default = StatisticalStatement;
 });
-define("informationChild", ["require", "exports", "react", "dataService", "css!./styles/informationChild.css"], function (require, exports, React, dataService_22) {
+define("informationChild", ["require", "exports", "react", "dataService", "css!./styles/informationChild.css"], function (require, exports, React, dataService_23) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class InformationChild extends React.Component {
@@ -8218,7 +8268,7 @@ define("informationChild", ["require", "exports", "react", "dataService", "css!.
                 history: this.props.history,
                 location: this.props.location
             };
-            this.dataService = new dataService_22.default();
+            this.dataService = new dataService_23.default();
         }
         componentWillMount() {
             sessionStorage.setItem("informationId", 0);
@@ -8373,7 +8423,7 @@ define("informationChild", ["require", "exports", "react", "dataService", "css!.
     }
     exports.default = InformationChild;
 });
-define("informationDetail", ["require", "exports", "react", "dataService", "react-router-dom", "css!./styles/informationDetail.css"], function (require, exports, React, dataService_23, react_router_dom_8) {
+define("informationDetail", ["require", "exports", "react", "dataService", "react-router-dom", "css!./styles/informationDetail.css"], function (require, exports, React, dataService_24, react_router_dom_7) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class informationDetail extends React.Component {
@@ -8404,7 +8454,7 @@ define("informationDetail", ["require", "exports", "react", "dataService", "reac
             this.props = {
                 history: this.props.history
             };
-            this.dataService = new dataService_23.default();
+            this.dataService = new dataService_24.default();
         }
         componentDidMount() {
             if (parseInt(sessionStorage.getItem("informationId")) < 2) {
@@ -8455,7 +8505,7 @@ define("informationDetail", ["require", "exports", "react", "dataService", "reac
                         React.createElement("div", { style: { height: "50px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "36px 30px 0 50px" } }),
                         React.createElement("div", { style: { color: "#333333", fontSize: "40px", fontWeight: "600", lineHeight: "120px" } }, "\u670D\u52A1\u4FE1\u606F")),
                     React.createElement("div", { className: "index-park" }, this.state.parkArr.map((item, index) => {
-                        return (React.createElement(react_router_dom_8.Link, { to: "/home" },
+                        return (React.createElement(react_router_dom_7.Link, { to: "/home" },
                             React.createElement("div", { className: "index-child-park", key: index, onClick: this.initPark.bind(this, 1001) },
                                 React.createElement("div", { className: "index-child-park-left" },
                                     React.createElement("img", { src: "./park_m/image/a.jpg", className: "park-img" })),
@@ -8542,7 +8592,7 @@ define("informationDetail", ["require", "exports", "react", "dataService", "reac
     }
     exports.default = informationDetail;
 });
-define("room", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/room.css"], function (require, exports, React, react_router_dom_9, dataService_24) {
+define("room", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/room.css"], function (require, exports, React, react_router_dom_8, dataService_25) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Room extends React.Component {
@@ -8554,7 +8604,7 @@ define("room", ["require", "exports", "react", "react-router-dom", "dataService"
                 buildingIndex: "",
                 floorIndex: ""
             };
-            this.dataService = new dataService_24.default();
+            this.dataService = new dataService_25.default();
         }
         componentDidMount() {
             this.dataService.getParkBuildingInfo(this.callBackParkBuildingInfo.bind(this));
@@ -8627,7 +8677,7 @@ define("room", ["require", "exports", "react", "react-router-dom", "dataService"
                                         React.createElement("img", { src: "./park_m/image/right.png", className: item.isSpread ? "room-spread-right" : null }))),
                                 this.state.floorIndex === index ?
                                     React.createElement("div", { style: { width: "90%", margin: "10px auto", minHeight: "200px", overflow: "hidden" } }, this.state.buildingArr[this.state.buildingIndex].child[this.state.floorIndex].child.map((it, ind) => {
-                                        return (React.createElement(react_router_dom_9.Link, { to: { pathname: "/roomDetail", state: { name: it.name, id: it.id } } },
+                                        return (React.createElement(react_router_dom_8.Link, { to: { pathname: "/roomDetail", state: { name: it.name, id: it.id } } },
                                             React.createElement("div", { key: ind, className: it.State === 1 ? "room-single-add" : "room-single" }, it.name)));
                                     })) : null));
                         }))));
@@ -8635,7 +8685,7 @@ define("room", ["require", "exports", "react", "react-router-dom", "dataService"
     }
     exports.default = Room;
 });
-define("roomDetail", ["require", "exports", "react", "react-router-dom", "dataService"], function (require, exports, React, react_router_dom_10, dataService_25) {
+define("roomDetail", ["require", "exports", "react", "react-router-dom", "dataService"], function (require, exports, React, react_router_dom_9, dataService_26) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RoomDetail extends React.Component {
@@ -8645,7 +8695,7 @@ define("roomDetail", ["require", "exports", "react", "react-router-dom", "dataSe
                 location: this.props.location,
                 history: this.props.history
             };
-            this.dataService = new dataService_25.default();
+            this.dataService = new dataService_26.default();
             this.state = {
                 roomName: "",
                 roomInfo: [{ use_info: { state: 1, company_name: "", user: "", phone: "", rent_date: "" } }]
@@ -8675,17 +8725,17 @@ define("roomDetail", ["require", "exports", "react", "react-router-dom", "dataSe
                         React.createElement("span", null, this.state.roomName),
                         React.createElement("span", { style: { color: "#F53636", float: "right", marginRight: "50px" } }, "\u5220\u9664"))),
                 React.createElement("div", { style: { width: "100%", height: "15px", backgroundColor: "#F2F2F2" } }),
-                React.createElement(react_router_dom_10.Link, { to: { pathname: "/roomBase", state: { roomInfo: this.state.roomInfo } } },
+                React.createElement(react_router_dom_9.Link, { to: { pathname: "/roomBase", state: { roomInfo: this.state.roomInfo } } },
                     React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("img", { src: "./park_m/image/room_base.png", style: { margin: "0 20px 15px 10px" } }),
                         React.createElement("span", null, "\u623F\u95F4\u57FA\u672C\u4FE1\u606F"),
                         React.createElement("span", { style: { color: "#0B8BF0", float: "right", marginRight: "50px" } }, "\u4FEE\u6539"))),
-                React.createElement(react_router_dom_10.Link, { to: "/roomPattern" },
+                React.createElement(react_router_dom_9.Link, { to: "/roomPattern" },
                     React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("img", { src: "./park_m/image/pattern.png", style: { margin: "0 20px 15px 10px" } }),
                         React.createElement("span", null, "\u623F\u95F4\u683C\u5C40\u4FE1\u606F"),
                         React.createElement("span", { style: { color: "#0B8BF0", float: "right", marginRight: "50px" } }, "\u4FEE\u6539"))),
-                React.createElement(react_router_dom_10.Link, { to: { pathname: "/roomUse", state: { roomInfo: this.state.roomInfo } } },
+                React.createElement(react_router_dom_9.Link, { to: { pathname: "/roomUse", state: { roomInfo: this.state.roomInfo } } },
                     React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("img", { src: "./park_m/image/room_rent.png", style: { margin: "0 20px 15px 10px" } }),
                         React.createElement("span", null, "\u623F\u95F4\u4F7F\u7528\u4FE1\u606F"),
@@ -8710,7 +8760,7 @@ define("roomDetail", ["require", "exports", "react", "react-router-dom", "dataSe
     }
     exports.default = RoomDetail;
 });
-define("roomUse", ["require", "exports", "react", "dataService"], function (require, exports, React, dataService_26) {
+define("roomUse", ["require", "exports", "react", "dataService"], function (require, exports, React, dataService_27) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RoomUse extends React.Component {
@@ -8720,7 +8770,7 @@ define("roomUse", ["require", "exports", "react", "dataService"], function (requ
                 location: this.props.location,
                 history: this.props.history
             };
-            this.dataService = new dataService_26.default();
+            this.dataService = new dataService_27.default();
             this.state = {
                 companyName: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.company_name,
                 user: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.user,
@@ -8809,7 +8859,7 @@ define("roomUse", ["require", "exports", "react", "dataService"], function (requ
     }
     exports.default = RoomUse;
 });
-define("roomBase", ["require", "exports", "react", "dataService"], function (require, exports, React, dataService_27) {
+define("roomBase", ["require", "exports", "react", "dataService"], function (require, exports, React, dataService_28) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RoomBase extends React.Component {
@@ -8828,7 +8878,7 @@ define("roomBase", ["require", "exports", "react", "dataService"], function (req
                 require: JSON.parse(sessionStorage.getItem("roomInfo"))[0].require,
                 lift: 1
             };
-            this.dataService = new dataService_27.default();
+            this.dataService = new dataService_28.default();
         }
         componentDidMount() {
             if (this.props.location.state) {
@@ -8940,7 +8990,7 @@ define("roomBase", ["require", "exports", "react", "dataService"], function (req
     }
     exports.default = RoomBase;
 });
-define("roomPattern", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/roomPattern.css"], function (require, exports, React, react_router_dom_11, dataService_28) {
+define("roomPattern", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/roomPattern.css"], function (require, exports, React, react_router_dom_10, dataService_29) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RoomPattern extends React.Component {
@@ -8953,7 +9003,7 @@ define("roomPattern", ["require", "exports", "react", "react-router-dom", "dataS
                 file: "",
                 roomInfo: [{ part: [] }]
             };
-            this.dataService = new dataService_28.default();
+            this.dataService = new dataService_29.default();
         }
         componentDidMount() {
             this.dataService.getRoomInfo(this.callBackGetRoomInfo.bind(this), sessionStorage.getItem("roomId"));
@@ -8982,7 +9032,7 @@ define("roomPattern", ["require", "exports", "react", "react-router-dom", "dataS
                     return (React.createElement("div", { key: index, style: { width: "100%", height: "400px", backgroundColor: "#ffffff", marginBottom: "10px" } },
                         React.createElement("div", { style: { overflow: "hidden", padding: "30px 0 0 50px" } },
                             React.createElement("div", { style: { fontSize: "42px", color: "#333333", fontWeight: "600", float: "left" } }, item.name),
-                            React.createElement(react_router_dom_11.Link, { to: { pathname: "/roomPatternUpdate", state: { index: index } } },
+                            React.createElement(react_router_dom_10.Link, { to: { pathname: "/roomPatternUpdate", state: { index: index } } },
                                 React.createElement("div", { style: { float: "right", fontSize: "40px", color: "#0B8BF0", marginRight: "50px" } }, "\u4FEE\u6539"))),
                         React.createElement("div", { style: { width: "100%", height: "300px", lineHeight: "300px", paddingLeft: "50px" } },
                             React.createElement("div", { style: { fontSize: "40px", color: "#6C6C6C", float: "left", marginRight: "20px" } }, "\u7F29\u7565\u56FE\uFF1A"),
@@ -8996,7 +9046,7 @@ define("roomPattern", ["require", "exports", "react", "react-router-dom", "dataS
     }
     exports.default = RoomPattern;
 });
-define("roomPatternUpdate", ["require", "exports", "react", "dataService", "css!./styles/roomPatternUpdate.css"], function (require, exports, React, dataService_29) {
+define("roomPatternUpdate", ["require", "exports", "react", "dataService", "css!./styles/roomPatternUpdate.css"], function (require, exports, React, dataService_30) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class roomPatternUpdate extends React.Component {
@@ -9011,7 +9061,7 @@ define("roomPatternUpdate", ["require", "exports", "react", "dataService", "css!
                 fileArr: [],
                 name: JSON.parse(sessionStorage.getItem("roomInfo"))[0].part[this.props.location.state.index].name
             };
-            this.dataService = new dataService_29.default();
+            this.dataService = new dataService_30.default();
         }
         componentDidMount() {
             sessionStorage.setItem("part", JSON.stringify(JSON.parse(sessionStorage.getItem("roomInfo"))[0].part[this.props.location.state.index]));
@@ -9126,7 +9176,7 @@ define("roomPatternUpdate", ["require", "exports", "react", "dataService", "css!
     }
     exports.default = roomPatternUpdate;
 });
-define("modificationAuthenticationDetail", ["require", "exports", "react", "dataService", "css!./styles/roomPattern.css"], function (require, exports, React, dataService_30) {
+define("modificationAuthenticationDetail", ["require", "exports", "react", "dataService", "css!./styles/roomPattern.css"], function (require, exports, React, dataService_31) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class modificationAuthenticationDetail extends React.Component {
@@ -9140,7 +9190,7 @@ define("modificationAuthenticationDetail", ["require", "exports", "react", "data
                 file: "",
                 name: JSON.parse(sessionStorage.getItem("roomInfo"))[0].part[0].name
             };
-            this.dataService = new dataService_30.default();
+            this.dataService = new dataService_31.default();
         }
         componentDidMount() {
         }
@@ -9193,65 +9243,65 @@ define("modificationAuthenticationDetail", ["require", "exports", "react", "data
     }
     exports.default = modificationAuthenticationDetail;
 });
-define("router", ["require", "exports", "react-router-dom", "react", "index", "home", "parkCompany", "photograph", "infoArea", "information", "personalCenter", "findLease", "applyPut", "bookSite", "repairsOnline", "parking", "narrate", "isay", "workOrder", "workOrderDetail", "modificationAuthentication", "message", "enterpriseInformation", "rentRoom", "rentRoomDetail", "defaultRentRoom", "parkWorkOrder", "serviceTel", "distribute", "searchUser", "statisticalStatement", "informationChild", "informationDetail", "attractInvestment", "attractInvestmentList", "room", "roomDetail", "roomUse", "roomBase", "roomPattern", "roomPatternUpdate", "modificationAuthenticationDetail", "identityAuthentication"], function (require, exports, react_router_dom_12, React, index_1, home_1, parkCompany_1, photograph_1, infoArea_1, information_1, personalCenter_1, findLease_1, applyPut_1, bookSite_1, repairsOnline_1, parking_1, narrate_1, isay_1, workOrder_1, workOrderDetail_1, modificationAuthentication_1, message_1, enterpriseInformation_1, rentRoom_1, rentRoomDetail_1, defaultRentRoom_1, parkWorkOrder_1, serviceTel_1, distribute_1, searchUser_1, statisticalStatement_1, informationChild_1, informationDetail_1, attractInvestment_1, attractInvestmentList_1, room_1, roomDetail_1, roomUse_1, roomBase_1, roomPattern_1, roomPatternUpdate_1, modificationAuthenticationDetail_1, identityAuthentication_1) {
+define("router", ["require", "exports", "react-router-dom", "react", "index", "home", "parkCompany", "photograph", "infoArea", "information", "personalCenter", "findLease", "applyPut", "bookSite", "repairsOnline", "parking", "narrate", "isay", "workOrder", "workOrderDetail", "modificationAuthentication", "message", "enterpriseInformation", "rentRoom", "rentRoomDetail", "defaultRentRoom", "parkWorkOrder", "serviceTel", "distribute", "searchUser", "statisticalStatement", "informationChild", "informationDetail", "attractInvestment", "attractInvestmentList", "room", "roomDetail", "roomUse", "roomBase", "roomPattern", "roomPatternUpdate", "modificationAuthenticationDetail", "identityAuthentication"], function (require, exports, react_router_dom_11, React, index_1, home_1, parkCompany_1, photograph_1, infoArea_1, information_1, personalCenter_1, findLease_1, applyPut_1, bookSite_1, repairsOnline_1, parking_1, narrate_1, isay_1, workOrder_1, workOrderDetail_1, modificationAuthentication_1, message_1, enterpriseInformation_1, rentRoom_1, rentRoomDetail_1, defaultRentRoom_1, parkWorkOrder_1, serviceTel_1, distribute_1, searchUser_1, statisticalStatement_1, informationChild_1, informationDetail_1, attractInvestment_1, attractInvestmentList_1, room_1, roomDetail_1, roomUse_1, roomBase_1, roomPattern_1, roomPatternUpdate_1, modificationAuthenticationDetail_1, identityAuthentication_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Router extends React.Component {
         render() {
-            return (React.createElement(react_router_dom_12.HashRouter, null,
-                React.createElement(react_router_dom_12.Switch, null,
-                    React.createElement(react_router_dom_12.Route, { exact: true, path: "/", component: index_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/parkCompany", component: parkCompany_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/photograph", component: photograph_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/findLease", component: findLease_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/applyPut", component: applyPut_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/bookSite", component: bookSite_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/repairsOnline", component: repairsOnline_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/parking", component: parking_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/narrate", component: narrate_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/isay", component: isay_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/workOrder", component: workOrder_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/workOrderDetail", component: workOrderDetail_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/parkworkOrder", component: parkWorkOrder_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/modificationAuthentication", component: modificationAuthentication_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/message", component: message_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/enterpriseInformation", component: enterpriseInformation_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/rentRoom", component: rentRoom_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/rentRoomDetail", component: rentRoomDetail_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/defaultRentRoom", component: defaultRentRoom_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/serviceTel", component: serviceTel_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/distribute", component: distribute_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/searchUser", component: searchUser_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/statisticalStatement", component: statisticalStatement_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/informationDetail", component: informationDetail_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/attractInvestment", component: attractInvestment_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/attractInvestmentList", component: attractInvestmentList_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/room", component: room_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/roomDetail", component: roomDetail_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/roomUse", component: roomUse_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/roomBase", component: roomBase_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/roomPattern", component: roomPattern_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/roomPatternUpdate", component: roomPatternUpdate_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/modificationAuthenticationDetail", component: modificationAuthenticationDetail_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/identityAuthentication", component: identityAuthentication_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/home", render: (props) => (React.createElement(home_1.default, Object.assign({}, props),
-                            React.createElement(react_router_dom_12.Route, { path: "/home/infoArea", component: infoArea_1.default }),
-                            React.createElement(react_router_dom_12.Route, { path: "/home/information", component: information_1.default }),
-                            React.createElement(react_router_dom_12.Route, { path: "/home/personalCenter", component: personalCenter_1.default }))) }),
-                    React.createElement(react_router_dom_12.Route, { path: "/", render: (props) => (React.createElement(index_1.default, Object.assign({}, props),
-                            React.createElement(react_router_dom_12.Route, { path: "/informationChild", component: informationChild_1.default }),
-                            React.createElement(react_router_dom_12.Route, { path: "/personalCenter", component: personalCenter_1.default }))) }))));
+            return (React.createElement(react_router_dom_11.HashRouter, null,
+                React.createElement(react_router_dom_11.Switch, null,
+                    React.createElement(react_router_dom_11.Route, { exact: true, path: "/", component: index_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/parkCompany", component: parkCompany_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/photograph", component: photograph_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/findLease", component: findLease_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/applyPut", component: applyPut_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/bookSite", component: bookSite_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/repairsOnline", component: repairsOnline_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/parking", component: parking_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/narrate", component: narrate_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/isay", component: isay_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/workOrder", component: workOrder_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/workOrderDetail", component: workOrderDetail_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/parkworkOrder", component: parkWorkOrder_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/modificationAuthentication", component: modificationAuthentication_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/message", component: message_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/enterpriseInformation", component: enterpriseInformation_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/rentRoom", component: rentRoom_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/rentRoomDetail", component: rentRoomDetail_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/defaultRentRoom", component: defaultRentRoom_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/serviceTel", component: serviceTel_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/distribute", component: distribute_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/searchUser", component: searchUser_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/statisticalStatement", component: statisticalStatement_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/informationDetail", component: informationDetail_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/attractInvestment", component: attractInvestment_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/attractInvestmentList", component: attractInvestmentList_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/room", component: room_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/roomDetail", component: roomDetail_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/roomUse", component: roomUse_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/roomBase", component: roomBase_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/roomPattern", component: roomPattern_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/roomPatternUpdate", component: roomPatternUpdate_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/modificationAuthenticationDetail", component: modificationAuthenticationDetail_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/identityAuthentication", component: identityAuthentication_1.default }),
+                    React.createElement(react_router_dom_11.Route, { path: "/home", render: (props) => (React.createElement(home_1.default, Object.assign({}, props),
+                            React.createElement(react_router_dom_11.Route, { path: "/home/infoArea", component: infoArea_1.default }),
+                            React.createElement(react_router_dom_11.Route, { path: "/home/information", component: information_1.default }),
+                            React.createElement(react_router_dom_11.Route, { path: "/home/personalCenter", component: personalCenter_1.default }))) }),
+                    React.createElement(react_router_dom_11.Route, { path: "/", render: (props) => (React.createElement(index_1.default, Object.assign({}, props),
+                            React.createElement(react_router_dom_11.Route, { path: "/informationChild", component: informationChild_1.default }),
+                            React.createElement(react_router_dom_11.Route, { path: "/personalCenter", component: personalCenter_1.default }))) }))));
         }
     }
     exports.default = Router;
 });
-define("index", ["require", "exports", "react", "react-dom", "react-router-dom", "router", "parkCompany", "findLease", "applyPut", "photograph", "bookSite", "parking", "bottomBtn", "repairsOnline", "dataService", "compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_13, router_1, parkCompany_2, findLease_2, applyPut_2, photograph_2, bookSite_2, parking_2, bottomBtn_1, repairsOnline_2, dataService_31, compat_11) {
+define("index", ["require", "exports", "react", "react-dom", "react-router-dom", "router", "parkCompany", "findLease", "applyPut", "photograph", "bookSite", "parking", "bottomBtn", "repairsOnline", "dataService", "compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_12, router_1, parkCompany_2, findLease_2, applyPut_2, photograph_2, bookSite_2, parking_2, bottomBtn_1, repairsOnline_2, dataService_32, compat_11) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
         constructor(props) {
             super(props);
-            this.dataService = new dataService_31.default();
+            this.dataService = new dataService_32.default();
             this.globalAction = new compat_11.default();
             this.state = {
                 inputValue: "请输入园区名/区域名/商圈名",
@@ -9355,25 +9405,27 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         componentWillMount() {
             this.dataService.getParks(this.setParks);
             let _this = this;
-            var geolocation = new BMap.Geolocation();
-            geolocation.getCurrentPosition(function (r) {
-                if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-                    let parkArr = _this.state.parkArr;
-                    parkArr.forEach(item => {
-                        item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude));
-                    });
-                    sessionStorage.setItem("city", r.address.city);
-                    _this.setState({ city: r.address.city, parkArr: parkArr });
-                }
-                else {
-                    if (this.getStatus() === 6) {
-                        console.log("没有权限");
+            if (!sessionStorage.getItem("city")) {
+                var geolocation = new BMap.Geolocation();
+                geolocation.getCurrentPosition(function (r) {
+                    if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                        let parkArr = _this.state.parkArr;
+                        parkArr.forEach(item => {
+                            item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude));
+                        });
+                        sessionStorage.setItem("city", r.address.city);
+                        _this.setState({ city: r.address.city, parkArr: parkArr });
                     }
-                    if (this.getStatus() === 8) {
-                        console.log("连接超时");
+                    else {
+                        if (this.getStatus() === 6) {
+                            console.log("没有权限");
+                        }
+                        if (this.getStatus() === 8) {
+                            console.log("连接超时");
+                        }
                     }
-                }
-            });
+                });
+            }
             curtainHide();
         }
         isLoginData() {
@@ -9676,7 +9728,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
                     React.createElement("div", { className: "mask", onClick: this.clickMask.bind(this) }) : null,
                 React.createElement("div", { className: "index-park" },
                     this.state.parkArr.map((item, index) => {
-                        return (React.createElement(react_router_dom_13.Link, { to: "/home" },
+                        return (React.createElement(react_router_dom_12.Link, { to: "/home" },
                             React.createElement("div", { className: "index-child-park", key: index, onClick: this.initPark.bind(this, item.id) },
                                 React.createElement("div", { className: "index-child-park-left" },
                                     React.createElement("img", { src: this.state.type ? "./park_m/image/a.jpg" : "./park_m/image/b.jpg", className: "park-img" })),
@@ -9774,7 +9826,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
     class LoginTest extends React.Component {
         constructor(props) {
             super(props);
-            this.dataService = new dataService_31.default();
+            this.dataService = new dataService_32.default();
             this.globalAction = new compat_11.default();
             this.state = {
                 username: "",
@@ -9846,1375 +9898,4 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
     }
     exports.default = Index;
     ReactDOM.render(React.createElement(router_1.default, null), document.getElementById('viewContainer'));
-});
-define("personalCenter - \u526F\u672C", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_14, dataService_32) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class PersonalCenter extends React.Component {
-        constructor() {
-            super(...arguments);
-            this.props = {
-                history: this.props.history
-            };
-            this.state = {
-                parkList: [
-                    { name: "统计报表", imgUrl: "./park_m/image/statistics.png", url: "/statisticalStatement" }, { name: "房间管理", imgUrl: "./park_m/image/room.png", url: "/room" },
-                    { name: "工单派发管理", imgUrl: "./park_m/image/distribute.png", url: "/distribute" }, { name: "客服电话", imgUrl: "./park_m/image/service.png", url: "/serviceTel" },
-                    { name: "招商管理", imgUrl: "./park_m/image/attractInvestment.png", url: "/attractInvestment" }
-                ],
-                isSpread: false,
-                userInfo: "",
-                pathname: "",
-                userName: "",
-                enterprise: "",
-                phone: "",
-                parkPhone: "",
-            };
-            this.dataService = new dataService_32.default();
-        }
-        componentDidMount() {
-            this.dataService.getRoleType(this.callBackGetRoleType.bind(this));
-            let userInfo = sessionStorage.getItem("userInfo");
-            let userName = sessionStorage.getItem("userName");
-            let enterprise = sessionStorage.getItem("enterprise");
-            let phone = sessionStorage.getItem("phone");
-            console.log("userInfo222", userInfo);
-            if (!sessionStorage.getItem("userInfo")) {
-                sessionStorage.setItem("userInfo", "园区成员");
-                sessionStorage.setItem("userName", "用户名称");
-            }
-            if (sessionStorage.getItem("userInfo") == "企业管理员") {
-            }
-            this.setState({
-                userInfo: userInfo,
-                pathname: this.props.history.location.pathname,
-                userName: userName,
-                enterprise: enterprise,
-                phone: phone,
-            });
-            console.log("userInfo", this.state);
-        }
-        callBackGetUserInfo(data) {
-            console.log("userInfoss", data);
-            this.setState({ userInfo: JSON.parse(data) });
-            sessionStorage.setItem("userInfo", this.state.userInfo.roles.role_name);
-        }
-        callBackGetRoleType(data) {
-            console.log(data);
-        }
-        spread() {
-            this.setState({ isSpread: !this.state.isSpread });
-        }
-        switchMember() {
-            switch (this.state.userInfo) {
-                case "园区成员":
-                    this.setState({ userInfo: "企业管理员" });
-                    sessionStorage.setItem("userInfo", "企业管理员");
-                    break;
-                case "企业管理员":
-                    this.setState({ userInfo: "园区管理员" });
-                    sessionStorage.setItem("userInfo", "园区管理员");
-                    break;
-                default:
-                    this.setState({ userInfo: "园区成员" });
-                    sessionStorage.setItem("userInfo", "园区成员");
-            }
-        }
-        changeParkPhone() {
-            var x;
-            var phoneNew = prompt("请输入新园区电话", "");
-            var reg01 = /^1[3456789]\d{9}$/;
-            var reg02 = /^(0[0-9]{2,3}\-)([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$/;
-            if (phoneNew != null && phoneNew != "" && reg01.test(phoneNew)) {
-            }
-        }
-        render() {
-            return (React.createElement("div", { className: "personal-center" },
-                React.createElement("div", { className: "personal-center-top" },
-                    React.createElement("div", { className: "personal-center-info" },
-                        React.createElement("div", { className: "personal-center-tx" },
-                            React.createElement("img", { src: "./park_m/image/tx.jpg", className: "personal-center-tx-img" })),
-                        React.createElement("div", { style: { float: "left", color: "#FFFFFF", fontSize: "42px", margin: "10px 0 0 36px" } },
-                            React.createElement("div", null, this.state.userName),
-                            React.createElement("div", { style: {
-                                    color: "#83d5ff", fontSize: "27px", backgroundColor: "#2e9cf3", width: "160px",
-                                    height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
-                                }, onClick: this.switchMember.bind(this) }, this.state.userInfo)),
-                        React.createElement(react_router_dom_14.Link, { to: "/modificationAuthentication" },
-                            React.createElement("div", { className: "personal-center-right" },
-                                React.createElement("img", { src: "./park_m/image/w-right.png" }))))),
-                this.state.pathname === "/personalCenter" ?
-                    React.createElement("div", null,
-                        React.createElement("div", { className: "personal-center-tag", style: { margin: "0 50px 0 50px", fontWeight: "600" } },
-                            "\u6211\u7684\u6536\u85CF ",
-                            React.createElement("img", { src: "./park_m/image/right.png", style: { marginTop: "40px", float: "right" } })),
-                        React.createElement("div", { className: "personal-center-tag", style: { margin: "0 50px 0 50px", fontWeight: "600" } },
-                            "\u6D4F\u89C8\u8BB0\u5F55 ",
-                            React.createElement("img", { src: "./park_m/image/right.png", style: { marginTop: "40px", float: "right" } })),
-                        React.createElement("div", { className: "personal-center-tag", style: { margin: "0 50px 0 50px", fontWeight: "600" } },
-                            "\u5BA2\u670D\u7535\u8BDD ",
-                            React.createElement("span", { style: { float: "right" } }, "400-808-3066"))) : null,
-                this.state.pathname !== "/personalCenter" ?
-                    React.createElement("div", null,
-                        React.createElement("div", { className: "personal-center-tag" },
-                            React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u624B\u673A\u53F7\u7801"),
-                            React.createElement("span", null, this.state.phone),
-                            React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u4FEE\u6539")),
-                        React.createElement("div", { className: "personal-center-tag" },
-                            React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5173\u8054\u4F01\u4E1A"),
-                            React.createElement("span", null, this.state.enterprise),
-                            React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u4FEE\u6539")),
-                        React.createElement("div", { className: "personal-center-tag" },
-                            React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5BA2\u670D\u7535\u8BDD"),
-                            React.createElement("span", null, this.state.parkPhone),
-                            React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" }, onClick: this.changeParkPhone.bind(this) }, "\u4FEE\u6539")),
-                        React.createElement("div", { className: "personal-center-my" },
-                            React.createElement(react_router_dom_14.Link, { to: sessionStorage.getItem("userInfo") === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
-                                React.createElement("div", { className: "personal-center-my-left" },
-                                    React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "5"),
-                                    React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u5DE5\u5355"))),
-                            React.createElement("div", { className: "personal-center-my-middle" }),
-                            React.createElement(react_router_dom_14.Link, { to: "/message" },
-                                React.createElement("div", { className: "personal-center-my-right" },
-                                    React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "6"),
-                                    React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u6D88\u606F")))))
-                    : null,
-                sessionStorage.getItem("userInfo") === "企业管理员" && this.state.pathname !== "/personalCenter" ?
-                    React.createElement("div", { className: "personal-center-enterprise" },
-                        React.createElement(react_router_dom_14.Link, { to: "/enterpriseInformation" },
-                            React.createElement("div", { className: "personal-center-enterprise-child" },
-                                React.createElement("img", { src: "./park_m/image/enterprise.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
-                                React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u4F01\u4E1A\u4FE1\u606F\u7BA1\u7406"),
-                                React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
-                                    React.createElement("img", { src: "./park_m/image/right.png" })))),
-                        React.createElement(react_router_dom_14.Link, { to: "/rentRoom" },
-                            React.createElement("div", { className: "personal-center-enterprise-child" },
-                                React.createElement("img", { src: "./park_m/image/let.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
-                                React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"),
-                                React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
-                                    React.createElement("img", { src: "./park_m/image/right.png" }))))) : null,
-                sessionStorage.getItem("userInfo") === "园区管理员" && this.state.pathname !== "/personalCenter" ?
-                    React.createElement("div", { className: "personal-center-park" },
-                        React.createElement("div", { className: "personal-center-enterprise-child", onClick: this.spread.bind(this) },
-                            React.createElement("img", { src: "./park_m/image/park.png", width: "60px", height: "60px", style: { marginBottom: "10px" } }),
-                            React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u56ED\u533A\u7BA1\u7406"),
-                            React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
-                                React.createElement("img", { src: "./park_m/image/right.png", className: this.state.isSpread ? "personal-center-bottom-img" : "" }))),
-                        this.state.isSpread ?
-                            React.createElement("div", { style: { backgroundColor: "#ffffff", overflow: "hidden", paddingTop: "30px" } }, this.state.parkList.map((item, index) => {
-                                return (React.createElement(react_router_dom_14.Link, { to: item.url },
-                                    React.createElement("div", { key: index, className: "personal-center-park-child" },
-                                        React.createElement("img", { src: item.imgUrl, width: "110px", height: "110px" }),
-                                        React.createElement("div", { style: { marginTop: "10px" } }, item.name))));
-                            })) : null) : null));
-        }
-    }
-    exports.default = PersonalCenter;
-});
-define("dataService - \u526F\u672C", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class DataService {
-        constructor() {
-            this.state = {
-                rooturl: "http://parkadmin.yongtoc.com",
-                userInfoUrl: "http://minghuakejiyuan.3dparkcloud.com/me",
-                rooturl2: "http://192.168.1.30:8002",
-                rooturl3: "http://192.168.1.27:89",
-                token: "",
-            };
-        }
-        componentDidMount() {
-        }
-        callback(a, pBack) {
-            console.log("callback1", a);
-            pBack("callback");
-        }
-        upload(pBack, file) {
-            console.log("fiffffffffffffffff", file);
-            $.ajax({
-                url: this.state.rooturl + '/api/upload?token=' + sessionStorage.getItem("token"),
-                data: file,
-                cache: false,
-                dataType: "json",
-                processData: false,
-                contentType: false,
-                type: "post",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        uploadImgOss(pBack, file) {
-            console.log("uploadImgOss", file);
-            $.ajax({
-                url: this.state.rooturl + '/api/uploadImgOss',
-                type: "post",
-                data: JSON.stringify(file),
-                success: function (data) {
-                    console.log(typeof data);
-                    let dataJ = JSON.parse(data);
-                    console.log("ajax", dataJ);
-                    if (dataJ.return_code == 100) {
-                        pBack(dataJ.response);
-                    }
-                }
-            });
-        }
-        login(username, password, pBack) {
-            $.ajax({
-                url: this.state.rooturl + '/api/login',
-                data: {
-                    "username": username,
-                    "password": password,
-                },
-                type: "post",
-                success: function (data) {
-                    console.log(data);
-                    sessionStorage.setItem("token", data.token);
-                    console.log(data.roles[0].role_name);
-                    sessionStorage.setItem("userInfo", data.roles[0].role_name);
-                    sessionStorage.setItem("userName", data.name);
-                    sessionStorage.setItem("phone", data.phone);
-                    sessionStorage.setItem("userid", data.id);
-                    sessionStorage.setItem("enterprises", JSON.stringify(data.enterprises));
-                    pBack(data);
-                }
-            });
-        }
-        refreshToken(ytoken) {
-            $.ajax({
-                url: this.state.rooturl + '/api/refresh',
-                data: {
-                    "token": ytoken,
-                },
-                type: "post",
-                success: function (data) {
-                    console.log("login-getToken", data);
-                }
-            });
-        }
-        getParks(pBack) {
-            let thetoken = sessionStorage.getItem("token");
-            $.ajax({
-                url: this.state.rooturl + '/api/getParks',
-                type: "get",
-                data: {
-                    "token": thetoken,
-                },
-                success: function (data) {
-                    if (data) {
-                        pBack(data.response);
-                    }
-                    ;
-                }
-            });
-        }
-        getParkInfo(pBack, park_id) {
-            let thetoken = sessionStorage.getItem("token");
-            var data = {
-                "return_code": "100",
-                "response": [
-                    {
-                        "id": "1009",
-                        "headimgurl": "http://xxx.jpg",
-                        "province": "桂林",
-                        "longitude": "10.55",
-                        "latitude": "66.666",
-                        "name": "桂林国家高新",
-                        "address": "桂林七星朝阳路D-11",
-                        "project": [
-                            {
-                                "id": "1009",
-                                "name": "电子信息",
-                                "type": 1,
-                                "use_type": 0,
-                                "project_url": "http://xxx.bin",
-                                "longitude": "10.55",
-                                "latitude": "66.666",
-                                "offset": "10,20,10",
-                                "rotate": "10",
-                            }
-                        ],
-                        "audio": [
-                            { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-                            { name: "园区配套", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
-                            { name: "园区建筑", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-                        ]
-                    }
-                ],
-                "err_msg": ""
-            };
-            pBack(data);
-        }
-        getCompanyType(pBack, park_id) {
-            let thetoken = sessionStorage.getItem("token");
-            $.ajax({
-                url: this.state.rooturl + '/api/getCompanyType',
-                data: {
-                    "park_id": park_id,
-                    "token": thetoken,
-                },
-                type: "get",
-                success: function (data) {
-                    console.log("5-企业类型列表", data);
-                    pBack(data);
-                }
-            });
-        }
-        findCompany(pBack, park_id, company_type_id, companyName) {
-            let thetoken = sessionStorage.getItem("token");
-            $.ajax({
-                url: this.state.rooturl + '/api/findCompany',
-                data: {
-                    "park_id": 1,
-                    "company_type_id": company_type_id,
-                    "token": thetoken,
-                    "name": companyName
-                },
-                type: "get",
-                success: function (data) {
-                    console.log("findCompany企业列表", data);
-                    if (data.status == 113) {
-                    }
-                    else {
-                        pBack(data);
-                        console.log("fin企业列表", data);
-                    }
-                }
-            });
-        }
-        getCompanyInfo(pBack, id) {
-            let thetoken = sessionStorage.getItem("token");
-            $.ajax({
-                url: this.state.rooturl + '/api/getCompanyInfo',
-                data: {
-                    "id": id,
-                    "token": thetoken,
-                },
-                type: "get",
-                success: function (data) {
-                    if (data.status == 113) {
-                    }
-                    else {
-                        pBack(data);
-                        console.log("77777777777", data);
-                    }
-                }
-            });
-        }
-        getRoomRentSquareType(pBack, park_id) {
-            console.log("init-AllareaType", pBack, park_id);
-            let thetoken = sessionStorage.getItem("token");
-            $.ajax({
-                url: this.state.rooturl + '/api/getRoomRentSquareType',
-                data: {
-                    "park_id": 1,
-                    "token": thetoken,
-                },
-                type: "get",
-                success: function (data) {
-                    if (data.status == 113) {
-                    }
-                    else {
-                        pBack(data);
-                    }
-                }
-            });
-        }
-        findRoomRentByparkid(pBack, park_id, square) {
-            console.log("findRoomRentByparkid", pBack, park_id, square);
-            let thetoken = sessionStorage.getItem("token");
-            $.ajax({
-                url: this.state.rooturl + '/api/findRoomRent',
-                data: {
-                    "park_id": park_id,
-                    "token": thetoken,
-                    "square": square
-                },
-                type: "get",
-                success: function (data) {
-                    console.log("getfindRoomRent", data);
-                    if (data.status == 113) {
-                    }
-                    else {
-                        pBack(data);
-                        console.log("findRoomRentByparkid", data);
-                    }
-                }
-            });
-        }
-        findRoomRentByroomid(pBack, id) {
-            console.log("findRoomRentByroomid-jxxxxxxxxxxxx", id);
-            let thetoken = sessionStorage.getItem("token");
-            $.ajax({
-                url: this.state.rooturl + '/api/getRoomRentInfo',
-                data: {
-                    "id": id,
-                    "token": thetoken,
-                },
-                type: "get",
-                success: function (data) {
-                    if (data.status == 113) {
-                    }
-                    else {
-                        pBack(data);
-                        console.log("findRoomRentByroomid", data);
-                    }
-                }
-            });
-        }
-        getTakingPhotosType(pBack, park_id) {
-            console.log("getTakingPhotosType", pBack, park_id);
-            var data = {
-                "return_code": "100",
-                "response": [
-                    {
-                        "id": "1009",
-                        "name": "阻挡主要出入口",
-                    },
-                    {
-                        "id": "1009",
-                        "name": "非停车位侧停车",
-                    }
-                ],
-                "err_msg": ""
-            };
-            pBack(data);
-        }
-        getTakingPhotos(pBack, park_id, name) {
-            let data = {
-                "return_code": "100",
-                "response": [
-                    {
-                        "id": "1009",
-                        "type": "非停车位侧停车",
-                        "car_license": "桂C123456",
-                        "time": "2020-02-28 14:38:15",
-                        "position": "A座厦门旁",
-                        "longitude": "10.55",
-                        "latitude": "66.666",
-                        "photo": "./park_m/image/i.png"
-                    }, {
-                        "id": "1009",
-                        "type": "非停车位侧停车",
-                        "car_license": "桂C120000",
-                        "time": "2020-02-28 14:38:15",
-                        "position": "A座厦门旁",
-                        "longitude": "10.55",
-                        "latitude": "66.666",
-                        "photo": "./park_m/image/i.png"
-                    }
-                ],
-                "err_msg": ""
-            };
-            pBack(data);
-        }
-        getTakingPhotoInfo(pBack, id) {
-            console.log("随手拍list", id);
-            let data = {
-                "return_code": "100",
-                "response": {
-                    "id": "1009",
-                    "type_name": "非停车位侧停车",
-                    "car_license": "桂A5000",
-                    "time": "2020-02-28 14:38:15",
-                    "position": "A座厦门旁",
-                    "longitude": "10.55",
-                    "latitude": "66.666",
-                    "descript": "横跨在斑马线上",
-                    "photo": "./park_m/image/i.png",
-                },
-                "err_msg": ""
-            };
-            pBack(data);
-        }
-        postTakingPhotoInfo(pBack, data) {
-            let theData = {
-                "park_id": sessionStorage.getItem("park_id"),
-                "type_id": data.type_id,
-                "car_license": data.car_license,
-                "time": data.time,
-                "position": data.position,
-                "longitude": data.longitude,
-                "latitude": data.latitude,
-                "descript": data.descript,
-                "photo": data.files[0].url,
-            };
-            console.log("postTakingPhotoInfo", theData);
-            pBack("随手拍提交完成");
-        }
-        postAdvertisementPoint(pBack, data) {
-            let datas = {
-                'park_id': sessionStorage.getItem("park_id"),
-                'staff_id': data.staff_id,
-                "staff_name": data.applicant,
-                "phone": data.phone,
-                "company_id": data.company_id,
-                "company": data.company,
-                "content": data.content,
-                "positions": data.applyList
-            };
-            let thedata = JSON.stringify(datas);
-            $.ajax({
-                url: this.state.rooturl + '/api/postAdvertisementPoint',
-                data: thedata,
-                type: "post",
-                dataType: "json",
-                success: function (data) {
-                    console.log("getRoomRentSquareType", data);
-                    if (data.status == 113) {
-                    }
-                    else {
-                    }
-                    if (data.return_code == 100) {
-                        pBack("摆点申请提交完成");
-                    }
-                }
-            });
-        }
-        getRoomBook(pBack, park_id, name) {
-            console.log("getRoomBook", pBack, park_id, name);
-            let theurl;
-            if (name && name !== "搜索") {
-                theurl = this.state.rooturl + '/api/getRoomBook/' + park_id + '/' + name;
-            }
-            else {
-                theurl = this.state.rooturl + '/api/getRoomBook/' + park_id;
-            }
-            $.ajax({
-                url: theurl,
-                type: "get",
-                success: function (data) {
-                    if (data.status == 113) {
-                    }
-                    else {
-                        let dataJ = JSON.parse(data);
-                        pBack(dataJ);
-                    }
-                }
-            });
-        }
-        getRoomBookInfo(pBack, id) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getRoomBookInfo' + "/" + id,
-                type: "get",
-                success: function (data) {
-                    console.log("getRoomBookInfoajax", data);
-                    if (data.status == 113) {
-                    }
-                    else {
-                        let dataJ = JSON.parse(data);
-                        pBack(dataJ);
-                    }
-                }
-            });
-        }
-        bookingRoom(pBack, data) {
-            let datas = {
-                'park_id': sessionStorage.getItem("park_id"),
-                'staff_id': data.staff_id,
-                "staff_name": data.applicant,
-                "phone": data.phone,
-                "company_id": data.company_id,
-                "company": data.company,
-                "room": data.room_name,
-                "building_id": data.building_id,
-                "floor_id": data.floor_id,
-                "room_id": data.room_id,
-                "start_date": data.start_date,
-                "end_date": data.end_date,
-                "theme": data.theme,
-                "content": data.content,
-            };
-            let thedata = JSON.stringify(datas);
-            $.ajax({
-                url: this.state.rooturl + '/api/BookingRoom',
-                data: thedata,
-                type: "post",
-                dataType: "json",
-                success: function (data) {
-                    console.log("BookingRoom", data);
-                    if (data.status == 113) {
-                    }
-                    else {
-                    }
-                    if (data.return_code == 100) {
-                        pBack("场地预定申请完成");
-                    }
-                }
-            });
-        }
-        getRepairType(pBack) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getRepairType',
-                type: "get",
-                success: function (data) {
-                    console.log("getRepairType", data);
-                    let dataJ = JSON.parse(data);
-                    console.log("getRepairType", dataJ);
-                    if (dataJ.return_code == 100) {
-                        pBack(dataJ);
-                    }
-                }
-            });
-        }
-        saveRepairInfo(pBack, data) {
-            let datas = {
-                'park_id': sessionStorage.getItem("park_id"),
-                "type_id": data.type_id,
-                "position": "E座b区三楼",
-                "longitude": "10.55",
-                "latitude": "66.666",
-                "building_id": "a座",
-                "floor_id": "1F",
-                "room_id": "202",
-                "room": "201-2",
-                "company_id": data.company_id,
-                "company": data.company,
-                'staff_id': data.staff_id,
-                "staff_name": data.contact,
-                "phone": data.phone,
-                "descript": data.descript,
-                "img_url": data.files[0].url
-            };
-            console.log("saveRepairInfo", datas);
-            let thedata = JSON.stringify(datas);
-            $.ajax({
-                url: this.state.rooturl + '/api/saveRepairInfo',
-                data: thedata,
-                type: "post",
-                dataType: "json",
-                success: function (data) {
-                    console.log("saveRepairInfo", data);
-                    if (data.status == 113) {
-                    }
-                    else {
-                    }
-                    if (data.err_msg == "请求成功") {
-                        pBack("场地预定申请完成");
-                    }
-                }
-            });
-        }
-        getParkingList(pBack, park_id) {
-            let data = {
-                "return_code": "100",
-                "response": [
-                    {
-                        "id": "100001",
-                        "name": "a座地下停车场",
-                        "longitude": "10.55",
-                        "latitude": "66.666",
-                    },
-                    {
-                        "id": "100002",
-                        "name": "b座地下停车场",
-                        "longitude": "10.55",
-                        "latitude": "66.666",
-                    }
-                ],
-                "err_msg": ""
-            };
-            pBack(data);
-        }
-        getCarType(pBack, park_id) {
-            console.log("显示车辆类型列表");
-            let data = {
-                "return_code": "100",
-                "response": [
-                    {
-                        "id": "1009",
-                        "name": "中小型车",
-                    },
-                    {
-                        "id": "1009",
-                        "name": "大型车",
-                    }
-                ],
-                "err_msg": ""
-            };
-            pBack(data);
-        }
-        saveParkingApply(pBack, data) {
-            let thedata = {
-                'park_id': sessionStorage.getItem("park_id"),
-                "car_license_color": data.car_license_color,
-                "car_license": data.car_license,
-                "applicant": data.applicant,
-                "phone": data.phone,
-                "company": data.company,
-                "company_address": data.company_address,
-                "car_owner": data.car_owner,
-                "car_brand": data.car_brand,
-                "car_model": data.car_model,
-                "car_color": data.car_color,
-                "car_type": data.car_type,
-            };
-            console.log("24提交车位申请信息", thedata);
-        }
-        saveParkingAppointment(pBack, data) {
-            let thedata = {
-                'park_id': sessionStorage.getItem("park_id"),
-                "car_license_color": data.car_license_color,
-                "car_license": data.car_license,
-                "applicant": data.applicant,
-                "phone": data.phone,
-                "company": data.company,
-                "company_address": data.company_address,
-                "car_owner": data.car_owner,
-                "car_brand": data.car_brand,
-                "car_model": data.car_model,
-                "car_color": data.car_color,
-                "car_type": data.car_type,
-                "underground_parking_id": data.underground_parking_id,
-                "underground_parking_name": data.underground_parking_name,
-            };
-            console.log("25提交地库申请信息", thedata);
-        }
-        changeParkingCarInfo(pBack, data) {
-            let thedata = {
-                'park_id': sessionStorage.getItem("park_id"),
-                "car_license_color": data.car_license_color,
-                "car_license": data.car_license,
-                "applicant": data.applicant,
-                "phone": data.phone,
-                "company": data.company,
-                "company_address": data.company_address,
-                "car_owner": data.car_owner,
-                "car_brand": data.car_brand,
-                "car_model": data.car_model,
-                "car_color": data.car_color,
-                "car_type": data.car_type,
-                "orgin_car_license_color": data.orgin_car_license_color,
-                "orgin_car_license": data.orgin_car_license,
-                "orgin_car_owner": data.orgin_car_owner,
-                "orgin_phone": data.orgin_phone,
-            };
-            console.log("26 提交车位变更", thedata);
-            pBack("提交车位变更,成功！");
-        }
-        saveVisitorParkingAppointment(pBack, data) {
-            let thedata = {
-                'park_id': sessionStorage.getItem("park_id"),
-                "car_license_color": data.car_license_color,
-                "car_license": data.car_license,
-                "applicant": data.applicant,
-                "phone": data.phone,
-                "company": data.company,
-                "underground_parking_id": data.underground_parking_id,
-                "underground_parking_name": data.underground_parking_name,
-                "start_time": data.start_time,
-                "end_time": data.end_time,
-            };
-            console.log("27 提交来访车辆预约", thedata);
-            pBack("提交来访车辆预约,成功！");
-        }
-        getMicroCircleType(pBack) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getMicroCircleType',
-                data: {
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getMicroCircleList(pBack, obj) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getMicroCircleList',
-                data: {
-                    park_id: obj.park_id,
-                    type_id: obj.type_id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getMicroCircleInfo(pBack, id) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getMicroCircleInfo',
-                data: {
-                    id: id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        saveMyMicroCircle(pBack, obj) {
-            $.ajax({
-                url: this.state.rooturl + '/api/saveMyMicroCircle',
-                data: JSON.stringify({
-                    park_id: obj.park_id,
-                    user_id: obj.user_id,
-                    type_id: obj.type_id,
-                    name: obj.name,
-                    content: obj.content,
-                    token: sessionStorage.getItem("token")
-                }),
-                type: "post",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getHeadlines(pBack, park_id) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getHeadlines',
-                data: {
-                    park_id: park_id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getPreferentialPolicyType(pBack, park_id) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getPreferentialPolicyType',
-                data: {
-                    park_id: park_id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getPreferentialPolicies(pBack, obj) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getPreferentialPolicies',
-                data: {
-                    park_id: obj.park_id,
-                    type_id: obj.type_id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getParkInformationType(pBack, park_id) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getParkInformationType',
-                data: {
-                    park_id: park_id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getParkInformationList(pBack, obj) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getParkInformationList',
-                data: {
-                    park_id: obj.park_id,
-                    type_id: obj.type_id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getInformation(pBack, id) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getInformation',
-                data: {
-                    id: id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getActivityType(pBack, park_id) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getActivityType',
-                data: {
-                    park_id: park_id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getActivities(pBack, obj) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getActivities',
-                data: {
-                    park_id: obj.park_id,
-                    type_id: obj.type_id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getActivitiyInfo(pBack, id) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getActivitiyInfo',
-                data: {
-                    id: id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        postActivitySign(pBack, obj) {
-            $.ajax({
-                url: this.state.rooturl + '/api/postActivitySign',
-                data: {
-                    user_id: obj.user_id,
-                    activity_id: obj.activity_id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "post",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getThirdServiceType(pBack, park_id) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getThirdServiceType',
-                data: {
-                    park_id: park_id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getThirdServices(pBack, obj) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getThirdServices',
-                data: {
-                    park_id: obj.park_id,
-                    type_id: obj.type_id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        modifyUserName(pBack, username) {
-            $.ajax({
-                url: this.state.rooturl + '/api/modifyUserName',
-                data: {
-                    id: 3,
-                    username: username,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getRoleType(pBack) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getRoleType',
-                data: {
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        userAuthentication(pBack, obj) {
-            console.log("用户身份认证提交 ", obj);
-            $.ajax({
-                url: this.state.rooturl + '/api/userAuthentication',
-                data: obj,
-                type: "post",
-                success: function (data) {
-                    console.log(data.err_msg);
-                    if (data.err_msg == "提交成功") {
-                        pBack(data.err_msg);
-                    }
-                }
-            });
-        }
-        getCompanyInfoByUser(pBack, id) {
-            $.ajax({
-                url: this.state.rooturl3 + '/api/getCompanyInfoByUser?user_id=' + id,
-                type: "get",
-                success: function (data) {
-                    console.log(data);
-                    pBack(data);
-                }
-            });
-        }
-        getMyAuthorityWorkType(pBack, id) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getMyAuthorityWorkType',
-                data: {
-                    id: id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getMyAuthorityStateType(pBack, id) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getMyAuthorityStateType',
-                data: {
-                    id: id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getMyWork(pBack, obj) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getMyWork',
-                data: {
-                    id: obj.id,
-                    work_type: obj.work_type,
-                    state_type: obj.state_type,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getBookingRoomInfo(pBack, id) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getBookingRoomInfo',
-                data: {
-                    id: id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        changeBookingRoomInfo(pBack, obj) {
-            $.ajax({
-                url: this.state.rooturl + '/api/changeBookingRoomInfo',
-                data: {
-                    uid: obj.uid,
-                    id: obj.id,
-                    state: obj.state,
-                    reply: obj.reply,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getRoleAuthenticationInfo(pBack, id) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getRoleAuthenticationInfo',
-                data: {
-                    id: id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        changeRoleAuthenticationInfo(pBack, obj) {
-            $.ajax({
-                url: this.state.rooturl + '/api/changeRoleAuthenticationInfo',
-                data: {
-                    uid: obj.uid,
-                    id: obj.id,
-                    state: obj.state,
-                    reply: obj.reply,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getAdvertisementPointInfo(pBack, id) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getAdvertisementPointInfo',
-                data: {
-                    id: id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        changeAdvertisementPointInfo(pBack, obj) {
-            $.ajax({
-                url: this.state.rooturl + '/api/changeAdvertisementPointInfo',
-                data: {
-                    uid: obj.uid,
-                    id: obj.id,
-                    state: obj.state,
-                    reply: obj.reply,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getRepairInfo(pBack, id) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getRepairInfo',
-                data: {
-                    id: id,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        changeRepairInfo(pBack, obj) {
-            $.ajax({
-                url: this.state.rooturl + '/api/changeRepairInfo',
-                data: {
-                    uid: obj.uid,
-                    id: obj.id,
-                    state: obj.state,
-                    reply: obj.reply,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getMyMsgType(pBack) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getMyMsgType',
-                data: {
-                    park_id: 1001,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getMyMsgInfo(pBack, typeId) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getMyMsgInfo',
-                data: {
-                    id: 1,
-                    type_id: typeId,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getMyStatistic(pBack) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getMyStatistic',
-                data: {
-                    id: 1001,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getParkBuildingInfo(pBack) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getParkBuildingInfo',
-                data: {
-                    id: 1001,
-                    park_id: 1001,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getRoomInfo(pBack, roomId) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getRoomInfo',
-                data: {
-                    id: 1001,
-                    park_id: 1001,
-                    room_id: roomId,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        saveRoomBaseInfo(pBack, obj) {
-            $.ajax({
-                url: this.state.rooturl + '/api/saveRoomBaseInfo?token=' + sessionStorage.getItem("token"),
-                data: JSON.stringify({
-                    id: 1001,
-                    room_id: sessionStorage.getItem("roomId"),
-                    squre: obj.squre,
-                    price: obj.price,
-                    contact: obj.contact,
-                    phone: obj.phone,
-                    inspectionTime: obj.inspectionTime,
-                    require: obj.require,
-                    lift: obj.lift,
-                    square: obj.square,
-                    pic: obj.pic,
-                    video: obj.video
-                }),
-                type: "post",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        saveRoomRentInfo(pBack, obj) {
-            $.ajax({
-                url: this.state.rooturl + '/api/saveRoomRentInfo?token=' + sessionStorage.getItem("token"),
-                data: JSON.stringify({
-                    id: 1001,
-                    room_id: sessionStorage.getItem("roomId"),
-                    state: obj.state,
-                    company_id: obj.companyId,
-                    company_name: obj.companyName,
-                    user: obj.user,
-                    phone: obj.phone,
-                    rent_date: obj.rentDate,
-                    rent_end_date: obj.rentEndDate,
-                    default_room: obj.defaultRoom
-                }),
-                type: "post",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        saveRoomPartBaseInfo(pBack, obj) {
-            $.ajax({
-                url: this.state.rooturl + '/api/saveRoomPartBaseInfo?token=' + sessionStorage.getItem("token"),
-                data: JSON.stringify({
-                    id: 1,
-                    park_id: 1,
-                    room_id: sessionStorage.getItem("roomId"),
-                    part: [{
-                            id: obj[0].id,
-                            name: obj[0].name,
-                            position: obj[0].position,
-                            headimageurl: obj[0].headimageurl,
-                            panoramaurl: obj[0].panoramaurl
-                        },
-                        {
-                            id: obj[1].id,
-                            name: obj[1].name,
-                            position: obj[1].position,
-                            headimageurl: obj[1].headimageurl,
-                            panoramaurl: obj[1].panoramaurl
-                        }
-                    ]
-                }),
-                type: "post",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        postParkPhone(pBack, phone) {
-            $.ajax({
-                url: this.state.rooturl + '/api/postParkPhone',
-                data: {
-                    id: 1001,
-                    park_id: 1001,
-                    phone: phone,
-                    token: sessionStorage.getItem("token")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        saveCompanyInfo(pBack, obj) {
-            console.log("tjjjj", obj);
-            $.ajax({
-                url: this.state.rooturl + '/api/saveCompanyInfo?token=' + sessionStorage.getItem("token"),
-                dataType: "json",
-                data: JSON.stringify(obj),
-                type: "post",
-                success: function (data) {
-                    console.log(data);
-                    pBack(data);
-                }
-            });
-        }
-        getUserInfo(pBack) {
-            $.ajax({
-                url: this.state.userInfoUrl,
-                dataType: "json",
-                data: "",
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-    }
-    exports.default = DataService;
 });

@@ -189,7 +189,7 @@ class Index extends React.Component {
     this.dataService.getParks(this.setParks);
 
     let _this = this
-    //if (!sessionStorage.getItem("city")) {
+    if (!sessionStorage.getItem("city")) {
       var geolocation = new BMap.Geolocation();
       geolocation.getCurrentPosition(function (r) {
         if (this.getStatus() == BMAP_STATUS_SUCCESS) {
@@ -209,7 +209,7 @@ class Index extends React.Component {
           }
         }
       });
-    //}
+    }
 
     curtainHide();
 
