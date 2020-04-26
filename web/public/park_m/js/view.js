@@ -674,26 +674,27 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 }
             });
         }
-        login() {
+        login(username, password, pBack) {
             $.ajax({
                 url: this.state.rooturl + '/api/login',
                 data: {
-                    "username": "admin",
-                    "password": "admin"
+                    "username": username,
+                    "password": password,
                 },
                 type: "post",
                 success: function (data) {
+                    console.log(data);
                     localStorage.setItem("token", data.token);
+                    console.log(data.roles[0].role_name);
+                    sessionStorage.setItem("userInfo", data.roles[0].role_name);
+                    sessionStorage.setItem("userName", data.name);
+                    sessionStorage.setItem("phone", data.name);
+                    sessionStorage.setItem("userid", data.id);
+                    pBack(data);
                 }
             });
             let park_id = "1";
             localStorage.setItem("park_id", park_id);
-            let userName = "王铁柱";
-            localStorage.setItem("userName", userName);
-            let phone = "15296811111";
-            localStorage.setItem("phone", phone);
-            let userid = "1";
-            localStorage.setItem("userid", userid);
             let enterprises = [
                 {
                     "id": "1009",
@@ -5682,17 +5683,27 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                     { name: "招商管理", imgUrl: "./park_m/image/attractInvestment.png", url: "/attractInvestment" }
                 ],
                 isSpread: false,
-                userInfo: {
-                    name: "", avatar: "", roles: { role_name: "" }
-                },
-                pathname: ""
+                userInfo: "",
+                pathname: "",
+                userName: "",
             };
             this.dataService = new dataService_11.default();
         }
         componentDidMount() {
-            this.dataService.getUserInfo(this.callBackGetUserInfo);
             this.dataService.getRoleType(this.callBackGetRoleType.bind(this));
-            this.setState({ pathname: this.props.history.location.pathname });
+            let userInfo = sessionStorage.getItem("userInfo");
+            let userName = sessionStorage.getItem("userName");
+            console.log("userInfo222", userInfo);
+            if (!sessionStorage.getItem("userInfo")) {
+                sessionStorage.setItem("userInfo", "园区成员");
+                sessionStorage.setItem("userName", "用户名称");
+            }
+            this.setState({
+                userInfo: userInfo,
+                pathname: this.props.history.location.pathname,
+                userName: userName
+            });
+            console.log("userInfo", this.state);
         }
         callBackGetRoleType(data) {
             console.log(data);
@@ -5705,18 +5716,33 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
         spread() {
             this.setState({ isSpread: !this.state.isSpread });
         }
+        switchMember() {
+            switch (this.state.userInfo) {
+                case "园区成员":
+                    this.setState({ userInfo: "企业管理员" });
+                    sessionStorage.setItem("userInfo", "企业管理员");
+                    break;
+                case "企业管理员":
+                    this.setState({ userInfo: "园区管理员" });
+                    sessionStorage.setItem("userInfo", "园区管理员");
+                    break;
+                default:
+                    this.setState({ userInfo: "园区成员" });
+                    sessionStorage.setItem("userInfo", "园区成员");
+            }
+        }
         render() {
             return (React.createElement("div", { className: "personal-center" },
                 React.createElement("div", { className: "personal-center-top" },
                     React.createElement("div", { className: "personal-center-info" },
                         React.createElement("div", { className: "personal-center-tx" },
-                            React.createElement("img", { src: this.state.userInfo.avatar, className: "personal-center-tx-img" })),
+                            React.createElement("img", { src: "./park_m/image/tx.jpg", className: "personal-center-tx-img" })),
                         React.createElement("div", { style: { float: "left", color: "#FFFFFF", fontSize: "42px", margin: "10px 0 0 36px" } },
-                            React.createElement("div", null, this.state.userInfo.name),
+                            React.createElement("div", null, this.state.userName),
                             React.createElement("div", { style: {
                                     color: "#83d5ff", fontSize: "27px", backgroundColor: "#2e9cf3", width: "160px",
                                     height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
-                                } }, this.state.userInfo.roles.role_name)),
+                                }, onClick: this.switchMember.bind(this) }, this.state.userInfo)),
                         React.createElement(react_router_dom_4.Link, { to: "/modificationAuthentication" },
                             React.createElement("div", { className: "personal-center-right" },
                                 React.createElement("img", { src: "./park_m/image/w-right.png" }))))),
@@ -5745,7 +5771,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5BA2\u670D\u7535\u8BDD"),
                             React.createElement("span", null, "0773-123456")),
                         React.createElement("div", { className: "personal-center-my" },
-                            React.createElement(react_router_dom_4.Link, { to: this.state.userInfo.roles.role_name === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
+                            React.createElement(react_router_dom_4.Link, { to: sessionStorage.getItem("userInfo") === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
                                 React.createElement("div", { className: "personal-center-my-left" },
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "5"),
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u5DE5\u5355"))),
@@ -5755,7 +5781,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "6"),
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u6D88\u606F")))))
                     : null,
-                this.state.userInfo.roles.role_name === "企业管理员" && this.state.pathname !== "/personalCenter" ?
+                sessionStorage.getItem("userInfo") === "企业管理员" && this.state.pathname !== "/personalCenter" ?
                     React.createElement("div", { className: "personal-center-enterprise" },
                         React.createElement(react_router_dom_4.Link, { to: "/enterpriseInformation" },
                             React.createElement("div", { className: "personal-center-enterprise-child" },
@@ -5769,7 +5795,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                                 React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"),
                                 React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
                                     React.createElement("img", { src: "./park_m/image/right.png" }))))) : null,
-                this.state.userInfo.roles.role_name === "园区管理员" && this.state.pathname !== "/personalCenter" ?
+                sessionStorage.getItem("userInfo") === "园区管理员" && this.state.pathname !== "/personalCenter" ?
                     React.createElement("div", { className: "personal-center-park" },
                         React.createElement("div", { className: "personal-center-enterprise-child", onClick: this.spread.bind(this) },
                             React.createElement("img", { src: "./park_m/image/park.png", width: "60px", height: "60px", style: { marginBottom: "10px" } }),
@@ -7657,28 +7683,34 @@ define("modificationAuthentication", ["require", "exports", "react", "react-rout
         constructor() {
             super(...arguments);
             this.state = {
-                inputValue: "用户昵称XXX"
+                userName: "用户昵称XXX"
             };
             this.dataService = new dataService_18.default();
         }
+        componentDidMount() {
+            let userName = sessionStorage.getItem("userName");
+            this.setState({
+                userName: userName
+            });
+        }
         modifyUserName() {
-            this.dataService.modifyUserName(this.callBackModifyUserName.bind(this), this.state.inputValue);
+            this.dataService.modifyUserName(this.callBackModifyUserName.bind(this), this.state.userName);
         }
         callBackModifyUserName(data) {
             alert(data.err_msg);
         }
         focus() {
-            if (this.state.inputValue === "用户昵称XXX") {
-                this.setState({ inputValue: "" });
+            if (this.state.userName === "用户昵称XXX") {
+                this.setState({ userName: "" });
             }
         }
         blur() {
-            if (this.state.inputValue === "") {
-                this.setState({ inputValue: "用户昵称XXX" });
+            if (this.state.userName === "") {
+                this.setState({ userName: "用户昵称XXX" });
             }
         }
         change(event) {
-            this.setState({ inputValue: event.target.value });
+            this.setState({ userName: event.target.value });
         }
         goBack() {
             this.props.history.goBack();
@@ -7692,12 +7724,12 @@ define("modificationAuthentication", ["require", "exports", "react", "react-rout
                 React.createElement("div", { className: "modification-authentication-tag", style: { marginTop: "15px" } },
                     React.createElement("div", { style: { paddingLeft: "40px", float: "left" } },
                         React.createElement("span", { style: { color: "#333333", fontSize: "42px" } }, "\u7528\u6237\u6635\u79F0"),
-                        React.createElement("input", { value: this.state.inputValue, className: "modification-authentication-input", onFocus: this.focus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) })),
+                        React.createElement("input", { value: this.state.userName, className: "modification-authentication-input", onFocus: this.focus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this) })),
                     React.createElement("div", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" }, onClick: this.modifyUserName.bind(this) }, "\u4FEE\u6539")),
                 React.createElement("div", { className: "modification-authentication-tag" },
                     React.createElement("div", { style: { paddingLeft: "40px", float: "left" } },
                         React.createElement("span", { style: { color: "#333333", fontSize: "42px" } }, "\u8EAB\u4EFD\u8BA4\u8BC1"),
-                        React.createElement("span", { style: { color: "#949494", fontSize: "42px", marginLeft: "50px" } }, "\u8BA4\u8BC1\u6210\u4E3A\u7BA1\u7406\u5458")),
+                        React.createElement("span", { style: { color: "#949494", fontSize: "42px", marginLeft: "50px" } }, "\u8BA4\u8BC1\u6210\u4E3A\u4F01\u4E1A\u7BA1\u7406\u5458")),
                     React.createElement(react_router_dom_5.Link, { to: "/identityAuthentication" },
                         React.createElement("div", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u8BA4\u8BC1")))));
         }
@@ -9304,35 +9336,62 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
                 typeIndex: 0,
                 moreName: "",
                 isMask: false,
+                isCompanyArr: false,
+                isLoginBox: true,
+            };
+            this.props = {
+                history: this.props.history
             };
             Index.g_pIns = this;
             this.setParks = this.setParks.bind(this);
+            this.isLoginData = this.isLoginData.bind(this);
+            Index.hideCompanyArr = this.hideCompanyArr.bind(this);
+            Index.hideLoginBox = this.hideLoginBox.bind(this);
         }
         componentWillMount() {
-            this.dataService.login();
             this.dataService.getParks(this.setParks);
             let _this = this;
-            if (!sessionStorage.getItem("city")) {
-                var geolocation = new BMap.Geolocation();
-                geolocation.getCurrentPosition(function (r) {
-                    if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-                        let parkArr = _this.state.parkArr;
-                        parkArr.forEach(item => {
-                            item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude));
-                        });
-                        sessionStorage.setItem("city", r.address.city);
-                        _this.setState({ city: r.address.city, parkArr: parkArr });
+            var geolocation = new BMap.Geolocation();
+            geolocation.getCurrentPosition(function (r) {
+                if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                    let parkArr = _this.state.parkArr;
+                    parkArr.forEach(item => {
+                        item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude));
+                    });
+                    sessionStorage.setItem("city", r.address.city);
+                    _this.setState({ city: r.address.city, parkArr: parkArr });
+                }
+                else {
+                    if (this.getStatus() === 6) {
+                        console.log("没有权限");
                     }
-                    else {
-                        if (this.getStatus() === 6) {
-                            console.log("没有权限");
-                        }
-                        if (this.getStatus() === 8) {
-                            console.log("连接超时");
-                        }
+                    if (this.getStatus() === 8) {
+                        console.log("连接超时");
                     }
+                }
+            });
+            curtainHide();
+        }
+        isLoginData(data) {
+            console.log("LoginData", data);
+            IsCompanys.getCompanyArr(data.enterprises);
+            if (data.enterprises.length > 1) {
+                this.setState({
+                    isCompanyArr: true,
                 });
             }
+        }
+        static hideCompanyArr() { }
+        hideCompanyArr() {
+            this.setState({
+                isCompanyArr: false,
+            });
+        }
+        static hideLoginBox() { }
+        hideLoginBox() {
+            this.setState({
+                isLoginBox: false,
+            });
         }
         foucus() {
             if (this.state.inputValue === "请输入园区名/区域名/商圈名") {
@@ -9471,6 +9530,8 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         }
         render() {
             return (React.createElement("div", { className: "index" },
+                React.createElement("div", { className: this.state.isLoginBox == true ? "show" : "hide" },
+                    React.createElement(LoginTest, null)),
                 React.createElement("div", { className: "index-input-div" },
                     React.createElement("div", { className: "index-child-right" },
                         React.createElement("span", { style: { fontWeight: "600" } }, sessionStorage.getItem("city")),
@@ -9653,6 +9714,117 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         }
     }
     Index.g_pIns = null;
+    class IsCompanys extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                companyArr: [],
+                indexOf: 100,
+            };
+            IsCompanys.getCompanyArr = this.getCompanyArr.bind(this);
+            this.setCompanyArr = this.setCompanyArr.bind(this);
+        }
+        componentDidMount() {
+            console.log(444, this.state);
+        }
+        static getCompanyArr(data) { }
+        getCompanyArr(data) {
+            this.setCompanyArr(data);
+        }
+        setCompanyArr(data) {
+            console.log(99, data);
+            this.setState({
+                companyArr: data
+            });
+            console.log(888, this.state.companyArr);
+        }
+        companyActive(data, id) {
+            console.log("active", data);
+            this.setState({
+                indexOf: data,
+            });
+            setTimeout(function () { Index.hideCompanyArr(); }, 1000);
+        }
+        render() {
+            return (React.createElement("div", { className: "isCompanyBox" },
+                React.createElement("ul", { className: "isCompanyBox_ul" }, this.state.companyArr.map((i, index) => {
+                    return (React.createElement("li", { onClick: this.companyActive.bind(this, index, i.id), className: this.state.indexOf == index ? "companyIn" : "companyUn" }, i.name));
+                }))));
+        }
+    }
+    class LoginTest extends React.Component {
+        constructor(props) {
+            super(props);
+            this.dataService = new dataService_31.default();
+            this.globalAction = new compat_11.default();
+            this.state = {
+                username: "",
+                password: "",
+            };
+        }
+        componentDidMount() {
+            console.log(444, this.state);
+        }
+        doLogin() {
+            console.log(this.state.username, this.state.password);
+            this.dataService.login(this.state.username, this.state.password, this.hideLogin);
+        }
+        adminLogin() {
+            console.log(this.state.username, this.state.password);
+            this.dataService.login("admin", "admin", this.hideLogin);
+        }
+        parkLogin() {
+            this.dataService.login("twl01", "123456", this.hideLogin);
+        }
+        companyLogin() {
+            console.log(this.state.username, this.state.password);
+            this.dataService.login("twl02", "123456", this.hideLogin);
+        }
+        ptLogin() {
+            console.log(this.state.username, this.state.password);
+            this.dataService.login("twl03", "123456", this.hideLogin);
+        }
+        hideLogin() {
+            setTimeout(function () { Index.hideLoginBox(); }, 1000);
+        }
+        usernameChange(event) {
+            this.setState({
+                username: event.target.value,
+            });
+        }
+        passwordChange(event) {
+            this.setState({
+                password: event.target.value,
+            });
+        }
+        render() {
+            return (React.createElement("div", { className: "userBox" },
+                React.createElement("ul", { className: "userBox_ul" },
+                    React.createElement("li", null,
+                        "\u7528\u6237\u540D\uFF1A",
+                        React.createElement("input", { type: "text", value: this.state.username, onChange: this.usernameChange.bind(this) })),
+                    React.createElement("li", null,
+                        "\u5BC6\u7801\uFF1A",
+                        React.createElement("input", { type: "text", value: this.state.password, onChange: this.passwordChange.bind(this) })),
+                    React.createElement("li", null,
+                        React.createElement("button", { onClick: this.doLogin.bind(this) }, "\u767B\u5F55")),
+                    React.createElement("li", null,
+                        "  // admin admin (\u8D85\u7EA7\u7BA1\u7406\u5458)",
+                        React.createElement("button", { onClick: this.adminLogin.bind(this) }, "admin\u767B\u5F55")),
+                    React.createElement("li", null,
+                        "  // twl01    123456(\u56ED\u533A\u7BA1\u7406\u5458)",
+                        React.createElement("button", { onClick: this.parkLogin.bind(this) }, "\u56ED\u533A\u7BA1\u7406\u5458"),
+                        " "),
+                    React.createElement("li", null,
+                        "  // twl02    123456(\u4F01\u4E1A\u7BA1\u7406\u5458)",
+                        React.createElement("button", { onClick: this.companyLogin.bind(this) }, "\u4F01\u4E1A\u7BA1\u7406\u5458"),
+                        " "),
+                    React.createElement("li", null,
+                        "  // twl03    123456(\u666E\u901A\u7528\u6237)",
+                        React.createElement("button", { onClick: this.ptLogin.bind(this) }, "\u666E\u901A\u7528\u6237"),
+                        " "))));
+        }
+    }
     exports.default = Index;
     ReactDOM.render(React.createElement(router_1.default, null), document.getElementById('viewContainer'));
 });
