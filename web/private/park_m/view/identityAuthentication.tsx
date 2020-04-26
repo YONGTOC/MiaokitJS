@@ -37,11 +37,11 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
 
   public componentDidMount() {
     this.dataService.getRoleType(this.setRoleTypeUL);
-    this.state.applicant = localStorage.getItem("userName");
-    this.state.phone = localStorage.getItem("phone");
+    this.state.applicant = sessionStorage.getItem("userName");
+    this.state.phone = sessionStorage.getItem("phone");
     //this.state.company = localStorage.getItem("applicant");
-    this.state.company = "永拓科技公司";
-    this.state.park_id = localStorage.getItem("park_id");
+    this.state.company = sessionStorage.getItem("enterprise");;
+    this.state.park_id = sessionStorage.getItem("park_id");
 
   }
 

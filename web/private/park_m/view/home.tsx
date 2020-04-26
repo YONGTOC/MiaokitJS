@@ -30,7 +30,7 @@ class Home extends React.Component {
 
   public componentDidMount() {
     //2  登录获取 token
-    this.dataService.login();
+    //this.dataService.login();
   }
 
 

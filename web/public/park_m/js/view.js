@@ -637,7 +637,6 @@ define("dataService", ["require", "exports"], function (require, exports) {
             };
         }
         componentDidMount() {
-            console.log(localStorage.getItem("token"));
         }
         callback(a, pBack) {
             console.log("callback1", a);
@@ -646,7 +645,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         upload(pBack, file) {
             console.log("fiffffffffffffffff", file);
             $.ajax({
-                url: this.state.rooturl + '/api/upload?token=' + localStorage.getItem("token"),
+                url: this.state.rooturl + '/api/upload?token=' + sessionStorage.getItem("token"),
                 data: file,
                 cache: false,
                 dataType: "json",
@@ -695,19 +694,6 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     pBack(data);
                 }
             });
-            let park_id = "1";
-            localStorage.setItem("park_id", park_id);
-            let enterprises = [
-                {
-                    "id": "1009",
-                    "name": "力拓科技",
-                },
-                {
-                    "id": "1003",
-                    "name": "永拓拓科技",
-                }
-            ];
-            localStorage.setItem("enterprises", JSON.stringify(enterprises));
         }
         refreshToken(ytoken) {
             $.ajax({
@@ -722,7 +708,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             });
         }
         getParks(pBack) {
-            let thetoken = localStorage.getItem("token");
+            let thetoken = sessionStorage.getItem("token");
             $.ajax({
                 url: this.state.rooturl + '/api/getParks',
                 type: "get",
@@ -738,7 +724,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             });
         }
         getParkInfo(pBack, park_id) {
-            let thetoken = localStorage.getItem("token");
+            let thetoken = sessionStorage.getItem("token");
             var data = {
                 "return_code": "100",
                 "response": [
@@ -775,7 +761,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             pBack(data);
         }
         getCompanyType(pBack, park_id) {
-            let thetoken = localStorage.getItem("token");
+            let thetoken = sessionStorage.getItem("token");
             $.ajax({
                 url: this.state.rooturl + '/api/getCompanyType',
                 data: {
@@ -790,7 +776,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             });
         }
         findCompany(pBack, park_id, company_type_id, companyName) {
-            let thetoken = localStorage.getItem("token");
+            let thetoken = sessionStorage.getItem("token");
             $.ajax({
                 url: this.state.rooturl + '/api/findCompany',
                 data: {
@@ -812,7 +798,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             });
         }
         getCompanyInfo(pBack, id) {
-            let thetoken = localStorage.getItem("token");
+            let thetoken = sessionStorage.getItem("token");
             $.ajax({
                 url: this.state.rooturl + '/api/getCompanyInfo',
                 data: {
@@ -832,7 +818,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         getRoomRentSquareType(pBack, park_id) {
             console.log("init-AllareaType", pBack, park_id);
-            let thetoken = localStorage.getItem("token");
+            let thetoken = sessionStorage.getItem("token");
             $.ajax({
                 url: this.state.rooturl + '/api/getRoomRentSquareType',
                 data: {
@@ -851,7 +837,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         findRoomRentByparkid(pBack, park_id, square) {
             console.log("findRoomRentByparkid", pBack, park_id, square);
-            let thetoken = localStorage.getItem("token");
+            let thetoken = sessionStorage.getItem("token");
             $.ajax({
                 url: this.state.rooturl + '/api/findRoomRent',
                 data: {
@@ -873,7 +859,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         findRoomRentByroomid(pBack, id) {
             console.log("findRoomRentByroomid-jxxxxxxxxxxxx", id);
-            let thetoken = localStorage.getItem("token");
+            let thetoken = sessionStorage.getItem("token");
             $.ajax({
                 url: this.state.rooturl + '/api/getRoomRentInfo',
                 data: {
@@ -958,7 +944,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         postTakingPhotoInfo(pBack, data) {
             let theData = {
-                "park_id": localStorage.getItem("park_id"),
+                "park_id": sessionStorage.getItem("park_id"),
                 "type_id": data.type_id,
                 "car_license": data.car_license,
                 "time": data.time,
@@ -973,7 +959,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         postAdvertisementPoint(pBack, data) {
             let datas = {
-                'park_id': localStorage.getItem("park_id"),
+                'park_id': sessionStorage.getItem("park_id"),
                 'staff_id': data.staff_id,
                 "staff_name": data.applicant,
                 "phone": data.phone,
@@ -1039,7 +1025,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         bookingRoom(pBack, data) {
             let datas = {
-                'park_id': localStorage.getItem("park_id"),
+                'park_id': sessionStorage.getItem("park_id"),
                 'staff_id': data.staff_id,
                 "staff_name": data.applicant,
                 "phone": data.phone,
@@ -1088,7 +1074,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         saveRepairInfo(pBack, data) {
             let datas = {
-                'park_id': localStorage.getItem("park_id"),
+                'park_id': sessionStorage.getItem("park_id"),
                 "type_id": data.type_id,
                 "position": "E座b区三楼",
                 "longitude": "10.55",
@@ -1165,7 +1151,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         saveParkingApply(pBack, data) {
             let thedata = {
-                'park_id': localStorage.getItem("park_id"),
+                'park_id': sessionStorage.getItem("park_id"),
                 "car_license_color": data.car_license_color,
                 "car_license": data.car_license,
                 "applicant": data.applicant,
@@ -1182,7 +1168,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         saveParkingAppointment(pBack, data) {
             let thedata = {
-                'park_id': localStorage.getItem("park_id"),
+                'park_id': sessionStorage.getItem("park_id"),
                 "car_license_color": data.car_license_color,
                 "car_license": data.car_license,
                 "applicant": data.applicant,
@@ -1201,7 +1187,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         changeParkingCarInfo(pBack, data) {
             let thedata = {
-                'park_id': localStorage.getItem("park_id"),
+                'park_id': sessionStorage.getItem("park_id"),
                 "car_license_color": data.car_license_color,
                 "car_license": data.car_license,
                 "applicant": data.applicant,
@@ -1223,7 +1209,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         saveVisitorParkingAppointment(pBack, data) {
             let thedata = {
-                'park_id': localStorage.getItem("park_id"),
+                'park_id': sessionStorage.getItem("park_id"),
                 "car_license_color": data.car_license_color,
                 "car_license": data.car_license,
                 "applicant": data.applicant,
@@ -1241,7 +1227,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             $.ajax({
                 url: this.state.rooturl + '/api/getMicroCircleType',
                 data: {
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1255,7 +1241,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 data: {
                     park_id: obj.park_id,
                     type_id: obj.type_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1268,7 +1254,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getMicroCircleInfo',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1285,7 +1271,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     type_id: obj.type_id,
                     name: obj.name,
                     content: obj.content,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 }),
                 type: "post",
                 success: function (data) {
@@ -1298,7 +1284,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getHeadlines',
                 data: {
                     park_id: park_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1311,7 +1297,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getPreferentialPolicyType',
                 data: {
                     park_id: park_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1325,7 +1311,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 data: {
                     park_id: obj.park_id,
                     type_id: obj.type_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1338,7 +1324,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getParkInformationType',
                 data: {
                     park_id: park_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1352,7 +1338,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 data: {
                     park_id: obj.park_id,
                     type_id: obj.type_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1365,7 +1351,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getInformation',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1378,7 +1364,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getActivityType',
                 data: {
                     park_id: park_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1392,7 +1378,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 data: {
                     park_id: obj.park_id,
                     type_id: obj.type_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1405,7 +1391,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getActivitiyInfo',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1419,7 +1405,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 data: {
                     user_id: obj.user_id,
                     activity_id: obj.activity_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "post",
                 success: function (data) {
@@ -1432,7 +1418,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getThirdServiceType',
                 data: {
                     park_id: park_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1446,7 +1432,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 data: {
                     park_id: obj.park_id,
                     type_id: obj.type_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1460,7 +1446,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 data: {
                     id: 3,
                     username: username,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1472,7 +1458,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             $.ajax({
                 url: this.state.rooturl + '/api/getRoleType',
                 data: {
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1509,7 +1495,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getMyAuthorityWorkType',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1522,7 +1508,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getMyAuthorityStateType',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1537,7 +1523,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     id: obj.id,
                     work_type: obj.work_type,
                     state_type: obj.state_type,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1550,7 +1536,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getBookingRoomInfo',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1566,7 +1552,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     id: obj.id,
                     state: obj.state,
                     reply: obj.reply,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1579,7 +1565,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getRoleAuthenticationInfo',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1595,7 +1581,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     id: obj.id,
                     state: obj.state,
                     reply: obj.reply,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1608,7 +1594,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getAdvertisementPointInfo',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1624,7 +1610,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     id: obj.id,
                     state: obj.state,
                     reply: obj.reply,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1637,7 +1623,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getRepairInfo',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1653,7 +1639,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     id: obj.id,
                     state: obj.state,
                     reply: obj.reply,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1666,7 +1652,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getMyMsgType',
                 data: {
                     park_id: 1001,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1680,7 +1666,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 data: {
                     id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
                     type_id: typeId,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1693,7 +1679,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getMyStatistic',
                 data: {
                     id: 1001,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1706,8 +1692,8 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getParkBuildingInfo',
                 data: {
                     id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
-                    park_id: localStorage.getItem("park_id"),
-                    token: localStorage.getItem("token")
+                    park_id: sessionStorage.getItem("park_id"),
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1722,7 +1708,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
                     park_id: localStorage.getItem("park_id"),
                     room_id: roomId,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1732,7 +1718,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         saveRoomBaseInfo(pBack, obj) {
             $.ajax({
-                url: this.state.rooturl + '/api/saveRoomBaseInfo?token=' + localStorage.getItem("token"),
+                url: this.state.rooturl + '/api/saveRoomBaseInfo?token=' + sessionStorage.getItem("token"),
                 data: JSON.stringify({
                     id: 1001,
                     room_id: sessionStorage.getItem("roomId"),
@@ -1755,7 +1741,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         saveRoomRentInfo(pBack, obj) {
             $.ajax({
-                url: this.state.rooturl + '/api/saveRoomRentInfo?token=' + localStorage.getItem("token"),
+                url: this.state.rooturl + '/api/saveRoomRentInfo?token=' + sessionStorage.getItem("token"),
                 data: JSON.stringify({
                     id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
                     room_id: sessionStorage.getItem("roomId"),
@@ -1776,7 +1762,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         saveRoomPartBaseInfo(pBack, obj) {
             $.ajax({
-                url: this.state.rooturl + '/api/saveRoomPartBaseInfo?token=' + localStorage.getItem("token"),
+                url: this.state.rooturl + '/api/saveRoomPartBaseInfo?token=' + sessionStorage.getItem("token"),
                 data: JSON.stringify({
                     id: 1,
                     park_id: 1,
@@ -1810,7 +1796,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     id: 1001,
                     park_id: 1001,
                     phone: phone,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1819,8 +1805,9 @@ define("dataService", ["require", "exports"], function (require, exports) {
             });
         }
         saveCompanyInfo(pBack, obj) {
+            console.log("tjjjj", obj);
             $.ajax({
-                url: this.state.rooturl + '/api/saveCompanyInfo',
+                url: this.state.rooturl + '/api/saveCompanyInfo?token=' + sessionStorage.getItem("token"),
                 dataType: "json",
                 data: JSON.stringify(obj),
                 type: "post",
@@ -3293,8 +3280,10 @@ define("enterpriseInformation", ["require", "exports", "react", "dataService", "
         }
         componentDidMount() {
             let userid = localStorage.getItem("userId");
-            this.dataService.getCompanyInfo(this.setCompanyinfo, 2);
-            this.dataService.getCompanyType(this.setCompanyType, 1001);
+            let enterpriseId = sessionStorage.getItem("enterpriseId");
+            this.dataService.getCompanyInfo(this.setCompanyinfo, enterpriseId);
+            let park_id = sessionStorage.getItem("park_id");
+            this.dataService.getCompanyType(this.setCompanyType, park_id);
         }
         setCompanyinfo(data) {
             console.log("rrrrrrrrrrrrr", data);
@@ -3312,9 +3301,15 @@ define("enterpriseInformation", ["require", "exports", "react", "dataService", "
             $.each(data.response.panorama, function (index, item) {
                 panoramaImgs.push({ "id": item.id, "name": item.name, "url": item.pic_url });
             });
-            let descriptN = data.response.descript;
-            descriptN.replace(/&#10;/, "<br />&nbsp;");
-            let descriptArr = descriptN.split("    ");
+            let descriptArr;
+            if (data.response.descript) {
+                let descriptN = data.response.descript;
+                descriptN.replace(/&#10;/, "<br />&nbsp;");
+                descriptArr = descriptN.split("    ");
+            }
+            else {
+                descriptArr = [];
+            }
             this.setState({
                 ID: data.response.id,
                 inputEnterpriseIDValue: data.response.id,
@@ -3412,14 +3407,18 @@ define("enterpriseInformation", ["require", "exports", "react", "dataService", "
                 console.log("手机号或座机号填写正确");
             }
             else {
-                console.log("手机号码不正确，固话请添加区号");
+                alert("手机号码不正确，固话请添加区号");
                 return;
             }
+            let userid = sessionStorage.getItem("userid");
+            let park_id = sessionStorage.getItem("park_id");
+            let enterpriseId = sessionStorage.getItem("enterpriseId");
+            let token = sessionStorage.getItem("token");
             console.log("bobo", this.state.elegant.length);
             let obj = {
-                "user_id": "1",
-                "park_id": "1",
-                "id": "2",
+                "user_id": userid,
+                "park_id": park_id,
+                "id": enterpriseId,
                 "name": this.state.inputEnterpriseNameValue,
                 "address": this.state.inputEnterprisePositionValue,
                 "contact": this.state.contactsValue,
@@ -3795,7 +3794,6 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
             this.setToken = this.setToken.bind(this);
         }
         componentDidMount() {
-            this.dataService.login();
         }
         setToken(data) {
             console.log("setToken", data);
@@ -4182,10 +4180,11 @@ define("identityAuthentication", ["require", "exports", "react", "dataService", 
         }
         componentDidMount() {
             this.dataService.getRoleType(this.setRoleTypeUL);
-            this.state.applicant = localStorage.getItem("userName");
-            this.state.phone = localStorage.getItem("phone");
-            this.state.company = "永拓科技公司";
-            this.state.park_id = localStorage.getItem("park_id");
+            this.state.applicant = sessionStorage.getItem("userName");
+            this.state.phone = sessionStorage.getItem("phone");
+            this.state.company = sessionStorage.getItem("enterprise");
+            ;
+            this.state.park_id = sessionStorage.getItem("park_id");
         }
         goBack() {
             this.props.history.goBack();
@@ -9378,13 +9377,20 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             });
             curtainHide();
         }
-        isLoginData(data) {
+        isLoginData() {
+            let data = sessionStorage.getItem("enterprises");
             console.log("LoginData", data);
-            IsCompanys.getCompanyArr(data.enterprises);
-            if (data.enterprises.length > 1) {
+            console.log(" LoginData", typeof data);
+            let dataObj = JSON.parse(data);
+            IsCompanys.getCompanyArr(dataObj);
+            if (dataObj.length > 1) {
                 this.setState({
                     isCompanyArr: true,
                 });
+            }
+            else {
+                sessionStorage.setItem("enterprise", dataObj[0].name);
+                sessionStorage.setItem("enterpriseId", dataObj[0].id);
             }
         }
         static hideCompanyArr() { }
@@ -9398,6 +9404,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             this.setState({
                 isLoginBox: false,
             });
+            this.isLoginData();
         }
         foucus() {
             if (this.state.inputValue === "请输入园区名/区域名/商圈名") {
@@ -9413,8 +9420,9 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             this.setState({ inputValue: event.target.value });
         }
         initPark(park_id) {
+            console.log("initPark", park_id);
+            sessionStorage.setItem("park_id", park_id);
             this.globalAction.web_call_webgl_initPark(park_id);
-            localStorage.setItem("park_id", park_id);
         }
         setParks(data) {
             this.setState({
@@ -9536,6 +9544,8 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         }
         render() {
             return (React.createElement("div", { className: "index" },
+                React.createElement("div", { className: this.state.isCompanyArr == true ? "show" : "hide" },
+                    React.createElement(IsCompanys, null)),
                 React.createElement("div", { className: this.state.isLoginBox == true ? "show" : "hide" },
                     React.createElement(LoginTest, null)),
                 React.createElement("div", { className: "index-input-div" },
@@ -9744,17 +9754,19 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             });
             console.log(888, this.state.companyArr);
         }
-        companyActive(data, id) {
-            console.log("active", data);
+        companyActive(index, id, name) {
+            console.log("active", index, id, name);
             this.setState({
-                indexOf: data,
+                indexOf: index,
             });
+            sessionStorage.setItem("enterprise", name);
+            sessionStorage.setItem("enterpriseId", id);
             setTimeout(function () { Index.hideCompanyArr(); }, 1000);
         }
         render() {
             return (React.createElement("div", { className: "isCompanyBox" },
                 React.createElement("ul", { className: "isCompanyBox_ul" }, this.state.companyArr.map((i, index) => {
-                    return (React.createElement("li", { onClick: this.companyActive.bind(this, index, i.id), className: this.state.indexOf == index ? "companyIn" : "companyUn" }, i.name));
+                    return (React.createElement("li", { onClick: this.companyActive.bind(this, index, i.id, i.name), className: this.state.indexOf == index ? "companyIn" : "companyUn" }, i.name));
                 }))));
         }
     }
@@ -9769,7 +9781,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             };
         }
         componentDidMount() {
-            console.log(444, this.state);
+            console.log(44333334, this.state);
         }
         doLogin() {
             console.log(this.state.username, this.state.password);
