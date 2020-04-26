@@ -684,12 +684,14 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 type: "post",
                 success: function (data) {
                     console.log(data);
+                    let userInfo = {
+                        userId: data.id, name: data.name, phone: data.phone, avatar: data.avatar, enterprise: data.enterprise,
+                        roles: {
+                            role_id: data.roles[0].role_id, role_name: data.roles[0].role_name
+                        }
+                    };
                     localStorage.setItem("token", data.token);
-                    console.log(data.roles[0].role_name);
-                    sessionStorage.setItem("userInfo", data.roles[0].role_name);
-                    sessionStorage.setItem("userName", data.name);
-                    sessionStorage.setItem("phone", data.name);
-                    sessionStorage.setItem("userid", data.id);
+                    sessionStorage.setItem("userInfos", JSON.stringify(userInfo));
                     pBack(data);
                 }
             });
@@ -1676,7 +1678,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             $.ajax({
                 url: this.state.rooturl + '/api/getMyMsgInfo',
                 data: {
-                    id: 1,
+                    id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
                     type_id: typeId,
                     token: localStorage.getItem("token")
                 },
@@ -1703,8 +1705,8 @@ define("dataService", ["require", "exports"], function (require, exports) {
             $.ajax({
                 url: this.state.rooturl + '/api/getParkBuildingInfo',
                 data: {
-                    id: 1001,
-                    park_id: 1001,
+                    id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+                    park_id: localStorage.getItem("park_id"),
                     token: localStorage.getItem("token")
                 },
                 type: "get",
@@ -1717,8 +1719,8 @@ define("dataService", ["require", "exports"], function (require, exports) {
             $.ajax({
                 url: this.state.rooturl + '/api/getRoomInfo',
                 data: {
-                    id: 1001,
-                    park_id: 1001,
+                    id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+                    park_id: localStorage.getItem("park_id"),
                     room_id: roomId,
                     token: localStorage.getItem("token")
                 },
@@ -1755,7 +1757,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             $.ajax({
                 url: this.state.rooturl + '/api/saveRoomRentInfo?token=' + localStorage.getItem("token"),
                 data: JSON.stringify({
-                    id: 1001,
+                    id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
                     room_id: sessionStorage.getItem("roomId"),
                     state: obj.state,
                     company_id: obj.companyId,
@@ -5683,66 +5685,55 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                     { name: "招商管理", imgUrl: "./park_m/image/attractInvestment.png", url: "/attractInvestment" }
                 ],
                 isSpread: false,
-                userInfo: "",
+                userInfo: { name: "", avatar: "", phone: "", enterprise: "", roles: { role_id: "", role_name: "" } },
                 pathname: "",
-                userName: "",
+                messagelength: 0,
+                workOrderLength: 0
             };
             this.dataService = new dataService_11.default();
         }
         componentDidMount() {
-            this.dataService.getRoleType(this.callBackGetRoleType.bind(this));
-            let userInfo = sessionStorage.getItem("userInfo");
-            let userName = sessionStorage.getItem("userName");
-            console.log("userInfo222", userInfo);
-            if (!sessionStorage.getItem("userInfo")) {
-                sessionStorage.setItem("userInfo", "园区成员");
-                sessionStorage.setItem("userName", "用户名称");
-            }
+            let obj = {
+                id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+                work_type: "",
+                state_type: "",
+            };
+            this.dataService.getMyMsgInfo(this.callBackGetMyMsgInfo.bind(this), "");
+            this.dataService.getMyWork(this.callBackGetMyWork.bind(this), obj);
             this.setState({
-                userInfo: userInfo,
+                userInfo: JSON.parse(sessionStorage.getItem("userInfos")),
                 pathname: this.props.history.location.pathname,
-                userName: userName
             });
-            console.log("userInfo", this.state);
         }
-        callBackGetRoleType(data) {
-            console.log(data);
+        callBackGetMyMsgInfo(data) {
+            this.setState({ messagelength: data.response.length });
+        }
+        callBackGetMyWork(data) {
+            this.setState({ workOrderLength: data.response ? data.response.length : 0 });
         }
         callBackGetUserInfo(data) {
             console.log("userInfoss", data);
             this.setState({ userInfo: JSON.parse(data) });
             sessionStorage.setItem("userInfo", this.state.userInfo.roles.role_name);
         }
+        callBackGetRoleType(data) {
+            console.log(data);
+        }
         spread() {
             this.setState({ isSpread: !this.state.isSpread });
-        }
-        switchMember() {
-            switch (this.state.userInfo) {
-                case "园区成员":
-                    this.setState({ userInfo: "企业管理员" });
-                    sessionStorage.setItem("userInfo", "企业管理员");
-                    break;
-                case "企业管理员":
-                    this.setState({ userInfo: "园区管理员" });
-                    sessionStorage.setItem("userInfo", "园区管理员");
-                    break;
-                default:
-                    this.setState({ userInfo: "园区成员" });
-                    sessionStorage.setItem("userInfo", "园区成员");
-            }
         }
         render() {
             return (React.createElement("div", { className: "personal-center" },
                 React.createElement("div", { className: "personal-center-top" },
                     React.createElement("div", { className: "personal-center-info" },
                         React.createElement("div", { className: "personal-center-tx" },
-                            React.createElement("img", { src: "./park_m/image/tx.jpg", className: "personal-center-tx-img" })),
+                            React.createElement("img", { src: this.state.userInfo.avatar, className: "personal-center-tx-img" })),
                         React.createElement("div", { style: { float: "left", color: "#FFFFFF", fontSize: "42px", margin: "10px 0 0 36px" } },
-                            React.createElement("div", null, this.state.userName),
+                            React.createElement("div", null, this.state.userInfo.name),
                             React.createElement("div", { style: {
                                     color: "#83d5ff", fontSize: "27px", backgroundColor: "#2e9cf3", width: "160px",
                                     height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
-                                }, onClick: this.switchMember.bind(this) }, this.state.userInfo)),
+                                } }, this.state.userInfo.roles.role_name)),
                         React.createElement(react_router_dom_4.Link, { to: "/modificationAuthentication" },
                             React.createElement("div", { className: "personal-center-right" },
                                 React.createElement("img", { src: "./park_m/image/w-right.png" }))))),
@@ -5761,27 +5752,29 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                     React.createElement("div", null,
                         React.createElement("div", { className: "personal-center-tag" },
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u624B\u673A\u53F7\u7801"),
-                            React.createElement("span", null, "15578383040"),
-                            React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u4FEE\u6539")),
+                            React.createElement("span", null, this.state.userInfo.phone),
+                            this.state.userInfo.roles.role_name !== "园区管理员" && this.state.userInfo.roles.role_name !== "企业管理员" ?
+                                React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u4FEE\u6539") : null),
                         React.createElement("div", { className: "personal-center-tag" },
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5173\u8054\u4F01\u4E1A"),
-                            React.createElement("span", null, "\u6D59\u6C5F\u6C38\u62D3\u4FE1\u606F\u79D1\u6280\u6709\u9650\u516C\u53F8"),
-                            React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u4FEE\u6539")),
+                            React.createElement("span", null, this.state.userInfo.enterprise),
+                            this.state.userInfo.roles.role_name !== "园区管理员" && this.state.userInfo.roles.role_name !== "企业管理员" ?
+                                React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u4FEE\u6539") : null),
                         React.createElement("div", { className: "personal-center-tag" },
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5BA2\u670D\u7535\u8BDD"),
                             React.createElement("span", null, "0773-123456")),
                         React.createElement("div", { className: "personal-center-my" },
-                            React.createElement(react_router_dom_4.Link, { to: sessionStorage.getItem("userInfo") === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
+                            React.createElement(react_router_dom_4.Link, { to: this.state.userInfo.roles.role_name === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
                                 React.createElement("div", { className: "personal-center-my-left" },
-                                    React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "5"),
+                                    React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, this.state.workOrderLength),
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u5DE5\u5355"))),
                             React.createElement("div", { className: "personal-center-my-middle" }),
                             React.createElement(react_router_dom_4.Link, { to: "/message" },
                                 React.createElement("div", { className: "personal-center-my-right" },
-                                    React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "6"),
+                                    React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, this.state.messagelength),
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u6D88\u606F")))))
                     : null,
-                sessionStorage.getItem("userInfo") === "企业管理员" && this.state.pathname !== "/personalCenter" ?
+                this.state.userInfo.roles.role_name === "企业管理员" && this.state.pathname !== "/personalCenter" ?
                     React.createElement("div", { className: "personal-center-enterprise" },
                         React.createElement(react_router_dom_4.Link, { to: "/enterpriseInformation" },
                             React.createElement("div", { className: "personal-center-enterprise-child" },
@@ -5795,7 +5788,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                                 React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"),
                                 React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
                                     React.createElement("img", { src: "./park_m/image/right.png" }))))) : null,
-                sessionStorage.getItem("userInfo") === "园区管理员" && this.state.pathname !== "/personalCenter" ?
+                this.state.userInfo.roles.role_name === "园区管理员" && this.state.pathname !== "/personalCenter" ?
                     React.createElement("div", { className: "personal-center-park" },
                         React.createElement("div", { className: "personal-center-enterprise-child", onClick: this.spread.bind(this) },
                             React.createElement("img", { src: "./park_m/image/park.png", width: "60px", height: "60px", style: { marginBottom: "10px" } }),
@@ -7414,7 +7407,7 @@ define("workOrder", ["require", "exports", "react", "dataService", "css!./styles
                 ],
                 tagIndex: 0,
                 workOrderArray: [
-                    { id: "", applicant: "", state_name: "", time: "" }
+                    { id: "", applicant: [{ Name: "" }], state_name: "", time: "" }
                 ]
             };
             this.dataService = new dataService_16.default();
@@ -7441,11 +7434,10 @@ define("workOrder", ["require", "exports", "react", "dataService", "css!./styles
             else {
                 this.setState({ workOrderArray: [] });
             }
-            console.log(data);
         }
         getMyWork() {
             let obj = {
-                id: 1,
+                id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
                 work_type: this.state.tagIndex,
                 state_type: 1
             };
@@ -7467,7 +7459,6 @@ define("workOrder", ["require", "exports", "react", "dataService", "css!./styles
                     "场地预定工单" : this.state.workOrderArray[index].work_type == 3 ? "摆点申请工单" : "在线保修工单",
                 stateName: this.state.workOrderArray[index].state_name
             };
-            console.log("看这里", obj);
             sessionStorage.setItem("workOrder", JSON.stringify(obj));
             this.props.history.push("/workOrderDetail");
         }
@@ -7487,7 +7478,7 @@ define("workOrder", ["require", "exports", "react", "dataService", "css!./styles
                                 React.createElement("img", { style: { float: "right", marginRight: "40px" }, src: "./park_m/image/right.png" })),
                             React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" } },
                                 "\u7533\u8BF7\u4EBA\uFF1A",
-                                item.applicant),
+                                item.applicant[0].Name),
                             React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "10px 0 0 40px", overflow: "hidden" } },
                                 React.createElement("div", { style: { float: "left" } },
                                     "\u7533\u8BF7\u65F6\u95F4\uFF1A",
@@ -7580,12 +7571,24 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
             this.setState({ tagArray: tagArray, datas: data.response });
         }
         callBackGetAdvertisementPointInfo(data) {
-            this.setState({ datas: data.response });
-            console.log("333", data);
+            console.log("摆点", data);
+            let tagArray = this.state.tagArray;
+            tagArray[2][0].content = data.response.applicant;
+            tagArray[2][1].content = data.response.phone;
+            tagArray[2][2].content = data.response.company;
+            tagArray[2][3].content = data.response.content;
+            tagArray[2][4].content = data.response.positions.name;
+            tagArray[2][5].content = data.response.positions.start_date;
+            tagArray[2][6].content = data.response.positions.end_date;
+            this.setState({ tagArray: tagArray, datas: data.response });
         }
         callBackGetRepairInfo(data) {
-            this.setState({ datas: data.response });
-            console.log("444", data);
+            console.log("保修", data);
+            let tagArray = this.state.tagArray;
+            tagArray[2][0].content = data.response.applicant;
+            tagArray[3][1].content = data.response.phone;
+            tagArray[3][2].content = data.response.descript;
+            this.setState({ tagArray: tagArray, datas: data.response });
         }
         goBack() {
             this.props.history.goBack();
@@ -7661,16 +7664,16 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
                             React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u5BA1\u6838\u56DE\u590D:")),
                         React.createElement("div", { style: { margin: "20px 0 0 50px" } },
                             React.createElement("span", { style: { color: "#333333", fontSize: "40px" } }, this.state.datas.examine.reply)))
-                    : this.state.stateName === "审核中" && sessionStorage.getItem("userInfo") !== "园区成员" ?
+                    : this.state.stateName === "审核中" && (sessionStorage.getItem("userInfo") !== "园区成员" && sessionStorage.getItem("userInfo") !== "普通成员") ?
                         React.createElement("div", null,
                             React.createElement("div", { style: { padding: "30px 0 0 50px" } },
                                 React.createElement("div", { className: "isay-star" }),
                                 React.createElement("div", { style: { marginLeft: "30px", fontSize: "40px", color: "#333333" } }, "\u5BA1\u6838\u56DE\u590D\uFF1A"),
                                 React.createElement("textarea", { style: { height: "200px", width: "90%", backgroundColor: "#F2F2F2", marginTop: "30px", fontSize: "40px", color: "#949494" }, value: this.state.reply, onFocus: this.textareaFoucus.bind(this), onBlur: this.textareaBlur.bind(this), onChange: this.inputChange.bind(this) })),
                             React.createElement("div", { style: { height: "150px", width: "100%", position: "absolute", bottom: 0, fontSize: "45px" } },
-                                React.createElement("div", { style: { float: "left", height: "100%", width: "33%", lineHeight: "150px", textAlign: "center", backgroundColor: "#F2F2F2", color: "#6C6C6C" }, onClick: e => this.submit(0) }, "\u8F6C\u5355"),
-                                React.createElement("div", { style: { float: "left", height: "100%", width: "33%", lineHeight: "150px", textAlign: "center", backgroundColor: "#FE4E4E", color: "#FFFFFF" }, onClick: e => this.submit(3) }, "\u4E0D\u901A\u8FC7"),
-                                React.createElement("div", { style: { float: "left", height: "100%", width: "33%", lineHeight: "150px", textAlign: "center", backgroundColor: "#0B8BF0", color: "#FFFFFF" }, onClick: e => this.submit(1) }, "\u901A\u8FC7")))
+                                React.createElement("div", { style: { float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#F2F2F2", color: "#6C6C6C" }, onClick: e => this.submit(0) }, "\u8F6C\u5355"),
+                                React.createElement("div", { style: { float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#FE4E4E", color: "#FFFFFF" }, onClick: e => this.submit(3) }, "\u4E0D\u901A\u8FC7"),
+                                React.createElement("div", { style: { float: "left", height: "100%", width: "33.4%", lineHeight: "150px", textAlign: "center", backgroundColor: "#0B8BF0", color: "#FFFFFF" }, onClick: e => this.submit(1) }, "\u901A\u8FC7")))
                         : null));
         }
     }
@@ -8763,7 +8766,9 @@ define("roomUse", ["require", "exports", "react", "dataService"], function (requ
             this.dataService.saveRoomRentInfo(this.callBackSaveRoomRentInfo.bind(this), obj);
         }
         callBackSaveRoomRentInfo(data) {
-            console.log(data);
+            if (data.return_code == 100) {
+                this.props.history.goBack();
+            }
         }
         changeState(index) {
             this.setState({ state: index });
@@ -8870,9 +8875,8 @@ define("roomBase", ["require", "exports", "react", "dataService"], function (req
             this.dataService.saveRoomBaseInfo(this.callBackSaveRoomBaseInfo.bind(this), obj);
         }
         callBackSaveRoomBaseInfo(data) {
-            console.log(data);
             if (data.return_code == 100) {
-                alert("提交成功");
+                this.props.history.goBack();
             }
         }
         render() {
@@ -9028,11 +9032,13 @@ define("roomPatternUpdate", ["require", "exports", "react", "dataService", "css!
             this.dataService.upload(this.callBackUpload.bind(this), file);
         }
         callBackUpload(data) {
-            console.log(data);
+            console.log("callBackUpload", data);
             if (data.return_code == 100) {
                 let fileArr = this.state.fileArr;
                 fileArr[this.state.fileIndex] = data.response;
-                this.setState({ fileArr: fileArr });
+                this.setState({ fileArr: fileArr }, () => {
+                    console.log(this.state.fileArr);
+                });
             }
             else {
                 alert("上传失败");
@@ -9660,7 +9666,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
                 React.createElement("div", { className: "index-park" },
                     this.state.parkArr.map((item, index) => {
                         return (React.createElement(react_router_dom_13.Link, { to: "/home" },
-                            React.createElement("div", { className: "index-child-park", key: index, onClick: this.initPark.bind(this, 1001) },
+                            React.createElement("div", { className: "index-child-park", key: index, onClick: this.initPark.bind(this, item.id) },
                                 React.createElement("div", { className: "index-child-park-left" },
                                     React.createElement("img", { src: this.state.type ? "./park_m/image/a.jpg" : "./park_m/image/b.jpg", className: "park-img" })),
                                 React.createElement("div", { className: "index-child-park-right" },

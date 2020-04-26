@@ -78,7 +78,9 @@ export default class RoomUse extends React.Component<{ history: any }>{
   }
 
   callBackSaveRoomRentInfo(data) {
-    console.log(data)
+    if (data.return_code == 100) {
+      this.props.history.goBack()
+    }
   }
 
   changeState(index) {

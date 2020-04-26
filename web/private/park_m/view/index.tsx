@@ -776,7 +776,7 @@ class Index extends React.Component {
           {this.state.parkArr.map((item, index) => {
             return (
               <Link to="/home">
-                <div className="index-child-park" key={index} onClick={this.initPark.bind(this, 1001)}>
+                <div className="index-child-park" key={index} onClick={this.initPark.bind(this, item.id)}>
                   <div className="index-child-park-left"><img src={this.state.type ? "./park_m/image/a.jpg" : "./park_m/image/b.jpg"} className="park-img" /></div>
                   <div className="index-child-park-right">
                     <div className="index-park-name">{item.name}</div>

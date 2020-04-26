@@ -72,12 +72,15 @@ class DataService {
       type: "post",    
       success: function (data) {
         console.log(data)
+
+        let userInfo = {
+          userId: data.id, name: data.name, phone: data.phone, avatar: data.avatar, enterprise: data.enterprise,
+          roles: {
+            role_id: data.roles[0].role_id, role_name: data.roles[0].role_name
+          }
+        }
         localStorage.setItem("token", data.token);
-        console.log(data.roles[0].role_name)
-         sessionStorage.setItem("userInfo", data.roles[0].role_name);
-         sessionStorage.setItem("userName", data.name);
-         sessionStorage.setItem("phone", data.name);
-         sessionStorage.setItem("userid", data.id);
+        sessionStorage.setItem("userInfos", JSON.stringify(userInfo));
         pBack(data);
     
         }
@@ -1365,7 +1368,7 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/getMyMsgInfo',
       data: {
-        id: 1,
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
         type_id: typeId,
         token: localStorage.getItem("token")
       },
@@ -1396,8 +1399,8 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/getParkBuildingInfo',
       data: {
-        id: 1001,
-        park_id: 1001,
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+        park_id: localStorage.getItem("park_id"),
         token: localStorage.getItem("token")
       },
       type: "get",
@@ -1412,8 +1415,8 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/getRoomInfo',
       data: {
-        id: 1001,
-        park_id: 1001,
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+        park_id: localStorage.getItem("park_id"),
         room_id: roomId,
         token: localStorage.getItem("token")
       },
@@ -1454,7 +1457,7 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/saveRoomRentInfo?token=' + localStorage.getItem("token"),
       data: JSON.stringify({
-        id: 1001,
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
         room_id: sessionStorage.getItem("roomId"),
         state: obj.state,
         company_id: obj.companyId,

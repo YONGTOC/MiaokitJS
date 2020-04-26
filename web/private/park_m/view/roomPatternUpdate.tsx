@@ -46,11 +46,13 @@ export default class roomPatternUpdate extends React.Component<{ history: any }>
   }
 
   callBackUpload(data) {
-    console.log(data)
+    console.log("callBackUpload", data)
     if (data.return_code == 100) {
       let fileArr = this.state.fileArr
       fileArr[this.state.fileIndex] = data.response
-      this.setState({ fileArr: fileArr })
+      this.setState({ fileArr: fileArr }, () => {
+        console.log(this.state.fileArr)
+      })
     } else {
       alert("上传失败")
     }

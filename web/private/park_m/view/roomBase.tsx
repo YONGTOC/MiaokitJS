@@ -93,9 +93,8 @@ export default class RoomBase extends React.Component<{ history: any }>{
   }
 
   callBackSaveRoomBaseInfo(data) {
-    console.log(data)
     if (data.return_code == 100) {
-      alert("提交成功")
+      this.props.history.goBack()
     }
   }
 
