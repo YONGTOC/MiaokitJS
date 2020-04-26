@@ -211,19 +211,29 @@ class Index extends React.Component {
       });
     //}
 
-        curtainHide();
+    curtainHide();
+
   }
 
     // 判断所属企业
-  public isLoginData(data) {
+  public isLoginData() {
+    let data =  sessionStorage.getItem("enterprises");
     console.log("LoginData", data);
-       IsCompanys.getCompanyArr(data.enterprises);
-    if (data.enterprises.length > 1) {
+    console.log(" LoginData",typeof  data);
+    let dataObj = JSON.parse(data);
+    //   console.log(" LoginData1", typeof dataObj);
+    //console.log(" LoginData2", dataObj);
+    //console.log(" LoginData2", dataObj.length);
+    IsCompanys.getCompanyArr(dataObj);
+    if (dataObj.length > 1) {
       this.setState({
         isCompanyArr: true,
       })
 
-     }
+    } else {
+       sessionStorage.setItem("enterprise",dataObj[0].name);
+       sessionStorage.setItem("enterpriseId",dataObj[0].id);
+    }
   }
 
   //隐藏企业选择列表
@@ -240,6 +250,7 @@ class Index extends React.Component {
     this.setState({
       isLoginBox: false,
     })
+    this.isLoginData();
   }
 
   // 聚焦
@@ -422,15 +433,11 @@ class Index extends React.Component {
   }
 
   render() {
-    
-        //<div className={this.state.isCompanyArr == true ? "show" : "hide"}>
-        //  <IsCompanys />
-        //</div>
-    
-
     return (
       <div className="index">
-
+             <div className={this.state.isCompanyArr == true ? "show" : "hide"}>
+          <IsCompanys />
+        </div>
         <div className={this.state.isLoginBox == true ? "show" : "hide"}>
           <LoginTest />
         </div>
@@ -887,12 +894,13 @@ class IsCompanys extends React.Component {
   }
 
   // 显示选择的企业,并隐藏列表 
-  public companyActive(data, id) {
-    console.log("active", data);
+  public companyActive(index, id, name) {
+    console.log("active", index,id, name );
     this.setState({
-      indexOf: data,
+      indexOf: index,
     });
- 
+    sessionStorage.setItem("enterprise", name);
+    sessionStorage.setItem("enterpriseId", id);
    setTimeout(function (){ Index.hideCompanyArr()},1000);
 
   }
@@ -904,7 +912,7 @@ class IsCompanys extends React.Component {
         <ul className="isCompanyBox_ul">
           {this.state.companyArr.map((i, index) => {
             return (
-              <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyIn" : "companyUn"}>{i.name}</li>
+              <li onClick={this.companyActive.bind(this, index, i.id, i.name)} className={this.state.indexOf == index ? "companyIn" : "companyUn"}>{i.name}</li>
             )
           })}
         </ul>
@@ -930,7 +938,7 @@ class LoginTest extends React.Component {
   public globalAction: GlobalAction = new GlobalAction();
 
   public componentDidMount() {
-    console.log(444, this.state);
+    console.log(44333334, this.state);
   }
 
   //正常登录

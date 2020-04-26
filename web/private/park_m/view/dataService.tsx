@@ -76,8 +76,9 @@ class DataService {
         console.log(data.roles[0].role_name)
          sessionStorage.setItem("userInfo", data.roles[0].role_name);
          sessionStorage.setItem("userName", data.name);
-         sessionStorage.setItem("phone", data.name);
+         sessionStorage.setItem("phone", data.phone);
          sessionStorage.setItem("userid", data.id);
+         sessionStorage.setItem("enterprises",JSON.stringify(data.enterprises));
         pBack(data);
     
         }
@@ -96,17 +97,17 @@ class DataService {
     //let userid = "1"
     //localStorage.setItem("userid", userid);
 
-    let enterprises = [
-      {
-        "id": "1009",
-        "name": "力拓科技",
-      },
-      {
-        "id": "1003",
-        "name": "永拓拓科技",
-      }
-    ]
-    localStorage.setItem("enterprises", JSON.stringify(enterprises));
+    //let enterprises = [
+    //  {
+    //    "id": "1009",
+    //    "name": "力拓科技",
+    //  },
+    //  {
+    //    "id": "1003",
+    //    "name": "永拓拓科技",
+    //  }
+    //]
+    //localStorage.setItem("enterprises", JSON.stringify(enterprises));
 
      //获取：
    // var arr = JSON.parse(localStorage.getItem("arr"));

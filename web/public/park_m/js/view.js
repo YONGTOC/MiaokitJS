@@ -688,24 +688,14 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     console.log(data.roles[0].role_name);
                     sessionStorage.setItem("userInfo", data.roles[0].role_name);
                     sessionStorage.setItem("userName", data.name);
-                    sessionStorage.setItem("phone", data.name);
+                    sessionStorage.setItem("phone", data.phone);
                     sessionStorage.setItem("userid", data.id);
+                    sessionStorage.setItem("enterprises", JSON.stringify(data.enterprises));
                     pBack(data);
                 }
             });
             let park_id = "1";
             localStorage.setItem("park_id", park_id);
-            let enterprises = [
-                {
-                    "id": "1009",
-                    "name": "力拓科技",
-                },
-                {
-                    "id": "1003",
-                    "name": "永拓拓科技",
-                }
-            ];
-            localStorage.setItem("enterprises", JSON.stringify(enterprises));
         }
         refreshToken(ytoken) {
             $.ajax({
@@ -5686,6 +5676,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                 userInfo: "",
                 pathname: "",
                 userName: "",
+                enterprise: "",
             };
             this.dataService = new dataService_11.default();
         }
@@ -5693,6 +5684,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
             this.dataService.getRoleType(this.callBackGetRoleType.bind(this));
             let userInfo = sessionStorage.getItem("userInfo");
             let userName = sessionStorage.getItem("userName");
+            let enterprise = sessionStorage.getItem("enterprise");
             console.log("userInfo222", userInfo);
             if (!sessionStorage.getItem("userInfo")) {
                 sessionStorage.setItem("userInfo", "园区成员");
@@ -5701,17 +5693,18 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
             this.setState({
                 userInfo: userInfo,
                 pathname: this.props.history.location.pathname,
-                userName: userName
+                userName: userName,
+                enterprise: enterprise,
             });
             console.log("userInfo", this.state);
-        }
-        callBackGetRoleType(data) {
-            console.log(data);
         }
         callBackGetUserInfo(data) {
             console.log("userInfoss", data);
             this.setState({ userInfo: JSON.parse(data) });
             sessionStorage.setItem("userInfo", this.state.userInfo.roles.role_name);
+        }
+        callBackGetRoleType(data) {
+            console.log(data);
         }
         spread() {
             this.setState({ isSpread: !this.state.isSpread });
@@ -5765,7 +5758,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                             React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u4FEE\u6539")),
                         React.createElement("div", { className: "personal-center-tag" },
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5173\u8054\u4F01\u4E1A"),
-                            React.createElement("span", null, "\u6D59\u6C5F\u6C38\u62D3\u4FE1\u606F\u79D1\u6280\u6709\u9650\u516C\u53F8"),
+                            React.createElement("span", null, this.state.enterprise),
                             React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u4FEE\u6539")),
                         React.createElement("div", { className: "personal-center-tag" },
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5BA2\u670D\u7535\u8BDD"),
@@ -9372,13 +9365,20 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             });
             curtainHide();
         }
-        isLoginData(data) {
+        isLoginData() {
+            let data = sessionStorage.getItem("enterprises");
             console.log("LoginData", data);
-            IsCompanys.getCompanyArr(data.enterprises);
-            if (data.enterprises.length > 1) {
+            console.log(" LoginData", typeof data);
+            let dataObj = JSON.parse(data);
+            IsCompanys.getCompanyArr(dataObj);
+            if (dataObj.length > 1) {
                 this.setState({
                     isCompanyArr: true,
                 });
+            }
+            else {
+                sessionStorage.setItem("enterprise", dataObj[0].name);
+                sessionStorage.setItem("enterpriseId", dataObj[0].id);
             }
         }
         static hideCompanyArr() { }
@@ -9392,6 +9392,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             this.setState({
                 isLoginBox: false,
             });
+            this.isLoginData();
         }
         foucus() {
             if (this.state.inputValue === "请输入园区名/区域名/商圈名") {
@@ -9530,6 +9531,8 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         }
         render() {
             return (React.createElement("div", { className: "index" },
+                React.createElement("div", { className: this.state.isCompanyArr == true ? "show" : "hide" },
+                    React.createElement(IsCompanys, null)),
                 React.createElement("div", { className: this.state.isLoginBox == true ? "show" : "hide" },
                     React.createElement(LoginTest, null)),
                 React.createElement("div", { className: "index-input-div" },
@@ -9738,17 +9741,19 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             });
             console.log(888, this.state.companyArr);
         }
-        companyActive(data, id) {
-            console.log("active", data);
+        companyActive(index, id, name) {
+            console.log("active", index, id, name);
             this.setState({
-                indexOf: data,
+                indexOf: index,
             });
+            sessionStorage.setItem("enterprise", name);
+            sessionStorage.setItem("enterpriseId", id);
             setTimeout(function () { Index.hideCompanyArr(); }, 1000);
         }
         render() {
             return (React.createElement("div", { className: "isCompanyBox" },
                 React.createElement("ul", { className: "isCompanyBox_ul" }, this.state.companyArr.map((i, index) => {
-                    return (React.createElement("li", { onClick: this.companyActive.bind(this, index, i.id), className: this.state.indexOf == index ? "companyIn" : "companyUn" }, i.name));
+                    return (React.createElement("li", { onClick: this.companyActive.bind(this, index, i.id, i.name), className: this.state.indexOf == index ? "companyIn" : "companyUn" }, i.name));
                 }))));
         }
     }
@@ -9763,7 +9768,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             };
         }
         componentDidMount() {
-            console.log(444, this.state);
+            console.log(44333334, this.state);
         }
         doLogin() {
             console.log(this.state.username, this.state.password);

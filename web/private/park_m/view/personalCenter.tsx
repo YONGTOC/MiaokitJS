@@ -14,6 +14,7 @@ interface IState {
   userInfo: string,
   pathname: string,
   userName: string,
+  enterprise: string,
 }
 
 class PersonalCenter extends React.Component {
@@ -29,7 +30,8 @@ class PersonalCenter extends React.Component {
     isSpread: false,
     userInfo: "",
     pathname: "",
-    userName:"",
+    userName: "",
+    enterprise:"",
   }
 
   public dataService: DataService = new DataService()
@@ -38,6 +40,7 @@ class PersonalCenter extends React.Component {
     this.dataService.getRoleType(this.callBackGetRoleType.bind(this))
     let userInfo = sessionStorage.getItem("userInfo");
     let userName= sessionStorage.getItem("userName");
+    let enterprise= sessionStorage.getItem("enterprise");
 
     
       console.log("userInfo222",userInfo)
@@ -49,7 +52,8 @@ class PersonalCenter extends React.Component {
       this.setState({
         userInfo: userInfo,
         pathname: this.props.history.location.pathname,
-        userName:userName
+        userName: userName,
+        enterprise:enterprise,
     })
     console.log("userInfo",this.state)
   }
@@ -127,7 +131,7 @@ class PersonalCenter extends React.Component {
               <span style={{ margin: "0 50px 0 50px" }}>手机号码</span><span>15578383040</span><span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>修改</span>
             </div>
             <div className="personal-center-tag">
-              <span style={{ margin: "0 50px 0 50px" }}>关联企业</span><span>浙江永拓信息科技有限公司</span><span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>修改</span>
+              <span style={{ margin: "0 50px 0 50px" }}>关联企业</span><span>{this.state.enterprise}</span><span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>修改</span>
             </div>
             <div className="personal-center-tag">
               <span style={{ margin: "0 50px 0 50px" }}>客服电话</span><span>0773-123456</span>
