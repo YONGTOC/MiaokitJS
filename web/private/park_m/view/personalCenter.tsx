@@ -47,7 +47,7 @@ class PersonalCenter extends React.Component {
 
   callBackGetUserInfo(data) {
     console.log("userInfoss", data)
-    this.setState({ userInfo: data })
+    this.setState({ userInfo: JSON.parse(data) })
     sessionStorage.setItem("userInfo", this.state.userInfo.roles.role_name)
   }
 

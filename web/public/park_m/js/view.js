@@ -630,9 +630,9 @@ define("dataService", ["require", "exports"], function (require, exports) {
         constructor() {
             this.state = {
                 rooturl: "http://parkadmin.yongtoc.com",
+                userInfoUrl: "http://minghuakejiyuan.3dparkcloud.com/me",
                 rooturl2: "http://192.168.1.30:8002",
                 rooturl3: "http://192.168.1.27:89",
-                userInfoUrl: "http://minghuakejiyuan.3dparkcloud.com/me",
                 token: "",
             };
         }
@@ -5699,7 +5699,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
         }
         callBackGetUserInfo(data) {
             console.log("userInfoss", data);
-            this.setState({ userInfo: data });
+            this.setState({ userInfo: JSON.parse(data) });
             sessionStorage.setItem("userInfo", this.state.userInfo.roles.role_name);
         }
         spread() {
