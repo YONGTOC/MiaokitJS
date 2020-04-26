@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
 import DataService from "dataService";
 import { ImagePicker, WingBlank, SegmentedControl } from 'antd-mobile';
@@ -12,7 +12,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     company: "",
     roleType: "",
     park_id:"",
-    // ¹«Ë¾Ñ¡Ôñ
+    // å…¬å¸é€‰æ‹©
     roleTypeBox: "hide",
     roleTypeUL: [],
     roleTypeIndexof: 0,
@@ -20,7 +20,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     role_id_in: "",
     role_name: "",
     role_name_in: "",
-    //ÕÕÆ¬
+    //ç…§ç‰‡
     files: [],
     multiple: false,
     filesImg: [],
@@ -40,14 +40,14 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     this.state.applicant = localStorage.getItem("userName");
     this.state.phone = localStorage.getItem("phone");
     //this.state.company = localStorage.getItem("applicant");
-    this.state.company = "ÓÀÍØ¿Æ¼¼¹«Ë¾";
+    this.state.company = "æ°¸æ‹“ç§‘æŠ€å…¬å¸";
     this.state.park_id = localStorage.getItem("park_id");
 
   }
 
   public dataService: DataService = new DataService();
 
-  //  ·µ»Ø
+  //  è¿”å›
   public goBack() {
     this.props.history.goBack()
   }
@@ -70,7 +70,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     })
   }
 
-  //½ÇÉ«ÀàĞÍÑ¡Ôñ
+  //è§’è‰²ç±»å‹é€‰æ‹©
   public showRoleTypeBox() {
     console.log(111111)
     this.setState({
@@ -78,7 +78,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     })
   }
 
-  // Ğ´Èë½ÇÉ«ÀàĞÍ
+  // å†™å…¥è§’è‰²ç±»å‹
   public setRoleTypeUL(data) {
     this.setState({
       roleTypeUL: data.response,
@@ -87,7 +87,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     })
   }
 
-  //Ñ¡ÖĞ½ÇÉ«ÀàĞÍ
+  //é€‰ä¸­è§’è‰²ç±»å‹
   inRoleTypeList(i, id, name) {
     this.setState({
       role_id_in: id,
@@ -96,14 +96,14 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     })
   }
 
-  // È¡Ïû½ÇÉ«ÀàĞÍ
+  // å–æ¶ˆè§’è‰²ç±»å‹
   hideRoleTypeBox() {
     this.setState({
       roleTypeBox: "hide",
     })
   }
 
-  // È·ÈÏ½ÇÉ«ÀàĞÍ
+  // ç¡®è®¤è§’è‰²ç±»å‹
   getRoleTypeBox() {
     this.setState({
       roleTypeBox: "hide",
@@ -112,7 +112,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     })
   }
 
-  // ĞŞ¸Äimg
+  // ä¿®æ”¹img
   onChange = (files, type, index) => {
     console.log(files, type, index);
     this.setState({
@@ -128,7 +128,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     this.dataService.uploadImgOss(this.setImg, obj);
   }
 
-  // ĞŞ¸ÄÌá½»imgÊı¾İ
+  // ä¿®æ”¹æäº¤imgæ•°æ®
   setImg(data) {
     //console.log("AAAA", data);
    // console.log("BBB", data[0]);
@@ -153,13 +153,13 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
       "pic1": this.state.pic1,
     }
     if (this.state.applicant == "") {
-      alert("ÇëÌîĞ´ĞÕÃû")
+      alert("è¯·å¡«å†™å§“å")
     } else if (this.state.phone == "") {
-      alert("ÇëÌîĞ´ÁªÏµµç»°")
+      alert("è¯·å¡«å†™è”ç³»ç”µè¯")
     } else if (this.state.company == "") {
-      alert("ÇëÌîĞ´ÆóÒµÃû³Æ")
+      alert("è¯·å¡«å†™ä¼ä¸šåç§°")
     } else if (this.state.role_id == "") {
-      alert("ÇëÑ¡Ôñ½ÇÉ«ÀàĞÍ")
+      alert("è¯·é€‰æ‹©è§’è‰²ç±»å‹")
     } else {
       this.dataService.userAuthentication(this.sumbitSucceed, obj);
     }
@@ -180,36 +180,36 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
         <div className="personal-center-tag" style={{ "border-bottom": "0rem" }}>
           <div style={{ paddingLeft: "30px", float: "left" }} onClick={this.goBack.bind(this)}>
             <img src="./park_m/image/right.png" style={{ transform: "rotate(180deg)", marginBottom: "10px" }} />
-            <span style={{ color: "#6C6C6C" }}>Éí·İÈÏÖ¤</span>
+            <span style={{ color: "#6C6C6C" }}>èº«ä»½è®¤è¯</span>
           </div>
         </div>
         <form >
           <div className="identityTop">
             <p>
-              <span className="redStar">*</span>  ÉêÇëÈË
-                 <input type="text" value={this.state.applicant} placeholder="ÇëÊäÈëÄúµÄĞÕÃû" style={{ "border": "none", "margin-left": "8rem" }}
+              <span className="redStar">*</span>  ç”³è¯·äºº
+                 <input type="text" value={this.state.applicant} placeholder="è¯·è¾“å…¥æ‚¨çš„å§“å" style={{ "border": "none", "margin-left": "8rem" }}
                 onChange={this.applicantChange.bind(this)} />
             </p>
             <p>
-              <span className="redStar">*</span>  ÁªÏµºÅÂë
-                 <input type="number" value={this.state.phone} placeholder="ÇëÊäÈëÄúµÄÁªÏµºÅÂë" style={{ "border": "none", "margin-left": "5rem" }}
+              <span className="redStar">*</span>  è”ç³»å·ç 
+                 <input type="number" value={this.state.phone} placeholder="è¯·è¾“å…¥æ‚¨çš„è”ç³»å·ç " style={{ "border": "none", "margin-left": "5rem" }}
                 onChange={this.phoneChange.bind(this)} />
             </p>
             <p >
-              <span className="redStar">*</span>  ÆóÒµÃû³Æ
-                 <input type="text" value={this.state.company} placeholder="ÇëÊäÈëÄúµÄÆóÒµÃû³Æ" style={{ "border": "none", "margin-left": "5rem" }}
+              <span className="redStar">*</span>  ä¼ä¸šåç§°
+                 <input type="text" value={this.state.company} placeholder="è¯·è¾“å…¥æ‚¨çš„ä¼ä¸šåç§°" style={{ "border": "none", "margin-left": "5rem" }}
                 onChange={this.companyChange.bind(this)} />
             </p>
             <p onClick={this.showRoleTypeBox.bind(this)}>
-              <span className="redStar">*</span>  ½ÇÉ«ÀàĞÍ  
-                 <input type="text" value={this.state.role_name} placeholder="Ñ¡ÔñÈÏÖ¤µÄ½ÇÉ«ÀàĞÍ" style={{ "border": "none", "margin-left": "5rem" }}
+              <span className="redStar">*</span>  è§’è‰²ç±»å‹  
+                 <input type="text" value={this.state.role_name} placeholder="é€‰æ‹©è®¤è¯çš„è§’è‰²ç±»å‹" style={{ "border": "none", "margin-left": "5rem" }}
                 />
               <span className="iconfont" style={{ "fontSize": "3rem", "float": "right" }} >&#xe827;</span>
             </p>
           </div>
-          <div className="applyPutSumbit" onClick={this.sumbit.bind(this)}>Ìá½»</div>
+          <div className="applyPutSumbit" onClick={this.sumbit.bind(this)}>æäº¤</div>
           <div className="identityBotton">
-            <p style={{ "color": "#333" }}>ÈÏÖ¤²ÄÁÏ</p>
+            <p style={{ "color": "#333" }}>è®¤è¯ææ–™</p>
             <div className="identityBottonBox">
               
               <div className="" style={{ position: "relative", left: "13rem", width: "106rem" }}>
@@ -223,10 +223,10 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
                   />
                 </WingBlank>
               </div>
-              <p>ÈÏÖ¤ÆóÒµ¹ÜÀíÔ±ÇëÉÏ´«×â·¿ºÏÍ¬»òÓªÒµÖ´ÕÕ</p>
-              <p>ÈÏÖ¤Ô°Çø¹ÜÀíÔ±ÇëÉÏ´«¹¤ÅÆ</p>
+              <p>è®¤è¯ä¼ä¸šç®¡ç†å‘˜è¯·ä¸Šä¼ ç§Ÿæˆ¿åˆåŒæˆ–è¥ä¸šæ‰§ç…§</p>
+              <p>è®¤è¯å›­åŒºç®¡ç†å‘˜è¯·ä¸Šä¼ å·¥ç‰Œ</p>
             </div>
-            <p>»òÕßµç»°ÁªÏµ¹ÜÀíÔ±½øĞĞÊÚÈ¨(<span style={{"color":"#333"}}>0773-1234567</span>)</p>
+            <p>æˆ–è€…ç”µè¯è”ç³»ç®¡ç†å‘˜è¿›è¡Œæˆæƒ(<span style={{"color":"#333"}}>0773-1234567</span>)</p>
           </div>
         </form>
         <div className={this.state.roleTypeBox}>
@@ -240,8 +240,8 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
             })}
           </ul>
           <div className="rollSelectCuasedBtn">
-            <span className="rollSelectCancel" onClick={this.hideRoleTypeBox.bind(this)} >È¡Ïû</span>
-            <span className="rollSelectConfirm" onClick={this.getRoleTypeBox.bind(this)}>È·ÈÏ</span>
+            <span className="rollSelectCancel" onClick={this.hideRoleTypeBox.bind(this)} >å–æ¶ˆ</span>
+            <span className="rollSelectConfirm" onClick={this.getRoleTypeBox.bind(this)}>ç¡®è®¤</span>
           </div>
         </div>
       </div>

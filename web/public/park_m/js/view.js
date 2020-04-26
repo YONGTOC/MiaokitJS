@@ -4181,7 +4181,7 @@ define("identityAuthentication", ["require", "exports", "react", "dataService", 
             this.dataService.getRoleType(this.setRoleTypeUL);
             this.state.applicant = localStorage.getItem("userName");
             this.state.phone = localStorage.getItem("phone");
-            this.state.company = "���ؿƼ���˾";
+            this.state.company = "永拓科技公司";
             this.state.park_id = localStorage.getItem("park_id");
         }
         goBack() {
@@ -4252,16 +4252,16 @@ define("identityAuthentication", ["require", "exports", "react", "dataService", 
                 "pic1": this.state.pic1,
             };
             if (this.state.applicant == "") {
-                alert("����д����");
+                alert("请填写姓名");
             }
             else if (this.state.phone == "") {
-                alert("����д��ϵ�绰");
+                alert("请填写联系电话");
             }
             else if (this.state.company == "") {
-                alert("����д��ҵ����");
+                alert("请填写企业名称");
             }
             else if (this.state.role_id == "") {
-                alert("��ѡ���ɫ����");
+                alert("请选择角色类型");
             }
             else {
                 this.dataService.userAuthentication(this.sumbitSucceed, obj);
@@ -4275,37 +4275,37 @@ define("identityAuthentication", ["require", "exports", "react", "dataService", 
                 React.createElement("div", { className: "personal-center-tag", style: { "border-bottom": "0rem" } },
                     React.createElement("div", { style: { paddingLeft: "30px", float: "left" }, onClick: this.goBack.bind(this) },
                         React.createElement("img", { src: "./park_m/image/right.png", style: { transform: "rotate(180deg)", marginBottom: "10px" } }),
-                        React.createElement("span", { style: { color: "#6C6C6C" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u05A4"))),
+                        React.createElement("span", { style: { color: "#6C6C6C" } }, "\u8EAB\u4EFD\u8BA4\u8BC1"))),
                 React.createElement("form", null,
                     React.createElement("div", { className: "identityTop" },
                         React.createElement("p", null,
                             React.createElement("span", { className: "redStar" }, "*"),
-                            "  \uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD",
-                            React.createElement("input", { type: "text", value: this.state.applicant, placeholder: "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD", style: { "border": "none", "margin-left": "8rem" }, onChange: this.applicantChange.bind(this) })),
+                            "  \u7533\u8BF7\u4EBA",
+                            React.createElement("input", { type: "text", value: this.state.applicant, placeholder: "\u8BF7\u8F93\u5165\u60A8\u7684\u59D3\u540D", style: { "border": "none", "margin-left": "8rem" }, onChange: this.applicantChange.bind(this) })),
                         React.createElement("p", null,
                             React.createElement("span", { className: "redStar" }, "*"),
-                            "  \uFFFD\uFFFD\u03F5\uFFFD\uFFFD\uFFFD\uFFFD",
-                            React.createElement("input", { type: "number", value: this.state.phone, placeholder: "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u03F5\uFFFD\uFFFD\uFFFD\uFFFD", style: { "border": "none", "margin-left": "5rem" }, onChange: this.phoneChange.bind(this) })),
+                            "  \u8054\u7CFB\u53F7\u7801",
+                            React.createElement("input", { type: "number", value: this.state.phone, placeholder: "\u8BF7\u8F93\u5165\u60A8\u7684\u8054\u7CFB\u53F7\u7801", style: { "border": "none", "margin-left": "5rem" }, onChange: this.phoneChange.bind(this) })),
                         React.createElement("p", null,
                             React.createElement("span", { className: "redStar" }, "*"),
-                            "  \uFFFD\uFFFD\u04B5\uFFFD\uFFFD\uFFFD\uFFFD",
-                            React.createElement("input", { type: "text", value: this.state.company, placeholder: "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\uFFFD\uFFFD", style: { "border": "none", "margin-left": "5rem" }, onChange: this.companyChange.bind(this) })),
+                            "  \u4F01\u4E1A\u540D\u79F0",
+                            React.createElement("input", { type: "text", value: this.state.company, placeholder: "\u8BF7\u8F93\u5165\u60A8\u7684\u4F01\u4E1A\u540D\u79F0", style: { "border": "none", "margin-left": "5rem" }, onChange: this.companyChange.bind(this) })),
                         React.createElement("p", { onClick: this.showRoleTypeBox.bind(this) },
                             React.createElement("span", { className: "redStar" }, "*"),
-                            "  \uFFFD\uFFFD\u026B\uFFFD\uFFFD\uFFFD\uFFFD",
-                            React.createElement("input", { type: "text", value: this.state.role_name, placeholder: "\u0461\uFFFD\uFFFD\uFFFD\uFFFD\u05A4\uFFFD\u013D\uFFFD\u026B\uFFFD\uFFFD\uFFFD\uFFFD", style: { "border": "none", "margin-left": "5rem" } }),
+                            "  \u89D2\u8272\u7C7B\u578B",
+                            React.createElement("input", { type: "text", value: this.state.role_name, placeholder: "\u9009\u62E9\u8BA4\u8BC1\u7684\u89D2\u8272\u7C7B\u578B", style: { "border": "none", "margin-left": "5rem" } }),
                             React.createElement("span", { className: "iconfont", style: { "fontSize": "3rem", "float": "right" } }, "\uE827"))),
-                    React.createElement("div", { className: "applyPutSumbit", onClick: this.sumbit.bind(this) }, "\uFFFD\u1F7B"),
+                    React.createElement("div", { className: "applyPutSumbit", onClick: this.sumbit.bind(this) }, "\u63D0\u4EA4"),
                     React.createElement("div", { className: "identityBotton" },
-                        React.createElement("p", { style: { "color": "#333" } }, "\uFFFD\uFFFD\u05A4\uFFFD\uFFFD\uFFFD\uFFFD"),
+                        React.createElement("p", { style: { "color": "#333" } }, "\u8BA4\u8BC1\u6750\u6599"),
                         React.createElement("div", { className: "identityBottonBox" },
                             React.createElement("div", { className: "", style: { position: "relative", left: "13rem", width: "106rem" } },
                                 React.createElement(antd_mobile_5.WingBlank, null,
                                     React.createElement(antd_mobile_5.ImagePicker, { files: this.state.files, onChange: this.onChange, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple }))),
-                            React.createElement("p", null, "\uFFFD\uFFFD\u05A4\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\uFFFD\uFFFD\u0531\uFFFD\uFFFD\uFFFD\u03F4\uFFFD\uFFFD\u2DFF\uFFFD\uFFFD\u036C\uFFFD\uFFFD\u04EA\u04B5\u05B4\uFFFD\uFFFD"),
-                            React.createElement("p", null, "\uFFFD\uFFFD\u05A4\u0530\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u0531\uFFFD\uFFFD\uFFFD\u03F4\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD")),
+                            React.createElement("p", null, "\u8BA4\u8BC1\u4F01\u4E1A\u7BA1\u7406\u5458\u8BF7\u4E0A\u4F20\u79DF\u623F\u5408\u540C\u6216\u8425\u4E1A\u6267\u7167"),
+                            React.createElement("p", null, "\u8BA4\u8BC1\u56ED\u533A\u7BA1\u7406\u5458\u8BF7\u4E0A\u4F20\u5DE5\u724C")),
                         React.createElement("p", null,
-                            "\uFFFD\uFFFD\uFFFD\u07F5\u7EF0\uFFFD\uFFFD\u03F5\uFFFD\uFFFD\uFFFD\uFFFD\u0531\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u0228(",
+                            "\u6216\u8005\u7535\u8BDD\u8054\u7CFB\u7BA1\u7406\u5458\u8FDB\u884C\u6388\u6743(",
                             React.createElement("span", { style: { "color": "#333" } }, "0773-1234567"),
                             ")"))),
                 React.createElement("div", { className: this.state.roleTypeBox },
@@ -4313,8 +4313,8 @@ define("identityAuthentication", ["require", "exports", "react", "dataService", 
                         return (React.createElement("li", { className: this.state.roleTypeIndexof == index ? "rollSelectCauseli-active" : "rollSelectCauseli", onClick: this.inRoleTypeList.bind(this, index, i.id, i.name) }, i.name));
                     })),
                     React.createElement("div", { className: "rollSelectCuasedBtn" },
-                        React.createElement("span", { className: "rollSelectCancel", onClick: this.hideRoleTypeBox.bind(this) }, "\u0221\uFFFD\uFFFD"),
-                        React.createElement("span", { className: "rollSelectConfirm", onClick: this.getRoleTypeBox.bind(this) }, "\u0237\uFFFD\uFFFD")))));
+                        React.createElement("span", { className: "rollSelectCancel", onClick: this.hideRoleTypeBox.bind(this) }, "\u53D6\u6D88"),
+                        React.createElement("span", { className: "rollSelectConfirm", onClick: this.getRoleTypeBox.bind(this) }, "\u786E\u8BA4")))));
         }
     }
     exports.default = IdentityAuthentication;
@@ -5683,7 +5683,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                 ],
                 isSpread: false,
                 userInfo: {
-                    name: "", roles: { role_name: "" }
+                    name: "", avatar: "", roles: { role_name: "" }
                 },
                 pathname: ""
             };
@@ -5710,7 +5710,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                 React.createElement("div", { className: "personal-center-top" },
                     React.createElement("div", { className: "personal-center-info" },
                         React.createElement("div", { className: "personal-center-tx" },
-                            React.createElement("img", { src: "./park_m/image/tx.jpg", className: "personal-center-tx-img" })),
+                            React.createElement("img", { src: this.state.userInfo.avatar, className: "personal-center-tx-img" })),
                         React.createElement("div", { style: { float: "left", color: "#FFFFFF", fontSize: "42px", margin: "10px 0 0 36px" } },
                             React.createElement("div", null, this.state.userInfo.name),
                             React.createElement("div", { style: {
