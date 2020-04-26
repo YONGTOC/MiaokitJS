@@ -645,7 +645,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         upload(pBack, file) {
             console.log("fiffffffffffffffff", file);
             $.ajax({
-                url: this.state.rooturl + '/api/upload?token=' + localStorage.getItem("token"),
+                url: this.state.rooturl + '/api/upload?token=' + sessionStorage.getItem("token"),
                 data: file,
                 cache: false,
                 dataType: "json",
@@ -707,7 +707,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             });
         }
         getParks(pBack) {
-            let thetoken = localStorage.getItem("token");
+            let thetoken = sessionStorage.getItem("token");
             $.ajax({
                 url: this.state.rooturl + '/api/getParks',
                 type: "get",
@@ -723,7 +723,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             });
         }
         getParkInfo(pBack, park_id) {
-            let thetoken = localStorage.getItem("token");
+            let thetoken = sessionStorage.getItem("token");
             var data = {
                 "return_code": "100",
                 "response": [
@@ -760,7 +760,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             pBack(data);
         }
         getCompanyType(pBack, park_id) {
-            let thetoken = localStorage.getItem("token");
+            let thetoken = sessionStorage.getItem("token");
             $.ajax({
                 url: this.state.rooturl + '/api/getCompanyType',
                 data: {
@@ -775,7 +775,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             });
         }
         findCompany(pBack, park_id, company_type_id, companyName) {
-            let thetoken = localStorage.getItem("token");
+            let thetoken = sessionStorage.getItem("token");
             $.ajax({
                 url: this.state.rooturl + '/api/findCompany',
                 data: {
@@ -797,7 +797,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             });
         }
         getCompanyInfo(pBack, id) {
-            let thetoken = localStorage.getItem("token");
+            let thetoken = sessionStorage.getItem("token");
             $.ajax({
                 url: this.state.rooturl + '/api/getCompanyInfo',
                 data: {
@@ -817,7 +817,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         getRoomRentSquareType(pBack, park_id) {
             console.log("init-AllareaType", pBack, park_id);
-            let thetoken = localStorage.getItem("token");
+            let thetoken = sessionStorage.getItem("token");
             $.ajax({
                 url: this.state.rooturl + '/api/getRoomRentSquareType',
                 data: {
@@ -836,7 +836,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         findRoomRentByparkid(pBack, park_id, square) {
             console.log("findRoomRentByparkid", pBack, park_id, square);
-            let thetoken = localStorage.getItem("token");
+            let thetoken = sessionStorage.getItem("token");
             $.ajax({
                 url: this.state.rooturl + '/api/findRoomRent',
                 data: {
@@ -858,7 +858,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         findRoomRentByroomid(pBack, id) {
             console.log("findRoomRentByroomid-jxxxxxxxxxxxx", id);
-            let thetoken = localStorage.getItem("token");
+            let thetoken = sessionStorage.getItem("token");
             $.ajax({
                 url: this.state.rooturl + '/api/getRoomRentInfo',
                 data: {
@@ -943,7 +943,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         postTakingPhotoInfo(pBack, data) {
             let theData = {
-                "park_id": localStorage.getItem("park_id"),
+                "park_id": sessionStorage.getItem("park_id"),
                 "type_id": data.type_id,
                 "car_license": data.car_license,
                 "time": data.time,
@@ -958,7 +958,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         postAdvertisementPoint(pBack, data) {
             let datas = {
-                'park_id': localStorage.getItem("park_id"),
+                'park_id': sessionStorage.getItem("park_id"),
                 'staff_id': data.staff_id,
                 "staff_name": data.applicant,
                 "phone": data.phone,
@@ -1024,7 +1024,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         bookingRoom(pBack, data) {
             let datas = {
-                'park_id': localStorage.getItem("park_id"),
+                'park_id': sessionStorage.getItem("park_id"),
                 'staff_id': data.staff_id,
                 "staff_name": data.applicant,
                 "phone": data.phone,
@@ -1073,7 +1073,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         saveRepairInfo(pBack, data) {
             let datas = {
-                'park_id': localStorage.getItem("park_id"),
+                'park_id': sessionStorage.getItem("park_id"),
                 "type_id": data.type_id,
                 "position": "E座b区三楼",
                 "longitude": "10.55",
@@ -1150,7 +1150,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         saveParkingApply(pBack, data) {
             let thedata = {
-                'park_id': localStorage.getItem("park_id"),
+                'park_id': sessionStorage.getItem("park_id"),
                 "car_license_color": data.car_license_color,
                 "car_license": data.car_license,
                 "applicant": data.applicant,
@@ -1167,7 +1167,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         saveParkingAppointment(pBack, data) {
             let thedata = {
-                'park_id': localStorage.getItem("park_id"),
+                'park_id': sessionStorage.getItem("park_id"),
                 "car_license_color": data.car_license_color,
                 "car_license": data.car_license,
                 "applicant": data.applicant,
@@ -1186,7 +1186,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         changeParkingCarInfo(pBack, data) {
             let thedata = {
-                'park_id': localStorage.getItem("park_id"),
+                'park_id': sessionStorage.getItem("park_id"),
                 "car_license_color": data.car_license_color,
                 "car_license": data.car_license,
                 "applicant": data.applicant,
@@ -1208,7 +1208,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         saveVisitorParkingAppointment(pBack, data) {
             let thedata = {
-                'park_id': localStorage.getItem("park_id"),
+                'park_id': sessionStorage.getItem("park_id"),
                 "car_license_color": data.car_license_color,
                 "car_license": data.car_license,
                 "applicant": data.applicant,
@@ -1226,7 +1226,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             $.ajax({
                 url: this.state.rooturl + '/api/getMicroCircleType',
                 data: {
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1240,7 +1240,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 data: {
                     park_id: obj.park_id,
                     type_id: obj.type_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1253,7 +1253,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getMicroCircleInfo',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1270,7 +1270,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     type_id: obj.type_id,
                     name: obj.name,
                     content: obj.content,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 }),
                 type: "post",
                 success: function (data) {
@@ -1283,7 +1283,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getHeadlines',
                 data: {
                     park_id: park_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1296,7 +1296,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getPreferentialPolicyType',
                 data: {
                     park_id: park_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1310,7 +1310,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 data: {
                     park_id: obj.park_id,
                     type_id: obj.type_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1323,7 +1323,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getParkInformationType',
                 data: {
                     park_id: park_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1337,7 +1337,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 data: {
                     park_id: obj.park_id,
                     type_id: obj.type_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1350,7 +1350,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getInformation',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1363,7 +1363,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getActivityType',
                 data: {
                     park_id: park_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1377,7 +1377,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 data: {
                     park_id: obj.park_id,
                     type_id: obj.type_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1390,7 +1390,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getActivitiyInfo',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1404,7 +1404,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 data: {
                     user_id: obj.user_id,
                     activity_id: obj.activity_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "post",
                 success: function (data) {
@@ -1417,7 +1417,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getThirdServiceType',
                 data: {
                     park_id: park_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1431,7 +1431,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 data: {
                     park_id: obj.park_id,
                     type_id: obj.type_id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1445,7 +1445,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 data: {
                     id: 3,
                     username: username,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1457,7 +1457,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             $.ajax({
                 url: this.state.rooturl + '/api/getRoleType',
                 data: {
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1494,7 +1494,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getMyAuthorityWorkType',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1507,7 +1507,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getMyAuthorityStateType',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1522,7 +1522,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     id: obj.id,
                     work_type: obj.work_type,
                     state_type: obj.state_type,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1535,7 +1535,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getBookingRoomInfo',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1551,7 +1551,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     id: obj.id,
                     state: obj.state,
                     reply: obj.reply,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1564,7 +1564,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getRoleAuthenticationInfo',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1580,7 +1580,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     id: obj.id,
                     state: obj.state,
                     reply: obj.reply,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1593,7 +1593,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getAdvertisementPointInfo',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1609,7 +1609,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     id: obj.id,
                     state: obj.state,
                     reply: obj.reply,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1622,7 +1622,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getRepairInfo',
                 data: {
                     id: id,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1638,7 +1638,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     id: obj.id,
                     state: obj.state,
                     reply: obj.reply,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1651,7 +1651,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getMyMsgType',
                 data: {
                     park_id: 1001,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1665,7 +1665,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 data: {
                     id: 1,
                     type_id: typeId,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1678,7 +1678,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 url: this.state.rooturl + '/api/getMyStatistic',
                 data: {
                     id: 1001,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1692,7 +1692,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 data: {
                     id: 1001,
                     park_id: 1001,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1707,7 +1707,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     id: 1001,
                     park_id: 1001,
                     room_id: roomId,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
@@ -1717,7 +1717,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         saveRoomBaseInfo(pBack, obj) {
             $.ajax({
-                url: this.state.rooturl + '/api/saveRoomBaseInfo?token=' + localStorage.getItem("token"),
+                url: this.state.rooturl + '/api/saveRoomBaseInfo?token=' + sessionStorage.getItem("token"),
                 data: JSON.stringify({
                     id: 1001,
                     room_id: sessionStorage.getItem("roomId"),
@@ -1740,7 +1740,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
         saveRoomRentInfo(pBack, obj) {
             $.ajax({
-                url: this.state.rooturl + '/api/saveRoomRentInfo?token=' + localStorage.getItem("token"),
+                url: this.state.rooturl + '/api/saveRoomRentInfo?token=' + sessionStorage.getItem("token"),
                 data: JSON.stringify({
                     id: 1001,
                     room_id: sessionStorage.getItem("roomId"),
@@ -1795,7 +1795,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     id: 1001,
                     park_id: 1001,
                     phone: phone,
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 },
                 type: "get",
                 success: function (data) {
