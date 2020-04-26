@@ -174,10 +174,6 @@ class Index extends React.Component {
    
   }
 
-  public readonly props: Readonly<IProps> = {
-    history: this.props.history
-  }
-
   componentWillMount() {
     this.dataService.login();
     this.dataService.getParks(this.setParks);
@@ -206,6 +202,7 @@ class Index extends React.Component {
     //}
 
   }
+
 
   // 聚焦
   foucus() {

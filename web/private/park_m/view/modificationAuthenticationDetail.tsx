@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import "css!./styles/roomPattern.css"
 import DataService from "dataService";
 
@@ -41,15 +41,15 @@ export default class modificationAuthenticationDetail extends React.Component<{ 
     this.setState({ name: event.target.value })
   }
 
-  // ·µ»Ø
+  // è¿”å›
   goBack() {
     this.props.history.goBack()
   }
 
-  // Ìá½»
+  // æäº¤
   submit(event) {
     let formFile = new FormData();
-    formFile.append("uploadFile", event.target.files[0]); //¼ÓÈëÎÄ¼ş¶ÔÏó
+    formFile.append("uploadFile", event.target.files[0]); //åŠ å…¥æ–‡ä»¶å¯¹è±¡
     console.log(formFile)
     this.upload(formFile)
   }
@@ -60,13 +60,13 @@ export default class modificationAuthenticationDetail extends React.Component<{ 
         <div className="rent-room-back">
           <div style={{ float: "left", width: "100%" }} onClick={this.goBack.bind(this)}>
             <img src="./park_m/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
-            <span>·¿¼ä¸ñ¾ÖĞŞ¸Ä</span>
+            <span>æˆ¿é—´æ ¼å±€ä¿®æ”¹</span>
           </div>
         </div>
         <div style={{ backgroundColor: "#ffffff", width: "100%", height: "90%", marginTop: "15px" }}>
           <div style={{ width: "100%", height: "160px", lineHeight: "160px", fontSize: "40px", paddingLeft: "50px" }}>
             <div className="enterprise-information-star"></div>
-            <div style={{ color: "#949494", height: "80px", float: "left", marginRight: "30px", marginTop: "-16px" }}>¸ñ¾ÖÃû³Æ£º</div>
+            <div style={{ color: "#949494", height: "80px", float: "left", marginRight: "30px", marginTop: "-16px" }}>æ ¼å±€åç§°ï¼š</div>
           </div>
           <div style={{ height: "120px", margin: "0 50px 0 50px", fontSize: "40px" }} >
             <input value={this.state.name} onChange={this.change.bind(this)}
@@ -74,7 +74,7 @@ export default class modificationAuthenticationDetail extends React.Component<{ 
           </div>
           <div style={{ fontSize: "40px", color: "#6C6C6C", margin: "100px 50px 0 50px", height: "500px" }}>
             <div style={{ float: "left", width: "50%" }}>
-              <div>ËõÂÔÍ¼:</div>
+              <div>ç¼©ç•¥å›¾:</div>
               <div style={{ width: "250px", height: "250px", marginTop: "50px" }}>
                 <img src="./park_m/image/close.png" style={{ position: "relative", left: "210px", top: "10px" }} />
                 <input type="file" onChange={this.submit.bind(this)} />
@@ -82,7 +82,7 @@ export default class modificationAuthenticationDetail extends React.Component<{ 
               </div>
             </div>
             <div style={{ float: "left", width: "50%" }}>
-              <div>È«¾°Í¼:</div>
+              <div>å…¨æ™¯å›¾:</div>
               <div style={{ width: "250px", height: "250px", marginTop: "50px" }}>
                 <img src="./park_m/image/close.png" style={{ position: "relative", left: "210px", top: "10px" }} />
                 <img src="./park_m/image/tx.jpg" width="100%" height="100%" />
@@ -91,8 +91,8 @@ export default class modificationAuthenticationDetail extends React.Component<{ 
           </div>
         </div>
         <div className="rent-room-detail-bottom">
-          <div style={{ float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", color: "#6C6C6C", backgroundColor: "#F2F2F2" }}>È¡Ïû</div>
-          <div style={{ float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", backgroundColor: "#0B8BF0", color: "#ffffff" }} onClick={this.submit.bind(this)}>Ìá½»</div>
+          <div style={{ float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", color: "#6C6C6C", backgroundColor: "#F2F2F2" }}>å–æ¶ˆ</div>
+          <div style={{ float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", backgroundColor: "#0B8BF0", color: "#ffffff" }} onClick={this.submit.bind(this)}>æäº¤</div>
         </div>
       </div>
     )

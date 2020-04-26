@@ -1,3 +1,18 @@
+define("app", ["require", "exports", "react", "css!./styles/app.css"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class App extends React.Component {
+        constructor() {
+            super(...arguments);
+            this.state = {};
+        }
+        componentDidMount() {
+        }
+        render() {
+            return (React.createElement("div", { className: "app" }));
+        }
+    }
+});
 define("compat", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -617,6 +632,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 rooturl: "http://parkadmin.yongtoc.com",
                 rooturl2: "http://192.168.1.30:8002",
                 rooturl3: "http://192.168.1.27:89",
+                userInfoUrl: "http://minghuakejiyuan.3dparkcloud.com/me",
                 token: "",
             };
         }
@@ -1811,6 +1827,17 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 }
             });
         }
+        getUserInfo(pBack) {
+            $.ajax({
+                url: this.state.userInfoUrl,
+                dataType: "json",
+                data: "",
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
     }
     exports.default = DataService;
 });
@@ -2993,6 +3020,53 @@ define("bottomBtn", ["require", "exports", "react", "react-router-dom", "compat"
         ;
     }
     exports.default = BottomBtn;
+});
+define("compat_online", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class GlobalAction {
+        web_call_webgl_initPark(pInfo) {
+            MiaokitJS.App.m_pProject.EnterPark({
+                m_pView: {
+                    m_nLng: 110.344301,
+                    m_nLat: 25.272208,
+                    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
+                    m_nDistance: 300.0,
+                    m_nPitch: 19.0,
+                    m_nYaw: 90.0
+                }
+            });
+            console.log("web_call_webgl_initPark", pInfo);
+        }
+        web_call_webgl_switchCompany(pName) {
+            console.log("web_call_webgl_switchCompany", pName);
+        }
+        web_call_webgl_switchRoom(pName) {
+            console.log("web_call_webgl_SwitchRoom", pName);
+        }
+        web_call_webgl_switchMark(pName, pInfo) {
+            console.log("web_call_webgl_switchMark", pName, pInfo);
+        }
+        web_call_webgl_mapReturnpark() {
+            console.log("web_call_webgl_mapReturnpark");
+        }
+        web_call_webgl_pauseloadModuler() {
+            console.log("web_call_webgl_pauseloadModuler");
+        }
+        web_call_webgl_continueloadModuler() {
+            console.log("web_call_webgl_continueloadModuler");
+        }
+        web_call_webgl_showParkingList(data) {
+            console.log("web_call_webgl_showParkingList", data);
+        }
+        web_call_webgl_onParking(data) {
+            console.log("web_call_webgl_onParking", data);
+        }
+        web_call_webgl_cancelApplyPut(data) {
+            console.log("web_call_webgl_cancelApplyPut", data);
+        }
+    }
+    exports.default = GlobalAction;
 });
 define("defaultRentRoom", ["require", "exports", "react", "css!./styles/defaultRentRoom.css"], function (require, exports, React) {
     "use strict";
@@ -5608,38 +5682,28 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                     { name: "招商管理", imgUrl: "./park_m/image/attractInvestment.png", url: "/attractInvestment" }
                 ],
                 isSpread: false,
-                userInfo: "园区成员",
+                userInfo: {
+                    name: "", roles: { role_name: "" }
+                },
                 pathname: ""
             };
             this.dataService = new dataService_11.default();
         }
         componentDidMount() {
+            this.dataService.getUserInfo(this.callBackGetUserInfo);
             this.dataService.getRoleType(this.callBackGetRoleType.bind(this));
-            if (!sessionStorage.getItem("userInfo")) {
-                sessionStorage.setItem("userInfo", "园区成员");
-            }
-            this.setState({ userInfo: sessionStorage.getItem("userInfo"), pathname: this.props.history.location.pathname });
+            this.setState({ pathname: this.props.history.location.pathname });
         }
         callBackGetRoleType(data) {
             console.log(data);
         }
+        callBackGetUserInfo(data) {
+            console.log("userInfo", data);
+            this.setState({ userInfo: data });
+            sessionStorage.setItem("userInfo", this.state.userInfo.roles.role_name);
+        }
         spread() {
             this.setState({ isSpread: !this.state.isSpread });
-        }
-        switchMember() {
-            switch (this.state.userInfo) {
-                case "园区成员":
-                    this.setState({ userInfo: "企业管理员" });
-                    sessionStorage.setItem("userInfo", "企业管理员");
-                    break;
-                case "企业管理员":
-                    this.setState({ userInfo: "园区管理员" });
-                    sessionStorage.setItem("userInfo", "园区管理员");
-                    break;
-                default:
-                    this.setState({ userInfo: "园区成员" });
-                    sessionStorage.setItem("userInfo", "园区成员");
-            }
         }
         render() {
             return (React.createElement("div", { className: "personal-center" },
@@ -5648,11 +5712,11 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                         React.createElement("div", { className: "personal-center-tx" },
                             React.createElement("img", { src: "./park_m/image/tx.jpg", className: "personal-center-tx-img" })),
                         React.createElement("div", { style: { float: "left", color: "#FFFFFF", fontSize: "42px", margin: "10px 0 0 36px" } },
-                            React.createElement("div", null, "\u7528\u6237\u540D\u5B57"),
+                            React.createElement("div", null, this.state.userInfo.name),
                             React.createElement("div", { style: {
                                     color: "#83d5ff", fontSize: "27px", backgroundColor: "#2e9cf3", width: "160px",
                                     height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
-                                }, onClick: this.switchMember.bind(this) }, this.state.userInfo)),
+                                } }, this.state.userInfo.roles.role_name)),
                         React.createElement(react_router_dom_4.Link, { to: "/modificationAuthentication" },
                             React.createElement("div", { className: "personal-center-right" },
                                 React.createElement("img", { src: "./park_m/image/w-right.png" }))))),
@@ -5681,7 +5745,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5BA2\u670D\u7535\u8BDD"),
                             React.createElement("span", null, "0773-123456")),
                         React.createElement("div", { className: "personal-center-my" },
-                            React.createElement(react_router_dom_4.Link, { to: sessionStorage.getItem("userInfo") === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
+                            React.createElement(react_router_dom_4.Link, { to: this.state.userInfo.roles.role_name === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
                                 React.createElement("div", { className: "personal-center-my-left" },
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "5"),
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u5DE5\u5355"))),
@@ -5691,7 +5755,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "6"),
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u6D88\u606F")))))
                     : null,
-                sessionStorage.getItem("userInfo") === "企业管理员" && this.state.pathname !== "/personalCenter" ?
+                this.state.userInfo.roles.role_name === "企业管理员" && this.state.pathname !== "/personalCenter" ?
                     React.createElement("div", { className: "personal-center-enterprise" },
                         React.createElement(react_router_dom_4.Link, { to: "/enterpriseInformation" },
                             React.createElement("div", { className: "personal-center-enterprise-child" },
@@ -5705,7 +5769,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                                 React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"),
                                 React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
                                     React.createElement("img", { src: "./park_m/image/right.png" }))))) : null,
-                sessionStorage.getItem("userInfo") === "园区管理员" && this.state.pathname !== "/personalCenter" ?
+                this.state.userInfo.roles.role_name === "园区管理员" && this.state.pathname !== "/personalCenter" ?
                     React.createElement("div", { className: "personal-center-park" },
                         React.createElement("div", { className: "personal-center-enterprise-child", onClick: this.spread.bind(this) },
                             React.createElement("img", { src: "./park_m/image/park.png", width: "60px", height: "60px", style: { marginBottom: "10px" } }),
@@ -9067,28 +9131,28 @@ define("modificationAuthenticationDetail", ["require", "exports", "react", "data
                 React.createElement("div", { className: "rent-room-back" },
                     React.createElement("div", { style: { float: "left", width: "100%" }, onClick: this.goBack.bind(this) },
                         React.createElement("img", { src: "./park_m/image/back.png", style: { margin: "-10px 10px 0 0" } }),
-                        React.createElement("span", null, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u07B8\uFFFD"))),
+                        React.createElement("span", null, "\u623F\u95F4\u683C\u5C40\u4FEE\u6539"))),
                 React.createElement("div", { style: { backgroundColor: "#ffffff", width: "100%", height: "90%", marginTop: "15px" } },
                     React.createElement("div", { style: { width: "100%", height: "160px", lineHeight: "160px", fontSize: "40px", paddingLeft: "50px" } },
                         React.createElement("div", { className: "enterprise-information-star" }),
-                        React.createElement("div", { style: { color: "#949494", height: "80px", float: "left", marginRight: "30px", marginTop: "-16px" } }, "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u01A3\uFFFD")),
+                        React.createElement("div", { style: { color: "#949494", height: "80px", float: "left", marginRight: "30px", marginTop: "-16px" } }, "\u683C\u5C40\u540D\u79F0\uFF1A")),
                     React.createElement("div", { style: { height: "120px", margin: "0 50px 0 50px", fontSize: "40px" } },
                         React.createElement("input", { value: this.state.name, onChange: this.change.bind(this), style: { backgroundColor: "#F2F2F2", width: "100%", margin: "auto", height: "120px", lineHeight: "120px", border: "none", outline: "none", color: "#333333", paddingLeft: "50px" } })),
                     React.createElement("div", { style: { fontSize: "40px", color: "#6C6C6C", margin: "100px 50px 0 50px", height: "500px" } },
                         React.createElement("div", { style: { float: "left", width: "50%" } },
-                            React.createElement("div", null, "\uFFFD\uFFFD\uFFFD\uFFFD\u037C:"),
+                            React.createElement("div", null, "\u7F29\u7565\u56FE:"),
                             React.createElement("div", { style: { width: "250px", height: "250px", marginTop: "50px" } },
                                 React.createElement("img", { src: "./park_m/image/close.png", style: { position: "relative", left: "210px", top: "10px" } }),
                                 React.createElement("input", { type: "file", onChange: this.submit.bind(this) }),
                                 React.createElement("img", { src: "./park_m/image/tx.jpg", width: "100%", height: "100%" }))),
                         React.createElement("div", { style: { float: "left", width: "50%" } },
-                            React.createElement("div", null, "\u022B\uFFFD\uFFFD\u037C:"),
+                            React.createElement("div", null, "\u5168\u666F\u56FE:"),
                             React.createElement("div", { style: { width: "250px", height: "250px", marginTop: "50px" } },
                                 React.createElement("img", { src: "./park_m/image/close.png", style: { position: "relative", left: "210px", top: "10px" } }),
                                 React.createElement("img", { src: "./park_m/image/tx.jpg", width: "100%", height: "100%" }))))),
                 React.createElement("div", { className: "rent-room-detail-bottom" },
-                    React.createElement("div", { style: { float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", color: "#6C6C6C", backgroundColor: "#F2F2F2" } }, "\u0221\uFFFD\uFFFD"),
-                    React.createElement("div", { style: { float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", backgroundColor: "#0B8BF0", color: "#ffffff" }, onClick: this.submit.bind(this) }, "\uFFFD\u1F7B"))));
+                    React.createElement("div", { style: { float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", color: "#6C6C6C", backgroundColor: "#F2F2F2" } }, "\u53D6\u6D88"),
+                    React.createElement("div", { style: { float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", backgroundColor: "#0B8BF0", color: "#ffffff" }, onClick: this.submit.bind(this) }, "\u63D0\u4EA4"))));
         }
     }
     exports.default = modificationAuthenticationDetail;
@@ -9240,9 +9304,6 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
                 typeIndex: 0,
                 moreName: "",
                 isMask: false,
-            };
-            this.props = {
-                history: this.props.history
             };
             Index.g_pIns = this;
             this.setParks = this.setParks.bind(this);
@@ -9592,66 +9653,4 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
     Index.g_pIns = null;
     exports.default = Index;
     ReactDOM.render(React.createElement(router_1.default, null), document.getElementById('viewContainer'));
-});
-define("app", ["require", "exports", "react", "css!./styles/app.css"], function (require, exports, React) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class App extends React.Component {
-        constructor() {
-            super(...arguments);
-            this.state = {};
-        }
-        componentDidMount() {
-        }
-        render() {
-            return (React.createElement("div", { className: "app" }));
-        }
-    }
-});
-define("compat_online", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class GlobalAction {
-        web_call_webgl_initPark(pInfo) {
-            MiaokitJS.App.m_pProject.EnterPark({
-                m_pView: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
-                    m_nDistance: 300.0,
-                    m_nPitch: 19.0,
-                    m_nYaw: 90.0
-                }
-            });
-            console.log("web_call_webgl_initPark", pInfo);
-        }
-        web_call_webgl_switchCompany(pName) {
-            console.log("web_call_webgl_switchCompany", pName);
-        }
-        web_call_webgl_switchRoom(pName) {
-            console.log("web_call_webgl_SwitchRoom", pName);
-        }
-        web_call_webgl_switchMark(pName, pInfo) {
-            console.log("web_call_webgl_switchMark", pName, pInfo);
-        }
-        web_call_webgl_mapReturnpark() {
-            console.log("web_call_webgl_mapReturnpark");
-        }
-        web_call_webgl_pauseloadModuler() {
-            console.log("web_call_webgl_pauseloadModuler");
-        }
-        web_call_webgl_continueloadModuler() {
-            console.log("web_call_webgl_continueloadModuler");
-        }
-        web_call_webgl_showParkingList(data) {
-            console.log("web_call_webgl_showParkingList", data);
-        }
-        web_call_webgl_onParking(data) {
-            console.log("web_call_webgl_onParking", data);
-        }
-        web_call_webgl_cancelApplyPut(data) {
-            console.log("web_call_webgl_cancelApplyPut", data);
-        }
-    }
-    exports.default = GlobalAction;
 });

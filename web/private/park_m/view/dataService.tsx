@@ -1527,12 +1527,26 @@ class DataService {
     })
   }
 
+  public getUserInfo(pBack) {
+    $.ajax({
+      url: this.state.userInfoUrl,
+      dataType: "json",
+      data: "",
+
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
 
   public state = {
     rooturl: "http://parkadmin.yongtoc.com",
     //rooturl: "http://192.168.1.13:90",  //wl
     rooturl2: "http://192.168.1.30:8002", //qjf
     rooturl3: "http://192.168.1.27:89", //twl
+    userInfoUrl: "http://minghuakejiyuan.3dparkcloud.com/me",
     token: "",
 
   }
