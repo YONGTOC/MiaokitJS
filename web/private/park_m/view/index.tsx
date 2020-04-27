@@ -186,30 +186,30 @@ class Index extends React.Component {
 
   componentWillMount() {
    // this.dataService.login(this.isLoginData);
-    this.dataService.getParks(this.setParks);
 
-    let _this = this
-    if (!sessionStorage.getItem("city")) {
-      var geolocation = new BMap.Geolocation();
-      geolocation.getCurrentPosition(function (r) {
-        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-          let parkArr = _this.state.parkArr
-          parkArr.forEach(item => {
-            item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude))
-          })
-          sessionStorage.setItem("city", r.address.city)
-          _this.setState({ city: r.address.city, parkArr: parkArr })
-        }
-        else {
-          if (this.getStatus() === 6) {
-            console.log("没有权限")
-          }
-          if (this.getStatus() === 8) {
-            console.log("连接超时")
-          }
-        }
-      });
-    }
+
+    //let _this = this
+    //if (!sessionStorage.getItem("city")) {
+    //  var geolocation = new BMap.Geolocation();
+    //  geolocation.getCurrentPosition(function (r) {
+    //    if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+    //      let parkArr = _this.state.parkArr
+    //      parkArr.forEach(item => {
+    //        item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude))
+    //      })
+    //      sessionStorage.setItem("city", r.address.city)
+    //      _this.setState({ city: r.address.city, parkArr: parkArr })
+    //    }
+    //    else {
+    //      if (this.getStatus() === 6) {
+    //        console.log("没有权限")
+    //      }
+    //      if (this.getStatus() === 8) {
+    //        console.log("连接超时")
+    //      }
+    //    }
+    //  });
+    //}
 
     curtainHide();
 
@@ -218,25 +218,31 @@ class Index extends React.Component {
     // 判断所属企业
   public isLoginData() {
     let data = sessionStorage.getItem("userInfos");
-    let dataO = JSON.parse(data)
+    let dataObj = JSON.parse(data)
 
-    console.log("LoginData", dataO);
-    console.log(" LoginData", typeof dataO);
-    console.log("LoginData21", dataO.enterprises);
-    console.log(" LoginData22",typeof   dataO.enterprises);
+    console.log("LoginData", dataObj);
+    console.log(" LoginData", typeof dataObj);
+    console.log("LoginData21", dataObj.enterprises);
+    console.log(" LoginData22",typeof   dataObj.enterprises);
   //  let dataObj = JSON.parse( dataObj.enterprises);
     //   console.log(" LoginData1", typeof dataObj);
     //console.log(" LoginData2", dataObj);
     //console.log(" LoginData2", dataObj.length);
-    IsCompanys.getCompanyArr(dataO.enterprises);
-    if (dataO.enterprises.length > 1) {
+    IsCompanys.getCompanyArr(dataObj.enterprises);
+    if (dataObj.enterprises.length > 1) {
       this.setState({
         isCompanyArr: true,
       })
 
     } else {
-       sessionStorage.setItem("enterprise",dataO.enterprises[0].name);
-       sessionStorage.setItem("enterpriseId",dataO.enterprises[0].id);
+      if (dataObj.enterprises.length ==0 ) {
+           sessionStorage.setItem("enterprise","请先关联企业");
+        sessionStorage.setItem("enterpriseId", "请先关联企业");
+      } else {
+         sessionStorage.setItem("enterprise", dataObj.enterprises[0].name);
+        sessionStorage.setItem("enterpriseId", dataObj.enterprises[0].id);
+      }
+      
     }
   }
 
@@ -255,6 +261,9 @@ class Index extends React.Component {
       isLoginBox: false,
     })
     this.isLoginData();
+    //获取park list
+    this.dataService.getParks(this.setParks);
+
   }
 
   // 聚焦
@@ -287,7 +296,30 @@ class Index extends React.Component {
   public setParks(data) {
     this.setState({
       parkArr: data
-    })
+    });
+    
+    let _this = this
+    if (!sessionStorage.getItem("city")) {
+      var geolocation = new BMap.Geolocation();
+      geolocation.getCurrentPosition(function (r) {
+        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+          let parkArr = _this.state.parkArr
+          parkArr.forEach(item => {
+            item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude))
+          })
+          sessionStorage.setItem("city", r.address.city)
+          _this.setState({ city: r.address.city, parkArr: parkArr })
+        }
+        else {
+          if (this.getStatus() === 6) {
+            console.log("没有权限")
+          }
+          if (this.getStatus() === 8) {
+            console.log("连接超时")
+          }
+        }
+      });
+    }
   }
 
   getRad(d) {
@@ -949,7 +981,9 @@ class LoginTest extends React.Component {
   //正常登录
   public doLogin() {
     console.log(this.state.username,this.state.password)
-      this.dataService.login(this.state.username,this.state.password,this.hideLogin);
+    this.dataService.login(this.state.username, this.state.password, this.hideLogin);
+
+
   }
   //admin 登录
   public adminLogin() {
@@ -973,7 +1007,8 @@ class LoginTest extends React.Component {
   }
 
   public hideLogin() {
-     setTimeout(function (){ Index.hideLoginBox()},1000);
+    setTimeout(function () { Index.hideLoginBox() }, 1000);
+    
   }
 
   public usernameChange(event) {

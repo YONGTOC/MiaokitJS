@@ -44,7 +44,7 @@ class DataService {
   public uploadImgOss(pBack, file) {
     console.log("uploadImgOss", file)
     $.ajax({
-      url: this.state.rooturl + '/api/uploadImgOss',
+      url: this.state.rooturl + '/api/uploadImgOss?token=' + sessionStorage.getItem("token"),
       type: "post",
       data: JSON.stringify(file),
       success: function (data) {
@@ -506,8 +506,19 @@ class DataService {
       "descript": data.descript,
       "photo": data.files[0].url,
     }
-    console.log("postTakingPhotoInfo", theData);
-    pBack("随手拍提交完成");
+    //console.log("postTakingPhotoInfo", theData);
+    //pBack("随手拍提交完成");
+    //    let thedata = JSON.stringify(datas)
+      $.ajax({
+        url: this.state.rooturl + '/api/postTakingPhotoInfo',
+        data: theData,
+        type: "post",
+        dataType: "json",
+      success: function (data) {
+         console.log("postTakingPhotoInfo", data); 
+      }
+     });
+
   }
 
   // 15.2(摆点申请模块)提交摆点申请接口 
@@ -525,7 +536,7 @@ class DataService {
     };
     let thedata = JSON.stringify(datas)
       $.ajax({
-        url: this.state.rooturl + '/api/postAdvertisementPoint',
+        url: this.state.rooturl + '/api/postAdvertisementPoint?token=' + sessionStorage.getItem("token"),
         data: thedata,
         type: "post",
         dataType: "json",
@@ -550,14 +561,20 @@ class DataService {
   public getRoomBook(pBack, park_id, name) {
     console.log("getRoomBook", pBack, park_id, name);
     let theurl
-    if (name && name!=="搜索") {
-       theurl = this.state.rooturl + '/api/getRoomBook/' + 1 + '/' + name
-    } else {
-       theurl= this.state.rooturl + '/api/getRoomBook/' + 1 
-    }
+    //if (name && name!=="搜索") {
+    //   theurl = this.state.rooturl + '/api/getRoomBook/' + park_id + '/' + name
+    //} else {
+    //   theurl= this.state.rooturl + '/api/getRoomBook?token=' + sessionStorage.getItem("token") +  '/' + park_id  
+    //}
     $.ajax({
-      url: theurl,
+     // url: theurl,
+      url: this.state.rooturl +'/api/getRoomBook',
       type: "get",
+      data: {
+        park_id: park_id,
+        name: name,
+        token: sessionStorage.getItem("token") 
+      },
       success: function (data) {
         //console.log("getRoomBookajax", data);
         if (data.status == 113) {
@@ -578,8 +595,13 @@ class DataService {
   public getRoomBookInfo(pBack, id) {
     //console.log("getRoomBookInfo", id);
     $.ajax({
-      url: this.state.rooturl + '/api/getRoomBookInfo'+"/"+id,
+    //  url: this.state.rooturl + '/api/getRoomBookInfo'+"/"+id,
+      url: this.state.rooturl + '/api/getRoomBookInfo',
       type: "get",
+      data: {
+        id:id,
+        token: sessionStorage.getItem("token"),
+      },
       success: function (data) {
         console.log("getRoomBookInfoajax", data);
         if (data.status == 113) {
@@ -621,7 +643,7 @@ class DataService {
     let thedata = JSON.stringify(datas)
    // console.log("提交场地预定", thedata);
     $.ajax({
-      url: this.state.rooturl + '/api/BookingRoom',
+      url: this.state.rooturl + '/api/BookingRoom?token=' + sessionStorage.getItem("token"),
       data: thedata,
       type: "post",
       dataType: "json",
@@ -645,7 +667,7 @@ class DataService {
   //19.(在线报修模块-报修类型)通过园区id获取在线报修类型
   public getRepairType(pBack) {
     $.ajax({
-      url: this.state.rooturl + '/api/getRepairType',
+      url: this.state.rooturl + '/api/getRepairType?token=' + sessionStorage.getItem("token"),
       type: "get",
       success: function (data) {
         console.log("getRepairType", data);
@@ -698,7 +720,7 @@ class DataService {
     console.log("saveRepairInfo", datas);
     let thedata = JSON.stringify(datas)
     $.ajax({
-      url: this.state.rooturl + '/api/saveRepairInfo',
+      url: this.state.rooturl + '/api/saveRepairInfo?token=' + sessionStorage.getItem("token"),
       data: thedata,
       type: "post",
       dataType: "json",
@@ -1113,12 +1135,14 @@ class DataService {
   }
 
   // 42.(我的个人中心模块-修改认证)用户修改用户名
-  public modifyUserName(pBack, username) {
+  public modifyUserName(pBack, username,phone,company_id) {
     $.ajax({
       url: this.state.rooturl + '/api/modifyUserName',
       data: {
-        id: 3,
+        id:  sessionStorage.getItem("userInfos.userId"),
         username: username,
+        phone: phone,
+        company_id: company_id,
         token: sessionStorage.getItem("token")
       },
       type: "get",
@@ -1146,7 +1170,7 @@ class DataService {
   public userAuthentication(pBack, obj) {
     console.log("用户身份认证提交 ", obj);
     $.ajax({
-      url: this.state.rooturl + '/api/userAuthentication',
+      url: this.state.rooturl + '/api/userAuthentication?token=' + sessionStorage.getItem("token"),
       data: obj,
       type: "post",
       success: function (data) {

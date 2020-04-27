@@ -16,19 +16,36 @@ class RepairsOnline extends React.Component<{ history: any }>{
   public componentDidMount() {
     // 19.(在线报修模块-报修类型)通过园区id获取在线报修类型
     this.dataService.getRepairType(this.setTypeUL);
-    let enterprises = JSON.parse(localStorage.getItem("enterprises"));
-    let contact = localStorage.getItem("userName");
-    let phone = localStorage.getItem("phone");
-    let staff_id = localStorage.getItem("userid");
-    console.log("--------", contact, phone, staff_id)
+    //let enterprises = JSON.parse(localStorage.getItem("enterprises"));
+    //let contact = localStorage.getItem("userName");
+    //let phone = localStorage.getItem("phone");
+    //let staff_id = localStorage.getItem("userid");
+    //console.log("--------", contact, phone, staff_id)
+    let data = sessionStorage.getItem("userInfos");
+    let dataObj = JSON.parse(data)
     this.setState({
-      contact: contact,
-      phone: phone,
-      staff_id: staff_id,
-      companyUL: enterprises,
-      company: enterprises[0].name,
-      company_id: enterprises[0].id,
+      contact: dataObj.name,
+      phone: dataObj.phone,
+      staff_id: dataObj.userId,
+      //companyUL: dataObj.enterprises,
+      //company: dataObj.enterprises[0].name,
+      //company_id: dataObj.enterprises[0].id,
     })
+
+    if (dataObj.enterprises.length == 0) {
+      this.setState({
+        companyUL: [],
+        company: "请先关联企业",
+        company_id: "请先关联企业",
+      })
+    } else {
+      this.setState({
+        companyUL:[],
+        company: sessionStorage.getItem("enterprise") ,
+        company_id:sessionStorage.getItem("enterpriseId") ,
+      })
+    }
+
   }
 
   public dataService: DataService = new DataService();
@@ -78,7 +95,7 @@ class RepairsOnline extends React.Component<{ history: any }>{
 
   static getReqairstpostion(data) { };
   public getReqairstpostion(data) {
-    console.log("getReqairstpostion",data)
+    console.log("getReqairstpostion", data)
 
     this.setState({
       position: data.position,
@@ -241,7 +258,7 @@ class RepairsOnline extends React.Component<{ history: any }>{
   //提交报修单 -- 成功
   public sumbitReqairssucceed(data) {
     alert(data);
-   // window.history.back();
+    // window.history.back();
   }
 
   public render() {
@@ -259,9 +276,9 @@ class RepairsOnline extends React.Component<{ history: any }>{
         <div className={this.state.reqairscss}>
           <div className={"foleBtn"}>
             <RouterDOM.Link to="/home" onClick={this.mapReturnpark.bind(this)}>
-            <p className="companyGoHomeLeft" style={{ color: "#949494" }} >
-              <i className="iconfont companyInfoicon">&#xe83b;</i>
-              <span>返回</span>
+              <p className="companyGoHomeLeft" style={{ color: "#949494" }} >
+                <i className="iconfont companyInfoicon">&#xe83b;</i>
+                <span>返回</span>
               </p>
             </RouterDOM.Link>
             <p className="companyGoHomeRight">
@@ -272,7 +289,7 @@ class RepairsOnline extends React.Component<{ history: any }>{
             <ul className={this.state.reqairsul} >
               <li>
                 <span className="redStar">*</span><span style={{ "color": "#949494" }}>报修照片</span>
-                  <div className="imgCom">
+                <div className="imgCom">
                   <WingBlank>
                     <ImagePicker
                       files={this.state.files}
@@ -286,26 +303,25 @@ class RepairsOnline extends React.Component<{ history: any }>{
               </li>
               <li>
                 <span className="redStar" >*</span><span style={{ "color": "#949494" }}>报修类型</span>
-                 <input type="text" className="getillType" value={this.state.type_name} placeholder="请选择报修类型" />
+                <input type="text" className="getillType" value={this.state.type_name} placeholder="请选择报修类型" />
                 <span className="iconfont" onClick={this.showTypeUL.bind(this)} style={{ "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" }} >&#xe827;</span>
               </li>
               <li>
                 <span className="redStar">*</span><span style={{ "color": "#949494" }}>报修位置</span>
-                  <input type="text" value={this.state.position} placeholder="请输入报修位置" style={{ "margin-left": "4rem", "border": "0" }}
+                <input type="text" value={this.state.position} placeholder="请输入报修位置" style={{ "margin-left": "4rem", "border": "0" }}
                   onChange={this.getPosition.bind(this)} />
                 <i className="iconfont" style={{ "fontSize": "3rem", "color": "#0B8BF0", "float": "right", "padding": " 0 0 0 4rem" }}>&#xe82c;</i>
               </li>
               <li>
                 <span className="redStar">*</span><span style={{ "color": "#949494" }}>报修企业</span>
-                <span className="iconfont" onClick={this.showCompanyBox.bind(this)} style={{ "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" }} >&#xe827;</span>
+                <span className="iconfont" style={{ "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" }} >&#xe827;</span>
                 <p className={"applyRight"}
-                  style={{ "font-size": "2.3rem", "padding-left": "2.5rem", "float":"right","width": "37rem" }}>{this.state.company}</p>
-                
+                  style={{ "font-size": "2.3rem", "padding-left": "2.5rem", "float": "right", "width": "37rem" }}>{this.state.company}</p>
               </li>
               <li>
                 <span className="redStar">*</span><span style={{ "color": "#949494" }}>联系人</span>
                 <input type="text" value={this.state.contact} placeholder="请填写联系人" style={{ "margin-left": "6rem", "border": "0" }}
-                  onChange={this.reqairsContacts.bind(this)} readOnly/>
+                  onChange={this.reqairsContacts.bind(this)} readOnly />
               </li>
               <li>
                 <span className="redStar">*</span><span style={{ "color": "#949494" }}>电话号码</span>
@@ -394,7 +410,7 @@ class RepairsOnline extends React.Component<{ history: any }>{
     //使用场地id，模型编号(用于匹配对应3d房间)
     room_id: "",
     //使用场地名称，
-    room:"",
+    room: "",
     //报修企业
     company: "",
     //联系人

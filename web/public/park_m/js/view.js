@@ -556,22 +556,13 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
                 this.setState({
                     roomImg: data.response.pic,
                     urlNull: "show",
-                    data: [
-                        'https://zos.alipayobjects.com/rmsportal/AiyWuByWklrrUDlFignR.png',
-                        'https://zos.alipayobjects.com/rmsportal/TekJlZRVCjLFexlOCuWn.png',
-                        'https://zos.alipayobjects.com/rmsportal/IJOtIlfsYdTyaDTRVrLI.png'
-                    ],
                 });
             }
             else {
                 this.setState({
                     roomImg: data.response.pic,
                     urlNull: "hide",
-                    data: [
-                        'https://zos.alipayobjects.com/rmsportal/AiyWuByWklrrUDlFignR.png',
-                        'https://zos.alipayobjects.com/rmsportal/TekJlZRVCjLFexlOCuWn.png',
-                        'https://zos.alipayobjects.com/rmsportal/IJOtIlfsYdTyaDTRVrLI.png'
-                    ],
+                    data: picurl,
                 });
             }
         }
@@ -660,7 +651,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
         uploadImgOss(pBack, file) {
             console.log("uploadImgOss", file);
             $.ajax({
-                url: this.state.rooturl + '/api/uploadImgOss',
+                url: this.state.rooturl + '/api/uploadImgOss?token=' + sessionStorage.getItem("token"),
                 type: "post",
                 data: JSON.stringify(file),
                 success: function (data) {
@@ -692,6 +683,2478 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     };
                     sessionStorage.setItem("token", data.token);
                     sessionStorage.setItem("userInfos", JSON.stringify(userInfo));
+                    pBack(data);
+                }
+            });
+        }
+        refreshToken(ytoken) {
+            $.ajax({
+                url: this.state.rooturl + '/api/refresh',
+                data: {
+                    "token": ytoken,
+                },
+                type: "post",
+                success: function (data) {
+                    console.log("login-getToken", data);
+                }
+            });
+        }
+        getParks(pBack) {
+            let thetoken = sessionStorage.getItem("token");
+            $.ajax({
+                url: this.state.rooturl + '/api/getParks',
+                type: "get",
+                data: {
+                    "token": thetoken,
+                },
+                success: function (data) {
+                    if (data) {
+                        pBack(data.response);
+                    }
+                    ;
+                }
+            });
+        }
+        getParkInfo(pBack, park_id) {
+            let thetoken = sessionStorage.getItem("token");
+            var data = {
+                "return_code": "100",
+                "response": [
+                    {
+                        "id": "1009",
+                        "headimgurl": "http://xxx.jpg",
+                        "province": "桂林",
+                        "longitude": "10.55",
+                        "latitude": "66.666",
+                        "name": "桂林国家高新",
+                        "address": "桂林七星朝阳路D-11",
+                        "project": [
+                            {
+                                "id": "1009",
+                                "name": "电子信息",
+                                "type": 1,
+                                "use_type": 0,
+                                "project_url": "http://xxx.bin",
+                                "longitude": "10.55",
+                                "latitude": "66.666",
+                                "offset": "10,20,10",
+                                "rotate": "10",
+                            }
+                        ],
+                        "audio": [
+                            { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+                            { name: "园区配套", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
+                            { name: "园区建筑", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+                        ]
+                    }
+                ],
+                "err_msg": ""
+            };
+            pBack(data);
+        }
+        getCompanyType(pBack, park_id) {
+            let thetoken = sessionStorage.getItem("token");
+            $.ajax({
+                url: this.state.rooturl + '/api/getCompanyType',
+                data: {
+                    "park_id": park_id,
+                    "token": thetoken,
+                },
+                type: "get",
+                success: function (data) {
+                    console.log("5-企业类型列表", data);
+                    pBack(data);
+                }
+            });
+        }
+        findCompany(pBack, park_id, company_type_id, companyName) {
+            let thetoken = sessionStorage.getItem("token");
+            $.ajax({
+                url: this.state.rooturl + '/api/findCompany',
+                data: {
+                    "park_id": 1,
+                    "company_type_id": company_type_id,
+                    "token": thetoken,
+                    "name": companyName
+                },
+                type: "get",
+                success: function (data) {
+                    console.log("findCompany企业列表", data);
+                    if (data.status == 113) {
+                    }
+                    else {
+                        pBack(data);
+                        console.log("fin企业列表", data);
+                    }
+                }
+            });
+        }
+        getCompanyInfo(pBack, id) {
+            let thetoken = sessionStorage.getItem("token");
+            $.ajax({
+                url: this.state.rooturl + '/api/getCompanyInfo',
+                data: {
+                    "id": id,
+                    "token": thetoken,
+                },
+                type: "get",
+                success: function (data) {
+                    if (data.status == 113) {
+                    }
+                    else {
+                        pBack(data);
+                        console.log("77777777777", data);
+                    }
+                }
+            });
+        }
+        getRoomRentSquareType(pBack, park_id) {
+            console.log("init-AllareaType", pBack, park_id);
+            let thetoken = sessionStorage.getItem("token");
+            $.ajax({
+                url: this.state.rooturl + '/api/getRoomRentSquareType',
+                data: {
+                    "park_id": 1,
+                    "token": thetoken,
+                },
+                type: "get",
+                success: function (data) {
+                    if (data.status == 113) {
+                    }
+                    else {
+                        pBack(data);
+                    }
+                }
+            });
+        }
+        findRoomRentByparkid(pBack, park_id, square) {
+            console.log("findRoomRentByparkid", pBack, park_id, square);
+            let thetoken = sessionStorage.getItem("token");
+            $.ajax({
+                url: this.state.rooturl + '/api/findRoomRent',
+                data: {
+                    "park_id": park_id,
+                    "token": thetoken,
+                    "square": square
+                },
+                type: "get",
+                success: function (data) {
+                    console.log("getfindRoomRent", data);
+                    if (data.status == 113) {
+                    }
+                    else {
+                        pBack(data);
+                        console.log("findRoomRentByparkid", data);
+                    }
+                }
+            });
+        }
+        findRoomRentByroomid(pBack, id) {
+            console.log("findRoomRentByroomid-jxxxxxxxxxxxx", id);
+            let thetoken = sessionStorage.getItem("token");
+            $.ajax({
+                url: this.state.rooturl + '/api/getRoomRentInfo',
+                data: {
+                    "id": id,
+                    "token": thetoken,
+                },
+                type: "get",
+                success: function (data) {
+                    if (data.status == 113) {
+                    }
+                    else {
+                        pBack(data);
+                        console.log("findRoomRentByroomid", data);
+                    }
+                }
+            });
+        }
+        getTakingPhotosType(pBack, park_id) {
+            console.log("getTakingPhotosType", pBack, park_id);
+            var data = {
+                "return_code": "100",
+                "response": [
+                    {
+                        "id": "1009",
+                        "name": "阻挡主要出入口",
+                    },
+                    {
+                        "id": "1009",
+                        "name": "非停车位侧停车",
+                    }
+                ],
+                "err_msg": ""
+            };
+            pBack(data);
+        }
+        getTakingPhotos(pBack, park_id, name) {
+            let data = {
+                "return_code": "100",
+                "response": [
+                    {
+                        "id": "1009",
+                        "type": "非停车位侧停车",
+                        "car_license": "桂C123456",
+                        "time": "2020-02-28 14:38:15",
+                        "position": "A座厦门旁",
+                        "longitude": "10.55",
+                        "latitude": "66.666",
+                        "photo": "./park_m/image/i.png"
+                    }, {
+                        "id": "1009",
+                        "type": "非停车位侧停车",
+                        "car_license": "桂C120000",
+                        "time": "2020-02-28 14:38:15",
+                        "position": "A座厦门旁",
+                        "longitude": "10.55",
+                        "latitude": "66.666",
+                        "photo": "./park_m/image/i.png"
+                    }
+                ],
+                "err_msg": ""
+            };
+            pBack(data);
+        }
+        getTakingPhotoInfo(pBack, id) {
+            console.log("随手拍list", id);
+            let data = {
+                "return_code": "100",
+                "response": {
+                    "id": "1009",
+                    "type_name": "非停车位侧停车",
+                    "car_license": "桂A5000",
+                    "time": "2020-02-28 14:38:15",
+                    "position": "A座厦门旁",
+                    "longitude": "10.55",
+                    "latitude": "66.666",
+                    "descript": "横跨在斑马线上",
+                    "photo": "./park_m/image/i.png",
+                },
+                "err_msg": ""
+            };
+            pBack(data);
+        }
+        postTakingPhotoInfo(pBack, data) {
+            let theData = {
+                "park_id": sessionStorage.getItem("park_id"),
+                "type_id": data.type_id,
+                "car_license": data.car_license,
+                "time": data.time,
+                "position": data.position,
+                "longitude": data.longitude,
+                "latitude": data.latitude,
+                "descript": data.descript,
+                "photo": data.files[0].url,
+            };
+            $.ajax({
+                url: this.state.rooturl + '/api/postTakingPhotoInfo',
+                data: theData,
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    console.log("postTakingPhotoInfo", data);
+                }
+            });
+        }
+        postAdvertisementPoint(pBack, data) {
+            let datas = {
+                'park_id': sessionStorage.getItem("park_id"),
+                'staff_id': data.staff_id,
+                "staff_name": data.applicant,
+                "phone": data.phone,
+                "company_id": data.company_id,
+                "company": data.company,
+                "content": data.content,
+                "positions": data.applyList
+            };
+            let thedata = JSON.stringify(datas);
+            $.ajax({
+                url: this.state.rooturl + '/api/postAdvertisementPoint?token=' + sessionStorage.getItem("token"),
+                data: thedata,
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    console.log("getRoomRentSquareType", data);
+                    if (data.status == 113) {
+                    }
+                    else {
+                    }
+                    if (data.return_code == 100) {
+                        pBack("摆点申请提交完成");
+                    }
+                }
+            });
+        }
+        getRoomBook(pBack, park_id, name) {
+            console.log("getRoomBook", pBack, park_id, name);
+            let theurl;
+            $.ajax({
+                url: this.state.rooturl + '/api/getRoomBook',
+                type: "get",
+                data: {
+                    park_id: park_id,
+                    name: name,
+                    token: sessionStorage.getItem("token")
+                },
+                success: function (data) {
+                    if (data.status == 113) {
+                    }
+                    else {
+                        let dataJ = JSON.parse(data);
+                        pBack(dataJ);
+                    }
+                }
+            });
+        }
+        getRoomBookInfo(pBack, id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getRoomBookInfo',
+                type: "get",
+                data: {
+                    id: id,
+                    token: sessionStorage.getItem("token"),
+                },
+                success: function (data) {
+                    console.log("getRoomBookInfoajax", data);
+                    if (data.status == 113) {
+                    }
+                    else {
+                        let dataJ = JSON.parse(data);
+                        pBack(dataJ);
+                    }
+                }
+            });
+        }
+        bookingRoom(pBack, data) {
+            let datas = {
+                'park_id': sessionStorage.getItem("park_id"),
+                'staff_id': data.staff_id,
+                "staff_name": data.applicant,
+                "phone": data.phone,
+                "company_id": data.company_id,
+                "company": data.company,
+                "room": data.room_name,
+                "building_id": data.building_id,
+                "floor_id": data.floor_id,
+                "room_id": data.room_id,
+                "start_date": data.start_date,
+                "end_date": data.end_date,
+                "theme": data.theme,
+                "content": data.content,
+            };
+            let thedata = JSON.stringify(datas);
+            $.ajax({
+                url: this.state.rooturl + '/api/BookingRoom?token=' + sessionStorage.getItem("token"),
+                data: thedata,
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    console.log("BookingRoom", data);
+                    if (data.status == 113) {
+                    }
+                    else {
+                    }
+                    if (data.return_code == 100) {
+                        pBack("场地预定申请完成");
+                    }
+                }
+            });
+        }
+        getRepairType(pBack) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getRepairType?token=' + sessionStorage.getItem("token"),
+                type: "get",
+                success: function (data) {
+                    console.log("getRepairType", data);
+                    let dataJ = JSON.parse(data);
+                    console.log("getRepairType", dataJ);
+                    if (dataJ.return_code == 100) {
+                        pBack(dataJ);
+                    }
+                }
+            });
+        }
+        saveRepairInfo(pBack, data) {
+            let datas = {
+                'park_id': sessionStorage.getItem("park_id"),
+                "type_id": data.type_id,
+                "position": "E座b区三楼",
+                "longitude": "10.55",
+                "latitude": "66.666",
+                "building_id": "a座",
+                "floor_id": "1F",
+                "room_id": "202",
+                "room": "201-2",
+                "company_id": data.company_id,
+                "company": data.company,
+                'staff_id': data.staff_id,
+                "staff_name": data.contact,
+                "phone": data.phone,
+                "descript": data.descript,
+                "img_url": data.files[0].url
+            };
+            console.log("saveRepairInfo", datas);
+            let thedata = JSON.stringify(datas);
+            $.ajax({
+                url: this.state.rooturl + '/api/saveRepairInfo?token=' + sessionStorage.getItem("token"),
+                data: thedata,
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    console.log("saveRepairInfo", data);
+                    if (data.status == 113) {
+                    }
+                    else {
+                    }
+                    if (data.err_msg == "请求成功") {
+                        pBack("场地预定申请完成");
+                    }
+                }
+            });
+        }
+        getParkingList(pBack, park_id) {
+            let data = {
+                "return_code": "100",
+                "response": [
+                    {
+                        "id": "100001",
+                        "name": "a座地下停车场",
+                        "longitude": "10.55",
+                        "latitude": "66.666",
+                    },
+                    {
+                        "id": "100002",
+                        "name": "b座地下停车场",
+                        "longitude": "10.55",
+                        "latitude": "66.666",
+                    }
+                ],
+                "err_msg": ""
+            };
+            pBack(data);
+        }
+        getCarType(pBack, park_id) {
+            console.log("显示车辆类型列表");
+            let data = {
+                "return_code": "100",
+                "response": [
+                    {
+                        "id": "1009",
+                        "name": "中小型车",
+                    },
+                    {
+                        "id": "1009",
+                        "name": "大型车",
+                    }
+                ],
+                "err_msg": ""
+            };
+            pBack(data);
+        }
+        saveParkingApply(pBack, data) {
+            let thedata = {
+                'park_id': sessionStorage.getItem("park_id"),
+                "car_license_color": data.car_license_color,
+                "car_license": data.car_license,
+                "applicant": data.applicant,
+                "phone": data.phone,
+                "company": data.company,
+                "company_address": data.company_address,
+                "car_owner": data.car_owner,
+                "car_brand": data.car_brand,
+                "car_model": data.car_model,
+                "car_color": data.car_color,
+                "car_type": data.car_type,
+            };
+            console.log("24提交车位申请信息", thedata);
+        }
+        saveParkingAppointment(pBack, data) {
+            let thedata = {
+                'park_id': sessionStorage.getItem("park_id"),
+                "car_license_color": data.car_license_color,
+                "car_license": data.car_license,
+                "applicant": data.applicant,
+                "phone": data.phone,
+                "company": data.company,
+                "company_address": data.company_address,
+                "car_owner": data.car_owner,
+                "car_brand": data.car_brand,
+                "car_model": data.car_model,
+                "car_color": data.car_color,
+                "car_type": data.car_type,
+                "underground_parking_id": data.underground_parking_id,
+                "underground_parking_name": data.underground_parking_name,
+            };
+            console.log("25提交地库申请信息", thedata);
+        }
+        changeParkingCarInfo(pBack, data) {
+            let thedata = {
+                'park_id': sessionStorage.getItem("park_id"),
+                "car_license_color": data.car_license_color,
+                "car_license": data.car_license,
+                "applicant": data.applicant,
+                "phone": data.phone,
+                "company": data.company,
+                "company_address": data.company_address,
+                "car_owner": data.car_owner,
+                "car_brand": data.car_brand,
+                "car_model": data.car_model,
+                "car_color": data.car_color,
+                "car_type": data.car_type,
+                "orgin_car_license_color": data.orgin_car_license_color,
+                "orgin_car_license": data.orgin_car_license,
+                "orgin_car_owner": data.orgin_car_owner,
+                "orgin_phone": data.orgin_phone,
+            };
+            console.log("26 提交车位变更", thedata);
+            pBack("提交车位变更,成功！");
+        }
+        saveVisitorParkingAppointment(pBack, data) {
+            let thedata = {
+                'park_id': sessionStorage.getItem("park_id"),
+                "car_license_color": data.car_license_color,
+                "car_license": data.car_license,
+                "applicant": data.applicant,
+                "phone": data.phone,
+                "company": data.company,
+                "underground_parking_id": data.underground_parking_id,
+                "underground_parking_name": data.underground_parking_name,
+                "start_time": data.start_time,
+                "end_time": data.end_time,
+            };
+            console.log("27 提交来访车辆预约", thedata);
+            pBack("提交来访车辆预约,成功！");
+        }
+        getMicroCircleType(pBack) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getMicroCircleType',
+                data: {
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getMicroCircleList(pBack, obj) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getMicroCircleList',
+                data: {
+                    park_id: obj.park_id,
+                    type_id: obj.type_id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getMicroCircleInfo(pBack, id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getMicroCircleInfo',
+                data: {
+                    id: id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        saveMyMicroCircle(pBack, obj) {
+            $.ajax({
+                url: this.state.rooturl + '/api/saveMyMicroCircle',
+                data: JSON.stringify({
+                    park_id: obj.park_id,
+                    user_id: obj.user_id,
+                    type_id: obj.type_id,
+                    name: obj.name,
+                    content: obj.content,
+                    token: sessionStorage.getItem("token")
+                }),
+                type: "post",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getHeadlines(pBack, park_id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getHeadlines',
+                data: {
+                    park_id: park_id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getPreferentialPolicyType(pBack, park_id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getPreferentialPolicyType',
+                data: {
+                    park_id: park_id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getPreferentialPolicies(pBack, obj) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getPreferentialPolicies',
+                data: {
+                    park_id: obj.park_id,
+                    type_id: obj.type_id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getParkInformationType(pBack, park_id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getParkInformationType',
+                data: {
+                    park_id: park_id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getParkInformationList(pBack, obj) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getParkInformationList',
+                data: {
+                    park_id: obj.park_id,
+                    type_id: obj.type_id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getInformation(pBack, id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getInformation',
+                data: {
+                    id: id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getActivityType(pBack, park_id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getActivityType',
+                data: {
+                    park_id: park_id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getActivities(pBack, obj) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getActivities',
+                data: {
+                    park_id: obj.park_id,
+                    type_id: obj.type_id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getActivitiyInfo(pBack, id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getActivitiyInfo',
+                data: {
+                    id: id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        postActivitySign(pBack, obj) {
+            $.ajax({
+                url: this.state.rooturl + '/api/postActivitySign',
+                data: {
+                    user_id: obj.user_id,
+                    activity_id: obj.activity_id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "post",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getThirdServiceType(pBack, park_id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getThirdServiceType',
+                data: {
+                    park_id: park_id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getThirdServices(pBack, obj) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getThirdServices',
+                data: {
+                    park_id: obj.park_id,
+                    type_id: obj.type_id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        modifyUserName(pBack, username, phone, company_id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/modifyUserName',
+                data: {
+                    id: sessionStorage.getItem("userInfos.userId"),
+                    username: username,
+                    phone: phone,
+                    company_id: company_id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getRoleType(pBack) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getRoleType',
+                data: {
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        userAuthentication(pBack, obj) {
+            console.log("用户身份认证提交 ", obj);
+            $.ajax({
+                url: this.state.rooturl + '/api/userAuthentication?token=' + sessionStorage.getItem("token"),
+                data: obj,
+                type: "post",
+                success: function (data) {
+                    console.log(data.err_msg);
+                    if (data.err_msg == "提交成功") {
+                        pBack(data.err_msg);
+                    }
+                }
+            });
+        }
+        getCompanyInfoByUser(pBack, id) {
+            $.ajax({
+                url: this.state.rooturl3 + '/api/getCompanyInfoByUser?user_id=' + id,
+                type: "get",
+                success: function (data) {
+                    console.log(data);
+                    pBack(data);
+                }
+            });
+        }
+        getMyAuthorityWorkType(pBack, id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getMyAuthorityWorkType',
+                data: {
+                    id: id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getMyAuthorityStateType(pBack, id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getMyAuthorityStateType',
+                data: {
+                    id: id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getMyWork(pBack, obj) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getMyWork',
+                data: {
+                    id: obj.id,
+                    work_type: obj.work_type,
+                    state_type: obj.state_type,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getBookingRoomInfo(pBack, id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getBookingRoomInfo',
+                data: {
+                    id: id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        changeBookingRoomInfo(pBack, obj) {
+            $.ajax({
+                url: this.state.rooturl + '/api/changeBookingRoomInfo',
+                data: {
+                    uid: obj.uid,
+                    id: obj.id,
+                    state: obj.state,
+                    reply: obj.reply,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getRoleAuthenticationInfo(pBack, id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getRoleAuthenticationInfo',
+                data: {
+                    id: id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        changeRoleAuthenticationInfo(pBack, obj) {
+            $.ajax({
+                url: this.state.rooturl + '/api/changeRoleAuthenticationInfo',
+                data: {
+                    uid: obj.uid,
+                    id: obj.id,
+                    state: obj.state,
+                    reply: obj.reply,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getAdvertisementPointInfo(pBack, id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getAdvertisementPointInfo',
+                data: {
+                    id: id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        changeAdvertisementPointInfo(pBack, obj) {
+            $.ajax({
+                url: this.state.rooturl + '/api/changeAdvertisementPointInfo',
+                data: {
+                    uid: obj.uid,
+                    id: obj.id,
+                    state: obj.state,
+                    reply: obj.reply,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getRepairInfo(pBack, id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getRepairInfo',
+                data: {
+                    id: id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        changeRepairInfo(pBack, obj) {
+            $.ajax({
+                url: this.state.rooturl + '/api/changeRepairInfo',
+                data: {
+                    uid: obj.uid,
+                    id: obj.id,
+                    state: obj.state,
+                    reply: obj.reply,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getMyMsgType(pBack) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getMyMsgType',
+                data: {
+                    park_id: 1001,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getMyMsgInfo(pBack, typeId) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getMyMsgInfo',
+                data: {
+                    id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+                    type_id: typeId,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getMyStatistic(pBack) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getMyStatistic',
+                data: {
+                    id: 1001,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getParkBuildingInfo(pBack) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getParkBuildingInfo',
+                data: {
+                    id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+                    park_id: sessionStorage.getItem("park_id"),
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        getRoomInfo(pBack, roomId) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getRoomInfo',
+                data: {
+                    id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+                    park_id: sessionStorage.getItem("park_id"),
+                    room_id: roomId,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        saveRoomBaseInfo(pBack, obj) {
+            $.ajax({
+                url: this.state.rooturl + '/api/saveRoomBaseInfo?token=' + sessionStorage.getItem("token"),
+                data: JSON.stringify({
+                    id: 1001,
+                    room_id: sessionStorage.getItem("roomId"),
+                    squre: obj.squre,
+                    price: obj.price,
+                    contact: obj.contact,
+                    phone: obj.phone,
+                    inspectionTime: obj.inspectionTime,
+                    require: obj.require,
+                    lift: obj.lift,
+                    square: obj.square,
+                    pic: obj.pic,
+                    video: obj.video
+                }),
+                type: "post",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        saveRoomRentInfo(pBack, obj) {
+            $.ajax({
+                url: this.state.rooturl + '/api/saveRoomRentInfo?token=' + sessionStorage.getItem("token"),
+                data: JSON.stringify({
+                    id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+                    room_id: sessionStorage.getItem("roomId"),
+                    state: obj.state,
+                    company_id: obj.companyId,
+                    company_name: obj.companyName,
+                    user: obj.user,
+                    phone: obj.phone,
+                    rent_date: obj.rentDate,
+                    rent_end_date: obj.rentEndDate,
+                    default_room: obj.defaultRoom
+                }),
+                type: "post",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        saveRoomPartBaseInfo(pBack, obj) {
+            $.ajax({
+                url: this.state.rooturl + '/api/saveRoomPartBaseInfo?token=' + sessionStorage.getItem("token"),
+                data: JSON.stringify({
+                    id: 1,
+                    park_id: 1,
+                    room_id: sessionStorage.getItem("roomId"),
+                    part: [{
+                            id: obj[0].id,
+                            name: obj[0].name,
+                            position: obj[0].position,
+                            headimageurl: obj[0].headimageurl,
+                            panoramaurl: obj[0].panoramaurl
+                        },
+                        {
+                            id: obj[1].id,
+                            name: obj[1].name,
+                            position: obj[1].position,
+                            headimageurl: obj[1].headimageurl,
+                            panoramaurl: obj[1].panoramaurl
+                        }
+                    ]
+                }),
+                type: "post",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        postParkPhone(pBack, phone) {
+            $.ajax({
+                url: this.state.rooturl + '/api/postParkPhone',
+                data: {
+                    id: 1001,
+                    park_id: 1001,
+                    phone: phone,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        saveCompanyInfo(pBack, obj) {
+            console.log("tjjjj", obj);
+            $.ajax({
+                url: this.state.rooturl + '/api/saveCompanyInfo?token=' + sessionStorage.getItem("token"),
+                dataType: "json",
+                data: JSON.stringify(obj),
+                type: "post",
+                success: function (data) {
+                    console.log(data);
+                    pBack(data);
+                }
+            });
+        }
+        getUserInfo(pBack) {
+            $.ajax({
+                url: this.state.userInfoUrl,
+                dataType: "json",
+                data: "",
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+    }
+    exports.default = DataService;
+});
+define("applyPut", ["require", "exports", "react", "react-router-dom", "antd-mobile", "dataService", "compat", "css!./styles/antd-mobile.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, antd_mobile_2, dataService_2, compat_2) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class ApplyPut extends React.Component {
+        constructor(props) {
+            super(props);
+            this.dataService = new dataService_2.default();
+            this.globalAction = new compat_2.default();
+            this.state = {
+                applyPutStartTimeBox: "hide",
+                applyPutEndTimeBox: "hide",
+                timeIndex: "",
+                companyBox: "hide",
+                companyUL: [],
+                companyIndexof: 0,
+                company_id_in: "",
+                company_name_in: "",
+                startDate: "",
+                endDate: "",
+                inval: "",
+                applicant: "",
+                phone: "",
+                company: "请选择申请企业",
+                applyPutcss: "applyPut-part ",
+                iconfont: "iconfont iconfont-unturn",
+                applyPutul: "applyPutul-part applyPutul",
+                applyList: [],
+                address: "",
+                content: "请将具体内容描述出来。（200字内）",
+                inputValue: "",
+                value: '2017-01-25',
+                staff_id: "",
+            };
+            ApplyPut.addapplyPut = this.addapplyPut.bind(this);
+            this.delApply = this.delApply.bind(this);
+        }
+        componentDidMount() {
+            let data = sessionStorage.getItem("userInfos");
+            let dataObj = JSON.parse(data);
+            this.setState({
+                applicant: dataObj.name,
+                phone: dataObj.phone,
+                staff_id: dataObj.userId,
+            });
+            if (dataObj.enterprises.length == 0) {
+                this.setState({
+                    companyUL: [],
+                    company: "请先关联企业",
+                    company_id: "请先关联企业",
+                });
+            }
+            else {
+                this.setState({
+                    companyUL: [],
+                    company: sessionStorage.getItem("enterprise"),
+                    company_id: sessionStorage.getItem("enterpriseId"),
+                });
+            }
+        }
+        toggleFold() {
+            console.log("tftft");
+            if (this.state.applyPutcss == "applyPut-all") {
+                this.setState({
+                    applyPutcss: "applyPut-part",
+                    applyPutul: " applyPutul-part applyPutul",
+                });
+                this.globalAction.web_call_webgl_continueloadModuler();
+            }
+            else {
+                this.setState({
+                    applyPutcss: "applyPut-all",
+                    applyPutul: " applyPutul-all applyPutul",
+                });
+                this.globalAction.web_call_webgl_pauseloadModuler();
+            }
+            if (this.state.iconfont == "iconfont iconfont-unturn") {
+                this.setState({
+                    iconfont: "iconfont iconfont-turn",
+                });
+            }
+            else {
+                this.setState({
+                    iconfont: "iconfont iconfont-unturn",
+                });
+            }
+        }
+        mapReturnpark() {
+            this.globalAction.web_call_webgl_mapReturnpark();
+        }
+        static addapplyPut(data) { }
+        ;
+        addapplyPut(data) {
+            let arr = this.state.applyList;
+            arr.push({
+                startTime: "开始日期", endTime: "结束日期", id: data.id, name: data.name,
+            });
+            this.setState({
+                applyList: arr
+            });
+            console.log(this.state);
+        }
+        foucus(event) {
+            console.log("address聚焦2", event.target.value);
+            let index = event.target.getAttribute("data-index");
+            console.log("address输入index", index);
+        }
+        blur(event) {
+        }
+        changeContent(event) {
+            this.setState({
+                content: event.target.value,
+            });
+        }
+        foucusContent(event) {
+            if (this.state.content === "请将具体内容描述出来。（200字内）") {
+                this.setState({ content: "" });
+            }
+        }
+        blurContent(event) {
+            if (this.state.content == "") {
+                this.setState({ content: "请将具体内容描述出来。（200字内）" });
+            }
+        }
+        changeAddress(event) {
+            let index = event.target.getAttribute("data-index");
+            let applyList = this.state.applyList;
+            applyList[index].address = event.target.value;
+            this.setState({
+                applyList: applyList,
+            });
+        }
+        delApply(event) {
+            let index = event.target.getAttribute("data-index");
+            let applyList = this.state.applyList;
+            applyList.splice(index, 1);
+            this.setState({ applyList: applyList });
+            console.log("删除条目2", this.state.applyList);
+            let id = event.target.getAttribute("data-id");
+            let data = {
+                id: id
+            };
+            this.globalAction.web_call_webgl_cancelApplyPut(data);
+        }
+        changeStart(event) {
+            let index = event.target.getAttribute("data-index");
+            let applyList = this.state.applyList;
+            console.log("start输入index1", this.state.startDate);
+            applyList[index].start_date = this.state.startDate;
+            this.setState({
+                applyList: applyList,
+            });
+            console.log("start输入index2", this.state.applyList);
+        }
+        changeEnd(event) {
+            let index = event.target.getAttribute("data-index");
+            let applyList = this.state.applyList;
+            console.log("end输入index1", this.state.endDate);
+            applyList[index].end_date = this.state.endDate;
+            this.setState({
+                applyList: applyList,
+            });
+            console.log("end输入index2", this.state.applyList);
+        }
+        setStartDate(date) {
+            var dateStr = JSON.stringify(date);
+            var dateN = dateStr.slice(1, 11);
+            var index = this.state.timeIndex;
+            let applyList = this.state.applyList;
+            console.log("start输入index1", dateN);
+            applyList[index].startTime = dateN;
+            applyList[index].start_date = dateN;
+            this.setState({
+                applyList: applyList,
+                applyPutStartTimeBox: "hide"
+            });
+            console.log("start输入index2", this.state.applyList);
+        }
+        setEndDate(date) {
+            var dateStr = JSON.stringify(date);
+            var dateN = dateStr.slice(1, 11);
+            var index = this.state.timeIndex;
+            let applyList = this.state.applyList;
+            console.log("end输入index1", dateN);
+            applyList[index].endTime = dateN;
+            applyList[index].end_date = dateN;
+            this.setState({
+                applyList: applyList,
+                applyPutEndTimeBox: "hide"
+            });
+            console.log("end输入index2", this.state.applyList);
+        }
+        clickStart(event) {
+            let index = event.target.getAttribute("data-index");
+            console.log("clickStart输入index", index);
+            this.setState({
+                timeIndex: index,
+                applyPutStartTimeBox: "show"
+            });
+        }
+        clickEnd(event) {
+            let index = event.target.getAttribute("data-index");
+            console.log("clickEnd输入index", index);
+            this.setState({
+                timeIndex: index,
+                applyPutEndTimeBox: "show"
+            });
+        }
+        showCompanyBox() {
+            this.setState({
+                companyBox: "rollSelectCauseBox",
+                company_id_in: this.state.companyUL[this.state.companyIndexof].id,
+                company_name_in: this.state.companyUL[this.state.companyIndexof].name,
+            });
+        }
+        inCompanyeList(i, id, name) {
+            this.setState({
+                companyIndexof: i,
+                company_id_in: id,
+                company_name_in: name,
+            });
+        }
+        hideCompanyBox() {
+            this.setState({
+                companyBox: "hide",
+            });
+        }
+        getCompanyBox() {
+            this.setState({
+                companyBox: "hide",
+                company_id: this.state.company_id_in,
+                company: this.state.company_name_in,
+            });
+        }
+        sumbitApplyput() {
+            console.log("提交摆点申请", this.state);
+            if (this.state.applyList.length == 0) {
+                alert("请选择摆点位置");
+                return;
+            }
+            if (this.state.content == "请将具体内容描述出来。（200字内）") {
+                alert("请描述具体内容");
+            }
+            else {
+                alert(22222);
+                $.each(this.state.applyList, function (index, item) {
+                    if (item.startTime == "开始日期") {
+                        alert("请填写开始日期");
+                    }
+                    else if (item.endTime == "结束日期") {
+                        alert("请填写结束日期");
+                    }
+                });
+                return;
+            }
+            alert(3333);
+        }
+        sumbitApplyputsucceed(data) {
+            alert(data);
+            window.history.back();
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("p", { className: "companyInfotit" },
+                    React.createElement("span", null, "\u6446\u70B9\u7533\u8BF7")),
+                React.createElement("div", { className: this.state.applyPutcss },
+                    React.createElement("div", { className: "foleBtn" },
+                        React.createElement(RouterDOM.Link, { to: "/home" },
+                            React.createElement("p", { className: "companyGoHomeLeft", style: { color: "#949494" }, onClick: this.mapReturnpark.bind(this) },
+                                React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B"),
+                                React.createElement("span", null, "\u8FD4\u56DE"))),
+                        React.createElement("p", { className: "companyGoHomeRight" },
+                            React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem", "color": "#C0C0C0" }, onClick: this.toggleFold.bind(this) }, "\uE849"))),
+                    React.createElement("form", null,
+                        React.createElement("ul", { className: this.state.applyPutul },
+                            React.createElement("li", null,
+                                React.createElement("span", { className: "applySpanleft" },
+                                    React.createElement("span", { className: "redStar" }, "*"),
+                                    "\u7533\u8BF7\u4EBA"),
+                                React.createElement("p", { className: "applyRight" }, this.state.applicant)),
+                            React.createElement("li", null,
+                                React.createElement("span", { className: "redStar" }, "*"),
+                                "\u624B\u673A\u53F7\u7801",
+                                React.createElement("p", { className: "applyRight" }, this.state.phone)),
+                            React.createElement("li", null,
+                                React.createElement("span", { className: "redStar" }, "*"),
+                                "\u7533\u8BF7\u5355\u4F4D",
+                                React.createElement("p", { className: "applyRight" }, this.state.company)),
+                            React.createElement("li", null,
+                                React.createElement("p", null,
+                                    React.createElement("span", { className: "redStar" }, "*"),
+                                    React.createElement("span", { style: { "font-size": "2.3rem" } }, "\u5177\u4F53\u5185\u5BB9\uFF1A")),
+                                React.createElement("textarea", { className: "getapplyPuttextarea", value: this.state.content, placeholder: "", onChange: this.changeContent.bind(this), onFocus: this.foucusContent.bind(this), onBlur: this.blurContent.bind(this) })),
+                            React.createElement("div", { className: this.state.applyPutStartTimeBox },
+                                React.createElement(antd_mobile_2.DatePicker, { mode: "date", title: "\u8BF7\u9009\u62E9\u65E5\u671F", extra: "\u8BF7\u9009\u62E9", value: this.state.startDate, onChange: this.setStartDate.bind(this) },
+                                    React.createElement(antd_mobile_2.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65E5\u671F"))),
+                            React.createElement("div", { className: this.state.applyPutEndTimeBox },
+                                React.createElement(antd_mobile_2.DatePicker, { mode: "date", title: "\u8BF7\u9009\u62E9\u65E5\u671F", extra: "\u8BF7\u9009\u62E9", value: this.state.endDate, onChange: this.setEndDate.bind(this) },
+                                    React.createElement(antd_mobile_2.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65E5\u671F"))),
+                            React.createElement("div", { className: "applyList" },
+                                React.createElement("p", { className: "theapplyP" }, "\u8BF7\u5728\u6240\u9700\u6295\u653E\u5730\u70B9\u540E\u8BBE\u7F6E\u6295\u653E\u5F00\u59CB\u53CA\u7ED3\u675F\u65F6\u95F4"),
+                                React.createElement("ul", { style: { "margin": "0" } },
+                                    React.createElement("li", null,
+                                        React.createElement("div", { className: "applyAddress" }, "\u5E7F\u544A\u653E\u7F6E\u5730\u70B9"),
+                                        React.createElement("div", { className: "applytime" }, "\u5F00\u59CB\u65F6\u95F4"),
+                                        React.createElement("div", { className: "applytime" }, "\u7ED3\u675F\u65F6\u95F4"),
+                                        React.createElement("div", { className: "applyicom" },
+                                            " ",
+                                            React.createElement("i", { className: "iconfont", style: { "color": "#fff" } }, "\uE82D"))),
+                                    this.state.applyList.map((i, index) => {
+                                        return (React.createElement("li", { key: index },
+                                            React.createElement("div", { className: "applyAddress" },
+                                                React.createElement("span", { className: "applyIndexof" }, index + 1),
+                                                React.createElement("input", { className: "", type: "text", placeholder: "", style: { " width": "18rem", "border": 0 }, value: i.name })),
+                                            React.createElement("div", { className: "applytime", style: { "color": "#158CE8" }, onClick: this.clickStart.bind(this), "data-index": index },
+                                                i.startTime,
+                                                " "),
+                                            React.createElement("div", { className: "applytime", style: { "color": "#158CE8" }, onClick: this.clickEnd.bind(this), "data-index": index }, i.endTime),
+                                            React.createElement("div", { className: "applyicom" },
+                                                " ",
+                                                React.createElement("i", { className: "iconfont", onClick: this.delApply, "data-longitude": i.longitude, "data-latitude": i.latitude, "data-id": i.id, "data-index": index, style: { "color": "#158CE8" } }, "\uE81C"))));
+                                    }))),
+                            React.createElement("div", { className: "applyPutSumbit", onClick: this.sumbitApplyput.bind(this) }, "\u63D0\u4EA4"))),
+                    React.createElement("div", { className: this.state.companyBox },
+                        React.createElement("ul", { className: "rollSelectCauseULcss" }, this.state.companyUL.map((i, index) => {
+                            return (React.createElement("li", { className: this.state.companyIndexof == index ? "rollSelectCauseli-active" : "rollSelectCauseli", onClick: this.inCompanyeList.bind(this, index, i.id, i.name) }, i.name));
+                        })),
+                        React.createElement("div", { className: "rollSelectCuasedBtn" },
+                            React.createElement("span", { className: "rollSelectCancel", onClick: this.hideCompanyBox.bind(this) }, "\u53D6\u6D88"),
+                            React.createElement("span", { className: "rollSelectConfirm", onClick: this.getCompanyBox.bind(this) }, "\u786E\u8BA4"))))));
+        }
+    }
+    exports.default = ApplyPut;
+});
+define("attractInvestment", ["require", "exports", "react", "react-router-dom", "css!./styles/attractInvestment.css"], function (require, exports, React, react_router_dom_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class AttractInvestment extends React.Component {
+        constructor() {
+            super(...arguments);
+            this.state = {
+                tagArr: [
+                    { name: "园区企业", imgUrl: "./park_m/image/business_administration.png", url: "/attractInvestmentList" },
+                    { name: "园区人员", imgUrl: "./park_m/image/park_staff.png", url: "" },
+                    { name: "意向用户", imgUrl: "./park_m/image/intended_users.png", url: "" }
+                ]
+            };
+        }
+        goBack() {
+            this.props.history.goBack();
+        }
+        render() {
+            return (React.createElement("div", { className: "rent-room" },
+                React.createElement("div", { className: "rent-room-back" },
+                    React.createElement("div", { style: { float: "left" }, onClick: this.goBack.bind(this) },
+                        React.createElement("img", { src: "./park_m/image/back.png", style: { margin: "-10px 10px 0 0" } }),
+                        React.createElement("span", null, "\u62DB\u5546\u7BA1\u7406"))),
+                React.createElement("div", { style: { backgroundColor: "#ffffff", width: "100%", height: "100%", marginTop: "15px" } }, this.state.tagArr.map((item, index) => {
+                    return (React.createElement(react_router_dom_1.Link, { to: item.url },
+                        React.createElement("div", { key: index, style: { width: "33%", height: "300px", float: "left", textAlign: "center", marginTop: "150px" } },
+                            React.createElement("img", { src: item.imgUrl, style: { width: "120px", height: "120px" } }),
+                            React.createElement("div", { style: { fontSize: "40px", color: "#333333" } }, item.name))));
+                }))));
+        }
+    }
+    exports.default = AttractInvestment;
+});
+define("attractInvestmentList", ["require", "exports", "react", "css!./styles/attractInvestmentList.css"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class AttractInvestmentList extends React.Component {
+        constructor() {
+            super(...arguments);
+            this.state = {
+                inputValue: "搜索企业",
+                listArr: [
+                    { deleteState: false }, { deleteState: false }, { deleteState: false }, { deleteState: false }, { deleteState: false }, { deleteState: false }, { deleteState: false },
+                    { deleteState: false }, { deleteState: false }, { deleteState: false }, { deleteState: false }, { deleteState: false }, { deleteState: false }, { deleteState: false }
+                ],
+                deleteState: true,
+                deleteNumber: 0
+            };
+        }
+        foucus() {
+            if (this.state.inputValue === "搜索企业") {
+                this.setState({ inputValue: "" });
+            }
+        }
+        blur() {
+            if (this.state.inputValue === "") {
+                this.setState({ inputValue: "搜索企业" });
+            }
+        }
+        change(event) {
+            this.setState({ inputValue: event.target.value });
+        }
+        clickTag(index) {
+            let listArr = this.state.listArr;
+            let deleteNumber = 0;
+            listArr[index].deleteState = !listArr[index].deleteState;
+            listArr.forEach(item => {
+                if (item.deleteState) {
+                    deleteNumber++;
+                }
+            });
+            this.setState({ listArr: listArr, deleteNumber: deleteNumber });
+        }
+        goBack() {
+            this.props.history.goBack();
+        }
+        delete() {
+            this.setState({ deleteState: !this.state.deleteState });
+        }
+        render() {
+            return (React.createElement("div", { className: "infoarea" },
+                React.createElement("div", { className: "infoarea-top" },
+                    React.createElement("div", { className: "infoarea-child-top" },
+                        React.createElement("img", { src: "./park_m/image/whiteBack.png", style: { margin: "0 10px 30px -15px", padding: "15px 15px 15px 15px" }, onClick: this.goBack.bind(this) }),
+                        React.createElement("input", { className: "infoarea-input", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this), style: { width: "82%" } }),
+                        React.createElement("img", { src: "./park_m/image/search.png", className: "infoarea-search-img", style: { left: "-78%" } }),
+                        React.createElement("img", { src: "./park_m/image/bottom.png", style: { position: "relative", left: "-13%", bottom: "10px" } }),
+                        React.createElement("span", { style: { position: "absolute", fontSize: "40px", left: "73%", top: "68px", fontWeight: "600" } }, "\u5168\u90E8"))),
+                React.createElement("div", { className: "search-user-list" },
+                    this.state.listArr.map((item, index) => {
+                        return (React.createElement("div", { key: index, className: "attract-investment-list-child", onClick: e => this.clickTag(index) },
+                            React.createElement("div", { style: { float: "left" } },
+                                React.createElement("img", { src: item.deleteState ? "./park_m/image/delete_checked.png" : "./park_m/image/unchecked.png", width: "50px", height: "50px" })),
+                            React.createElement("div", { style: { float: "left", width: "200px", height: "200px", marginLeft: "-40px" } },
+                                React.createElement("img", { src: "./park_m/image/logo.png" })),
+                            React.createElement("div", { style: { float: "left", height: "100%" } },
+                                React.createElement("div", { style: { height: "25%", margin: "-30px 0 25px 0" } }, "\u6D59\u6C5F\u6C38\u62D3\u4FE1\u606F\u79D1\u6280\u6709\u9650\u516C\u53F8"),
+                                React.createElement("img", { src: "./park_m/image/position.png", style: { width: "50px", height: "50px", marginBottom: "12px" } }),
+                                React.createElement("span", { style: { color: "#949494", fontSize: "36px", marginLeft: "10px" } }, "E\u5EA7B\u533A-3F-301")),
+                            React.createElement("div", { style: { float: "right", height: "100%", lineHeight: "100px" } },
+                                React.createElement("div", null,
+                                    React.createElement("img", { src: "./park_m/image/right.png", style: { margin: "30px 0 0 110px" } })),
+                                React.createElement("div", { style: { fontSize: "32px", backgroundColor: "#F5F5F5", height: "50px", width: "150px", textAlign: "center", lineHeight: "50px", margin: "22px 10px 0 0" } }, "\u79D1\u6280\u670D\u52A1"))));
+                    }),
+                    React.createElement("div", { style: { width: "100%", height: "350px", textAlign: "center", fontSize: "40px", lineHeight: "100px" } }, "\u5230\u5E95\u5566~")),
+                !this.state.deleteState ?
+                    React.createElement("div", { className: "rent-room-detail-bottom" },
+                        React.createElement("div", { style: { float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", color: "#6C6C6C", backgroundColor: "#F2F2F2" }, onClick: this.delete.bind(this) }, "\u5220\u9664"),
+                        React.createElement("div", { style: { float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", backgroundColor: "#0B8BF0", color: "#ffffff" } }, "\u65B0\u589E")) :
+                    React.createElement("div", { className: "attract-investment-list-bottom" },
+                        "\u5220\u9664(",
+                        this.state.deleteNumber,
+                        ")")));
+        }
+    }
+    exports.default = AttractInvestmentList;
+});
+define("bookSite", ["require", "exports", "react", "react-router-dom", "antd-mobile", "dataService", "compat", "css!./styles/antd-mobile.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, antd_mobile_3, dataService_3, compat_3) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class BookSite extends React.Component {
+        constructor(props) {
+            super(props);
+            this.globalAction = new compat_3.default();
+            this.state = {
+                BookSitecss: "bookSite",
+                showList: true,
+                showInfo: false,
+                showBook: false,
+                companyInfotit: "companyInfotit",
+            };
+            BookSite.toggleView = this.toggleView.bind(this);
+            BookSite.getSiteinfo = this.getSiteinfo.bind(this);
+        }
+        static getSiteinfo(id) { }
+        getSiteinfo(id) {
+            console.log("getCompanyinfo", id);
+            this.toggleView("Info", id);
+            BookInfo.getRoomdata(id);
+        }
+        static toggleView(a, id) { }
+        ;
+        toggleView(a, id) {
+            console.log("fl", a);
+            console.log("fl", id);
+            if (a == "Info") {
+                this.setState({
+                    showList: false,
+                    showInfo: true,
+                    companyInfotit: "hide",
+                });
+            }
+            else {
+                this.setState({
+                    showList: true,
+                    showInfo: false,
+                    companyInfotit: "companyInfotit",
+                });
+            }
+        }
+        mapReturnpark() {
+            this.globalAction.web_call_webgl_mapReturnpark();
+        }
+        render() {
+            return (React.createElement("div", { className: this.state.BookSitecss },
+                React.createElement("p", { className: this.state.companyInfotit },
+                    React.createElement("span", null, "\u573A\u5730\u9884\u7EA6")),
+                React.createElement("div", { className: this.state.showList == true ? "show" : "hide" },
+                    React.createElement(BookList, null)),
+                React.createElement("div", { className: this.state.showInfo == true ? "show" : "hide" },
+                    React.createElement(BookInfo, null))));
+        }
+    }
+    exports.default = BookSite;
+    class BookList extends React.Component {
+        constructor(props) {
+            super(props);
+            this.dataService = new dataService_3.default();
+            this.globalAction = new compat_3.default();
+            this.state = {
+                imgurlNull: "https://yongtoc-digitalcity.oss-cn-shenzhen.aliyuncs.com/images/9982b35c62bd7376bc29c5e1ef12ae6b.jpg",
+                bookListcss: "bookList-part",
+                iconfont: "iconfont iconfont-unturn",
+                bookul: "bookul",
+                indexOf: 0,
+                park_id: 1,
+                inputValue: "搜索",
+                bookData: [],
+                nullBookData: "hide",
+                src: "about:'blank'",
+                bookImgback: "bookImgback",
+            };
+            this.getRoomBook = this.getRoomBook.bind(this);
+        }
+        componentDidMount() {
+            this.dataService.getRoomBook(this.getRoomBook, this.state.park_id, name);
+        }
+        getRoomBook(data) {
+            console.log("returnRoomBook222", data);
+            if (data.response) {
+                this.setState({
+                    nullBookData: "hide",
+                    bookData: data.response,
+                });
+            }
+            else {
+                this.setState({
+                    bookData: [],
+                    nullBookData: "show"
+                });
+                console.log("没有符合条件的结果");
+            }
+        }
+        toggleFold() {
+            console.log("tftft");
+            if (this.state.bookListcss == "bookList-all") {
+                this.setState({
+                    bookListcss: "bookList-part",
+                    bookul: "bookul"
+                });
+                this.globalAction.web_call_webgl_continueloadModuler();
+            }
+            else {
+                this.setState({
+                    bookListcss: "bookList-all",
+                    bookul: "bookul-all"
+                });
+                this.globalAction.web_call_webgl_pauseloadModuler();
+            }
+            if (this.state.iconfont == "iconfont iconfont-unturn") {
+                this.setState({
+                    iconfont: "iconfont iconfont-turn",
+                });
+            }
+            else {
+                this.setState({
+                    iconfont: "iconfont iconfont-unturn",
+                });
+            }
+        }
+        showInfo(a, id, name, e) {
+            BookSite.toggleView(a, id);
+            console.log("more", a, id, name, e);
+            BookInfo.getRoomdata(id);
+        }
+        bookActive(index, id) {
+            console.log("active", index, id);
+            this.setState({
+                indexOf: index,
+                roomId: id
+            });
+            console.log("bookActive", this.state);
+            this.globalAction.web_call_webgl_switchRoom(id);
+        }
+        foucus() {
+            if (this.state.inputValue == "搜索") {
+                this.setState({ inputValue: "" });
+            }
+        }
+        blur(event) {
+            if (this.state.inputValue == "") {
+                this.setState({ inputValue: "搜索" });
+            }
+        }
+        change(event) {
+            this.setState({
+                inputValue: event.target.value,
+            });
+        }
+        queryKeyDownHandler(e) {
+            switch (e.keyCode) {
+                case 13:
+                    this.searchRoomBook();
+                    break;
+            }
+        }
+        searchRoomBook() {
+            console.log("搜索", this.state);
+            this.dataService.getRoomBook(this.getRoomBook, this.state.park_id, this.state.inputValue);
+        }
+        onError() {
+            this.setState({
+                imageUrl: "https://yongtoc-digitalcity.oss-cn-shenzhen.aliyuncs.com/images/9982b35c62bd7376bc29c5e1ef12ae6b.jpg"
+            });
+        }
+        mapReturnpark() {
+            this.globalAction.web_call_webgl_mapReturnpark();
+        }
+        render() {
+            return (React.createElement("div", { className: this.state.bookListcss },
+                React.createElement("div", { className: "foleBtn" },
+                    React.createElement("p", { className: "companyGoHomeLeft", onClick: this.mapReturnpark.bind(this) },
+                        React.createElement(RouterDOM.Link, { to: "/home", style: { color: "#949494" } },
+                            React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B"),
+                            React.createElement("span", null, "\u8FD4\u56DE"))),
+                    React.createElement("p", { className: "companyGoHomeRight" },
+                        React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem", "color": "#C0C0C0" }, onClick: this.toggleFold.bind(this) }, "\uE849"))),
+                React.createElement("ul", { className: this.state.bookul },
+                    React.createElement("li", { className: this.state.nullBookData },
+                        React.createElement("p", null, "\u6CA1\u6709\u7B26\u5408\u6761\u4EF6\u7684\u7ED3\u679C")),
+                    this.state.bookData.map((i, index) => {
+                        if (!i.pic_url) {
+                            return (React.createElement("li", { onClick: this.bookActive.bind(this, index, i.id), className: this.state.indexOf == index ? "bookli-active" : "bookli" },
+                                React.createElement("div", { className: this.state.indexOf == index ? "bookImgback-active" : "bookImgback" },
+                                    React.createElement("img", { src: i.headimgurl, onError: this.onError.bind(this) })),
+                                React.createElement("div", { className: "bookul-middle" },
+                                    React.createElement("p", { style: { "font-size": "2.4rem", "font-weight": "bold" } },
+                                        i.building_name,
+                                        "-",
+                                        i.floor_name,
+                                        "-",
+                                        i.room_name),
+                                    i.price.map((it, index) => {
+                                        return (React.createElement("p", { style: { "font-size": "2.5rem" } },
+                                            it.content,
+                                            "\uFF1A",
+                                            React.createElement("span", { className: "bookPrice" }, it.price),
+                                            "  ",
+                                            React.createElement("span", { className: "priceYuan" }, "\u5143")));
+                                    })),
+                                React.createElement("div", { className: "bookul-right" },
+                                    React.createElement("p", { onClick: this.showInfo.bind(this, "Info", i.id, "name"), className: this.state.indexOf == index ? "show" : "hide" },
+                                        "\u66F4\u591A",
+                                        React.createElement("i", { className: "iconfont", style: { "fontSize": "2rem" } }, "\uE827")))));
+                        }
+                        else {
+                            return (React.createElement("li", { onClick: this.bookActive.bind(this, index, i.id), className: this.state.indexOf == index ? "bookli-active" : "bookli" },
+                                React.createElement("div", { className: this.state.indexOf == index ? "bookImgback-active" : "bookImgback" },
+                                    React.createElement("img", { src: this.state.imgurlNull })),
+                                React.createElement("div", { className: "bookul-middle" },
+                                    React.createElement("p", { style: { "font-size": "2.4rem", "font-weight": "bold" } },
+                                        i.building_name,
+                                        "-",
+                                        i.floor_name,
+                                        "-",
+                                        i.room_name),
+                                    i.price.map((it, index) => {
+                                        return (React.createElement("p", { style: { "font-size": "2.5rem" } },
+                                            it.content,
+                                            "\uFF1A",
+                                            React.createElement("span", { className: "bookPrice" }, it.price),
+                                            " ",
+                                            React.createElement("span", { className: "priceYuan" }, "\u5143")));
+                                    })),
+                                React.createElement("div", { className: "bookul-right" },
+                                    React.createElement("p", { onClick: this.showInfo.bind(this, "Info", i.id, "name"), className: this.state.indexOf == index ? "show" : "hide" },
+                                        "\u66F4\u591A",
+                                        React.createElement("i", { className: "iconfont", style: { "fontSize": "2rem" } }, "\uE827")))));
+                        }
+                    })),
+                React.createElement("form", { action: '', target: "rfFrame" },
+                    React.createElement("div", { className: "bookBtn" },
+                        React.createElement("div", { className: "searchBox" },
+                            React.createElement("span", { className: "searchBox-text" },
+                                React.createElement("span", { className: "iconfont", style: { "fontSize": "2.3rem" } }, "\uE810"),
+                                React.createElement("input", { className: "leaseSearch", type: "search", placeholder: "\u641C\u7D22", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this), onKeyDown: this.queryKeyDownHandler.bind(this) }))))),
+                React.createElement("iframe", { id: "rfFrame", name: "rfFrame", src: this.state.src, style: { display: "none" } }, "   ")));
+        }
+    }
+    class BookInfo extends React.Component {
+        constructor(props) {
+            super(props);
+            this.dataService = new dataService_3.default();
+            this.state = {
+                bookInfocss: "bookInfos",
+                iconfont: "iconfont iconfont-turn",
+                building_name: "",
+                floor_name: "",
+                room_name: "",
+                infoli: 0,
+                bookInfoul: "bookInfoul",
+                leaseInfoul: "leaseInfoul_br",
+            };
+            BookInfo.showList = this.showList.bind(this);
+            this.toggleFold = this.toggleFold.bind(this);
+            BookInfo.getRoomdata = this.getRoomdata.bind(this);
+            this.setBookdata = this.setBookdata.bind(this);
+        }
+        static getRoomdata(id) { }
+        getRoomdata(id) {
+            this.dataService.getRoomBookInfo(this.setBookdata, id);
+        }
+        static setBookdata(data) { }
+        setBookdata(data) {
+            console.log("setBookdata,setBookdata", data);
+            this.setState({
+                building_name: data.response.building_name,
+                floor_name: data.response.floor_name,
+                room_name: data.response.room_name,
+            });
+            SiteInfos.getInfos(data);
+            Notes.getNotes(data);
+            BookRoom.getRoomdata(data);
+        }
+        static showList(a, id) { }
+        ;
+        showList(a, id) {
+            console.log("showList", a);
+            BookSite.toggleView(a, id);
+            this.setState({
+                infoli: 0,
+                bookInfocss: "bookInfos",
+            });
+        }
+        toggleFold() {
+            console.log("tftft", this.state.infoli);
+            if (this.state.infoli == 2) {
+                if (this.state.bookInfocss == "bookInfos") {
+                    this.setState({
+                        bookInfocss: "bookInfos-all",
+                    });
+                }
+                else {
+                    this.setState({
+                        bookInfocss: "bookInfos",
+                    });
+                }
+            }
+            else {
+                if (this.state.bookInfocss == "bookInfos") {
+                    this.setState({
+                        bookInfocss: "bookInfos-part",
+                    });
+                }
+                else {
+                    this.setState({
+                        bookInfocss: "bookInfos",
+                    });
+                }
+            }
+            if (this.state.iconfont == "iconfont iconfont-unturn") {
+                this.setState({
+                    iconfont: "iconfont iconfont-turn",
+                });
+            }
+            else {
+                this.setState({
+                    iconfont: "iconfont iconfont-unturn",
+                });
+            }
+        }
+        infoClick(indexof) {
+            console.log("infoClick", indexof);
+            this.setState({
+                infoli: indexof,
+            });
+        }
+        render() {
+            return (React.createElement("div", { className: this.state.bookInfocss },
+                React.createElement("p", { className: "companyInfotit" },
+                    React.createElement("span", { className: this.state.infoli !== 2 ? "show" : "hide" },
+                        this.state.building_name,
+                        "-",
+                        this.state.floor_name,
+                        "-",
+                        this.state.room_name),
+                    React.createElement("span", { className: this.state.infoli == 2 ? "show" : "hide" }, "\u9884\u5B9A\u7533\u8BF7")),
+                React.createElement("div", { className: "foleBtn" },
+                    React.createElement("p", { className: "companyGoHomeLeft", onClick: this.showList.bind(this, "List", "id-01") },
+                        React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B"),
+                        React.createElement("span", null, "\u8FD4\u56DE")),
+                    React.createElement("p", { className: "companyGoHomeRight" },
+                        React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem", "color": "#C0C0C0" }, onClick: this.toggleFold.bind(this) }, "\uE849"))),
+                React.createElement("div", { className: this.state.infoli !== 2 ? "leaseInfoul" : "hide" },
+                    React.createElement("ul", { className: this.state.bookInfoul },
+                        React.createElement("li", { className: this.state.infoli == 0 ? "bookInfoli-active" : "bookInfoli", onClick: this.infoClick.bind(this, 0) }, "\u573A\u5730\u4FE1\u606F"),
+                        React.createElement("li", { className: this.state.infoli == 1 ? "bookInfoli-active" : "bookInfoli", onClick: this.infoClick.bind(this, 1) }, "\u4F7F\u7528\u987B\u77E5"))),
+                React.createElement("div", { className: "infoContain" },
+                    React.createElement("div", { className: this.state.infoli == 0 ? "show" : "hide" },
+                        React.createElement(SiteInfos, null)),
+                    React.createElement("div", { className: this.state.infoli == 1 ? "show" : "hide" },
+                        React.createElement(Notes, null)),
+                    React.createElement("div", { className: this.state.infoli == 2 ? "show" : "hide" },
+                        React.createElement(BookRoom, null)),
+                    React.createElement("div", { className: this.state.infoli !== 2 ? "bookSumbit" : "hide", onClick: this.infoClick.bind(this, 2) }, "\u9884\u5B9A"))));
+        }
+    }
+    class BookRoom extends React.Component {
+        constructor(props) {
+            super(props);
+            this.globalAction = new compat_3.default();
+            this.dataService = new dataService_3.default();
+            this.state = {
+                startTime: "",
+                endTime: "",
+                iconfont: "iconfont iconfont-unturn",
+                bookRoom: "bookRoom-part",
+                bookformcss: "bookform-part",
+                companyBox: "show",
+                companyUL: [],
+                companyIndexof: 0,
+                company_id_in: "",
+                company_name_in: "",
+                id: "",
+                applicant: "",
+                phone: "",
+                company: "",
+                name: "",
+                building_id: "",
+                floor_id: "",
+                room_id: "",
+                building_name: "",
+                floor_name: "",
+                room_name: "",
+                start_date: "",
+                start_time: "",
+                end_date: "",
+                end_time: "",
+                theme: "50字内",
+                content: "",
+            };
+            BookRoom.getRoomdata = this.getRoomdata.bind(this);
+        }
+        componentDidMount() {
+            let data = sessionStorage.getItem("userInfos");
+            let dataObj = JSON.parse(data);
+            this.setState({
+                applicant: dataObj.name,
+                phone: dataObj.phone,
+                staff_id: dataObj.userId,
+            });
+            if (dataObj.enterprises.length == 0) {
+                this.setState({
+                    companyUL: [],
+                    company: "请先关联企业",
+                    company_id: "请先关联企业",
+                });
+            }
+            else {
+                this.setState({
+                    companyUL: [],
+                    company: sessionStorage.getItem("enterprise"),
+                    company_id: sessionStorage.getItem("enterpriseId"),
+                });
+            }
+        }
+        static getRoomdata(data) { }
+        ;
+        getRoomdata(data) {
+            console.log("getBook", data);
+            this.setState({
+                id: data.response.id,
+                building_id: data.response.building_id,
+                floor_id: data.response.floor_id,
+                room_id: data.response.room_id,
+                building_name: data.response.building_name,
+                floor_name: data.response.floor_name,
+                room_name: data.response.room_name,
+            });
+        }
+        toggleFold() {
+            if (this.state.iconfont == "iconfont iconfont-unturn") {
+                this.setState({
+                    iconfont: "iconfont iconfont-turn",
+                });
+            }
+            else {
+                this.setState({
+                    iconfont: "iconfont iconfont-unturn",
+                });
+            }
+            if (this.state.bookRoom == "bookRoom-part") {
+                this.setState({
+                    bookRoom: "bookRoom-all",
+                    bookformcss: "bookform-all "
+                });
+                this.globalAction.web_call_webgl_pauseloadModuler();
+            }
+            else {
+                this.setState({
+                    bookRoom: "bookRoom-part",
+                    bookformcss: "bookform-part"
+                });
+                this.globalAction.web_call_webgl_continueloadModuler();
+            }
+        }
+        changebookContent(event) {
+            this.setState({
+                content: event.target.value,
+            });
+        }
+        changebookTheme(event) {
+            this.setState({
+                theme: event.target.value,
+            });
+        }
+        foucusbookTheme() {
+            if (this.state.theme === "50字内") {
+                this.setState({ theme: "" });
+            }
+        }
+        p(s) {
+            return s < 10 ? '0' + s : s;
+        }
+        setStartTime(date) {
+            const d = new Date(date);
+            const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate());
+            const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds());
+            const startDate = resDate + " " + resTime;
+            console.log("start输入index656", startDate);
+            this.setState({
+                startTime: date,
+                start_date: startDate,
+            });
+            console.log("start输入index2", this.state.startTime);
+        }
+        setEndTime(date) {
+            const d = new Date(date);
+            const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate());
+            const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds());
+            const endDate = resDate + " " + resTime;
+            this.setState({
+                endTime: date,
+                end_date: endDate,
+            });
+        }
+        showCompanyBox() {
+            this.setState({
+                companyBox: "rollSelectCauseBox",
+                company_id_in: this.state.companyUL[this.state.companyIndexof].id,
+                company_name_in: this.state.companyUL[this.state.companyIndexof].name,
+            });
+        }
+        inCompanyeList(i, id, name) {
+            this.setState({
+                companyIndexof: i,
+                company_id_in: id,
+                company_name_in: name,
+            });
+        }
+        hideCompanyBox() {
+            this.setState({
+                companyBox: "hide",
+            });
+        }
+        getCompanyBox() {
+            this.setState({
+                companyBox: "hide",
+                company_id: this.state.company_id_in,
+                company: this.state.company_name_in,
+            });
+        }
+        bookSumbit() {
+            if (this.state.start_date == "") {
+                alert("请选择开始时间");
+            }
+            else if (this.state.end_date == "") {
+                alert("请选择结束时间");
+            }
+            else if (this.state.theme == "") {
+                alert("请输入会议主题");
+            }
+            else if (this.state.content == "") {
+                alert("请输入会议具体需求");
+            }
+            else {
+                this.dataService.bookingRoom(this.bookSumbitOK, this.state);
+            }
+        }
+        static showList(a, id) { }
+        ;
+        showList(a, id) {
+            console.log("showList", a);
+            BookSite.toggleView(a, id);
+            this.setState({
+                infoli: 0,
+                bookInfocss: "bookInfos",
+            });
+        }
+        bookSumbitOK(data) {
+            alert(data);
+            BookInfo.showList("List", "");
+        }
+        render() {
+            return (React.createElement("div", { className: this.state.bookRoom },
+                React.createElement("div", { className: "foleBtn" },
+                    React.createElement("p", { className: "companyGoHomeLeft", onClick: this.showList.bind(this, "List", "id-01") },
+                        React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B"),
+                        React.createElement("span", null, "\u8FD4\u56DE")),
+                    React.createElement("p", { className: "companyGoHomeRight" },
+                        React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem", "color": "#C0C0C0" }, onClick: this.toggleFold.bind(this) }, "\uE849"))),
+                React.createElement("form", { className: this.state.bookformcss },
+                    React.createElement("ul", { className: "bookfromul" },
+                        React.createElement("li", null,
+                            React.createElement("span", { className: "applySpanleft" },
+                                React.createElement("span", { className: "redStar" }, "*"),
+                                "\u7533\u8BF7\u4EBA"),
+                            React.createElement("p", { className: "bookRight", style: { "padding-left": "1rem", "padding-top": "0.5rem" } }, this.state.applicant)),
+                        React.createElement("li", null,
+                            React.createElement("span", { className: "redStar" }, "*"),
+                            "\u624B\u673A\u53F7\u7801",
+                            React.createElement("p", { className: "bookRight", style: { "padding-left": "1rem", "padding-top": "0.5rem" } }, this.state.phone)),
+                        React.createElement("li", null,
+                            React.createElement("span", { className: "redStar" }, "*"),
+                            "\u7533\u8BF7\u4F01\u4E1A",
+                            React.createElement("p", { className: "bookfromliRight", style: { "line-height": " 4rem" } }, this.state.company)),
+                        React.createElement("li", { className: "bookActive" },
+                            React.createElement("span", { className: "bookformLeft" },
+                                React.createElement("span", { style: { "color": "#F2F2F2", "margin-right": "1rem" } }, "*"),
+                                "\u4F7F\u7528\u573A\u5730"),
+                            React.createElement("p", { className: "bookfromliRight", style: { "line-height": "3.5rem" } }, this.state.room_name)),
+                        React.createElement("li", null,
+                            React.createElement("p", null,
+                                React.createElement("span", { className: "redStar", style: { "float": "left", "margin-top": "0.8rem" } }, "*"),
+                                React.createElement("div", { style: { "fonSize": "2.5rem" }, className: "mDate" },
+                                    React.createElement(antd_mobile_3.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.startTime, onChange: this.setStartTime.bind(this) },
+                                        React.createElement(antd_mobile_3.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65F6\u95F4"))))),
+                        React.createElement("li", null,
+                            React.createElement("p", null,
+                                React.createElement("span", { className: "redStar", style: { "float": "left", "margin-top": "0.8rem" } }, "*"),
+                                React.createElement("div", { style: { "fonSize": "2.5rem" }, className: "mDate" },
+                                    React.createElement(antd_mobile_3.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.endTime, onChange: this.setEndTime.bind(this) },
+                                        React.createElement(antd_mobile_3.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65F6\u95F4"))))),
+                        React.createElement("li", { style: { "border": "0", "padding": "1rem 0 0 0" } },
+                            React.createElement("p", null,
+                                React.createElement("span", { className: "redStar" }, "*"),
+                                React.createElement("span", { style: { "font-size": "2.3rem", "margin-": "1rem" } }, "\u4F1A\u8BAE\u4E3B\u9898\uFF1A")),
+                            React.createElement("textarea", { className: "bookTheme", value: this.state.theme, onChange: this.changebookTheme.bind(this), onFocus: this.foucusbookTheme.bind(this) })),
+                        React.createElement("li", null,
+                            React.createElement("p", null,
+                                React.createElement("span", { className: "redStar" }, "*"),
+                                React.createElement("span", { style: { "font-size": "2.3rem" } }, "\u5177\u4F53\u9700\u6C42\uFF1A")),
+                            React.createElement("textarea", { className: "bookContent", value: this.state.content, style: { "margin-bottom": "10rem" }, placeholder: "\u8BF7\u5C06\u5177\u4F53\u9700\u6C42\u63CF\u8FF0\u51FA\u6765\u3002\uFF08200\u5B57\u5185\uFF09", onChange: this.changebookContent.bind(this) }))),
+                    React.createElement("div", { className: "bookSumbit", onClick: this.bookSumbit.bind(this) }, "\u63D0\u4EA4")),
+                React.createElement("div", { className: this.state.companyBox },
+                    React.createElement("ul", { className: "rollSelectCauseULcss" }, this.state.companyUL.map((i, index) => {
+                        return (React.createElement("li", { className: this.state.companyIndexof == index ? "rollSelectCauseli-active" : "rollSelectCauseli", onClick: this.inCompanyeList.bind(this, index, i.id, i.name) }, i.name));
+                    })),
+                    React.createElement("div", { className: "rollSelectCuasedBtn" },
+                        React.createElement("span", { className: "rollSelectCancel", onClick: this.hideCompanyBox.bind(this) }, "\u53D6\u6D88"),
+                        React.createElement("span", { className: "rollSelectConfirm", onClick: this.getCompanyBox.bind(this) }, "\u786E\u8BA4")))));
+        }
+    }
+    class SiteInfos extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                descript: [],
+                descriptS: "",
+            };
+            SiteInfos.getInfos = this.getInfos.bind(this);
+        }
+        componentDidMount() {
+            console.log("场地信息,场地信息");
+        }
+        static getInfos(data) { }
+        ;
+        getInfos(data) {
+            console.log("getinfo", typeof data.response.descript);
+            if (typeof data.response.descript == "string") {
+                this.setState({
+                    descriptS: data.response.descript,
+                    descript: [],
+                });
+            }
+            else {
+                this.setState({
+                    descript: data.response.descript,
+                    descriptS: "",
+                });
+            }
+        }
+        render() {
+            return (React.createElement("div", { className: "siteInfosbox" },
+                React.createElement("ul", null,
+                    this.state.descript.map((i, index) => {
+                        return (React.createElement("li", null,
+                            index + 1,
+                            "\u3001",
+                            i.content,
+                            " "));
+                    }),
+                    React.createElement("li", null,
+                        this.state.descriptS,
+                        " "))));
+        }
+    }
+    class Notes extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                guide: "",
+            };
+            Notes.getNotes = this.getNotes.bind(this);
+        }
+        componentDidMount() {
+            console.log("使用须知,使用须知");
+        }
+        static getNotes(data) { }
+        ;
+        getNotes(data) {
+            console.log("NotesNotes", data);
+            this.setState({
+                guide: data.response.guide,
+            });
+        }
+        render() {
+            return (React.createElement("div", { className: "notesBox" },
+                React.createElement("p", null,
+                    "\u5C0A\u656C\u7684\u4F01\u4E1A\uFF1A \u60A8\u597D\uFF0C",
+                    React.createElement("span", null, this.state.guide))));
+        }
+    }
+});
+define("bottomBtn", ["require", "exports", "react", "react-router-dom", "compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_4) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class BottomBtn extends React.Component {
+        constructor(props) {
+            super(props);
+            this.props = {
+                history: this.props.history
+            };
+            this.globalAction = new compat_4.default();
+            this.state = {
+                index: 1,
+                iconImg1In: "./park_m/image/bottomBtn/3d-in.png",
+                iconImg1Un: "./park_m/image/bottomBtn/3d-un.png",
+                iconImg3In: "./park_m/image/bottomBtn/zx-in.png",
+                iconImg3Un: "./park_m/image/bottomBtn/zx-un.png",
+                iconImg4In: "./park_m/image/bottomBtn/my-in.png",
+                iconImg4Un: "./park_m/image/bottomBtn/my-un.png",
+            };
+            this.toggleIcon = this.toggleIcon.bind(this);
+        }
+        componentDidMount() {
+            console.log(this.props.history.location.pathname);
+            if (this.props.history.location.pathname === "/home" || this.props.history.location.pathname === "/") {
+                this.setState({ index: 1 }, () => {
+                    this.toggleIcon(this.state.index);
+                });
+            }
+            else if (this.props.history.location.pathname === "/informationChild") {
+                this.setState({ index: 3 }, () => {
+                    this.toggleIcon(this.state.index);
+                });
+            }
+            else {
+                this.setState({ index: 4 }, () => {
+                    this.toggleIcon(this.state.index);
+                });
+            }
+        }
+        toggleIcon(data) {
+            this.setState({
+                index: data
+            });
+            if (data == 1) {
+                this.globalAction.web_call_webgl_continueloadModuler();
+            }
+            else {
+                this.globalAction.web_call_webgl_pauseloadModuler();
+            }
+        }
+        render() {
+            return (React.createElement("div", { className: "bottomView" },
+                React.createElement(RouterDOM.Link, { to: "/" },
+                    React.createElement("div", { className: this.state.index == 1 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 1) },
+                        React.createElement("img", { src: this.state.index == 1 ? this.state.iconImg1In : this.state.iconImg1Un }),
+                        React.createElement("p", null, "\u9996\u9875"))),
+                React.createElement(RouterDOM.Link, { to: "/informationChild" },
+                    React.createElement("div", { className: this.state.index == 3 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 3) },
+                        React.createElement("img", { src: this.state.index == 3 ? this.state.iconImg3In : this.state.iconImg3Un }),
+                        React.createElement("p", null, "\u653F\u7B56"))),
+                React.createElement(RouterDOM.Link, { to: "/personalCenter" },
+                    React.createElement("div", { className: this.state.index == 4 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 4) },
+                        React.createElement("img", { src: this.state.index == 4 ? this.state.iconImg4In : this.state.iconImg4Un }),
+                        React.createElement("p", null, "\u6211\u7684")))));
+        }
+        ;
+    }
+    exports.default = BottomBtn;
+});
+define("compat_online", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class GlobalAction {
+        web_call_webgl_initPark(pInfo) {
+            MiaokitJS.App.m_pProject.EnterPark({
+                m_pView: {
+                    m_nLng: 110.344301,
+                    m_nLat: 25.272208,
+                    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
+                    m_nDistance: 300.0,
+                    m_nPitch: 19.0,
+                    m_nYaw: 90.0
+                }
+            });
+            console.log("web_call_webgl_initPark", pInfo);
+        }
+        web_call_webgl_switchCompany(pName) {
+            console.log("web_call_webgl_switchCompany", pName);
+        }
+        web_call_webgl_switchRoom(pName) {
+            console.log("web_call_webgl_SwitchRoom", pName);
+        }
+        web_call_webgl_switchMark(pName, pInfo) {
+            console.log("web_call_webgl_switchMark", pName, pInfo);
+        }
+        web_call_webgl_mapReturnpark() {
+            console.log("web_call_webgl_mapReturnpark");
+        }
+        web_call_webgl_pauseloadModuler() {
+            console.log("web_call_webgl_pauseloadModuler");
+        }
+        web_call_webgl_continueloadModuler() {
+            console.log("web_call_webgl_continueloadModuler");
+        }
+        web_call_webgl_showParkingList(data) {
+            console.log("web_call_webgl_showParkingList", data);
+        }
+        web_call_webgl_onParking(data) {
+            console.log("web_call_webgl_onParking", data);
+        }
+        web_call_webgl_cancelApplyPut(data) {
+            console.log("web_call_webgl_cancelApplyPut", data);
+        }
+    }
+    exports.default = GlobalAction;
+});
+define("dataService - \u526F\u672C", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class DataService {
+        constructor() {
+            this.state = {
+                rooturl: "http://parkadmin.yongtoc.com",
+                userInfoUrl: "http://minghuakejiyuan.3dparkcloud.com/me",
+                rooturl2: "http://192.168.1.30:8002",
+                rooturl3: "http://192.168.1.27:89",
+                token: "",
+            };
+        }
+        componentDidMount() {
+        }
+        callback(a, pBack) {
+            console.log("callback1", a);
+            pBack("callback");
+        }
+        upload(pBack, file) {
+            console.log("fiffffffffffffffff", file);
+            $.ajax({
+                url: this.state.rooturl + '/api/upload?token=' + sessionStorage.getItem("token"),
+                data: file,
+                cache: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                type: "post",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
+        uploadImgOss(pBack, file) {
+            console.log("uploadImgOss", file);
+            $.ajax({
+                url: this.state.rooturl + '/api/uploadImgOss',
+                type: "post",
+                data: JSON.stringify(file),
+                success: function (data) {
+                    console.log(typeof data);
+                    let dataJ = JSON.parse(data);
+                    console.log("ajax", dataJ);
+                    if (dataJ.return_code == 100) {
+                        pBack(dataJ.response);
+                    }
+                }
+            });
+        }
+        login(username, password, pBack) {
+            $.ajax({
+                url: this.state.rooturl + '/api/login',
+                data: {
+                    "username": username,
+                    "password": password,
+                },
+                type: "post",
+                success: function (data) {
+                    console.log(data);
+                    sessionStorage.setItem("token", data.token);
+                    console.log(data.roles[0].role_name);
+                    sessionStorage.setItem("userInfo", data.roles[0].role_name);
+                    sessionStorage.setItem("userName", data.name);
+                    sessionStorage.setItem("phone", data.phone);
+                    sessionStorage.setItem("userid", data.id);
+                    sessionStorage.setItem("enterprises", JSON.stringify(data.enterprises));
                     pBack(data);
                 }
             });
@@ -991,10 +3454,10 @@ define("dataService", ["require", "exports"], function (require, exports) {
             console.log("getRoomBook", pBack, park_id, name);
             let theurl;
             if (name && name !== "搜索") {
-                theurl = this.state.rooturl + '/api/getRoomBook/' + 1 + '/' + name;
+                theurl = this.state.rooturl + '/api/getRoomBook/' + park_id + '/' + name;
             }
             else {
-                theurl = this.state.rooturl + '/api/getRoomBook/' + 1;
+                theurl = this.state.rooturl + '/api/getRoomBook/' + park_id;
             }
             $.ajax({
                 url: theurl,
@@ -1665,7 +4128,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             $.ajax({
                 url: this.state.rooturl + '/api/getMyMsgInfo',
                 data: {
-                    id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+                    id: 1,
                     type_id: typeId,
                     token: sessionStorage.getItem("token")
                 },
@@ -1692,8 +4155,8 @@ define("dataService", ["require", "exports"], function (require, exports) {
             $.ajax({
                 url: this.state.rooturl + '/api/getParkBuildingInfo',
                 data: {
-                    id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
-                    park_id: sessionStorage.getItem("park_id"),
+                    id: 1001,
+                    park_id: 1001,
                     token: sessionStorage.getItem("token")
                 },
                 type: "get",
@@ -1706,8 +4169,8 @@ define("dataService", ["require", "exports"], function (require, exports) {
             $.ajax({
                 url: this.state.rooturl + '/api/getRoomInfo',
                 data: {
-                    id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
-                    park_id: sessionStorage.getItem("park_id"),
+                    id: 1001,
+                    park_id: 1001,
                     room_id: roomId,
                     token: sessionStorage.getItem("token")
                 },
@@ -1744,7 +4207,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             $.ajax({
                 url: this.state.rooturl + '/api/saveRoomRentInfo?token=' + sessionStorage.getItem("token"),
                 data: JSON.stringify({
-                    id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+                    id: 1001,
                     room_id: sessionStorage.getItem("roomId"),
                     state: obj.state,
                     company_id: obj.companyId,
@@ -1831,1233 +4294,6 @@ define("dataService", ["require", "exports"], function (require, exports) {
         }
     }
     exports.default = DataService;
-});
-define("applyPut", ["require", "exports", "react", "react-router-dom", "antd-mobile", "dataService", "compat", "css!./styles/antd-mobile.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, antd_mobile_2, dataService_2, compat_2) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class ApplyPut extends React.Component {
-        constructor(props) {
-            super(props);
-            this.dataService = new dataService_2.default();
-            this.globalAction = new compat_2.default();
-            this.state = {
-                applyPutStartTimeBox: "hide",
-                applyPutEndTimeBox: "hide",
-                timeIndex: "",
-                companyBox: "hide",
-                companyUL: [],
-                companyIndexof: 0,
-                company_id_in: "",
-                company_name_in: "",
-                startDate: "",
-                endDate: "",
-                inval: "",
-                applicant: "",
-                phone: "",
-                company: "请选择申请企业",
-                applyPutcss: "applyPut-part ",
-                iconfont: "iconfont iconfont-unturn",
-                applyPutul: "applyPutul-part applyPutul",
-                applyList: [],
-                address: "",
-                content: "请将具体内容描述出来。（200字内）",
-                inputValue: "",
-                value: '2017-01-25',
-            };
-            ApplyPut.addapplyPut = this.addapplyPut.bind(this);
-            this.delApply = this.delApply.bind(this);
-        }
-        componentDidMount() {
-            let enterprises = JSON.parse(localStorage.getItem("enterprises"));
-            let applicant = localStorage.getItem("userName");
-            let phone = localStorage.getItem("phone");
-            let staff_id = localStorage.getItem("userid");
-            this.setState({
-                applicant: applicant,
-                phone: phone,
-                staff_id: staff_id,
-                companyUL: enterprises,
-                company: enterprises[0].name,
-                company_id: enterprises[0].id,
-            });
-        }
-        toggleFold() {
-            console.log("tftft");
-            if (this.state.applyPutcss == "applyPut-all") {
-                this.setState({
-                    applyPutcss: "applyPut-part",
-                    applyPutul: " applyPutul-part applyPutul",
-                });
-                this.globalAction.web_call_webgl_continueloadModuler();
-            }
-            else {
-                this.setState({
-                    applyPutcss: "applyPut-all",
-                    applyPutul: " applyPutul-all applyPutul",
-                });
-                this.globalAction.web_call_webgl_pauseloadModuler();
-            }
-            if (this.state.iconfont == "iconfont iconfont-unturn") {
-                this.setState({
-                    iconfont: "iconfont iconfont-turn",
-                });
-            }
-            else {
-                this.setState({
-                    iconfont: "iconfont iconfont-unturn",
-                });
-            }
-        }
-        mapReturnpark() {
-            this.globalAction.web_call_webgl_mapReturnpark();
-        }
-        static addapplyPut(data) { }
-        ;
-        addapplyPut(data) {
-            let arr = this.state.applyList;
-            arr.push({
-                startTime: "开始日期", endTime: "结束日期", id: data.id, name: data.name,
-            });
-            this.setState({
-                applyList: arr
-            });
-            console.log(this.state);
-        }
-        foucus(event) {
-            console.log("address聚焦2", event.target.value);
-            let index = event.target.getAttribute("data-index");
-            console.log("address输入index", index);
-        }
-        blur(event) {
-        }
-        changeContent(event) {
-            this.setState({
-                content: event.target.value,
-            });
-        }
-        foucusContent(event) {
-            if (this.state.content === "请将具体内容描述出来。（200字内）") {
-                this.setState({ content: "" });
-            }
-        }
-        blurContent(event) {
-            if (this.state.content == "") {
-                this.setState({ content: "请将具体内容描述出来。（200字内）" });
-            }
-        }
-        changeAddress(event) {
-            let index = event.target.getAttribute("data-index");
-            let applyList = this.state.applyList;
-            applyList[index].address = event.target.value;
-            this.setState({
-                applyList: applyList,
-            });
-        }
-        delApply(event) {
-            let index = event.target.getAttribute("data-index");
-            let applyList = this.state.applyList;
-            applyList.splice(index, 1);
-            this.setState({ applyList: applyList });
-            console.log("删除条目2", this.state.applyList);
-            let id = event.target.getAttribute("data-id");
-            let data = {
-                id: id
-            };
-            this.globalAction.web_call_webgl_cancelApplyPut(data);
-        }
-        changeStart(event) {
-            let index = event.target.getAttribute("data-index");
-            let applyList = this.state.applyList;
-            console.log("start输入index1", this.state.startDate);
-            applyList[index].startTime = this.state.startDate;
-            this.setState({
-                applyList: applyList,
-            });
-            console.log("start输入index2", this.state.applyList);
-        }
-        changeEnd(event) {
-            let index = event.target.getAttribute("data-index");
-            let applyList = this.state.applyList;
-            console.log("end输入index1", this.state.endDate);
-            applyList[index].endTime = this.state.endDate;
-            this.setState({
-                applyList: applyList,
-            });
-            console.log("end输入index2", this.state.applyList);
-        }
-        setStartDate(date) {
-            var dateStr = JSON.stringify(date);
-            var dateN = dateStr.slice(1, 11);
-            var index = this.state.timeIndex;
-            let applyList = this.state.applyList;
-            console.log("start输入index1", dateN);
-            applyList[index].startTime = dateN;
-            this.setState({
-                applyList: applyList,
-                applyPutStartTimeBox: "hide"
-            });
-            console.log("start输入index2", this.state.applyList);
-        }
-        setEndDate(date) {
-            var dateStr = JSON.stringify(date);
-            var dateN = dateStr.slice(1, 11);
-            var index = this.state.timeIndex;
-            let applyList = this.state.applyList;
-            console.log("end输入index1", dateN);
-            applyList[index].endTime = dateN;
-            this.setState({
-                applyList: applyList,
-                applyPutEndTimeBox: "hide"
-            });
-            console.log("end输入index2", this.state.applyList);
-        }
-        clickStart(event) {
-            let index = event.target.getAttribute("data-index");
-            console.log("clickStart输入index", index);
-            this.setState({
-                timeIndex: index,
-                applyPutStartTimeBox: "show"
-            });
-        }
-        clickEnd(event) {
-            let index = event.target.getAttribute("data-index");
-            console.log("clickEnd输入index", index);
-            this.setState({
-                timeIndex: index,
-                applyPutEndTimeBox: "show"
-            });
-        }
-        showCompanyBox() {
-            this.setState({
-                companyBox: "rollSelectCauseBox",
-                company_id_in: this.state.companyUL[this.state.companyIndexof].id,
-                company_name_in: this.state.companyUL[this.state.companyIndexof].name,
-            });
-        }
-        inCompanyeList(i, id, name) {
-            this.setState({
-                companyIndexof: i,
-                company_id_in: id,
-                company_name_in: name,
-            });
-        }
-        hideCompanyBox() {
-            this.setState({
-                companyBox: "hide",
-            });
-        }
-        getCompanyBox() {
-            this.setState({
-                companyBox: "hide",
-                company_id: this.state.company_id_in,
-                company: this.state.company_name_in,
-            });
-        }
-        sumbitApplyput() {
-            $.each(this.state.applyList, function (index, item) {
-                if (item.startTime == "开始日期") {
-                    alert("请填写开始日期");
-                }
-                ;
-                if (item.endTime == "结束日期") {
-                    alert("请填写结束日期");
-                }
-                ;
-            });
-            if (this.state.content == "请将具体内容描述出来。（200字内）") {
-                alert("请描述具体内容");
-            }
-            else {
-                console.log("提交摆点申请", this.state);
-            }
-        }
-        sumbitApplyputsucceed(data) {
-            alert(data);
-        }
-        render() {
-            return (React.createElement("div", null,
-                React.createElement("p", { className: "companyInfotit" },
-                    React.createElement("span", null, "\u6446\u70B9\u7533\u8BF7")),
-                React.createElement("div", { className: this.state.applyPutcss },
-                    React.createElement("div", { className: "foleBtn" },
-                        React.createElement(RouterDOM.Link, { to: "/home" },
-                            React.createElement("p", { className: "companyGoHomeLeft", style: { color: "#949494" }, onClick: this.mapReturnpark.bind(this) },
-                                React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B"),
-                                React.createElement("span", null, "\u8FD4\u56DE"))),
-                        React.createElement("p", { className: "companyGoHomeRight" },
-                            React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem", "color": "#C0C0C0" }, onClick: this.toggleFold.bind(this) }, "\uE849"))),
-                    React.createElement("form", null,
-                        React.createElement("ul", { className: this.state.applyPutul },
-                            React.createElement("li", null,
-                                React.createElement("span", { className: "applySpanleft" },
-                                    React.createElement("span", { className: "redStar" }, "*"),
-                                    "\u7533\u8BF7\u4EBA"),
-                                React.createElement("p", { className: "applyRight" }, this.state.applicant)),
-                            React.createElement("li", null,
-                                React.createElement("span", { className: "redStar" }, "*"),
-                                "\u624B\u673A\u53F7\u7801",
-                                React.createElement("p", { className: "applyRight" }, this.state.phone)),
-                            React.createElement("li", null,
-                                React.createElement("span", { className: "redStar" }, "*"),
-                                "\u7533\u8BF7\u5355\u4F4D",
-                                React.createElement("p", { className: "applyRight" }, this.state.company)),
-                            React.createElement("li", null,
-                                React.createElement("p", null,
-                                    React.createElement("span", { className: "redStar" }, "*"),
-                                    React.createElement("span", { style: { "font-size": "2.3rem" } }, "\u5177\u4F53\u5185\u5BB9\uFF1A")),
-                                React.createElement("textarea", { className: "getapplyPuttextarea", value: this.state.content, placeholder: "", onChange: this.changeContent.bind(this), onFocus: this.foucusContent.bind(this), onBlur: this.blurContent.bind(this) })),
-                            React.createElement("div", { className: this.state.applyPutStartTimeBox },
-                                React.createElement(antd_mobile_2.DatePicker, { mode: "date", title: "\u8BF7\u9009\u62E9\u65E5\u671F", extra: "\u8BF7\u9009\u62E9", value: this.state.startDate, onChange: this.setStartDate.bind(this) },
-                                    React.createElement(antd_mobile_2.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65E5\u671F"))),
-                            React.createElement("div", { className: this.state.applyPutEndTimeBox },
-                                React.createElement(antd_mobile_2.DatePicker, { mode: "date", title: "\u8BF7\u9009\u62E9\u65E5\u671F", extra: "\u8BF7\u9009\u62E9", value: this.state.endDate, onChange: this.setEndDate.bind(this) },
-                                    React.createElement(antd_mobile_2.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65E5\u671F"))),
-                            React.createElement("div", { className: "applyList" },
-                                React.createElement("p", { className: "theapplyP" }, "\u8BF7\u5728\u6240\u9700\u6295\u653E\u5730\u70B9\u540E\u8BBE\u7F6E\u6295\u653E\u5F00\u59CB\u53CA\u7ED3\u675F\u65F6\u95F4"),
-                                React.createElement("ul", { style: { "margin": "0" } },
-                                    React.createElement("li", null,
-                                        React.createElement("div", { className: "applyAddress" }, "\u5E7F\u544A\u653E\u7F6E\u5730\u70B9"),
-                                        React.createElement("div", { className: "applytime" }, "\u5F00\u59CB\u65F6\u95F4"),
-                                        React.createElement("div", { className: "applytime" }, "\u7ED3\u675F\u65F6\u95F4"),
-                                        React.createElement("div", { className: "applyicom" },
-                                            " ",
-                                            React.createElement("i", { className: "iconfont", style: { "color": "#fff" } }, "\uE82D"))),
-                                    this.state.applyList.map((i, index) => {
-                                        return (React.createElement("li", { key: index },
-                                            React.createElement("div", { className: "applyAddress" },
-                                                React.createElement("span", { className: "applyIndexof" }, index + 1),
-                                                React.createElement("input", { className: "", type: "text", placeholder: "", style: { " width": "18rem", "border": 0 }, value: i.name })),
-                                            React.createElement("div", { className: "applytime", style: { "color": "#158CE8" }, onClick: this.clickStart.bind(this), "data-index": index },
-                                                i.startTime,
-                                                " "),
-                                            React.createElement("div", { className: "applytime", style: { "color": "#158CE8" }, onClick: this.clickEnd.bind(this), "data-index": index }, i.endTime),
-                                            React.createElement("div", { className: "applyicom" },
-                                                " ",
-                                                React.createElement("i", { className: "iconfont", onClick: this.delApply, "data-longitude": i.longitude, "data-latitude": i.latitude, "data-id": i.id, "data-index": index, style: { "color": "#158CE8" } }, "\uE81C"))));
-                                    }))),
-                            React.createElement("div", { className: "applyPutSumbit", onClick: this.sumbitApplyput.bind(this) }, "\u63D0\u4EA4"))),
-                    React.createElement("div", { className: this.state.companyBox },
-                        React.createElement("ul", { className: "rollSelectCauseULcss" }, this.state.companyUL.map((i, index) => {
-                            return (React.createElement("li", { className: this.state.companyIndexof == index ? "rollSelectCauseli-active" : "rollSelectCauseli", onClick: this.inCompanyeList.bind(this, index, i.id, i.name) }, i.name));
-                        })),
-                        React.createElement("div", { className: "rollSelectCuasedBtn" },
-                            React.createElement("span", { className: "rollSelectCancel", onClick: this.hideCompanyBox.bind(this) }, "\u53D6\u6D88"),
-                            React.createElement("span", { className: "rollSelectConfirm", onClick: this.getCompanyBox.bind(this) }, "\u786E\u8BA4"))))));
-        }
-    }
-    exports.default = ApplyPut;
-});
-define("attractInvestment", ["require", "exports", "react", "react-router-dom", "css!./styles/attractInvestment.css"], function (require, exports, React, react_router_dom_1) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class AttractInvestment extends React.Component {
-        constructor() {
-            super(...arguments);
-            this.state = {
-                tagArr: [
-                    { name: "园区企业", imgUrl: "./park_m/image/business_administration.png", url: "/attractInvestmentList" },
-                    { name: "园区人员", imgUrl: "./park_m/image/park_staff.png", url: "" },
-                    { name: "意向用户", imgUrl: "./park_m/image/intended_users.png", url: "" }
-                ]
-            };
-        }
-        goBack() {
-            this.props.history.goBack();
-        }
-        render() {
-            return (React.createElement("div", { className: "rent-room" },
-                React.createElement("div", { className: "rent-room-back" },
-                    React.createElement("div", { style: { float: "left" }, onClick: this.goBack.bind(this) },
-                        React.createElement("img", { src: "./park_m/image/back.png", style: { margin: "-10px 10px 0 0" } }),
-                        React.createElement("span", null, "\u62DB\u5546\u7BA1\u7406"))),
-                React.createElement("div", { style: { backgroundColor: "#ffffff", width: "100%", height: "100%", marginTop: "15px" } }, this.state.tagArr.map((item, index) => {
-                    return (React.createElement(react_router_dom_1.Link, { to: item.url },
-                        React.createElement("div", { key: index, style: { width: "33%", height: "300px", float: "left", textAlign: "center", marginTop: "150px" } },
-                            React.createElement("img", { src: item.imgUrl, style: { width: "120px", height: "120px" } }),
-                            React.createElement("div", { style: { fontSize: "40px", color: "#333333" } }, item.name))));
-                }))));
-        }
-    }
-    exports.default = AttractInvestment;
-});
-define("attractInvestmentList", ["require", "exports", "react", "css!./styles/attractInvestmentList.css"], function (require, exports, React) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class AttractInvestmentList extends React.Component {
-        constructor() {
-            super(...arguments);
-            this.state = {
-                inputValue: "搜索企业",
-                listArr: [
-                    { deleteState: false }, { deleteState: false }, { deleteState: false }, { deleteState: false }, { deleteState: false }, { deleteState: false }, { deleteState: false },
-                    { deleteState: false }, { deleteState: false }, { deleteState: false }, { deleteState: false }, { deleteState: false }, { deleteState: false }, { deleteState: false }
-                ],
-                deleteState: true,
-                deleteNumber: 0
-            };
-        }
-        foucus() {
-            if (this.state.inputValue === "搜索企业") {
-                this.setState({ inputValue: "" });
-            }
-        }
-        blur() {
-            if (this.state.inputValue === "") {
-                this.setState({ inputValue: "搜索企业" });
-            }
-        }
-        change(event) {
-            this.setState({ inputValue: event.target.value });
-        }
-        clickTag(index) {
-            let listArr = this.state.listArr;
-            let deleteNumber = 0;
-            listArr[index].deleteState = !listArr[index].deleteState;
-            listArr.forEach(item => {
-                if (item.deleteState) {
-                    deleteNumber++;
-                }
-            });
-            this.setState({ listArr: listArr, deleteNumber: deleteNumber });
-        }
-        goBack() {
-            this.props.history.goBack();
-        }
-        delete() {
-            this.setState({ deleteState: !this.state.deleteState });
-        }
-        render() {
-            return (React.createElement("div", { className: "infoarea" },
-                React.createElement("div", { className: "infoarea-top" },
-                    React.createElement("div", { className: "infoarea-child-top" },
-                        React.createElement("img", { src: "./park_m/image/whiteBack.png", style: { margin: "0 10px 30px -15px", padding: "15px 15px 15px 15px" }, onClick: this.goBack.bind(this) }),
-                        React.createElement("input", { className: "infoarea-input", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this), style: { width: "82%" } }),
-                        React.createElement("img", { src: "./park_m/image/search.png", className: "infoarea-search-img", style: { left: "-78%" } }),
-                        React.createElement("img", { src: "./park_m/image/bottom.png", style: { position: "relative", left: "-13%", bottom: "10px" } }),
-                        React.createElement("span", { style: { position: "absolute", fontSize: "40px", left: "73%", top: "68px", fontWeight: "600" } }, "\u5168\u90E8"))),
-                React.createElement("div", { className: "search-user-list" },
-                    this.state.listArr.map((item, index) => {
-                        return (React.createElement("div", { key: index, className: "attract-investment-list-child", onClick: e => this.clickTag(index) },
-                            React.createElement("div", { style: { float: "left" } },
-                                React.createElement("img", { src: item.deleteState ? "./park_m/image/delete_checked.png" : "./park_m/image/unchecked.png", width: "50px", height: "50px" })),
-                            React.createElement("div", { style: { float: "left", width: "200px", height: "200px", marginLeft: "-40px" } },
-                                React.createElement("img", { src: "./park_m/image/logo.png" })),
-                            React.createElement("div", { style: { float: "left", height: "100%" } },
-                                React.createElement("div", { style: { height: "25%", margin: "-30px 0 25px 0" } }, "\u6D59\u6C5F\u6C38\u62D3\u4FE1\u606F\u79D1\u6280\u6709\u9650\u516C\u53F8"),
-                                React.createElement("img", { src: "./park_m/image/position.png", style: { width: "50px", height: "50px", marginBottom: "12px" } }),
-                                React.createElement("span", { style: { color: "#949494", fontSize: "36px", marginLeft: "10px" } }, "E\u5EA7B\u533A-3F-301")),
-                            React.createElement("div", { style: { float: "right", height: "100%", lineHeight: "100px" } },
-                                React.createElement("div", null,
-                                    React.createElement("img", { src: "./park_m/image/right.png", style: { margin: "30px 0 0 110px" } })),
-                                React.createElement("div", { style: { fontSize: "32px", backgroundColor: "#F5F5F5", height: "50px", width: "150px", textAlign: "center", lineHeight: "50px", margin: "22px 10px 0 0" } }, "\u79D1\u6280\u670D\u52A1"))));
-                    }),
-                    React.createElement("div", { style: { width: "100%", height: "350px", textAlign: "center", fontSize: "40px", lineHeight: "100px" } }, "\u5230\u5E95\u5566~")),
-                !this.state.deleteState ?
-                    React.createElement("div", { className: "rent-room-detail-bottom" },
-                        React.createElement("div", { style: { float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", color: "#6C6C6C", backgroundColor: "#F2F2F2" }, onClick: this.delete.bind(this) }, "\u5220\u9664"),
-                        React.createElement("div", { style: { float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", backgroundColor: "#0B8BF0", color: "#ffffff" } }, "\u65B0\u589E")) :
-                    React.createElement("div", { className: "attract-investment-list-bottom" },
-                        "\u5220\u9664(",
-                        this.state.deleteNumber,
-                        ")")));
-        }
-    }
-    exports.default = AttractInvestmentList;
-});
-define("bookSite", ["require", "exports", "react", "react-router-dom", "antd-mobile", "dataService", "compat", "css!./styles/antd-mobile.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, antd_mobile_3, dataService_3, compat_3) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class BookSite extends React.Component {
-        constructor(props) {
-            super(props);
-            this.globalAction = new compat_3.default();
-            this.state = {
-                BookSitecss: "bookSite",
-                showList: true,
-                showInfo: false,
-                showBook: false,
-                companyInfotit: "companyInfotit",
-            };
-            BookSite.toggleView = this.toggleView.bind(this);
-            BookSite.getSiteinfo = this.getSiteinfo.bind(this);
-        }
-        static getSiteinfo(id) { }
-        getSiteinfo(id) {
-            console.log("getCompanyinfo", id);
-            this.toggleView("Info", id);
-            BookInfo.getRoomdata(id);
-        }
-        static toggleView(a, id) { }
-        ;
-        toggleView(a, id) {
-            console.log("fl", a);
-            console.log("fl", id);
-            if (a == "Info") {
-                this.setState({
-                    showList: false,
-                    showInfo: true,
-                    companyInfotit: "hide",
-                });
-            }
-            else {
-                this.setState({
-                    showList: true,
-                    showInfo: false,
-                    companyInfotit: "companyInfotit",
-                });
-            }
-        }
-        mapReturnpark() {
-            this.globalAction.web_call_webgl_mapReturnpark();
-        }
-        render() {
-            return (React.createElement("div", { className: this.state.BookSitecss },
-                React.createElement("p", { className: this.state.companyInfotit },
-                    React.createElement("span", null, "\u573A\u5730\u9884\u7EA6")),
-                React.createElement("div", { className: this.state.showList == true ? "show" : "hide" },
-                    React.createElement(BookList, null)),
-                React.createElement("div", { className: this.state.showInfo == true ? "show" : "hide" },
-                    React.createElement(BookInfo, null))));
-        }
-    }
-    exports.default = BookSite;
-    class BookList extends React.Component {
-        constructor(props) {
-            super(props);
-            this.dataService = new dataService_3.default();
-            this.globalAction = new compat_3.default();
-            this.state = {
-                imgurlNull: "https://yongtoc-digitalcity.oss-cn-shenzhen.aliyuncs.com/images/9982b35c62bd7376bc29c5e1ef12ae6b.jpg",
-                bookListcss: "bookList-part",
-                iconfont: "iconfont iconfont-unturn",
-                bookul: "bookul",
-                indexOf: 0,
-                park_id: 1,
-                inputValue: "搜索",
-                bookData: [],
-                nullBookData: "hide",
-                src: "about:'blank'",
-                bookImgback: "bookImgback",
-            };
-            this.getRoomBook = this.getRoomBook.bind(this);
-        }
-        componentDidMount() {
-            this.dataService.getRoomBook(this.getRoomBook, this.state.park_id, name);
-        }
-        getRoomBook(data) {
-            console.log("returnRoomBook222", data);
-            if (data.response) {
-                this.setState({
-                    nullBookData: "hide",
-                    bookData: data.response,
-                });
-            }
-            else {
-                this.setState({
-                    bookData: [],
-                    nullBookData: "show"
-                });
-                console.log("没有符合条件的结果");
-            }
-        }
-        toggleFold() {
-            console.log("tftft");
-            if (this.state.bookListcss == "bookList-all") {
-                this.setState({
-                    bookListcss: "bookList-part",
-                    bookul: "bookul"
-                });
-                this.globalAction.web_call_webgl_continueloadModuler();
-            }
-            else {
-                this.setState({
-                    bookListcss: "bookList-all",
-                    bookul: "bookul-all"
-                });
-                this.globalAction.web_call_webgl_pauseloadModuler();
-            }
-            if (this.state.iconfont == "iconfont iconfont-unturn") {
-                this.setState({
-                    iconfont: "iconfont iconfont-turn",
-                });
-            }
-            else {
-                this.setState({
-                    iconfont: "iconfont iconfont-unturn",
-                });
-            }
-        }
-        showInfo(a, id, name, e) {
-            BookSite.toggleView(a, id);
-            console.log("more", a, id, name, e);
-            BookInfo.getRoomdata(id);
-        }
-        bookActive(index, id) {
-            console.log("active", index, id);
-            this.setState({
-                indexOf: index,
-                roomId: id
-            });
-            console.log("bookActive", this.state);
-            this.globalAction.web_call_webgl_switchRoom(id);
-        }
-        foucus() {
-            if (this.state.inputValue == "搜索") {
-                this.setState({ inputValue: "" });
-            }
-        }
-        blur(event) {
-            if (this.state.inputValue == "") {
-                this.setState({ inputValue: "搜索" });
-            }
-        }
-        change(event) {
-            this.setState({
-                inputValue: event.target.value,
-            });
-        }
-        queryKeyDownHandler(e) {
-            switch (e.keyCode) {
-                case 13:
-                    this.searchRoomBook();
-                    break;
-            }
-        }
-        searchRoomBook() {
-            console.log("搜索", this.state);
-            this.dataService.getRoomBook(this.getRoomBook, this.state.park_id, this.state.inputValue);
-        }
-        onError() {
-            this.setState({
-                imageUrl: "https://yongtoc-digitalcity.oss-cn-shenzhen.aliyuncs.com/images/9982b35c62bd7376bc29c5e1ef12ae6b.jpg"
-            });
-        }
-        mapReturnpark() {
-            this.globalAction.web_call_webgl_mapReturnpark();
-        }
-        render() {
-            return (React.createElement("div", { className: this.state.bookListcss },
-                React.createElement("div", { className: "foleBtn" },
-                    React.createElement("p", { className: "companyGoHomeLeft", onClick: this.mapReturnpark.bind(this) },
-                        React.createElement(RouterDOM.Link, { to: "/home", style: { color: "#949494" } },
-                            React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B"),
-                            React.createElement("span", null, "\u8FD4\u56DE"))),
-                    React.createElement("p", { className: "companyGoHomeRight" },
-                        React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem", "color": "#C0C0C0" }, onClick: this.toggleFold.bind(this) }, "\uE849"))),
-                React.createElement("ul", { className: this.state.bookul },
-                    React.createElement("li", { className: this.state.nullBookData },
-                        React.createElement("p", null, "\u6CA1\u6709\u7B26\u5408\u6761\u4EF6\u7684\u7ED3\u679C")),
-                    this.state.bookData.map((i, index) => {
-                        if (!i.pic_url) {
-                            return (React.createElement("li", { onClick: this.bookActive.bind(this, index, i.id), className: this.state.indexOf == index ? "bookli-active" : "bookli" },
-                                React.createElement("div", { className: this.state.indexOf == index ? "bookImgback-active" : "bookImgback" },
-                                    React.createElement("img", { src: i.headimgurl, onError: this.onError.bind(this) })),
-                                React.createElement("div", { className: "bookul-middle" },
-                                    React.createElement("p", { style: { "font-size": "2.4rem", "font-weight": "bold" } },
-                                        i.building_name,
-                                        "-",
-                                        i.floor_name,
-                                        "-",
-                                        i.room_name),
-                                    i.price.map((it, index) => {
-                                        return (React.createElement("p", { style: { "font-size": "2.5rem" } },
-                                            it.content,
-                                            "\uFF1A",
-                                            React.createElement("span", { className: "bookPrice" }, it.price),
-                                            "  ",
-                                            React.createElement("span", { className: "priceYuan" }, "\u5143")));
-                                    })),
-                                React.createElement("div", { className: "bookul-right" },
-                                    React.createElement("p", { onClick: this.showInfo.bind(this, "Info", i.id, "name"), className: this.state.indexOf == index ? "show" : "hide" },
-                                        "\u66F4\u591A",
-                                        React.createElement("i", { className: "iconfont", style: { "fontSize": "2rem" } }, "\uE827")))));
-                        }
-                        else {
-                            return (React.createElement("li", { onClick: this.bookActive.bind(this, index, i.id), className: this.state.indexOf == index ? "bookli-active" : "bookli" },
-                                React.createElement("div", { className: this.state.indexOf == index ? "bookImgback-active" : "bookImgback" },
-                                    React.createElement("img", { src: this.state.imgurlNull })),
-                                React.createElement("div", { className: "bookul-middle" },
-                                    React.createElement("p", { style: { "font-size": "2.4rem", "font-weight": "bold" } },
-                                        i.building_name,
-                                        "-",
-                                        i.floor_name,
-                                        "-",
-                                        i.room_name),
-                                    i.price.map((it, index) => {
-                                        return (React.createElement("p", { style: { "font-size": "2.5rem" } },
-                                            it.content,
-                                            "\uFF1A",
-                                            React.createElement("span", { className: "bookPrice" }, it.price),
-                                            " ",
-                                            React.createElement("span", { className: "priceYuan" }, "\u5143")));
-                                    })),
-                                React.createElement("div", { className: "bookul-right" },
-                                    React.createElement("p", { onClick: this.showInfo.bind(this, "Info", i.id, "name"), className: this.state.indexOf == index ? "show" : "hide" },
-                                        "\u66F4\u591A",
-                                        React.createElement("i", { className: "iconfont", style: { "fontSize": "2rem" } }, "\uE827")))));
-                        }
-                    })),
-                React.createElement("form", { action: '', target: "rfFrame" },
-                    React.createElement("div", { className: "bookBtn" },
-                        React.createElement("div", { className: "searchBox" },
-                            React.createElement("span", { className: "searchBox-text" },
-                                React.createElement("span", { className: "iconfont", style: { "fontSize": "2.3rem" } }, "\uE810"),
-                                React.createElement("input", { className: "leaseSearch", type: "search", placeholder: "\u641C\u7D22", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this), onKeyDown: this.queryKeyDownHandler.bind(this) }))))),
-                React.createElement("iframe", { id: "rfFrame", name: "rfFrame", src: this.state.src, style: { display: "none" } }, "   ")));
-        }
-    }
-    class BookInfo extends React.Component {
-        constructor(props) {
-            super(props);
-            this.dataService = new dataService_3.default();
-            this.state = {
-                bookInfocss: "bookInfos",
-                iconfont: "iconfont iconfont-turn",
-                building_name: "",
-                floor_name: "",
-                room_name: "",
-                infoli: 0,
-                bookInfoul: "bookInfoul",
-                leaseInfoul: "leaseInfoul_br",
-            };
-            BookInfo.showList = this.showList.bind(this);
-            this.toggleFold = this.toggleFold.bind(this);
-            BookInfo.getRoomdata = this.getRoomdata.bind(this);
-            this.setBookdata = this.setBookdata.bind(this);
-        }
-        static getRoomdata(id) { }
-        getRoomdata(id) {
-            this.dataService.getRoomBookInfo(this.setBookdata, id);
-        }
-        static setBookdata(data) { }
-        setBookdata(data) {
-            console.log("setBookdata,setBookdata", data);
-            this.setState({
-                building_name: data.response.building_name,
-                floor_name: data.response.floor_name,
-                room_name: data.response.room_name,
-            });
-            SiteInfos.getInfos(data);
-            Notes.getNotes(data);
-            BookRoom.getRoomdata(data);
-        }
-        static showList(a, id) { }
-        ;
-        showList(a, id) {
-            console.log("showList", a);
-            BookSite.toggleView(a, id);
-            this.setState({
-                infoli: 0,
-                bookInfocss: "bookInfos",
-            });
-        }
-        toggleFold() {
-            console.log("tftft", this.state.infoli);
-            if (this.state.infoli == 2) {
-                if (this.state.bookInfocss == "bookInfos") {
-                    this.setState({
-                        bookInfocss: "bookInfos-all",
-                    });
-                }
-                else {
-                    this.setState({
-                        bookInfocss: "bookInfos",
-                    });
-                }
-            }
-            else {
-                if (this.state.bookInfocss == "bookInfos") {
-                    this.setState({
-                        bookInfocss: "bookInfos-part",
-                    });
-                }
-                else {
-                    this.setState({
-                        bookInfocss: "bookInfos",
-                    });
-                }
-            }
-            if (this.state.iconfont == "iconfont iconfont-unturn") {
-                this.setState({
-                    iconfont: "iconfont iconfont-turn",
-                });
-            }
-            else {
-                this.setState({
-                    iconfont: "iconfont iconfont-unturn",
-                });
-            }
-        }
-        infoClick(indexof) {
-            console.log("infoClick", indexof);
-            this.setState({
-                infoli: indexof,
-            });
-        }
-        render() {
-            return (React.createElement("div", { className: this.state.bookInfocss },
-                React.createElement("p", { className: "companyInfotit" },
-                    React.createElement("span", { className: this.state.infoli !== 2 ? "show" : "hide" },
-                        this.state.building_name,
-                        "-",
-                        this.state.floor_name,
-                        "-",
-                        this.state.room_name),
-                    React.createElement("span", { className: this.state.infoli == 2 ? "show" : "hide" }, "\u9884\u5B9A\u7533\u8BF7")),
-                React.createElement("div", { className: "foleBtn" },
-                    React.createElement("p", { className: "companyGoHomeLeft", onClick: this.showList.bind(this, "List", "id-01") },
-                        React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B"),
-                        React.createElement("span", null, "\u8FD4\u56DE")),
-                    React.createElement("p", { className: "companyGoHomeRight" },
-                        React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem", "color": "#C0C0C0" }, onClick: this.toggleFold.bind(this) }, "\uE849"))),
-                React.createElement("div", { className: this.state.infoli !== 2 ? "leaseInfoul" : "hide" },
-                    React.createElement("ul", { className: this.state.bookInfoul },
-                        React.createElement("li", { className: this.state.infoli == 0 ? "bookInfoli-active" : "bookInfoli", onClick: this.infoClick.bind(this, 0) }, "\u573A\u5730\u4FE1\u606F"),
-                        React.createElement("li", { className: this.state.infoli == 1 ? "bookInfoli-active" : "bookInfoli", onClick: this.infoClick.bind(this, 1) }, "\u4F7F\u7528\u987B\u77E5"))),
-                React.createElement("div", { className: "infoContain" },
-                    React.createElement("div", { className: this.state.infoli == 0 ? "show" : "hide" },
-                        React.createElement(SiteInfos, null)),
-                    React.createElement("div", { className: this.state.infoli == 1 ? "show" : "hide" },
-                        React.createElement(Notes, null)),
-                    React.createElement("div", { className: this.state.infoli == 2 ? "show" : "hide" },
-                        React.createElement(BookRoom, null)),
-                    React.createElement("div", { className: this.state.infoli !== 2 ? "bookSumbit" : "hide", onClick: this.infoClick.bind(this, 2) }, "\u9884\u5B9A"))));
-        }
-    }
-    class BookRoom extends React.Component {
-        constructor(props) {
-            super(props);
-            this.globalAction = new compat_3.default();
-            this.dataService = new dataService_3.default();
-            this.state = {
-                startTime: "",
-                endTime: "",
-                iconfont: "iconfont iconfont-unturn",
-                bookRoom: "bookRoom-part",
-                bookformcss: "bookform-part",
-                companyBox: "show",
-                companyUL: [],
-                companyIndexof: 0,
-                company_id_in: "",
-                company_name_in: "",
-                id: "",
-                applicant: "",
-                phone: "",
-                company: "",
-                name: "",
-                building_id: "",
-                floor_id: "",
-                room_id: "",
-                building_name: "",
-                floor_name: "",
-                room_name: "",
-                start_date: "",
-                start_time: "",
-                end_date: "",
-                end_time: "",
-                theme: "50字内",
-                content: "",
-            };
-            BookRoom.getRoomdata = this.getRoomdata.bind(this);
-        }
-        componentDidMount() {
-            let enterprises = JSON.parse(localStorage.getItem("enterprises"));
-            console.log("enterprises--------", enterprises);
-            let applicant = localStorage.getItem("userName");
-            let phone = localStorage.getItem("phone");
-            let staff_id = localStorage.getItem("userid");
-            console.log("--------", applicant, phone, staff_id);
-            this.setState({
-                applicant: applicant,
-                phone: phone,
-                staff_id: staff_id,
-                companyUL: enterprises,
-                company: enterprises[0].name,
-                company_id: enterprises[0].id,
-            });
-        }
-        static getRoomdata(data) { }
-        ;
-        getRoomdata(data) {
-            console.log("getBook", data);
-            this.setState({
-                id: data.response.id,
-                building_id: data.response.building_id,
-                floor_id: data.response.floor_id,
-                room_id: data.response.room_id,
-                building_name: data.response.building_name,
-                floor_name: data.response.floor_name,
-                room_name: data.response.room_name,
-            });
-        }
-        toggleFold() {
-            if (this.state.iconfont == "iconfont iconfont-unturn") {
-                this.setState({
-                    iconfont: "iconfont iconfont-turn",
-                });
-            }
-            else {
-                this.setState({
-                    iconfont: "iconfont iconfont-unturn",
-                });
-            }
-            if (this.state.bookRoom == "bookRoom-part") {
-                this.setState({
-                    bookRoom: "bookRoom-all",
-                    bookformcss: "bookform-all "
-                });
-                this.globalAction.web_call_webgl_pauseloadModuler();
-            }
-            else {
-                this.setState({
-                    bookRoom: "bookRoom-part",
-                    bookformcss: "bookform-part"
-                });
-                this.globalAction.web_call_webgl_continueloadModuler();
-            }
-        }
-        changebookContent(event) {
-            this.setState({
-                content: event.target.value,
-            });
-        }
-        changebookTheme(event) {
-            this.setState({
-                theme: event.target.value,
-            });
-        }
-        foucusbookTheme() {
-            if (this.state.theme === "50字内") {
-                this.setState({ theme: "" });
-            }
-        }
-        p(s) {
-            return s < 10 ? '0' + s : s;
-        }
-        setStartTime(date) {
-            const d = new Date(date);
-            const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate());
-            const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds());
-            const startDate = resDate + " " + resTime;
-            console.log("start输入index656", startDate);
-            this.setState({
-                startTime: date,
-                start_date: startDate,
-            });
-            console.log("start输入index2", this.state.startTime);
-        }
-        setEndTime(date) {
-            const d = new Date(date);
-            const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate());
-            const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds());
-            const endDate = resDate + " " + resTime;
-            this.setState({
-                endTime: date,
-                end_date: endDate,
-            });
-        }
-        showCompanyBox() {
-            this.setState({
-                companyBox: "rollSelectCauseBox",
-                company_id_in: this.state.companyUL[this.state.companyIndexof].id,
-                company_name_in: this.state.companyUL[this.state.companyIndexof].name,
-            });
-        }
-        inCompanyeList(i, id, name) {
-            this.setState({
-                companyIndexof: i,
-                company_id_in: id,
-                company_name_in: name,
-            });
-        }
-        hideCompanyBox() {
-            this.setState({
-                companyBox: "hide",
-            });
-        }
-        getCompanyBox() {
-            this.setState({
-                companyBox: "hide",
-                company_id: this.state.company_id_in,
-                company: this.state.company_name_in,
-            });
-        }
-        bookSumbit() {
-            if (this.state.start_date == "") {
-                alert("请选择开始时间");
-            }
-            else if (this.state.end_date == "") {
-                alert("请选择结束时间");
-            }
-            else if (this.state.theme == "") {
-                alert("请输入会议主题");
-            }
-            else if (this.state.content == "") {
-                alert("请输入会议具体需求");
-            }
-            else {
-                this.dataService.bookingRoom(this.bookSumbitOK, this.state);
-            }
-        }
-        static showList(a, id) { }
-        ;
-        showList(a, id) {
-            console.log("showList", a);
-            BookSite.toggleView(a, id);
-            this.setState({
-                infoli: 0,
-                bookInfocss: "bookInfos",
-            });
-        }
-        bookSumbitOK(data) {
-            alert(data);
-        }
-        render() {
-            return (React.createElement("div", { className: this.state.bookRoom },
-                React.createElement("div", { className: "foleBtn" },
-                    React.createElement("p", { className: "companyGoHomeLeft", onClick: this.showList.bind(this, "List", "id-01") },
-                        React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B"),
-                        React.createElement("span", null, "\u8FD4\u56DE")),
-                    React.createElement("p", { className: "companyGoHomeRight" },
-                        React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem", "color": "#C0C0C0" }, onClick: this.toggleFold.bind(this) }, "\uE849"))),
-                React.createElement("form", { className: this.state.bookformcss },
-                    React.createElement("ul", { className: "bookfromul" },
-                        React.createElement("li", null,
-                            React.createElement("span", { className: "applySpanleft" },
-                                React.createElement("span", { className: "redStar" }, "*"),
-                                "\u7533\u8BF7\u4EBA"),
-                            React.createElement("p", { className: "bookRight", style: { "padding-left": "1rem", "padding-top": "0.5rem" } }, this.state.applicant)),
-                        React.createElement("li", null,
-                            React.createElement("span", { className: "redStar" }, "*"),
-                            "\u624B\u673A\u53F7\u7801",
-                            React.createElement("p", { className: "bookRight", style: { "padding-left": "1rem", "padding-top": "0.5rem" } }, this.state.phone)),
-                        React.createElement("li", null,
-                            React.createElement("span", { className: "redStar" }, "*"),
-                            "\u7533\u8BF7\u4F01\u4E1A",
-                            React.createElement("p", { className: "bookfromliRight", onClick: this.showCompanyBox.bind(this), style: { "line-height": " 4rem" } }, this.state.company)),
-                        React.createElement("li", { className: "bookActive" },
-                            React.createElement("span", { className: "bookformLeft" },
-                                React.createElement("span", { style: { "color": "#F2F2F2", "margin-right": "1rem" } }, "*"),
-                                "\u4F7F\u7528\u573A\u5730"),
-                            React.createElement("p", { className: "bookfromliRight", style: { "line-height": "3.5rem" } }, this.state.room_name)),
-                        React.createElement("li", null,
-                            React.createElement("p", null,
-                                React.createElement("span", { className: "redStar", style: { "float": "left", "margin-top": "0.8rem" } }, "*"),
-                                React.createElement("div", { style: { "fonSize": "2.5rem" }, className: "mDate" },
-                                    React.createElement(antd_mobile_3.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.startTime, onChange: this.setStartTime.bind(this) },
-                                        React.createElement(antd_mobile_3.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65F6\u95F4"))))),
-                        React.createElement("li", null,
-                            React.createElement("p", null,
-                                React.createElement("span", { className: "redStar", style: { "float": "left", "margin-top": "0.8rem" } }, "*"),
-                                React.createElement("div", { style: { "fonSize": "2.5rem" }, className: "mDate" },
-                                    React.createElement(antd_mobile_3.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.endTime, onChange: this.setEndTime.bind(this) },
-                                        React.createElement(antd_mobile_3.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65F6\u95F4"))))),
-                        React.createElement("li", { style: { "border": "0", "padding": "1rem 0 0 0" } },
-                            React.createElement("p", null,
-                                React.createElement("span", { className: "redStar" }, "*"),
-                                React.createElement("span", { style: { "font-size": "2.3rem", "margin-": "1rem" } }, "\u4F1A\u8BAE\u4E3B\u9898\uFF1A")),
-                            React.createElement("textarea", { className: "bookTheme", value: this.state.theme, onChange: this.changebookTheme.bind(this), onFocus: this.foucusbookTheme.bind(this) })),
-                        React.createElement("li", null,
-                            React.createElement("p", null,
-                                React.createElement("span", { className: "redStar" }, "*"),
-                                React.createElement("span", { style: { "font-size": "2.3rem" } }, "\u5177\u4F53\u9700\u6C42\uFF1A")),
-                            React.createElement("textarea", { className: "bookContent", value: this.state.content, style: { "margin-bottom": "10rem" }, placeholder: "\u8BF7\u5C06\u5177\u4F53\u9700\u6C42\u63CF\u8FF0\u51FA\u6765\u3002\uFF08200\u5B57\u5185\uFF09", onChange: this.changebookContent.bind(this) }))),
-                    React.createElement("div", { className: "bookSumbit", onClick: this.bookSumbit.bind(this) }, "\u63D0\u4EA4")),
-                React.createElement("div", { className: this.state.companyBox },
-                    React.createElement("ul", { className: "rollSelectCauseULcss" }, this.state.companyUL.map((i, index) => {
-                        return (React.createElement("li", { className: this.state.companyIndexof == index ? "rollSelectCauseli-active" : "rollSelectCauseli", onClick: this.inCompanyeList.bind(this, index, i.id, i.name) }, i.name));
-                    })),
-                    React.createElement("div", { className: "rollSelectCuasedBtn" },
-                        React.createElement("span", { className: "rollSelectCancel", onClick: this.hideCompanyBox.bind(this) }, "\u53D6\u6D88"),
-                        React.createElement("span", { className: "rollSelectConfirm", onClick: this.getCompanyBox.bind(this) }, "\u786E\u8BA4")))));
-        }
-    }
-    class SiteInfos extends React.Component {
-        constructor(props) {
-            super(props);
-            this.state = {
-                descript: [],
-                descriptS: "",
-            };
-            SiteInfos.getInfos = this.getInfos.bind(this);
-        }
-        componentDidMount() {
-            console.log("场地信息,场地信息");
-        }
-        static getInfos(data) { }
-        ;
-        getInfos(data) {
-            console.log("getinfo", typeof data.response.descript);
-            if (typeof data.response.descript == "string") {
-                this.setState({
-                    descriptS: data.response.descript,
-                    descript: [],
-                });
-            }
-            else {
-                this.setState({
-                    descript: data.response.descript,
-                    descriptS: "",
-                });
-            }
-        }
-        render() {
-            return (React.createElement("div", { className: "siteInfosbox" },
-                React.createElement("ul", null,
-                    this.state.descript.map((i, index) => {
-                        return (React.createElement("li", null,
-                            index + 1,
-                            "\u3001",
-                            i.content,
-                            " "));
-                    }),
-                    React.createElement("li", null,
-                        this.state.descriptS,
-                        " "))));
-        }
-    }
-    class Notes extends React.Component {
-        constructor(props) {
-            super(props);
-            this.state = {
-                guide: "",
-            };
-            Notes.getNotes = this.getNotes.bind(this);
-        }
-        componentDidMount() {
-            console.log("使用须知,使用须知");
-        }
-        static getNotes(data) { }
-        ;
-        getNotes(data) {
-            console.log("NotesNotes", data);
-            this.setState({
-                guide: data.response.guide,
-            });
-        }
-        render() {
-            return (React.createElement("div", { className: "notesBox" },
-                React.createElement("p", null,
-                    "\u5C0A\u656C\u7684\u4F01\u4E1A\uFF1A \u60A8\u597D\uFF0C",
-                    React.createElement("span", null, this.state.guide))));
-        }
-    }
-});
-define("bottomBtn", ["require", "exports", "react", "react-router-dom", "compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_4) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class BottomBtn extends React.Component {
-        constructor(props) {
-            super(props);
-            this.props = {
-                history: this.props.history
-            };
-            this.globalAction = new compat_4.default();
-            this.state = {
-                index: 1,
-                iconImg1In: "./park_m/image/bottomBtn/3d-in.png",
-                iconImg1Un: "./park_m/image/bottomBtn/3d-un.png",
-                iconImg3In: "./park_m/image/bottomBtn/zx-in.png",
-                iconImg3Un: "./park_m/image/bottomBtn/zx-un.png",
-                iconImg4In: "./park_m/image/bottomBtn/my-in.png",
-                iconImg4Un: "./park_m/image/bottomBtn/my-un.png",
-            };
-            this.toggleIcon = this.toggleIcon.bind(this);
-        }
-        componentDidMount() {
-            console.log(this.props.history.location.pathname);
-            if (this.props.history.location.pathname === "/home" || this.props.history.location.pathname === "/") {
-                this.setState({ index: 1 }, () => {
-                    this.toggleIcon(this.state.index);
-                });
-            }
-            else if (this.props.history.location.pathname === "/informationChild") {
-                this.setState({ index: 3 }, () => {
-                    this.toggleIcon(this.state.index);
-                });
-            }
-            else {
-                this.setState({ index: 4 }, () => {
-                    this.toggleIcon(this.state.index);
-                });
-            }
-        }
-        toggleIcon(data) {
-            this.setState({
-                index: data
-            });
-            if (data == 1) {
-                this.globalAction.web_call_webgl_continueloadModuler();
-            }
-            else {
-                this.globalAction.web_call_webgl_pauseloadModuler();
-            }
-        }
-        render() {
-            return (React.createElement("div", { className: "bottomView" },
-                React.createElement(RouterDOM.Link, { to: "/" },
-                    React.createElement("div", { className: this.state.index == 1 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 1) },
-                        React.createElement("img", { src: this.state.index == 1 ? this.state.iconImg1In : this.state.iconImg1Un }),
-                        React.createElement("p", null, "\u9996\u9875"))),
-                React.createElement(RouterDOM.Link, { to: "/informationChild" },
-                    React.createElement("div", { className: this.state.index == 3 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 3) },
-                        React.createElement("img", { src: this.state.index == 3 ? this.state.iconImg3In : this.state.iconImg3Un }),
-                        React.createElement("p", null, "\u653F\u7B56"))),
-                React.createElement(RouterDOM.Link, { to: "/personalCenter" },
-                    React.createElement("div", { className: this.state.index == 4 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 4) },
-                        React.createElement("img", { src: this.state.index == 4 ? this.state.iconImg4In : this.state.iconImg4Un }),
-                        React.createElement("p", null, "\u6211\u7684")))));
-        }
-        ;
-    }
-    exports.default = BottomBtn;
-});
-define("compat_online", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class GlobalAction {
-        web_call_webgl_initPark(pInfo) {
-            MiaokitJS.App.m_pProject.EnterPark({
-                m_pView: {
-                    m_nLng: 110.344301,
-                    m_nLat: 25.272208,
-                    m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
-                    m_nDistance: 300.0,
-                    m_nPitch: 19.0,
-                    m_nYaw: 90.0
-                }
-            });
-            console.log("web_call_webgl_initPark", pInfo);
-        }
-        web_call_webgl_switchCompany(pName) {
-            console.log("web_call_webgl_switchCompany", pName);
-        }
-        web_call_webgl_switchRoom(pName) {
-            console.log("web_call_webgl_SwitchRoom", pName);
-        }
-        web_call_webgl_switchMark(pName, pInfo) {
-            console.log("web_call_webgl_switchMark", pName, pInfo);
-        }
-        web_call_webgl_mapReturnpark() {
-            console.log("web_call_webgl_mapReturnpark");
-        }
-        web_call_webgl_pauseloadModuler() {
-            console.log("web_call_webgl_pauseloadModuler");
-        }
-        web_call_webgl_continueloadModuler() {
-            console.log("web_call_webgl_continueloadModuler");
-        }
-        web_call_webgl_showParkingList(data) {
-            console.log("web_call_webgl_showParkingList", data);
-        }
-        web_call_webgl_onParking(data) {
-            console.log("web_call_webgl_onParking", data);
-        }
-        web_call_webgl_cancelApplyPut(data) {
-            console.log("web_call_webgl_cancelApplyPut", data);
-        }
-    }
-    exports.default = GlobalAction;
 });
 define("defaultRentRoom", ["require", "exports", "react", "css!./styles/defaultRentRoom.css"], function (require, exports, React) {
     "use strict";
@@ -3185,6 +4421,7 @@ define("enterpriseInformation", ["require", "exports", "react", "dataService", "
                 companyTypeIndexof: 0,
                 companyType_id_in: "",
                 companyType_name_in: "",
+                company_id_in: "",
                 multiple: false,
                 files: [],
                 filesLogo: [],
@@ -3351,28 +4588,43 @@ define("enterpriseInformation", ["require", "exports", "react", "dataService", "
                 companyBox: "rollSelectCauseBox",
                 company_id_in: this.state.companyTypeUL[this.state.companyTypeIndexof].id,
                 company_name_in: this.state.companyTypeUL[this.state.companyTypeIndexof].name,
+            }, () => {
+                console.log("show", this.state);
             });
-            console.log(this.state.companyType_id_in, this.state.companyType_name_in, this.state.companyTypeIndexof);
         }
         inCompanyeTypeList(i, id, name) {
+            console.log("选中企业类型", id, name);
             this.setState({
                 companyTypeIndexof: i,
                 companyType_id_in: id,
                 companyType_name_in: name,
+            }, () => {
+                console.log(this.state.companyType_id_in, this.state.companyType_name_in, this.state.companyTypeIndexof);
             });
-            console.log(this.state.companyType_id_in, this.state.companyType_name_in, this.state.companyTypeIndexof);
         }
         hideCompanyTypeBox() {
+            console.log(this.state);
             this.setState({
                 companyTypeBox: "hide",
+                company_type: this.state.company_type,
+                companyType_id_in: this.state.company_type_id,
             });
         }
         getCompanyTypeBox() {
-            this.setState({
-                companyTypeBox: "hide",
-                company_type: this.state.companyType_id_in,
-                inputCompanyType: this.state.companyType_name_in,
-            });
+            if (this.state.companyType_name_in == "") {
+                this.setState({
+                    companyTypeBox: "hide",
+                    company_type: this.state.company_type_id,
+                    inputCompanyType: this.state.company_type,
+                });
+            }
+            else {
+                this.setState({
+                    companyTypeBox: "hide",
+                    company_type: this.state.company_id_in,
+                    inputCompanyType: this.state.companyType_name_in,
+                });
+            }
         }
         onErrorHeadimageurl() {
             this.setState({
@@ -3423,9 +4675,9 @@ define("enterpriseInformation", ["require", "exports", "react", "dataService", "
                 "address": this.state.inputEnterprisePositionValue,
                 "contact": this.state.contactsValue,
                 "phone": this.state.phoneValue,
-                "website": this.state.officialWebsiteValue,
-                "descript": this.state.descriptionValue,
-                "company_type": this.state.company_type_id,
+                "website": this.state.officialWebsiteValue == "请输入企业官方网址" ? "" : this.state.officialWebsiteValue,
+                "descript": this.state.descriptionValue == "400字内" ? "" : this.state.descriptionValue,
+                "company_type": this.state.companyType_id_in == "" ? this.state.company_type_id : this.state.companyType_id_in,
                 "elegant": this.state.elegant,
                 "product": this.state.product,
                 "panorama": this.state.panorama,
@@ -4121,15 +5373,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
                     React.createElement(RouterDOM.Link, { to: "/repairsOnline" },
                         React.createElement("div", { className: this.state.foleIcon },
                             React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#26AC8F", "height": "6rem" } }, "\uE822"),
-                            React.createElement("p", null, "\u5728\u7EBF\u62A5\u4FEE"))),
-                    React.createElement(RouterDOM.Link, { to: "/photograph" },
-                        React.createElement("div", { className: this.state.foleIcon },
-                            React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#F0594C", "height": "6rem" } }, "\uE821"),
-                            React.createElement("p", null, "\u968F\u624B\u62CD"))),
-                    React.createElement(RouterDOM.Link, { to: "/parking" },
-                        React.createElement("div", { className: this.state.foleIcon },
-                            React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#208FE6", "height": "6rem" } }, "\uE823"),
-                            React.createElement("p", null, "\u505C\u8F66\u4E1A\u52A1"))))));
+                            React.createElement("p", null, "\u5728\u7EBF\u62A5\u4FEE"))))));
         }
     }
     exports.default = Home;
@@ -4180,11 +5424,14 @@ define("identityAuthentication", ["require", "exports", "react", "dataService", 
         }
         componentDidMount() {
             this.dataService.getRoleType(this.setRoleTypeUL);
-            this.state.applicant = sessionStorage.getItem("userName");
-            this.state.phone = sessionStorage.getItem("phone");
-            this.state.company = sessionStorage.getItem("enterprise");
-            ;
-            this.state.park_id = sessionStorage.getItem("park_id");
+            let data = sessionStorage.getItem("userInfos");
+            let dataObj = JSON.parse(data);
+            this.setState({
+                applicant: dataObj.name,
+                phone: dataObj.phone,
+                company: dataObj.enterprise,
+                park_id: dataObj.park_id,
+            });
         }
         goBack() {
             this.props.history.goBack();
@@ -5687,7 +6934,9 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                 userInfo: { name: "", avatar: "", phone: "", enterprise: "", roles: { role_id: "", role_name: "" } },
                 pathname: "",
                 messagelength: 0,
-                workOrderLength: 0
+                workOrderLength: 0,
+                enterprise: "",
+                enterpriseId: "",
             };
             this.dataService = new dataService_11.default();
         }
@@ -5702,6 +6951,8 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
             this.setState({
                 userInfo: JSON.parse(sessionStorage.getItem("userInfos")),
                 pathname: this.props.history.location.pathname,
+                enterprise: sessionStorage.getItem("enterprise"),
+                enterpriseId: sessionStorage.getItem("enterpriseId"),
             });
         }
         callBackGetMyMsgInfo(data) {
@@ -5721,12 +6972,43 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
         spread() {
             this.setState({ isSpread: !this.state.isSpread });
         }
+        phoneChange() {
+            let reg01 = /^1[3456789]\d{9}$/;
+            var phone = prompt("请输入新的手机号", "");
+            if (phone != null && phone != "" && reg01.test(phone)) {
+                console.log("phoneNew", phone);
+                this.dataService.modifyUserName(this.callBackUserName.bind(this), this.state.userInfo.name, this.state.userInfo.phone, this.state.enterpriseId);
+            }
+            else {
+                alert("手机号码不正确，固话请添加区号");
+                return;
+            }
+        }
+        callBackUserName(data) {
+            alert(data.err_msg);
+        }
+        showCompanyList() {
+            console.log("show公司列表");
+            this.setState({
+                companyBox: "rollSelectCauseBox",
+            });
+        }
+        hideCompanyBox() {
+            this.setState({
+                companyBox: "hide",
+            });
+        }
+        getCompanyBox() {
+            this.setState({
+                companyBox: "hide",
+            });
+        }
         render() {
             return (React.createElement("div", { className: "personal-center" },
                 React.createElement("div", { className: "personal-center-top" },
                     React.createElement("div", { className: "personal-center-info" },
                         React.createElement("div", { className: "personal-center-tx" },
-                            React.createElement("img", { src: this.state.userInfo.avatar, className: "personal-center-tx-img" })),
+                            React.createElement("img", { src: this.state.userInfo.avatar == null ? "./park_m/image/tx.jpg" : this.state.userInfo.avatar, className: "personal-center-tx-img" })),
                         React.createElement("div", { style: { float: "left", color: "#FFFFFF", fontSize: "42px", margin: "10px 0 0 36px" } },
                             React.createElement("div", null, this.state.userInfo.name),
                             React.createElement("div", { style: {
@@ -5752,13 +7034,12 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                         React.createElement("div", { className: "personal-center-tag" },
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u624B\u673A\u53F7\u7801"),
                             React.createElement("span", null, this.state.userInfo.phone),
-                            this.state.userInfo.roles.role_name !== "园区管理员" && this.state.userInfo.roles.role_name !== "企业管理员" ?
-                                React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u4FEE\u6539") : null),
+                            React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" }, onClick: this.phoneChange.bind(this) }, "\u4FEE\u6539")),
                         React.createElement("div", { className: "personal-center-tag" },
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5173\u8054\u4F01\u4E1A"),
-                            React.createElement("span", null, this.state.userInfo.enterprise),
+                            React.createElement("span", null, this.state.enterprise),
                             this.state.userInfo.roles.role_name !== "园区管理员" && this.state.userInfo.roles.role_name !== "企业管理员" ?
-                                React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u4FEE\u6539") : null),
+                                React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" }, onClick: this.showCompanyList.bind(this) }, "\u4FEE\u6539") : null),
                         React.createElement("div", { className: "personal-center-tag" },
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5BA2\u670D\u7535\u8BDD"),
                             React.createElement("span", null, "0773-123456")),
@@ -5857,19 +7138,27 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
         }
         componentDidMount() {
             this.dataService.getRepairType(this.setTypeUL);
-            let enterprises = JSON.parse(localStorage.getItem("enterprises"));
-            let contact = localStorage.getItem("userName");
-            let phone = localStorage.getItem("phone");
-            let staff_id = localStorage.getItem("userid");
-            console.log("--------", contact, phone, staff_id);
+            let data = sessionStorage.getItem("userInfos");
+            let dataObj = JSON.parse(data);
             this.setState({
-                contact: contact,
-                phone: phone,
-                staff_id: staff_id,
-                companyUL: enterprises,
-                company: enterprises[0].name,
-                company_id: enterprises[0].id,
+                contact: dataObj.name,
+                phone: dataObj.phone,
+                staff_id: dataObj.userId,
             });
+            if (dataObj.enterprises.length == 0) {
+                this.setState({
+                    companyUL: [],
+                    company: "请先关联企业",
+                    company_id: "请先关联企业",
+                });
+            }
+            else {
+                this.setState({
+                    companyUL: [],
+                    company: sessionStorage.getItem("enterprise"),
+                    company_id: sessionStorage.getItem("enterpriseId"),
+                });
+            }
         }
         setTypeUL(data) {
             console.log("getRepairType", data);
@@ -6063,7 +7352,7 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 React.createElement("span", { style: { "color": "#949494" } }, "\u62A5\u4FEE\u4F01\u4E1A"),
-                                React.createElement("span", { className: "iconfont", onClick: this.showCompanyBox.bind(this), style: { "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" } }, "\uE827"),
+                                React.createElement("span", { className: "iconfont", style: { "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" } }, "\uE827"),
                                 React.createElement("p", { className: "applyRight", style: { "font-size": "2.3rem", "padding-left": "2.5rem", "float": "right", "width": "37rem" } }, this.state.company)),
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
@@ -7684,18 +8973,24 @@ define("modificationAuthentication", ["require", "exports", "react", "react-rout
         constructor() {
             super(...arguments);
             this.state = {
-                userName: "用户昵称XXX"
+                userName: "用户昵称XXX",
+                phone: "",
+                company_id: "",
             };
             this.dataService = new dataService_18.default();
         }
         componentDidMount() {
             let userName = sessionStorage.getItem("userName");
+            let phone = sessionStorage.getItem("userInfos.phone");
+            let company_id = sessionStorage.getItem("enterpriseId");
             this.setState({
-                userName: userName
+                userName: userName,
+                phone: phone,
+                company_id: company_id,
             });
         }
         modifyUserName() {
-            this.dataService.modifyUserName(this.callBackModifyUserName.bind(this), this.state.userName);
+            this.dataService.modifyUserName(this.callBackModifyUserName.bind(this), this.state.userName, this.state.phone, this.state.company_id);
         }
         callBackModifyUserName(data) {
             alert(data.err_msg);
@@ -9403,47 +10698,30 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             Index.hideLoginBox = this.hideLoginBox.bind(this);
         }
         componentWillMount() {
-            this.dataService.getParks(this.setParks);
-            let _this = this;
-            if (!sessionStorage.getItem("city")) {
-                var geolocation = new BMap.Geolocation();
-                geolocation.getCurrentPosition(function (r) {
-                    if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-                        let parkArr = _this.state.parkArr;
-                        parkArr.forEach(item => {
-                            item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude));
-                        });
-                        sessionStorage.setItem("city", r.address.city);
-                        _this.setState({ city: r.address.city, parkArr: parkArr });
-                    }
-                    else {
-                        if (this.getStatus() === 6) {
-                            console.log("没有权限");
-                        }
-                        if (this.getStatus() === 8) {
-                            console.log("连接超时");
-                        }
-                    }
-                });
-            }
             curtainHide();
         }
         isLoginData() {
             let data = sessionStorage.getItem("userInfos");
-            let dataO = JSON.parse(data);
-            console.log("LoginData", dataO);
-            console.log(" LoginData", typeof dataO);
-            console.log("LoginData21", dataO.enterprises);
-            console.log(" LoginData22", typeof dataO.enterprises);
-            IsCompanys.getCompanyArr(dataO.enterprises);
-            if (dataO.enterprises.length > 1) {
+            let dataObj = JSON.parse(data);
+            console.log("LoginData", dataObj);
+            console.log(" LoginData", typeof dataObj);
+            console.log("LoginData21", dataObj.enterprises);
+            console.log(" LoginData22", typeof dataObj.enterprises);
+            IsCompanys.getCompanyArr(dataObj.enterprises);
+            if (dataObj.enterprises.length > 1) {
                 this.setState({
                     isCompanyArr: true,
                 });
             }
             else {
-                sessionStorage.setItem("enterprise", dataO.enterprises[0].name);
-                sessionStorage.setItem("enterpriseId", dataO.enterprises[0].id);
+                if (dataObj.enterprises.length == 0) {
+                    sessionStorage.setItem("enterprise", "请先关联企业");
+                    sessionStorage.setItem("enterpriseId", "请先关联企业");
+                }
+                else {
+                    sessionStorage.setItem("enterprise", dataObj.enterprises[0].name);
+                    sessionStorage.setItem("enterpriseId", dataObj.enterprises[0].id);
+                }
             }
         }
         static hideCompanyArr() { }
@@ -9458,6 +10736,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
                 isLoginBox: false,
             });
             this.isLoginData();
+            this.dataService.getParks(this.setParks);
         }
         foucus() {
             if (this.state.inputValue === "请输入园区名/区域名/商圈名") {
@@ -9481,6 +10760,28 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             this.setState({
                 parkArr: data
             });
+            let _this = this;
+            if (!sessionStorage.getItem("city")) {
+                var geolocation = new BMap.Geolocation();
+                geolocation.getCurrentPosition(function (r) {
+                    if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                        let parkArr = _this.state.parkArr;
+                        parkArr.forEach(item => {
+                            item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude));
+                        });
+                        sessionStorage.setItem("city", r.address.city);
+                        _this.setState({ city: r.address.city, parkArr: parkArr });
+                    }
+                    else {
+                        if (this.getStatus() === 6) {
+                            console.log("没有权限");
+                        }
+                        if (this.getStatus() === 8) {
+                            console.log("连接超时");
+                        }
+                    }
+                });
+            }
         }
         getRad(d) {
             return d * Math.PI / 180.0;
@@ -9898,4 +11199,168 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
     }
     exports.default = Index;
     ReactDOM.render(React.createElement(router_1.default, null), document.getElementById('viewContainer'));
+});
+define("personalCenter - \u526F\u672C", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_13, dataService_33) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class PersonalCenter extends React.Component {
+        constructor() {
+            super(...arguments);
+            this.props = {
+                history: this.props.history
+            };
+            this.state = {
+                parkList: [
+                    { name: "统计报表", imgUrl: "./park_m/image/statistics.png", url: "/statisticalStatement" }, { name: "房间管理", imgUrl: "./park_m/image/room.png", url: "/room" },
+                    { name: "工单派发管理", imgUrl: "./park_m/image/distribute.png", url: "/distribute" }, { name: "客服电话", imgUrl: "./park_m/image/service.png", url: "/serviceTel" },
+                    { name: "招商管理", imgUrl: "./park_m/image/attractInvestment.png", url: "/attractInvestment" }
+                ],
+                isSpread: false,
+                userInfo: "",
+                pathname: "",
+                userName: "",
+                enterprise: "",
+                phone: "",
+                parkPhone: "",
+            };
+            this.dataService = new dataService_33.default();
+        }
+        componentDidMount() {
+            this.dataService.getRoleType(this.callBackGetRoleType.bind(this));
+            let userInfo = sessionStorage.getItem("userInfo");
+            let userName = sessionStorage.getItem("userName");
+            let enterprise = sessionStorage.getItem("enterprise");
+            let phone = sessionStorage.getItem("phone");
+            console.log("userInfo222", userInfo);
+            if (!sessionStorage.getItem("userInfo")) {
+                sessionStorage.setItem("userInfo", "园区成员");
+                sessionStorage.setItem("userName", "用户名称");
+            }
+            if (sessionStorage.getItem("userInfo") == "企业管理员") {
+            }
+            this.setState({
+                userInfo: userInfo,
+                pathname: this.props.history.location.pathname,
+                userName: userName,
+                enterprise: enterprise,
+                phone: phone,
+            });
+            console.log("userInfo", this.state);
+        }
+        callBackGetUserInfo(data) {
+            console.log("userInfoss", data);
+            this.setState({ userInfo: JSON.parse(data) });
+            sessionStorage.setItem("userInfo", this.state.userInfo.roles.role_name);
+        }
+        callBackGetRoleType(data) {
+            console.log(data);
+        }
+        spread() {
+            this.setState({ isSpread: !this.state.isSpread });
+        }
+        switchMember() {
+            switch (this.state.userInfo) {
+                case "园区成员":
+                    this.setState({ userInfo: "企业管理员" });
+                    sessionStorage.setItem("userInfo", "企业管理员");
+                    break;
+                case "企业管理员":
+                    this.setState({ userInfo: "园区管理员" });
+                    sessionStorage.setItem("userInfo", "园区管理员");
+                    break;
+                default:
+                    this.setState({ userInfo: "园区成员" });
+                    sessionStorage.setItem("userInfo", "园区成员");
+            }
+        }
+        changeParkPhone() {
+            var x;
+            var phoneNew = prompt("请输入新园区电话", "");
+            var reg01 = /^1[3456789]\d{9}$/;
+            var reg02 = /^(0[0-9]{2,3}\-)([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$/;
+            if (phoneNew != null && phoneNew != "" && reg01.test(phoneNew)) {
+            }
+        }
+        render() {
+            return (React.createElement("div", { className: "personal-center" },
+                React.createElement("div", { className: "personal-center-top" },
+                    React.createElement("div", { className: "personal-center-info" },
+                        React.createElement("div", { className: "personal-center-tx" },
+                            React.createElement("img", { src: "./park_m/image/tx.jpg", className: "personal-center-tx-img" })),
+                        React.createElement("div", { style: { float: "left", color: "#FFFFFF", fontSize: "42px", margin: "10px 0 0 36px" } },
+                            React.createElement("div", null, this.state.userName),
+                            React.createElement("div", { style: {
+                                    color: "#83d5ff", fontSize: "27px", backgroundColor: "#2e9cf3", width: "160px",
+                                    height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
+                                }, onClick: this.switchMember.bind(this) }, this.state.userInfo)),
+                        React.createElement(react_router_dom_13.Link, { to: "/modificationAuthentication" },
+                            React.createElement("div", { className: "personal-center-right" },
+                                React.createElement("img", { src: "./park_m/image/w-right.png" }))))),
+                this.state.pathname === "/personalCenter" ?
+                    React.createElement("div", null,
+                        React.createElement("div", { className: "personal-center-tag", style: { margin: "0 50px 0 50px", fontWeight: "600" } },
+                            "\u6211\u7684\u6536\u85CF ",
+                            React.createElement("img", { src: "./park_m/image/right.png", style: { marginTop: "40px", float: "right" } })),
+                        React.createElement("div", { className: "personal-center-tag", style: { margin: "0 50px 0 50px", fontWeight: "600" } },
+                            "\u6D4F\u89C8\u8BB0\u5F55 ",
+                            React.createElement("img", { src: "./park_m/image/right.png", style: { marginTop: "40px", float: "right" } })),
+                        React.createElement("div", { className: "personal-center-tag", style: { margin: "0 50px 0 50px", fontWeight: "600" } },
+                            "\u5BA2\u670D\u7535\u8BDD ",
+                            React.createElement("span", { style: { float: "right" } }, "400-808-3066"))) : null,
+                this.state.pathname !== "/personalCenter" ?
+                    React.createElement("div", null,
+                        React.createElement("div", { className: "personal-center-tag" },
+                            React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u624B\u673A\u53F7\u7801"),
+                            React.createElement("span", null, this.state.phone),
+                            React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u4FEE\u6539")),
+                        React.createElement("div", { className: "personal-center-tag" },
+                            React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5173\u8054\u4F01\u4E1A"),
+                            React.createElement("span", null, this.state.enterprise),
+                            React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u4FEE\u6539")),
+                        React.createElement("div", { className: "personal-center-tag" },
+                            React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5BA2\u670D\u7535\u8BDD"),
+                            React.createElement("span", null, this.state.parkPhone),
+                            React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" }, onClick: this.changeParkPhone.bind(this) }, "\u4FEE\u6539")),
+                        React.createElement("div", { className: "personal-center-my" },
+                            React.createElement(react_router_dom_13.Link, { to: sessionStorage.getItem("userInfo") === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
+                                React.createElement("div", { className: "personal-center-my-left" },
+                                    React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "5"),
+                                    React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u5DE5\u5355"))),
+                            React.createElement("div", { className: "personal-center-my-middle" }),
+                            React.createElement(react_router_dom_13.Link, { to: "/message" },
+                                React.createElement("div", { className: "personal-center-my-right" },
+                                    React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "6"),
+                                    React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u6D88\u606F")))))
+                    : null,
+                sessionStorage.getItem("userInfo") === "企业管理员" && this.state.pathname !== "/personalCenter" ?
+                    React.createElement("div", { className: "personal-center-enterprise" },
+                        React.createElement(react_router_dom_13.Link, { to: "/enterpriseInformation" },
+                            React.createElement("div", { className: "personal-center-enterprise-child" },
+                                React.createElement("img", { src: "./park_m/image/enterprise.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
+                                React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u4F01\u4E1A\u4FE1\u606F\u7BA1\u7406"),
+                                React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
+                                    React.createElement("img", { src: "./park_m/image/right.png" })))),
+                        React.createElement(react_router_dom_13.Link, { to: "/rentRoom" },
+                            React.createElement("div", { className: "personal-center-enterprise-child" },
+                                React.createElement("img", { src: "./park_m/image/let.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
+                                React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"),
+                                React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
+                                    React.createElement("img", { src: "./park_m/image/right.png" }))))) : null,
+                sessionStorage.getItem("userInfo") === "园区管理员" && this.state.pathname !== "/personalCenter" ?
+                    React.createElement("div", { className: "personal-center-park" },
+                        React.createElement("div", { className: "personal-center-enterprise-child", onClick: this.spread.bind(this) },
+                            React.createElement("img", { src: "./park_m/image/park.png", width: "60px", height: "60px", style: { marginBottom: "10px" } }),
+                            React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u56ED\u533A\u7BA1\u7406"),
+                            React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
+                                React.createElement("img", { src: "./park_m/image/right.png", className: this.state.isSpread ? "personal-center-bottom-img" : "" }))),
+                        this.state.isSpread ?
+                            React.createElement("div", { style: { backgroundColor: "#ffffff", overflow: "hidden", paddingTop: "30px" } }, this.state.parkList.map((item, index) => {
+                                return (React.createElement(react_router_dom_13.Link, { to: item.url },
+                                    React.createElement("div", { key: index, className: "personal-center-park-child" },
+                                        React.createElement("img", { src: item.imgUrl, width: "110px", height: "110px" }),
+                                        React.createElement("div", { style: { marginTop: "10px" } }, item.name))));
+                            })) : null) : null));
+        }
+    }
+    exports.default = PersonalCenter;
 });
