@@ -26,6 +26,20 @@ class Indoor {
             pBuildingObj.highlight = true;
             pBuildingObj.opacity = 250;
         }
+        this.m_pScene.m_pScene.object3D.active = true;
+        let pPosition = null;
+        let nOffset = 6.0;
+        for (let pLayer of this.m_pScene.m_pScene.layers) {
+            let pObject = pLayer.object3D;
+            if (pPosition) {
+                pPosition.y += nOffset;
+                pObject.transform.localPosition = pPosition;
+            }
+            else {
+                pPosition = pObject.transform.localPosition;
+            }
+            pLayer._Draw();
+        }
     }
     Close() {
         let pBuildingObj = this.m_pBuilding.object3D;
@@ -33,6 +47,7 @@ class Indoor {
             pBuildingObj.highlight = false;
             pBuildingObj.opacity = 255;
         }
+        this.m_pScene.m_pScene.object3D.active = false;
     }
     Update(mEyePos) {
         let pBuildingObj = this.m_pBuilding.object3D;
@@ -87,12 +102,12 @@ class Main {
         pThis.m_pApp.m_pCameraCtrl.Jump(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, {
             m_nLng: pThis.m_pCity.m_nLng,
             m_nLat: pThis.m_pCity.m_nLat,
-            m_mTarget: { x: 0.0, y: 170.0, z: 0.0 },
+            m_mTarget: { x: 0.0, y: 0.0, z: 0.0 },
             m_nDistance: 300.000,
             m_nPitch: 20.0,
             m_nYaw: 90.0
         });
-        MiaokitJS.ShaderLab.SetSunlight(0.0, 20.0, 0.1);
+        MiaokitJS.ShaderLab.SetSunlight(0.0, 60.0, 0.1);
     }
     Update() {
         if ((this.iii++) % 180 === 0) {
