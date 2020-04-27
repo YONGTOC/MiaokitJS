@@ -13,7 +13,10 @@ interface IState {
   phone: string,
   inspectionTime: string,
   require: string,
-  lift: number
+  lift: number,
+  isElevator: boolean,
+  pic: Array<any>,
+  video: Array<any>
 }
 
 export default class RoomBase extends React.Component<{ history: any }>{
@@ -29,16 +32,26 @@ export default class RoomBase extends React.Component<{ history: any }>{
     phone: JSON.parse(sessionStorage.getItem("roomInfo"))[0].phone, // 联系电话
     inspectionTime: JSON.parse(sessionStorage.getItem("roomInfo"))[0].inspection_time, // 看房时间
     require: JSON.parse(sessionStorage.getItem("roomInfo"))[0].require, // 租房要求
-    lift: 1 // 电梯
+    pic: JSON.parse(sessionStorage.getItem("roomInfo"))[0].pic, // 图库
+    video: JSON.parse(sessionStorage.getItem("roomInfo"))[0].video, // 视频
+    lift: JSON.parse(sessionStorage.getItem("roomInfo"))[0].lift, // 电梯
+    isElevator: false
   }
 
   public dataService: DataService = new DataService()
 
   componentDidMount() {
+    $('#a-img').click(() => {
+      $('#a-input').click()
+    })
+    $('#b-img').click(() => {
+      $('#b-input').click()
+    })
     if (this.props.location.state) {
       sessionStorage.setItem("roomInfo", JSON.stringify(this.props.location.state.roomInfo))
     }
     console.log(JSON.parse(sessionStorage.getItem("roomInfo")))
+    console.log("pic", this.state.pic)
   }
 
   // 输入
@@ -86,8 +99,8 @@ export default class RoomBase extends React.Component<{ history: any }>{
       require: this.state.require,
       lift: this.state.lift,
       square: JSON.parse(sessionStorage.getItem("roomInfo"))[0].square,
-      pic: JSON.parse(sessionStorage.getItem("roomInfo"))[0].pic,
-      video: JSON.parse(sessionStorage.getItem("roomInfo"))[0].video
+      pic: this.state.pic,
+      video: this.state.video
     }
     this.dataService.saveRoomBaseInfo(this.callBackSaveRoomBaseInfo.bind(this), obj)
   }
@@ -97,6 +110,72 @@ export default class RoomBase extends React.Component<{ history: any }>{
       this.props.history.goBack()
     }
   }
+
+  changeElevator() {
+    this.setState({ isElevator: !this.state.isElevator })
+  }
+
+  closeElevator(flag) {
+    this.setState({ isElevator: false, lift: flag ? 1 : 0 })
+  }
+
+  // 清除图片
+  closePic(index) {
+    let pic = this.state.pic
+    pic.splice(index, 1)
+    this.setState({ pic: pic })
+  }
+
+  // 清除视频
+  closeVideo(index) {
+    let video = this.state.video
+    video.splice(index, 1)
+    this.setState({ video: video })
+  }
+
+  uploadPic(file) {
+    this.dataService.upload(this.callBackUploadPic.bind(this), file)
+  }
+
+  callBackUploadPic(data) {
+    console.log("callBackUpload", data)
+    if (data.return_code == 100) {
+      let pic = this.state.pic
+      pic.push({ url: data.response, name: "" })
+      this.setState({ pic: pic })
+    } else {
+      alert("上传失败")
+    }
+  }
+
+  updatePic(event) {
+    let formData = new FormData();
+    formData.append("file", event.target.files[0]);
+    this.uploadPic(formData)
+  }
+
+  updateVideo(event) {
+    let formData = new FormData();
+    formData.append("file", event.target.files[0]);
+    this.uploadVideo(formData)
+  }
+
+  uploadVideo(file) {
+    this.dataService.upload(this.callBackUploadVideo.bind(this), file)
+  }
+
+  callBackUploadVideo(data) {
+    console.log("callBackUpload", data)
+    if (data.return_code == 100) {
+      let video = this.state.video
+      video.push({ url: data.response, name: "" })
+      this.setState({ video: video })
+    } else {
+      alert("上传失败")
+    }
+  }
+
+  
 
   render() {
     return (
@@ -127,10 +206,16 @@ export default class RoomBase extends React.Component<{ history: any }>{
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
           <div className="enterprise-information-star"></div>
           <div style={{ color: "#949494", height: "80px", float: "left", width: "20%", marginRight: "30px" }}>电梯</div>
-          <div style={{ color: "#6C6C6C", float: "left" }}>{JSON.parse(sessionStorage.getItem("roomInfo"))[0].lift == 1 ? "有" : "没有"}</div>
-          <div style={{ height: "100%", float: "right" }}>
-            <img src="./park_m/image/right.png" style={{ margin: "-10px 40px 0 0"}} />
+          <div style={{ color: "#6C6C6C", float: "left" }}>{this.state.lift == 1 ? "有" : "没有"}</div>
+          <div style={{ height: "100%", float: "right" }} onClick={this.changeElevator.bind(this)}>
+            <img src="./park_m/image/right.png" style={{ margin: "-10px 40px 0 0", transform: this.state.isElevator ? "rotate(90deg)" : "" }} />
           </div>
+          {this.state.isElevator ? 
+            <div style={{ position: "relative", top: "120px", width: "100%", height: "200px", backgroundColor: "#ffffff" }}>
+              <div style={{ width: "500px", height: "100px", margin: "auto", paddingRight: "100px", textAlign: "center" }} onClick={e => this.closeElevator(true)}>有</div>
+              <div style={{ width: "500px", height: "100px", margin: "auto", paddingRight: "100px", textAlign: "center" }} onClick={e => this.closeElevator(false)}>没有</div>
+            </div> : null
+          }
         </div>
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
           <div className="enterprise-information-star"></div>
@@ -153,17 +238,37 @@ export default class RoomBase extends React.Component<{ history: any }>{
             style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
           />
         </div>
-        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", height: "360px" }}>
+        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", height: 360 + Math.floor(this.state.pic.length / 3) * 250 }}>
           <div className="enterprise-information-star"></div>
           <div style={{ color: "#949494", height: "80px", width: "20%" }}>图库</div>
-          <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px" }}>
+          {this.state.pic.map((item, index) => {
+            return (
+              <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", margin: "30px 30px 0 0", float: "left" }} key={index}>
+                <img src="./park_m/image/close.png" style={{ position: "absolute", left: (index % 3 + 1) * 250 }} onClick={e => this.closePic(index)} />
+                <img src={item.url} style={{ height: "100%", width: "100%" }} />
+                </div>
+              )
+            })
+          }
+          <input type="file" onChange={this.updatePic.bind(this)} id="a-input" style={{ display: "none" }} />
+          <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left" }} id="a-img">
             <img src="./park_m/image/addPicture.png" style={{ height: "60px", width: "60px" }} />
             <div style={{ color: "#949494", marginTop: "-30px" }}>添加</div>
           </div>
         </div>
-        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", height: "360px", marginLeft: "30px" }}>
+        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", height: 360 + Math.floor(this.state.video.length / 3) * 250, marginLeft: "30px" }}>
           <div style={{ color: "#949494", height: "80px", width: "20%" }}>房间视频</div>
-          <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px" }}>
+          {this.state.video.map((item, index) => {
+            return (
+              <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", margin: "30px 30px 0 0", float: "left" }} key={index}>
+                <img src="./park_m/image/close.png" style={{ position: "absolute", left: (index % 3 + 1) * 250 }} onClick={e => this.closeVideo(index)} />
+                <img src={item.url} style={{ height: "100%", width: "100%" }} />
+              </div>
+            )
+          })
+          }
+          <input type="file" onChange={this.updateVideo.bind(this)} id="b-input" style={{ display: "none" }} />
+          <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left" }} id="b-img">
             <img src="./park_m/image/addPicture.png" style={{ height: "60px", width: "60px" }} />
             <div style={{ color: "#949494", marginTop: "-30px" }}>添加</div>
           </div>
@@ -174,13 +279,13 @@ export default class RoomBase extends React.Component<{ history: any }>{
         </div>
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", marginLeft: "30px" }}>
           <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>看房时间</div>
-          <input onChange={this.changed.bind(this)} value={this.state.inspectionTime}
+          <input onChange={this.changee.bind(this)} value={this.state.inspectionTime}
             style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
           />
         </div>
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", marginLeft: "30px" }}>
           <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>租房要求</div>
-          <input onChange={this.changed.bind(this)} value={this.state.require}
+          <input onChange={this.changef.bind(this)} value={this.state.require}
             style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
           />
         </div>

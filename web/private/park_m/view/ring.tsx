@@ -8,7 +8,8 @@ interface IProps {
   fontSize: number,
   ringName: string,
   ringNumber: number,
-  label: boolean
+  label: boolean,
+  labelType: number
 }
 
 interface IState {
@@ -23,12 +24,13 @@ interface IState {
 export default class Ring extends React.Component {
   public readonly props: Readonly<IProps> = {
     ringList: this.props.ringList,
-    ringRadius: this.props.ringRadius,
-    ringWidth: this.props.ringWidth,
+    ringRadius: 0,
+    ringWidth: 0,
     fontSize: this.props.fontSize,
     ringName: this.props.ringName,
     ringNumber: this.props.ringNumber,
-    label: true
+    label: true,
+    labelType: 0
   }
 
   public readonly state: Readonly<IState> = {
@@ -59,25 +61,28 @@ export default class Ring extends React.Component {
     this.props.ringList.map(item => {
       if (item.percentage / 0.25 > 1) {
         for (let i = 1; i <= item.percentage / 0.25; i++) {
-          ringList.push({ color: item.color, percentage: 0.25, position: position, length: 91, name: item.name, number: item.number })
+          ringList.push({ color: item.color, percentage: 0.25, position: position, length: 91, name: item.name, number: item.amount })
           position = position + 90
         }
         if (item.percentage % 0.25 !== 0) {
           percentageFloat = parseFloat("0." + (item.percentage / 0.25).toString().replace(/\d+\.(\d*)/, "$1"))
-          ringList.push({ color: item.color, percentage: percentageFloat * 0.25, position: position, length: percentageFloat * 0.25 * 360, name: item.name, number: item.number })
+          ringList.push({ color: item.color, percentage: percentageFloat * 0.25, position: position, length: percentageFloat * 0.25 * 360, name: item.name, number: item.amount })
           position = position + percentageFloat * 90
         }
       } else {
-        ringList.push({ color: item.color, percentage: item.percentage, position: position, length: item.percentage * 360, name: item.name, number: item.number })
+        ringList.push({ color: item.color, percentage: item.percentage, position: position, length: item.percentage * 360, name: item.name, number: item.amount })
         position = position + item.percentage * 360
       }
     })
+    console.log("ringList", ringList)
     this.setState({ ringList: ringList, label: this.props.label ? true : this.props.label, ringName: this.props.ringName, ringNumber: this.props.ringNumber })
   }
 
   // 选择类型
   choiceType(index) {
-    this.setState({ ringName: this.state.ringList[index].name, ringNumber: this.state.ringList[index].number })
+    this.setState({ ringName: this.state.ringList[index].name, ringNumber: this.state.ringList[index].number }, () => {
+      console.log("ringNumber", this.state.ringList[index])
+    })
   }
 
 
@@ -104,17 +109,35 @@ export default class Ring extends React.Component {
           }
         </div>
         {this.state.label ?
-          <div style={{ float: "left", height: this.props.ringRadius * 2, paddingTop: (this.props.ringRadius * 2 - this.props.ringRadius * 2 / 1.5 + (this.props.ringRadius * 2 / 1.5 / 4)) / 2 }}>
-            {this.props.ringList.map((item, index) => {
-              return (
-                <div style={{ width: "100%", height: this.props.ringRadius * 2 / this.state.ringList.length / 1.5, overflow: "hidden", marginLeft: "60px" }} key={index}>
-                  <div style={{ height: "30px", width: "30px", border: "5px solid " + item.color, borderRadius: "50%", float: "left", marginTop: "10px" }}></div>
-                  <div style={{ float: "left", color: "#333333", fontSize: "32px", marginLeft: "30px" }}>{item.name}</div>
-                </div>
-              )
-            })
+          <div style={{ width: this.props.labelType === 2 ? "100%" : null, overflow: "hidden" }}>
+            {
+              this.props.labelType === 1 ?
+              <div style={{ float: "left", height: this.props.ringRadius * 2, paddingTop: (this.props.ringRadius * 2 - this.props.ringRadius * 2 / 1.5 + (this.props.ringRadius * 2 / 1.5 / 4)) / 2 }}>
+                {this.props.ringList.map((item, index) => {
+                  return (
+                    <div style={{ width: "100%", height: this.props.ringRadius * 2 / this.state.ringList.length / 1.5, overflow: "hidden", marginLeft: "60px" }} key={index}>
+                      <div style={{ height: "30px", width: "30px", border: "5px solid " + item.color, borderRadius: "50%", float: "left", marginTop: "10px" }}></div>
+                      <div style={{ float: "left", color: "#333333", fontSize: "32px", marginLeft: "30px" }}>{item.name}</div>
+                    </div>
+                  )
+                })
+                }
+              </div> 
+                :
+              <div style={{ height: this.props.ringRadius * 2, paddingTop: "40px" }}>
+                {this.props.ringList.map((item, index) => {
+                  return (
+                    <div style={{ float: "left", width: "20%", height: this.props.ringRadius * 2 / this.state.ringList.length / 1.5, overflow: "hidden", marginLeft: "30px" }} key={index}>
+                      <div style={{ height: "30px", width: "30px", backgroundColor: item.color, float: "left", marginTop: "10px" }}></div>
+                      <div style={{ float: "left", color: "#333333", fontSize: "32px", marginLeft: "30px" }}>{item.name}</div>
+                    </div>
+                  )
+                })
+                }
+              </div>
             }
-          </div> : null
+          </div>
+          : null
         }
       </div>
     )

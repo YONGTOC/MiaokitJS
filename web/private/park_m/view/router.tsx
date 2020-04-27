@@ -28,7 +28,9 @@ import Distribute from "distribute";
 import SearchUser from "searchUser";
 import StatisticalStatement from "statisticalStatement";
 import InformationChild from "informationChild";
+import InformationChilds from "informationChilds";
 import InformationDetail from "informationDetail";
+import InformationDetails from "informationDetails";
 import AttractInvestment from "attractInvestment";
 import AttractInvestmentList from "attractInvestmentList";
 import Room from "room";
@@ -88,6 +90,8 @@ class Router extends React.Component {
             <Home {...props}>
               <Route path="/home/infoArea" component={InfoArea} />
               <Route path="/home/information" component={Information} />
+              <Route path="/home/informationChilds" component={InformationChilds} />
+              <Route path="/home/informationDetails" component={InformationDetails} />
               <Route path="/home/personalCenter" component={PersonalCenter} />
             </Home>
           )}>

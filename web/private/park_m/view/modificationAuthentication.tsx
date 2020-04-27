@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import DataService from "dataService";
 
 interface IProps {
+  location: any,
+  history: any
 }
 
 interface IState {
@@ -14,14 +16,17 @@ class ModificationAuthentication extends React.Component<{ history: any }> {
   public readonly state: Readonly<IState> = {
     userName: "用户昵称XXX"
   }
+  
+  public readonly props: Readonly<IProps> = {
+    location: this.props.location,
+    history: this.props.history
+  }
 
   public dataService: DataService = new DataService()
 
   componentDidMount() {
-    // 写入用户名
-    let userName = sessionStorage.getItem("userName");
     this.setState({
-      userName:userName
+      userName: this.props.location.state.name
     })
 
   }
@@ -32,7 +37,10 @@ class ModificationAuthentication extends React.Component<{ history: any }> {
   }
 
   callBackModifyUserName(data) {
-    alert(data.err_msg)
+    let userInfos = JSON.parse(sessionStorage.getItem("userInfos"))
+    userInfos.name = data.response
+    sessionStorage.setItem("userInfos", JSON.stringify(userInfos))
+    this.props.history.goBack()
   }
 
   // 聚焦

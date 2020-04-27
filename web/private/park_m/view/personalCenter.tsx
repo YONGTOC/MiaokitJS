@@ -92,7 +92,7 @@ class PersonalCenter extends React.Component {
                 height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
               }}>{this.state.userInfo.roles.role_name}</div>
             </div>
-            <Link to="/modificationAuthentication">
+            <Link to={{pathname: "/modificationAuthentication", state: {name: this.state.userInfo.name}}}>
               <div className="personal-center-right">
                 <img src="./park_m/image/w-right.png" />
               </div>

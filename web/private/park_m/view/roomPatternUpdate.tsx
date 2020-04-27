@@ -83,8 +83,7 @@ export default class roomPatternUpdate extends React.Component<{ history: any }>
 
   // 提交
   submit() {
-    let obj = []
-    let index = this.props.location.state.index === 0 ? 1 : 0
+    let obj = JSON.parse(sessionStorage.getItem("roomInfo"))[0].part
     obj[this.props.location.state.index] = {
       id: JSON.parse(sessionStorage.getItem("part")).id,
       name: this.state.name,
@@ -92,14 +91,6 @@ export default class roomPatternUpdate extends React.Component<{ history: any }>
       headimageurl: this.state.fileArr[0],
       panoramaurl: this.state.fileArr[1]
     }
-    obj[index] = {
-      id: JSON.parse(sessionStorage.getItem("roomInfo"))[0].part[index].id,
-      name: JSON.parse(sessionStorage.getItem("roomInfo"))[0].part[index].name,
-      position: JSON.parse(sessionStorage.getItem("roomInfo"))[0].part[index].position,
-      headimageurl: JSON.parse(sessionStorage.getItem("roomInfo"))[0].part[index].headimageurl,
-      panoramaurl: JSON.parse(sessionStorage.getItem("roomInfo"))[0].part[index].panoramaurl
-    }
-
     this.dataService.saveRoomPartBaseInfo(this.callBackSaveRoomPartBaseInfo.bind(this), obj)
   }
 

@@ -5,6 +5,7 @@
   margin-top: 15px;
   white-space: pre-line;
   overflow-y: auto;
+  padding-bottom: 300px;
 }
 .room-pattern-content::-webkit-scrollbar {
   display: none;

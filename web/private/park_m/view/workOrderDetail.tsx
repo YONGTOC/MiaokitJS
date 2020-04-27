@@ -138,6 +138,9 @@ class workOrderDetail extends React.Component<{ history: any }>{
 
   // 提交
   submit(index) {
+    if (index === 0) {
+      this.props.history.push("/searchUser")
+    }
     let obj = {
       uid: 1,
       id: this.state.datas.id,
@@ -207,7 +210,7 @@ class workOrderDetail extends React.Component<{ history: any }>{
               <span style={{ color: "#333333", fontSize: "40px" }}>{this.state.datas.examine.reply}</span>
             </div>
           </div>
-          : this.state.stateName === "审核中" && (sessionStorage.getItem("userInfo") !== "园区成员" && sessionStorage.getItem("userInfo") !== "普通成员" )?
+          : this.state.stateName === "审核中" && sessionStorage.getItem("userInfo") === "园区管理员" ?
           <div>
             <div style={{padding: "30px 0 0 50px"}}>
               <div className="isay-star"></div><div style={{ marginLeft: "30px", fontSize: "40px", color: "#333333" }}>审核回复：</div>

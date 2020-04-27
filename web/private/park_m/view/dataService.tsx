@@ -1117,7 +1117,7 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/modifyUserName',
       data: {
-        id: 3,
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
         username: username,
         token: sessionStorage.getItem("token")
       },
@@ -1481,24 +1481,10 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/saveRoomPartBaseInfo?token=' + sessionStorage.getItem("token"),
       data: JSON.stringify({
-        id: 1,
-        park_id: 1,
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+        park_id: sessionStorage.getItem("park_id"),
         room_id: sessionStorage.getItem("roomId"),
-        part: [{
-          id: obj[0].id,
-          name: obj[0].name,
-          position: obj[0].position,
-          headimageurl: obj[0].headimageurl,
-          panoramaurl: obj[0].panoramaurl
-        },
-        {
-          id: obj[1].id,
-          name: obj[1].name,
-          position: obj[1].position,
-          headimageurl: obj[1].headimageurl,
-          panoramaurl: obj[1].panoramaurl
-        }
-        ]
+        part: obj
       }),
       type: "post",
       success: function (data) {

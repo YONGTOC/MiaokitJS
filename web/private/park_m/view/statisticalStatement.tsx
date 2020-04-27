@@ -100,8 +100,14 @@ class StatisticalStatement extends React.Component {
                   <div style={{ float: "left" }}>{item.name}</div>
                 </div>
                 <div style={{ width: "100%", padding: "90px 20px 20px 80px" }}>
-                  <Ring ringList={item.array} ringRadius={this.state.ringRadius} ringWidth={this.state.ringWidth} fontSize={this.state.fontSize}
-                    ringName={this.state.ringName} ringNumber={item.sum} label={true} />
+                  {index !== 1 ?
+                    <Ring ringList={item.array} ringRadius={this.state.ringRadius} ringWidth={this.state.ringWidth} fontSize={this.state.fontSize}
+                      ringName={this.state.ringName} ringNumber={item.sum} label={true} labelType={1} /> :
+                    <div style={{ marginLeft: "160px" }}>
+                      <Ring ringList={item.array} ringRadius={200} ringWidth={50} fontSize={this.state.fontSize}
+                      ringName={this.state.ringName} ringNumber={item.sum} label={true} labelType={2} />
+                    </div>
+                  }
                 </div>
               </div>
             )
