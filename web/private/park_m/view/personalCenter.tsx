@@ -15,6 +15,8 @@ interface IState {
     name: string, avatar: string, phone: string, enterprise: string, roles: { role_id: string, role_name: string }
   },
   pathname: string,
+  enterprise: string,
+  enterpriseId: string,
   messagelength: number
   workOrderLength: number
 }
@@ -33,7 +35,9 @@ class PersonalCenter extends React.Component {
     userInfo: { name: "", avatar: "", phone: "", enterprise: "", roles: { role_id: "", role_name: "" } },
     pathname: "",
     messagelength: 0,
-    workOrderLength: 0
+    workOrderLength: 0,
+    enterprise:"",
+    enterpriseId:"",
   }
 
   public dataService: DataService = new DataService()
@@ -47,15 +51,17 @@ class PersonalCenter extends React.Component {
     }
     this.dataService.getMyMsgInfo(this.callBackGetMyMsgInfo.bind(this), "")
     this.dataService.getMyWork(this.callBackGetMyWork.bind(this), obj)
-    
+
     this.setState({
       userInfo: JSON.parse(sessionStorage.getItem("userInfos")),
       pathname: this.props.history.location.pathname,
+      enterprise: sessionStorage.getItem("enterprise"),
+      enterpriseId: sessionStorage.getItem("enterpriseId"),
     })
   }
 
   callBackGetMyMsgInfo(data) {
-    this.setState({ messagelength: data.response.length})
+    this.setState({ messagelength: data.response.length })
   }
 
   callBackGetMyWork(data) {
@@ -77,13 +83,57 @@ class PersonalCenter extends React.Component {
     this.setState({ isSpread: !this.state.isSpread })
   }
 
+
+  public phoneChange() {
+   let reg01 = /^1[3456789]\d{9}$/;
+    var phone = prompt("请输入新的手机号", "")
+    if (phone != null && phone != "" && reg01.test(phone) ) {
+      console.log("phoneNew", phone)
+      // 提交手机号修改
+    this.dataService.modifyUserName(this.callBackUserName.bind(this),
+      this.state.userInfo.name, this.state.userInfo.phone, this.state.enterpriseId )
+
+    } else {
+      alert("手机号码不正确，固话请添加区号")
+      return;
+    }
+  }
+
+  public callBackUserName(data) {
+        alert(data.err_msg)
+  }
+
+  //关联企业
+  public showCompanyList() {
+    console.log("show公司列表")
+    this.setState({
+      companyBox: "rollSelectCauseBox",
+    })
+  }
+
+    // 隐藏公司列表框
+  public hideCompanyBox() {
+    this.setState({
+      companyBox: "hide",
+    })
+  }
+
+    //确认公司列表选择
+  public getCompanyBox() {
+    this.setState({
+      companyBox: "hide",
+      //company_id: this.state.company_id_in,
+      //company: this.state.company_name_in,
+    })
+  }
+
   render() {
     return (
       <div className="personal-center">
         <div className="personal-center-top">
           <div className="personal-center-info">
             <div className="personal-center-tx">
-              <img src={this.state.userInfo.avatar} className="personal-center-tx-img" />
+              <img src={this.state.userInfo.avatar == null ? "./park_m/image/tx.jpg" : this.state.userInfo.avatar} className="personal-center-tx-img" />
             </div>
             <div style={{ float: "left", color: "#FFFFFF", fontSize: "42px", margin: "10px 0 0 36px" }}>
               <div>{this.state.userInfo.name}</div>
@@ -99,7 +149,7 @@ class PersonalCenter extends React.Component {
             </Link>
           </div>
         </div>
-        {this.state.pathname === "/personalCenter" ? 
+        {this.state.pathname === "/personalCenter" ?
           <div>
             <div className="personal-center-tag" style={{ margin: "0 50px 0 50px", fontWeight: "600" }}>
               我的收藏 <img src="./park_m/image/right.png" style={{ marginTop: "40px", float: "right" }} />
@@ -109,23 +159,21 @@ class PersonalCenter extends React.Component {
             </div>
             <div className="personal-center-tag" style={{ margin: "0 50px 0 50px", fontWeight: "600" }}>
               客服电话 <span style={{ float: "right" }}>400-808-3066</span>
-            </div> 
-          </div>: null
+            </div>
+          </div> : null
         }
         {this.state.pathname !== "/personalCenter" ?
           <div>
             <div className="personal-center-tag">
               <span style={{ margin: "0 50px 0 50px" }}>手机号码</span><span>{this.state.userInfo.phone}</span>
-              {this.state.userInfo.roles.role_name !== "园区管理员" && this.state.userInfo.roles.role_name !== "企业管理员" ?
-                <span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>
-                    修改
-                </span> : null
-              }
+                <span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }} onClick={this.phoneChange.bind(this)}>
+                  修改
+                </span>  
             </div>
             <div className="personal-center-tag">
-              <span style={{ margin: "0 50px 0 50px" }}>关联企业</span><span>{this.state.userInfo.enterprise}</span>
+              <span style={{ margin: "0 50px 0 50px" }}>关联企业</span><span>{this.state.enterprise}</span>
               {this.state.userInfo.roles.role_name !== "园区管理员" && this.state.userInfo.roles.role_name !== "企业管理员" ?
-                <span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>
+                <span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }} onClick={this.showCompanyList.bind(this)}>
                   修改
                 </span> : null
               }
@@ -152,13 +200,13 @@ class PersonalCenter extends React.Component {
           </div>
           : null
         }
- 
+
 
         {this.state.userInfo.roles.role_name === "企业管理员" && this.state.pathname !== "/personalCenter" ?
           <div className="personal-center-enterprise">
             <Link to="/enterpriseInformation">
               <div className="personal-center-enterprise-child">
-                <img src="./park_m/image/enterprise.png" width="70px" height="70px" style={{marginBottom: "10px"}} />
+                <img src="./park_m/image/enterprise.png" width="70px" height="70px" style={{ marginBottom: "10px" }} />
                 <span style={{ fontSize: "40px", color: "#333333", marginLeft: "30px" }}>企业信息管理</span>
                 <div style={{ float: "right", height: "100%", width: "120px", textAlign: "center" }}>
                   <img src="./park_m/image/right.png" />
@@ -180,7 +228,7 @@ class PersonalCenter extends React.Component {
         {this.state.userInfo.roles.role_name === "园区管理员" && this.state.pathname !== "/personalCenter" ?
           <div className="personal-center-park">
             <div className="personal-center-enterprise-child" onClick={this.spread.bind(this)}>
-              <img src="./park_m/image/park.png" width="60px" height="60px" style={{ marginBottom: "10px" }}/>
+              <img src="./park_m/image/park.png" width="60px" height="60px" style={{ marginBottom: "10px" }} />
               <span style={{ fontSize: "40px", color: "#333333", marginLeft: "30px" }}>园区管理</span>
               <div style={{ float: "right", height: "100%", width: "120px", textAlign: "center" }}>
                 <img src="./park_m/image/right.png" className={this.state.isSpread ? "personal-center-bottom-img" : ""} />

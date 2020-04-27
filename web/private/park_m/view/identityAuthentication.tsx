@@ -37,12 +37,19 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
 
   public componentDidMount() {
     this.dataService.getRoleType(this.setRoleTypeUL);
-    this.state.applicant = sessionStorage.getItem("userName");
-    this.state.phone = sessionStorage.getItem("phone");
-    //this.state.company = localStorage.getItem("applicant");
-    this.state.company = sessionStorage.getItem("enterprise");;
-    this.state.park_id = sessionStorage.getItem("park_id");
+    let data = sessionStorage.getItem("userInfos");
+    let dataObj = JSON.parse(data)
 
+    //this.state.applicant = sessionStorage.getItem("userName");
+    //this.state.phone = sessionStorage.getItem("phone");
+    //this.state.company = sessionStorage.getItem("enterprise");;
+    //this.state.park_id = sessionStorage.getItem("park_id");
+    this.setState({
+      applicant:dataObj.name,
+      phone:dataObj.phone,
+      company:dataObj.enterprise,
+      park_id:dataObj.park_id,
+    })
   }
 
   public dataService: DataService = new DataService();

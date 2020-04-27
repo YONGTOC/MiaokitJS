@@ -613,22 +613,22 @@ class Picshow extends React.Component {
         roomImg: data.response.pic,
         urlNull: "show",
         //data: picurl;
-        data: [
-          'https://zos.alipayobjects.com/rmsportal/AiyWuByWklrrUDlFignR.png',
-          'https://zos.alipayobjects.com/rmsportal/TekJlZRVCjLFexlOCuWn.png',
-          'https://zos.alipayobjects.com/rmsportal/IJOtIlfsYdTyaDTRVrLI.png'
-        ],
+        //data: [
+        //  'https://zos.alipayobjects.com/rmsportal/AiyWuByWklrrUDlFignR.png',
+        //  'https://zos.alipayobjects.com/rmsportal/TekJlZRVCjLFexlOCuWn.png',
+        //  'https://zos.alipayobjects.com/rmsportal/IJOtIlfsYdTyaDTRVrLI.png'
+        //],
       })
     } else {
       this.setState({
         roomImg: data.response.pic,
         urlNull: "hide",
-        //data: picurl,
-        data: [
-          'https://zos.alipayobjects.com/rmsportal/AiyWuByWklrrUDlFignR.png',
-          'https://zos.alipayobjects.com/rmsportal/TekJlZRVCjLFexlOCuWn.png',
-          'https://zos.alipayobjects.com/rmsportal/IJOtIlfsYdTyaDTRVrLI.png'
-        ],
+        data: picurl,
+        //data: [
+        //  'https://zos.alipayobjects.com/rmsportal/AiyWuByWklrrUDlFignR.png',
+        //  'https://zos.alipayobjects.com/rmsportal/TekJlZRVCjLFexlOCuWn.png',
+        //  'https://zos.alipayobjects.com/rmsportal/IJOtIlfsYdTyaDTRVrLI.png'
+        //],
       })
     }
   }

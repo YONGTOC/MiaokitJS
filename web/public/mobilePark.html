@@ -136,17 +136,19 @@
     <div class="selectDoor">进入室内</div>
     <div class="selectAdd">+</div>
     <div class="selectPop">-</div>
+  
+    <div style="position: absolute;top: 130px;left: 0px;z-index: 101;">
+       <button onclick="changeBut()" style="width: 12rem;height: 4rem;font-size: 2.3rem;">测试按钮</button>
     </div>
-
     <!--<p id="go">调用预定义的全景图</p>-->
-    <ul style="position: absolute;top: 130px;left:0px;z-index: 101;">
+    <ul style="position: absolute;top: 230px;left:0px;z-index: 101;" class="testBut hide">
         <!--<li>
             <button onclick="roomScene(1)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活房间全景</button>
         </li>
         <li>
             <button onclick="companyScene(2)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业全景</button>
         </li>-->
-        <!--<li>
+        <li>
             <button onclick="addReqairs(3, 4,'A座','2F','201-2')" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加报修位置34</button>
         </li>
         <li>
@@ -167,7 +169,7 @@
         <li>
             <button onclick="refreshBooksite(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活场地预约</button>
         </li>
-        <li>
+        <!--<li>
             <button onclick="refreshParking(120)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活地库</button>
         </li>-->
         <!--<li>
@@ -189,6 +191,17 @@
     </ul>
 
     <script>
+        var but = 0;
+        function changeBut() {
+            if (but == 0) {
+                $('.testBut').removeClass('hide')
+                but = 1
+            } else {
+                 $('.testBut').addClass('hide')
+                but = 0
+            }
+        }
+
         var floorIndex;
         var floorIndexMax;
         var floorId;

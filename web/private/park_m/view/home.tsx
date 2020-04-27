@@ -416,25 +416,28 @@ class FoldBtn extends React.Component {
               <i className="iconfont" style={{ "fontSize": "6rem", "color": "#26AC8F", "height": "6rem" }}>&#xe822;</i>
               <p>在线报修</p>
             </div>
-
           </RouterDOM.Link>
-               <RouterDOM.Link to="/photograph" >
-            <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "6rem", "color": "#F0594C", "height": "6rem" }}>&#xe821;</i>
-              <p>随手拍</p>
-            </div>
-          </RouterDOM.Link>
-          <RouterDOM.Link to="/parking" >
-            <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "6rem", "color": "#208FE6", "height": "6rem" }}>&#xe823;</i>
-              <p>停车业务</p>
-            </div>
-          </RouterDOM.Link>
-        </div>
+         
+        </div>  
       </div>
     )
-  }
-
+    
+ //
+ //              <RouterDOM.Link to="/photograph" >
+ //           <div className={this.state.foleIcon} >
+ //             <i className="iconfont" style={{ "fontSize": "6rem", "color": "#F0594C", "height": "6rem" }}>&#xe821;</i>
+ //             <p>随手拍</p>
+ //           </div>
+ //         </RouterDOM.Link>    
+ //<RouterDOM.Link to="/parking" >
+ //           <div className={this.state.foleIcon} >
+ //             <i className="iconfont" style={{ "fontSize": "6rem", "color": "#208FE6", "height": "6rem" }}>&#xe823;</i>
+ //             <p>停车业务</p>
+ //           </div>
+ //         </RouterDOM.Link>
+  
+      }
+    
   public state = {
     // 按钮
     foleIcon: "foleIcon",

@@ -9,12 +9,16 @@ interface IProps {
 }
 
 interface IState {
-  userName: string
+  userName: string,
+  phone: string,
+  company_id: string,
 }
 
 class ModificationAuthentication extends React.Component<{ history: any }> {
   public readonly state: Readonly<IState> = {
-    userName: "用户昵称XXX"
+    userName: "用户昵称XXX",
+    phone: "",
+    company_id: "",
   }
   
   public readonly props: Readonly<IProps> = {
@@ -25,15 +29,22 @@ class ModificationAuthentication extends React.Component<{ history: any }> {
   public dataService: DataService = new DataService()
 
   componentDidMount() {
+    // 写入用户名
+    let userName = sessionStorage.getItem("userName");
+    let phone = sessionStorage.getItem("userInfos.phone");
+    let company_id = sessionStorage.getItem("enterpriseId");
     this.setState({
-      userName: this.props.location.state.name
+      userName: userName,
+      phone: phone,
+      company_id: company_id,
     })
 
   }
 
   // 修改用户名字
   modifyUserName() {
-    this.dataService.modifyUserName(this.callBackModifyUserName.bind(this), this.state.userName)
+    this.dataService.modifyUserName(this.callBackModifyUserName.bind(this),
+      this.state.userName, this.state.phone, this.state.company_id)
   }
 
   callBackModifyUserName(data) {
@@ -76,7 +87,7 @@ class ModificationAuthentication extends React.Component<{ history: any }> {
             <span style={{ color: "#6C6C6C" }}>修改认证</span>
           </div>
         </div>
-        <div className="modification-authentication-tag" style={{marginTop: "15px"}}>
+        <div className="modification-authentication-tag" style={{ marginTop: "15px" }}>
           <div style={{ paddingLeft: "40px", float: "left" }}>
             <span style={{ color: "#333333", fontSize: "42px" }}>用户昵称</span>
             <input value={this.state.userName} className="modification-authentication-input"
