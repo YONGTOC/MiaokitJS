@@ -30,9 +30,9 @@ class ModificationAuthentication extends React.Component<{ history: any }> {
 
   componentDidMount() {
     // 写入用户名
-    let userName = sessionStorage.getItem("userName");
-    let phone = sessionStorage.getItem("userInfos.phone");
-    let company_id = sessionStorage.getItem("enterpriseId");
+    let userName = this.props.location.state.name;
+    let phone = JSON.parse(sessionStorage.getItem("userInfos")).phone;
+    let company_id = JSON.parse(sessionStorage.getItem("userInfos")).enterpriseId;
     this.setState({
       userName: userName,
       phone: phone,

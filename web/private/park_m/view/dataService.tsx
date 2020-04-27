@@ -74,7 +74,7 @@ class DataService {
         console.log(data)
 
         let userInfo = {
-          userId: data.id, name: data.name, phone: data.phone, avatar: data.avatar, enterprise: data.enterprise,
+          userId: data.id, name: data.name, phone: data.phone, avatar: data.avatar, enterprise: data.enterprise, enterpriseId: data.enterprises[0].id,
           roles: {
             role_id: data.roles[0].role_id, role_name: data.roles[0].role_name
           },
@@ -1139,7 +1139,7 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/modifyUserName',
       data: {
-        id:  sessionStorage.getItem("userInfos.userId"),
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
         username: username,
         phone: phone,
         company_id: company_id,
