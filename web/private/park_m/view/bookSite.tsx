@@ -31,13 +31,13 @@ class BookSite extends React.Component {
       this.setState({
         showList: false,
         showInfo: true,
-        companyInfotit:"hide",
+        companyInfotit: "hide",
       })
     } else {
       this.setState({
         showList: true,
         showInfo: false,
-        companyInfotit:"companyInfotit",
+        companyInfotit: "companyInfotit",
       })
     }
   }
@@ -72,7 +72,7 @@ class BookSite extends React.Component {
     showInfo: false,
     // 场地预约页
     showBook: false,
-    companyInfotit:"companyInfotit",
+    companyInfotit: "companyInfotit",
   }
 }
 
@@ -94,10 +94,10 @@ class BookList extends React.Component {
 
   public dataService: DataService = new DataService();
   public globalAction: GlobalAction = new GlobalAction();
- 
+
   //获取园区内可以预定的场地列表
   public getRoomBook(data) {
-   // console.log("returnRoomBook", typeof data);
+    // console.log("returnRoomBook", typeof data);
     console.log("returnRoomBook222", data);
     if (data.response) {
       this.setState({
@@ -107,11 +107,11 @@ class BookList extends React.Component {
     } else {
       this.setState({
         bookData: [],
-        nullBookData:"show"
+        nullBookData: "show"
       })
       console.log("没有符合条件的结果");
     }
- 
+
   }
 
   public toggleFold() {
@@ -228,10 +228,10 @@ class BookList extends React.Component {
         <ul className={this.state.bookul}>
           <li className={this.state.nullBookData}><p>没有符合条件的结果</p></li>
           {this.state.bookData.map((i, index) => {
-            if (!i.pic_url ) {
+            if (!i.pic_url) {
               return (
                 <li onClick={this.bookActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "bookli-active" : "bookli"}>
-                  <div  className={this.state.indexOf == index ? "bookImgback-active" : "bookImgback"}>
+                  <div className={this.state.indexOf == index ? "bookImgback-active" : "bookImgback"}>
                     <img src={i.headimgurl} onError={this.onError.bind(this)} />
                   </div>
                   <div className="bookul-middle">
@@ -271,20 +271,20 @@ class BookList extends React.Component {
                 </li>
               )
             }
-         
+
           })}
         </ul>
         <form action='' target="rfFrame">
-        <div className={"bookBtn"}>
-          <div className="searchBox">
-            <span className="searchBox-text">
-              <span className="iconfont" style={{ "fontSize": "2.3rem" }}>&#xe810;</span>
+          <div className={"bookBtn"}>
+            <div className="searchBox">
+              <span className="searchBox-text">
+                <span className="iconfont" style={{ "fontSize": "2.3rem" }}>&#xe810;</span>
                 <input className="leaseSearch" type="search" placeholder="搜索"
-                value={this.state.inputValue} onFocus={this.foucus.bind(this)}
-                onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} onKeyDown={this.queryKeyDownHandler.bind(this)} />
-            </span>
-          </div>
-         
+                  value={this.state.inputValue} onFocus={this.foucus.bind(this)}
+                  onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} onKeyDown={this.queryKeyDownHandler.bind(this)} />
+              </span>
+            </div>
+
           </div>
         </form>
         <iframe id="rfFrame" name="rfFrame" src={this.state.src} style={{ display: "none" }}>   </iframe>
@@ -310,7 +310,7 @@ class BookList extends React.Component {
     nullBookData: "hide",
     //设置 点击软键盘搜索，页面不刷新
     src: "about:'blank'",
-    bookImgback:"bookImgback",
+    bookImgback: "bookImgback",
   }
 }
 
@@ -415,8 +415,8 @@ class BookInfo extends React.Component {
         </p>
         <div className={"foleBtn"} >
           <p className="companyGoHomeLeft" onClick={this.showList.bind(this, "List", "id-01")}>
-              <i className="iconfont companyInfoicon">&#xe83b;</i>
-              <span>返回</span>
+            <i className="iconfont companyInfoicon">&#xe83b;</i>
+            <span>返回</span>
           </p>
           <p className="companyGoHomeRight">
             <i className={this.state.iconfont} style={{ "fontSize": "5rem", "color": "#C0C0C0" }} onClick={this.toggleFold.bind(this)} >&#xe849;</i>
@@ -474,20 +474,36 @@ class BookRoom extends React.Component {
 
   public componentDidMount() {
     //获取：
-    let enterprises = JSON.parse(localStorage.getItem("enterprises"));
-    console.log("enterprises--------", enterprises)
-    let applicant = localStorage.getItem("userName");
-    let phone = localStorage.getItem("phone");
-    let staff_id = localStorage.getItem("userid");
-    console.log("--------", applicant, phone, staff_id)
+    //let enterprises = JSON.parse(localStorage.getItem("enterprises"));
+    //console.log("enterprises--------", enterprises)
+    //let applicant = localStorage.getItem("userName");
+    //let phone = localStorage.getItem("phone");
+    //let staff_id = localStorage.getItem("userid");
+    //console.log("--------", applicant, phone, staff_id)
+    let data = sessionStorage.getItem("userInfos");
+    let dataObj = JSON.parse(data)
     this.setState({
-      applicant: applicant,
-      phone: phone,
-      staff_id: staff_id,
-      companyUL: enterprises,
-      company: enterprises[0].name,
-      company_id: enterprises[0].id,
+      applicant: dataObj.name,
+      phone: dataObj.phone,
+      staff_id: dataObj.userId,
+      //companyUL: dataObj.enterprises,
+      //company: dataObj.enterprises[0].name,
+      //company_id: dataObj.enterprises[0].id,
     })
+
+    if (dataObj.enterprises.length == 0) {
+      this.setState({
+        companyUL: [],
+        company: "请先关联企业",
+        company_id: "请先关联企业",
+      })
+    } else {
+      this.setState({
+        companyUL:[],
+        company: sessionStorage.getItem("enterprise") ,
+        company_id:sessionStorage.getItem("enterpriseId") ,
+      })
+    }
   }
 
   public globalAction: GlobalAction = new GlobalAction();
@@ -496,9 +512,9 @@ class BookRoom extends React.Component {
   public getRoomdata(data) {
     console.log("getBook", data);
     this.setState({
-      id: data.response.id ,
-      building_id: data.response.building_id ,
-      floor_id: data.response.floor_id ,
+      id: data.response.id,
+      building_id: data.response.building_id,
+      floor_id: data.response.floor_id,
       room_id: data.response.room_id,
       building_name: data.response.building_name,
       floor_name: data.response.floor_name,
@@ -520,14 +536,14 @@ class BookRoom extends React.Component {
     if (this.state.bookRoom == "bookRoom-part") {
       this.setState({
         bookRoom: "bookRoom-all",
-        bookformcss:"bookform-all "
+        bookformcss: "bookform-all "
       })
       // 通知3d，暂停加载模型
       this.globalAction.web_call_webgl_pauseloadModuler();
     } else {
       this.setState({
         bookRoom: "bookRoom-part",
-        bookformcss:"bookform-part"
+        bookformcss: "bookform-part"
       })
       //通知3d，继续加载模型  
       this.globalAction.web_call_webgl_continueloadModuler();
@@ -564,12 +580,12 @@ class BookRoom extends React.Component {
     const d = new Date(date)
     const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate())
     const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds())
-    const startDate = resDate +" "+ resTime
+    const startDate = resDate + " " + resTime
     console.log("start输入index656", startDate);
     this.setState({
-      startTime: date ,
-      start_date: startDate ,
-     // start_time: resTime
+      startTime: date,
+      start_date: startDate,
+      // start_time: resTime
     });
     console.log("start输入index2", this.state.startTime);
   }
@@ -579,13 +595,13 @@ class BookRoom extends React.Component {
     const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate())
     const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds())
     const endDate = resDate + " " + resTime
-   // console.log("end输入index656", endDate);
+    // console.log("end输入index656", endDate);
     this.setState({
       endTime: date,
       end_date: endDate,
-     // end_time: resTime
+      // end_time: resTime
     });
-   // console.log("end输入index2", this.state.endTime);
+    // console.log("end输入index2", this.state.endTime);
   }
 
   // 显示公司列表
@@ -599,7 +615,7 @@ class BookRoom extends React.Component {
 
   // 选中公司
   public inCompanyeList(i, id, name) {
-   // console.log("选中的公司", i, id, name);
+    // console.log("选中的公司", i, id, name);
     this.setState({
       companyIndexof: i,
       company_id_in: id,
@@ -626,8 +642,8 @@ class BookRoom extends React.Component {
   public dataService: DataService = new DataService();
   // 提交预约申请 
   public bookSumbit() {
-   // console.log("bookSumbit", this.state);
-   // console.log("bookSumbit", this.state.start_date);
+    // console.log("bookSumbit", this.state);
+    // console.log("bookSumbit", this.state.start_date);
     if (this.state.start_date == "") {
       alert("请选择开始时间")
     } else if (this.state.end_date == "") {
@@ -639,7 +655,7 @@ class BookRoom extends React.Component {
     } else {
       this.dataService.bookingRoom(this.bookSumbitOK, this.state);
     }
-  
+
   }
 
   static showList(a, id) { };
@@ -655,7 +671,7 @@ class BookRoom extends React.Component {
   //提交成功
   public bookSumbitOK(data) {
     alert(data);
-   //BookInfo.showList("List", "id-01");
+    BookInfo.showList("List", "");
 
   }
 
@@ -685,20 +701,20 @@ class BookRoom extends React.Component {
               <span className="redStar">*</span>手机号码
               <p className={"bookRight"} style={{ "padding-left": "1rem", "padding-top": "0.5rem" }}>{this.state.phone}</p>
             </li>
-          <li>
+            <li>
               <span className="redStar">*</span>申请企业
-              <p className={"bookfromliRight"} onClick={this.showCompanyBox.bind(this)} style={{ "line-height":" 4rem" }}>{this.state.company}</p>
-          </li>
+              <p className={"bookfromliRight"} style={{ "line-height": " 4rem" }}>{this.state.company}</p>
+            </li>
             <li className={"bookActive"}>
               <span className={"bookformLeft"}><span style={{ "color": "#F2F2F2", "margin-right": "1rem" }}>*</span>使用场地</span>
               <p className={"bookfromliRight"} style={{ "line-height": "3.5rem" }}>
-                {this.state.room_name} 
+                {this.state.room_name}
               </p>
-          </li>
-         
-          <li>
+            </li>
+
+            <li>
               <p >
-                <span className="redStar" style={{ "float": "left", "margin-top": "0.8rem"}}>*</span>
+                <span className="redStar" style={{ "float": "left", "margin-top": "0.8rem" }}>*</span>
                 <div style={{ "fonSize": "2.5rem" }} className={"mDate"}>
                   <DatePicker style={{ "fonSize": "2.5rem" }}
                     value={this.state.startTime}
@@ -707,11 +723,11 @@ class BookRoom extends React.Component {
                   </DatePicker>
                 </div>
               </p>
-          </li>
-      
-          <li>
+            </li>
+
+            <li>
               <p>
-                <span className="redStar" style={{ "float": "left","margin-top":"0.8rem" }}>*</span>
+                <span className="redStar" style={{ "float": "left", "margin-top": "0.8rem" }}>*</span>
                 <div style={{ "fonSize": "2.5rem" }} className={"mDate"}>
                   <DatePicker style={{ "fonSize": "2.5rem" }}
                     value={this.state.endTime}
@@ -720,12 +736,12 @@ class BookRoom extends React.Component {
                   </DatePicker>
                 </div>
               </p>
-          </li>
+            </li>
             <li style={{ "border": "0", "padding": "1rem 0 0 0" }}>
-              <p><span className="redStar">*</span><span style={{ "font-size": "2.3rem","margin-": "1rem"}}>会议主题：</span></p>
-              <textarea className="bookTheme" value={this.state.theme} 
+              <p><span className="redStar">*</span><span style={{ "font-size": "2.3rem", "margin-": "1rem" }}>会议主题：</span></p>
+              <textarea className="bookTheme" value={this.state.theme}
                 onChange={this.changebookTheme.bind(this)} onFocus={this.foucusbookTheme.bind(this)} ></textarea>
-          </li>
+            </li>
             <li>
               <p><span className="redStar">*</span><span style={{ "font-size": "2.3rem" }}>具体需求：</span></p>
               <textarea className="bookContent" value={this.state.content} style={{ "margin-bottom": "10rem" }}
@@ -768,37 +784,37 @@ class BookRoom extends React.Component {
     companyIndexof: 0,
     company_id_in: "",
     company_name_in: "",
-      //id
-      id: "",
-      //申请人
-      applicant: "",
-      //手机号码
-      phone: "",
-      //申请企业
-      company: "",
-      //使用场地
-      name: "",
-      //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
-      building_id: "",
-      //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
-      floor_id: "",
-      //使用场地，模型编号(用于匹配对应3d房间)
-      room_id: "",
-      building_name: "",
-      floor_name: "",
-      room_name: "",
-      //开始日期
-      start_date: "",
-      //开始时间
-      start_time: "",
-      //结束日期
-      end_date: "",
-      //结束时间
-      end_time: "",
-      //主题
+    //id
+    id: "",
+    //申请人
+    applicant: "",
+    //手机号码
+    phone: "",
+    //申请企业
+    company: "",
+    //使用场地
+    name: "",
+    //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
+    building_id: "",
+    //使用场地对应大楼id，模型编号(用于匹配对应3d大楼)
+    floor_id: "",
+    //使用场地，模型编号(用于匹配对应3d房间)
+    room_id: "",
+    building_name: "",
+    floor_name: "",
+    room_name: "",
+    //开始日期
+    start_date: "",
+    //开始时间
+    start_time: "",
+    //结束日期
+    end_date: "",
+    //结束时间
+    end_time: "",
+    //主题
     theme: "50字内",
-      //具体需求
-      content: "", 
+    //具体需求
+    content: "",
   }
 
 }
@@ -822,7 +838,7 @@ class SiteInfos extends React.Component {
     if (typeof data.response.descript == "string") {
       this.setState({
         descriptS: data.response.descript,
-        descript:[],
+        descript: [],
       })
     } else {
       this.setState({
@@ -830,7 +846,7 @@ class SiteInfos extends React.Component {
         descriptS: "",
       })
     }
-  
+
   }
 
   public render() {
@@ -850,7 +866,7 @@ class SiteInfos extends React.Component {
 
   public state = {
     descript: [],
-    descriptS:"",
+    descriptS: "",
   }
 
 }

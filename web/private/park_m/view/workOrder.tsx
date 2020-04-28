@@ -20,7 +20,7 @@ class WorkOrder extends React.Component<{ history: any }>{
     ],
     tagIndex: 0,
     workOrderArray: [
-      { id: "", applicant: "", state_name: "", time: ""}
+      { id: "", applicant: [{Name: ""}], state_name: "", time: ""}
     ]
   }
 
@@ -50,12 +50,11 @@ class WorkOrder extends React.Component<{ history: any }>{
     } else {
       this.setState({ workOrderArray: [] })
     }
-    console.log(data)
   }
 
   getMyWork() {
     let obj = {
-      id: 1,
+      id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
       work_type: this.state.tagIndex,
       state_type: 1
     }
@@ -82,7 +81,6 @@ class WorkOrder extends React.Component<{ history: any }>{
       "场地预定工单" : this.state.workOrderArray[index].work_type == 3 ? "摆点申请工单" : "在线保修工单",
       stateName: this.state.workOrderArray[index].state_name
     }
-    console.log("看这里", obj)
     sessionStorage.setItem("workOrder", JSON.stringify(obj))
     this.props.history.push("/workOrderDetail")
   }
@@ -115,7 +113,7 @@ class WorkOrder extends React.Component<{ history: any }>{
                     <img style={{ float: "right", marginRight: "40px"}} src="./park_m/image/right.png"/>
                   </div>
                   <div style={{ fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" }}>
-                    申请人：{item.applicant}
+                    申请人：{item.applicant[0].Name}
                   </div>
                   <div style={{ fontSize: "38px", color: "#949494", margin: "10px 0 0 40px", overflow: "hidden" }}>
                     <div style={{ float: "left" }}>申请时间：{item.time}</div>

@@ -310,7 +310,7 @@ class CompanyList extends React.Component {
               return (
                 <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyli-active" : "companyli"} >
                   <div className={this.state.indexOf == index ? "companyImgback-active" : "companyImgback"}>
-                    <img src={i.headimageurl == null ? i.headimageurl : "./park_m/image/i.png"} />
+                    <img src={"./park_m/image/i.png"} onError={this.onErrorHeadimageurl.bind(this)} />
                   </div>
                   <div className="companyul-middle">
                     <p className={this.state.indexOf == index ? "companyName-active" : "companyName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.name}</p>
@@ -319,11 +319,9 @@ class CompanyList extends React.Component {
                       {i.address}</p>
                   </div>
                   <div className="companyul-right">
-                       <RouterDOM.Link to="/home" style={{ color: "#949494" }}>
                     <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)} className={this.state.indexOf == index ? "show" : "hide"} >更多
                     <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
-                      </p>
-                    </RouterDOM.Link>
+                    </p>
                     <p className={this.state.indexOf == index ? "companyType-active" : "companyType"} >{i.company_type}</p>
                   </div>
                 </li>
@@ -696,7 +694,7 @@ class Mien extends React.Component {
   }
 
   public render() {
-    // beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
+    //  beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
     return (
       <div className={"mien"} >
         <p className={this.state.urlNull} style={{ "color": "#333333", "text-align": "center", "font-size": "2.5rem" }}>暂无图片···</p>

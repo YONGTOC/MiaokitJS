@@ -52,7 +52,6 @@ export default class RoomDetail extends React.Component<{ history: any }>{
           <div style={{ float: "left", width: "100%" }} onClick={this.goBack.bind(this)}>
             <img src="./park_m/image/back.png" style={{ margin: "-10px 10px 0 0" }} />
             <span>房间管理-</span><span>{this.state.roomName}</span>
-            <span style={{ color: "#F53636", float: "right", marginRight: "50px" }}>删除</span>
           </div>
         </div>
         <div style={{ width: "100%", height: "15px", backgroundColor: "#F2F2F2" }}></div>

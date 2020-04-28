@@ -36,7 +36,7 @@ class Information extends React.Component {
   }
 
   goChild(index) {
-    this.props.history.push({ pathname: "/informationChild",  state: { index: index } })
+    this.props.history.push({ pathname: "/home/informationChilds",  state: { index: index } })
   }
 
   render() {

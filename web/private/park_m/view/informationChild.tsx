@@ -29,7 +29,7 @@ export default class InformationChild extends React.Component {
   public dataService: DataService = new DataService()
 
   componentWillMount() {
-    sessionStorage.setItem("informationId", 0)
+    sessionStorage.setItem("informationId", "0")
     this.getTag()
     this.getTagContent()
   }

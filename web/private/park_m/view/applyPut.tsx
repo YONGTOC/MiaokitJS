@@ -2,7 +2,7 @@ import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
 import { DatePicker, List } from 'antd-mobile';
 import DataService from "dataService";
-import GlobalAction from "compat";  
+import GlobalAction from "compat";
 import "css!./styles/antd-mobile.css";
 import "css!./styles/resetAntdMobile.css"
 import { func } from "prop-types";
@@ -19,21 +19,33 @@ class ApplyPut extends React.Component {
 
   public componentDidMount() {
     //获取：
-    let enterprises = JSON.parse(localStorage.getItem("enterprises"));
-   // console.log("enterprises--------", enterprises)
+    let data = sessionStorage.getItem("userInfos");
+    let dataObj = JSON.parse(data)
+    // let enterprises = JSON.parse(localStorage.getItem("enterprises"));
+    // console.log("enterprises--------", enterprises)
 
-    let applicant = localStorage.getItem("userName");
-    let phone = localStorage.getItem("phone");
-    let staff_id = localStorage.getItem("userid");
-   // console.log("--------", applicant, phone, staff_id)
     this.setState({
-      applicant: applicant,
-      phone: phone,
-      staff_id: staff_id,
-      companyUL: enterprises,
-      company: enterprises[0].name,
-      company_id: enterprises[0].id,
+      applicant: dataObj.name,
+      phone: dataObj.phone,
+      staff_id: dataObj.userId,
+      //companyUL:  dataObj.enterprises,
+      //company: dataObj.enterprises[0].name,
+      //company_id: dataObj.enterprises[0].id,
     })
+
+    if (dataObj.enterprises.length == 0) {
+      this.setState({
+        companyUL: [],
+        company: "请先关联企业",
+        company_id: "请先关联企业",
+      })
+    } else {
+      this.setState({
+        companyUL: [],
+        company: sessionStorage.getItem("enterprise"),
+        company_id: sessionStorage.getItem("enterpriseId"),
+      })
+    }
 
   }
 
@@ -49,7 +61,7 @@ class ApplyPut extends React.Component {
     } else {
       this.setState({
         applyPutcss: "applyPut-all",
-        applyPutul:" applyPutul-all applyPutul",
+        applyPutul: " applyPutul-all applyPutul",
       })
       // 通知3d，暂停加载模型
       this.globalAction.web_call_webgl_pauseloadModuler();
@@ -81,7 +93,7 @@ class ApplyPut extends React.Component {
       applyList: arr
     })
     console.log(this.state)
-    
+
   }
 
   // 聚焦
@@ -100,7 +112,7 @@ class ApplyPut extends React.Component {
 
   // 申请内容输入
   public changeContent(event) {
-   // console.log("content输入", event.target.value);
+    // console.log("content输入", event.target.value);
     this.setState({
       content: event.target.value,
     });
@@ -113,7 +125,7 @@ class ApplyPut extends React.Component {
     }
   }
 
-    // 申请内容失焦
+  // 申请内容失焦
   public blurContent(event) {
     if (this.state.content == "") {
       this.setState({ content: "请将具体内容描述出来。（200字内）" })
@@ -122,8 +134,8 @@ class ApplyPut extends React.Component {
 
   //修改摆点地址
   public changeAddress(event) {
-   let index = event.target.getAttribute("data-index");
-  // console.log("address输入index", index);
+    let index = event.target.getAttribute("data-index");
+    // console.log("address输入index", index);
     let applyList = this.state.applyList // 给对象赋值出来
     applyList[index].address = event.target.value // 在新对象里面修改，然后赋值给需要改变的对象
     this.setState({
@@ -134,17 +146,17 @@ class ApplyPut extends React.Component {
   // 删除条目
   public delApply(event) {
     let index = event.target.getAttribute("data-index");
-     let applyList = this.state.applyList;
-      applyList.splice(index, 1);
-     this.setState({ applyList: applyList });
+    let applyList = this.state.applyList;
+    applyList.splice(index, 1);
+    this.setState({ applyList: applyList });
     console.log("删除条目2", this.state.applyList);
 
     //通知3d，删除定位点
-   // let longitude = event.target.getAttribute("data-longitude");
-   // let latitude = event.target.getAttribute("data-latitude");
+    // let longitude = event.target.getAttribute("data-longitude");
+    // let latitude = event.target.getAttribute("data-latitude");
     let id = event.target.getAttribute("data-id");
     let data = {
-      id:id
+      id: id
     }
     this.globalAction.web_call_webgl_cancelApplyPut(data)
   }
@@ -153,9 +165,10 @@ class ApplyPut extends React.Component {
   public changeStart(event) {
     let index = event.target.getAttribute("data-index");
     // console.log("start输入index", value);
-    let applyList = this.state.applyList 
+    let applyList = this.state.applyList
     console.log("start输入index1", this.state.startDate);
-    applyList[index].startTime = this.state.startDate 
+    // applyList[index].startTime = this.state.startDate 
+    applyList[index].start_date = this.state.startDate
     this.setState({
       applyList: applyList,
     });
@@ -165,23 +178,25 @@ class ApplyPut extends React.Component {
   //修改结束时间
   public changeEnd(event) {
     let index = event.target.getAttribute("data-index");
-    let applyList = this.state.applyList 
+    let applyList = this.state.applyList
     console.log("end输入index1", this.state.endDate);
-    applyList[index].endTime = this.state.endDate 
+    // applyList[index].endTime = this.state.endDate 
+    applyList[index].end_date = this.state.endDate
     this.setState({
       applyList: applyList,
     });
     console.log("end输入index2", this.state.applyList);
   }
 
-    // 组件获取开始时间
+  // 组件获取开始时间
   public setStartDate(date) {
     var dateStr = JSON.stringify(date);
     var dateN = dateStr.slice(1, 11);
     var index = this.state.timeIndex;
-    let applyList = this.state.applyList 
+    let applyList = this.state.applyList
     console.log("start输入index1", dateN);
-    applyList[index].startTime = dateN 
+    applyList[index].startTime = dateN
+    applyList[index].start_date = dateN
     this.setState({
       applyList: applyList,
       applyPutStartTimeBox: "hide"
@@ -197,6 +212,7 @@ class ApplyPut extends React.Component {
     let applyList = this.state.applyList // 给对象赋值出来
     console.log("end输入index1", dateN);
     applyList[index].endTime = dateN // 在新对象里面修改，然后赋值给需要改变的对象
+    applyList[index].end_date = dateN // 在新对象里面修改，然后赋值给需要改变的对象
     this.setState({
       applyList: applyList,
       applyPutEndTimeBox: "hide"
@@ -210,7 +226,7 @@ class ApplyPut extends React.Component {
     console.log("clickStart输入index", index);
     this.setState({
       timeIndex: index,
-      applyPutStartTimeBox:"show"
+      applyPutStartTimeBox: "show"
     });
   }
 
@@ -235,7 +251,7 @@ class ApplyPut extends React.Component {
 
   // 选中公司
   public inCompanyeList(i, id, name) {
-   // console.log("选中的公司", i, id, name);
+    // console.log("选中的公司", i, id, name);
     this.setState({
       companyIndexof: i,
       company_id_in: id,
@@ -261,27 +277,39 @@ class ApplyPut extends React.Component {
 
   //提交
   public sumbitApplyput() {
-    //console.log("提交摆点申请", this.state);
-    $.each(this.state.applyList, function (index, item) {
-      if (item.startTime == "开始日期") {
-        alert("请填写开始日期")
-      };
-        if (item.endTime == "结束日期") {
-        alert("请填写结束日期")
-      };
-    })
-    if (this.state.content == "请将具体内容描述出来。（200字内）") {
-      alert("请描述具体内容")
-    } else {
-      console.log("提交摆点申请",this.state)
-     // this.dataService.postAdvertisementPoint(this.sumbitApplyputsucceed, this.state);
+    let postData = 0;
+    console.log("提交摆点申请", this.state);
+    if (this.state.applyList.length == 0) {
+      alert("请选择摆点位置");
     }
+    if (this.state.content == "请将具体内容描述出来。（200字内）" ) {
+      alert("请描述具体内容")
+    }  else  {
+      $.each(this.state.applyList, function (index, item) {
+        if (item.startTime == "开始日期") {
+          alert("请填写开始日期")
+          postData = 0;
+        } else if (item.endTime == "结束日期") {
+          alert("请填写结束日期")
+          alert(postData);
+          postData = 0;
+        } else {
+          postData = 1;
+        };
+      })
+    }
+
+    if (postData == 1) {
+      //console.log("38888888888888", postData);
+      this.dataService.postAdvertisementPoint(this.sumbitApplyputsucceed, this.state);
+    }
+
   }
 
   // 摆点申请提交 -- 成功
   public sumbitApplyputsucceed(data) {
     alert(data);
-   // window.history.back();
+    window.history.back();
   }
 
   public render() {
@@ -294,9 +322,9 @@ class ApplyPut extends React.Component {
         <div className={this.state.applyPutcss}>
           <div className={"foleBtn"}>
             <RouterDOM.Link to="/home" >
-            <p className="companyGoHomeLeft" style={{ color: "#949494" }} onClick={this.mapReturnpark.bind(this)}>
-              <i className="iconfont companyInfoicon">&#xe83b;</i>
-              <span>返回</span>
+              <p className="companyGoHomeLeft" style={{ color: "#949494" }} onClick={this.mapReturnpark.bind(this)}>
+                <i className="iconfont companyInfoicon">&#xe83b;</i>
+                <span>返回</span>
               </p>
             </RouterDOM.Link>
             <p className="companyGoHomeRight">
@@ -316,7 +344,7 @@ class ApplyPut extends React.Component {
                 <p className={"applyRight"}>{this.state.company}</p>
               </li>
               <li>
-                <p><span className="redStar">*</span><span style={{"font-size":"2.3rem"}}>具体内容：</span></p>
+                <p><span className="redStar">*</span><span style={{ "font-size": "2.3rem" }}>具体内容：</span></p>
                 <textarea className="getapplyPuttextarea" value={this.state.content}
                   placeholder=""
                   onChange={this.changeContent.bind(this)} onFocus={this.foucusContent.bind(this)} onBlur={this.blurContent.bind(this)} ></textarea>
@@ -343,33 +371,33 @@ class ApplyPut extends React.Component {
                   <List.Item arrow="horizontal">结束日期</List.Item>
                 </DatePicker>
               </div>
-            <div className="applyList">
-              <p className="theapplyP">请在所需投放地点后设置投放开始及结束时间</p>
-              <ul style={{ "margin": "0" }}>
-                <li>
-                  <div className="applyAddress">广告放置地点</div>
-                  <div className="applytime">开始时间</div>
-                  <div className="applytime">结束时间</div>
-                  <div className="applyicom"> <i className="iconfont" style={{ "color": "#fff" }}>&#xe82d;</i></div>
-                </li>
-                {
-                  this.state.applyList.map((i, index) => {
-                    return (
-                      <li key={index}>
-                        <div className="applyAddress"><span className="applyIndexof">{index + 1}</span>
-                          <input className="" type="text" placeholder="" style={{ " width": "18rem", "border": 0 }}
-                            value={i.name} />
-                        </div>
-                        <div className="applytime" style={{ "color": "#158CE8" }} onClick={this.clickStart.bind(this)} data-index={index}>{i.startTime} </div>
-                        <div className="applytime" style={{ "color": "#158CE8" }} onClick={this.clickEnd.bind(this)} data-index={index}>{i.endTime}</div>
-                        <div className="applyicom" > <i className="iconfont" onClick={this.delApply}
-                          data-longitude={i.longitude} data-latitude={i.latitude} data-id={i.id}
-                          data-index={index} style={{ "color": "#158CE8" }} >&#xe81c;</i></div>
-                      </li>
-                    )
-                  })
-                }
-              </ul>
+              <div className="applyList">
+                <p className="theapplyP">请在所需投放地点后设置投放开始及结束时间</p>
+                <ul style={{ "margin": "0" }}>
+                  <li>
+                    <div className="applyAddress">广告放置地点</div>
+                    <div className="applytime">开始时间</div>
+                    <div className="applytime">结束时间</div>
+                    <div className="applyicom"> <i className="iconfont" style={{ "color": "#fff" }}>&#xe82d;</i></div>
+                  </li>
+                  {
+                    this.state.applyList.map((i, index) => {
+                      return (
+                        <li key={index}>
+                          <div className="applyAddress"><span className="applyIndexof">{index + 1}</span>
+                            <input className="" type="text" placeholder="" style={{ " width": "18rem", "border": 0 }}
+                              value={i.name} />
+                          </div>
+                          <div className="applytime" style={{ "color": "#158CE8" }} onClick={this.clickStart.bind(this)} data-index={index}>{i.startTime} </div>
+                          <div className="applytime" style={{ "color": "#158CE8" }} onClick={this.clickEnd.bind(this)} data-index={index}>{i.endTime}</div>
+                          <div className="applyicom" > <i className="iconfont" onClick={this.delApply}
+                            data-longitude={i.longitude} data-latitude={i.latitude} data-id={i.id}
+                            data-index={index} style={{ "color": "#158CE8" }} >&#xe81c;</i></div>
+                        </li>
+                      )
+                    })
+                  }
+                </ul>
               </div>
 
               <div className="applyPutSumbit" onClick={this.sumbitApplyput.bind(this)}>提交</div>
@@ -399,37 +427,38 @@ class ApplyPut extends React.Component {
 
   public state = {
     applyPutStartTimeBox: "hide",
-    applyPutEndTimeBox:"hide",
+    applyPutEndTimeBox: "hide",
     timeIndex: "",
     // 公司选择
     companyBox: "hide",
     companyUL: [],
     companyIndexof: 0,
     company_id_in: "",
-    company_name_in:"",
+    company_name_in: "",
     //startTime:"",
     startDate: "",
-    endDate:"",
-    inval:"",
+    endDate: "",
+    inval: "",
     // 申请人
     applicant: "",
     //phone
     phone: "",
     //申请企业
-    company:  "请选择申请企业",
+    company: "请选择申请企业",
     applyPutcss: "applyPut-part ",
     // 折叠按钮状态
     iconfont: "iconfont iconfont-unturn",
     // 内容框状态
     applyPutul: "applyPutul-part applyPutul",
     // 摆点列表
-    applyList: [ ],
+    applyList: [],
     address: "",
     // 摆点内容
     content: "请将具体内容描述出来。（200字内）",
     inputValue: "",
     value: '2017-01-25',
-  
+    staff_id: "",
+    postData: false,
   }
 }
 

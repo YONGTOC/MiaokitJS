@@ -38,6 +38,7 @@ interface IState {
   companyTypeIndexof: number,
   companyType_id_in: string,
   companyType_name_in: string,
+  company_id_in: string,
   files: Array<any>,
   filesLogo: Array<any>,
   multiple: boolean,
@@ -84,6 +85,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
     companyTypeIndexof: 0,
     companyType_id_in: "",
     companyType_name_in: "",
+    company_id_in:"",
 
     multiple: false,
     files: [],
@@ -114,9 +116,11 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
   componentDidMount() {
     let userid = localStorage.getItem("userId");
     //this.dataService.getCompanyInfo(this.setCompanyinfo, userId);
-    this.dataService.getCompanyInfo(this.setCompanyinfo, 2);
+    let enterpriseId = sessionStorage.getItem("enterpriseId");
+    this.dataService.getCompanyInfo(this.setCompanyinfo, enterpriseId);
     // this.dataService.getCompanyInfoByUser(this.setCompanyinfo, 2);
-    this.dataService.getCompanyType(this.setCompanyType, 1001);
+    let park_id = sessionStorage.getItem("park_id");
+    this.dataService.getCompanyType(this.setCompanyType, park_id);
   }
 
   public setCompanyinfo(data) {
@@ -139,10 +143,15 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
       panoramaImgs.push({ "id": item.id, "name": item.name, "url": item.pic_url });
     });
 
-    let descriptN = data.response.descript;
-    //descriptN.replace(/&#10;/, "\n  &nbsp;")
-    descriptN.replace(/&#10;/, "<br />&nbsp;");
-    let descriptArr = descriptN.split("    ");
+    let descriptArr;
+    if (data.response.descript) {
+      let descriptN = data.response.descript;
+      //descriptN.replace(/&#10;/, "\n  &nbsp;")
+      descriptN.replace(/&#10;/, "<br />&nbsp;");
+      descriptArr = descriptN.split("    ");
+    } else {
+      descriptArr = [];
+    }
 
     this.setState({
       ID: data.response.id,
@@ -189,35 +198,52 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
       companyBox: "rollSelectCauseBox",
       company_id_in: this.state.companyTypeUL[this.state.companyTypeIndexof].id,
       company_name_in: this.state.companyTypeUL[this.state.companyTypeIndexof].name,
-    })
-    console.log(this.state.companyType_id_in, this.state.companyType_name_in, this.state.companyTypeIndexof)
+    }, () => {
+      console.log("show",this.state)
+      })
+     
 
   }
 
   // 选中企业类型
   inCompanyeTypeList(i, id, name) {
+    console.log("选中企业类型", id, name)
     this.setState({
       companyTypeIndexof: i,
       companyType_id_in: id,
       companyType_name_in: name,
-    })
-    console.log(this.state.companyType_id_in, this.state.companyType_name_in, this.state.companyTypeIndexof)
+    }, () => {
+      console.log(this.state.companyType_id_in, this.state.companyType_name_in, this.state.companyTypeIndexof)
+    }
+    )
   }
 
   // 隐藏公司列表框
   hideCompanyTypeBox() {
+    console.log(this.state)
     this.setState({
       companyTypeBox: "hide",
+      company_type: this.state.company_type,
+      companyType_id_in: this.state.company_type_id,
     })
   }
 
   //确认公司列表选择
   getCompanyTypeBox() {
-    this.setState({
-      companyTypeBox: "hide",
-      company_type: this.state.companyType_id_in,
-      inputCompanyType: this.state.companyType_name_in,
-    })
+    if (this.state.companyType_name_in == "") {
+      this.setState({
+        companyTypeBox: "hide",
+        company_type: this.state.company_type_id,
+        inputCompanyType: this.state.company_type,
+      })
+    } else {
+      this.setState({
+        companyTypeBox: "hide",
+        company_type: this.state.company_id_in,
+        inputCompanyType: this.state.companyType_name_in,
+      })
+    }
+
   }
 
   onErrorHeadimageurl() {
@@ -253,29 +279,33 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
   // 提交
   submit() {
     console.log("objobjobj", this.state);
-    var reg01 = /^1[3456789]\d{9}$/;  
-    var reg02 = /^(0[0-9]{2,3}\-)([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$/; 
+    var reg01 = /^1[3456789]\d{9}$/;
+    var reg02 = /^(0[0-9]{2,3}\-)([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$/;
 
-     if(reg01.test(this.state.phoneValue) || reg02.test(this.state.phoneValue) || this.state.phoneValue=="") {
-       console.log("手机号或座机号填写正确")    
-     } else {
-        console.log("手机号码不正确，固话请添加区号")         
-        return;
-     }
+    if (reg01.test(this.state.phoneValue) || reg02.test(this.state.phoneValue) || this.state.phoneValue == "") {
+      console.log("手机号或座机号填写正确")
+    } else {
+      alert("手机号码不正确，固话请添加区号")
+      return;
+    }
 
+    let userid = sessionStorage.getItem("userid");
+    let park_id = sessionStorage.getItem("park_id");
+    let enterpriseId = sessionStorage.getItem("enterpriseId");
+    // let token= sessionStorage.getItem("token");
 
 
     console.log("bobo", this.state.elegant.length);
 
+
     //let elegants = [];
     let obj = {
       //用户id
-      "user_id": "1",
+      "user_id": userid,
       //园区id
-
-      "park_id": "1",
+      "park_id": park_id,
       //企业id（当为添加新企业时，参数为""）
-      "id": "2",
+      "id": enterpriseId,
       //公司名字
       "name": this.state.inputEnterpriseNameValue,
       //地址
@@ -285,15 +315,17 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
       //电话
       "phone": this.state.phoneValue,
       //企业官网
-      "website": this.state.officialWebsiteValue,
+      "website": this.state.officialWebsiteValue == "请输入企业官方网址" ? "" : this.state.officialWebsiteValue,
       //企业详情详情文字
-      "descript": this.state.descriptionValue,
+      "descript": this.state.descriptionValue == "400字内" ? "" : this.state.descriptionValue,
       //企业类型id
-      "company_type": this.state.company_type_id,
+      "company_type": this.state.companyType_id_in == "" ? this.state.company_type_id : this.state.companyType_id_in,
+     // "company_type": this.state.companyType_id_in == "" ? this.state.company_type : this.state.companyType_id_in,
       "elegant": this.state.elegant,
       "product": this.state.product,
       "panorama": this.state.panorama,
       "headimageurl": this.state.headimageurl,
+
     }
     if (this.state.elegant.length == 0) {
       obj.elegant = this.state.filesElegant;

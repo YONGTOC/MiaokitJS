@@ -91,13 +91,25 @@ class workOrderDetail extends React.Component<{ history: any }>{
   }
 
   callBackGetAdvertisementPointInfo(data) {
-    this.setState({ datas: data.response})
-    console.log("333", data)
+    console.log("摆点", data)
+    let tagArray = this.state.tagArray
+    tagArray[2][0].content = data.response.applicant
+    tagArray[2][1].content = data.response.phone
+    tagArray[2][2].content = data.response.company
+    tagArray[2][3].content = data.response.content
+    tagArray[2][4].content = data.response.positions.name
+    tagArray[2][5].content = data.response.positions.start_date
+    tagArray[2][6].content = data.response.positions.end_date
+    this.setState({ tagArray: tagArray, datas: data.response })
   }
 
   callBackGetRepairInfo(data) {
-    this.setState({ datas: data.response })
-    console.log("444", data)
+    console.log("保修", data)
+    let tagArray = this.state.tagArray
+    tagArray[2][0].content = data.response.applicant
+    tagArray[3][1].content = data.response.phone
+    tagArray[3][2].content = data.response.descript
+    this.setState({ tagArray: tagArray, datas: data.response })
   }
 
   // 返回
@@ -126,13 +138,15 @@ class workOrderDetail extends React.Component<{ history: any }>{
 
   // 提交
   submit(index) {
+    if (index === 0) {
+      this.props.history.push("/searchUser")
+    }
     let obj = {
       uid: 1,
       id: this.state.datas.id,
       state: index,
       reply: this.state.reply
     }
-    console.log("这里呢", obj)
     if (JSON.parse(sessionStorage.getItem("workOrder")).workType == 1) {
       this.dataService.changeRoleAuthenticationInfo(this.callBack.bind(this), obj)
     } else if (JSON.parse(sessionStorage.getItem("workOrder")).workType == 2) {
@@ -196,7 +210,7 @@ class workOrderDetail extends React.Component<{ history: any }>{
               <span style={{ color: "#333333", fontSize: "40px" }}>{this.state.datas.examine.reply}</span>
             </div>
           </div>
-          : this.state.stateName === "审核中" && sessionStorage.getItem("userInfo") !== "园区成员" ?
+          : this.state.stateName === "审核中" && sessionStorage.getItem("userInfo") === "园区管理员" ?
           <div>
             <div style={{padding: "30px 0 0 50px"}}>
               <div className="isay-star"></div><div style={{ marginLeft: "30px", fontSize: "40px", color: "#333333" }}>审核回复：</div>
@@ -204,9 +218,9 @@ class workOrderDetail extends React.Component<{ history: any }>{
               value={this.state.reply} onFocus={this.textareaFoucus.bind(this)} onBlur={this.textareaBlur.bind(this)} onChange={this.inputChange.bind(this)}></textarea>
             </div>
             <div style={{ height: "150px", width: "100%", position: "absolute", bottom: 0, fontSize: "45px" }}>
-              <div style={{ float: "left", height: "100%", width: "33%", lineHeight: "150px", textAlign: "center", backgroundColor: "#F2F2F2", color: "#6C6C6C" }} onClick={e => this.submit(0)}>转单</div>
-              <div style={{ float: "left", height: "100%", width: "33%", lineHeight: "150px", textAlign: "center", backgroundColor: "#FE4E4E", color: "#FFFFFF" }} onClick={e => this.submit(3)}>不通过</div>
-              <div style={{ float: "left", height: "100%", width: "33%", lineHeight: "150px", textAlign: "center", backgroundColor: "#0B8BF0", color: "#FFFFFF" }} onClick={e => this.submit(1)}>通过</div>
+              <div style={{ float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#F2F2F2", color: "#6C6C6C" }} onClick={e => this.submit(0)}>转单</div>
+              <div style={{ float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#FE4E4E", color: "#FFFFFF" }} onClick={e => this.submit(3)}>不通过</div>
+              <div style={{ float: "left", height: "100%", width: "33.4%", lineHeight: "150px", textAlign: "center", backgroundColor: "#0B8BF0", color: "#FFFFFF" }} onClick={e => this.submit(1)}>通过</div>
             </div>
           </div>
           : null

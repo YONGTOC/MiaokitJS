@@ -3,7 +3,7 @@ import FindLease from 'findLease';
 class DataService {
 
   public componentDidMount() {
-    console.log(localStorage.getItem("token"));
+   // console.log(sessionStorage.getItem("token"));
 
     // this.setToken = this.setToken.bind(this);
   }
@@ -27,7 +27,7 @@ class DataService {
   public upload(pBack, file) {
     console.log("fiffffffffffffffff", file)
     $.ajax({
-      url: this.state.rooturl + '/api/upload?token=' + localStorage.getItem("token"),
+      url: this.state.rooturl + '/api/upload?token=' + sessionStorage.getItem("token"),
       data: file,
       cache: false,         //阻止浏览器缓存
       dataType: "json",
@@ -44,7 +44,7 @@ class DataService {
   public uploadImgOss(pBack, file) {
     console.log("uploadImgOss", file)
     $.ajax({
-      url: this.state.rooturl + '/api/uploadImgOss',
+      url: this.state.rooturl + '/api/uploadImgOss?token=' + sessionStorage.getItem("token"),
       type: "post",
       data: JSON.stringify(file),
       success: function (data) {
@@ -59,58 +59,67 @@ class DataService {
   }
 
   // 2.(注册登录模块)用户登陆接口 ### email:test@test.com password:123456 
-  // admin admin (超级管理员)
-  // twl01 123456(园区管理员) 
-  // twl02 123456(企业管理员) 
-  public login(pBack) {
+  public login(username, password, pBack) {
     $.ajax({
       url: this.state.rooturl + '/api/login',
+    //  url:"minghuakejiyuan.3dparkcloud.com/login?url=/web/public/park_m.html ",
       data: {
-        "username": "twl02",
-        "password": "123456",
+        "username": username,
+        "password": password,
         //"username": "admin",
         //"password": "admin",
       },
       type: "post",    
       success: function (data) {
-        localStorage.setItem("token", data.token);
+        console.log(data)
+
+        let userInfo = {
+          userId: data.id, name: data.name, phone: data.phone, avatar: data.avatar, enterprise: data.enterprise, enterpriseId: data.enterprises[0].id,
+          roles: {
+            role_id: data.roles[0].role_id, role_name: data.roles[0].role_name
+          },
+          enterprises:data.enterprises,
+        }
+        sessionStorage.setItem("token", data.token);
+        sessionStorage.setItem("userInfos", JSON.stringify(userInfo));
         pBack(data);
+    
         }
     })
 
-    //返回数据存储
-    let park_id = "1"
-    localStorage.setItem("park_id", park_id);
+    ////返回数据存储
+    //let park_id = "1"
+    //sessionStorage.setItem("park_id", park_id);
 
-    let userName = "王铁柱"
-    localStorage.setItem("userName", userName);
+    //let userName = "王铁柱"
+    //sessionStorage.setItem("userName", userName);
 
-    let phone = "15296811111"
-    localStorage.setItem("phone", phone);
+    //let phone = "15296811111"
+    //sessionStorage.setItem("phone", phone);
 
-    let userid = "1"
-    localStorage.setItem("userid", userid);
+    //let userid = "1"
+    //sessionStorage.setItem("userid", userid);
 
-    let enterprises = [
-      {
-        "id": "1009",
-        "name": "力拓科技",
-      },
-      {
-        "id": "1003",
-        "name": "永拓拓科技",
-      }
-    ]
-    localStorage.setItem("enterprises", JSON.stringify(enterprises));
+    //let enterprises = [
+    //  {
+    //    "id": "1009",
+    //    "name": "力拓科技",
+    //  },
+    //  {
+    //    "id": "1003",
+    //    "name": "永拓拓科技",
+    //  }
+    //]
+    //sessionStorage.setItem("enterprises", JSON.stringify(enterprises));
 
      //获取：
-   // var arr = JSON.parse(localStorage.getItem("arr"));
+   // var arr = JSON.parse(sessionStorage.getItem("arr"));
   }
 
   //  原有token过期，换取新 token
   public refreshToken(ytoken) {
     //  /api/refresh ?token=ytoken；
-    //获取到ntoken，存localStorage.setItem("token", data.access_token);
+    //获取到ntoken，存sessionStorage.setItem("token", data.access_token);
     $.ajax({
       url: this.state.rooturl + '/api/refresh',
       data: {
@@ -121,14 +130,14 @@ class DataService {
         // console.log("login",data);
         //pBackajax(data);
         console.log("login-getToken", data);
-        //localStorage.setItem("token", data.token);
+        //sessionStorage.setItem("token", data.token);
       }
     })
   }
 
   //3.(首页模块)获取园区列表
   public getParks(pBack) {
-    let thetoken = localStorage.getItem("token");
+    let thetoken = sessionStorage.getItem("token");
     $.ajax({
       url: this.state.rooturl + '/api/getParks',
       type: "get",
@@ -145,90 +154,92 @@ class DataService {
 
   //4.(园区信息-3D显示)获取园区详细信息
   public getParkInfo(pBack, park_id) {
-    let thetoken = localStorage.getItem("token");
-    //$.ajax({
-    //  url: this.state.rooturl + '/api/getParkInfo',
-    //  data: {
-    //    "park_id": 1,
-    //    "token": thetoken,
-    //  },
-    //  type: "get",
-    //  success: function (data) {
-    //    console.log("getParkInfo", data);
-    //    if (data.status == 113) {
-    //      // 113 token到期，跳转登录页面
-    //      // console.log(window.location.pathname);
-    //      //  window.location.href = window.location.pathname+"#/"
-    //    } else {
-    //     // pBack(data);
-    //      console.log("getParkInfo", data);
-    //    }
-    //  }
-    // })
-
-
-    var data = {
-      //错误码
-      "return_code": "100",
-      "response": [
-        {
-          //id
-          "id": "1009",
-          //园区图像url
-          "headimgurl": "http://xxx.jpg",
-          //所在城市
-          "province": "桂林",
-          //经度
-          "longitude": "10.55",
-          //纬度
-          "latitude": "66.666",
-          //园区名字
-          "name": "桂林国家高新",
-          //地址
-          "address": "桂林七星朝阳路D-11",
-          //工程列表，列表内为园区使用的工程。
-          "project": [
-            {
-              //id
-              "id": "1009",
-              //工程名。
-              "name": "电子信息",
-              //工程类型 1为普通模型 2为航拍实景图 3为sve工程 4为其它
-              "type": 1,
-              //使用类型 1为完整场景 2为单独内景
-              "use_type": 0,
-              //工程地址
-              "project_url": "http://xxx.bin",
-              //经度
-              "longitude": "10.55",
-              //纬度
-              "latitude": "66.666",
-              //偏移值
-              "offset": "10,20,10",
-              //旋转角度
-              "rotate": "10",
-            }
-          ],
-          //园区讲解列表
-          "audio": [
-            { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-            { name: "园区配套", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
-            { name: "园区建筑", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-          ]
+    let thetoken = sessionStorage.getItem("token");
+    $.ajax({
+      url: this.state.rooturl + '/api/getParkInfo',
+      data: {
+        "park_id": park_id,
+        "token": thetoken,
+      },
+      type: "get",
+      success: function (data) {
+        console.log("getParkInfo444444444", data);
+        if (data.status == 113) {
+          // 113 token到期，跳转登录页面
+          // console.log(window.location.pathname);
+          //  window.location.href = window.location.pathname+"#/"
+        } else {
+          pBack(data);
+         // console.log("getParkInfo", data);
         }
+      }
+     })
 
-      ],
-      //错误代码信息
-      "err_msg": ""
-    }
 
-    pBack(data);
+    //var data = {
+    //  //错误码
+    //  "return_code": "100",
+    //  "response": [
+    //    {
+    //      //id
+    //      "id": "1009",
+    //      //园区图像url
+    //      "headimgurl": "http://xxx.jpg",
+    //      //所在城市
+    //      "province": "桂林",
+    //      //经度
+    //      "longitude": "10.55",
+    //      //纬度
+    //      "latitude": "66.666",
+    //      //园区名字
+    //      "name": "桂林国家高新",
+    //      //地址
+    //      "address": "桂林七星朝阳路D-11",
+    //      //工程列表，列表内为园区使用的工程。
+    //      "project": [
+    //        {
+    //          //id
+    //          "id": "1009",
+    //          //工程名。
+    //          "name": "电子信息",
+    //          //工程类型 1为普通模型 2为航拍实景图 3为sve工程 4为其它
+    //          "type": 1,
+    //          //使用类型 1为完整场景 2为单独内景
+    //          "use_type": 0,
+    //          //工程地址
+    //          "project_url": "http://xxx.bin",
+    //          //经度
+    //          "longitude": "10.55",
+    //          //纬度
+    //          "latitude": "66.666",
+    //          //偏移值
+    //          "offset": "10,20,10",
+    //          //旋转角度
+    //          "rotate": "10",
+    //        }
+    //      ],
+    //      //园区讲解列表
+    //      "audio": [
+    //        { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+    //        { name: "园区配套", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
+    //        { name: "园区建筑", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+    //      ]
+    //    }
+
+    //  ],
+    //  //错误代码信息
+    //  "err_msg": ""
+    //}
+
+
+
+    //pBack(data);
   }
 
   // 5. (企业园区模块-搜索类型)获取园区下面企业类型列表
   public getCompanyType(pBack, park_id) {
     // id =1
-    let thetoken = localStorage.getItem("token");
+    let thetoken = sessionStorage.getItem("token");
     $.ajax({
       url: this.state.rooturl + '/api/getCompanyType',
       data: {
@@ -247,11 +258,11 @@ class DataService {
   public findCompany(pBack, park_id, company_type_id, companyName) {
     // id=1
     // console.log("findCompany", park_id, company_type_id, name);
-    let thetoken = localStorage.getItem("token");
+    let thetoken = sessionStorage.getItem("token");
     $.ajax({
       url: this.state.rooturl + '/api/findCompany',
       data: {
-        "park_id": 1,
+        "park_id": park_id,
         "company_type_id": company_type_id,
         "token": thetoken,
         "name": companyName
@@ -274,7 +285,7 @@ class DataService {
   //7 通过企业id, 获企业详细信息
   public getCompanyInfo(pBack, id) {
     // id=2 模拟id
-    let thetoken = localStorage.getItem("token");
+    let thetoken = sessionStorage.getItem("token");
     $.ajax({
       url: this.state.rooturl + '/api/getCompanyInfo',
       data: {
@@ -300,7 +311,7 @@ class DataService {
   public getRoomRentSquareType(pBack, park_id) {
     console.log("init-AllareaType", pBack, park_id);
     // console.log("findCompany", park_id, company_type_id, name, token);
-    let thetoken = localStorage.getItem("token");
+    let thetoken = sessionStorage.getItem("token");
     $.ajax({
       url: this.state.rooturl + '/api/getRoomRentSquareType',
       data: {
@@ -327,7 +338,7 @@ class DataService {
   public findRoomRentByparkid(pBack, park_id, square) {
     // id =1
     console.log("findRoomRentByparkid", pBack, park_id, square);
-    let thetoken = localStorage.getItem("token");
+    let thetoken = sessionStorage.getItem("token");
     $.ajax({
       url: this.state.rooturl + '/api/findRoomRent',
       data: {
@@ -354,7 +365,7 @@ class DataService {
   //10 通过招租id,获取租房信息列表接口(getRoomRentInfo)
   public findRoomRentByroomid(pBack, id) {
     console.log("findRoomRentByroomid-jxxxxxxxxxxxx", id);
-    let thetoken = localStorage.getItem("token");
+    let thetoken = sessionStorage.getItem("token");
     $.ajax({
       url: this.state.rooturl + '/api/getRoomRentInfo',
       data: {
@@ -487,7 +498,7 @@ class DataService {
   // 14.(随手拍模块-提交)提交随手拍信息
   public postTakingPhotoInfo(pBack, data) {
     let theData = {
-      "park_id": localStorage.getItem("park_id"),
+      "park_id": sessionStorage.getItem("park_id"),
       "type_id": data.type_id,
       "car_license": data.car_license,
       "time": data.time,
@@ -497,15 +508,26 @@ class DataService {
       "descript": data.descript,
       "photo": data.files[0].url,
     }
-    console.log("postTakingPhotoInfo", theData);
-    pBack("随手拍提交完成");
+    //console.log("postTakingPhotoInfo", theData);
+    //pBack("随手拍提交完成");
+    //    let thedata = JSON.stringify(datas)
+      $.ajax({
+        url: this.state.rooturl + '/api/postTakingPhotoInfo',
+        data: theData,
+        type: "post",
+        dataType: "json",
+      success: function (data) {
+         console.log("postTakingPhotoInfo", data); 
+      }
+     });
+
   }
 
   // 15.2(摆点申请模块)提交摆点申请接口 
   public postAdvertisementPoint(pBack, data) {
     //console.log("postAdvertisementPoint", data);
     let datas = {
-      'park_id': localStorage.getItem("park_id"),
+      'park_id': sessionStorage.getItem("park_id"),
       'staff_id': data.staff_id,
       "staff_name": data.applicant,
       "phone": data.phone,
@@ -516,7 +538,7 @@ class DataService {
     };
     let thedata = JSON.stringify(datas)
       $.ajax({
-        url: this.state.rooturl + '/api/postAdvertisementPoint',
+        url: this.state.rooturl + '/api/postAdvertisementPoint?token=' + sessionStorage.getItem("token"),
         data: thedata,
         type: "post",
         dataType: "json",
@@ -541,14 +563,20 @@ class DataService {
   public getRoomBook(pBack, park_id, name) {
     console.log("getRoomBook", pBack, park_id, name);
     let theurl
-    if (name && name!=="搜索") {
-       theurl = this.state.rooturl + '/api/getRoomBook/' + 1 + '/' + name
-    } else {
-       theurl= this.state.rooturl + '/api/getRoomBook/' + 1 
-    }
+    //if (name && name!=="搜索") {
+    //   theurl = this.state.rooturl + '/api/getRoomBook/' + park_id + '/' + name
+    //} else {
+    //   theurl= this.state.rooturl + '/api/getRoomBook?token=' + sessionStorage.getItem("token") +  '/' + park_id  
+    //}
     $.ajax({
-      url: theurl,
+     // url: theurl,
+      url: this.state.rooturl +'/api/getRoomBook',
       type: "get",
+      data: {
+        park_id: park_id,
+        name: name,
+        token: sessionStorage.getItem("token") 
+      },
       success: function (data) {
         //console.log("getRoomBookajax", data);
         if (data.status == 113) {
@@ -569,8 +597,13 @@ class DataService {
   public getRoomBookInfo(pBack, id) {
     //console.log("getRoomBookInfo", id);
     $.ajax({
-      url: this.state.rooturl + '/api/getRoomBookInfo'+"/"+id,
+    //  url: this.state.rooturl + '/api/getRoomBookInfo'+"/"+id,
+      url: this.state.rooturl + '/api/getRoomBookInfo',
       type: "get",
+      data: {
+        id:id,
+        token: sessionStorage.getItem("token"),
+      },
       success: function (data) {
         console.log("getRoomBookInfoajax", data);
         if (data.status == 113) {
@@ -593,7 +626,7 @@ class DataService {
    // console.log("bookingRoom", data.room_id)
    // pBack("提交成功！");
     let datas = {
-      'park_id': localStorage.getItem("park_id"),
+      'park_id': sessionStorage.getItem("park_id"),
       'staff_id': data.staff_id,
       "staff_name": data.applicant,
       "phone": data.phone,
@@ -612,7 +645,7 @@ class DataService {
     let thedata = JSON.stringify(datas)
    // console.log("提交场地预定", thedata);
     $.ajax({
-      url: this.state.rooturl + '/api/BookingRoom',
+      url: this.state.rooturl + '/api/BookingRoom?token=' + sessionStorage.getItem("token"),
       data: thedata,
       type: "post",
       dataType: "json",
@@ -636,7 +669,7 @@ class DataService {
   //19.(在线报修模块-报修类型)通过园区id获取在线报修类型
   public getRepairType(pBack) {
     $.ajax({
-      url: this.state.rooturl + '/api/getRepairType',
+      url: this.state.rooturl + '/api/getRepairType?token=' + sessionStorage.getItem("token"),
       type: "get",
       success: function (data) {
         console.log("getRepairType", data);
@@ -661,7 +694,7 @@ class DataService {
   //20.(在线报修模块-提交)提交在线报修信息
   public saveRepairInfo(pBack, data) {
     let datas = {
-      'park_id': localStorage.getItem("park_id"),
+      'park_id': sessionStorage.getItem("park_id"),
       "type_id": data.type_id,
       //"position": data.position,
       //"longitude": data.longitude,
@@ -689,7 +722,7 @@ class DataService {
     console.log("saveRepairInfo", datas);
     let thedata = JSON.stringify(datas)
     $.ajax({
-      url: this.state.rooturl + '/api/saveRepairInfo',
+      url: this.state.rooturl + '/api/saveRepairInfo?token=' + sessionStorage.getItem("token"),
       data: thedata,
       type: "post",
       dataType: "json",
@@ -773,7 +806,7 @@ class DataService {
   // 24.(停车业务模块-车位申请)提交车位申请信息
   public saveParkingApply(pBack, data) {
     let thedata = {
-      'park_id': localStorage.getItem("park_id"),
+      'park_id': sessionStorage.getItem("park_id"),
       "car_license_color": data.car_license_color,
       "car_license": data.car_license,
       "applicant": data.applicant,
@@ -793,7 +826,7 @@ class DataService {
   // 25.(停车业务模块-地库车位预约)提交地库车位预约
   public saveParkingAppointment(pBack, data) {
     let thedata = {
-      'park_id': localStorage.getItem("park_id"),
+      'park_id': sessionStorage.getItem("park_id"),
       "car_license_color": data.car_license_color,
       "car_license": data.car_license,
       "applicant": data.applicant,
@@ -815,7 +848,7 @@ class DataService {
   // 26.(停车业务模块-车位变更)提交车位变更（目前：变更车辆，不变更车位） 
   public changeParkingCarInfo(pBack, data) {
     let thedata = {
-      'park_id': localStorage.getItem("park_id"),
+      'park_id': sessionStorage.getItem("park_id"),
       "car_license_color": data.car_license_color,
       "car_license": data.car_license,
       "applicant": data.applicant,
@@ -839,7 +872,7 @@ class DataService {
   //27.(停车业务模块-来访车辆预约)提交来访车辆预约
   public saveVisitorParkingAppointment(pBack, data) {
     let thedata = {
-      'park_id': localStorage.getItem("park_id"),
+      'park_id': sessionStorage.getItem("park_id"),
       "car_license_color": data.car_license_color,
       "car_license": data.car_license,
       "applicant": data.applicant,
@@ -859,7 +892,7 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/getMicroCircleType',
       data: {
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -875,7 +908,7 @@ class DataService {
       data: {
         park_id: obj.park_id,
         type_id: obj.type_id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -890,7 +923,7 @@ class DataService {
       url: this.state.rooturl + '/api/getMicroCircleInfo',
       data: {
         id: id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -909,7 +942,7 @@ class DataService {
         type_id: obj.type_id,
         name: obj.name,
         content: obj.content,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       }),
       type: "post",
       success: function (data) {
@@ -924,7 +957,7 @@ class DataService {
       url: this.state.rooturl + '/api/getHeadlines',
       data: {
         park_id: park_id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -939,7 +972,7 @@ class DataService {
       url: this.state.rooturl + '/api/getPreferentialPolicyType',
       data: {
         park_id: park_id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -955,7 +988,7 @@ class DataService {
       data: {
         park_id: obj.park_id,
         type_id: obj.type_id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -970,7 +1003,7 @@ class DataService {
       url: this.state.rooturl + '/api/getParkInformationType',
       data: {
         park_id: park_id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -986,7 +1019,7 @@ class DataService {
       data: {
         park_id: obj.park_id,
         type_id: obj.type_id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1001,7 +1034,7 @@ class DataService {
       url: this.state.rooturl + '/api/getInformation',
       data: {
         id: id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1016,7 +1049,7 @@ class DataService {
       url: this.state.rooturl + '/api/getActivityType',
       data: {
         park_id: park_id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1032,7 +1065,7 @@ class DataService {
       data: {
         park_id: obj.park_id,
         type_id: obj.type_id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1047,7 +1080,7 @@ class DataService {
       url: this.state.rooturl + '/api/getActivitiyInfo',
       data: {
         id: id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1063,7 +1096,7 @@ class DataService {
       data: {
         user_id: obj.user_id,
         activity_id: obj.activity_id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "post",
       success: function (data) {
@@ -1078,7 +1111,7 @@ class DataService {
       url: this.state.rooturl + '/api/getThirdServiceType',
       data: {
         park_id: park_id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1094,7 +1127,7 @@ class DataService {
       data: {
         park_id: obj.park_id,
         type_id: obj.type_id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1104,13 +1137,15 @@ class DataService {
   }
 
   // 42.(我的个人中心模块-修改认证)用户修改用户名
-  public modifyUserName(pBack, username) {
+  public modifyUserName(pBack, username,phone,company_id) {
     $.ajax({
       url: this.state.rooturl + '/api/modifyUserName',
       data: {
-        id: 3,
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
         username: username,
-        token: localStorage.getItem("token")
+        phone: phone,
+        company_id: company_id,
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1124,7 +1159,7 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/getRoleType',
       data: {
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1137,7 +1172,7 @@ class DataService {
   public userAuthentication(pBack, obj) {
     console.log("用户身份认证提交 ", obj);
     $.ajax({
-      url: this.state.rooturl + '/api/userAuthentication',
+      url: this.state.rooturl + '/api/userAuthentication?token=' + sessionStorage.getItem("token"),
       data: obj,
       type: "post",
       success: function (data) {
@@ -1169,7 +1204,7 @@ class DataService {
       url: this.state.rooturl + '/api/getMyAuthorityWorkType',
       data: {
         id: id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1184,7 +1219,7 @@ class DataService {
       url: this.state.rooturl + '/api/getMyAuthorityStateType',
       data: {
         id: id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1201,7 +1236,7 @@ class DataService {
         id: obj.id,
         work_type: obj.work_type,
         state_type: obj.state_type,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1215,7 +1250,7 @@ class DataService {
       url: this.state.rooturl + '/api/getBookingRoomInfo',
       data: {
         id: id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1233,7 +1268,7 @@ class DataService {
         id: obj.id,
         state: obj.state,
         reply: obj.reply,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1247,7 +1282,7 @@ class DataService {
       url: this.state.rooturl + '/api/getRoleAuthenticationInfo',
       data: {
         id: id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1265,7 +1300,7 @@ class DataService {
         id: obj.id,
         state: obj.state,
         reply: obj.reply,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1280,7 +1315,7 @@ class DataService {
       url: this.state.rooturl + '/api/getAdvertisementPointInfo',
       data: {
         id: id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1298,7 +1333,7 @@ class DataService {
         id: obj.id,
         state: obj.state,
         reply: obj.reply,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1313,7 +1348,7 @@ class DataService {
       url: this.state.rooturl + '/api/getRepairInfo',
       data: {
         id: id,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1331,7 +1366,7 @@ class DataService {
         id: obj.id,
         state: obj.state,
         reply: obj.reply,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1346,7 +1381,7 @@ class DataService {
       url: this.state.rooturl + '/api/getMyMsgType',
       data: {
         park_id: 1001,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1360,9 +1395,9 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/getMyMsgInfo',
       data: {
-        id: 1,
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
         type_id: typeId,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1377,7 +1412,7 @@ class DataService {
       url: this.state.rooturl + '/api/getMyStatistic',
       data: {
         id: 1001,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1391,9 +1426,9 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/getParkBuildingInfo',
       data: {
-        id: 1001,
-        park_id: 1001,
-        token: localStorage.getItem("token")
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+        park_id: sessionStorage.getItem("park_id"),
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1407,10 +1442,10 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/getRoomInfo',
       data: {
-        id: 1001,
-        park_id: 1001,
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+        park_id: sessionStorage.getItem("park_id"),
         room_id: roomId,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1422,7 +1457,7 @@ class DataService {
   // 96.(我的个人中心-房间管理-提交房间基础信息) 提交房间基础信息
   public saveRoomBaseInfo(pBack, obj) {
     $.ajax({
-      url: this.state.rooturl + '/api/saveRoomBaseInfo?token=' + localStorage.getItem("token"),
+      url: this.state.rooturl + '/api/saveRoomBaseInfo?token=' + sessionStorage.getItem("token"),
       data: JSON.stringify({
         id: 1001,
         room_id: sessionStorage.getItem("roomId"),
@@ -1447,9 +1482,9 @@ class DataService {
   // 97.(我的个人中心-房间管理-提交房间租用信息) 提交房间租用信息
   public saveRoomRentInfo(pBack, obj) {
     $.ajax({
-      url: this.state.rooturl + '/api/saveRoomRentInfo?token=' + localStorage.getItem("token"),
+      url: this.state.rooturl + '/api/saveRoomRentInfo?token=' + sessionStorage.getItem("token"),
       data: JSON.stringify({
-        id: 1001,
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
         room_id: sessionStorage.getItem("roomId"),
         state: obj.state,
         company_id: obj.companyId,
@@ -1470,26 +1505,12 @@ class DataService {
   // 98.(我的个人中心-房间管理-提交房间格局信息) 提交房间格局基础信息
   public saveRoomPartBaseInfo(pBack, obj) {
     $.ajax({
-      url: this.state.rooturl + '/api/saveRoomPartBaseInfo?token=' + localStorage.getItem("token"),
+      url: this.state.rooturl + '/api/saveRoomPartBaseInfo?token=' + sessionStorage.getItem("token"),
       data: JSON.stringify({
-        id: 1,
-        park_id: 1,
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+        park_id: sessionStorage.getItem("park_id"),
         room_id: sessionStorage.getItem("roomId"),
-        part: [{
-          id: obj[0].id,
-          name: obj[0].name,
-          position: obj[0].position,
-          headimageurl: obj[0].headimageurl,
-          panoramaurl: obj[0].panoramaurl
-        },
-        {
-          id: obj[1].id,
-          name: obj[1].name,
-          position: obj[1].position,
-          headimageurl: obj[1].headimageurl,
-          panoramaurl: obj[1].panoramaurl
-        }
-        ]
+        part: obj
       }),
       type: "post",
       success: function (data) {
@@ -1506,7 +1527,7 @@ class DataService {
         id: 1001,
         park_id: 1001,
         phone: phone,
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       type: "get",
       success: function (data) {
@@ -1516,11 +1537,11 @@ class DataService {
   }
   // 100.(我的个人中心-企业信息添加)添加或者更新企业详细信息 (同47号接口)
   public saveCompanyInfo(pBack, obj) {
-    // console.log("tjjjj", obj);
+     console.log("tjjjj", obj);
    //let objs = { "user_id": "1", "park_id": "1", "id": "2", "name": "桂林国家高新", "address": "桂林市七星区信息产业园E座B区三楼", "contact": "莫111", "phone": "15266666666", "website": "请输入企业官方网址", "descript": "xxx公司是由计算机图\n形学，计算机应用学组fdsfds方面专家成。", "company_type": 1, "elegant": [{ "url": "http://park.oss.yongtoc.com/images/temp/2020/04/17/1587092082_5e991a72b92ea.png", "id": "", "name": "XXimg" }], "product": [{ "url": "http://park.oss.yongtoc.com/images/temp/2020/04/17/1587092085_5e991a7583aea.png", "id": "", "name": "XXimg" }], "panorama": [{ "url": "http://park.oss.yongtoc.com/images/temp/2020/04/17/1587092090_5e991a7acef8e.png", "id": "", "name": "XXimg" }], "headimageurl": "http://xxx.jpg" }
     
     $.ajax({
-      url: this.state.rooturl + '/api/saveCompanyInfo',
+      url: this.state.rooturl + '/api/saveCompanyInfo?token=' + sessionStorage.getItem("token"),
       dataType: "json",
      data: JSON.stringify(obj),
       
@@ -1533,9 +1554,23 @@ class DataService {
     })
   }
 
+  public getUserInfo(pBack) {
+    $.ajax({
+      url: this.state.userInfoUrl,
+      dataType: "json",
+      data: "",
+
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
 
   public state = {
     rooturl: "http://parkadmin.yongtoc.com",
+    userInfoUrl: "http://minghuakejiyuan.3dparkcloud.com/me",
     //rooturl: "http://192.168.1.13:90",  //wl
     rooturl2: "http://192.168.1.30:8002", //qjf
     rooturl3: "http://192.168.1.27:89", //twl

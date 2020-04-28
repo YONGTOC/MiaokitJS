@@ -78,7 +78,9 @@ export default class RoomUse extends React.Component<{ history: any }>{
   }
 
   callBackSaveRoomRentInfo(data) {
-    console.log(data)
+    if (data.return_code == 100) {
+      this.props.history.goBack()
+    }
   }
 
   changeState(index) {
@@ -111,39 +113,44 @@ export default class RoomUse extends React.Component<{ history: any }>{
             }
           </div>
         </div>
-        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
-          <div className="enterprise-information-star"></div>
-          <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>租用单位</div>
-          <input onChange={this.changea.bind(this)} value={this.state.companyName}
-            style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
-          />
-        </div>
-        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
-          <div className="enterprise-information-star"></div>
-          <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>租用人</div>
-          <input onChange={this.changeb.bind(this)} value={this.state.user}
-            style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
-          />
-        </div>
-        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
-          <div className="enterprise-information-star"></div>
-          <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>联系电话</div>
-          <input onChange={this.changec.bind(this)} value={this.state.phone}
-            style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
-          />
-        </div>
-        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
-          <div className="enterprise-information-star"></div>
-          <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>租用日期</div>
-          <input onChange={this.changed.bind(this)} value={this.state.rentDate}
-            style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
-          />
-          <img src="./park_m/image/calendar.png" />
-        </div>
-        <div onClick={this.submit.bind(this)} 
+        {this.state.state === 0 ?
+          <div>
+            <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
+              <div className="enterprise-information-star"></div>
+              <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>租用单位</div>
+              <input onChange={this.changea.bind(this)} value={this.state.companyName}
+                style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
+              />
+            </div>
+            <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
+              <div className="enterprise-information-star"></div>
+              <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>租用人</div>
+              <input onChange={this.changeb.bind(this)} value={this.state.user}
+                style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
+              />
+            </div>
+            <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
+              <div className="enterprise-information-star"></div>
+              <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>联系电话</div>
+              <input onChange={this.changec.bind(this)} value={this.state.phone}
+                style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
+              />
+            </div>
+            <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
+              <div className="enterprise-information-star"></div>
+              <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>租用日期</div>
+              <input onChange={this.changed.bind(this)} value={this.state.rentDate}
+                style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
+              />
+              <img src="./park_m/image/calendar.png" />
+            </div>
+           
+          </div> : null
+        }
+        <div onClick={this.submit.bind(this)}
           style={{ width: "100%", height: "150px", textAlign: "center", lineHeight: "150px", color: "#ffffff", backgroundColor: "#0B8BF0", position: "fixed", bottom: 0, fontSize: "50px" }}>
           提交
-        </div>
+        </div> 
       </div>
     )
   }

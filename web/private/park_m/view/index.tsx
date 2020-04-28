@@ -68,6 +68,7 @@ interface IState {
   moreName: string,
   typeIndex: number,
   isCompanyArr: boolean,
+  isLoginBox: boolean,
 }
 
 class Index extends React.Component {
@@ -78,6 +79,7 @@ class Index extends React.Component {
     this.setParks = this.setParks.bind(this);
     this.isLoginData = this.isLoginData.bind(this);
     Index.hideCompanyArr = this.hideCompanyArr.bind(this);
+    Index.hideLoginBox = this.hideLoginBox.bind(this);
   }
   public static g_pIns: Index = null;
 
@@ -173,7 +175,8 @@ class Index extends React.Component {
     typeIndex: 0,
     moreName: "",
     isMask: false, // 遮罩
-        isCompanyArr: false,  //判断是否拥有多个企业
+    isCompanyArr: false,  //判断是否拥有多个企业
+    isLoginBox:true,
    
   }
 
@@ -182,45 +185,65 @@ class Index extends React.Component {
   }
 
   componentWillMount() {
-    this.dataService.login(this.isLoginData);
-    this.dataService.getParks(this.setParks);
+   // this.dataService.login(this.isLoginData);
 
-    let _this = this
+
+    //let _this = this
     //if (!sessionStorage.getItem("city")) {
-      var geolocation = new BMap.Geolocation();
-      geolocation.getCurrentPosition(function (r) {
-        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-          let parkArr = _this.state.parkArr
-          parkArr.forEach(item => {
-            item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude))
-          })
-          sessionStorage.setItem("city", r.address.city)
-          _this.setState({ city: r.address.city, parkArr: parkArr })
-        }
-        else {
-          if (this.getStatus() === 6) {
-            console.log("没有权限")
-          }
-          if (this.getStatus() === 8) {
-            console.log("连接超时")
-          }
-        }
-      });
+    //  var geolocation = new BMap.Geolocation();
+    //  geolocation.getCurrentPosition(function (r) {
+    //    if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+    //      let parkArr = _this.state.parkArr
+    //      parkArr.forEach(item => {
+    //        item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude))
+    //      })
+    //      sessionStorage.setItem("city", r.address.city)
+    //      _this.setState({ city: r.address.city, parkArr: parkArr })
+    //    }
+    //    else {
+    //      if (this.getStatus() === 6) {
+    //        console.log("没有权限")
+    //      }
+    //      if (this.getStatus() === 8) {
+    //        console.log("连接超时")
+    //      }
+    //    }
+    //  });
     //}
 
-        curtainHide();
+    curtainHide();
+
   }
 
     // 判断所属企业
-  public isLoginData(data) {
-    console.log("LoginData", data);
-       IsCompanys.getCompanyArr(data.enterprises);
-    if (data.enterprises.length > 1) {
+  public isLoginData() {
+    let data = sessionStorage.getItem("userInfos");
+    let dataObj = JSON.parse(data)
+
+    console.log("LoginData", dataObj);
+    console.log(" LoginData", typeof dataObj);
+    console.log("LoginData21", dataObj.enterprises);
+    console.log(" LoginData22",typeof   dataObj.enterprises);
+  //  let dataObj = JSON.parse( dataObj.enterprises);
+    //   console.log(" LoginData1", typeof dataObj);
+    //console.log(" LoginData2", dataObj);
+    //console.log(" LoginData2", dataObj.length);
+    IsCompanys.getCompanyArr(dataObj.enterprises);
+    if (dataObj.enterprises.length > 1) {
       this.setState({
         isCompanyArr: true,
       })
 
-     }
+    } else {
+      if (dataObj.enterprises.length ==0 ) {
+           sessionStorage.setItem("enterprise","请先关联企业");
+        sessionStorage.setItem("enterpriseId", "请先关联企业");
+      } else {
+         sessionStorage.setItem("enterprise", dataObj.enterprises[0].name);
+        sessionStorage.setItem("enterpriseId", dataObj.enterprises[0].id);
+      }
+      
+    }
   }
 
   //隐藏企业选择列表
@@ -229,6 +252,18 @@ class Index extends React.Component {
     this.setState({
       isCompanyArr: false,
     })
+  }
+
+  //隐藏登录列表
+  static hideLoginBox() { }
+  public hideLoginBox() {
+    this.setState({
+      isLoginBox: false,
+    })
+    this.isLoginData();
+    //获取park list
+    this.dataService.getParks(this.setParks);
+
   }
 
   // 聚焦
@@ -251,16 +286,40 @@ class Index extends React.Component {
   }
 
   // 加载园区地图
-  public initPark(park_id) {
+  public initPark(this,park_id) {
+    console.log("initPark", park_id)
+    sessionStorage.setItem("park_id", park_id);
     this.globalAction.web_call_webgl_initPark(park_id);
-    localStorage.setItem("park_id", park_id);
   }
 
   //加载园区信息列表
   public setParks(data) {
     this.setState({
       parkArr: data
-    })
+    });
+    
+    let _this = this
+    if (!sessionStorage.getItem("city")) {
+      var geolocation = new BMap.Geolocation();
+      geolocation.getCurrentPosition(function (r) {
+        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+          let parkArr = _this.state.parkArr
+          parkArr.forEach(item => {
+            item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.latitude), parseFloat(item.longitude))
+          })
+          sessionStorage.setItem("city", r.address.city)
+          _this.setState({ city: r.address.city, parkArr: parkArr })
+        }
+        else {
+          if (this.getStatus() === 6) {
+            console.log("没有权限")
+          }
+          if (this.getStatus() === 8) {
+            console.log("连接超时")
+          }
+        }
+      });
+    }
   }
 
   getRad(d) {
@@ -411,13 +470,14 @@ class Index extends React.Component {
   }
 
   render() {
-    
-        //<div className={this.state.isCompanyArr == true ? "show" : "hide"}>
-        //  <IsCompanys />
-        //</div>
     return (
       <div className="index">
-
+             <div className={this.state.isCompanyArr == true ? "show" : "hide"}>
+          <IsCompanys />
+        </div>
+        <div className={this.state.isLoginBox == true ? "show" : "hide"}>
+          <LoginTest />
+        </div>
 
         <div className="index-input-div">
           <div className="index-child-right">
@@ -760,7 +820,7 @@ class Index extends React.Component {
           {this.state.parkArr.map((item, index) => {
             return (
               <Link to="/home">
-                <div className="index-child-park" key={index} onClick={this.initPark.bind(this, 1001)}>
+                <div className="index-child-park" key={index} onClick={this.initPark.bind(this, item.id)}>
                   <div className="index-child-park-left"><img src={this.state.type ? "./park_m/image/a.jpg" : "./park_m/image/b.jpg"} className="park-img" /></div>
                   <div className="index-child-park-right">
                     <div className="index-park-name">{item.name}</div>
@@ -841,6 +901,7 @@ class Index extends React.Component {
 
 }
 
+//显示企业列表
 class IsCompanys extends React.Component {
   public constructor(props) {
     super(props);
@@ -870,12 +931,13 @@ class IsCompanys extends React.Component {
   }
 
   // 显示选择的企业,并隐藏列表 
-  public companyActive(data, id) {
-    console.log("active", data);
+  public companyActive(index, id, name) {
+    console.log("active", index,id, name );
     this.setState({
-      indexOf: data,
+      indexOf: index,
     });
- 
+    sessionStorage.setItem("enterprise", name);
+    sessionStorage.setItem("enterpriseId", id);
    setTimeout(function (){ Index.hideCompanyArr()},1000);
 
   }
@@ -887,7 +949,7 @@ class IsCompanys extends React.Component {
         <ul className="isCompanyBox_ul">
           {this.state.companyArr.map((i, index) => {
             return (
-              <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyIn" : "companyUn"}>{i.name}</li>
+              <li onClick={this.companyActive.bind(this, index, i.id, i.name)} className={this.state.indexOf == index ? "companyIn" : "companyUn"}>{i.name}</li>
             )
           })}
         </ul>
@@ -899,6 +961,88 @@ class IsCompanys extends React.Component {
   public state = {
     companyArr: [ ],
     indexOf: 100,
+  };
+}
+
+//显示登录框
+class LoginTest extends React.Component {
+  public constructor(props) {
+    super(props);
+
+  }
+
+    public dataService: DataService = new DataService();
+  public globalAction: GlobalAction = new GlobalAction();
+
+  public componentDidMount() {
+    console.log(44333334, this.state);
+  }
+
+  //正常登录
+  public doLogin() {
+    console.log(this.state.username,this.state.password)
+    this.dataService.login(this.state.username, this.state.password, this.hideLogin);
+
+
+  }
+  //admin 登录
+  public adminLogin() {
+    console.log(this.state.username,this.state.password)
+      this.dataService.login("admin","admin",this.hideLogin);
+  }
+  //园区管理员登录
+  public parkLogin() {
+   // console.log(this.state.username,this.state.password)
+      this.dataService.login("twl01","123456",this.hideLogin);
+  }
+  // 企业管理员登录
+  public companyLogin() {
+    console.log(this.state.username,this.state.password)
+      this.dataService.login("twl02","123456",this.hideLogin);
+  }
+  // 企业管理员登录
+  public ptLogin() {
+    console.log(this.state.username,this.state.password)
+      this.dataService.login("twl03","123456",this.hideLogin);
+  }
+
+  public hideLogin() {
+    setTimeout(function () { Index.hideLoginBox() }, 1000);
+    
+  }
+
+  public usernameChange(event) {
+      this.setState({
+      username: event.target.value,
+    })
+  }
+
+  public passwordChange(event) {
+      this.setState({
+      password: event.target.value,
+    })
+  }
+
+ 
+  public render() {
+    return (
+      <div className="userBox">
+        <ul className="userBox_ul">
+          <li>用户名：<input type="text" value={this.state.username} onChange={this.usernameChange.bind(this)} /></li>
+          <li>密码：<input type="text" value={this.state.password}  onChange={this.passwordChange.bind(this)}/></li>
+          <li><button onClick={this.doLogin.bind(this)} >登录</button></li>
+          <li>  // admin admin (超级管理员)<button onClick={this.adminLogin.bind(this)} >admin登录</button></li>
+          <li>  // twl01    123456(园区管理员)<button onClick={this.parkLogin.bind(this)} >园区管理员</button> </li>
+          <li>  // twl02    123456(企业管理员)<button onClick={this.companyLogin.bind(this)} >企业管理员</button> </li>
+          <li>  // twl03    123456(普通用户)<button onClick={this.ptLogin.bind(this)} >普通用户</button> </li>
+        </ul>
+      </div>
+    )
+  }
+
+  public state = {
+    username: "",
+    password:"",
   };
 }
 

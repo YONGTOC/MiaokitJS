@@ -37,7 +37,7 @@ export default class informationDetail extends React.Component {
         ]
       }
     ],
-    tagArr: ["七星区", "东二环路", "1号线"], // 标签
+    tagArr: ["七星区", "东二环路", "1号线"], // 标签 
   }
 
   public readonly props: Readonly<IProps> = {
@@ -77,8 +77,8 @@ export default class informationDetail extends React.Component {
     this.dataService.postActivitySign(this.callBackPostActivitySign.bind(this), obj)
   }
 
-  callBackPostActivitySign() {
-
+  callBackPostActivitySign(data) {
+    alert(JSON.parse(data).err_msg)
   }
 
   render() {
