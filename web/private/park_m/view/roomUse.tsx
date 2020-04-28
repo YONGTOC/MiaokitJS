@@ -1,5 +1,6 @@
 ﻿import * as React from "react";
 import DataService from "dataService";
+import { DatePicker, List } from 'antd-mobile';
 
 interface IProps {
   location: any,
@@ -12,6 +13,9 @@ interface IState {
   phone: string,
   rentDate: string,
   state: number,
+  isSpread: boolean,
+  companyNameList: Array<any>,
+  companyId: number,
 }
 
 export default class RoomUse extends React.Component<{ history: any }>{
@@ -23,6 +27,9 @@ export default class RoomUse extends React.Component<{ history: any }>{
   public dataService: DataService = new DataService()
 
   componentDidMount() {
+    $('#date').click(() => {
+      $('#datePicker').click()
+    })
     if (this.props.location.state) {
       sessionStorage.setItem("roomInfo", JSON.stringify(this.props.location.state.roomInfo))
     }
@@ -34,27 +41,29 @@ export default class RoomUse extends React.Component<{ history: any }>{
     user: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.user,
     phone: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.phone,
     rentDate: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.rent_date,
-    state: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.state
+    state: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.state,
+    isSpread: false,
+    companyNameList: [],
+    companyId: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.company_id,
   }
 
   // 输入
   changea(event) {
     this.setState({ companyName: event.target.value })
+    this.dataService.findCompany(this.callBackFindCompany.bind(this), "", event.target.value);
   }
 
-  // 输入
-  changeb(event) {
-    this.setState({ user: event.target.value })
+  callBackFindCompany(data) {
+    console.log("callBackFindCompany", data)
+    this.setState({ companyNameList: data.response, isSpread: data.response.length > 0 ? true : false })
   }
 
-  // 输入
-  changec(event) {
-    this.setState({ phone: event.target.value })
-  }
-
-  // 输入
-  changed(event) {
-    this.setState({ rentDate: event.target.value })
+  clickCompanyName(index) {
+    let companyNameList = this.state.companyNameList[index]
+    this.setState({
+      companyId: companyNameList.id, companyName: companyNameList.name,
+      user: companyNameList.contact, phone: companyNameList.phone, isSpread: false
+    })
   }
 
   // 返回
@@ -66,7 +75,7 @@ export default class RoomUse extends React.Component<{ history: any }>{
   submit() {
     let obj = {
       state: this.state.state,
-      companyId: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.company_id,
+      companyId: this.state.companyId,
       companyName: this.state.companyName,
       user: this.state.user,
       phone: this.state.phone,
@@ -85,6 +94,13 @@ export default class RoomUse extends React.Component<{ history: any }>{
 
   changeState(index) {
     this.setState({ state: index })
+  }
+
+  // 组件获取开始时间
+  public setStartDate(date) {
+    let dateStr = JSON.stringify(date);
+    let dateN = dateStr.slice(1, 11);
+    this.setState({ rentDate: dateN })
   }
 
   render() {
@@ -122,28 +138,45 @@ export default class RoomUse extends React.Component<{ history: any }>{
                 style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
               />
             </div>
+            {this.state.isSpread ? 
+              <div style={{ width: "70%", height: "600px", backgroundColor: "#ffffff", position: "absolute", left: "28%", border: "1px solid #797272" }}>
+                {this.state.companyNameList.map((item, index) => {
+                  return (
+                    <div key={index} style={{ height: "100px", fontSize: "40px", lineHeight: "100px" }} onClick={e=> this.clickCompanyName(index)}>{item.name}</div>
+                    )
+                })
+                }
+              </div> : null
+            }
             <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
               <div className="enterprise-information-star"></div>
               <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>租用人</div>
-              <input onChange={this.changeb.bind(this)} value={this.state.user}
-                style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
-              />
+              <div style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}>
+                {this.state.user}
+              </div>
             </div>
             <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
               <div className="enterprise-information-star"></div>
               <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>联系电话</div>
-              <input onChange={this.changec.bind(this)} value={this.state.phone}
-                style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
-              />
+              <div style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}>
+                {this.state.phone} 
+              </div>
             </div>
-            <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
+            <div className="service-tel" id="date" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
               <div className="enterprise-information-star"></div>
               <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>租用日期</div>
-              <input onChange={this.changed.bind(this)} value={this.state.rentDate}
-                style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
-              />
+              <div style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }} >
+                {this.state.rentDate}
+              </div>
               <img src="./park_m/image/calendar.png" />
             </div>
+            <DatePicker
+              mode="date"
+              extra=" "
+              onChange={this.setStartDate.bind(this)}
+            >
+              <List.Item arrow="horizontal" style={{ position: "absolute", top: "-100px" }} id="datePicker"></List.Item>
+            </DatePicker>
            
           </div> : null
         }

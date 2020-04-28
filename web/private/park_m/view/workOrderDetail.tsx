@@ -51,7 +51,6 @@ class workOrderDetail extends React.Component<{ history: any }>{
   public dataService: DataService = new DataService()
 
   componentDidMount() {
-    console.log(JSON.parse(sessionStorage.getItem("workOrder")).workType)
     if (JSON.parse(sessionStorage.getItem("workOrder")).workType == 1) {
       this.dataService.getRoleAuthenticationInfo(this.callBackGetRoleAuthenticationInfo.bind(this), JSON.parse(sessionStorage.getItem("workOrder")).id)
     } else if (JSON.parse(sessionStorage.getItem("workOrder")).workType == 2) {
@@ -64,22 +63,24 @@ class workOrderDetail extends React.Component<{ history: any }>{
   }
 
   callBackGetRoleAuthenticationInfo(data) {
+    console.log('aaaaaaaa', data)
     let tagArray = this.state.tagArray
     tagArray[0][0].content = data.response.name
     tagArray[0][1].content = data.response.phone
-    tagArray[0][2].content = data.response.company_name
+    tagArray[0][2].content = data.response.company_name[0].company_name
     tagArray[0][3].content = data.response.role_name
-    tagArray[0][4].content = data.response.photo
-    console.log('aaaaaaaa', tagArray)
+    tagArray[0][4].content = data.response.pic_url
+    console.log('bbbbbbb', tagArray)
     this.setState({ tagArray: tagArray, datas: data.response })
   }
 
   callBackGetBookingRoomInfo(data) {
+    console.log('bbbbbbbbb', data)
     let tagArray = this.state.tagArray
     tagArray[1][0].content = data.response.applicant
     tagArray[1][1].content = data.response.phone
     tagArray[1][2].content = data.response.company
-    tagArray[1][3].content = data.response.room
+    tagArray[1][3].content = data.response.publicplace
     tagArray[1][4].content = data.response.start_date.substring(0, 10)
     tagArray[1][5].content = data.response.start_date.substring(10)
     tagArray[1][6].content = data.response.end_date.substring(0, 10)
@@ -183,7 +184,10 @@ class workOrderDetail extends React.Component<{ history: any }>{
             return (
               <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }} key={index}>
                 <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>{item.name}</div>
-                <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "75%" }}>{item.content}</div>
+                {item.type === "text" ?
+                  <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "75%" }}>{item.content}</div> :
+                  <div><img src={item.content} /></div>
+                }
               </div>
             )
           })
@@ -194,8 +198,7 @@ class workOrderDetail extends React.Component<{ history: any }>{
           <div style={{ border: "2px solid #F2F2F2", width: "90%", margin: "30px 0 0 5%"}}></div>
         </div>
        
-
-        {this.state.datas.examine && sessionStorage.getItem("userInfo") === "园区成员" ?
+        {this.state.datas.examine ?
           <div>
             <div style={{ margin: "30px 0 0 50px" }}>
               <span style={{ color: "#949494", fontSize: "40px" }}>由</span>
@@ -209,22 +212,23 @@ class workOrderDetail extends React.Component<{ history: any }>{
             <div style={{ margin: "20px 0 0 50px" }}>
               <span style={{ color: "#333333", fontSize: "40px" }}>{this.state.datas.examine.reply}</span>
             </div>
-          </div>
-          : this.state.stateName === "审核中" && sessionStorage.getItem("userInfo") === "园区管理员" ?
+          </div> : null
+        }
+
+        {this.state.stateName === "审核中" && JSON.parse(sessionStorage.getItem("userInfos")).roles.role_name === "园区管理员" ?
           <div>
-            <div style={{padding: "30px 0 0 50px"}}>
+            <div style={{ padding: "30px 0 0 50px" }}>
               <div className="isay-star"></div><div style={{ marginLeft: "30px", fontSize: "40px", color: "#333333" }}>审核回复：</div>
               <textarea style={{ height: "200px", width: "90%", backgroundColor: "#F2F2F2", marginTop: "30px", fontSize: "40px", color: "#949494" }}
-              value={this.state.reply} onFocus={this.textareaFoucus.bind(this)} onBlur={this.textareaBlur.bind(this)} onChange={this.inputChange.bind(this)}></textarea>
+                value={this.state.reply} onFocus={this.textareaFoucus.bind(this)} onBlur={this.textareaBlur.bind(this)} onChange={this.inputChange.bind(this)}></textarea>
             </div>
             <div style={{ height: "150px", width: "100%", position: "absolute", bottom: 0, fontSize: "45px" }}>
               <div style={{ float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#F2F2F2", color: "#6C6C6C" }} onClick={e => this.submit(0)}>转单</div>
               <div style={{ float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#FE4E4E", color: "#FFFFFF" }} onClick={e => this.submit(3)}>不通过</div>
               <div style={{ float: "left", height: "100%", width: "33.4%", lineHeight: "150px", textAlign: "center", backgroundColor: "#0B8BF0", color: "#FFFFFF" }} onClick={e => this.submit(1)}>通过</div>
             </div>
-          </div>
-          : null
-        }
+          </div> : null
+         }
         
       </div>
     )

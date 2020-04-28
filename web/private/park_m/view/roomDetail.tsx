@@ -83,22 +83,26 @@ export default class RoomDetail extends React.Component<{ history: any }>{
               {this.state.roomInfo[0].use_info.state == 0 ? "租用中" : this.state.roomInfo[0].use_info.state == 1 ? "招租中" : "不出租"}
             </div>
           </div>
-          <div style={{ width: "100%", overflow: "hidden" }}>
-            <div style={{ float: "left", width: "300px", margin: "30px 0 0 120px" }}>租用单位</div>
-            <div style={{ float: "left", color: "#333333", marginTop: "30px" }}>{this.state.roomInfo[0].use_info.company_name}</div>
-          </div>
-          <div style={{ width: "100%", overflow: "hidden" }}>
-            <div style={{ float: "left", width: "300px", margin: "30px 0 0 120px" }}>租用人</div>
-            <div style={{ float: "left", color: "#333333", marginTop: "30px" }}>{this.state.roomInfo[0].use_info.user}</div>
-          </div>
-          <div style={{ width: "100%", overflow: "hidden" }}>
-            <div style={{ float: "left", width: "300px", margin: "30px 0 0 120px" }}>联系电话</div>
-            <div style={{ float: "left", color: "#333333", marginTop: "30px" }}>{this.state.roomInfo[0].use_info.phone}</div>
-          </div>
-          <div style={{ width: "100%", overflow: "hidden" }}>
-            <div style={{ float: "left", width: "300px", margin: "30px 0 0 120px" }}>租用日期</div>
-            <div style={{ float: "left", marginTop: "30px", color: "#F53636" }}>{this.state.roomInfo[0].use_info.rent_date}</div>
-          </div>
+          {this.state.roomInfo[0].use_info.state == 0 ?
+            <div>
+              <div style={{ width: "100%", overflow: "hidden" }}>
+                <div style={{ float: "left", width: "300px", margin: "30px 0 0 120px" }}>租用单位</div>
+                <div style={{ float: "left", color: "#333333", marginTop: "30px" }}>{this.state.roomInfo[0].use_info.company_name}</div>
+              </div>
+              <div style={{ width: "100%", overflow: "hidden" }}>
+                <div style={{ float: "left", width: "300px", margin: "30px 0 0 120px" }}>租用人</div>
+                <div style={{ float: "left", color: "#333333", marginTop: "30px" }}>{this.state.roomInfo[0].use_info.user}</div>
+              </div>
+              <div style={{ width: "100%", overflow: "hidden" }}>
+                <div style={{ float: "left", width: "300px", margin: "30px 0 0 120px" }}>联系电话</div>
+                <div style={{ float: "left", color: "#333333", marginTop: "30px" }}>{this.state.roomInfo[0].use_info.phone}</div>
+              </div>
+              <div style={{ width: "100%", overflow: "hidden" }}>
+                <div style={{ float: "left", width: "300px", margin: "30px 0 0 120px" }}>租用日期</div>
+                <div style={{ float: "left", marginTop: "30px", color: "#F53636" }}>{this.state.roomInfo[0].use_info.rent_date}</div>
+              </div>
+            </div> : null
+          }
         </div>
       </div>
     )

@@ -109,7 +109,7 @@ class CompanyList extends React.Component {
     //获取园区下面企业类型列表
     this.dataService.getCompanyType(this.setCompanyType, this.state.park_id);
     //通过园区id搜索园区下面企业列表
-    this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.typeName);
+    this.dataService.findCompany(this.setCompany, this.state.company_type_id, this.state.typeName);
   }
 
 
@@ -278,7 +278,7 @@ class CompanyList extends React.Component {
       this.setState({ inputValue: "" })
     };
     console.log("searchBtn", this.state.inputValue, this.state.company_type_id);
-    this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.inputValue);
+    this.dataService.findCompany(this.setCompany, this.state.company_type_id, this.state.inputValue);
   }
 
   //返回园区map

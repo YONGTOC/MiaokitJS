@@ -48,9 +48,9 @@ export default class informationDetail extends React.Component {
 
   componentDidMount() {
     if (parseInt(sessionStorage.getItem("informationId")) < 2) {
-      this.dataService.getInformation(this.callBack.bind(this), 2)
+      this.dataService.getInformation(this.callBack.bind(this), this.props.history.location.state.index)
     } else if (parseInt(sessionStorage.getItem("informationId")) === 2){
-      this.dataService.getActivitiyInfo(this.callBack.bind(this), 1)
+      this.dataService.getActivitiyInfo(this.callBack.bind(this), this.props.history.location.state.index)
     }
   }
   callBack(data) {

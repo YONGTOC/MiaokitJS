@@ -675,7 +675,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 success: function (data) {
                     console.log(data);
                     let userInfo = {
-                        userId: data.id, name: data.name, phone: data.phone, avatar: data.avatar, enterprise: data.enterprise, enterpriseId: data.enterprises[0].id,
+                        userId: data.id, name: data.name, phone: data.phone, avatar: data.avatar, enterprise: data.enterprise, enterpriseId: data.enterprises.length > 0 ? data.enterprises[0].id : "",
                         roles: {
                             role_id: data.roles[0].role_id, role_name: data.roles[0].role_name
                         },
@@ -767,19 +767,18 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 }
             });
         }
-        findCompany(pBack, park_id, company_type_id, companyName) {
-            let thetoken = sessionStorage.getItem("token");
+        findCompany(pBack, company_type_id, companyName) {
+            let url = this.state.rooturl + '/api/findCompany?park_id=' + sessionStorage.getItem("park_id") + "&name=" + companyName;
+            if (company_type_id) {
+                url = url + "&company_type_id=" + company_type_id;
+            }
             $.ajax({
-                url: this.state.rooturl + '/api/findCompany',
+                url: url,
                 data: {
-                    "park_id": 1,
-                    "company_type_id": company_type_id,
-                    "token": thetoken,
-                    "name": companyName
+                    "token": sessionStorage.getItem("token"),
                 },
                 type: "get",
                 success: function (data) {
-                    console.log("findCompany企业列表", data);
                     if (data.status == 113) {
                     }
                     else {
@@ -1521,12 +1520,14 @@ define("dataService", ["require", "exports"], function (require, exports) {
             });
         }
         getMyWork(pBack, obj) {
+            let url = this.state.rooturl + "/api/getMyWork?";
+            for (let key in obj) {
+                url = url + key + "=" + obj[key] + "&";
+            }
+            url = url.substring(0, url.length - 1);
             $.ajax({
-                url: this.state.rooturl + '/api/getMyWork',
+                url: url,
                 data: {
-                    id: obj.id,
-                    work_type: obj.work_type,
-                    state_type: obj.state_type,
                     token: sessionStorage.getItem("token")
                 },
                 type: "get",
@@ -1724,13 +1725,13 @@ define("dataService", ["require", "exports"], function (require, exports) {
             $.ajax({
                 url: this.state.rooturl + '/api/saveRoomBaseInfo?token=' + sessionStorage.getItem("token"),
                 data: JSON.stringify({
-                    id: 1001,
+                    id: sessionStorage.getItem("park_id"),
                     room_id: sessionStorage.getItem("roomId"),
                     squre: obj.squre,
                     price: obj.price,
                     contact: obj.contact,
                     phone: obj.phone,
-                    inspectionTime: obj.inspectionTime,
+                    inspection_time: obj.inspectionTime,
                     require: obj.require,
                     lift: obj.lift,
                     square: obj.square,
@@ -4438,7 +4439,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
         }
         componentDidMount() {
             this.dataService.getCompanyType(this.setCompanyType, this.state.park_id);
-            this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.typeName);
+            this.dataService.findCompany(this.setCompany, this.state.company_type_id, this.state.typeName);
         }
         setCompanyType(data) {
             console.log("set企业类型列表", data.response);
@@ -4557,7 +4558,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
             }
             ;
             console.log("searchBtn", this.state.inputValue, this.state.company_type_id);
-            this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.inputValue);
+            this.dataService.findCompany(this.setCompany, this.state.company_type_id, this.state.inputValue);
         }
         mapReturnpark() {
             this.globalAction.web_call_webgl_mapReturnpark();
@@ -7474,7 +7475,7 @@ define("workOrder", ["require", "exports", "react", "dataService", "css!./styles
                 ],
                 tagIndex: 0,
                 workOrderArray: [
-                    { id: "", applicant: [{ Name: "" }], state_name: "", time: "" }
+                    { id: "", applicant: "", state_name: "", time: "" }
                 ]
             };
             this.dataService = new dataService_16.default();
@@ -7503,11 +7504,11 @@ define("workOrder", ["require", "exports", "react", "dataService", "css!./styles
             }
         }
         getMyWork() {
-            let obj = {
-                id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
-                work_type: this.state.tagIndex,
-                state_type: 1
-            };
+            let obj = {};
+            obj.id = JSON.parse(sessionStorage.getItem("userInfos")).userId;
+            if (this.state.tagIndex !== 0) {
+                obj.work_type = this.state.tagIndex;
+            }
             this.dataService.getMyWork(this.callBackGetMyWork.bind(this), obj);
         }
         changeTag(index) {
@@ -7523,7 +7524,7 @@ define("workOrder", ["require", "exports", "react", "dataService", "css!./styles
                 id: this.state.workOrderArray[index].id,
                 workType: this.state.workOrderArray[index].work_type,
                 name: this.state.workOrderArray[index].work_type == 1 ? "身份认证工单" : this.state.workOrderArray[index].work_type == 2 ?
-                    "场地预定工单" : this.state.workOrderArray[index].work_type == 3 ? "摆点申请工单" : "在线保修工单",
+                    "场地预定工单" : this.state.workOrderArray[index].work_type == 3 ? "摆点申请工单" : this.state.workOrderArray[index].work_type == 4 ? "在线保修工单" : null,
                 stateName: this.state.workOrderArray[index].state_name
             };
             sessionStorage.setItem("workOrder", JSON.stringify(obj));
@@ -7541,11 +7542,11 @@ define("workOrder", ["require", "exports", "react", "dataService", "css!./styles
                     this.state.workOrderArray.map((item, index) => {
                         return (React.createElement("div", { key: index, className: "work-order-list-child", onClick: e => this.goWorkOrderDetail(index) },
                             React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 40px" } },
-                                React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, item.work_type == 1 ? "身份认证工单" : item.work_type == 2 ? "场地预定工单" : item.work_type == 3 ? "摆点申请工单" : "在线保修工单"),
+                                React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, item.work_type == 1 ? "身份认证工单" : item.work_type == 2 ? "场地预定工单" : item.work_type == 3 ? "摆点申请工单" : item.work_type == 4 ? "在线保修工单" : ""),
                                 React.createElement("img", { style: { float: "right", marginRight: "40px" }, src: "./park_m/image/right.png" })),
                             React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" } },
                                 "\u7533\u8BF7\u4EBA\uFF1A",
-                                item.applicant[0].Name),
+                                item.applicant),
                             React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "10px 0 0 40px", overflow: "hidden" } },
                                 React.createElement("div", { style: { float: "left" } },
                                     "\u7533\u8BF7\u65F6\u95F4\uFF1A",
@@ -7598,7 +7599,6 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
             this.dataService = new dataService_17.default();
         }
         componentDidMount() {
-            console.log(JSON.parse(sessionStorage.getItem("workOrder")).workType);
             if (JSON.parse(sessionStorage.getItem("workOrder")).workType == 1) {
                 this.dataService.getRoleAuthenticationInfo(this.callBackGetRoleAuthenticationInfo.bind(this), JSON.parse(sessionStorage.getItem("workOrder")).id);
             }
@@ -7613,21 +7613,23 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
             }
         }
         callBackGetRoleAuthenticationInfo(data) {
+            console.log('aaaaaaaa', data);
             let tagArray = this.state.tagArray;
             tagArray[0][0].content = data.response.name;
             tagArray[0][1].content = data.response.phone;
-            tagArray[0][2].content = data.response.company_name;
+            tagArray[0][2].content = data.response.company_name[0].company_name;
             tagArray[0][3].content = data.response.role_name;
-            tagArray[0][4].content = data.response.photo;
-            console.log('aaaaaaaa', tagArray);
+            tagArray[0][4].content = data.response.pic_url;
+            console.log('bbbbbbb', tagArray);
             this.setState({ tagArray: tagArray, datas: data.response });
         }
         callBackGetBookingRoomInfo(data) {
+            console.log('bbbbbbbbb', data);
             let tagArray = this.state.tagArray;
             tagArray[1][0].content = data.response.applicant;
             tagArray[1][1].content = data.response.phone;
             tagArray[1][2].content = data.response.company;
-            tagArray[1][3].content = data.response.room;
+            tagArray[1][3].content = data.response.publicplace;
             tagArray[1][4].content = data.response.start_date.substring(0, 10);
             tagArray[1][5].content = data.response.start_date.substring(10);
             tagArray[1][6].content = data.response.end_date.substring(0, 10);
@@ -7715,14 +7717,17 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
                 this.state.tagArray[JSON.parse(sessionStorage.getItem("workOrder")).workType - 1].map((item, index) => {
                     return (React.createElement("div", { style: { margin: "30px 0 0 50px", overflow: "hidden" }, key: index },
                         React.createElement("div", { style: { color: "#949494", fontSize: "40px", float: "left", width: "25%" } }, item.name),
-                        React.createElement("div", { style: { color: "#333333", fontSize: "40px", float: "left", width: "75%" } }, item.content)));
+                        item.type === "text" ?
+                            React.createElement("div", { style: { color: "#333333", fontSize: "40px", float: "left", width: "75%" } }, item.content) :
+                            React.createElement("div", null,
+                                React.createElement("img", { src: item.content }))));
                 }),
                 React.createElement("div", { style: { fontSize: "40px", color: "#949494", float: "right", margin: "30px 50px 0 0" } },
                     "\u5DE5\u5355\u7533\u8BF7\u65F6\u95F4\uFF1A",
                     this.state.datas.time),
                 React.createElement("div", { style: { width: "100%", overflow: "hidden", textAlign: "center" } },
                     React.createElement("div", { style: { border: "2px solid #F2F2F2", width: "90%", margin: "30px 0 0 5%" } })),
-                this.state.datas.examine && sessionStorage.getItem("userInfo") === "园区成员" ?
+                this.state.datas.examine ?
                     React.createElement("div", null,
                         React.createElement("div", { style: { margin: "30px 0 0 50px" } },
                             React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u7531"),
@@ -7732,18 +7737,17 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
                         React.createElement("div", { style: { margin: "20px 0 0 50px" } },
                             React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u5BA1\u6838\u56DE\u590D:")),
                         React.createElement("div", { style: { margin: "20px 0 0 50px" } },
-                            React.createElement("span", { style: { color: "#333333", fontSize: "40px" } }, this.state.datas.examine.reply)))
-                    : this.state.stateName === "审核中" && sessionStorage.getItem("userInfo") === "园区管理员" ?
-                        React.createElement("div", null,
-                            React.createElement("div", { style: { padding: "30px 0 0 50px" } },
-                                React.createElement("div", { className: "isay-star" }),
-                                React.createElement("div", { style: { marginLeft: "30px", fontSize: "40px", color: "#333333" } }, "\u5BA1\u6838\u56DE\u590D\uFF1A"),
-                                React.createElement("textarea", { style: { height: "200px", width: "90%", backgroundColor: "#F2F2F2", marginTop: "30px", fontSize: "40px", color: "#949494" }, value: this.state.reply, onFocus: this.textareaFoucus.bind(this), onBlur: this.textareaBlur.bind(this), onChange: this.inputChange.bind(this) })),
-                            React.createElement("div", { style: { height: "150px", width: "100%", position: "absolute", bottom: 0, fontSize: "45px" } },
-                                React.createElement("div", { style: { float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#F2F2F2", color: "#6C6C6C" }, onClick: e => this.submit(0) }, "\u8F6C\u5355"),
-                                React.createElement("div", { style: { float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#FE4E4E", color: "#FFFFFF" }, onClick: e => this.submit(3) }, "\u4E0D\u901A\u8FC7"),
-                                React.createElement("div", { style: { float: "left", height: "100%", width: "33.4%", lineHeight: "150px", textAlign: "center", backgroundColor: "#0B8BF0", color: "#FFFFFF" }, onClick: e => this.submit(1) }, "\u901A\u8FC7")))
-                        : null));
+                            React.createElement("span", { style: { color: "#333333", fontSize: "40px" } }, this.state.datas.examine.reply))) : null,
+                this.state.stateName === "审核中" && JSON.parse(sessionStorage.getItem("userInfos")).roles.role_name === "园区管理员" ?
+                    React.createElement("div", null,
+                        React.createElement("div", { style: { padding: "30px 0 0 50px" } },
+                            React.createElement("div", { className: "isay-star" }),
+                            React.createElement("div", { style: { marginLeft: "30px", fontSize: "40px", color: "#333333" } }, "\u5BA1\u6838\u56DE\u590D\uFF1A"),
+                            React.createElement("textarea", { style: { height: "200px", width: "90%", backgroundColor: "#F2F2F2", marginTop: "30px", fontSize: "40px", color: "#949494" }, value: this.state.reply, onFocus: this.textareaFoucus.bind(this), onBlur: this.textareaBlur.bind(this), onChange: this.inputChange.bind(this) })),
+                        React.createElement("div", { style: { height: "150px", width: "100%", position: "absolute", bottom: 0, fontSize: "45px" } },
+                            React.createElement("div", { style: { float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#F2F2F2", color: "#6C6C6C" }, onClick: e => this.submit(0) }, "\u8F6C\u5355"),
+                            React.createElement("div", { style: { float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#FE4E4E", color: "#FFFFFF" }, onClick: e => this.submit(3) }, "\u4E0D\u901A\u8FC7"),
+                            React.createElement("div", { style: { float: "left", height: "100%", width: "33.4%", lineHeight: "150px", textAlign: "center", backgroundColor: "#0B8BF0", color: "#FFFFFF" }, onClick: e => this.submit(1) }, "\u901A\u8FC7"))) : null));
         }
     }
     exports.default = workOrderDetail;
@@ -7984,25 +7988,13 @@ define("parkWorkOrder", ["require", "exports", "react", "dataService", "css!./st
                 tagList: [{ id: 0, name: "全部" }, { id: 1, name: "审核中" }, { id: 2, name: "已通过" }, { id: 3, name: "未通过" }, { id: 4, name: "已转单" }],
                 tagIndex: 0,
                 workOrderArray: [
-                    { id: "", applicant: [{ Name: "" }], state_name: "", time: "" }
+                    { id: "", applicant: "", state_name: "", time: "" }
                 ]
             };
             this.dataService = new dataService_20.default();
         }
         componentDidMount() {
-            this.dataService.getMyAuthorityWorkType(this.callBackGetMyAuthorityWorkType.bind(this), 8);
-            this.dataService.getMyAuthorityStateType(this.callBackGetMyAuthorityStateType.bind(this), 1);
             this.getMyWork();
-        }
-        callBackGetMyAuthorityWorkType(data) {
-            let tagList = this.state.tagList;
-            data.response.forEach(item => {
-                tagList.push(item);
-            });
-            this.setState({ tagList: tagList });
-        }
-        callBackGetMyAuthorityStateType(data) {
-            console.log(data);
         }
         callBackGetMyWork(data) {
             if (data.response) {
@@ -8013,11 +8005,11 @@ define("parkWorkOrder", ["require", "exports", "react", "dataService", "css!./st
             }
         }
         getMyWork() {
-            let obj = {
-                id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
-                work_type: this.state.tagIndex,
-                state_type: 1
-            };
+            let obj = {};
+            obj.id = JSON.parse(sessionStorage.getItem("userInfos")).userId;
+            if (this.state.tagIndex !== 0) {
+                obj.state_type = this.state.tagIndex - 1;
+            }
             this.dataService.getMyWork(this.callBackGetMyWork.bind(this), obj);
         }
         changeTag(index) {
@@ -8055,7 +8047,7 @@ define("parkWorkOrder", ["require", "exports", "react", "dataService", "css!./st
                                 React.createElement("img", { style: { float: "right", marginRight: "40px" }, src: "./park_m/image/right.png" })),
                             React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" } },
                                 "\u7533\u8BF7\u4EBA\uFF1A",
-                                item.applicant[0].Name),
+                                item.applicant),
                             React.createElement("div", { style: { fontSize: "38px", color: "#949494", margin: "10px 0 0 40px", overflow: "hidden" } },
                                 React.createElement("div", { style: { float: "left" } },
                                     "\u7533\u8BF7\u65F6\u95F4\uFF1A",
@@ -8371,7 +8363,6 @@ define("informationChild", ["require", "exports", "react", "dataService", "css!.
         componentWillMount() {
             sessionStorage.setItem("informationId", "0");
             this.getTag();
-            this.getTagContent();
         }
         getTag() {
             if (parseInt(sessionStorage.getItem("informationId")) === 0) {
@@ -8389,8 +8380,8 @@ define("informationChild", ["require", "exports", "react", "dataService", "css!.
         }
         getTagContent() {
             let obj = {
-                park_id: 1,
-                type_id: this.state.tagIndex + 1
+                park_id: sessionStorage.getItem("park_id"),
+                type_id: this.state.tagArr[this.state.tagIndex].id
             };
             if (parseInt(sessionStorage.getItem("informationId")) === 0) {
                 this.dataService.getPreferentialPolicies(this.callBackTagContent.bind(this), obj);
@@ -8406,7 +8397,9 @@ define("informationChild", ["require", "exports", "react", "dataService", "css!.
             }
         }
         callBackTag(data) {
-            this.setState({ tagArr: JSON.parse(data).response });
+            this.setState({ tagArr: JSON.parse(data).response }, () => {
+                this.getTagContent();
+            });
         }
         callBackTagContent(data) {
             let listArr = [];
@@ -8424,7 +8417,6 @@ define("informationChild", ["require", "exports", "react", "dataService", "css!.
                     listArr.push(obj);
                 });
                 this.setState({ listArr: listArr });
-                console.log(listArr);
             }
             else if (parseInt(sessionStorage.getItem("informationId")) === 3) {
                 JSON.parse(data).response.forEach(item => {
@@ -8481,11 +8473,11 @@ define("informationChild", ["require", "exports", "react", "dataService", "css!.
                 React.createElement("div", { className: "information-child-List" },
                     this.state.listArr.map((item, index) => {
                         return (parseInt(sessionStorage.getItem("informationId")) < 2 ?
-                            React.createElement("div", { key: index, className: "information-child-List-child", onClick: e => this.goDetail(index) },
+                            React.createElement("div", { key: index, className: "information-child-List-child", onClick: e => this.goDetail(item.id) },
                                 React.createElement("div", { style: { fontSize: "42px", color: "#333333", width: "90%", margin: "auto", paddingTop: "30px" } }, item.name),
                                 React.createElement("div", { style: {
                                         color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", display: "-webkit-box", webkitLineClamp: "3", overflow: "hidden",
-                                        webkitBoxOrient: "vertical"
+                                        webkitBoxOrient: "vertical", minHeight: "210px"
                                     } }, item.content),
                                 React.createElement("div", { style: { color: "#949494", fontSize: "34px", margin: "30px 0 0 50px" } },
                                     React.createElement("div", { style: { float: "left" } },
@@ -8494,17 +8486,17 @@ define("informationChild", ["require", "exports", "react", "dataService", "css!.
                                     React.createElement("div", { style: { float: "right", marginRight: "50px" } },
                                         item.time,
                                         " \u53D1\u5E03"))) :
-                            React.createElement("div", { key: index, className: "information-child-List-child", onClick: e => this.goDetail(index) },
+                            React.createElement("div", { key: index, className: "information-child-List-child", onClick: e => this.goDetail(item.id) },
                                 React.createElement("div", { style: { overflow: "hidden" } },
                                     React.createElement("div", { style: { width: "250px", height: "260px", float: "left", margin: "30px 0 0 50px", borderRadius: "10px" } },
                                         React.createElement("img", { src: item.headimgurl, style: { width: "100%", height: "100%" } })),
-                                    React.createElement("div", { style: { float: "left", fontSize: "45px", margin: "25px 0 0 50px", fontWeight: "600", color: "#333333" } },
+                                    React.createElement("div", { style: { float: "left", fontSize: "45px", margin: "25px 0 0 50px", fontWeight: "600", color: "#333333", width: "60%" } },
                                         React.createElement("div", null, item.title),
-                                        React.createElement("div", { style: { color: "#949494", fontSize: "40px", fontWeight: "400", marginTop: "85px" } },
+                                        React.createElement("div", { style: { color: "#949494", fontSize: "40px", fontWeight: "400", marginTop: "85px", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" } },
                                             item.taga,
                                             "\uFF1A",
                                             item.contenta),
-                                        React.createElement("div", { style: { color: "#949494", fontSize: "40px", fontWeight: "400" } },
+                                        React.createElement("div", { style: { color: "#949494", fontSize: "40px", fontWeight: "400", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" } },
                                             item.tagb,
                                             "\uFF1A",
                                             item.contentb))),
@@ -8544,7 +8536,6 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
                 sessionStorage.setItem("informationId", this.props.location.state.index);
             }
             this.getTag();
-            this.getTagContent();
         }
         getTag() {
             if (parseInt(sessionStorage.getItem("informationId")) === 0) {
@@ -8562,8 +8553,8 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
         }
         getTagContent() {
             let obj = {
-                park_id: 1,
-                type_id: this.state.tagIndex + 1
+                park_id: sessionStorage.getItem("park_id"),
+                type_id: this.state.tagArr[this.state.tagIndex].id
             };
             if (parseInt(sessionStorage.getItem("informationId")) === 0) {
                 this.dataService.getPreferentialPolicies(this.callBackTagContent.bind(this), obj);
@@ -8579,7 +8570,9 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
             }
         }
         callBackTag(data) {
-            this.setState({ tagArr: JSON.parse(data).response });
+            this.setState({ tagArr: JSON.parse(data).response }, () => {
+                this.getTagContent();
+            });
         }
         callBackTagContent(data) {
             let datas = JSON.parse(data).response ? JSON.parse(data).response : [];
@@ -8657,28 +8650,30 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
                 React.createElement("div", { className: "information-child-List" },
                     this.state.listArr.map((item, index) => {
                         return (parseInt(sessionStorage.getItem("informationId")) < 2 ?
-                            React.createElement("div", { key: index, className: "information-child-List-child", onClick: e => this.goDetail(index) },
-                                React.createElement("div", { style: { fontSize: "42px", color: "#333333", width: "90%", margin: "auto", paddingTop: "30px", color: "#333333" } }, item.name),
+                            React.createElement("div", { key: index, className: "information-child-List-child", onClick: e => this.goDetail(item.id) },
+                                React.createElement("div", { style: { fontSize: "42px", color: "#333333", width: "90%", margin: "auto", paddingTop: "30px" } }, item.name),
                                 React.createElement("div", { style: {
                                         color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", display: "-webkit-box", webkitLineClamp: "3", overflow: "hidden",
-                                        webkitBoxOrient: "vertical"
+                                        webkitBoxOrient: "vertical", minHeight: "210px"
                                     } }, item.content),
                                 React.createElement("div", { style: { color: "#949494", fontSize: "34px", margin: "30px 0 0 50px" } },
-                                    React.createElement("div", { style: { float: "left" } }, item.visit_amount),
+                                    React.createElement("div", { style: { float: "left" } },
+                                        item.visit_amount,
+                                        "\u6B21\u6D4F\u89C8"),
                                     React.createElement("div", { style: { float: "right", marginRight: "50px" } },
                                         item.time,
                                         " \u53D1\u5E03"))) :
-                            React.createElement("div", { key: index, className: "information-child-List-child", onClick: e => this.goDetail(index) },
+                            React.createElement("div", { key: index, className: "information-child-List-child", onClick: e => this.goDetail(item.id) },
                                 React.createElement("div", { style: { overflow: "hidden" } },
                                     React.createElement("div", { style: { width: "250px", height: "260px", float: "left", margin: "30px 0 0 50px", borderRadius: "10px" } },
                                         React.createElement("img", { src: item.headimgurl, style: { width: "100%", height: "100%" } })),
-                                    React.createElement("div", { style: { float: "left", fontSize: "45px", margin: "25px 0 0 50px", fontWeight: "600", color: "#333333" } },
+                                    React.createElement("div", { style: { float: "left", fontSize: "45px", margin: "25px 0 0 50px", fontWeight: "600", color: "#333333", width: "60%" } },
                                         React.createElement("div", null, item.title),
-                                        React.createElement("div", { style: { color: "#949494", fontSize: "40px", fontWeight: "400", marginTop: "85px" } },
+                                        React.createElement("div", { style: { color: "#949494", fontSize: "40px", fontWeight: "400", marginTop: "85px", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" } },
                                             item.taga,
                                             "\uFF1A",
                                             item.contenta),
-                                        React.createElement("div", { style: { color: "#949494", fontSize: "40px", fontWeight: "400" } },
+                                        React.createElement("div", { style: { color: "#949494", fontSize: "40px", fontWeight: "400", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" } },
                                             item.tagb,
                                             "\uFF1A",
                                             item.contentb))),
@@ -8730,10 +8725,10 @@ define("informationDetail", ["require", "exports", "react", "dataService", "reac
         }
         componentDidMount() {
             if (parseInt(sessionStorage.getItem("informationId")) < 2) {
-                this.dataService.getInformation(this.callBack.bind(this), 2);
+                this.dataService.getInformation(this.callBack.bind(this), this.props.history.location.state.index);
             }
             else if (parseInt(sessionStorage.getItem("informationId")) === 2) {
-                this.dataService.getActivitiyInfo(this.callBack.bind(this), 1);
+                this.dataService.getActivitiyInfo(this.callBack.bind(this), this.props.history.location.state.index);
             }
         }
         callBack(data) {
@@ -8900,10 +8895,10 @@ define("informationDetails", ["require", "exports", "react", "dataService", "rea
         }
         componentDidMount() {
             if (parseInt(sessionStorage.getItem("informationId")) < 2) {
-                this.dataService.getInformation(this.callBack.bind(this), 2);
+                this.dataService.getInformation(this.callBack.bind(this), this.props.history.location.state.index);
             }
             else if (parseInt(sessionStorage.getItem("informationId")) === 2) {
-                this.dataService.getActivitiyInfo(this.callBack.bind(this), 1);
+                this.dataService.getActivitiyInfo(this.callBack.bind(this), this.props.history.location.state.index);
             }
         }
         callBack(data) {
@@ -9186,23 +9181,25 @@ define("roomDetail", ["require", "exports", "react", "react-router-dom", "dataSe
                     React.createElement("div", { style: { width: "100%", overflow: "hidden" } },
                         React.createElement("div", { style: { float: "left", width: "300px", margin: "30px 0 0 120px" } }, "\u4F7F\u7528\u72B6\u6001"),
                         React.createElement("div", { style: { float: "left", color: "#333333", marginTop: "30px" } }, this.state.roomInfo[0].use_info.state == 0 ? "租用中" : this.state.roomInfo[0].use_info.state == 1 ? "招租中" : "不出租")),
-                    React.createElement("div", { style: { width: "100%", overflow: "hidden" } },
-                        React.createElement("div", { style: { float: "left", width: "300px", margin: "30px 0 0 120px" } }, "\u79DF\u7528\u5355\u4F4D"),
-                        React.createElement("div", { style: { float: "left", color: "#333333", marginTop: "30px" } }, this.state.roomInfo[0].use_info.company_name)),
-                    React.createElement("div", { style: { width: "100%", overflow: "hidden" } },
-                        React.createElement("div", { style: { float: "left", width: "300px", margin: "30px 0 0 120px" } }, "\u79DF\u7528\u4EBA"),
-                        React.createElement("div", { style: { float: "left", color: "#333333", marginTop: "30px" } }, this.state.roomInfo[0].use_info.user)),
-                    React.createElement("div", { style: { width: "100%", overflow: "hidden" } },
-                        React.createElement("div", { style: { float: "left", width: "300px", margin: "30px 0 0 120px" } }, "\u8054\u7CFB\u7535\u8BDD"),
-                        React.createElement("div", { style: { float: "left", color: "#333333", marginTop: "30px" } }, this.state.roomInfo[0].use_info.phone)),
-                    React.createElement("div", { style: { width: "100%", overflow: "hidden" } },
-                        React.createElement("div", { style: { float: "left", width: "300px", margin: "30px 0 0 120px" } }, "\u79DF\u7528\u65E5\u671F"),
-                        React.createElement("div", { style: { float: "left", marginTop: "30px", color: "#F53636" } }, this.state.roomInfo[0].use_info.rent_date)))));
+                    this.state.roomInfo[0].use_info.state == 0 ?
+                        React.createElement("div", null,
+                            React.createElement("div", { style: { width: "100%", overflow: "hidden" } },
+                                React.createElement("div", { style: { float: "left", width: "300px", margin: "30px 0 0 120px" } }, "\u79DF\u7528\u5355\u4F4D"),
+                                React.createElement("div", { style: { float: "left", color: "#333333", marginTop: "30px" } }, this.state.roomInfo[0].use_info.company_name)),
+                            React.createElement("div", { style: { width: "100%", overflow: "hidden" } },
+                                React.createElement("div", { style: { float: "left", width: "300px", margin: "30px 0 0 120px" } }, "\u79DF\u7528\u4EBA"),
+                                React.createElement("div", { style: { float: "left", color: "#333333", marginTop: "30px" } }, this.state.roomInfo[0].use_info.user)),
+                            React.createElement("div", { style: { width: "100%", overflow: "hidden" } },
+                                React.createElement("div", { style: { float: "left", width: "300px", margin: "30px 0 0 120px" } }, "\u8054\u7CFB\u7535\u8BDD"),
+                                React.createElement("div", { style: { float: "left", color: "#333333", marginTop: "30px" } }, this.state.roomInfo[0].use_info.phone)),
+                            React.createElement("div", { style: { width: "100%", overflow: "hidden" } },
+                                React.createElement("div", { style: { float: "left", width: "300px", margin: "30px 0 0 120px" } }, "\u79DF\u7528\u65E5\u671F"),
+                                React.createElement("div", { style: { float: "left", marginTop: "30px", color: "#F53636" } }, this.state.roomInfo[0].use_info.rent_date))) : null)));
         }
     }
     exports.default = RoomDetail;
 });
-define("roomUse", ["require", "exports", "react", "dataService"], function (require, exports, React, dataService_29) {
+define("roomUse", ["require", "exports", "react", "dataService", "antd-mobile"], function (require, exports, React, dataService_29, antd_mobile_11) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RoomUse extends React.Component {
@@ -9218,10 +9215,16 @@ define("roomUse", ["require", "exports", "react", "dataService"], function (requ
                 user: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.user,
                 phone: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.phone,
                 rentDate: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.rent_date,
-                state: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.state
+                state: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.state,
+                isSpread: false,
+                companyNameList: [],
+                companyId: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.company_id,
             };
         }
         componentDidMount() {
+            $('#date').click(() => {
+                $('#datePicker').click();
+            });
             if (this.props.location.state) {
                 sessionStorage.setItem("roomInfo", JSON.stringify(this.props.location.state.roomInfo));
             }
@@ -9229,15 +9232,18 @@ define("roomUse", ["require", "exports", "react", "dataService"], function (requ
         }
         changea(event) {
             this.setState({ companyName: event.target.value });
+            this.dataService.findCompany(this.callBackFindCompany.bind(this), "", event.target.value);
         }
-        changeb(event) {
-            this.setState({ user: event.target.value });
+        callBackFindCompany(data) {
+            console.log("callBackFindCompany", data);
+            this.setState({ companyNameList: data.response, isSpread: data.response.length > 0 ? true : false });
         }
-        changec(event) {
-            this.setState({ phone: event.target.value });
-        }
-        changed(event) {
-            this.setState({ rentDate: event.target.value });
+        clickCompanyName(index) {
+            let companyNameList = this.state.companyNameList[index];
+            this.setState({
+                companyId: companyNameList.id, companyName: companyNameList.name,
+                user: companyNameList.contact, phone: companyNameList.phone, isSpread: false
+            });
         }
         goBack() {
             this.props.history.goBack();
@@ -9245,7 +9251,7 @@ define("roomUse", ["require", "exports", "react", "dataService"], function (requ
         submit() {
             let obj = {
                 state: this.state.state,
-                companyId: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.company_id,
+                companyId: this.state.companyId,
                 companyName: this.state.companyName,
                 user: this.state.user,
                 phone: this.state.phone,
@@ -9262,6 +9268,11 @@ define("roomUse", ["require", "exports", "react", "dataService"], function (requ
         }
         changeState(index) {
             this.setState({ state: index });
+        }
+        setStartDate(date) {
+            let dateStr = JSON.stringify(date);
+            let dateN = dateStr.slice(1, 11);
+            this.setState({ rentDate: dateN });
         }
         render() {
             return (React.createElement("div", { className: "rent-room", style: { backgroundColor: "#ffffff" } },
@@ -9285,19 +9296,25 @@ define("roomUse", ["require", "exports", "react", "dataService"], function (requ
                             React.createElement("div", { className: "enterprise-information-star" }),
                             React.createElement("div", { style: { color: "#949494", height: "80px", float: "left", width: "20%" } }, "\u79DF\u7528\u5355\u4F4D"),
                             React.createElement("input", { onChange: this.changea.bind(this), value: this.state.companyName, style: { float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" } })),
+                        this.state.isSpread ?
+                            React.createElement("div", { style: { width: "70%", height: "600px", backgroundColor: "#ffffff", position: "absolute", left: "28%", border: "1px solid #797272" } }, this.state.companyNameList.map((item, index) => {
+                                return (React.createElement("div", { key: index, style: { height: "100px", fontSize: "40px", lineHeight: "100px" }, onClick: e => this.clickCompanyName(index) }, item.name));
+                            })) : null,
                         React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },
                             React.createElement("div", { className: "enterprise-information-star" }),
                             React.createElement("div", { style: { color: "#949494", height: "80px", float: "left", width: "20%" } }, "\u79DF\u7528\u4EBA"),
-                            React.createElement("input", { onChange: this.changeb.bind(this), value: this.state.user, style: { float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" } })),
+                            React.createElement("div", { style: { float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" } }, this.state.user)),
                         React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },
                             React.createElement("div", { className: "enterprise-information-star" }),
                             React.createElement("div", { style: { color: "#949494", height: "80px", float: "left", width: "20%" } }, "\u8054\u7CFB\u7535\u8BDD"),
-                            React.createElement("input", { onChange: this.changec.bind(this), value: this.state.phone, style: { float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" } })),
-                        React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },
+                            React.createElement("div", { style: { float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" } }, this.state.phone)),
+                        React.createElement("div", { className: "service-tel", id: "date", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },
                             React.createElement("div", { className: "enterprise-information-star" }),
                             React.createElement("div", { style: { color: "#949494", height: "80px", float: "left", width: "20%" } }, "\u79DF\u7528\u65E5\u671F"),
-                            React.createElement("input", { onChange: this.changed.bind(this), value: this.state.rentDate, style: { float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" } }),
-                            React.createElement("img", { src: "./park_m/image/calendar.png" }))) : null,
+                            React.createElement("div", { style: { float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" } }, this.state.rentDate),
+                            React.createElement("img", { src: "./park_m/image/calendar.png" })),
+                        React.createElement(antd_mobile_11.DatePicker, { mode: "date", extra: " ", onChange: this.setStartDate.bind(this) },
+                            React.createElement(antd_mobile_11.List.Item, { arrow: "horizontal", style: { position: "absolute", top: "-100px" }, id: "datePicker" }))) : null,
                 React.createElement("div", { onClick: this.submit.bind(this), style: { width: "100%", height: "150px", textAlign: "center", lineHeight: "150px", color: "#ffffff", backgroundColor: "#0B8BF0", position: "fixed", bottom: 0, fontSize: "50px" } }, "\u63D0\u4EA4")));
         }
     }
@@ -9320,8 +9337,8 @@ define("roomBase", ["require", "exports", "react", "dataService"], function (req
                 phone: JSON.parse(sessionStorage.getItem("roomInfo"))[0].phone,
                 inspectionTime: JSON.parse(sessionStorage.getItem("roomInfo"))[0].inspection_time,
                 require: JSON.parse(sessionStorage.getItem("roomInfo"))[0].require,
-                pic: JSON.parse(sessionStorage.getItem("roomInfo"))[0].pic,
-                video: JSON.parse(sessionStorage.getItem("roomInfo"))[0].video,
+                pic: JSON.parse(sessionStorage.getItem("roomInfo"))[0].pic ? JSON.parse(sessionStorage.getItem("roomInfo"))[0].pic : [],
+                video: JSON.parse(sessionStorage.getItem("roomInfo"))[0].video ? JSON.parse(sessionStorage.getItem("roomInfo"))[0].video : [],
                 lift: JSON.parse(sessionStorage.getItem("roomInfo"))[0].lift,
                 isElevator: false
             };
@@ -9363,14 +9380,13 @@ define("roomBase", ["require", "exports", "react", "dataService"], function (req
         }
         submit() {
             let obj = {
-                squre: this.state.squre,
+                square: this.state.squre,
                 price: this.state.price,
                 contact: this.state.contact,
                 phone: this.state.phone,
                 inspectionTime: this.state.inspectionTime,
                 require: this.state.require,
                 lift: this.state.lift,
-                square: JSON.parse(sessionStorage.getItem("roomInfo"))[0].square,
                 pic: this.state.pic,
                 video: this.state.video
             };
@@ -9454,14 +9470,14 @@ define("roomBase", ["require", "exports", "react", "dataService"], function (req
                     React.createElement("div", { className: "enterprise-information-star" }),
                     React.createElement("div", { style: { color: "#949494", height: "80px", float: "left", width: "20%", marginRight: "30px" } }, "\u6240\u5728\u697C\u5C42"),
                     React.createElement("div", { style: { float: "left" } }, JSON.parse(sessionStorage.getItem("roomInfo"))[0].floor_code)),
-                React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },
+                React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }, onClick: this.changeElevator.bind(this) },
                     React.createElement("div", { className: "enterprise-information-star" }),
                     React.createElement("div", { style: { color: "#949494", height: "80px", float: "left", width: "20%", marginRight: "30px" } }, "\u7535\u68AF"),
                     React.createElement("div", { style: { color: "#6C6C6C", float: "left" } }, this.state.lift == 1 ? "有" : "没有"),
-                    React.createElement("div", { style: { height: "100%", float: "right" }, onClick: this.changeElevator.bind(this) },
+                    React.createElement("div", { style: { height: "100%", float: "right" } },
                         React.createElement("img", { src: "./park_m/image/right.png", style: { margin: "-10px 40px 0 0", transform: this.state.isElevator ? "rotate(90deg)" : "" } })),
                     this.state.isElevator ?
-                        React.createElement("div", { style: { position: "relative", top: "120px", width: "100%", height: "200px", backgroundColor: "#ffffff" } },
+                        React.createElement("div", { style: { position: "relative", top: "120px", width: "97%", height: "200px", backgroundColor: "#ffffff", border: "1px solid #797272" } },
                             React.createElement("div", { style: { width: "500px", height: "100px", margin: "auto", paddingRight: "100px", textAlign: "center" }, onClick: e => this.closeElevator(true) }, "\u6709"),
                             React.createElement("div", { style: { width: "500px", height: "100px", margin: "auto", paddingRight: "100px", textAlign: "center" }, onClick: e => this.closeElevator(false) }, "\u6CA1\u6709")) : null),
                 React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },

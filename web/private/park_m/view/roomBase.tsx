@@ -32,8 +32,8 @@ export default class RoomBase extends React.Component<{ history: any }>{
     phone: JSON.parse(sessionStorage.getItem("roomInfo"))[0].phone, // 联系电话
     inspectionTime: JSON.parse(sessionStorage.getItem("roomInfo"))[0].inspection_time, // 看房时间
     require: JSON.parse(sessionStorage.getItem("roomInfo"))[0].require, // 租房要求
-    pic: JSON.parse(sessionStorage.getItem("roomInfo"))[0].pic, // 图库
-    video: JSON.parse(sessionStorage.getItem("roomInfo"))[0].video, // 视频
+    pic: JSON.parse(sessionStorage.getItem("roomInfo"))[0].pic ? JSON.parse(sessionStorage.getItem("roomInfo"))[0].pic : [], // 图库
+    video: JSON.parse(sessionStorage.getItem("roomInfo"))[0].video ? JSON.parse(sessionStorage.getItem("roomInfo"))[0].video : [] , // 视频
     lift: JSON.parse(sessionStorage.getItem("roomInfo"))[0].lift, // 电梯
     isElevator: false
   }
@@ -91,14 +91,14 @@ export default class RoomBase extends React.Component<{ history: any }>{
 
   submit() {
     let obj = {
-      squre: this.state.squre,
+      square: this.state.squre,
       price: this.state.price,
       contact: this.state.contact,
       phone: this.state.phone,
       inspectionTime: this.state.inspectionTime,
       require: this.state.require,
       lift: this.state.lift,
-      square: JSON.parse(sessionStorage.getItem("roomInfo"))[0].square,
+      //square: JSON.parse(sessionStorage.getItem("roomInfo"))[0].square,
       pic: this.state.pic,
       video: this.state.video
     }
@@ -203,15 +203,15 @@ export default class RoomBase extends React.Component<{ history: any }>{
           <div style={{ color: "#949494", height: "80px", float: "left", width: "20%", marginRight: "30px" }}>所在楼层</div>
           <div style={{ float: "left" }}>{JSON.parse(sessionStorage.getItem("roomInfo"))[0].floor_code}</div>
         </div>
-        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
+        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }} onClick={this.changeElevator.bind(this)}>
           <div className="enterprise-information-star"></div>
           <div style={{ color: "#949494", height: "80px", float: "left", width: "20%", marginRight: "30px" }}>电梯</div>
           <div style={{ color: "#6C6C6C", float: "left" }}>{this.state.lift == 1 ? "有" : "没有"}</div>
-          <div style={{ height: "100%", float: "right" }} onClick={this.changeElevator.bind(this)}>
+          <div style={{ height: "100%", float: "right" }}>
             <img src="./park_m/image/right.png" style={{ margin: "-10px 40px 0 0", transform: this.state.isElevator ? "rotate(90deg)" : "" }} />
           </div>
           {this.state.isElevator ? 
-            <div style={{ position: "relative", top: "120px", width: "100%", height: "200px", backgroundColor: "#ffffff" }}>
+            <div style={{ position: "relative", top: "120px", width: "97%", height: "200px", backgroundColor: "#ffffff", border: "1px solid #797272" }}>
               <div style={{ width: "500px", height: "100px", margin: "auto", paddingRight: "100px", textAlign: "center" }} onClick={e => this.closeElevator(true)}>有</div>
               <div style={{ width: "500px", height: "100px", margin: "auto", paddingRight: "100px", textAlign: "center" }} onClick={e => this.closeElevator(false)}>没有</div>
             </div> : null

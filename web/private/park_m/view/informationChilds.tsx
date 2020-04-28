@@ -33,7 +33,6 @@ export default class InformationChilds extends React.Component {
       sessionStorage.setItem("informationId", this.props.location.state.index)
     }
     this.getTag()
-    this.getTagContent()
   }
 
   getTag() {
@@ -50,8 +49,8 @@ export default class InformationChilds extends React.Component {
 
   getTagContent() {
     let obj = {
-      park_id: 1,
-      type_id: this.state.tagIndex + 1
+      park_id: sessionStorage.getItem("park_id"),
+      type_id: this.state.tagArr[this.state.tagIndex].id
     }
     if (parseInt(sessionStorage.getItem("informationId")) === 0) {
       this.dataService.getPreferentialPolicies(this.callBackTagContent.bind(this), obj)
@@ -65,7 +64,9 @@ export default class InformationChilds extends React.Component {
   }
 
   callBackTag(data) {
-    this.setState({ tagArr: JSON.parse(data).response })
+    this.setState({ tagArr: JSON.parse(data).response }, () => {
+      this.getTagContent()
+    })
   }
 
   callBackTagContent(data) {
@@ -165,30 +166,30 @@ export default class InformationChilds extends React.Component {
           {this.state.listArr.map((item, index) => {
             return (
               parseInt(sessionStorage.getItem("informationId")) < 2 ?
-                <div key={index} className="information-child-List-child" onClick={e => this.goDetail(index)} >
-                  <div style={{ fontSize: "42px", color: "#333333", width: "90%", margin: "auto", paddingTop: "30px", color: "#333333" }}>
+                <div key={index} className="information-child-List-child" onClick={e => this.goDetail(item.id)} >
+                  <div style={{ fontSize: "42px", color: "#333333", width: "90%", margin: "auto", paddingTop: "30px"}}>
                     {item.name}
                   </div>
                   <div style={{
                     color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", display: "-webkit-box", webkitLineClamp: "3", overflow: "hidden",
-                    webkitBoxOrient: "vertical"
+                    webkitBoxOrient: "vertical", minHeight: "210px"
                   }}>
                     {item.content}
                   </div>
                   <div style={{ color: "#949494", fontSize: "34px", margin: "30px 0 0 50px" }}>
-                    <div style={{ float: "left" }}>{item.visit_amount}</div>
+                    <div style={{ float: "left" }}>{item.visit_amount}¥Œ‰Ø¿¿</div>
                     <div style={{ float: "right", marginRight: "50px" }}>{item.time} ∑¢≤º</div>
                   </div>
                 </div> :
-                <div key={index} className="information-child-List-child" onClick={e => this.goDetail(index)} >
+                <div key={index} className="information-child-List-child" onClick={e => this.goDetail(item.id)} >
                   <div style={{ overflow: "hidden" }}>
                     <div style={{ width: "250px", height: "260px", float: "left", margin: "30px 0 0 50px", borderRadius: "10px" }}>
                       <img src={item.headimgurl} style={{ width: "100%", height: "100%" }} />
                     </div>
-                    <div style={{ float: "left", fontSize: "45px", margin: "25px 0 0 50px", fontWeight: "600", color: "#333333" }}>
+                    <div style={{ float: "left", fontSize: "45px", margin: "25px 0 0 50px", fontWeight: "600", color: "#333333",width: "60%" }}>
                       <div>{item.title}</div>
-                      <div style={{ color: "#949494", fontSize: "40px", fontWeight: "400", marginTop: "85px" }}>{item.taga}£∫{item.contenta}</div>
-                      <div style={{ color: "#949494", fontSize: "40px", fontWeight: "400" }}>{item.tagb}£∫{item.contentb}</div>
+                      <div style={{ color: "#949494", fontSize: "40px", fontWeight: "400", marginTop: "85px", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" }}>{item.taga}£∫{item.contenta}</div>
+                      <div style={{ color: "#949494", fontSize: "40px", fontWeight: "400", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" }}>{item.tagb}£∫{item.contentb}</div>
                     </div>
                   </div>
                   <div style={{ color: "#949494", fontSize: "34px", margin: "30px 0 0 50px", overflow: "hidden" }}>

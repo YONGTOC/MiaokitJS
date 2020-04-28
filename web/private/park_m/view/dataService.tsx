@@ -74,7 +74,7 @@ class DataService {
         console.log(data)
 
         let userInfo = {
-          userId: data.id, name: data.name, phone: data.phone, avatar: data.avatar, enterprise: data.enterprise, enterpriseId: data.enterprises[0].id,
+          userId: data.id, name: data.name, phone: data.phone, avatar: data.avatar, enterprise: data.enterprise, enterpriseId: data.enterprises.length > 0 ? data.enterprises[0].id : "" ,
           roles: {
             role_id: data.roles[0].role_id, role_name: data.roles[0].role_name
           },
@@ -253,21 +253,18 @@ class DataService {
   }
 
   //6 通过园区id，企业类型，关键词搜索园区下面企业列表
-  public findCompany(pBack, park_id, company_type_id, companyName) {
-    // id=1
-    // console.log("findCompany", park_id, company_type_id, name);
-    let thetoken = sessionStorage.getItem("token");
+  public findCompany(pBack, company_type_id, companyName) {
+    let url = this.state.rooturl + '/api/findCompany?park_id=' + sessionStorage.getItem("park_id") + "&name=" + companyName
+    if (company_type_id) {
+      url = url + "&company_type_id=" + company_type_id
+    }
     $.ajax({
-      url: this.state.rooturl + '/api/findCompany',
+      url: url,
       data: {
-        "park_id": 1,
-        "company_type_id": company_type_id,
-        "token": thetoken,
-        "name": companyName
+        "token": sessionStorage.getItem("token"),
       },
       type: "get",
       success: function (data) {
-        console.log("findCompany企业列表", data);
         if (data.status == 113) {
           // 113 token到期，跳转登录页面
          // console.log(window.location.pathname);
@@ -308,7 +305,6 @@ class DataService {
   //8 通过园区id, 获取面积分类
   public getRoomRentSquareType(pBack, park_id) {
     console.log("init-AllareaType", pBack, park_id);
-    // console.log("findCompany", park_id, company_type_id, name, token);
     let thetoken = sessionStorage.getItem("token");
     $.ajax({
       url: this.state.rooturl + '/api/getRoomRentSquareType',
@@ -1228,12 +1224,14 @@ class DataService {
 
   // 49.(我的个人中心模块-我的工单) 获取我的工单信息列表，全部工单类型的获取
   public getMyWork(pBack, obj) {
+    let url = this.state.rooturl + "/api/getMyWork?"
+    for (let key in obj) {
+      url = url + key + "=" + obj[key] + "&"
+    }
+    url = url.substring(0, url.length - 1)
     $.ajax({
-      url: this.state.rooturl + '/api/getMyWork',
+      url: url,
       data: {
-        id: obj.id,
-        work_type: obj.work_type,
-        state_type: obj.state_type,
         token: sessionStorage.getItem("token")
       },
       type: "get",
@@ -1457,13 +1455,13 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/saveRoomBaseInfo?token=' + sessionStorage.getItem("token"),
       data: JSON.stringify({
-        id: 1001,
+        id: sessionStorage.getItem("park_id"),
         room_id: sessionStorage.getItem("roomId"),
         squre: obj.squre,
         price: obj.price,
         contact: obj.contact,
         phone: obj.phone,
-        inspectionTime: obj.inspectionTime,
+        inspection_time: obj.inspectionTime,
         require: obj.require,
         lift: obj.lift,
         square: obj.square,
