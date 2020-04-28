@@ -178,7 +178,7 @@ MiaokitJS.ShaderLab.Pipeline = {
     ],
 
     InternalShader: [
-        "Default", /*00*/ "Default", /*01*/ "Default", /*02*/ "Default", /*03*/
+        "Default", /*00*/ "Wall", /*01*/ "Default", /*02*/ "Default", /*03*/
         "Default", /*04*/ "Default", /*05*/ "Default", /*06*/ "GIS", /*07*/
         "Mapbox", /*08*/ "Mapbox2", /*09*/ "Dioramas", /*10*/ "Panoramas", /*11*/
         "Cosmos", /*12*/ "Ground", /*13*/ "Sky", /*14*/ "Present"  /*15*/
@@ -343,7 +343,6 @@ vec4 vs()
     
     vec4 mPosition = vec4(a_Position.xyz, 1.0);
     mPosition = u_MatG * a_MatW * mPosition;
-    mPosition.y = mPosition.y - 6378137.0;
     
     #ifdef HIGH_QUALITY
     LightVS(mPosition.xyz, ObjectToWorldNormal(a_Normal));
@@ -358,6 +357,7 @@ varying vec4 v_UV;
 vec4 fs()
 {
     vec4 mColor = Tex2D(u_MainTex, v_UV.xy);
+    mColor.rgb *= 0.85;
     
     #ifdef HIGH_QUALITY
     mColor = LightFS(mColor);
@@ -371,17 +371,21 @@ vec4 fs()
 MiaokitJS.Shader["Wall"] = {
     name: "Wall",
     type: "Render",
-    mark: ["Transparent"],
+    mark: ["Opaque"],
     vs_src: `
 vec4 vs()
 {
-    return ObjectToClipPos(a_Position.xyz);
+    vec4 mPosition = vec4(a_Position.xyz, 1.0);
+    mPosition = u_MatG * a_MatW * mPosition;
+
+    return u_MatVP * mPosition;
+    //return ObjectToClipPos(a_Position.xyz);
 }
         `,
     fs_src: `
 vec4 fs()
 {
-    return vec4(0.3, 0.3, 0.3, 1.0);
+    return vec4(0.2, 0.2, 0.2, 1.0);
 }
         `
 };
@@ -462,8 +466,7 @@ vec4 vs()
     v_UV = vec4(a_UV, 0.0, 0.0);
     
     vec4 mPosition = vec4(a_Position.xyz, 1.0);
-    mPosition = u_MatG * a_MatW * mPosition;
-    mPosition.y = mPosition.y - 6378137.0;    
+    mPosition = u_MatG * a_MatW * mPosition;  
     mPosition.y -= mBuilding.r * (mPosition.y - 5.0);
 
     // 高品质下，计算法线，计算大气散射

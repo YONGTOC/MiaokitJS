@@ -51,6 +51,7 @@ class CameraCtrl {
     constructor(pCamera) {
         this.m_pCamera = null;
         this.m_pTransform = null;
+        this.m_nEnabled = true;
         this.m_eCtrlMode = CTRL_MODE.REMOTE;
         this.m_nViewMode = 3;
         this.m_nLng = 0.0;
@@ -263,6 +264,9 @@ class CameraCtrl {
         this.distance = nDistance;
     }
     Update() {
+        if (!this.m_nEnabled) {
+            return;
+        }
         if (this.m_pFlyTask) {
             if (this.m_pFlyTask.Update()) {
                 this.m_pFlyTask = null;
@@ -337,6 +341,9 @@ class CameraCtrl {
         else {
             console.log("未实现漫游模式");
         }
+    }
+    set enabled(enabled) {
+        this.m_nEnabled = enabled;
     }
     get ctrlMode() {
         return this.m_eCtrlMode;
@@ -629,6 +636,9 @@ class App {
             };
             if (0 === nDrag) {
                 pThis.m_pCameraCtrl.Move(-e.movementX, e.movementY, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
+                if (pThis.m_pProject.OnDrag) {
+                    pThis.m_pProject.OnDrag(-e.movementX, e.movementY, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
+                }
             }
             else if (1 === nDrag) {
                 pThis.m_pCameraCtrl.Rotate(e.movementX, e.movementY, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
@@ -656,6 +666,9 @@ class App {
                 let nDeltaY = e.touches[0].clientY - pStartEvent.touches[0].clientY;
                 pStartEvent = e;
                 pThis.m_pCameraCtrl.Move(nDeltaX * -2, nDeltaY * 2, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
+                if (pThis.m_pProject.OnDrag) {
+                    pThis.m_pProject.OnDrag(nDeltaX * -2, nDeltaY * 2, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
+                }
             }
             else if (2 == e.touches.length && 2 == pStartEvent.touches.length) {
                 let mStartPoint = { x: (pStartEvent.touches[0].clientX + pStartEvent.touches[1].clientX) * 0.5, y: (pStartEvent.touches[0].clientY + pStartEvent.touches[1].clientY) * 0.5 };
@@ -1056,7 +1069,7 @@ MiaokitJS.ShaderLab.Pipeline = {
         }
     ],
     InternalShader: [
-        "Default", "Default", "Default", "Default",
+        "Default", "Wall", "Default", "Default",
         "Default", "Default", "Default", "GIS",
         "Mapbox", "Mapbox2", "Dioramas", "Panoramas",
         "Cosmos", "Ground", "Sky", "Present"
@@ -1207,7 +1220,6 @@ vec4 vs()
     
     vec4 mPosition = vec4(a_Position.xyz, 1.0);
     mPosition = u_MatG * a_MatW * mPosition;
-    mPosition.y = mPosition.y - 6378137.0;
     
     #ifdef HIGH_QUALITY
     LightVS(mPosition.xyz, ObjectToWorldNormal(a_Normal));
@@ -1222,6 +1234,7 @@ varying vec4 v_UV;
 vec4 fs()
 {
     vec4 mColor = Tex2D(u_MainTex, v_UV.xy);
+    mColor.rgb *= 0.85;
     
     #ifdef HIGH_QUALITY
     mColor = LightFS(mColor);
@@ -1234,17 +1247,21 @@ vec4 fs()
 MiaokitJS.Shader["Wall"] = {
     name: "Wall",
     type: "Render",
-    mark: ["Transparent"],
+    mark: ["Opaque"],
     vs_src: `
 vec4 vs()
 {
-    return ObjectToClipPos(a_Position.xyz);
+    vec4 mPosition = vec4(a_Position.xyz, 1.0);
+    mPosition = u_MatG * a_MatW * mPosition;
+
+    return u_MatVP * mPosition;
+    //return ObjectToClipPos(a_Position.xyz);
 }
         `,
     fs_src: `
 vec4 fs()
 {
-    return vec4(0.3, 0.3, 0.3, 1.0);
+    return vec4(0.2, 0.2, 0.2, 1.0);
 }
         `
 };
@@ -1321,8 +1338,7 @@ vec4 vs()
     v_UV = vec4(a_UV, 0.0, 0.0);
     
     vec4 mPosition = vec4(a_Position.xyz, 1.0);
-    mPosition = u_MatG * a_MatW * mPosition;
-    mPosition.y = mPosition.y - 6378137.0;    
+    mPosition = u_MatG * a_MatW * mPosition;  
     mPosition.y -= mBuilding.r * (mPosition.y - 5.0);
 
     // 高品质下，计算法线，计算大气散射
