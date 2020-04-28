@@ -1185,18 +1185,28 @@ i {
 }
 
 .leaseul-middle {
-    float: left;
+    /*float: left;
     width: 25rem;
+    margin-top: 2rem;
+    line-height: 4.5rem;*/  
+    float: left;
+    width: 23rem;
     margin-top: 2rem;
     line-height: 4.5rem;
 }
-
+.leaseul-middle p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .leaseName {
     color: #949494;
+
 }
 
 .leaseName-active {
     color: #fff;
+ 
 }
 
 .leaseul-right {
@@ -1212,21 +1222,34 @@ i {
 }
 
 .leaseType {
-    color: #949494;
+    /*color: #949494;
     border-radius: 0.4rem;
     height: 4rem;
     line-height: 4rem;
     width: 12rem;
     margin-top: 9.5rem;
+    clear: both;*/ 
+    color: #949494;
+    border-radius: 0.4rem;
+    height: 4rem;
+    line-height: 4rem;
+    width: 14rem;
+    margin-top: 9.5rem;
     clear: both;
 }
 
 .leaseType-active {
-    color: #E4F3FF;
+    /*color: #E4F3FF;
     border-radius: 0.4rem;
     height: 4rem;
     line-height: 4rem;
     width: 12rem;
+    margin-top: 9.5rem;*/
+    color: #E4F3FF;
+    border-radius: 0.4rem;
+    height: 4rem;
+    line-height: 4rem;
+    width: 14rem;
     margin-top: 9.5rem;
 }
 
@@ -1884,6 +1907,19 @@ i {
     border-radius: 2rem 2rem 0 0;
 }
 
+.rollSelectCauseBox2 {
+    position: fixed;
+    width: 100%;
+    height: 55rem;
+    z-index: 100;
+    bottom: 10rem;
+    right: 0;
+    background: #fff;
+    font-size: 3rem;
+    padding-bottom: 15rem;
+    border-radius: 2rem 2rem 0 0;
+}
+
 .rollSelectCauseULcss {
     width: 96%;
     height: 27rem;
@@ -1892,7 +1928,20 @@ i {
     height: 37rem;
 }
 
+.rollSelectCauseULcss2 {
+    width: 96%;
+    height: 27rem;
+    margin-top: 13rem;
+    overflow-y: scroll;
+    height: 30rem;
+}
+
 .rollSelectCauseULcss li {
+    text-align: center;
+    line-height: 7rem;
+}
+
+.rollSelectCauseULcss2 li {
     text-align: center;
     line-height: 7rem;
 }

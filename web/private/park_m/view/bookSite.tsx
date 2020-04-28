@@ -228,35 +228,13 @@ class BookList extends React.Component {
         <ul className={this.state.bookul}>
           <li className={this.state.nullBookData}><p>没有符合条件的结果</p></li>
           {this.state.bookData.map((i, index) => {
-            if (!i.pic_url) {
               return (
                 <li onClick={this.bookActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "bookli-active" : "bookli"}>
                   <div className={this.state.indexOf == index ? "bookImgback-active" : "bookImgback"}>
-                    <img src={i.headimgurl} onError={this.onError.bind(this)} />
+                    <img  src={i.headimgurl ==  null ?  this.state.imgurlNull:  i.headimgurl }   />
                   </div>
                   <div className="bookul-middle">
-                    <p style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.building_name}-{i.floor_name}-{i.room_name}</p>
-                    {i.price.map((it, index) => {
-                      return (
-                        <p style={{ "font-size": "2.5rem" }}>{it.content}：<span className={"bookPrice"}>{it.price}</span>  <span className="priceYuan">元</span></p>
-                      )
-                    })}
-                  </div>
-                  <div className="bookul-right">
-                    <p onClick={this.showInfo.bind(this, "Info", i.id, "name")} className={this.state.indexOf == index ? "show" : "hide"}>更多
-                  <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
-                    </p>
-                  </div>
-                </li>
-              )
-            } else {
-              return (
-                <li onClick={this.bookActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "bookli-active" : "bookli"}>
-                  <div className={this.state.indexOf == index ? "bookImgback-active" : "bookImgback"}>
-                    <img src={this.state.imgurlNull} />
-                  </div>
-                  <div className="bookul-middle">
-                    <p style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.building_name}-{i.floor_name}-{i.room_name}</p>
+                    <p style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.name}</p>
                     {i.price.map((it, index) => {
                       return (
                         <p style={{ "font-size": "2.5rem" }}>{it.content}：<span className={"bookPrice"}>{it.price}</span> <span className="priceYuan">元</span></p>
@@ -270,7 +248,7 @@ class BookList extends React.Component {
                   </div>
                 </li>
               )
-            }
+            
 
           })}
         </ul>
@@ -338,9 +316,9 @@ class BookInfo extends React.Component {
   public setBookdata(data) {
     console.log("setBookdata,setBookdata", data);
     this.setState({
-      building_name: data.response.building_name,
-      floor_name: data.response.floor_name,
-      room_name: data.response.room_name,
+     // building_name: data.response.building_name,
+     // floor_name: data.response.floor_name,
+     name: data.response.name,
     })
     SiteInfos.getInfos(data);
     Notes.getNotes(data);
@@ -410,7 +388,7 @@ class BookInfo extends React.Component {
     return (
       <div className={this.state.bookInfocss}>
         <p className="companyInfotit">
-          <span className={this.state.infoli !== 2 ? "show" : "hide"}>{this.state.building_name}-{this.state.floor_name}-{this.state.room_name}</span>
+          <span className={this.state.infoli !== 2 ? "show" : "hide"}>{this.state.name}</span>
           <span className={this.state.infoli == 2 ? "show" : "hide"}>预定申请</span>
         </p>
         <div className={"foleBtn"} >
@@ -835,33 +813,16 @@ class SiteInfos extends React.Component {
   static getInfos(data) { };
   public getInfos(data) {
     console.log("getinfo", typeof data.response.descript);
-    if (typeof data.response.descript == "string") {
-      this.setState({
-        descriptS: data.response.descript,
-        descript: [],
-      })
-    } else {
-      this.setState({
-        descript: data.response.descript,
-        descriptS: "",
-      })
-    }
-
+    console.log("getinfo",  data.response.descript);
+    document.getElementById("siteInfosbox").innerHTML = data.response.descript;
   }
 
   public render() {
     return (
-      <div className={"siteInfosbox"}>
-        <ul>
-          {this.state.descript.map((i, index) => {
-            return (
-              <li>{index + 1}、{i.content} </li>
-            )
-          })}
-          <li>{this.state.descriptS} </li>
-        </ul>
+      <div className={"siteInfosbox"} id="siteInfosbox">
       </div>
     )
+
   }
 
   public state = {
@@ -889,15 +850,18 @@ class Notes extends React.Component {
   static getNotes(data) { };
   public getNotes(data) {
     console.log("NotesNotes", data);
-    this.setState({
-      guide: data.response.guide,
-    })
+    
+    document.getElementById("notesBox").innerHTML = data.response.guide;
+
+    //this.setState({
+    //  guide: data.response.guide,
+    //})
   }
 
   public render() {
     return (
-      <div className={"notesBox"}>
-        <p>尊敬的企业： 您好，<span>{this.state.guide}</span></p>
+      <div className={"notesBox"} id="notesBox">
+       
       </div>
     )
   }

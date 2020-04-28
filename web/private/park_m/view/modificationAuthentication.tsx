@@ -12,6 +12,7 @@ interface IState {
   userName: string,
   phone: string,
   company_id: string,
+  role_name: string,
 }
 
 class ModificationAuthentication extends React.Component<{ history: any }> {
@@ -19,6 +20,7 @@ class ModificationAuthentication extends React.Component<{ history: any }> {
     userName: "用户昵称XXX",
     phone: "",
     company_id: "",
+    role_name: "",
   }
   
   public readonly props: Readonly<IProps> = {
@@ -30,28 +32,49 @@ class ModificationAuthentication extends React.Component<{ history: any }> {
 
   componentDidMount() {
     // 写入用户名
-    let userName = this.props.location.state.name;
+   // let userName = this.props.location.state.name;
+     let userName = JSON.parse(sessionStorage.getItem("userInfos")).name;
     let phone = JSON.parse(sessionStorage.getItem("userInfos")).phone;
     let company_id = JSON.parse(sessionStorage.getItem("userInfos")).enterpriseId;
+    let role_name = JSON.parse(sessionStorage.getItem("userInfos")).roles.role_name;
+    console.log("role_name",role_name)
     this.setState({
       userName: userName,
       phone: phone,
       company_id: company_id,
+      role_name:role_name,
     })
 
   }
 
   // 修改用户名字
   modifyUserName() {
-    this.dataService.modifyUserName(this.callBackModifyUserName.bind(this),
-      this.state.userName, this.state.phone, this.state.company_id)
+    //this.dataService.modifyUserName(this.callBackModifyUserName.bind(this),
+    //  this.state.userName, this.state.phone, this.state.company_id)
+    var userNameNew = prompt("请输入新的用户名", "")
+    if (userNameNew != null && userNameNew != "") {
+      console.log("userNameNew", userNameNew)  
+      let userInfos = JSON.parse(sessionStorage.getItem("userInfos"));
+        this.dataService.modifyUserInfo(this.callBackModifyUserName.bind(this),
+           userNameNew , userInfos.phone, sessionStorage.getItem("enterpriseId") )
+    }
+
+
   }
 
   callBackModifyUserName(data) {
+    //let userInfos = JSON.parse(sessionStorage.getItem("userInfos"))
+    //userInfos.name = data.response
+    //sessionStorage.setItem("userInfos", JSON.stringify(userInfos))
+    //this.props.history.goBack()
+    alert(data.err_msg)
     let userInfos = JSON.parse(sessionStorage.getItem("userInfos"))
-    userInfos.name = data.response
-    sessionStorage.setItem("userInfos", JSON.stringify(userInfos))
-    this.props.history.goBack()
+    userInfos.name = data.response.username
+    sessionStorage.setItem("userInfos", JSON.stringify(userInfos));
+    this.setState({
+      userName: data.response.username,
+    })
+
   }
 
   // 聚焦
@@ -95,13 +118,15 @@ class ModificationAuthentication extends React.Component<{ history: any }> {
           </div>
           <div style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }} onClick={this.modifyUserName.bind(this)}>修改</div>
         </div>
-        <div className="modification-authentication-tag">
+        {this.state.role_name !== "园区管理员" ?
+         <div className="modification-authentication-tag">
           <div style={{ paddingLeft: "40px", float: "left" }}>
             <span style={{ color: "#333333", fontSize: "42px" }}>身份认证</span>
             <span style={{ color: "#949494", fontSize: "42px", marginLeft: "50px" }}>认证成为企业管理员</span>
           </div>
           <Link to="/identityAuthentication"><div style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }}>认证</div></Link>
-        </div>
+      </div>  : null }
+      
       </div>
     )
   }

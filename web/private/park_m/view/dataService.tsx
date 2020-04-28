@@ -155,83 +155,85 @@ class DataService {
   //4.(园区信息-3D显示)获取园区详细信息
   public getParkInfo(pBack, park_id) {
     let thetoken = sessionStorage.getItem("token");
-    //$.ajax({
-    //  url: this.state.rooturl + '/api/getParkInfo',
-    //  data: {
-    //    "park_id": 1,
-    //    "token": thetoken,
-    //  },
-    //  type: "get",
-    //  success: function (data) {
-    //    console.log("getParkInfo", data);
-    //    if (data.status == 113) {
-    //      // 113 token到期，跳转登录页面
-    //      // console.log(window.location.pathname);
-    //      //  window.location.href = window.location.pathname+"#/"
-    //    } else {
-    //     // pBack(data);
-    //      console.log("getParkInfo", data);
-    //    }
-    //  }
-    // })
-
-
-    var data = {
-      //错误码
-      "return_code": "100",
-      "response": [
-        {
-          //id
-          "id": "1009",
-          //园区图像url
-          "headimgurl": "http://xxx.jpg",
-          //所在城市
-          "province": "桂林",
-          //经度
-          "longitude": "10.55",
-          //纬度
-          "latitude": "66.666",
-          //园区名字
-          "name": "桂林国家高新",
-          //地址
-          "address": "桂林七星朝阳路D-11",
-          //工程列表，列表内为园区使用的工程。
-          "project": [
-            {
-              //id
-              "id": "1009",
-              //工程名。
-              "name": "电子信息",
-              //工程类型 1为普通模型 2为航拍实景图 3为sve工程 4为其它
-              "type": 1,
-              //使用类型 1为完整场景 2为单独内景
-              "use_type": 0,
-              //工程地址
-              "project_url": "http://xxx.bin",
-              //经度
-              "longitude": "10.55",
-              //纬度
-              "latitude": "66.666",
-              //偏移值
-              "offset": "10,20,10",
-              //旋转角度
-              "rotate": "10",
-            }
-          ],
-          //园区讲解列表
-          "audio": [
-            { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-            { name: "园区配套", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
-            { name: "园区建筑", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-          ]
+    $.ajax({
+      url: this.state.rooturl + '/api/getParkInfo',
+      data: {
+        "park_id": park_id,
+        "token": thetoken,
+      },
+      type: "get",
+      success: function (data) {
+        console.log("getParkInfo444444444", data);
+        if (data.status == 113) {
+          // 113 token到期，跳转登录页面
+          // console.log(window.location.pathname);
+          //  window.location.href = window.location.pathname+"#/"
+        } else {
+          pBack(data);
+         // console.log("getParkInfo", data);
         }
+      }
+     })
 
-      ],
-      //错误代码信息
-      "err_msg": ""
-    }
 
-    pBack(data);
+    //var data = {
+    //  //错误码
+    //  "return_code": "100",
+    //  "response": [
+    //    {
+    //      //id
+    //      "id": "1009",
+    //      //园区图像url
+    //      "headimgurl": "http://xxx.jpg",
+    //      //所在城市
+    //      "province": "桂林",
+    //      //经度
+    //      "longitude": "10.55",
+    //      //纬度
+    //      "latitude": "66.666",
+    //      //园区名字
+    //      "name": "桂林国家高新",
+    //      //地址
+    //      "address": "桂林七星朝阳路D-11",
+    //      //工程列表，列表内为园区使用的工程。
+    //      "project": [
+    //        {
+    //          //id
+    //          "id": "1009",
+    //          //工程名。
+    //          "name": "电子信息",
+    //          //工程类型 1为普通模型 2为航拍实景图 3为sve工程 4为其它
+    //          "type": 1,
+    //          //使用类型 1为完整场景 2为单独内景
+    //          "use_type": 0,
+    //          //工程地址
+    //          "project_url": "http://xxx.bin",
+    //          //经度
+    //          "longitude": "10.55",
+    //          //纬度
+    //          "latitude": "66.666",
+    //          //偏移值
+    //          "offset": "10,20,10",
+    //          //旋转角度
+    //          "rotate": "10",
+    //        }
+    //      ],
+    //      //园区讲解列表
+    //      "audio": [
+    //        { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+    //        { name: "园区配套", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
+    //        { name: "园区建筑", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+    //      ]
+    //    }
+
+    //  ],
+    //  //错误代码信息
+    //  "err_msg": ""
+    //}
+
+
+
+    //pBack(data);
   }
 
   // 5. (企业园区模块-搜索类型)获取园区下面企业类型列表
@@ -305,6 +307,7 @@ class DataService {
   //8 通过园区id, 获取面积分类
   public getRoomRentSquareType(pBack, park_id) {
     console.log("init-AllareaType", pBack, park_id);
+    // console.log("findCompany", park_id, company_type_id, name, token);
     let thetoken = sessionStorage.getItem("token");
     $.ajax({
       url: this.state.rooturl + '/api/getRoomRentSquareType',
@@ -1131,9 +1134,10 @@ class DataService {
   }
 
   // 42.(我的个人中心模块-修改认证)用户修改用户名
-  public modifyUserName(pBack, username,phone,company_id) {
+  public modifyUserInfo(pBack, username,phone,company_id) {
+  //public modifyUserName(pBack, username,phone,company_id) {
     $.ajax({
-      url: this.state.rooturl + '/api/modifyUserName',
+      url: this.state.rooturl + '/api/modifyUserInfo',
       data: {
         id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
         username: username,
@@ -1165,9 +1169,31 @@ class DataService {
   //44.(我的个人中心模块-身份认证)用户身份认证提交 
   public userAuthentication(pBack, obj) {
     console.log("用户身份认证提交 ", obj);
+    
     $.ajax({
       url: this.state.rooturl + '/api/userAuthentication?token=' + sessionStorage.getItem("token"),
-      data: obj,
+     // data: obj,
+     data: JSON.stringify({
+      "id":  obj.id,
+      "name": obj.name,
+      "company_name": obj.company,
+      "phone": obj.phone,
+      "park_id": sessionStorage.getItem("park_id"),
+      // 只能认证企业管理员
+      "role_id": 5,
+      "pic_amount": "1",
+      "pic": obj.pic1,
+        "bind_company": [
+        {
+            "company_id":sessionStorage.getItem("enterpriseId"),
+            "company_name": sessionStorage.getItem("enterprise"),
+        } ],
+        "add_company": [
+        {
+            "company_name":""
+        }
+    ]
+      }),
       type: "post",
       success: function (data) {
         console.log(data.err_msg);
