@@ -7,7 +7,7 @@ interface IProps {
 }
 
 interface IState {
-  squre: number,
+  square: number,
   price: number,
   contact: string,
   phone: string,
@@ -26,7 +26,7 @@ export default class RoomBase extends React.Component<{ history: any }>{
   }
 
   public readonly state: Readonly<IState> = {
-    squre: JSON.parse(sessionStorage.getItem("roomInfo"))[0].squre, // 建筑面积
+    square: JSON.parse(sessionStorage.getItem("roomInfo"))[0].square, // 建筑面积
     price: JSON.parse(sessionStorage.getItem("roomInfo"))[0].price, // 租金
     contact: JSON.parse(sessionStorage.getItem("roomInfo"))[0].contact, // 联系人
     phone: JSON.parse(sessionStorage.getItem("roomInfo"))[0].phone, // 联系电话
@@ -56,7 +56,7 @@ export default class RoomBase extends React.Component<{ history: any }>{
 
   // 输入
   changea(event) {
-    this.setState({ squre: event.target.value })
+    this.setState({ square: event.target.value })
   }
 
   // 输入
@@ -91,7 +91,7 @@ export default class RoomBase extends React.Component<{ history: any }>{
 
   submit() {
     let obj = {
-      square: this.state.squre,
+      square: this.state.square,
       price: this.state.price,
       contact: this.state.contact,
       phone: this.state.phone,
@@ -194,7 +194,7 @@ export default class RoomBase extends React.Component<{ history: any }>{
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
           <div className="enterprise-information-star"></div>
           <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>建筑面积</div>
-          <input onChange={this.changea.bind(this)} value={this.state.squre}
+          <input onChange={this.changea.bind(this)} value={this.state.square}
             style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
           />
         </div>
