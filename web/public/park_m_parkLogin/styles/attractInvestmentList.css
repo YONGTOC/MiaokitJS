@@ -1,0 +1,21 @@
+.attract-investment-list-child {
+  width: 90%;
+  height: 200px;
+  font-size: 42px;
+  color: #6C6C6C;
+  border-bottom: 1px solid #F2F2F2;
+  line-height: 200px;
+  margin: auto;
+  overflow: hidden;
+}
+.attract-investment-list-bottom {
+  background-color: #E23C3C;
+  color: #ffffff;
+  font-size: 50px;
+  height: 130px;
+  width: 100%;
+  position: fixed;
+  bottom: 0px;
+  text-align: center;
+  line-height: 130px;
+}

@@ -1,0 +1,18 @@
+.distribute-list {
+  height: 90%;
+  width: 100%;
+  white-space: pre-line;
+  overflow-y: auto;
+  padding-bottom: 150px;
+}
+.distribute-list-child {
+  height: 220px;
+  width: 100%;
+  background-color: #ffffff;
+  margin-top: 15px;
+  font-size: 40px;
+  color: #333333;
+}
+.distribute-list::-webkit-scrollbar {
+  display: none;
+}

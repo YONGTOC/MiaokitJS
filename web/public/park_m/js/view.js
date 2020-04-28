@@ -6608,600 +6608,220 @@ define("identityAuthentication", ["require", "exports", "react", "dataService", 
     }
     exports.default = IdentityAuthentication;
 });
-define("parkCompany", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_8, dataService_10, antd_mobile_9) {
+define("parkCompany", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_3, dataService_10) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class ParkCompany extends React.Component {
-        constructor(props) {
-            super(props);
-            this.globalAction = new compat_8.default();
-            this.state = {
-                parkCompanycss: "parkCompany",
-                showList: true,
-                showInfo: false,
-                token: "",
-                companyInfotit: "companyInfotit"
+    class PersonalCenter extends React.Component {
+        constructor() {
+            super(...arguments);
+            this.props = {
+                history: this.props.history
             };
-            ParkCompany.toggleView = this.toggleView.bind(this);
-            ParkCompany.getCompanyinfo = this.getCompanyinfo.bind(this);
-        }
-        componentDidMount() {
-            console.log("ParkCompany");
-            move3dBut("up");
-        }
-        static getCompanyinfo(id) { }
-        getCompanyinfo(id) {
-            console.log("getCompanyinfo", id);
-            this.toggleView("Info", id);
-            CompanyInfo.getCompanyinfo(id);
-        }
-        static toggleView(a, id) { }
-        ;
-        toggleView(a, id) {
-            console.log("ff", a);
-            console.log("ff", id);
-            if (a == "Info") {
-                this.setState({
-                    showList: false,
-                    showInfo: true,
-                    companyInfotit: "hide"
-                });
-            }
-            else {
-                this.setState({
-                    showList: true,
-                    showInfo: false,
-                    companyInfotit: "companyInfotit"
-                });
-            }
-        }
-        render() {
-            return (React.createElement("div", { className: this.state.parkCompanycss },
-                React.createElement("p", { className: this.state.companyInfotit },
-                    React.createElement("span", null, "\u56ED\u533A\u4F01\u4E1A")),
-                React.createElement("div", { className: this.state.showList == true ? "show" : "hide" },
-                    React.createElement(CompanyList, null)),
-                React.createElement("div", { className: this.state.showInfo == true ? "show" : "hide" },
-                    React.createElement(CompanyInfo, null))));
-        }
-    }
-    class CompanyList extends React.Component {
-        constructor(props) {
-            super(props);
+            this.state = {
+                parkList: [
+                    { name: "统计报表", imgUrl: "./park_m/image/statistics.png", url: "/statisticalStatement" }, { name: "房间管理", imgUrl: "./park_m/image/room.png", url: "/room" },
+                    { name: "工单派发管理", imgUrl: "./park_m/image/distribute.png", url: "/distribute" }, { name: "客服电话", imgUrl: "./park_m/image/service.png", url: "/serviceTel" },
+                    { name: "招商管理", imgUrl: "./park_m/image/attractInvestment.png", url: "/attractInvestment" }
+                ],
+                isSpread: false,
+                userInfo: { name: "", avatar: "", phone: "", enterprise: "", roles: { role_id: "", role_name: "" } },
+                pathname: "",
+                messagelength: 0,
+                workOrderLength: 0,
+                enterprise: "",
+                enterpriseId: "",
+                companyBox: "hide",
+                companyUL: [],
+                companyIndexof: 0,
+                company_id_in: "",
+                company_name_in: "",
+                company_id: "",
+                company_name: "",
+            };
             this.dataService = new dataService_10.default();
-            this.globalAction = new compat_8.default();
-            this.state = {
-                companyNull: "hide",
-                park_id: 1001,
-                companyListcss: "companyList-part",
-                foleBtn: "foleBtn",
-                companyBtn: "companyBtn-part",
-                companyul: "companyul",
-                searchBoxTypeIcon: "iconfont iconfont-unturn",
-                companyData: [],
-                companyType: [],
-                indexOf: 0,
-                typeIndexof: 100,
-                typeName: " ",
-                company_type_id: "",
-                inputValue: "",
-                iconfont: "iconfont iconfont-unturn",
-                token: "",
-                src: "about:'blank'",
-            };
-            this.showInfo = this.showInfo.bind(this);
-            this.setCompany = this.setCompany.bind(this);
-            this.setCompanyType = this.setCompanyType.bind(this);
-            this.change = this.change.bind(this);
-            this.typeActive = this.typeActive.bind(this);
-        }
-        componentWillMount() {
         }
         componentDidMount() {
-            this.dataService.getCompanyType(this.setCompanyType, this.state.park_id);
-            this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.typeName);
-        }
-        setCompanyType(data) {
-            console.log("set企业类型列表", data.response);
+            let obj = {
+                id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+                work_type: "",
+                state_type: "",
+            };
+            this.dataService.getMyMsgInfo(this.callBackGetMyMsgInfo.bind(this), "");
+            this.dataService.getMyWork(this.callBackGetMyWork.bind(this), obj);
             this.setState({
-                companyType: data.response,
+                userInfo: JSON.parse(sessionStorage.getItem("userInfos")),
+                pathname: this.props.history.location.pathname,
+                enterprise: sessionStorage.getItem("enterprise"),
+                enterpriseId: sessionStorage.getItem("enterpriseId"),
             });
         }
-        setCompany(data) {
-            console.log("set企业列表", data.response);
-            if (data.response.length == 0) {
-                console.log(22222222);
-                this.setState({
-                    companyData: data.response,
-                    companyNull: "show",
-                });
+        callBackGetMyMsgInfo(data) {
+            this.setState({ messagelength: data.response.length });
+        }
+        callBackGetMyWork(data) {
+            this.setState({ workOrderLength: data.response ? data.response.length : 0 });
+        }
+        callBackGetUserInfo(data) {
+            console.log("userInfoss", data);
+            this.setState({ userInfo: JSON.parse(data) });
+            sessionStorage.setItem("userInfo", this.state.userInfo.roles.role_name);
+        }
+        callBackGetRoleType(data) {
+            console.log(data);
+        }
+        spread() {
+            this.setState({ isSpread: !this.state.isSpread });
+        }
+        phoneChange() {
+            let reg01 = /^1[3456789]\d{9}$/;
+            var phoneNew = prompt("请输入新的手机号", "");
+            console.log("44444", this.state);
+            console.log("555", this.state.userInfo.name, this.state.userInfo.phone, this.state.enterpriseId);
+            if (phoneNew != null && phoneNew != "" && reg01.test(phoneNew)) {
+                console.log("phoneNew", phoneNew);
+                this.dataService.modifyUserName(this.callBackUserName.bind(this), this.state.userInfo.name, phoneNew, this.state.enterpriseId);
             }
             else {
-                this.setState({
-                    companyData: data.response,
-                    companyNull: "hide",
-                });
+                alert("手机号码不正确，固话请添加区号");
+                return;
             }
         }
-        onErrorHeadimageurl() {
-            console.log(this.state.companyData);
+        callBackUserName(data) {
+            alert(data.err_msg);
         }
-        showInfo(a, id, name, e) {
-            ParkCompany.toggleView(a, id);
-            CompanyInfo.getCompanyinfo(id);
-            console.log("more", a, id, name, e);
-        }
-        toggleFold() {
-            console.log("tftft");
-            if (this.state.companyListcss == "companyList-all") {
-                this.setState({
-                    companyListcss: "companyList-part",
-                    companyul: "companyul"
-                });
-                this.globalAction.web_call_webgl_continueloadModuler();
-            }
-            else {
-                this.setState({
-                    companyListcss: "companyList-all",
-                    companyul: "companyul-all"
-                });
-                this.globalAction.web_call_webgl_pauseloadModuler();
-            }
-            if (this.state.iconfont == "iconfont iconfont-unturn") {
-                this.setState({
-                    iconfont: "iconfont iconfont-turn",
-                });
-            }
-            else {
-                this.setState({
-                    iconfont: "iconfont iconfont-turn",
-                });
-            }
-        }
-        foldBtn() {
-            console.log("foldBtn");
-            if (this.state.companyBtn == "companyBtn-part") {
-                this.setState({
-                    companyBtn: "companyBtn-all",
-                    searchBoxTypeIcon: "iconfont iconfont-turn",
-                });
-            }
-            else {
-                this.setState({
-                    companyBtn: "companyBtn-part",
-                    searchBoxTypeIcon: "iconfont iconfont-unturn",
-                });
-            }
-        }
-        companyActive(data, id) {
-            console.log("active", data);
+        showCompanyList() {
+            console.log("show公司列表");
             this.setState({
-                indexOf: data,
+                companyBox: "rollSelectCauseBox2",
             });
-            this.globalAction.web_call_webgl_switchCompany(id);
+            this.dataService.findCompany(this.setCompanyList.bind(this), sessionStorage.getItem("park_id"), "", "");
         }
-        typeActive(indexof, name, id) {
-            console.log("typeActive", indexof);
-            console.log("typeActive", name);
-            console.log("typeActive", id);
+        setCompanyList(data) {
+            console.log("mmmmmmmmmmmmm", data.response);
             this.setState({
-                typeIndexof: indexof,
-                typeName: name,
-                company_type_id: id,
+                companyUL: data.response
+            });
+        }
+        hideCompanyBox() {
+            this.setState({
+                companyBox: "hide",
             }, () => {
-                this.searchCompany();
+                console.log("hide", this.state.company_id, this.state.company_name);
             });
         }
-        foucus() {
-            if (this.state.inputValue == " ") {
-                this.setState({ inputValue: "" });
-            }
+        getCompanyBox() {
+            this.setState({
+                companyBox: "hide",
+                company_id: this.state.company_id_in,
+                company_name: this.state.company_name_in,
+            }, () => {
+                console.log("queren", this.state.company_id, this.state.company_name);
+                this.dataService.modifyUserName(this.callBackModifyUserName.bind(this), this.state.userInfo.name, this.state.userInfo.phone, this.state.company_id);
+            });
         }
-        blur(event) {
-            if (this.state.inputValue == "") {
-                this.setState({ inputValue: " " });
-            }
+        callBackModifyUserName(data) {
+            console.log(data);
         }
-        change(event) {
-            this.setState({ inputValue: event.target.value });
-        }
-        queryKeyDownHandler(e) {
-            switch (e.keyCode) {
-                case 13:
-                    this.searchCompany();
-                    break;
-            }
-        }
-        searchCompany() {
-            if (this.state.inputValue == "请输入企业名称" || this.state.typeName == "全部 ") {
-                this.setState({ inputValue: "" });
-            }
-            ;
-            console.log("searchBtn", this.state.inputValue, this.state.company_type_id);
-            this.dataService.findCompany(this.setCompany, this.state.park_id, this.state.company_type_id, this.state.inputValue);
-        }
-        mapReturnpark() {
-            this.globalAction.web_call_webgl_mapReturnpark();
-            move3dBut("down");
+        inCompanyeList(i, id, name) {
+            this.setState({
+                companyIndexof: i,
+                company_id_in: id,
+                company_name_in: name,
+            }, () => {
+                console.log("选中的公司", this.state.company_id_in, this.state.company_name_in);
+            });
         }
         render() {
-            return (React.createElement("div", { className: this.state.companyListcss },
-                React.createElement("div", { className: "foleBtn" },
-                    React.createElement("p", { className: "companyGoHomeLeft", onClick: this.mapReturnpark.bind(this) },
-                        React.createElement(RouterDOM.Link, { to: "/home", style: { color: "#949494" } },
-                            React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B"),
-                            React.createElement("span", null, "\u8FD4\u56DE"))),
-                    React.createElement("p", { className: "companyGoHomeRight" },
-                        React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem", "color": "#C0C0C0" }, onClick: this.toggleFold.bind(this) }, "\uE849"))),
-                React.createElement("ul", { className: this.state.companyul },
-                    React.createElement("p", { className: this.state.companyNull, style: { "text-align": "center" } }, "\u6CA1\u6709\u7B26\u5408\u641C\u7D22\u6761\u4EF6\u7684\u7ED3\u679C\u00B7\u00B7\u00B7"),
-                    this.state.companyData.map((i, index) => {
-                        if (i.headimageurl == null) {
-                            return (React.createElement("li", { onClick: this.companyActive.bind(this, index, i.id), className: this.state.indexOf == index ? "companyli-active" : "companyli" },
-                                React.createElement("div", { className: this.state.indexOf == index ? "companyImgback-active" : "companyImgback" },
-                                    React.createElement("img", { src: "./park_m/image/i.png", onError: this.onErrorHeadimageurl.bind(this) })),
-                                React.createElement("div", { className: "companyul-middle" },
-                                    React.createElement("p", { className: this.state.indexOf == index ? "companyName-active" : "companyName", style: { "font-size": "2.4rem", "font-weight": "bold" } }, i.name),
-                                    React.createElement("p", { style: { "font-size": "2.5rem", "overflow": "hidden", "text-overflow": "ellipsis", "white-space": "nowrap" } },
-                                        React.createElement("i", { className: "iconfont", style: { "fontSize": "2.5rem" } }, "\uE815"),
-                                        i.address)),
-                                React.createElement("div", { className: "companyul-right" },
-                                    React.createElement("p", { onClick: this.showInfo.bind(this, "Info", i.id, i.name), className: this.state.indexOf == index ? "show" : "hide" },
-                                        "\u66F4\u591A",
-                                        React.createElement("i", { className: "iconfont", style: { "fontSize": "2rem" } }, "\uE827")),
-                                    React.createElement("p", { className: this.state.indexOf == index ? "companyType-active" : "companyType" }, i.company_type))));
-                        }
-                        else {
-                            return (React.createElement("li", { onClick: this.companyActive.bind(this, index, i.id), className: this.state.indexOf == index ? "companyli-active" : "companyli" },
-                                React.createElement("div", { className: this.state.indexOf == index ? "companyImgback-active" : "companyImgback" },
-                                    React.createElement("img", { src: i.headimageurl, onError: this.onErrorHeadimageurl.bind(this) })),
-                                React.createElement("div", { className: "companyul-middle" },
-                                    React.createElement("p", { className: this.state.indexOf == index ? "companyName-active" : "companyName", style: { "font-size": "2.4rem", "font-weight": "bold" } }, i.name),
-                                    React.createElement("p", { style: { "font-size": "2.5rem", "overflow": "hidden", "text-overflow": "ellipsis", "white-space": "nowrap" } },
-                                        React.createElement("i", { className: "iconfont", style: { "fontSize": "2.5rem" } }, "\uE815"),
-                                        i.address)),
-                                React.createElement("div", { className: "companyul-right" },
-                                    React.createElement("p", { onClick: this.showInfo.bind(this, "Info", i.id, i.name), className: this.state.indexOf == index ? "show" : "hide" },
-                                        "\u66F4\u591A",
-                                        React.createElement("i", { className: "iconfont", style: { "fontSize": "2rem" } }, "\uE827")),
-                                    React.createElement("p", { className: this.state.indexOf == index ? "companyType-active" : "companyType" }, i.company_type))));
-                        }
+            return (React.createElement("div", { className: "personal-center" },
+                React.createElement("div", { className: "personal-center-top" },
+                    React.createElement("div", { className: "personal-center-info" },
+                        React.createElement("div", { className: "personal-center-tx" },
+                            React.createElement("img", { src: this.state.userInfo.avatar == null ? "./park_m/image/tx.jpg" : this.state.userInfo.avatar, className: "personal-center-tx-img" })),
+                        React.createElement("div", { style: { float: "left", color: "#FFFFFF", fontSize: "42px", margin: "10px 0 0 36px" } },
+                            React.createElement("div", null, this.state.userInfo.name),
+                            React.createElement("div", { style: {
+                                    color: "#83d5ff", fontSize: "27px", backgroundColor: "#2e9cf3", width: "160px",
+                                    height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
+                                } }, this.state.userInfo.roles.role_name)),
+                        React.createElement(react_router_dom_3.Link, { to: { pathname: "/modificationAuthentication", state: { name: this.state.userInfo.name } } },
+                            React.createElement("div", { className: "personal-center-right" },
+                                React.createElement("img", { src: "./park_m/image/w-right.png" }))))),
+                this.state.pathname === "/personalCenter" ?
+                    React.createElement("div", null,
+                        React.createElement("div", { className: "personal-center-tag", style: { margin: "0 50px 0 50px", fontWeight: "600" } },
+                            "\u6211\u7684\u6536\u85CF ",
+                            React.createElement("img", { src: "./park_m/image/right.png", style: { marginTop: "40px", float: "right" } })),
+                        React.createElement("div", { className: "personal-center-tag", style: { margin: "0 50px 0 50px", fontWeight: "600" } },
+                            "\u6D4F\u89C8\u8BB0\u5F55 ",
+                            React.createElement("img", { src: "./park_m/image/right.png", style: { marginTop: "40px", float: "right" } })),
+                        React.createElement("div", { className: "personal-center-tag", style: { margin: "0 50px 0 50px", fontWeight: "600" } },
+                            "\u5BA2\u670D\u7535\u8BDD ",
+                            React.createElement("span", { style: { float: "right" } }, "400-808-3066"))) : null,
+                this.state.pathname !== "/personalCenter" ?
+                    React.createElement("div", null,
+                        React.createElement("div", { className: "personal-center-tag" },
+                            React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u624B\u673A\u53F7\u7801"),
+                            React.createElement("span", null, this.state.userInfo.phone),
+                            React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" }, onClick: this.phoneChange.bind(this) }, "\u4FEE\u6539")),
+                        React.createElement("div", { className: "personal-center-tag" },
+                            React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5173\u8054\u4F01\u4E1A"),
+                            React.createElement("span", null, this.state.enterprise),
+                            this.state.userInfo.roles.role_name !== "园区管理员" && this.state.userInfo.roles.role_name !== "企业管理员" ?
+                                React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" }, onClick: this.showCompanyList.bind(this) }, "\u4FEE\u6539") : null),
+                        React.createElement("div", { className: "personal-center-tag" },
+                            React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5BA2\u670D\u7535\u8BDD"),
+                            React.createElement("span", null, "0773-123456")),
+                        React.createElement("div", { className: "personal-center-my" },
+                            React.createElement(react_router_dom_3.Link, { to: this.state.userInfo.roles.role_name === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
+                                React.createElement("div", { className: "personal-center-my-left" },
+                                    React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, this.state.workOrderLength),
+                                    React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u5DE5\u5355"))),
+                            React.createElement("div", { className: "personal-center-my-middle" }),
+                            React.createElement(react_router_dom_3.Link, { to: "/message" },
+                                React.createElement("div", { className: "personal-center-my-right" },
+                                    React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, this.state.messagelength),
+                                    React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u6D88\u606F")))))
+                    : null,
+                this.state.userInfo.roles.role_name === "企业管理员" && this.state.pathname !== "/personalCenter" ?
+                    React.createElement("div", { className: "personal-center-enterprise" },
+                        React.createElement(react_router_dom_3.Link, { to: "/enterpriseInformation" },
+                            React.createElement("div", { className: "personal-center-enterprise-child" },
+                                React.createElement("img", { src: "./park_m/image/enterprise.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
+                                React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u4F01\u4E1A\u4FE1\u606F\u7BA1\u7406"),
+                                React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
+                                    React.createElement("img", { src: "./park_m/image/right.png" })))),
+                        React.createElement(react_router_dom_3.Link, { to: "/rentRoom" },
+                            React.createElement("div", { className: "personal-center-enterprise-child" },
+                                React.createElement("img", { src: "./park_m/image/let.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
+                                React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"),
+                                React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
+                                    React.createElement("img", { src: "./park_m/image/right.png" }))))) : null,
+                this.state.userInfo.roles.role_name === "园区管理员" && this.state.pathname !== "/personalCenter" ?
+                    React.createElement("div", { className: "personal-center-park" },
+                        React.createElement("div", { className: "personal-center-enterprise-child", onClick: this.spread.bind(this) },
+                            React.createElement("img", { src: "./park_m/image/park.png", width: "60px", height: "60px", style: { marginBottom: "10px" } }),
+                            React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u56ED\u533A\u7BA1\u7406"),
+                            React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
+                                React.createElement("img", { src: "./park_m/image/right.png", className: this.state.isSpread ? "personal-center-bottom-img" : "" }))),
+                        this.state.isSpread ?
+                            React.createElement("div", { style: { backgroundColor: "#ffffff", overflow: "hidden", paddingTop: "30px" } }, this.state.parkList.map((item, index) => {
+                                return (React.createElement(react_router_dom_3.Link, { to: item.url },
+                                    React.createElement("div", { key: index, className: "personal-center-park-child" },
+                                        React.createElement("img", { src: item.imgUrl, width: "110px", height: "110px" }),
+                                        React.createElement("div", { style: { marginTop: "10px" } }, item.name))));
+                            })) : null) : null,
+                React.createElement("div", { className: this.state.companyBox },
+                    React.createElement("ul", { className: "rollSelectCauseULcss" }, this.state.companyUL.map((i, index) => {
+                        return (React.createElement("li", { className: this.state.companyIndexof == index ? "rollSelectCauseli-active" : "rollSelectCauseli", onClick: this.inCompanyeList.bind(this, index, i.id, i.name) }, i.name));
                     })),
-                React.createElement("form", { action: '', target: "rfFrame" },
-                    React.createElement("div", { className: this.state.companyBtn },
-                        React.createElement("div", { className: "searchBox" },
-                            React.createElement("span", { className: "searchBox-text" },
-                                React.createElement("i", { className: "iconfont", style: { "fontSize": "2.3rem" } }, "\uE810"),
-                                React.createElement("input", { className: "companySearch", type: "search", placeholder: "\u8BF7\u8F93\u5165\u4F01\u4E1A\u540D\u79F0", value: this.state.inputValue, onFocus: this.foucus.bind(this), onBlur: this.blur.bind(this), onChange: this.change.bind(this), onKeyDown: this.queryKeyDownHandler.bind(this) })),
-                            React.createElement("span", { onClick: this.foldBtn.bind(this), className: "searchBox-type" },
-                                this.state.typeName,
-                                " ",
-                                React.createElement("i", { className: this.state.searchBoxTypeIcon, style: { "fontSize": "3rem", position: "relative", top: "0.3rem" } }, "\uE828"))),
-                        React.createElement("ul", { className: "companyTypeul" },
-                            React.createElement("li", { className: this.state.typeIndexof == 100 ? "companyTypeli-active" : "companyTypeli", onClick: this.typeActive.bind(this, 100, "全部", ""), style: { "width": "12rem" } }, "\u5168\u90E8"),
-                            this.state.companyType.map((i, index) => {
-                                return (React.createElement("li", { onClick: this.typeActive.bind(this, index, i.name, i.id), className: this.state.typeIndexof == index ? "companyTypeli-active" : "companyTypeli" }, i.name));
-                            })))),
-                React.createElement("iframe", { id: "rfFrame", name: "rfFrame", src: this.state.src, style: { display: "none" } }, "   ")));
+                    React.createElement("div", { className: "rollSelectCuasedBtn" },
+                        React.createElement("span", { className: "rollSelectCancel", onClick: this.hideCompanyBox.bind(this) }, "\u53D6\u6D88"),
+                        React.createElement("span", { className: "rollSelectConfirm", onClick: this.getCompanyBox.bind(this) }, "\u786E\u8BA4")))));
         }
     }
-    class CompanyInfo extends React.Component {
-        constructor(props) {
-            super(props);
-            this.dataService = new dataService_10.default();
-            this.state = {
-                companyInfocss: "companyInfo",
-                companyName: "浙江永拓信息科技有限公司",
-                companyInfoul: "companyInfoul",
-                infoli: 0,
-                iconfont: "iconfont iconfont-turn",
-            };
-            this.showList = this.showList.bind(this);
-            CompanyInfo.getCompanyinfo = this.getCompanyinfo.bind(this);
-            this.setCompanyinfo = this.setCompanyinfo.bind(this);
-        }
-        static getCompanyinfo(id) { }
-        getCompanyinfo(id) {
-            this.dataService.getCompanyInfo(this.setCompanyinfo, id);
-        }
-        setCompanyinfo(data) {
-            console.log("getCompanyinfo", data);
-            this.setState({
-                companyName: data.response.name,
-            });
-            CompanyInfos.setCompanyinfos(data);
-            Mien.setCompanymien(data);
-            Details.setCompanydetails(data);
-            Product.setCompanyproduct(data);
-        }
-        showList(a, id) {
-            ParkCompany.toggleView(a, id);
-        }
-        toggleFold() {
-            console.log("tftft");
-            if (this.state.companyInfocss == "companyInfo") {
-                this.setState({
-                    companyInfocss: "companyInfo-part",
-                });
-            }
-            else {
-                this.setState({
-                    companyInfocss: "companyInfo",
-                });
-            }
-            if (this.state.iconfont == "iconfont iconfont-unturn") {
-                this.setState({
-                    iconfont: "iconfont iconfont-turn",
-                });
-            }
-            else {
-                this.setState({
-                    iconfont: "iconfont iconfont-unturn",
-                });
-            }
-        }
-        infoClick(indexof) {
-            console.log("infoClick", indexof);
-            this.setState({
-                infoli: indexof,
-            });
-        }
-        render() {
-            return (React.createElement("div", null,
-                React.createElement("p", { className: "companyInfotit" },
-                    React.createElement("span", null, this.state.companyName)),
-                React.createElement("div", { className: this.state.companyInfocss },
-                    React.createElement("div", { className: "foleBtn" },
-                        React.createElement("p", { className: "companyGoHomeLeft", style: { color: "#949494" }, onClick: this.showList.bind(this, "List", "id-01") },
-                            React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B"),
-                            React.createElement("span", null, "\u8FD4\u56DE")),
-                        React.createElement("p", { className: "companyGoHomeRight" },
-                            React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem", "color": "#C0C0C0" }, onClick: this.toggleFold.bind(this) }, "\uE849"))),
-                    React.createElement("ul", { className: this.state.companyInfoul },
-                        React.createElement("li", { className: this.state.infoli == 0 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 0) }, "\u4F01\u4E1A\u4FE1\u606F"),
-                        React.createElement("li", { className: this.state.infoli == 1 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 1) }, "\u4F01\u4E1A\u98CE\u91C7"),
-                        React.createElement("li", { className: this.state.infoli == 2 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 2) }, "\u4F01\u4E1A\u8BE6\u60C5"),
-                        React.createElement("li", { className: this.state.infoli == 3 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 3) }, "\u4EA7\u54C1\u5C55\u793A")),
-                    React.createElement("div", { className: "infoContain" },
-                        React.createElement("div", { className: this.state.infoli == 0 ? "show" : "hide" },
-                            React.createElement(CompanyInfos, null)),
-                        React.createElement("div", { className: this.state.infoli == 1 ? "show" : "hide" },
-                            React.createElement(Mien, null)),
-                        React.createElement("div", { className: this.state.infoli == 2 ? "show" : "hide" },
-                            React.createElement(Details, null)),
-                        React.createElement("div", { className: this.state.infoli == 3 ? "show" : "hide" },
-                            React.createElement(Product, null))))));
-        }
-    }
-    class CompanyInfos extends React.Component {
-        constructor(props) {
-            super(props);
-            this.state = {
-                imgurl: "",
-                name: "",
-                address: "",
-                type: "",
-                man: "",
-                tel: "",
-                http: ""
-            };
-            CompanyInfos.setCompanyinfos = this.setCompanyinfos.bind(this);
-        }
-        componentDidMount() { }
-        static setCompanyinfos(data) { }
-        setCompanyinfos(data) {
-            console.log("setCompanyinfoCCCCCCCCCCC", data);
-            this.setState({
-                imgurl: data.response.headimageurl,
-                name: data.response.name,
-                address: data.response.address,
-                type: data.response.company_type,
-                man: data.response.contact,
-                tel: data.response.phone,
-                http: data.response.website,
-            });
-        }
-        render() {
-            if (!this.state.imgurl) {
-                return (React.createElement("div", { className: "infos" },
-                    React.createElement("img", { src: "./park_m/image/i.png" }),
-                    React.createElement("div", { className: "ifosRight" },
-                        React.createElement("h4", { className: "infos-1" },
-                            this.state.name,
-                            " "),
-                        React.createElement("h5", { className: "infos-2" },
-                            React.createElement("i", { className: "iconfont", style: { "fontSize": "3rem" } }, "\uE815"),
-                            this.state.address),
-                        React.createElement("p", { className: "infos-3" }, this.state.type),
-                        React.createElement("p", { className: "infos-4" },
-                            React.createElement("span", null, "\u8054\u7CFB\u4EBA"),
-                            React.createElement("span", null, this.state.man)),
-                        React.createElement("p", { className: "infos-5" },
-                            React.createElement("span", null, "\u8054\u7CFB\u7535\u8BDD"),
-                            React.createElement("span", null, this.state.tel)),
-                        React.createElement("p", { className: "infos-6" },
-                            React.createElement("span", null, "\u4F01\u4E1A\u5B98\u7F51"),
-                            React.createElement("span", null, this.state.http)))));
-            }
-            else {
-                return (React.createElement("div", { className: "infos" },
-                    React.createElement("img", { src: this.state.imgurl }),
-                    React.createElement("div", { className: "ifosRight" },
-                        React.createElement("h4", { className: "infos-1" },
-                            this.state.name,
-                            " "),
-                        React.createElement("h5", { className: "infos-2" },
-                            React.createElement("i", { className: "iconfont", style: { "fontSize": "3rem", "margin-right": "1rem" } }, "\uE815"),
-                            this.state.address),
-                        React.createElement("p", { className: "infos-3" }, this.state.type),
-                        React.createElement("p", { className: "infos-4" },
-                            React.createElement("span", null, "\u8054\u7CFB\u4EBA"),
-                            React.createElement("span", null, this.state.man)),
-                        React.createElement("p", { className: "infos-5" },
-                            React.createElement("span", null, "\u8054\u7CFB\u7535\u8BDD"),
-                            React.createElement("span", null, this.state.tel)),
-                        React.createElement("p", { className: "infos-6" },
-                            React.createElement("span", null, "\u4F01\u4E1A\u5B98\u7F51"),
-                            React.createElement("span", null, this.state.http)))));
-            }
-        }
-    }
-    class Mien extends React.Component {
-        constructor(props) {
-            super(props);
-            this.state = {
-                mienImg: [],
-                data: ['1', '2', '3', '4', '5', '6', '7'],
-                imgHeight: 176,
-                slideIndex: 0,
-                urlNull: "hide",
-                urlShow: "hide",
-            };
-            Mien.setCompanymien = this.setCompanymien.bind(this);
-        }
-        componentDidMount() {
-            setTimeout(() => {
-                this.setState({
-                    data: ['1', '2', '3', '4', '5', '6', '7'],
-                });
-            }, 100);
-        }
-        static setCompanymien(data) { }
-        setCompanymien(data) {
-            let picurl = [];
-            console.log("setCompanyMienMMMMM", data);
-            $.each(data.response.elegant, function (index, item) {
-                picurl.push(item.pic_url);
-            });
-            if (data.response.elegant.length == 0) {
-                this.setState({
-                    urlNull: "show",
-                    urlShow: "hide",
-                });
-            }
-            else {
-                this.setState({
-                    mienImg: data.response.elegant,
-                    mienImgLength: data.response.elegant.length,
-                    data: picurl,
-                    urlNull: "hide",
-                    urlShow: "show"
-                });
-            }
-            console.log("ssss", this.state);
-        }
-        render() {
-            return (React.createElement("div", { className: "mien" },
-                React.createElement("p", { className: this.state.urlNull, style: { "color": "#333333", "text-align": "center", "font-size": "2.5rem" } }, "\u6682\u65E0\u56FE\u7247\u00B7\u00B7\u00B7"),
-                React.createElement("div", { className: this.state.urlShow },
-                    React.createElement(antd_mobile_9.WingBlank, null,
-                        React.createElement(antd_mobile_9.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
-                                window.dispatchEvent(new Event('resize'));
-                                this.setState({ imgHeight: 'auto' });
-                            } }))))))));
-        }
-    }
-    class Details extends React.Component {
-        constructor(props) {
-            super(props);
-            this.state = {
-                text: "",
-                textArr: [],
-                detailsNull: "hide",
-                detailsShow: "hide"
-            };
-            Details.setCompanydetails = this.setCompanydetails.bind(this);
-        }
-        componentDidMount() { }
-        static setCompanydetails(data) { }
-        setCompanydetails(data) {
-            console.log("setCompanyDetailsDDDDD", data);
-            if (data.response.descript) {
-                let descriptN = data.response.descript;
-                descriptN.replace(/&#10;/, "<br />&nbsp;");
-                let descriptArr = descriptN.split("    ");
-                this.setState({
-                    text: descriptN,
-                    textArr: descriptArr,
-                    detailsNull: "hide",
-                    detailsShow: "show"
-                });
-            }
-            else {
-                this.setState({
-                    detailsNull: "show",
-                    detailsShow: "hide"
-                });
-            }
-            console.log(this.state);
-        }
-        render() {
-            return (React.createElement("div", { className: "details" },
-                React.createElement("p", { className: this.state.detailsNull, style: { "color": "#333333", "text-align": "center" } }, "\u6682\u65E0\u4F01\u4E1A\u8BE6\u60C5\u4FE1\u606F\u00B7\u00B7\u00B7"),
-                React.createElement("div", { className: this.state.detailsShow }, this.state.textArr.map((i, index) => {
-                    return (React.createElement("p", { style: { "white-space": "pre-line", "text-indent": "5rem" } }, i));
-                }))));
-        }
-    }
-    class Product extends React.Component {
-        constructor(props) {
-            super(props);
-            this.state = {
-                productImg: [],
-                urlNull: "hide",
-                data: ['1', '2', '3', '4', '5', '6', '7'],
-                imgHeight: 176,
-                slideIndex: 0,
-                urlShow: "hide",
-            };
-            Product.setCompanyproduct = this.setCompanyproduct.bind(this);
-        }
-        componentDidMount() {
-            setTimeout(() => {
-                this.setState({
-                    data: ['1', '2', '3', '4', '5', '6', '7'],
-                });
-            }, 100);
-        }
-        static setCompanyproduct(data) { }
-        setCompanyproduct(data) {
-            console.log("setCompanyproductPPPP", data);
-            let picurl = [];
-            $.each(data.response.product, function (index, item) {
-                console.log("ddddddddddd", item.pic_url);
-                picurl.push(item.pic_url);
-            });
-            if (data.response.product.length == 0) {
-                this.setState({
-                    productImg: data.response.product,
-                    urlNull: "show",
-                    urlShow: "hide",
-                });
-            }
-            else {
-                this.setState({
-                    productImg: data.response.product,
-                    urlNull: "hide",
-                    urlShow: "show",
-                    data: picurl,
-                });
-            }
-            console.log("666666666", this.state);
-        }
-        render() {
-            return (React.createElement("div", { className: "product" },
-                React.createElement("p", { className: this.state.urlNull, style: { "color": "#333333", "text-align": "center", "font-size": "2.5rem" } }, "\u6682\u65E0\u56FE\u7247\u00B7\u00B7\u00B7"),
-                React.createElement("div", { className: this.state.urlShow },
-                    React.createElement(antd_mobile_9.WingBlank, null,
-                        React.createElement(antd_mobile_9.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
-                                window.dispatchEvent(new Event('resize'));
-                                this.setState({ imgHeight: 'auto' });
-                            } }))))))));
-        }
-    }
-    exports.default = ParkCompany;
+    exports.default = PersonalCenter;
 });
-define("photograph", ["require", "exports", "react", "react-router-dom", "dataService", "antd-mobile", "antd-mobile", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, dataService_11, antd_mobile_10, antd_mobile_11) {
+define("photograph", ["require", "exports", "react", "react-router-dom", "dataService", "antd-mobile", "antd-mobile", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, dataService_11, antd_mobile_9, antd_mobile_10) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Photograph extends React.Component {
@@ -7584,8 +7204,8 @@ define("photograph", ["require", "exports", "react", "react-router-dom", "dataSe
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 " \u8FDD\u89C4\u7167\u7247",
                                 React.createElement("div", { className: "imgCom" },
-                                    React.createElement(antd_mobile_10.WingBlank, null,
-                                        React.createElement(antd_mobile_10.ImagePicker, { files: this.state.files, onChange: this.onChange, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple })))),
+                                    React.createElement(antd_mobile_9.WingBlank, null,
+                                        React.createElement(antd_mobile_9.ImagePicker, { files: this.state.files, onChange: this.onChange, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple })))),
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 " \u66DD\u5149\u7C7B\u578B",
@@ -7604,8 +7224,8 @@ define("photograph", ["require", "exports", "react", "react-router-dom", "dataSe
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 React.createElement("div", { style: { "fonSize": "2.5rem", "float": "right", "position": "relative", "top": "-0.5rem", "left": "-0.5rem" }, className: "mDate" },
-                                    React.createElement(antd_mobile_11.DatePicker, { value: this.state.timeShow, onChange: this.getTime.bind(this) },
-                                        React.createElement(antd_mobile_11.List.Item, { arrow: "horizontal" }, "\u66DD\u5149\u65F6\u95F4")))),
+                                    React.createElement(antd_mobile_10.DatePicker, { value: this.state.timeShow, onChange: this.getTime.bind(this) },
+                                        React.createElement(antd_mobile_10.List.Item, { arrow: "horizontal" }, "\u66DD\u5149\u65F6\u95F4")))),
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 " \u8FDD\u89C4\u63CF\u8FF0"),
@@ -7796,7 +7416,7 @@ define("photograph", ["require", "exports", "react", "react-router-dom", "dataSe
         }
     }
 });
-define("infoArea", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/infoArea.css"], function (require, exports, React, react_router_dom_3, dataService_12) {
+define("infoArea", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/infoArea.css"], function (require, exports, React, react_router_dom_4, dataService_12) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class InfoArea extends React.Component {
@@ -7906,7 +7526,7 @@ define("infoArea", ["require", "exports", "react", "react-router-dom", "dataServ
                                     React.createElement("div", { className: "infoarea-br-data" }, item.time))));
                     }),
                     React.createElement("div", { style: { width: "100%", height: "30%", textAlign: "center", fontSize: "40px", lineHeight: "60px", margin: "20px 0 0 -25px" } }, "\u5230\u5E95\u5566~")),
-                React.createElement(react_router_dom_3.Link, { to: "/isay" },
+                React.createElement(react_router_dom_4.Link, { to: "/isay" },
                     React.createElement("div", { className: "infoarea-add-c" },
                         React.createElement("img", { src: "./park_m/image/add.png", width: "60px", height: "60px" })))));
         }
@@ -7955,7 +7575,7 @@ define("information", ["require", "exports", "react", "dataService", "css!./styl
     }
     exports.default = Information;
 });
-define("personalCenter", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_4, dataService_14) {
+define("personalCenter", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_5, dataService_14) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class PersonalCenter extends React.Component {
@@ -8090,7 +7710,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                                     color: "#83d5ff", fontSize: "27px", backgroundColor: "#2e9cf3", width: "160px",
                                     height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
                                 } }, this.state.userInfo.roles.role_name)),
-                        React.createElement(react_router_dom_4.Link, { to: { pathname: "/modificationAuthentication", state: { name: this.state.userInfo.name } } },
+                        React.createElement(react_router_dom_5.Link, { to: { pathname: "/modificationAuthentication", state: { name: this.state.userInfo.name } } },
                             React.createElement("div", { className: "personal-center-right" },
                                 React.createElement("img", { src: "./park_m/image/w-right.png" }))))),
                 this.state.pathname === "/personalCenter" ?
@@ -8119,25 +7739,25 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5BA2\u670D\u7535\u8BDD"),
                             React.createElement("span", null, "0773-123456")),
                         React.createElement("div", { className: "personal-center-my" },
-                            React.createElement(react_router_dom_4.Link, { to: this.state.userInfo.roles.role_name === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
+                            React.createElement(react_router_dom_5.Link, { to: this.state.userInfo.roles.role_name === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
                                 React.createElement("div", { className: "personal-center-my-left" },
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, this.state.workOrderLength),
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u5DE5\u5355"))),
                             React.createElement("div", { className: "personal-center-my-middle" }),
-                            React.createElement(react_router_dom_4.Link, { to: "/message" },
+                            React.createElement(react_router_dom_5.Link, { to: "/message" },
                                 React.createElement("div", { className: "personal-center-my-right" },
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, this.state.messagelength),
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u6D88\u606F")))))
                     : null,
                 this.state.userInfo.roles.role_name === "企业管理员" && this.state.pathname !== "/personalCenter" ?
                     React.createElement("div", { className: "personal-center-enterprise" },
-                        React.createElement(react_router_dom_4.Link, { to: "/enterpriseInformation" },
+                        React.createElement(react_router_dom_5.Link, { to: "/enterpriseInformation" },
                             React.createElement("div", { className: "personal-center-enterprise-child" },
                                 React.createElement("img", { src: "./park_m/image/enterprise.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
                                 React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u4F01\u4E1A\u4FE1\u606F\u7BA1\u7406"),
                                 React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
                                     React.createElement("img", { src: "./park_m/image/right.png" })))),
-                        React.createElement(react_router_dom_4.Link, { to: "/rentRoom" },
+                        React.createElement(react_router_dom_5.Link, { to: "/rentRoom" },
                             React.createElement("div", { className: "personal-center-enterprise-child" },
                                 React.createElement("img", { src: "./park_m/image/let.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
                                 React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"),
@@ -8152,7 +7772,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                                 React.createElement("img", { src: "./park_m/image/right.png", className: this.state.isSpread ? "personal-center-bottom-img" : "" }))),
                         this.state.isSpread ?
                             React.createElement("div", { style: { backgroundColor: "#ffffff", overflow: "hidden", paddingTop: "30px" } }, this.state.parkList.map((item, index) => {
-                                return (React.createElement(react_router_dom_4.Link, { to: item.url },
+                                return (React.createElement(react_router_dom_5.Link, { to: item.url },
                                     React.createElement("div", { key: index, className: "personal-center-park-child" },
                                         React.createElement("img", { src: item.imgUrl, width: "110px", height: "110px" }),
                                         React.createElement("div", { style: { marginTop: "10px" } }, item.name))));
@@ -8169,14 +7789,14 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
     }
     exports.default = PersonalCenter;
 });
-define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dataService", "compat", "antd-mobile", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, dataService_15, compat_9, antd_mobile_12) {
+define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dataService", "compat", "antd-mobile", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, dataService_15, compat_8, antd_mobile_11) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RepairsOnline extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_15.default();
-            this.globalAction = new compat_9.default();
+            this.globalAction = new compat_8.default();
             this.onChangeImg = (files, type, index) => {
                 console.log(files, type, index);
                 this.setState({
@@ -8420,8 +8040,8 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 React.createElement("span", { style: { "color": "#949494" } }, "\u62A5\u4FEE\u7167\u7247"),
                                 React.createElement("div", { className: "imgCom" },
-                                    React.createElement(antd_mobile_12.WingBlank, null,
-                                        React.createElement(antd_mobile_12.ImagePicker, { files: this.state.files, onChange: this.onChangeImg, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple })))),
+                                    React.createElement(antd_mobile_11.WingBlank, null,
+                                        React.createElement(antd_mobile_11.ImagePicker, { files: this.state.files, onChange: this.onChangeImg, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple })))),
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 React.createElement("span", { style: { "color": "#949494" } }, "\u62A5\u4FEE\u7C7B\u578B"),
@@ -8469,13 +8089,13 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
     }
     exports.default = RepairsOnline;
 });
-define("parking", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_10, dataService_16, antd_mobile_13) {
+define("parking", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_9, dataService_16, antd_mobile_12) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Parking extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_10.default();
+            this.globalAction = new compat_9.default();
             this.state = {
                 parkingcss: "parking",
                 iconfont: "iconfont iconfont-unturn",
@@ -8579,7 +8199,7 @@ define("parking", ["require", "exports", "react", "react-router-dom", "compat", 
         constructor(props) {
             super(props);
             this.dataService = new dataService_16.default();
-            this.globalAction = new compat_10.default();
+            this.globalAction = new compat_9.default();
             this.state = {
                 contentULcss: "contentUL-part contentUL",
                 carTypeBox: "hide",
@@ -9008,7 +8628,7 @@ define("parking", ["require", "exports", "react", "react-router-dom", "compat", 
     class Alteration extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_10.default();
+            this.globalAction = new compat_9.default();
             this.dataService = new dataService_16.default();
             this.state = {
                 componentBox: "componentBox-part",
@@ -9297,7 +8917,7 @@ define("parking", ["require", "exports", "react", "react-router-dom", "compat", 
         constructor(props) {
             super(props);
             this.dataService = new dataService_16.default();
-            this.globalAction = new compat_10.default();
+            this.globalAction = new compat_9.default();
             this.state = {
                 componentBox: "componentBox-part",
                 contentBox: "contentBox-part",
@@ -9545,14 +9165,14 @@ define("parking", ["require", "exports", "react", "react-router-dom", "compat", 
                                 React.createElement("p", null,
                                     React.createElement("span", { className: "redStar", style: { "float": "left", "margin-top": "-1.2rem" } }, "*"),
                                     React.createElement("div", { style: { "fonSize": "2.5rem" }, className: "mDate" },
-                                        React.createElement(antd_mobile_13.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.startTime, onChange: this.setStartTime.bind(this) },
-                                            React.createElement(antd_mobile_13.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65F6\u95F4"))))),
+                                        React.createElement(antd_mobile_12.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.startTime, onChange: this.setStartTime.bind(this) },
+                                            React.createElement(antd_mobile_12.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65F6\u95F4"))))),
                             React.createElement("li", { style: { "padding": "1.5rem 0rem" } },
                                 React.createElement("p", null,
                                     React.createElement("span", { className: "redStar", style: { "float": "left", "margin-top": "-1.2rem" } }, "*"),
                                     React.createElement("div", { style: { "fonSize": "2.5rem" }, className: "mDate" },
-                                        React.createElement(antd_mobile_13.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.endTime, onChange: this.setEndTime.bind(this) },
-                                            React.createElement(antd_mobile_13.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65F6\u95F4"))))),
+                                        React.createElement(antd_mobile_12.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.endTime, onChange: this.setEndTime.bind(this) },
+                                            React.createElement(antd_mobile_12.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65F6\u95F4"))))),
                             React.createElement("div", { className: "bookSumbit", onClick: this.visitorSumbit.bind(this) }, "\u63D0\u4EA4"))),
                     React.createElement("div", { className: this.state.parkingListBox },
                         React.createElement("ul", { className: "rollSelectCauseULcss" }, this.state.parkingListUL.map((i, index) => {
@@ -9564,14 +9184,14 @@ define("parking", ["require", "exports", "react", "react-router-dom", "compat", 
         }
     }
 });
-define("narrate", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_11, dataService_17) {
+define("narrate", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_10, dataService_17) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Narrate extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_17.default();
-            this.globalAction = new compat_11.default();
+            this.globalAction = new compat_10.default();
             this.state = {
                 paused: true,
                 activeType: 0,
@@ -10052,7 +9672,7 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
     }
     exports.default = workOrderDetail;
 });
-define("modificationAuthentication", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/modificationAuthentication.css"], function (require, exports, React, react_router_dom_5, dataService_21) {
+define("modificationAuthentication", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/modificationAuthentication.css"], function (require, exports, React, react_router_dom_6, dataService_21) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ModificationAuthentication extends React.Component {
@@ -10119,7 +9739,7 @@ define("modificationAuthentication", ["require", "exports", "react", "react-rout
                     React.createElement("div", { style: { paddingLeft: "40px", float: "left" } },
                         React.createElement("span", { style: { color: "#333333", fontSize: "42px" } }, "\u8EAB\u4EFD\u8BA4\u8BC1"),
                         React.createElement("span", { style: { color: "#949494", fontSize: "42px", marginLeft: "50px" } }, "\u8BA4\u8BC1\u6210\u4E3A\u4F01\u4E1A\u7BA1\u7406\u5458")),
-                    React.createElement(react_router_dom_5.Link, { to: "/identityAuthentication" },
+                    React.createElement(react_router_dom_6.Link, { to: "/identityAuthentication" },
                         React.createElement("div", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u8BA4\u8BC1")))));
         }
     }
@@ -10192,7 +9812,7 @@ define("message", ["require", "exports", "react", "dataService", "css!./styles/m
     }
     exports.default = Message;
 });
-define("rentRoom", ["require", "exports", "react", "react-router-dom", "css!./styles/rentRoom.css"], function (require, exports, React, react_router_dom_6) {
+define("rentRoom", ["require", "exports", "react", "react-router-dom", "css!./styles/rentRoom.css"], function (require, exports, React, react_router_dom_7) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RentRoom extends React.Component {
@@ -10214,7 +9834,7 @@ define("rentRoom", ["require", "exports", "react", "react-router-dom", "css!./st
                         React.createElement("span", null, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"))),
                 React.createElement("div", { className: "rent-room-list" },
                     this.state.workOrderArray.map((item, index) => {
-                        return React.createElement(react_router_dom_6.Link, { to: "/rentRoomDetail" },
+                        return React.createElement(react_router_dom_7.Link, { to: "/rentRoomDetail" },
                             React.createElement("div", { key: index, className: "rent-room-list-child" },
                                 React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 40px" } },
                                     React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, item),
@@ -10232,7 +9852,7 @@ define("rentRoom", ["require", "exports", "react", "react-router-dom", "css!./st
                                                 marginRight: "40px", fontSize: "32px", textAlign: "center", lineHeight: "55px"
                                             } }, "\u9ED8\u8BA4\u5C55\u793A") : null)));
                     }),
-                    React.createElement(react_router_dom_6.Link, { to: "/defaultRentRoom" },
+                    React.createElement(react_router_dom_7.Link, { to: "/defaultRentRoom" },
                         React.createElement("div", { style: { width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "50px", color: "#0B8BF0" } }, "\u9009\u62E9\u9ED8\u8BA4\u5C55\u793A\u623F\u95F4")))));
         }
     }
@@ -10999,7 +10619,7 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
     }
     exports.default = InformationChilds;
 });
-define("informationDetail", ["require", "exports", "react", "dataService", "react-router-dom", "css!./styles/informationDetail.css"], function (require, exports, React, dataService_28, react_router_dom_7) {
+define("informationDetail", ["require", "exports", "react", "dataService", "react-router-dom", "css!./styles/informationDetail.css"], function (require, exports, React, dataService_28, react_router_dom_8) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class informationDetail extends React.Component {
@@ -11031,176 +10651,6 @@ define("informationDetail", ["require", "exports", "react", "dataService", "reac
                 history: this.props.history
             };
             this.dataService = new dataService_28.default();
-        }
-        componentDidMount() {
-            if (parseInt(sessionStorage.getItem("informationId")) < 2) {
-                this.dataService.getInformation(this.callBack.bind(this), 2);
-            }
-            else if (parseInt(sessionStorage.getItem("informationId")) === 2) {
-                this.dataService.getActivitiyInfo(this.callBack.bind(this), 1);
-            }
-        }
-        callBack(data) {
-            this.setState({ data: JSON.parse(data).response });
-        }
-        goBack() {
-            this.props.history.goBack();
-        }
-        initPark(park_id) {
-            this.globalAction.web_call_webgl_initPark(park_id);
-            localStorage.setItem("park_id", park_id);
-        }
-        submit() {
-            let obj = {
-                user_id: 2,
-                activity_id: 1
-            };
-            this.dataService.postActivitySign(this.callBackPostActivitySign.bind(this), obj);
-        }
-        callBackPostActivitySign(data) {
-            alert(JSON.parse(data).err_msg);
-        }
-        render() {
-            return (React.createElement("div", { className: "information-detail" }, parseInt(sessionStorage.getItem("informationId")) === 0 || parseInt(sessionStorage.getItem("informationId")) === 1 ?
-                React.createElement("div", null,
-                    React.createElement("div", { className: "isay-back" },
-                        React.createElement("img", { src: "./park_m/image/back.png", style: { marginBottom: "25px" }, onClick: this.goBack.bind(this) }),
-                        React.createElement("span", { style: { color: "#6C6C6C", fontSize: "40px", marginLeft: "15px" } }, "\u8BE6\u60C5\u5185\u5BB9")),
-                    React.createElement("div", { style: { fontSize: "40px", width: "90%", color: "#333333", margin: "20px auto" } }, this.state.data.name),
-                    React.createElement("div", { style: { color: "#949494", fontSize: "34px", margin: "30px 0 0 50px", overflow: "hidden" } },
-                        React.createElement("div", { style: { float: "left" } },
-                            this.state.data.visit_amount,
-                            "\u6B21\u6D4F\u89C8"),
-                        React.createElement("div", { style: { float: "right", marginRight: "50px" } },
-                            this.state.data.time,
-                            " \u53D1\u5E03")),
-                    React.createElement("div", { style: { border: "2px solid #F2F2F2", marginTop: "25px" } }),
-                    React.createElement("div", { style: { fontSize: "40px", color: "#333333", width: "90%", margin: "30px auto" } },
-                        React.createElement("p", { style: { fontSize: "40px" } }, "\u5404\u76F8\u5173\u5355\u4F4D\uFF1A"),
-                        this.state.data.content),
-                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" } },
-                        React.createElement("div", { style: { height: "50px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "36px 30px 0 50px" } }),
-                        React.createElement("div", { style: { color: "#333333", fontSize: "40px", fontWeight: "600", lineHeight: "120px" } }, "\u670D\u52A1\u4FE1\u606F")),
-                    React.createElement("div", { className: "index-park" }, this.state.parkArr.map((item, index) => {
-                        return (React.createElement(react_router_dom_7.Link, { to: "/home" },
-                            React.createElement("div", { className: "index-child-park", key: index, onClick: this.initPark.bind(this, 1001) },
-                                React.createElement("div", { className: "index-child-park-left" },
-                                    React.createElement("img", { src: "./park_m/image/a.jpg", className: "park-img" })),
-                                React.createElement("div", { className: "index-child-park-right" },
-                                    React.createElement("div", { className: "index-park-name" }, item.name),
-                                    React.createElement("div", { className: "index-tag" },
-                                        this.state.tagArr.map((item, index) => {
-                                            return (index < 3 ?
-                                                React.createElement("div", { key: index, className: "index-tag-child" }, item)
-                                                : null);
-                                        }),
-                                        this.state.tagArr.length > 3 ? React.createElement("div", { className: "index-tag-child-add" }, "...") : null),
-                                    React.createElement("div", { style: { color: "#949494", fontSize: "36px", margin: "20px 0 0 25px" } }, item.address)),
-                                React.createElement("div", { className: "index-child-park-end" },
-                                    React.createElement("div", { className: "index-distance" },
-                                        (item.distance * 0.001).toFixed(1),
-                                        "km")))));
-                    }))) : parseInt(sessionStorage.getItem("informationId")) === 2 ?
-                React.createElement("div", { style: { fontSize: "36px", color: "#333333" } },
-                    React.createElement("div", { style: { width: "100%", height: "600px" } },
-                        React.createElement("img", { src: this.state.data.headimgurl, style: { width: "100%", height: "100%" } }),
-                        React.createElement("div", { style: {
-                                position: "absolute", left: "50px", top: "30px", backgroundColor: "#000000", background: "rgba(0, 0, 0, 0.3)",
-                                borderRadius: "50px", width: "260px", height: "75px", lineHeight: "75px", textAlign: "center", opacity: "0.8"
-                            }, onClick: this.goBack.bind(this) },
-                            React.createElement("img", { src: "./park_m/image/w-right.png", style: { transform: "rotate(180deg)", margin: "0px 18px 22px 0px" } }),
-                            React.createElement("span", { style: { fontSize: "40px", color: "#ffffff", marginRight: "15px" } }, "\u8BE6\u60C5\u5185\u5BB9"))),
-                    React.createElement("div", { style: { width: "100%", height: "120px", fontSize: "42px", color: "#333333", fontWeight: "600", borderBottom: "5px solid #F2F2F2", lineHeight: "120px", textAlign: "center" } }, this.state.data.name),
-                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" } },
-                        React.createElement("div", { style: { height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" } }),
-                        React.createElement("div", { style: { color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px" } }, "\u6D3B\u52A8\u4FE1\u606F")),
-                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" } },
-                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u6D3B\u52A8\u65F6\u95F4"),
-                        React.createElement("div", { style: { float: "left", width: "60%" } },
-                            this.state.data.start_time.substring(0, 16),
-                            "~",
-                            this.state.data.end_time.substring(0, 16))),
-                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" } },
-                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u6D3B\u52A8\u5730\u70B9"),
-                        React.createElement("div", { style: { float: "left" } }, this.state.data.position)),
-                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" } },
-                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u6D3B\u52A8\u8D39\u7528"),
-                        React.createElement("div", { style: { float: "left" } }, this.state.data.fee)),
-                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" } },
-                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u62A5\u540D\u622A\u81F3\u65F6\u95F4"),
-                        React.createElement("div", { style: { float: "left" } }, this.state.data.sign_end_time)),
-                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" } },
-                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u8054\u7CFB\u4EBA"),
-                        React.createElement("div", { style: { float: "left" } }, this.state.data.contact)),
-                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "5px solid #F2F2F2", lineHeight: "120px" } },
-                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u8054\u7CFB\u7535\u8BDD"),
-                        React.createElement("div", { style: { float: "left" } }, this.state.data.contact_tel)),
-                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" } },
-                        React.createElement("div", { style: { height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" } }),
-                        React.createElement("div", { style: { color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px" } }, "\u6D3B\u52A8\u8BE6\u60C5")),
-                    React.createElement("div", { style: { width: "90%", margin: "auto", padding: "30px 0 200px 0" } }, this.state.data.content),
-                    React.createElement("div", { style: {
-                            backgroundColor: "#0B8BF0", width: "100%", height: "150px", fontSize: "50px", color: "#ffffff", lineHeight: "150px",
-                            textAlign: "center", position: "fixed", bottom: "0px"
-                        }, onClick: this.submit.bind(this) }, "\u6211\u8981\u62A5\u540D")) :
-                React.createElement("div", { style: { fontSize: "36px", color: "#333333" } },
-                    React.createElement("div", { style: { width: "100%", height: "600px" } },
-                        React.createElement("img", { src: "./park_m/image/thirdParty_bg.png", style: { width: "100%", height: "100%" } }),
-                        React.createElement("div", { style: {
-                                position: "absolute", left: "50px", top: "30px", backgroundColor: "#000000", background: "rgba(0, 0, 0, 0.3)",
-                                borderRadius: "50px", width: "260px", height: "75px", lineHeight: "75px", textAlign: "center", opacity: "0.8"
-                            }, onClick: this.goBack.bind(this) },
-                            React.createElement("img", { src: "./park_m/image/w-right.png", style: { transform: "rotate(180deg)", margin: "0px 18px 22px 0px" } }),
-                            React.createElement("span", { style: { fontSize: "40px", color: "#ffffff", marginRight: "15px" } }, "\u8BE6\u60C5\u5185\u5BB9"))),
-                    React.createElement("div", { style: { width: "100%", height: "120px", fontSize: "42px", color: "#333333", fontWeight: "600", borderBottom: "5px solid #F2F2F2", lineHeight: "120px", textAlign: "center" } }, "\u4F01\u4E1A\u6876\u88C5\u6C34\u91C7\u8D2D\uFF0C\u91CF\u5927\u4ECE\u4F18\uFF0C\u51C6\u65F6\u9001\u8FBE"),
-                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" } },
-                        React.createElement("div", { style: { height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" } }),
-                        React.createElement("div", { style: { color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px" } }, "\u670D\u52A1\u4FE1\u606F")),
-                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", overflow: "hidden" } },
-                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px", lineHeight: "120px" } }, "\u670D\u52A1\u5185\u5BB9"),
-                        React.createElement("div", { style: { float: "left", height: "100%", width: "60%" } }, "1. \u54C1\u724C\u6876\u88C5\u6C34 2. \u5FEB\u901F\u9001\u8FBE 3. \u54C1\u8D28\u53EF\u9760 \u6B22\u8FCE\u5404\u5927\u4F01\u4E1A\u8BA2\u8D2D")),
-                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "5px solid #F2F2F2", lineHeight: "120px" } },
-                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u8054\u7CFB\u7535\u8BDD"),
-                        React.createElement("div", { style: { float: "left" } }, "15578383040")),
-                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" } },
-                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u6536\u8D39\u6807\u51C6"),
-                        React.createElement("div", { style: { float: "left" } }, "\u6309\u6876\u88C5\u6C34\u54C1\u724C\u4EF7\u683C")))));
-        }
-    }
-    exports.default = informationDetail;
-});
-define("informationDetails", ["require", "exports", "react", "dataService", "react-router-dom", "css!./styles/informationDetail.css"], function (require, exports, React, dataService_29, react_router_dom_8) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class informationDetail extends React.Component {
-        constructor() {
-            super(...arguments);
-            this.state = {
-                data: { name: "", start_time: "", end_time: "", position: "", sign_end_time: "", contact: "", contact_tel: "", content: "", fee: "", headimgurl: "", visit_amount: "", time: "" },
-                parkArr: [
-                    {
-                        "id": "1009",
-                        "headimgurl": null,
-                        "province": "桂林",
-                        "longitude": "10.55",
-                        "latitude": "66.666",
-                        "name": "桂林国家高新",
-                        "phone": "0773-123456",
-                        "address": "桂林七星朝阳路D-11",
-                        "service": [
-                            {
-                                "id": "1009",
-                                "name": "电子信息",
-                            }
-                        ]
-                    }
-                ],
-                tagArr: ["七星区", "东二环路", "1号线"],
-            };
-            this.props = {
-                history: this.props.history
-            };
-            this.dataService = new dataService_29.default();
         }
         componentDidMount() {
             if (parseInt(sessionStorage.getItem("informationId")) < 2) {
@@ -11339,7 +10789,177 @@ define("informationDetails", ["require", "exports", "react", "dataService", "rea
     }
     exports.default = informationDetail;
 });
-define("room", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/room.css"], function (require, exports, React, react_router_dom_9, dataService_30) {
+define("informationDetails", ["require", "exports", "react", "dataService", "react-router-dom", "css!./styles/informationDetail.css"], function (require, exports, React, dataService_29, react_router_dom_9) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class informationDetail extends React.Component {
+        constructor() {
+            super(...arguments);
+            this.state = {
+                data: { name: "", start_time: "", end_time: "", position: "", sign_end_time: "", contact: "", contact_tel: "", content: "", fee: "", headimgurl: "", visit_amount: "", time: "" },
+                parkArr: [
+                    {
+                        "id": "1009",
+                        "headimgurl": null,
+                        "province": "桂林",
+                        "longitude": "10.55",
+                        "latitude": "66.666",
+                        "name": "桂林国家高新",
+                        "phone": "0773-123456",
+                        "address": "桂林七星朝阳路D-11",
+                        "service": [
+                            {
+                                "id": "1009",
+                                "name": "电子信息",
+                            }
+                        ]
+                    }
+                ],
+                tagArr: ["七星区", "东二环路", "1号线"],
+            };
+            this.props = {
+                history: this.props.history
+            };
+            this.dataService = new dataService_29.default();
+        }
+        componentDidMount() {
+            if (parseInt(sessionStorage.getItem("informationId")) < 2) {
+                this.dataService.getInformation(this.callBack.bind(this), 2);
+            }
+            else if (parseInt(sessionStorage.getItem("informationId")) === 2) {
+                this.dataService.getActivitiyInfo(this.callBack.bind(this), 1);
+            }
+        }
+        callBack(data) {
+            this.setState({ data: JSON.parse(data).response });
+        }
+        goBack() {
+            this.props.history.goBack();
+        }
+        initPark(park_id) {
+            this.globalAction.web_call_webgl_initPark(park_id);
+            localStorage.setItem("park_id", park_id);
+        }
+        submit() {
+            let obj = {
+                user_id: 2,
+                activity_id: 1
+            };
+            this.dataService.postActivitySign(this.callBackPostActivitySign.bind(this), obj);
+        }
+        callBackPostActivitySign(data) {
+            alert(JSON.parse(data).err_msg);
+        }
+        render() {
+            return (React.createElement("div", { className: "information-detail" }, parseInt(sessionStorage.getItem("informationId")) === 0 || parseInt(sessionStorage.getItem("informationId")) === 1 ?
+                React.createElement("div", null,
+                    React.createElement("div", { className: "isay-back" },
+                        React.createElement("img", { src: "./park_m/image/back.png", style: { marginBottom: "25px" }, onClick: this.goBack.bind(this) }),
+                        React.createElement("span", { style: { color: "#6C6C6C", fontSize: "40px", marginLeft: "15px" } }, "\u8BE6\u60C5\u5185\u5BB9")),
+                    React.createElement("div", { style: { fontSize: "40px", width: "90%", color: "#333333", margin: "20px auto" } }, this.state.data.name),
+                    React.createElement("div", { style: { color: "#949494", fontSize: "34px", margin: "30px 0 0 50px", overflow: "hidden" } },
+                        React.createElement("div", { style: { float: "left" } },
+                            this.state.data.visit_amount,
+                            "\u6B21\u6D4F\u89C8"),
+                        React.createElement("div", { style: { float: "right", marginRight: "50px" } },
+                            this.state.data.time,
+                            " \u53D1\u5E03")),
+                    React.createElement("div", { style: { border: "2px solid #F2F2F2", marginTop: "25px" } }),
+                    React.createElement("div", { style: { fontSize: "40px", color: "#333333", width: "90%", margin: "30px auto" } },
+                        React.createElement("p", { style: { fontSize: "40px" } }, "\u5404\u76F8\u5173\u5355\u4F4D\uFF1A"),
+                        this.state.data.content),
+                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" } },
+                        React.createElement("div", { style: { height: "50px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "36px 30px 0 50px" } }),
+                        React.createElement("div", { style: { color: "#333333", fontSize: "40px", fontWeight: "600", lineHeight: "120px" } }, "\u670D\u52A1\u4FE1\u606F")),
+                    React.createElement("div", { className: "index-park" }, this.state.parkArr.map((item, index) => {
+                        return (React.createElement(react_router_dom_9.Link, { to: "/home" },
+                            React.createElement("div", { className: "index-child-park", key: index, onClick: this.initPark.bind(this, 1001) },
+                                React.createElement("div", { className: "index-child-park-left" },
+                                    React.createElement("img", { src: "./park_m/image/a.jpg", className: "park-img" })),
+                                React.createElement("div", { className: "index-child-park-right" },
+                                    React.createElement("div", { className: "index-park-name" }, item.name),
+                                    React.createElement("div", { className: "index-tag" },
+                                        this.state.tagArr.map((item, index) => {
+                                            return (index < 3 ?
+                                                React.createElement("div", { key: index, className: "index-tag-child" }, item)
+                                                : null);
+                                        }),
+                                        this.state.tagArr.length > 3 ? React.createElement("div", { className: "index-tag-child-add" }, "...") : null),
+                                    React.createElement("div", { style: { color: "#949494", fontSize: "36px", margin: "20px 0 0 25px" } }, item.address)),
+                                React.createElement("div", { className: "index-child-park-end" },
+                                    React.createElement("div", { className: "index-distance" },
+                                        (item.distance * 0.001).toFixed(1),
+                                        "km")))));
+                    }))) : parseInt(sessionStorage.getItem("informationId")) === 2 ?
+                React.createElement("div", { style: { fontSize: "36px", color: "#333333" } },
+                    React.createElement("div", { style: { width: "100%", height: "600px" } },
+                        React.createElement("img", { src: this.state.data.headimgurl, style: { width: "100%", height: "100%" } }),
+                        React.createElement("div", { style: {
+                                position: "absolute", left: "50px", top: "30px", backgroundColor: "#000000", background: "rgba(0, 0, 0, 0.3)",
+                                borderRadius: "50px", width: "260px", height: "75px", lineHeight: "75px", textAlign: "center", opacity: "0.8"
+                            }, onClick: this.goBack.bind(this) },
+                            React.createElement("img", { src: "./park_m/image/w-right.png", style: { transform: "rotate(180deg)", margin: "0px 18px 22px 0px" } }),
+                            React.createElement("span", { style: { fontSize: "40px", color: "#ffffff", marginRight: "15px" } }, "\u8BE6\u60C5\u5185\u5BB9"))),
+                    React.createElement("div", { style: { width: "100%", height: "120px", fontSize: "42px", color: "#333333", fontWeight: "600", borderBottom: "5px solid #F2F2F2", lineHeight: "120px", textAlign: "center" } }, this.state.data.name),
+                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" } },
+                        React.createElement("div", { style: { height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" } }),
+                        React.createElement("div", { style: { color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px" } }, "\u6D3B\u52A8\u4FE1\u606F")),
+                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" } },
+                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u6D3B\u52A8\u65F6\u95F4"),
+                        React.createElement("div", { style: { float: "left", width: "60%" } },
+                            this.state.data.start_time.substring(0, 16),
+                            "~",
+                            this.state.data.end_time.substring(0, 16))),
+                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" } },
+                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u6D3B\u52A8\u5730\u70B9"),
+                        React.createElement("div", { style: { float: "left" } }, this.state.data.position)),
+                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" } },
+                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u6D3B\u52A8\u8D39\u7528"),
+                        React.createElement("div", { style: { float: "left" } }, this.state.data.fee)),
+                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" } },
+                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u62A5\u540D\u622A\u81F3\u65F6\u95F4"),
+                        React.createElement("div", { style: { float: "left" } }, this.state.data.sign_end_time)),
+                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" } },
+                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u8054\u7CFB\u4EBA"),
+                        React.createElement("div", { style: { float: "left" } }, this.state.data.contact)),
+                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "5px solid #F2F2F2", lineHeight: "120px" } },
+                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u8054\u7CFB\u7535\u8BDD"),
+                        React.createElement("div", { style: { float: "left" } }, this.state.data.contact_tel)),
+                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" } },
+                        React.createElement("div", { style: { height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" } }),
+                        React.createElement("div", { style: { color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px" } }, "\u6D3B\u52A8\u8BE6\u60C5")),
+                    React.createElement("div", { style: { width: "90%", margin: "auto", padding: "30px 0 200px 0" } }, this.state.data.content),
+                    React.createElement("div", { style: {
+                            backgroundColor: "#0B8BF0", width: "100%", height: "150px", fontSize: "50px", color: "#ffffff", lineHeight: "150px",
+                            textAlign: "center", position: "fixed", bottom: "0px"
+                        }, onClick: this.submit.bind(this) }, "\u6211\u8981\u62A5\u540D")) :
+                React.createElement("div", { style: { fontSize: "36px", color: "#333333" } },
+                    React.createElement("div", { style: { width: "100%", height: "600px" } },
+                        React.createElement("img", { src: "./park_m/image/thirdParty_bg.png", style: { width: "100%", height: "100%" } }),
+                        React.createElement("div", { style: {
+                                position: "absolute", left: "50px", top: "30px", backgroundColor: "#000000", background: "rgba(0, 0, 0, 0.3)",
+                                borderRadius: "50px", width: "260px", height: "75px", lineHeight: "75px", textAlign: "center", opacity: "0.8"
+                            }, onClick: this.goBack.bind(this) },
+                            React.createElement("img", { src: "./park_m/image/w-right.png", style: { transform: "rotate(180deg)", margin: "0px 18px 22px 0px" } }),
+                            React.createElement("span", { style: { fontSize: "40px", color: "#ffffff", marginRight: "15px" } }, "\u8BE6\u60C5\u5185\u5BB9"))),
+                    React.createElement("div", { style: { width: "100%", height: "120px", fontSize: "42px", color: "#333333", fontWeight: "600", borderBottom: "5px solid #F2F2F2", lineHeight: "120px", textAlign: "center" } }, "\u4F01\u4E1A\u6876\u88C5\u6C34\u91C7\u8D2D\uFF0C\u91CF\u5927\u4ECE\u4F18\uFF0C\u51C6\u65F6\u9001\u8FBE"),
+                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" } },
+                        React.createElement("div", { style: { height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" } }),
+                        React.createElement("div", { style: { color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px" } }, "\u670D\u52A1\u4FE1\u606F")),
+                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", overflow: "hidden" } },
+                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px", lineHeight: "120px" } }, "\u670D\u52A1\u5185\u5BB9"),
+                        React.createElement("div", { style: { float: "left", height: "100%", width: "60%" } }, "1. \u54C1\u724C\u6876\u88C5\u6C34 2. \u5FEB\u901F\u9001\u8FBE 3. \u54C1\u8D28\u53EF\u9760 \u6B22\u8FCE\u5404\u5927\u4F01\u4E1A\u8BA2\u8D2D")),
+                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "5px solid #F2F2F2", lineHeight: "120px" } },
+                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u8054\u7CFB\u7535\u8BDD"),
+                        React.createElement("div", { style: { float: "left" } }, "15578383040")),
+                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" } },
+                        React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u6536\u8D39\u6807\u51C6"),
+                        React.createElement("div", { style: { float: "left" } }, "\u6309\u6876\u88C5\u6C34\u54C1\u724C\u4EF7\u683C")))));
+        }
+    }
+    exports.default = informationDetail;
+});
+define("room", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/room.css"], function (require, exports, React, react_router_dom_10, dataService_30) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Room extends React.Component {
@@ -11424,7 +11044,7 @@ define("room", ["require", "exports", "react", "react-router-dom", "dataService"
                                         React.createElement("img", { src: "./park_m/image/right.png", className: item.isSpread ? "room-spread-right" : null }))),
                                 this.state.floorIndex === index ?
                                     React.createElement("div", { style: { width: "90%", margin: "10px auto", minHeight: "200px", overflow: "hidden" } }, this.state.buildingArr[this.state.buildingIndex].child[this.state.floorIndex].child.map((it, ind) => {
-                                        return (React.createElement(react_router_dom_9.Link, { to: { pathname: "/roomDetail", state: { name: it.name, id: it.id } } },
+                                        return (React.createElement(react_router_dom_10.Link, { to: { pathname: "/roomDetail", state: { name: it.name, id: it.id } } },
                                             React.createElement("div", { key: ind, className: it.State === 1 ? "room-single-add" : "room-single" }, it.name)));
                                     })) : null));
                         }))));
@@ -11432,7 +11052,7 @@ define("room", ["require", "exports", "react", "react-router-dom", "dataService"
     }
     exports.default = Room;
 });
-define("roomDetail", ["require", "exports", "react", "react-router-dom", "dataService"], function (require, exports, React, react_router_dom_10, dataService_31) {
+define("roomDetail", ["require", "exports", "react", "react-router-dom", "dataService"], function (require, exports, React, react_router_dom_11, dataService_31) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RoomDetail extends React.Component {
@@ -11471,17 +11091,17 @@ define("roomDetail", ["require", "exports", "react", "react-router-dom", "dataSe
                         React.createElement("span", null, "\u623F\u95F4\u7BA1\u7406-"),
                         React.createElement("span", null, this.state.roomName))),
                 React.createElement("div", { style: { width: "100%", height: "15px", backgroundColor: "#F2F2F2" } }),
-                React.createElement(react_router_dom_10.Link, { to: { pathname: "/roomBase", state: { roomInfo: this.state.roomInfo } } },
+                React.createElement(react_router_dom_11.Link, { to: { pathname: "/roomBase", state: { roomInfo: this.state.roomInfo } } },
                     React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("img", { src: "./park_m/image/room_base.png", style: { margin: "0 20px 15px 10px" } }),
                         React.createElement("span", null, "\u623F\u95F4\u57FA\u672C\u4FE1\u606F"),
                         React.createElement("span", { style: { color: "#0B8BF0", float: "right", marginRight: "50px" } }, "\u4FEE\u6539"))),
-                React.createElement(react_router_dom_10.Link, { to: "/roomPattern" },
+                React.createElement(react_router_dom_11.Link, { to: "/roomPattern" },
                     React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("img", { src: "./park_m/image/pattern.png", style: { margin: "0 20px 15px 10px" } }),
                         React.createElement("span", null, "\u623F\u95F4\u683C\u5C40\u4FE1\u606F"),
                         React.createElement("span", { style: { color: "#0B8BF0", float: "right", marginRight: "50px" } }, "\u4FEE\u6539"))),
-                React.createElement(react_router_dom_10.Link, { to: { pathname: "/roomUse", state: { roomInfo: this.state.roomInfo } } },
+                React.createElement(react_router_dom_11.Link, { to: { pathname: "/roomUse", state: { roomInfo: this.state.roomInfo } } },
                     React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("img", { src: "./park_m/image/room_rent.png", style: { margin: "0 20px 15px 10px" } }),
                         React.createElement("span", null, "\u623F\u95F4\u4F7F\u7528\u4FE1\u606F"),
@@ -11818,7 +11438,7 @@ define("roomBase", ["require", "exports", "react", "dataService"], function (req
     }
     exports.default = RoomBase;
 });
-define("roomPattern", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/roomPattern.css"], function (require, exports, React, react_router_dom_11, dataService_34) {
+define("roomPattern", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/roomPattern.css"], function (require, exports, React, react_router_dom_12, dataService_34) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RoomPattern extends React.Component {
@@ -11868,7 +11488,7 @@ define("roomPattern", ["require", "exports", "react", "react-router-dom", "dataS
                     return (React.createElement("div", { key: index, style: { width: "100%", height: "400px", backgroundColor: "#ffffff", marginBottom: "10px" } },
                         React.createElement("div", { style: { overflow: "hidden", padding: "30px 0 0 50px" } },
                             React.createElement("div", { style: { fontSize: "42px", color: "#333333", fontWeight: "600", float: "left" } }, item.name),
-                            React.createElement(react_router_dom_11.Link, { to: { pathname: "/roomPatternUpdate", state: { index: index } } },
+                            React.createElement(react_router_dom_12.Link, { to: { pathname: "/roomPatternUpdate", state: { index: index } } },
                                 React.createElement("div", { style: { float: "right", fontSize: "40px", color: "#0B8BF0", marginRight: "50px" } }, "\u4FEE\u6539")),
                             React.createElement("div", { style: { float: "right", fontSize: "40px", color: "#F00B0B", marginRight: "50px" }, onClick: e => this.delete(index) }, "\u5220\u9664")),
                         React.createElement("div", { style: { width: "100%", height: "300px", lineHeight: "300px", paddingLeft: "50px" } },
@@ -12073,68 +11693,68 @@ define("modificationAuthenticationDetail", ["require", "exports", "react", "data
     }
     exports.default = modificationAuthenticationDetail;
 });
-define("router", ["require", "exports", "react-router-dom", "react", "index", "home", "parkCompany", "photograph", "infoArea", "information", "personalCenter", "findLease", "applyPut", "bookSite", "repairsOnline", "parking", "narrate", "isay", "workOrder", "workOrderDetail", "modificationAuthentication", "message", "enterpriseInformation", "rentRoom", "rentRoomDetail", "defaultRentRoom", "parkWorkOrder", "serviceTel", "distribute", "searchUser", "statisticalStatement", "informationChild", "informationChilds", "informationDetail", "informationDetails", "attractInvestment", "attractInvestmentList", "room", "roomDetail", "roomUse", "roomBase", "roomPattern", "roomPatternUpdate", "modificationAuthenticationDetail", "identityAuthentication"], function (require, exports, react_router_dom_12, React, index_1, home_1, parkCompany_1, photograph_1, infoArea_1, information_1, personalCenter_1, findLease_1, applyPut_1, bookSite_1, repairsOnline_1, parking_1, narrate_1, isay_1, workOrder_1, workOrderDetail_1, modificationAuthentication_1, message_1, enterpriseInformation_1, rentRoom_1, rentRoomDetail_1, defaultRentRoom_1, parkWorkOrder_1, serviceTel_1, distribute_1, searchUser_1, statisticalStatement_1, informationChild_1, informationChilds_1, informationDetail_1, informationDetails_1, attractInvestment_1, attractInvestmentList_1, room_1, roomDetail_1, roomUse_1, roomBase_1, roomPattern_1, roomPatternUpdate_1, modificationAuthenticationDetail_1, identityAuthentication_1) {
+define("router", ["require", "exports", "react-router-dom", "react", "index", "home", "parkCompany", "photograph", "infoArea", "information", "personalCenter", "findLease", "applyPut", "bookSite", "repairsOnline", "parking", "narrate", "isay", "workOrder", "workOrderDetail", "modificationAuthentication", "message", "enterpriseInformation", "rentRoom", "rentRoomDetail", "defaultRentRoom", "parkWorkOrder", "serviceTel", "distribute", "searchUser", "statisticalStatement", "informationChild", "informationChilds", "informationDetail", "informationDetails", "attractInvestment", "attractInvestmentList", "room", "roomDetail", "roomUse", "roomBase", "roomPattern", "roomPatternUpdate", "modificationAuthenticationDetail", "identityAuthentication"], function (require, exports, react_router_dom_13, React, index_1, home_1, parkCompany_1, photograph_1, infoArea_1, information_1, personalCenter_1, findLease_1, applyPut_1, bookSite_1, repairsOnline_1, parking_1, narrate_1, isay_1, workOrder_1, workOrderDetail_1, modificationAuthentication_1, message_1, enterpriseInformation_1, rentRoom_1, rentRoomDetail_1, defaultRentRoom_1, parkWorkOrder_1, serviceTel_1, distribute_1, searchUser_1, statisticalStatement_1, informationChild_1, informationChilds_1, informationDetail_1, informationDetails_1, attractInvestment_1, attractInvestmentList_1, room_1, roomDetail_1, roomUse_1, roomBase_1, roomPattern_1, roomPatternUpdate_1, modificationAuthenticationDetail_1, identityAuthentication_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Router extends React.Component {
         render() {
-            return (React.createElement(react_router_dom_12.HashRouter, null,
-                React.createElement(react_router_dom_12.Switch, null,
-                    React.createElement(react_router_dom_12.Route, { exact: true, path: "/", component: index_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/parkCompany", component: parkCompany_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/photograph", component: photograph_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/findLease", component: findLease_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/applyPut", component: applyPut_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/bookSite", component: bookSite_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/repairsOnline", component: repairsOnline_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/parking", component: parking_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/narrate", component: narrate_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/isay", component: isay_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/workOrder", component: workOrder_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/workOrderDetail", component: workOrderDetail_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/parkworkOrder", component: parkWorkOrder_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/modificationAuthentication", component: modificationAuthentication_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/message", component: message_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/enterpriseInformation", component: enterpriseInformation_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/rentRoom", component: rentRoom_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/rentRoomDetail", component: rentRoomDetail_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/defaultRentRoom", component: defaultRentRoom_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/serviceTel", component: serviceTel_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/distribute", component: distribute_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/searchUser", component: searchUser_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/statisticalStatement", component: statisticalStatement_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/informationDetail", component: informationDetail_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/attractInvestment", component: attractInvestment_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/attractInvestmentList", component: attractInvestmentList_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/room", component: room_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/roomDetail", component: roomDetail_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/roomUse", component: roomUse_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/roomBase", component: roomBase_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/roomPattern", component: roomPattern_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/roomPatternUpdate", component: roomPatternUpdate_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/modificationAuthenticationDetail", component: modificationAuthenticationDetail_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/identityAuthentication", component: identityAuthentication_1.default }),
-                    React.createElement(react_router_dom_12.Route, { path: "/home", render: (props) => (React.createElement(home_1.default, Object.assign({}, props),
-                            React.createElement(react_router_dom_12.Route, { path: "/home/infoArea", component: infoArea_1.default }),
-                            React.createElement(react_router_dom_12.Route, { path: "/home/information", component: information_1.default }),
-                            React.createElement(react_router_dom_12.Route, { path: "/home/informationChilds", component: informationChilds_1.default }),
-                            React.createElement(react_router_dom_12.Route, { path: "/home/informationDetails", component: informationDetails_1.default }),
-                            React.createElement(react_router_dom_12.Route, { path: "/home/personalCenter", component: personalCenter_1.default }))) }),
-                    React.createElement(react_router_dom_12.Route, { path: "/", render: (props) => (React.createElement(index_1.default, Object.assign({}, props),
-                            React.createElement(react_router_dom_12.Route, { path: "/informationChild", component: informationChild_1.default }),
-                            React.createElement(react_router_dom_12.Route, { path: "/personalCenter", component: personalCenter_1.default }))) }))));
+            return (React.createElement(react_router_dom_13.HashRouter, null,
+                React.createElement(react_router_dom_13.Switch, null,
+                    React.createElement(react_router_dom_13.Route, { exact: true, path: "/", component: index_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/parkCompany", component: parkCompany_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/photograph", component: photograph_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/findLease", component: findLease_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/applyPut", component: applyPut_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/bookSite", component: bookSite_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/repairsOnline", component: repairsOnline_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/parking", component: parking_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/narrate", component: narrate_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/isay", component: isay_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/workOrder", component: workOrder_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/workOrderDetail", component: workOrderDetail_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/parkworkOrder", component: parkWorkOrder_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/modificationAuthentication", component: modificationAuthentication_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/message", component: message_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/enterpriseInformation", component: enterpriseInformation_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/rentRoom", component: rentRoom_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/rentRoomDetail", component: rentRoomDetail_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/defaultRentRoom", component: defaultRentRoom_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/serviceTel", component: serviceTel_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/distribute", component: distribute_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/searchUser", component: searchUser_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/statisticalStatement", component: statisticalStatement_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/informationDetail", component: informationDetail_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/attractInvestment", component: attractInvestment_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/attractInvestmentList", component: attractInvestmentList_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/room", component: room_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/roomDetail", component: roomDetail_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/roomUse", component: roomUse_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/roomBase", component: roomBase_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/roomPattern", component: roomPattern_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/roomPatternUpdate", component: roomPatternUpdate_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/modificationAuthenticationDetail", component: modificationAuthenticationDetail_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/identityAuthentication", component: identityAuthentication_1.default }),
+                    React.createElement(react_router_dom_13.Route, { path: "/home", render: (props) => (React.createElement(home_1.default, Object.assign({}, props),
+                            React.createElement(react_router_dom_13.Route, { path: "/home/infoArea", component: infoArea_1.default }),
+                            React.createElement(react_router_dom_13.Route, { path: "/home/information", component: information_1.default }),
+                            React.createElement(react_router_dom_13.Route, { path: "/home/informationChilds", component: informationChilds_1.default }),
+                            React.createElement(react_router_dom_13.Route, { path: "/home/informationDetails", component: informationDetails_1.default }),
+                            React.createElement(react_router_dom_13.Route, { path: "/home/personalCenter", component: personalCenter_1.default }))) }),
+                    React.createElement(react_router_dom_13.Route, { path: "/", render: (props) => (React.createElement(index_1.default, Object.assign({}, props),
+                            React.createElement(react_router_dom_13.Route, { path: "/informationChild", component: informationChild_1.default }),
+                            React.createElement(react_router_dom_13.Route, { path: "/personalCenter", component: personalCenter_1.default }))) }))));
         }
     }
     exports.default = Router;
 });
-define("index", ["require", "exports", "react", "react-dom", "react-router-dom", "router", "parkCompany", "findLease", "applyPut", "photograph", "bookSite", "parking", "bottomBtn", "repairsOnline", "dataService", "compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_13, router_1, parkCompany_2, findLease_2, applyPut_2, photograph_2, bookSite_2, parking_2, bottomBtn_1, repairsOnline_2, dataService_37, compat_12) {
+define("index", ["require", "exports", "react", "react-dom", "react-router-dom", "router", "parkCompany", "findLease", "applyPut", "photograph", "bookSite", "parking", "bottomBtn", "repairsOnline", "dataService", "compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_14, router_1, parkCompany_2, findLease_2, applyPut_2, photograph_2, bookSite_2, parking_2, bottomBtn_1, repairsOnline_2, dataService_37, compat_11) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_37.default();
-            this.globalAction = new compat_12.default();
+            this.globalAction = new compat_11.default();
             this.state = {
                 inputValue: "请输入园区名/区域名/商圈名",
                 city: "",
@@ -12566,7 +12186,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
                     React.createElement("div", { className: "mask", onClick: this.clickMask.bind(this) }) : null,
                 React.createElement("div", { className: "index-park" },
                     this.state.parkArr.map((item, index) => {
-                        return (React.createElement(react_router_dom_13.Link, { to: "/home" },
+                        return (React.createElement(react_router_dom_14.Link, { to: "/home" },
                             React.createElement("div", { className: "index-child-park", key: index, onClick: this.initPark.bind(this, item.id) },
                                 React.createElement("div", { className: "index-child-park-left" },
                                     React.createElement("img", { src: this.state.type ? "./park_m/image/a.jpg" : "./park_m/image/b.jpg", className: "park-img" })),
@@ -12665,7 +12285,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         constructor(props) {
             super(props);
             this.dataService = new dataService_37.default();
-            this.globalAction = new compat_12.default();
+            this.globalAction = new compat_11.default();
             this.state = {
                 username: "",
                 password: "",
@@ -12737,14 +12357,14 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
     exports.default = Index;
     ReactDOM.render(React.createElement(router_1.default, null), document.getElementById('viewContainer'));
 });
-define("index\uFF083\uFF09", ["require", "exports", "react", "react-dom", "react-router-dom", "router", "parkCompany", "findLease", "applyPut", "photograph", "bookSite", "parking", "bottomBtn", "repairsOnline", "dataService", "compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_14, router_2, parkCompany_3, findLease_3, applyPut_3, photograph_3, bookSite_3, parking_3, bottomBtn_2, repairsOnline_3, dataService_38, compat_13) {
+define("index\uFF083\uFF09", ["require", "exports", "react", "react-dom", "react-router-dom", "router", "parkCompany", "findLease", "applyPut", "photograph", "bookSite", "parking", "bottomBtn", "repairsOnline", "dataService", "compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_15, router_2, parkCompany_3, findLease_3, applyPut_3, photograph_3, bookSite_3, parking_3, bottomBtn_2, repairsOnline_3, dataService_38, compat_12) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_38.default();
-            this.globalAction = new compat_13.default();
+            this.globalAction = new compat_12.default();
             this.state = {
                 inputValue: "请输入园区名/区域名/商圈名",
                 city: "",
@@ -13145,7 +12765,7 @@ define("index\uFF083\uFF09", ["require", "exports", "react", "react-dom", "react
                     React.createElement("div", { className: "mask", onClick: this.clickMask.bind(this) }) : null,
                 React.createElement("div", { className: "index-park" },
                     this.state.parkArr.map((item, index) => {
-                        return (React.createElement(react_router_dom_14.Link, { to: "/home" },
+                        return (React.createElement(react_router_dom_15.Link, { to: "/home" },
                             React.createElement("div", { className: "index-child-park", key: index, onClick: this.initPark.bind(this, 1001) },
                                 React.createElement("div", { className: "index-child-park-left" },
                                     React.createElement("img", { src: this.state.type ? "./park_m/image/a.jpg" : "./park_m/image/b.jpg", className: "park-img" })),
@@ -13242,7 +12862,7 @@ define("index\uFF083\uFF09", ["require", "exports", "react", "react-dom", "react
         constructor(props) {
             super(props);
             this.dataService = new dataService_38.default();
-            this.globalAction = new compat_13.default();
+            this.globalAction = new compat_12.default();
             this.state = {
                 username: "",
                 password: "",
@@ -13314,14 +12934,14 @@ define("index\uFF083\uFF09", ["require", "exports", "react", "react-dom", "react
     exports.default = Index;
     ReactDOM.render(React.createElement(router_2.default, null), document.getElementById('viewContainer'));
 });
-define("narrate-s", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_14, dataService_39) {
+define("narrate-s", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_13, dataService_39) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Narrate extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_39.default();
-            this.globalAction = new compat_14.default();
+            this.globalAction = new compat_13.default();
             this.state = {
                 paused: true,
                 parkAudio: [],
@@ -13435,13 +13055,13 @@ define("narrate-s", ["require", "exports", "react", "react-router-dom", "compat"
     }
     exports.default = Narrate;
 });
-define("parkCompany (2)", ["require", "exports", "react", "react-router-dom", "compat", "dataService"], function (require, exports, React, RouterDOM, compat_15, dataService_40) {
+define("parkCompany (2)", ["require", "exports", "react", "react-router-dom", "compat", "dataService"], function (require, exports, React, RouterDOM, compat_14, dataService_40) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParkCompany extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_15.default();
+            this.globalAction = new compat_14.default();
             this.state = {
                 parkCompanycss: "parkCompany",
                 showList: true,
@@ -13492,7 +13112,7 @@ define("parkCompany (2)", ["require", "exports", "react", "react-router-dom", "c
         constructor(props) {
             super(props);
             this.dataService = new dataService_40.default();
-            this.globalAction = new compat_15.default();
+            this.globalAction = new compat_14.default();
             this.state = {
                 companyNull: "hide",
                 park_id: 1001,
@@ -14027,7 +13647,7 @@ define("324/compat", ["require", "exports"], function (require, exports) {
     }
     exports.default = GlobalAction;
 });
-define("324/bottomBtn", ["require", "exports", "react", "react-router-dom", "324/compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_16) {
+define("324/bottomBtn", ["require", "exports", "react", "react-router-dom", "324/compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_15) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class BottomBtn extends React.Component {
@@ -14036,7 +13656,7 @@ define("324/bottomBtn", ["require", "exports", "react", "react-router-dom", "324
             this.props = {
                 history: this.props.history
             };
-            this.globalAction = new compat_16.default();
+            this.globalAction = new compat_15.default();
             this.state = {
                 index: 1,
                 iconImg1In: "./park_m/image/bottomBtn/3d-in.png",
@@ -14106,13 +13726,13 @@ define("324/bottomBtn", ["require", "exports", "react", "react-router-dom", "324
     }
     exports.default = BottomBtn;
 });
-define("parkCompany (3)", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_17, dataService_41, antd_mobile_14) {
+define("parkCompany (3)", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_16, dataService_41, antd_mobile_13) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParkCompany extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_17.default();
+            this.globalAction = new compat_16.default();
             this.state = {
                 parkCompanycss: "parkCompany",
                 showList: true,
@@ -14163,7 +13783,7 @@ define("parkCompany (3)", ["require", "exports", "react", "react-router-dom", "c
         constructor(props) {
             super(props);
             this.dataService = new dataService_41.default();
-            this.globalAction = new compat_17.default();
+            this.globalAction = new compat_16.default();
             this.state = {
                 companyNull: "hide",
                 park_id: 1001,
@@ -14568,8 +14188,8 @@ define("parkCompany (3)", ["require", "exports", "react", "react-router-dom", "c
         }
         render() {
             return (React.createElement("div", { className: "mien" },
-                React.createElement(antd_mobile_14.WingBlank, null,
-                    React.createElement(antd_mobile_14.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
+                React.createElement(antd_mobile_13.WingBlank, null,
+                    React.createElement(antd_mobile_13.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
                             window.dispatchEvent(new Event('resize'));
                             this.setState({ imgHeight: 'auto' });
                         } })))))));
@@ -14638,13 +14258,13 @@ define("parkCompany (3)", ["require", "exports", "react", "react-router-dom", "c
     }
     exports.default = ParkCompany;
 });
-define("parkCompany (4)", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_18, dataService_42, antd_mobile_15) {
+define("parkCompany (4)", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_17, dataService_42, antd_mobile_14) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParkCompany extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_18.default();
+            this.globalAction = new compat_17.default();
             this.state = {
                 parkCompanycss: "parkCompany",
                 showList: true,
@@ -14699,7 +14319,7 @@ define("parkCompany (4)", ["require", "exports", "react", "react-router-dom", "c
         constructor(props) {
             super(props);
             this.dataService = new dataService_42.default();
-            this.globalAction = new compat_18.default();
+            this.globalAction = new compat_17.default();
             this.state = {
                 companyNull: "hide",
                 park_id: 1001,
@@ -15124,8 +14744,8 @@ define("parkCompany (4)", ["require", "exports", "react", "react-router-dom", "c
             return (React.createElement("div", { className: "mien" },
                 React.createElement("p", { className: this.state.urlNull, style: { "color": "#333333", "text-align": "center", "font-size": "2.5rem" } }, "\u6682\u65E0\u56FE\u7247\u00B7\u00B7\u00B7"),
                 React.createElement("div", { className: this.state.urlShow },
-                    React.createElement(antd_mobile_15.WingBlank, null,
-                        React.createElement(antd_mobile_15.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
+                    React.createElement(antd_mobile_14.WingBlank, null,
+                        React.createElement(antd_mobile_14.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
                                 window.dispatchEvent(new Event('resize'));
                                 this.setState({ imgHeight: 'auto' });
                             } }))))))));
@@ -15222,8 +14842,8 @@ define("parkCompany (4)", ["require", "exports", "react", "react-router-dom", "c
             return (React.createElement("div", { className: "product" },
                 React.createElement("p", { className: this.state.urlNull, style: { "color": "#333333", "text-align": "center", "font-size": "2.5rem" } }, "\u6682\u65E0\u56FE\u7247\u00B7\u00B7\u00B7"),
                 React.createElement("div", { className: this.state.urlShow },
-                    React.createElement(antd_mobile_15.WingBlank, null,
-                        React.createElement(antd_mobile_15.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
+                    React.createElement(antd_mobile_14.WingBlank, null,
+                        React.createElement(antd_mobile_14.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
                                 window.dispatchEvent(new Event('resize'));
                                 this.setState({ imgHeight: 'auto' });
                             } }))))))));
@@ -15231,7 +14851,7 @@ define("parkCompany (4)", ["require", "exports", "react", "react-router-dom", "c
     }
     exports.default = ParkCompany;
 });
-define("personalCenter - \u526F\u672C", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_15, dataService_43) {
+define("personalCenter - \u526F\u672C", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_16, dataService_43) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class PersonalCenter extends React.Component {
@@ -15324,7 +14944,7 @@ define("personalCenter - \u526F\u672C", ["require", "exports", "react", "react-r
                                     color: "#83d5ff", fontSize: "27px", backgroundColor: "#2e9cf3", width: "160px",
                                     height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
                                 }, onClick: this.switchMember.bind(this) }, this.state.userInfo)),
-                        React.createElement(react_router_dom_15.Link, { to: "/modificationAuthentication" },
+                        React.createElement(react_router_dom_16.Link, { to: "/modificationAuthentication" },
                             React.createElement("div", { className: "personal-center-right" },
                                 React.createElement("img", { src: "./park_m/image/w-right.png" }))))),
                 this.state.pathname === "/personalCenter" ?
@@ -15353,25 +14973,25 @@ define("personalCenter - \u526F\u672C", ["require", "exports", "react", "react-r
                             React.createElement("span", null, this.state.parkPhone),
                             React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" }, onClick: this.changeParkPhone.bind(this) }, "\u4FEE\u6539")),
                         React.createElement("div", { className: "personal-center-my" },
-                            React.createElement(react_router_dom_15.Link, { to: sessionStorage.getItem("userInfo") === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
+                            React.createElement(react_router_dom_16.Link, { to: sessionStorage.getItem("userInfo") === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
                                 React.createElement("div", { className: "personal-center-my-left" },
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "5"),
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u5DE5\u5355"))),
                             React.createElement("div", { className: "personal-center-my-middle" }),
-                            React.createElement(react_router_dom_15.Link, { to: "/message" },
+                            React.createElement(react_router_dom_16.Link, { to: "/message" },
                                 React.createElement("div", { className: "personal-center-my-right" },
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "6"),
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u6D88\u606F")))))
                     : null,
                 sessionStorage.getItem("userInfo") === "企业管理员" && this.state.pathname !== "/personalCenter" ?
                     React.createElement("div", { className: "personal-center-enterprise" },
-                        React.createElement(react_router_dom_15.Link, { to: "/enterpriseInformation" },
+                        React.createElement(react_router_dom_16.Link, { to: "/enterpriseInformation" },
                             React.createElement("div", { className: "personal-center-enterprise-child" },
                                 React.createElement("img", { src: "./park_m/image/enterprise.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
                                 React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u4F01\u4E1A\u4FE1\u606F\u7BA1\u7406"),
                                 React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
                                     React.createElement("img", { src: "./park_m/image/right.png" })))),
-                        React.createElement(react_router_dom_15.Link, { to: "/rentRoom" },
+                        React.createElement(react_router_dom_16.Link, { to: "/rentRoom" },
                             React.createElement("div", { className: "personal-center-enterprise-child" },
                                 React.createElement("img", { src: "./park_m/image/let.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
                                 React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"),
@@ -15386,7 +15006,7 @@ define("personalCenter - \u526F\u672C", ["require", "exports", "react", "react-r
                                 React.createElement("img", { src: "./park_m/image/right.png", className: this.state.isSpread ? "personal-center-bottom-img" : "" }))),
                         this.state.isSpread ?
                             React.createElement("div", { style: { backgroundColor: "#ffffff", overflow: "hidden", paddingTop: "30px" } }, this.state.parkList.map((item, index) => {
-                                return (React.createElement(react_router_dom_15.Link, { to: item.url },
+                                return (React.createElement(react_router_dom_16.Link, { to: item.url },
                                     React.createElement("div", { key: index, className: "personal-center-park-child" },
                                         React.createElement("img", { src: item.imgUrl, width: "110px", height: "110px" }),
                                         React.createElement("div", { style: { marginTop: "10px" } }, item.name))));
@@ -15395,7 +15015,7 @@ define("personalCenter - \u526F\u672C", ["require", "exports", "react", "react-r
     }
     exports.default = PersonalCenter;
 });
-define("personalCenter\uFF082\uFF09", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_16, dataService_44) {
+define("personalCenter\uFF082\uFF09", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_17, dataService_44) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class PersonalCenter extends React.Component {
@@ -15446,7 +15066,7 @@ define("personalCenter\uFF082\uFF09", ["require", "exports", "react", "react-rou
                                     color: "#83d5ff", fontSize: "27px", backgroundColor: "#2e9cf3", width: "160px",
                                     height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
                                 } }, this.state.userInfo.roles.role_name)),
-                        React.createElement(react_router_dom_16.Link, { to: "/modificationAuthentication" },
+                        React.createElement(react_router_dom_17.Link, { to: "/modificationAuthentication" },
                             React.createElement("div", { className: "personal-center-right" },
                                 React.createElement("img", { src: "./park_m/image/w-right.png" }))))),
                 this.state.pathname === "/personalCenter" ?
@@ -15474,25 +15094,25 @@ define("personalCenter\uFF082\uFF09", ["require", "exports", "react", "react-rou
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5BA2\u670D\u7535\u8BDD"),
                             React.createElement("span", null, "0773-123456")),
                         React.createElement("div", { className: "personal-center-my" },
-                            React.createElement(react_router_dom_16.Link, { to: this.state.userInfo.roles.role_name === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
+                            React.createElement(react_router_dom_17.Link, { to: this.state.userInfo.roles.role_name === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
                                 React.createElement("div", { className: "personal-center-my-left" },
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "5"),
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u5DE5\u5355"))),
                             React.createElement("div", { className: "personal-center-my-middle" }),
-                            React.createElement(react_router_dom_16.Link, { to: "/message" },
+                            React.createElement(react_router_dom_17.Link, { to: "/message" },
                                 React.createElement("div", { className: "personal-center-my-right" },
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "6"),
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u6D88\u606F")))))
                     : null,
                 this.state.userInfo.roles.role_name === "企业管理员" && this.state.pathname !== "/personalCenter" ?
                     React.createElement("div", { className: "personal-center-enterprise" },
-                        React.createElement(react_router_dom_16.Link, { to: "/enterpriseInformation" },
+                        React.createElement(react_router_dom_17.Link, { to: "/enterpriseInformation" },
                             React.createElement("div", { className: "personal-center-enterprise-child" },
                                 React.createElement("img", { src: "./park_m/image/enterprise.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
                                 React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u4F01\u4E1A\u4FE1\u606F\u7BA1\u7406"),
                                 React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
                                     React.createElement("img", { src: "./park_m/image/right.png" })))),
-                        React.createElement(react_router_dom_16.Link, { to: "/rentRoom" },
+                        React.createElement(react_router_dom_17.Link, { to: "/rentRoom" },
                             React.createElement("div", { className: "personal-center-enterprise-child" },
                                 React.createElement("img", { src: "./park_m/image/let.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
                                 React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"),
@@ -15507,7 +15127,7 @@ define("personalCenter\uFF082\uFF09", ["require", "exports", "react", "react-rou
                                 React.createElement("img", { src: "./park_m/image/right.png", className: this.state.isSpread ? "personal-center-bottom-img" : "" }))),
                         this.state.isSpread ?
                             React.createElement("div", { style: { backgroundColor: "#ffffff", overflow: "hidden", paddingTop: "30px" } }, this.state.parkList.map((item, index) => {
-                                return (React.createElement(react_router_dom_16.Link, { to: item.url },
+                                return (React.createElement(react_router_dom_17.Link, { to: item.url },
                                     React.createElement("div", { key: index, className: "personal-center-park-child" },
                                         React.createElement("img", { src: item.imgUrl, width: "110px", height: "110px" }),
                                         React.createElement("div", { style: { marginTop: "10px" } }, item.name))));
@@ -15516,13 +15136,13 @@ define("personalCenter\uFF082\uFF09", ["require", "exports", "react", "react-rou
     }
     exports.default = PersonalCenter;
 });
-define("324/findLease", ["require", "exports", "react", "react-router-dom", "324/compat", "324/dataService"], function (require, exports, React, RouterDOM, compat_19, dataService_45) {
+define("324/findLease", ["require", "exports", "react", "react-router-dom", "324/compat", "324/dataService"], function (require, exports, React, RouterDOM, compat_18, dataService_45) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class FindLease extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_19.default();
+            this.globalAction = new compat_18.default();
             this.state = {
                 FindLeasecss: "findLease",
                 showList: true,
@@ -15576,7 +15196,7 @@ define("324/findLease", ["require", "exports", "react", "react-router-dom", "324
         constructor(props) {
             super(props);
             this.dataService = new dataService_45.default();
-            this.globalAction = new compat_19.default();
+            this.globalAction = new compat_18.default();
             this.state = {
                 park_id: "1001",
                 roomId: "",
@@ -16461,14 +16081,14 @@ define("324/dataService", ["require", "exports"], function (require, exports) {
     }
     exports.default = DataService;
 });
-define("324/applyPut", ["require", "exports", "react", "react-router-dom", "324/dataService", "324/compat"], function (require, exports, React, RouterDOM, dataService_46, compat_20) {
+define("324/applyPut", ["require", "exports", "react", "react-router-dom", "324/dataService", "324/compat"], function (require, exports, React, RouterDOM, dataService_46, compat_19) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ApplyPut extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_46.default();
-            this.globalAction = new compat_20.default();
+            this.globalAction = new compat_19.default();
             this.state = {
                 inval: "",
                 applicant: "莫光宇",
@@ -16620,13 +16240,13 @@ define("324/applyPut", ["require", "exports", "react", "react-router-dom", "324/
     }
     exports.default = ApplyPut;
 });
-define("324/bookSite", ["require", "exports", "react", "react-router-dom", "324/dataService", "324/compat"], function (require, exports, React, RouterDOM, dataService_47, compat_21) {
+define("324/bookSite", ["require", "exports", "react", "react-router-dom", "324/dataService", "324/compat"], function (require, exports, React, RouterDOM, dataService_47, compat_20) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class BookSite extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_21.default();
+            this.globalAction = new compat_20.default();
             this.state = {
                 BookSitecss: "bookSite",
                 showList: true,
@@ -16680,7 +16300,7 @@ define("324/bookSite", ["require", "exports", "react", "react-router-dom", "324/
         constructor(props) {
             super(props);
             this.dataService = new dataService_47.default();
-            this.globalAction = new compat_21.default();
+            this.globalAction = new compat_20.default();
             this.state = {
                 bookListcss: "bookList-part",
                 iconfont: "iconfont iconfont-unturn",
@@ -16914,7 +16534,7 @@ define("324/bookSite", ["require", "exports", "react", "react-router-dom", "324/
     class BookRoom extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_21.default();
+            this.globalAction = new compat_20.default();
             this.dataService = new dataService_47.default();
             this.state = {
                 iconfont: "iconfont iconfont-unturn",
@@ -17127,7 +16747,7 @@ define("324/bookSite", ["require", "exports", "react", "react-router-dom", "324/
         }
     }
 });
-define("324/home", ["require", "exports", "react", "react-router-dom", "324/bottomBtn", "324/dataService", "324/compat", "css!./styles/iconfont.css", "css!./styles/view.css"], function (require, exports, React, RouterDOM, bottomBtn_3, dataService_48, compat_22) {
+define("324/home", ["require", "exports", "react", "react-router-dom", "324/bottomBtn", "324/dataService", "324/compat", "css!./styles/iconfont.css", "css!./styles/view.css"], function (require, exports, React, RouterDOM, bottomBtn_3, dataService_48, compat_21) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Home extends React.Component {
@@ -17137,7 +16757,7 @@ define("324/home", ["require", "exports", "react", "react-router-dom", "324/bott
                 history: this.props.history,
                 children: this.props.children
             };
-            this.globalAction = new compat_22.default();
+            this.globalAction = new compat_21.default();
             this.dataService = new dataService_48.default();
             this.setToken = this.setToken.bind(this);
         }
@@ -17189,7 +16809,7 @@ define("324/home", ["require", "exports", "react", "react-router-dom", "324/bott
                     { name: "交通" },
                 ]
             };
-            this.globalAction = new compat_22.default();
+            this.globalAction = new compat_21.default();
         }
         moreIcon(a) {
             console.log('toggleIconbox', a);
@@ -17481,13 +17101,13 @@ define("324/home", ["require", "exports", "react", "react-router-dom", "324/bott
     }
     exports.default = Home;
 });
-define("324/parkCompany", ["require", "exports", "react", "react-router-dom", "324/compat", "324/dataService"], function (require, exports, React, RouterDOM, compat_23, dataService_49) {
+define("324/parkCompany", ["require", "exports", "react", "react-router-dom", "324/compat", "324/dataService"], function (require, exports, React, RouterDOM, compat_22, dataService_49) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParkCompany extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_23.default();
+            this.globalAction = new compat_22.default();
             this.state = {
                 parkCompanycss: "parkCompany",
                 showList: true,
@@ -17543,7 +17163,7 @@ define("324/parkCompany", ["require", "exports", "react", "react-router-dom", "3
         constructor(props) {
             super(props);
             this.dataService = new dataService_49.default();
-            this.globalAction = new compat_23.default();
+            this.globalAction = new compat_22.default();
             this.state = {
                 park_id: 1001,
                 companyListcss: "companyList-part",
@@ -18427,7 +18047,7 @@ define("324/photograph", ["require", "exports", "react", "react-router-dom", "32
         }
     }
 });
-define("324/infoArea", ["require", "exports", "react", "react-router-dom", "css!./styles/infoArea.css"], function (require, exports, React, react_router_dom_17) {
+define("324/infoArea", ["require", "exports", "react", "react-router-dom", "css!./styles/infoArea.css"], function (require, exports, React, react_router_dom_18) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class InfoArea extends React.Component {
@@ -18508,7 +18128,7 @@ define("324/infoArea", ["require", "exports", "react", "react-router-dom", "css!
                                     React.createElement("div", { className: "infoarea-br-data" }, "2020-03-06 14:38:15"))));
                     }),
                     React.createElement("div", { style: { width: "100%", height: "30%", textAlign: "center", fontSize: "40px", lineHeight: "60px", margin: "20px 0 0 -25px" } }, "\u5230\u5E95\u5566~")),
-                React.createElement(react_router_dom_17.Link, { to: "/isay" },
+                React.createElement(react_router_dom_18.Link, { to: "/isay" },
                     React.createElement("div", { className: "infoarea-add-c" },
                         React.createElement("img", { src: "./park_m/image/add.png", width: "60px", height: "60px" })))));
         }
@@ -18545,7 +18165,7 @@ define("324/information", ["require", "exports", "react", "css!./styles/informat
     }
     exports.default = Information;
 });
-define("324/personalCenter", ["require", "exports", "react", "react-router-dom", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_18) {
+define("324/personalCenter", ["require", "exports", "react", "react-router-dom", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_19) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class PersonalCenter extends React.Component {
@@ -18595,7 +18215,7 @@ define("324/personalCenter", ["require", "exports", "react", "react-router-dom",
                                     color: "#83d5ff", fontSize: "27px", backgroundColor: "#2e9cf3", width: "160px",
                                     height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
                                 }, onClick: this.switchMember.bind(this) }, this.state.userInfo)),
-                        React.createElement(react_router_dom_18.Link, { to: "/modificationAuthentication" },
+                        React.createElement(react_router_dom_19.Link, { to: "/modificationAuthentication" },
                             React.createElement("div", { className: "personal-center-right" },
                                 React.createElement("img", { src: "./park_m/image/w-right.png" }))))),
                 React.createElement("div", { className: "personal-center-tag" },
@@ -18610,12 +18230,12 @@ define("324/personalCenter", ["require", "exports", "react", "react-router-dom",
                     React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5BA2\u670D\u7535\u8BDD"),
                     React.createElement("span", null, "0773-123456")),
                 React.createElement("div", { className: "personal-center-my" },
-                    React.createElement(react_router_dom_18.Link, { to: "/workOrder" },
+                    React.createElement(react_router_dom_19.Link, { to: "/workOrder" },
                         React.createElement("div", { className: "personal-center-my-left" },
                             React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "5"),
                             React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u5DE5\u5355"))),
                     React.createElement("div", { className: "personal-center-my-middle" }),
-                    React.createElement(react_router_dom_18.Link, { to: "/message" },
+                    React.createElement(react_router_dom_19.Link, { to: "/message" },
                         React.createElement("div", { className: "personal-center-my-right" },
                             React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "6"),
                             React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u6D88\u606F")))),
@@ -18648,14 +18268,14 @@ define("324/personalCenter", ["require", "exports", "react", "react-router-dom",
     }
     exports.default = PersonalCenter;
 });
-define("324/repairsOnline", ["require", "exports", "react", "react-router-dom", "324/dataService", "324/compat"], function (require, exports, React, RouterDOM, dataService_51, compat_24) {
+define("324/repairsOnline", ["require", "exports", "react", "react-router-dom", "324/dataService", "324/compat"], function (require, exports, React, RouterDOM, dataService_51, compat_23) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RepairsOnline extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_51.default();
-            this.globalAction = new compat_24.default();
+            this.globalAction = new compat_23.default();
             this.state = {
                 reqairscss: "reqairs-part",
                 iconfont: "iconfont iconfont-unturn",
@@ -18849,13 +18469,13 @@ define("324/repairsOnline", ["require", "exports", "react", "react-router-dom", 
     }
     exports.default = RepairsOnline;
 });
-define("324/parking", ["require", "exports", "react", "react-router-dom", "324/compat", "324/dataService"], function (require, exports, React, RouterDOM, compat_25, dataService_52) {
+define("324/parking", ["require", "exports", "react", "react-router-dom", "324/compat", "324/dataService"], function (require, exports, React, RouterDOM, compat_24, dataService_52) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Parking extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_25.default();
+            this.globalAction = new compat_24.default();
             this.state = {
                 parkingcss: "parking",
                 iconfont: "iconfont iconfont-unturn",
@@ -18954,7 +18574,7 @@ define("324/parking", ["require", "exports", "react", "react-router-dom", "324/c
         constructor(props) {
             super(props);
             this.dataService = new dataService_52.default();
-            this.globalAction = new compat_25.default();
+            this.globalAction = new compat_24.default();
             this.state = {
                 contentULcss: "contentUL-part contentUL",
                 carTypeBox: "hide",
@@ -19278,7 +18898,7 @@ define("324/parking", ["require", "exports", "react", "react-router-dom", "324/c
     class Alteration extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_25.default();
+            this.globalAction = new compat_24.default();
             this.dataService = new dataService_52.default();
             this.state = {
                 componentBox: "componentBox-part",
@@ -19644,14 +19264,14 @@ define("324/parking", ["require", "exports", "react", "react-router-dom", "324/c
         }
     }
 });
-define("324/narrate", ["require", "exports", "react", "react-router-dom", "324/compat", "324/dataService", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_26, dataService_53) {
+define("324/narrate", ["require", "exports", "react", "react-router-dom", "324/compat", "324/dataService", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_25, dataService_53) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Narrate extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_53.default();
-            this.globalAction = new compat_26.default();
+            this.globalAction = new compat_25.default();
             this.state = {
                 paused: true,
                 activeType: 0,
@@ -19824,7 +19444,7 @@ define("324/isay", ["require", "exports", "react", "css!./styles/isay.css"], fun
     }
     exports.default = Isay;
 });
-define("324/workOrder", ["require", "exports", "react", "react-router-dom", "css!./styles/workOrder.css"], function (require, exports, React, react_router_dom_19) {
+define("324/workOrder", ["require", "exports", "react", "react-router-dom", "css!./styles/workOrder.css"], function (require, exports, React, react_router_dom_20) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class WorkOrder extends React.Component {
@@ -19854,7 +19474,7 @@ define("324/workOrder", ["require", "exports", "react", "react-router-dom", "css
                 })),
                 React.createElement("div", { className: "work-order-list" },
                     this.state.workOrderArray.map((item, index) => {
-                        return React.createElement(react_router_dom_19.Link, { to: "/workOrderDetail" },
+                        return React.createElement(react_router_dom_20.Link, { to: "/workOrderDetail" },
                             React.createElement("div", { key: index, className: "work-order-list-child" },
                                 React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 40px" } },
                                     React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, "\u4F01\u4E1A\u8BA4\u8BC1\u5DE5\u53551"),
@@ -20031,36 +19651,36 @@ define("324/message", ["require", "exports", "react", "css!./styles/message.css"
     }
     exports.default = Message;
 });
-define("324/router", ["require", "exports", "react-router-dom", "react", "324/index", "324/home", "324/parkCompany", "324/photograph", "324/infoArea", "324/information", "324/personalCenter", "324/findLease", "324/applyPut", "324/bookSite", "324/repairsOnline", "324/parking", "324/narrate", "324/isay", "324/workOrder", "324/workOrderDetail", "324/modificationAuthentication", "324/message"], function (require, exports, react_router_dom_20, React, index_2, home_2, parkCompany_4, photograph_4, infoArea_2, information_2, personalCenter_2, findLease_4, applyPut_4, bookSite_4, repairsOnline_4, parking_4, narrate_2, isay_2, workOrder_2, workOrderDetail_2, modificationAuthentication_2, message_2) {
+define("324/router", ["require", "exports", "react-router-dom", "react", "324/index", "324/home", "324/parkCompany", "324/photograph", "324/infoArea", "324/information", "324/personalCenter", "324/findLease", "324/applyPut", "324/bookSite", "324/repairsOnline", "324/parking", "324/narrate", "324/isay", "324/workOrder", "324/workOrderDetail", "324/modificationAuthentication", "324/message"], function (require, exports, react_router_dom_21, React, index_2, home_2, parkCompany_4, photograph_4, infoArea_2, information_2, personalCenter_2, findLease_4, applyPut_4, bookSite_4, repairsOnline_4, parking_4, narrate_2, isay_2, workOrder_2, workOrderDetail_2, modificationAuthentication_2, message_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Router extends React.Component {
         render() {
-            return (React.createElement(react_router_dom_20.HashRouter, null,
-                React.createElement(react_router_dom_20.Switch, null,
-                    React.createElement(react_router_dom_20.Route, { exact: true, path: "/", component: index_2.default }),
-                    React.createElement(react_router_dom_20.Route, { path: "/parkCompany", component: parkCompany_4.default }),
-                    React.createElement(react_router_dom_20.Route, { path: "/photograph", component: photograph_4.default }),
-                    React.createElement(react_router_dom_20.Route, { path: "/findLease", component: findLease_4.default }),
-                    React.createElement(react_router_dom_20.Route, { path: "/applyPut", component: applyPut_4.default }),
-                    React.createElement(react_router_dom_20.Route, { path: "/bookSite", component: bookSite_4.default }),
-                    React.createElement(react_router_dom_20.Route, { path: "/repairsOnline", component: repairsOnline_4.default }),
-                    React.createElement(react_router_dom_20.Route, { path: "/parking", component: parking_4.default }),
-                    React.createElement(react_router_dom_20.Route, { path: "/narrate", component: narrate_2.default }),
-                    React.createElement(react_router_dom_20.Route, { path: "/isay", component: isay_2.default }),
-                    React.createElement(react_router_dom_20.Route, { path: "/workOrder", component: workOrder_2.default }),
-                    React.createElement(react_router_dom_20.Route, { path: "/workOrderDetail", component: workOrderDetail_2.default }),
-                    React.createElement(react_router_dom_20.Route, { path: "/home", render: (props) => (React.createElement(home_2.default, Object.assign({}, props),
-                            React.createElement(react_router_dom_20.Route, { path: "/home/infoArea", component: infoArea_2.default }),
-                            React.createElement(react_router_dom_20.Route, { path: "/home/information", component: information_2.default }),
-                            React.createElement(react_router_dom_20.Route, { path: "/home/personalCenter", component: personalCenter_2.default }))) }),
-                    React.createElement(react_router_dom_20.Route, { path: "/modificationAuthentication", component: modificationAuthentication_2.default }),
-                    React.createElement(react_router_dom_20.Route, { path: "/message", component: message_2.default }))));
+            return (React.createElement(react_router_dom_21.HashRouter, null,
+                React.createElement(react_router_dom_21.Switch, null,
+                    React.createElement(react_router_dom_21.Route, { exact: true, path: "/", component: index_2.default }),
+                    React.createElement(react_router_dom_21.Route, { path: "/parkCompany", component: parkCompany_4.default }),
+                    React.createElement(react_router_dom_21.Route, { path: "/photograph", component: photograph_4.default }),
+                    React.createElement(react_router_dom_21.Route, { path: "/findLease", component: findLease_4.default }),
+                    React.createElement(react_router_dom_21.Route, { path: "/applyPut", component: applyPut_4.default }),
+                    React.createElement(react_router_dom_21.Route, { path: "/bookSite", component: bookSite_4.default }),
+                    React.createElement(react_router_dom_21.Route, { path: "/repairsOnline", component: repairsOnline_4.default }),
+                    React.createElement(react_router_dom_21.Route, { path: "/parking", component: parking_4.default }),
+                    React.createElement(react_router_dom_21.Route, { path: "/narrate", component: narrate_2.default }),
+                    React.createElement(react_router_dom_21.Route, { path: "/isay", component: isay_2.default }),
+                    React.createElement(react_router_dom_21.Route, { path: "/workOrder", component: workOrder_2.default }),
+                    React.createElement(react_router_dom_21.Route, { path: "/workOrderDetail", component: workOrderDetail_2.default }),
+                    React.createElement(react_router_dom_21.Route, { path: "/home", render: (props) => (React.createElement(home_2.default, Object.assign({}, props),
+                            React.createElement(react_router_dom_21.Route, { path: "/home/infoArea", component: infoArea_2.default }),
+                            React.createElement(react_router_dom_21.Route, { path: "/home/information", component: information_2.default }),
+                            React.createElement(react_router_dom_21.Route, { path: "/home/personalCenter", component: personalCenter_2.default }))) }),
+                    React.createElement(react_router_dom_21.Route, { path: "/modificationAuthentication", component: modificationAuthentication_2.default }),
+                    React.createElement(react_router_dom_21.Route, { path: "/message", component: message_2.default }))));
         }
     }
     exports.default = Router;
 });
-define("324/index", ["require", "exports", "react", "react-dom", "react-router-dom", "324/router", "324/parkCompany", "324/findLease", "324/applyPut", "324/photograph", "324/bookSite", "324/parking", "324/repairsOnline", "324/dataService", "324/compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_21, router_3, parkCompany_5, findLease_5, applyPut_5, photograph_5, bookSite_5, parking_5, repairsOnline_5, dataService_54, compat_27) {
+define("324/index", ["require", "exports", "react", "react-dom", "react-router-dom", "324/router", "324/parkCompany", "324/findLease", "324/applyPut", "324/photograph", "324/bookSite", "324/parking", "324/repairsOnline", "324/dataService", "324/compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_22, router_3, parkCompany_5, findLease_5, applyPut_5, photograph_5, bookSite_5, parking_5, repairsOnline_5, dataService_54, compat_26) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
@@ -20076,7 +19696,7 @@ define("324/index", ["require", "exports", "react", "react-dom", "react-router-d
                 history: this.props.history
             };
             this.dataService = new dataService_54.default();
-            this.globalAction = new compat_27.default();
+            this.globalAction = new compat_26.default();
             Index.g_pIns = this;
         }
         componentDidMount() {
@@ -20132,7 +19752,7 @@ define("324/index", ["require", "exports", "react", "react-dom", "react-router-d
                     "\u5BB6\u56ED\u533A\u4E0A\u7EBF"),
                 React.createElement("div", { className: "index-park" },
                     this.state.parkArr.map((item, index) => {
-                        return React.createElement(react_router_dom_21.Link, { to: "/home" },
+                        return React.createElement(react_router_dom_22.Link, { to: "/home" },
                             React.createElement("div", { className: "index-child-park", key: index, onClick: this.initPark.bind(this, 1001) },
                                 React.createElement("div", { className: "index-child-park-left" },
                                     React.createElement("img", { src: "./park_m/image/a.jpg", className: "park-img" })),
@@ -20231,13 +19851,13 @@ define("41/compat", ["require", "exports"], function (require, exports) {
     }
     exports.default = GlobalAction;
 });
-define("41/findLease", ["require", "exports", "react", "react-router-dom", "41/compat", "41/dataService"], function (require, exports, React, RouterDOM, compat_28, dataService_55) {
+define("41/findLease", ["require", "exports", "react", "react-router-dom", "41/compat", "41/dataService"], function (require, exports, React, RouterDOM, compat_27, dataService_55) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class FindLease extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_28.default();
+            this.globalAction = new compat_27.default();
             this.state = {
                 FindLeasecss: "findLease",
                 showList: true,
@@ -20291,7 +19911,7 @@ define("41/findLease", ["require", "exports", "react", "react-router-dom", "41/c
         constructor(props) {
             super(props);
             this.dataService = new dataService_55.default();
-            this.globalAction = new compat_28.default();
+            this.globalAction = new compat_27.default();
             this.state = {
                 roomNull: "hide",
                 park_id: "1001",
@@ -21331,14 +20951,14 @@ define("41/dataService", ["require", "exports"], function (require, exports) {
     }
     exports.default = DataService;
 });
-define("41/applyPut", ["require", "exports", "react", "react-router-dom", "antd-mobile", "41/dataService", "41/compat", "css!./styles/antd-mobile.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, antd_mobile_16, dataService_56, compat_29) {
+define("41/applyPut", ["require", "exports", "react", "react-router-dom", "antd-mobile", "41/dataService", "41/compat", "css!./styles/antd-mobile.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, antd_mobile_15, dataService_56, compat_28) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ApplyPut extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_56.default();
-            this.globalAction = new compat_29.default();
+            this.globalAction = new compat_28.default();
             this.state = {
                 applyPutStartTimeBox: "hide",
                 applyPutEndTimeBox: "hide",
@@ -21528,11 +21148,11 @@ define("41/applyPut", ["require", "exports", "react", "react-router-dom", "antd-
                                     "\u5177\u4F53\u5185\u5BB9\uFF1A"),
                                 React.createElement("textarea", { className: "getapplyPuttextarea", value: this.state.content, placeholder: "\u8BF7\u5C06\u5177\u4F53\u5185\u5BB9\u63CF\u8FF0\u51FA\u6765\u3002\uFF08200\u5B57\u5185\uFF09", onChange: this.changeContent.bind(this) })),
                             React.createElement("div", { className: this.state.applyPutStartTimeBox },
-                                React.createElement(antd_mobile_16.DatePicker, { mode: "date", title: "\u8BF7\u9009\u62E9\u65E5\u671F", extra: "\u8BF7\u9009\u62E9", value: this.state.startDate, onChange: this.setStartDate.bind(this) },
-                                    React.createElement(antd_mobile_16.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65E5\u671F"))),
+                                React.createElement(antd_mobile_15.DatePicker, { mode: "date", title: "\u8BF7\u9009\u62E9\u65E5\u671F", extra: "\u8BF7\u9009\u62E9", value: this.state.startDate, onChange: this.setStartDate.bind(this) },
+                                    React.createElement(antd_mobile_15.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65E5\u671F"))),
                             React.createElement("div", { className: this.state.applyPutEndTimeBox },
-                                React.createElement(antd_mobile_16.DatePicker, { mode: "date", title: "\u8BF7\u9009\u62E9\u65E5\u671F", extra: "\u8BF7\u9009\u62E9", value: this.state.endDate, onChange: this.setEndDate.bind(this) },
-                                    React.createElement(antd_mobile_16.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65E5\u671F"))),
+                                React.createElement(antd_mobile_15.DatePicker, { mode: "date", title: "\u8BF7\u9009\u62E9\u65E5\u671F", extra: "\u8BF7\u9009\u62E9", value: this.state.endDate, onChange: this.setEndDate.bind(this) },
+                                    React.createElement(antd_mobile_15.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65E5\u671F"))),
                             React.createElement("div", { className: "applyList" },
                                 React.createElement("p", { className: "theapplyP" }, "\u8BF7\u5728\u6240\u9700\u6295\u653E\u5730\u70B9\u540E\u8BBE\u7F6E\u6295\u653E\u5F00\u59CB\u53CA\u7ED3\u675F\u65F6\u95F4"),
                                 React.createElement("ul", { style: { "margin": "0" } },
@@ -21561,7 +21181,7 @@ define("41/applyPut", ["require", "exports", "react", "react-router-dom", "antd-
     }
     exports.default = ApplyPut;
 });
-define("41/attractInvestment", ["require", "exports", "react", "react-router-dom", "css!./styles/attractInvestment.css"], function (require, exports, React, react_router_dom_22) {
+define("41/attractInvestment", ["require", "exports", "react", "react-router-dom", "css!./styles/attractInvestment.css"], function (require, exports, React, react_router_dom_23) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class AttractInvestment extends React.Component {
@@ -21585,7 +21205,7 @@ define("41/attractInvestment", ["require", "exports", "react", "react-router-dom
                         React.createElement("img", { src: "./park_m/image/back.png", style: { margin: "-10px 10px 0 0" } }),
                         React.createElement("span", null, "\u5BA2\u670D\u7535\u8BDD"))),
                 React.createElement("div", { style: { backgroundColor: "#ffffff", width: "100%", height: "100%", marginTop: "15px" } }, this.state.tagArr.map((item, index) => {
-                    return (React.createElement(react_router_dom_22.Link, { to: item.url },
+                    return (React.createElement(react_router_dom_23.Link, { to: item.url },
                         React.createElement("div", { key: index, style: { width: "33%", height: "300px", float: "left", textAlign: "center", marginTop: "150px" } },
                             React.createElement("img", { src: item.imgUrl, style: { width: "120px", height: "120px" } }),
                             React.createElement("div", { style: { fontSize: "40px", color: "#333333" } }, item.name))));
@@ -21678,13 +21298,13 @@ define("41/attractInvestmentList", ["require", "exports", "react", "css!./styles
     }
     exports.default = AttractInvestmentList;
 });
-define("41/bookSite", ["require", "exports", "react", "react-router-dom", "antd-mobile", "41/dataService", "41/compat", "css!./styles/antd-mobile.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, antd_mobile_17, dataService_57, compat_30) {
+define("41/bookSite", ["require", "exports", "react", "react-router-dom", "antd-mobile", "41/dataService", "41/compat", "css!./styles/antd-mobile.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, antd_mobile_16, dataService_57, compat_29) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class BookSite extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_30.default();
+            this.globalAction = new compat_29.default();
             this.state = {
                 BookSitecss: "bookSite",
                 showList: true,
@@ -21738,7 +21358,7 @@ define("41/bookSite", ["require", "exports", "react", "react-router-dom", "antd-
         constructor(props) {
             super(props);
             this.dataService = new dataService_57.default();
-            this.globalAction = new compat_30.default();
+            this.globalAction = new compat_29.default();
             this.state = {
                 bookListcss: "bookList-part",
                 iconfont: "iconfont iconfont-unturn",
@@ -21972,7 +21592,7 @@ define("41/bookSite", ["require", "exports", "react", "react-router-dom", "antd-
     class BookRoom extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_30.default();
+            this.globalAction = new compat_29.default();
             this.dataService = new dataService_57.default();
             this.state = {
                 startTime: "",
@@ -22119,14 +21739,14 @@ define("41/bookSite", ["require", "exports", "react", "react-router-dom", "antd-
                             React.createElement("p", null,
                                 React.createElement("span", { className: "redStar", style: { "float": "left", "margin-top": "0.8rem" } }, "*"),
                                 React.createElement("div", { style: { "fonSize": "2.5rem" }, className: "mDate" },
-                                    React.createElement(antd_mobile_17.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.startTime, onChange: this.setStartTime.bind(this) },
-                                        React.createElement(antd_mobile_17.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65F6\u95F4"))))),
+                                    React.createElement(antd_mobile_16.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.startTime, onChange: this.setStartTime.bind(this) },
+                                        React.createElement(antd_mobile_16.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65F6\u95F4"))))),
                         React.createElement("li", null,
                             React.createElement("p", null,
                                 React.createElement("span", { className: "redStar", style: { "float": "left", "margin-top": "0.8rem" } }, "*"),
                                 React.createElement("div", { style: { "fonSize": "2.5rem" }, className: "mDate" },
-                                    React.createElement(antd_mobile_17.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.endTime, onChange: this.setEndTime.bind(this) },
-                                        React.createElement(antd_mobile_17.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65F6\u95F4"))))),
+                                    React.createElement(antd_mobile_16.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.endTime, onChange: this.setEndTime.bind(this) },
+                                        React.createElement(antd_mobile_16.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65F6\u95F4"))))),
                         React.createElement("li", null,
                             React.createElement("p", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
@@ -22197,7 +21817,7 @@ define("41/bookSite", ["require", "exports", "react", "react-router-dom", "antd-
         }
     }
 });
-define("41/bottomBtn", ["require", "exports", "react", "react-router-dom", "41/compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_31) {
+define("41/bottomBtn", ["require", "exports", "react", "react-router-dom", "41/compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_30) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class BottomBtn extends React.Component {
@@ -22206,7 +21826,7 @@ define("41/bottomBtn", ["require", "exports", "react", "react-router-dom", "41/c
             this.props = {
                 history: this.props.history
             };
-            this.globalAction = new compat_31.default();
+            this.globalAction = new compat_30.default();
             this.state = {
                 index: 1,
                 iconImg1In: "./park_m/image/bottomBtn/3d-in.png",
@@ -22323,7 +21943,7 @@ define("41/defaultRentRoom", ["require", "exports", "react", "css!./styles/defau
     }
     exports.default = DetaultRentRoom;
 });
-define("41/distribute", ["require", "exports", "react", "react-router-dom", "css!./styles/distribute.css"], function (require, exports, React, react_router_dom_23) {
+define("41/distribute", ["require", "exports", "react", "react-router-dom", "css!./styles/distribute.css"], function (require, exports, React, react_router_dom_24) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Distribute extends React.Component {
@@ -22359,7 +21979,7 @@ define("41/distribute", ["require", "exports", "react", "react-router-dom", "css
                                     React.createElement("div", { style: { height: "100%", width: "60px", float: "left", lineHeight: "52px" } },
                                         React.createElement("img", { src: "./park_m/image/user.png", width: "40px", height: "40px" })),
                                     React.createElement("div", { style: { float: "left", lineHeight: "61px", height: "100%", minWidth: "90px", padding: "0 20px 0 15px" } }, "\u5C0F\u660E")),
-                                React.createElement(react_router_dom_23.Link, { to: "/searchUser" },
+                                React.createElement(react_router_dom_24.Link, { to: "/searchUser" },
                                     React.createElement("div", { style: { float: "right", color: "#0B8BF0", marginRight: "50px", textAlign: "center" } }, "\u4FEE\u6539")))));
                     }),
                     React.createElement("div", { style: { width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" } }, "\u5230\u5E95\u5566~"))));
@@ -22578,7 +22198,7 @@ define("41/enterpriseInformation", ["require", "exports", "react", "css!./styles
     }
     exports.default = EnterpriseInformation;
 });
-define("41/home", ["require", "exports", "react", "react-router-dom", "41/bottomBtn", "41/dataService", "41/compat", "css!./styles/iconfont.css", "css!./styles/view.css"], function (require, exports, React, RouterDOM, bottomBtn_4, dataService_58, compat_32) {
+define("41/home", ["require", "exports", "react", "react-router-dom", "41/bottomBtn", "41/dataService", "41/compat", "css!./styles/iconfont.css", "css!./styles/view.css"], function (require, exports, React, RouterDOM, bottomBtn_4, dataService_58, compat_31) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Home extends React.Component {
@@ -22588,7 +22208,7 @@ define("41/home", ["require", "exports", "react", "react-router-dom", "41/bottom
                 history: this.props.history,
                 children: this.props.children
             };
-            this.globalAction = new compat_32.default();
+            this.globalAction = new compat_31.default();
             this.dataService = new dataService_58.default();
             this.setToken = this.setToken.bind(this);
         }
@@ -22640,7 +22260,7 @@ define("41/home", ["require", "exports", "react", "react-router-dom", "41/bottom
                     { name: "交通" },
                 ]
             };
-            this.globalAction = new compat_32.default();
+            this.globalAction = new compat_31.default();
         }
         moreIcon(a) {
             console.log('toggleIconbox', a);
@@ -22932,13 +22552,13 @@ define("41/home", ["require", "exports", "react", "react-router-dom", "41/bottom
     }
     exports.default = Home;
 });
-define("41/parkCompany", ["require", "exports", "react", "react-router-dom", "41/compat", "41/dataService"], function (require, exports, React, RouterDOM, compat_33, dataService_59) {
+define("41/parkCompany", ["require", "exports", "react", "react-router-dom", "41/compat", "41/dataService"], function (require, exports, React, RouterDOM, compat_32, dataService_59) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParkCompany extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_33.default();
+            this.globalAction = new compat_32.default();
             this.state = {
                 parkCompanycss: "parkCompany",
                 showList: true,
@@ -22994,7 +22614,7 @@ define("41/parkCompany", ["require", "exports", "react", "react-router-dom", "41
         constructor(props) {
             super(props);
             this.dataService = new dataService_59.default();
-            this.globalAction = new compat_33.default();
+            this.globalAction = new compat_32.default();
             this.state = {
                 companyNull: "hide",
                 park_id: 1001,
@@ -23434,7 +23054,7 @@ define("41/parkCompany", ["require", "exports", "react", "react-router-dom", "41
     }
     exports.default = ParkCompany;
 });
-define("41/photograph", ["require", "exports", "react", "react-router-dom", "41/dataService", "antd-mobile", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, dataService_60, antd_mobile_18) {
+define("41/photograph", ["require", "exports", "react", "react-router-dom", "41/dataService", "antd-mobile", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, dataService_60, antd_mobile_17) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Photograph extends React.Component {
@@ -23767,8 +23387,8 @@ define("41/photograph", ["require", "exports", "react", "react-router-dom", "41/
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 " \u8FDD\u89C4\u7167\u7247",
                                 React.createElement("div", { className: "imgCom" },
-                                    React.createElement(antd_mobile_18.WingBlank, null,
-                                        React.createElement(antd_mobile_18.ImagePicker, { files: this.state.files, onChange: this.onChange, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple })))),
+                                    React.createElement(antd_mobile_17.WingBlank, null,
+                                        React.createElement(antd_mobile_17.ImagePicker, { files: this.state.files, onChange: this.onChange, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple })))),
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 " \u66DD\u5149\u7C7B\u578B",
@@ -23973,7 +23593,7 @@ define("41/photograph", ["require", "exports", "react", "react-router-dom", "41/
         }
     }
 });
-define("41/infoArea", ["require", "exports", "react", "react-router-dom", "css!./styles/infoArea.css"], function (require, exports, React, react_router_dom_24) {
+define("41/infoArea", ["require", "exports", "react", "react-router-dom", "css!./styles/infoArea.css"], function (require, exports, React, react_router_dom_25) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class InfoArea extends React.Component {
@@ -24053,7 +23673,7 @@ define("41/infoArea", ["require", "exports", "react", "react-router-dom", "css!.
                                     React.createElement("div", { className: "infoarea-br-data" }, "2020-03-06 14:38:15"))));
                     }),
                     React.createElement("div", { style: { width: "100%", height: "30%", textAlign: "center", fontSize: "40px", lineHeight: "60px", margin: "20px 0 0 -25px" } }, "\u5230\u5E95\u5566~")),
-                React.createElement(react_router_dom_24.Link, { to: "/isay" },
+                React.createElement(react_router_dom_25.Link, { to: "/isay" },
                     React.createElement("div", { className: "infoarea-add-c" },
                         React.createElement("img", { src: "./park_m/image/add.png", width: "60px", height: "60px" })))));
         }
@@ -24094,7 +23714,7 @@ define("41/information", ["require", "exports", "react", "css!./styles/informati
     }
     exports.default = Information;
 });
-define("41/personalCenter", ["require", "exports", "react", "react-router-dom", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_25) {
+define("41/personalCenter", ["require", "exports", "react", "react-router-dom", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_26) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class PersonalCenter extends React.Component {
@@ -24146,7 +23766,7 @@ define("41/personalCenter", ["require", "exports", "react", "react-router-dom", 
                                     color: "#83d5ff", fontSize: "27px", backgroundColor: "#2e9cf3", width: "160px",
                                     height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
                                 }, onClick: this.switchMember.bind(this) }, this.state.userInfo)),
-                        React.createElement(react_router_dom_25.Link, { to: "/modificationAuthentication" },
+                        React.createElement(react_router_dom_26.Link, { to: "/modificationAuthentication" },
                             React.createElement("div", { className: "personal-center-right" },
                                 React.createElement("img", { src: "./park_m/image/w-right.png" }))))),
                 React.createElement("div", { className: "personal-center-tag" },
@@ -24161,24 +23781,24 @@ define("41/personalCenter", ["require", "exports", "react", "react-router-dom", 
                     React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5BA2\u670D\u7535\u8BDD"),
                     React.createElement("span", null, "0773-123456")),
                 React.createElement("div", { className: "personal-center-my" },
-                    React.createElement(react_router_dom_25.Link, { to: sessionStorage.getItem("userInfo") === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
+                    React.createElement(react_router_dom_26.Link, { to: sessionStorage.getItem("userInfo") === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
                         React.createElement("div", { className: "personal-center-my-left" },
                             React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "5"),
                             React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u5DE5\u5355"))),
                     React.createElement("div", { className: "personal-center-my-middle" }),
-                    React.createElement(react_router_dom_25.Link, { to: "/message" },
+                    React.createElement(react_router_dom_26.Link, { to: "/message" },
                         React.createElement("div", { className: "personal-center-my-right" },
                             React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "6"),
                             React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u6D88\u606F")))),
                 sessionStorage.getItem("userInfo") === "企业管理员" ?
                     React.createElement("div", { className: "personal-center-enterprise" },
-                        React.createElement(react_router_dom_25.Link, { to: "/enterpriseInformation" },
+                        React.createElement(react_router_dom_26.Link, { to: "/enterpriseInformation" },
                             React.createElement("div", { className: "personal-center-enterprise-child" },
                                 React.createElement("img", { src: "./park_m/image/enterprise.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
                                 React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u4F01\u4E1A\u4FE1\u606F\u7BA1\u7406"),
                                 React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
                                     React.createElement("img", { src: "./park_m/image/right.png" })))),
-                        React.createElement(react_router_dom_25.Link, { to: "/rentRoom" },
+                        React.createElement(react_router_dom_26.Link, { to: "/rentRoom" },
                             React.createElement("div", { className: "personal-center-enterprise-child" },
                                 React.createElement("img", { src: "./park_m/image/let.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
                                 React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"),
@@ -24193,7 +23813,7 @@ define("41/personalCenter", ["require", "exports", "react", "react-router-dom", 
                                 React.createElement("img", { src: "./park_m/image/right.png", className: this.state.isSpread ? "personal-center-bottom-img" : "" }))),
                         this.state.isSpread ?
                             React.createElement("div", { style: { backgroundColor: "#ffffff", overflow: "hidden", paddingTop: "30px" } }, this.state.parkList.map((item, index) => {
-                                return (React.createElement(react_router_dom_25.Link, { to: item.url },
+                                return (React.createElement(react_router_dom_26.Link, { to: item.url },
                                     React.createElement("div", { key: index, className: "personal-center-park-child" },
                                         React.createElement("img", { src: item.imgUrl, width: "110px", height: "110px" }),
                                         React.createElement("div", { style: { marginTop: "10px" } }, item.name))));
@@ -24202,14 +23822,14 @@ define("41/personalCenter", ["require", "exports", "react", "react-router-dom", 
     }
     exports.default = PersonalCenter;
 });
-define("41/repairsOnline", ["require", "exports", "react", "react-router-dom", "41/dataService", "41/compat"], function (require, exports, React, RouterDOM, dataService_61, compat_34) {
+define("41/repairsOnline", ["require", "exports", "react", "react-router-dom", "41/dataService", "41/compat"], function (require, exports, React, RouterDOM, dataService_61, compat_33) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RepairsOnline extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_61.default();
-            this.globalAction = new compat_34.default();
+            this.globalAction = new compat_33.default();
             this.state = {
                 reqairscss: "reqairs-part",
                 iconfont: "iconfont iconfont-unturn",
@@ -24403,13 +24023,13 @@ define("41/repairsOnline", ["require", "exports", "react", "react-router-dom", "
     }
     exports.default = RepairsOnline;
 });
-define("41/parking", ["require", "exports", "react", "react-router-dom", "41/compat", "41/dataService"], function (require, exports, React, RouterDOM, compat_35, dataService_62) {
+define("41/parking", ["require", "exports", "react", "react-router-dom", "41/compat", "41/dataService"], function (require, exports, React, RouterDOM, compat_34, dataService_62) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Parking extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_35.default();
+            this.globalAction = new compat_34.default();
             this.state = {
                 parkingcss: "parking",
                 iconfont: "iconfont iconfont-unturn",
@@ -24513,7 +24133,7 @@ define("41/parking", ["require", "exports", "react", "react-router-dom", "41/com
         constructor(props) {
             super(props);
             this.dataService = new dataService_62.default();
-            this.globalAction = new compat_35.default();
+            this.globalAction = new compat_34.default();
             this.state = {
                 contentULcss: "contentUL-part contentUL",
                 carTypeBox: "hide",
@@ -24836,7 +24456,7 @@ define("41/parking", ["require", "exports", "react", "react-router-dom", "41/com
     class Alteration extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_35.default();
+            this.globalAction = new compat_34.default();
             this.dataService = new dataService_62.default();
             this.state = {
                 componentBox: "componentBox-part",
@@ -25081,7 +24701,7 @@ define("41/parking", ["require", "exports", "react", "react-router-dom", "41/com
         constructor(props) {
             super(props);
             this.dataService = new dataService_62.default();
-            this.globalAction = new compat_35.default();
+            this.globalAction = new compat_34.default();
             this.state = {
                 componentBox: "componentBox-part",
                 contentBox: "contentBox-part",
@@ -25306,14 +24926,14 @@ define("41/parking", ["require", "exports", "react", "react-router-dom", "41/com
         }
     }
 });
-define("41/narrate", ["require", "exports", "react", "react-router-dom", "41/compat", "41/dataService", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_36, dataService_63) {
+define("41/narrate", ["require", "exports", "react", "react-router-dom", "41/compat", "41/dataService", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_35, dataService_63) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Narrate extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_63.default();
-            this.globalAction = new compat_36.default();
+            this.globalAction = new compat_35.default();
             this.state = {
                 paused: true,
                 activeType: 0,
@@ -25484,7 +25104,7 @@ define("41/isay", ["require", "exports", "react", "css!./styles/isay.css"], func
     }
     exports.default = Isay;
 });
-define("41/workOrder", ["require", "exports", "react", "react-router-dom", "css!./styles/workOrder.css"], function (require, exports, React, react_router_dom_26) {
+define("41/workOrder", ["require", "exports", "react", "react-router-dom", "css!./styles/workOrder.css"], function (require, exports, React, react_router_dom_27) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class WorkOrder extends React.Component {
@@ -25512,7 +25132,7 @@ define("41/workOrder", ["require", "exports", "react", "react-router-dom", "css!
                 })),
                 React.createElement("div", { className: "work-order-list" },
                     this.state.workOrderArray.map((item, index) => {
-                        return React.createElement(react_router_dom_26.Link, { to: "/workOrderDetail" },
+                        return React.createElement(react_router_dom_27.Link, { to: "/workOrderDetail" },
                             React.createElement("div", { key: index, className: "work-order-list-child" },
                                 React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 40px" } },
                                     React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, "\u4F01\u4E1A\u8BA4\u8BC1\u5DE5\u53551"),
@@ -25683,7 +25303,7 @@ define("41/message", ["require", "exports", "react", "css!./styles/message.css"]
     }
     exports.default = Message;
 });
-define("41/rentRoom", ["require", "exports", "react", "react-router-dom", "css!./styles/rentRoom.css"], function (require, exports, React, react_router_dom_27) {
+define("41/rentRoom", ["require", "exports", "react", "react-router-dom", "css!./styles/rentRoom.css"], function (require, exports, React, react_router_dom_28) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RentRoom extends React.Component {
@@ -25705,7 +25325,7 @@ define("41/rentRoom", ["require", "exports", "react", "react-router-dom", "css!.
                         React.createElement("span", null, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"))),
                 React.createElement("div", { className: "rent-room-list" },
                     this.state.workOrderArray.map((item, index) => {
-                        return React.createElement(react_router_dom_27.Link, { to: "/rentRoomDetail" },
+                        return React.createElement(react_router_dom_28.Link, { to: "/rentRoomDetail" },
                             React.createElement("div", { key: index, className: "rent-room-list-child" },
                                 React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 40px" } },
                                     React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, item),
@@ -25723,7 +25343,7 @@ define("41/rentRoom", ["require", "exports", "react", "react-router-dom", "css!.
                                                 marginRight: "40px", fontSize: "32px", textAlign: "center", lineHeight: "55px"
                                             } }, "\u9ED8\u8BA4\u5C55\u793A") : null)));
                     }),
-                    React.createElement(react_router_dom_27.Link, { to: "/defaultRentRoom" },
+                    React.createElement(react_router_dom_28.Link, { to: "/defaultRentRoom" },
                         React.createElement("div", { style: { width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "50px", color: "#0B8BF0" } }, "\u9009\u62E9\u9ED8\u8BA4\u5C55\u793A\u623F\u95F4")))));
         }
     }
@@ -25769,7 +25389,7 @@ define("41/rentRoomDetail", ["require", "exports", "react", "css!./styles/rentRo
     }
     exports.default = RentRoomDetail;
 });
-define("41/parkWorkOrder", ["require", "exports", "react", "react-router-dom", "css!./styles/workOrder.css"], function (require, exports, React, react_router_dom_28) {
+define("41/parkWorkOrder", ["require", "exports", "react", "react-router-dom", "css!./styles/workOrder.css"], function (require, exports, React, react_router_dom_29) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParkWorkOrder extends React.Component {
@@ -25797,7 +25417,7 @@ define("41/parkWorkOrder", ["require", "exports", "react", "react-router-dom", "
                 })),
                 React.createElement("div", { className: "work-order-list" },
                     this.state.workOrderArray.map((item, index) => {
-                        return React.createElement(react_router_dom_28.Link, { to: "/workOrderDetail" },
+                        return React.createElement(react_router_dom_29.Link, { to: "/workOrderDetail" },
                             React.createElement("div", { key: index, className: "work-order-list-child" },
                                 React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 40px" } },
                                     React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, "\u4F01\u4E1A\u8BA4\u8BC1\u5DE5\u53551"),
@@ -26183,7 +25803,7 @@ define("41/informationDetail", ["require", "exports", "react", "css!./styles/inf
     }
     exports.default = informationDetail;
 });
-define("41/room", ["require", "exports", "react", "react-router-dom", "41/dataService", "css!./styles/room.css"], function (require, exports, React, react_router_dom_29, dataService_64) {
+define("41/room", ["require", "exports", "react", "react-router-dom", "41/dataService", "css!./styles/room.css"], function (require, exports, React, react_router_dom_30, dataService_64) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Room extends React.Component {
@@ -26269,7 +25889,7 @@ define("41/room", ["require", "exports", "react", "react-router-dom", "41/dataSe
                                         React.createElement("img", { src: "./park_m/image/right.png", className: item.isSpread ? "room-spread-right" : null }))),
                                 this.state.floorIndex === index ?
                                     React.createElement("div", { style: { width: "90%", margin: "10px auto", minHeight: "200px", overflow: "hidden" } }, this.state.buildingArr[this.state.buildingIndex].child[this.state.floorIndex].child.map((it, ind) => {
-                                        return (React.createElement(react_router_dom_29.Link, { to: { pathname: "/roomDetail", state: { name: it.name } } },
+                                        return (React.createElement(react_router_dom_30.Link, { to: { pathname: "/roomDetail", state: { name: it.name } } },
                                             React.createElement("div", { key: ind, className: ind === 1 ? "room-single-add" : "room-single" }, it.name)));
                                     })) : null));
                         }))));
@@ -26277,7 +25897,7 @@ define("41/room", ["require", "exports", "react", "react-router-dom", "41/dataSe
     }
     exports.default = Room;
 });
-define("41/roomDetail", ["require", "exports", "react", "react-router-dom"], function (require, exports, React, react_router_dom_30) {
+define("41/roomDetail", ["require", "exports", "react", "react-router-dom"], function (require, exports, React, react_router_dom_31) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RoomDetail extends React.Component {
@@ -26309,17 +25929,17 @@ define("41/roomDetail", ["require", "exports", "react", "react-router-dom"], fun
                         React.createElement("span", null, this.state.roomName),
                         React.createElement("span", { style: { color: "#F53636", float: "right", marginRight: "50px" } }, "\u5220\u9664"))),
                 React.createElement("div", { style: { width: "100%", height: "15px", backgroundColor: "#F2F2F2" } }),
-                React.createElement(react_router_dom_30.Link, { to: "/roomBase" },
+                React.createElement(react_router_dom_31.Link, { to: "/roomBase" },
                     React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("img", { src: "./park_m/image/room_base.png", style: { margin: "0 20px 15px 10px" } }),
                         React.createElement("span", null, "\u623F\u95F4\u57FA\u672C\u4FE1\u606F"),
                         React.createElement("span", { style: { color: "#0B8BF0", float: "right", marginRight: "50px" } }, "\u4FEE\u6539"))),
-                React.createElement(react_router_dom_30.Link, { to: "/roomPattern" },
+                React.createElement(react_router_dom_31.Link, { to: "/roomPattern" },
                     React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("img", { src: "./park_m/image/pattern.png", style: { margin: "0 20px 15px 10px" } }),
                         React.createElement("span", null, "\u623F\u95F4\u683C\u5C40\u4FE1\u606F"),
                         React.createElement("span", { style: { color: "#0B8BF0", float: "right", marginRight: "50px" } }, "\u4FEE\u6539"))),
-                React.createElement(react_router_dom_30.Link, { to: "/roomUse" },
+                React.createElement(react_router_dom_31.Link, { to: "/roomUse" },
                     React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("img", { src: "./park_m/image/room_rent.png", style: { margin: "0 20px 15px 10px" } }),
                         React.createElement("span", null, "\u623F\u95F4\u4F7F\u7528\u4FE1\u606F"),
@@ -26702,54 +26322,54 @@ define("41/roomPattern", ["require", "exports", "react"], function (require, exp
     }
     exports.default = RoomPattern;
 });
-define("41/router", ["require", "exports", "react-router-dom", "react", "41/index", "41/home", "41/parkCompany", "41/photograph", "41/infoArea", "41/information", "41/personalCenter", "41/findLease", "41/applyPut", "41/bookSite", "41/repairsOnline", "41/parking", "41/narrate", "41/isay", "41/workOrder", "41/workOrderDetail", "41/modificationAuthentication", "41/message", "41/enterpriseInformation", "41/rentRoom", "41/rentRoomDetail", "41/defaultRentRoom", "41/parkWorkOrder", "41/serviceTel", "41/distribute", "41/searchUser", "41/statisticalStatement", "41/informationChild", "41/informationDetail", "41/attractInvestment", "41/attractInvestmentList", "41/room", "41/roomDetail", "41/roomUse", "41/roomBase", "41/roomPattern"], function (require, exports, react_router_dom_31, React, index_3, home_3, parkCompany_6, photograph_6, infoArea_3, information_3, personalCenter_3, findLease_6, applyPut_6, bookSite_6, repairsOnline_6, parking_6, narrate_3, isay_3, workOrder_3, workOrderDetail_3, modificationAuthentication_3, message_3, enterpriseInformation_2, rentRoom_2, rentRoomDetail_2, defaultRentRoom_2, parkWorkOrder_2, serviceTel_2, distribute_2, searchUser_2, statisticalStatement_2, informationChild_2, informationDetail_2, attractInvestment_2, attractInvestmentList_2, room_2, roomDetail_2, roomUse_2, roomBase_2, roomPattern_2) {
+define("41/router", ["require", "exports", "react-router-dom", "react", "41/index", "41/home", "41/parkCompany", "41/photograph", "41/infoArea", "41/information", "41/personalCenter", "41/findLease", "41/applyPut", "41/bookSite", "41/repairsOnline", "41/parking", "41/narrate", "41/isay", "41/workOrder", "41/workOrderDetail", "41/modificationAuthentication", "41/message", "41/enterpriseInformation", "41/rentRoom", "41/rentRoomDetail", "41/defaultRentRoom", "41/parkWorkOrder", "41/serviceTel", "41/distribute", "41/searchUser", "41/statisticalStatement", "41/informationChild", "41/informationDetail", "41/attractInvestment", "41/attractInvestmentList", "41/room", "41/roomDetail", "41/roomUse", "41/roomBase", "41/roomPattern"], function (require, exports, react_router_dom_32, React, index_3, home_3, parkCompany_6, photograph_6, infoArea_3, information_3, personalCenter_3, findLease_6, applyPut_6, bookSite_6, repairsOnline_6, parking_6, narrate_3, isay_3, workOrder_3, workOrderDetail_3, modificationAuthentication_3, message_3, enterpriseInformation_2, rentRoom_2, rentRoomDetail_2, defaultRentRoom_2, parkWorkOrder_2, serviceTel_2, distribute_2, searchUser_2, statisticalStatement_2, informationChild_2, informationDetail_2, attractInvestment_2, attractInvestmentList_2, room_2, roomDetail_2, roomUse_2, roomBase_2, roomPattern_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Router extends React.Component {
         render() {
-            return (React.createElement(react_router_dom_31.HashRouter, null,
-                React.createElement(react_router_dom_31.Switch, null,
-                    React.createElement(react_router_dom_31.Route, { exact: true, path: "/", component: index_3.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/parkCompany", component: parkCompany_6.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/photograph", component: photograph_6.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/findLease", component: findLease_6.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/applyPut", component: applyPut_6.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/bookSite", component: bookSite_6.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/repairsOnline", component: repairsOnline_6.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/parking", component: parking_6.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/narrate", component: narrate_3.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/isay", component: isay_3.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/workOrder", component: workOrder_3.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/workOrderDetail", component: workOrderDetail_3.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/home", render: (props) => (React.createElement(home_3.default, Object.assign({}, props),
-                            React.createElement(react_router_dom_31.Route, { path: "/home/infoArea", component: infoArea_3.default }),
-                            React.createElement(react_router_dom_31.Route, { path: "/home/information", component: information_3.default }),
-                            React.createElement(react_router_dom_31.Route, { path: "/home/personalCenter", component: personalCenter_3.default }))) }),
-                    React.createElement(react_router_dom_31.Route, { path: "/modificationAuthentication", component: modificationAuthentication_3.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/message", component: message_3.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/enterpriseInformation", component: enterpriseInformation_2.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/rentRoom", component: rentRoom_2.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/rentRoomDetail", component: rentRoomDetail_2.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/defaultRentRoom", component: defaultRentRoom_2.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/parkworkOrder", component: parkWorkOrder_2.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/serviceTel", component: serviceTel_2.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/distribute", component: distribute_2.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/searchUser", component: searchUser_2.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/statisticalStatement", component: statisticalStatement_2.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/informationChild", component: informationChild_2.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/informationDetail", component: informationDetail_2.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/attractInvestment", component: attractInvestment_2.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/attractInvestmentList", component: attractInvestmentList_2.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/room", component: room_2.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/roomDetail", component: roomDetail_2.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/roomUse", component: roomUse_2.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/roomBase", component: roomBase_2.default }),
-                    React.createElement(react_router_dom_31.Route, { path: "/roomPattern", component: roomPattern_2.default }))));
+            return (React.createElement(react_router_dom_32.HashRouter, null,
+                React.createElement(react_router_dom_32.Switch, null,
+                    React.createElement(react_router_dom_32.Route, { exact: true, path: "/", component: index_3.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/parkCompany", component: parkCompany_6.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/photograph", component: photograph_6.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/findLease", component: findLease_6.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/applyPut", component: applyPut_6.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/bookSite", component: bookSite_6.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/repairsOnline", component: repairsOnline_6.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/parking", component: parking_6.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/narrate", component: narrate_3.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/isay", component: isay_3.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/workOrder", component: workOrder_3.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/workOrderDetail", component: workOrderDetail_3.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/home", render: (props) => (React.createElement(home_3.default, Object.assign({}, props),
+                            React.createElement(react_router_dom_32.Route, { path: "/home/infoArea", component: infoArea_3.default }),
+                            React.createElement(react_router_dom_32.Route, { path: "/home/information", component: information_3.default }),
+                            React.createElement(react_router_dom_32.Route, { path: "/home/personalCenter", component: personalCenter_3.default }))) }),
+                    React.createElement(react_router_dom_32.Route, { path: "/modificationAuthentication", component: modificationAuthentication_3.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/message", component: message_3.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/enterpriseInformation", component: enterpriseInformation_2.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/rentRoom", component: rentRoom_2.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/rentRoomDetail", component: rentRoomDetail_2.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/defaultRentRoom", component: defaultRentRoom_2.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/parkworkOrder", component: parkWorkOrder_2.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/serviceTel", component: serviceTel_2.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/distribute", component: distribute_2.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/searchUser", component: searchUser_2.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/statisticalStatement", component: statisticalStatement_2.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/informationChild", component: informationChild_2.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/informationDetail", component: informationDetail_2.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/attractInvestment", component: attractInvestment_2.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/attractInvestmentList", component: attractInvestmentList_2.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/room", component: room_2.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/roomDetail", component: roomDetail_2.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/roomUse", component: roomUse_2.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/roomBase", component: roomBase_2.default }),
+                    React.createElement(react_router_dom_32.Route, { path: "/roomPattern", component: roomPattern_2.default }))));
         }
     }
     exports.default = Router;
 });
-define("41/index", ["require", "exports", "react", "react-dom", "react-router-dom", "41/router", "41/parkCompany", "41/findLease", "41/applyPut", "41/photograph", "41/bookSite", "41/parking", "41/repairsOnline", "41/dataService", "41/compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_32, router_4, parkCompany_7, findLease_7, applyPut_7, photograph_7, bookSite_7, parking_7, repairsOnline_7, dataService_65, compat_37) {
+define("41/index", ["require", "exports", "react", "react-dom", "react-router-dom", "41/router", "41/parkCompany", "41/findLease", "41/applyPut", "41/photograph", "41/bookSite", "41/parking", "41/repairsOnline", "41/dataService", "41/compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_33, router_4, parkCompany_7, findLease_7, applyPut_7, photograph_7, bookSite_7, parking_7, repairsOnline_7, dataService_65, compat_36) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
@@ -26765,7 +26385,7 @@ define("41/index", ["require", "exports", "react", "react-dom", "react-router-do
                 history: this.props.history
             };
             this.dataService = new dataService_65.default();
-            this.globalAction = new compat_37.default();
+            this.globalAction = new compat_36.default();
             Index.g_pIns = this;
         }
         componentWillMount() {
@@ -26823,7 +26443,7 @@ define("41/index", ["require", "exports", "react", "react-dom", "react-router-do
                     "\u5BB6\u56ED\u533A\u4E0A\u7EBF"),
                 React.createElement("div", { className: "index-park" },
                     this.state.parkArr.map((item, index) => {
-                        return React.createElement(react_router_dom_32.Link, { to: "/home" },
+                        return React.createElement(react_router_dom_33.Link, { to: "/home" },
                             React.createElement("div", { className: "index-child-park", key: index, onClick: this.initPark.bind(this, 1001) },
                                 React.createElement("div", { className: "index-child-park-left" },
                                     React.createElement("img", { src: "./park_m/image/a.jpg", className: "park-img" })),
@@ -26937,13 +26557,13 @@ define("426/compat", ["require", "exports"], function (require, exports) {
     }
     exports.default = GlobalAction;
 });
-define("426/findLease", ["require", "exports", "react", "react-router-dom", "426/compat", "426/dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_38, dataService_66, antd_mobile_19) {
+define("426/findLease", ["require", "exports", "react", "react-router-dom", "426/compat", "426/dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_37, dataService_66, antd_mobile_18) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class FindLease extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_38.default();
+            this.globalAction = new compat_37.default();
             this.state = {
                 FindLeasecss: "findLease",
                 showList: true,
@@ -26997,7 +26617,7 @@ define("426/findLease", ["require", "exports", "react", "react-router-dom", "426
         constructor(props) {
             super(props);
             this.dataService = new dataService_66.default();
-            this.globalAction = new compat_38.default();
+            this.globalAction = new compat_37.default();
             this.state = {
                 roomNull: "hide",
                 park_id: "1001",
@@ -27456,8 +27076,8 @@ define("426/findLease", ["require", "exports", "react", "react-router-dom", "426
             return (React.createElement("div", { className: "picshow" },
                 React.createElement("ul", null,
                     React.createElement("p", { className: this.state.urlNull, style: { "margin": "1rem 0", "text-align": "center", "font-size": "3rem", "color": "#797979" } }, "\u6682\u65E0\u56FE\u7247\u00B7\u00B7\u00B7"),
-                    React.createElement(antd_mobile_19.WingBlank, null,
-                        React.createElement(antd_mobile_19.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
+                    React.createElement(antd_mobile_18.WingBlank, null,
+                        React.createElement(antd_mobile_18.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
                                 window.dispatchEvent(new Event('resize'));
                                 this.setState({ imgHeight: 'auto' });
                             } }))))))));
@@ -28707,14 +28327,14 @@ define("426/dataService", ["require", "exports"], function (require, exports) {
     }
     exports.default = DataService;
 });
-define("426/applyPut (2)", ["require", "exports", "react", "react-router-dom", "antd-mobile", "426/dataService", "426/compat", "css!./styles/antd-mobile.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, antd_mobile_20, dataService_67, compat_39) {
+define("426/applyPut (2)", ["require", "exports", "react", "react-router-dom", "antd-mobile", "426/dataService", "426/compat", "css!./styles/antd-mobile.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, antd_mobile_19, dataService_67, compat_38) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ApplyPut extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_67.default();
-            this.globalAction = new compat_39.default();
+            this.globalAction = new compat_38.default();
             this.state = {
                 applyPutStartTimeBox: "hide",
                 applyPutEndTimeBox: "hide",
@@ -28982,11 +28602,11 @@ define("426/applyPut (2)", ["require", "exports", "react", "react-router-dom", "
                                     React.createElement("span", { style: { "font-size": "2.3rem" } }, "\u5177\u4F53\u5185\u5BB9\uFF1A")),
                                 React.createElement("textarea", { className: "getapplyPuttextarea", value: this.state.content, placeholder: "", onChange: this.changeContent.bind(this), onFocus: this.foucusContent.bind(this), onBlur: this.blurContent.bind(this) })),
                             React.createElement("div", { className: this.state.applyPutStartTimeBox },
-                                React.createElement(antd_mobile_20.DatePicker, { mode: "date", title: "\u8BF7\u9009\u62E9\u65E5\u671F", extra: "\u8BF7\u9009\u62E9", value: this.state.startDate, onChange: this.setStartDate.bind(this) },
-                                    React.createElement(antd_mobile_20.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65E5\u671F"))),
+                                React.createElement(antd_mobile_19.DatePicker, { mode: "date", title: "\u8BF7\u9009\u62E9\u65E5\u671F", extra: "\u8BF7\u9009\u62E9", value: this.state.startDate, onChange: this.setStartDate.bind(this) },
+                                    React.createElement(antd_mobile_19.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65E5\u671F"))),
                             React.createElement("div", { className: this.state.applyPutEndTimeBox },
-                                React.createElement(antd_mobile_20.DatePicker, { mode: "date", title: "\u8BF7\u9009\u62E9\u65E5\u671F", extra: "\u8BF7\u9009\u62E9", value: this.state.endDate, onChange: this.setEndDate.bind(this) },
-                                    React.createElement(antd_mobile_20.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65E5\u671F"))),
+                                React.createElement(antd_mobile_19.DatePicker, { mode: "date", title: "\u8BF7\u9009\u62E9\u65E5\u671F", extra: "\u8BF7\u9009\u62E9", value: this.state.endDate, onChange: this.setEndDate.bind(this) },
+                                    React.createElement(antd_mobile_19.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65E5\u671F"))),
                             React.createElement("div", { className: "applyList" },
                                 React.createElement("p", { className: "theapplyP" }, "\u8BF7\u5728\u6240\u9700\u6295\u653E\u5730\u70B9\u540E\u8BBE\u7F6E\u6295\u653E\u5F00\u59CB\u53CA\u7ED3\u675F\u65F6\u95F4"),
                                 React.createElement("ul", { style: { "margin": "0" } },
@@ -29022,14 +28642,14 @@ define("426/applyPut (2)", ["require", "exports", "react", "react-router-dom", "
     }
     exports.default = ApplyPut;
 });
-define("426/applyPut", ["require", "exports", "react", "react-router-dom", "antd-mobile", "426/dataService", "426/compat", "css!./styles/antd-mobile.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, antd_mobile_21, dataService_68, compat_40) {
+define("426/applyPut", ["require", "exports", "react", "react-router-dom", "antd-mobile", "426/dataService", "426/compat", "css!./styles/antd-mobile.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, antd_mobile_20, dataService_68, compat_39) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ApplyPut extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_68.default();
-            this.globalAction = new compat_40.default();
+            this.globalAction = new compat_39.default();
             this.state = {
                 applyPutStartTimeBox: "hide",
                 applyPutEndTimeBox: "hide",
@@ -29297,11 +28917,11 @@ define("426/applyPut", ["require", "exports", "react", "react-router-dom", "antd
                                     React.createElement("span", { style: { "font-size": "2.3rem" } }, "\u5177\u4F53\u5185\u5BB9\uFF1A")),
                                 React.createElement("textarea", { className: "getapplyPuttextarea", value: this.state.content, placeholder: "", onChange: this.changeContent.bind(this), onFocus: this.foucusContent.bind(this), onBlur: this.blurContent.bind(this) })),
                             React.createElement("div", { className: this.state.applyPutStartTimeBox },
-                                React.createElement(antd_mobile_21.DatePicker, { mode: "date", title: "\u8BF7\u9009\u62E9\u65E5\u671F", extra: "\u8BF7\u9009\u62E9", value: this.state.startDate, onChange: this.setStartDate.bind(this) },
-                                    React.createElement(antd_mobile_21.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65E5\u671F"))),
+                                React.createElement(antd_mobile_20.DatePicker, { mode: "date", title: "\u8BF7\u9009\u62E9\u65E5\u671F", extra: "\u8BF7\u9009\u62E9", value: this.state.startDate, onChange: this.setStartDate.bind(this) },
+                                    React.createElement(antd_mobile_20.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65E5\u671F"))),
                             React.createElement("div", { className: this.state.applyPutEndTimeBox },
-                                React.createElement(antd_mobile_21.DatePicker, { mode: "date", title: "\u8BF7\u9009\u62E9\u65E5\u671F", extra: "\u8BF7\u9009\u62E9", value: this.state.endDate, onChange: this.setEndDate.bind(this) },
-                                    React.createElement(antd_mobile_21.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65E5\u671F"))),
+                                React.createElement(antd_mobile_20.DatePicker, { mode: "date", title: "\u8BF7\u9009\u62E9\u65E5\u671F", extra: "\u8BF7\u9009\u62E9", value: this.state.endDate, onChange: this.setEndDate.bind(this) },
+                                    React.createElement(antd_mobile_20.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65E5\u671F"))),
                             React.createElement("div", { className: "applyList" },
                                 React.createElement("p", { className: "theapplyP" }, "\u8BF7\u5728\u6240\u9700\u6295\u653E\u5730\u70B9\u540E\u8BBE\u7F6E\u6295\u653E\u5F00\u59CB\u53CA\u7ED3\u675F\u65F6\u95F4"),
                                 React.createElement("ul", { style: { "margin": "0" } },
@@ -29337,7 +28957,7 @@ define("426/applyPut", ["require", "exports", "react", "react-router-dom", "antd
     }
     exports.default = ApplyPut;
 });
-define("426/attractInvestment", ["require", "exports", "react", "react-router-dom", "css!./styles/attractInvestment.css"], function (require, exports, React, react_router_dom_33) {
+define("426/attractInvestment", ["require", "exports", "react", "react-router-dom", "css!./styles/attractInvestment.css"], function (require, exports, React, react_router_dom_34) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class AttractInvestment extends React.Component {
@@ -29361,7 +28981,7 @@ define("426/attractInvestment", ["require", "exports", "react", "react-router-do
                         React.createElement("img", { src: "./park_m/image/back.png", style: { margin: "-10px 10px 0 0" } }),
                         React.createElement("span", null, "\u62DB\u5546\u7BA1\u7406"))),
                 React.createElement("div", { style: { backgroundColor: "#ffffff", width: "100%", height: "100%", marginTop: "15px" } }, this.state.tagArr.map((item, index) => {
-                    return (React.createElement(react_router_dom_33.Link, { to: item.url },
+                    return (React.createElement(react_router_dom_34.Link, { to: item.url },
                         React.createElement("div", { key: index, style: { width: "33%", height: "300px", float: "left", textAlign: "center", marginTop: "150px" } },
                             React.createElement("img", { src: item.imgUrl, style: { width: "120px", height: "120px" } }),
                             React.createElement("div", { style: { fontSize: "40px", color: "#333333" } }, item.name))));
@@ -29454,13 +29074,13 @@ define("426/attractInvestmentList", ["require", "exports", "react", "css!./style
     }
     exports.default = AttractInvestmentList;
 });
-define("426/bookSite", ["require", "exports", "react", "react-router-dom", "antd-mobile", "426/dataService", "426/compat", "css!./styles/antd-mobile.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, antd_mobile_22, dataService_69, compat_41) {
+define("426/bookSite", ["require", "exports", "react", "react-router-dom", "antd-mobile", "426/dataService", "426/compat", "css!./styles/antd-mobile.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, antd_mobile_21, dataService_69, compat_40) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class BookSite extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_41.default();
+            this.globalAction = new compat_40.default();
             this.state = {
                 BookSitecss: "bookSite",
                 showList: true,
@@ -29515,7 +29135,7 @@ define("426/bookSite", ["require", "exports", "react", "react-router-dom", "antd
         constructor(props) {
             super(props);
             this.dataService = new dataService_69.default();
-            this.globalAction = new compat_41.default();
+            this.globalAction = new compat_40.default();
             this.state = {
                 imgurlNull: "https://yongtoc-digitalcity.oss-cn-shenzhen.aliyuncs.com/images/9982b35c62bd7376bc29c5e1ef12ae6b.jpg",
                 bookListcss: "bookList-part",
@@ -29817,7 +29437,7 @@ define("426/bookSite", ["require", "exports", "react", "react-router-dom", "antd
     class BookRoom extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_41.default();
+            this.globalAction = new compat_40.default();
             this.dataService = new dataService_69.default();
             this.state = {
                 startTime: "",
@@ -30034,14 +29654,14 @@ define("426/bookSite", ["require", "exports", "react", "react-router-dom", "antd
                             React.createElement("p", null,
                                 React.createElement("span", { className: "redStar", style: { "float": "left", "margin-top": "0.8rem" } }, "*"),
                                 React.createElement("div", { style: { "fonSize": "2.5rem" }, className: "mDate" },
-                                    React.createElement(antd_mobile_22.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.startTime, onChange: this.setStartTime.bind(this) },
-                                        React.createElement(antd_mobile_22.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65F6\u95F4"))))),
+                                    React.createElement(antd_mobile_21.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.startTime, onChange: this.setStartTime.bind(this) },
+                                        React.createElement(antd_mobile_21.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65F6\u95F4"))))),
                         React.createElement("li", null,
                             React.createElement("p", null,
                                 React.createElement("span", { className: "redStar", style: { "float": "left", "margin-top": "0.8rem" } }, "*"),
                                 React.createElement("div", { style: { "fonSize": "2.5rem" }, className: "mDate" },
-                                    React.createElement(antd_mobile_22.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.endTime, onChange: this.setEndTime.bind(this) },
-                                        React.createElement(antd_mobile_22.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65F6\u95F4"))))),
+                                    React.createElement(antd_mobile_21.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.endTime, onChange: this.setEndTime.bind(this) },
+                                        React.createElement(antd_mobile_21.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65F6\u95F4"))))),
                         React.createElement("li", { style: { "border": "0", "padding": "1rem 0 0 0" } },
                             React.createElement("p", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
@@ -30133,7 +29753,7 @@ define("426/bookSite", ["require", "exports", "react", "react-router-dom", "antd
         }
     }
 });
-define("426/bottomBtn", ["require", "exports", "react", "react-router-dom", "426/compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_42) {
+define("426/bottomBtn", ["require", "exports", "react", "react-router-dom", "426/compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_41) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class BottomBtn extends React.Component {
@@ -30142,7 +29762,7 @@ define("426/bottomBtn", ["require", "exports", "react", "react-router-dom", "426
             this.props = {
                 history: this.props.history
             };
-            this.globalAction = new compat_42.default();
+            this.globalAction = new compat_41.default();
             this.state = {
                 index: 1,
                 iconImg1In: "./park_m/image/bottomBtn/3d-in.png",
@@ -31132,7 +30752,7 @@ define("426/defaultRentRoom", ["require", "exports", "react", "css!./styles/defa
     }
     exports.default = DetaultRentRoom;
 });
-define("426/distribute", ["require", "exports", "react", "react-router-dom", "css!./styles/distribute.css"], function (require, exports, React, react_router_dom_34) {
+define("426/distribute", ["require", "exports", "react", "react-router-dom", "css!./styles/distribute.css"], function (require, exports, React, react_router_dom_35) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Distribute extends React.Component {
@@ -31168,7 +30788,7 @@ define("426/distribute", ["require", "exports", "react", "react-router-dom", "cs
                                     React.createElement("div", { style: { height: "100%", width: "60px", float: "left", lineHeight: "52px" } },
                                         React.createElement("img", { src: "./park_m/image/user.png", width: "40px", height: "40px" })),
                                     React.createElement("div", { style: { float: "left", lineHeight: "61px", height: "100%", minWidth: "90px", padding: "0 20px 0 15px" } }, "\u5C0F\u660E")),
-                                React.createElement(react_router_dom_34.Link, { to: "/searchUser" },
+                                React.createElement(react_router_dom_35.Link, { to: "/searchUser" },
                                     React.createElement("div", { style: { float: "right", color: "#0B8BF0", marginRight: "50px", textAlign: "center" } }, "\u4FEE\u6539")))));
                     }),
                     React.createElement("div", { style: { width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" } }, "\u5230\u5E95\u5566~"))));
@@ -31176,7 +30796,7 @@ define("426/distribute", ["require", "exports", "react", "react-router-dom", "cs
     }
     exports.default = Distribute;
 });
-define("426/enterpriseInformation - \u526F\u672C", ["require", "exports", "react", "426/dataService", "antd-mobile", "css!./styles/enterpriseInformation.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, dataService_70, antd_mobile_23) {
+define("426/enterpriseInformation - \u526F\u672C", ["require", "exports", "react", "426/dataService", "antd-mobile", "css!./styles/enterpriseInformation.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, dataService_70, antd_mobile_22) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class EnterpriseInformation extends React.Component {
@@ -31590,8 +31210,8 @@ define("426/enterpriseInformation - \u526F\u672C", ["require", "exports", "react
                             React.createElement("span", { className: "enterprise-information-photograph-star" }),
                             React.createElement("span", { style: { color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left" } }, "\u4F01\u4E1A logo"),
                             React.createElement("div", { className: "", style: { "marginLeft": "14rem" } },
-                                React.createElement(antd_mobile_23.WingBlank, null,
-                                    React.createElement(antd_mobile_23.ImagePicker, { files: this.state.filesLogo, onChange: this.onChangeLogo, onImageClick: (index, fs) => console.log(index, fs), selectable: files.length < 1, multiple: this.state.multiple })))),
+                                React.createElement(antd_mobile_22.WingBlank, null,
+                                    React.createElement(antd_mobile_22.ImagePicker, { files: this.state.filesLogo, onChange: this.onChangeLogo, onImageClick: (index, fs) => console.log(index, fs), selectable: files.length < 1, multiple: this.state.multiple })))),
                         React.createElement("div", { className: "enterprise-information-modify-tag" },
                             React.createElement("div", { className: "enterprise-information-star" }),
                             React.createElement("div", { style: { color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "25%" } }, "\u4F01\u4E1A\u4F4D\u7F6E"),
@@ -31620,18 +31240,18 @@ define("426/enterpriseInformation - \u526F\u672C", ["require", "exports", "react
                         React.createElement("div", { className: "", style: { margin: "1rem auto auto", width: "90%", borderBottom: "3px solid #F2F2F2" } },
                             React.createElement("span", { style: { color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left" } }, "\u4F01\u4E1A\u98CE\u91C7"),
                             React.createElement("div", { style: { marginLeft: "11rem" } },
-                                React.createElement(antd_mobile_23.WingBlank, null,
-                                    React.createElement(antd_mobile_23.ImagePicker, { files: this.state.filesElegant, onChange: this.onChangeElegant, onImageClick: (index, fs) => console.log(index, fs), selectable: files.length < 8, multiple: this.state.multiple })))),
+                                React.createElement(antd_mobile_22.WingBlank, null,
+                                    React.createElement(antd_mobile_22.ImagePicker, { files: this.state.filesElegant, onChange: this.onChangeElegant, onImageClick: (index, fs) => console.log(index, fs), selectable: files.length < 8, multiple: this.state.multiple })))),
                         React.createElement("div", { className: "", style: { margin: "1rem auto auto", width: "90%", borderBottom: "3px solid #F2F2F2" } },
                             React.createElement("span", { style: { color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left" } }, "\u4EA7\u54C1\u5C55\u793A"),
                             React.createElement("div", { style: { marginLeft: "11rem" } },
-                                React.createElement(antd_mobile_23.WingBlank, null,
-                                    React.createElement(antd_mobile_23.ImagePicker, { files: this.state.filesProduct, onChange: this.onChangeProduct, onImageClick: (index, fs) => console.log(index, fs), selectable: files.length < 8, multiple: this.state.multiple })))),
+                                React.createElement(antd_mobile_22.WingBlank, null,
+                                    React.createElement(antd_mobile_22.ImagePicker, { files: this.state.filesProduct, onChange: this.onChangeProduct, onImageClick: (index, fs) => console.log(index, fs), selectable: files.length < 8, multiple: this.state.multiple })))),
                         React.createElement("div", { className: "", style: { margin: "1rem auto auto", width: "90%", borderBottom: "3px solid #F2F2F2", marginBottom: "13rem" } },
                             React.createElement("span", { style: { color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left" } }, "\u5168\u666F\u5C55\u793A"),
                             React.createElement("div", { style: { marginLeft: "11rem" } },
-                                React.createElement(antd_mobile_23.WingBlank, null,
-                                    React.createElement(antd_mobile_23.ImagePicker, { files: this.state.filesPanorama, onChange: this.onChangePanorama, onImageClick: (index, fs) => console.log(index, fs), selectable: files.length < 8, multiple: this.state.multiple })))),
+                                React.createElement(antd_mobile_22.WingBlank, null,
+                                    React.createElement(antd_mobile_22.ImagePicker, { files: this.state.filesPanorama, onChange: this.onChangePanorama, onImageClick: (index, fs) => console.log(index, fs), selectable: files.length < 8, multiple: this.state.multiple })))),
                         React.createElement("div", { className: "enterprise-information-submit", onClick: this.submit.bind(this) }, "\u63D0\u4EA4")) :
                     React.createElement("div", null,
                         React.createElement("div", { style: { margin: "30px 0 0 50px", overflow: "hidden" } },
@@ -31691,7 +31311,7 @@ define("426/enterpriseInformation - \u526F\u672C", ["require", "exports", "react
     }
     exports.default = EnterpriseInformation;
 });
-define("426/enterpriseInformation", ["require", "exports", "react", "426/dataService", "antd-mobile", "css!./styles/enterpriseInformation.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, dataService_71, antd_mobile_24) {
+define("426/enterpriseInformation", ["require", "exports", "react", "426/dataService", "antd-mobile", "css!./styles/enterpriseInformation.css", "css!./styles/resetAntdMobile.css"], function (require, exports, React, dataService_71, antd_mobile_23) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class EnterpriseInformation extends React.Component {
@@ -32137,8 +31757,8 @@ define("426/enterpriseInformation", ["require", "exports", "react", "426/dataSer
                             React.createElement("span", { className: "enterprise-information-photograph-star" }),
                             React.createElement("span", { style: { color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left" } }, "\u4F01\u4E1A logo"),
                             React.createElement("div", { className: "", style: { "marginLeft": "14rem" } },
-                                React.createElement(antd_mobile_24.WingBlank, null,
-                                    React.createElement(antd_mobile_24.ImagePicker, { files: this.state.filesLogo, onChange: this.onChangeLogo, onImageClick: (index, fs) => console.log(index, fs), selectable: files.length < 1, accept: "image/jpg,image/jpge,image/png", multiple: this.state.multiple })))),
+                                React.createElement(antd_mobile_23.WingBlank, null,
+                                    React.createElement(antd_mobile_23.ImagePicker, { files: this.state.filesLogo, onChange: this.onChangeLogo, onImageClick: (index, fs) => console.log(index, fs), selectable: files.length < 1, accept: "image/jpg,image/jpge,image/png", multiple: this.state.multiple })))),
                         React.createElement("div", { className: "enterprise-information-modify-tag" },
                             React.createElement("div", { className: "enterprise-information-star" }),
                             React.createElement("div", { style: { color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "25%" } }, "\u4F01\u4E1A\u4F4D\u7F6E"),
@@ -32167,18 +31787,18 @@ define("426/enterpriseInformation", ["require", "exports", "react", "426/dataSer
                         React.createElement("div", { className: "", style: { margin: "1rem auto auto", width: "90%", borderBottom: "3px solid #F2F2F2" } },
                             React.createElement("span", { style: { color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left" } }, "\u4F01\u4E1A\u98CE\u91C7"),
                             React.createElement("div", { style: { marginLeft: "11rem" } },
-                                React.createElement(antd_mobile_24.WingBlank, null,
-                                    React.createElement(antd_mobile_24.ImagePicker, { files: this.state.filesElegant, onChange: this.onChangeElegant, onImageClick: (index, fs) => console.log(index, fs), selectable: files.length < 8, accept: "image/jpg,image/jpge,image/png", multiple: this.state.multiple })))),
+                                React.createElement(antd_mobile_23.WingBlank, null,
+                                    React.createElement(antd_mobile_23.ImagePicker, { files: this.state.filesElegant, onChange: this.onChangeElegant, onImageClick: (index, fs) => console.log(index, fs), selectable: files.length < 8, accept: "image/jpg,image/jpge,image/png", multiple: this.state.multiple })))),
                         React.createElement("div", { className: "", style: { margin: "1rem auto auto", width: "90%", borderBottom: "3px solid #F2F2F2" } },
                             React.createElement("span", { style: { color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left" } }, "\u4EA7\u54C1\u5C55\u793A"),
                             React.createElement("div", { style: { marginLeft: "11rem" } },
-                                React.createElement(antd_mobile_24.WingBlank, null,
-                                    React.createElement(antd_mobile_24.ImagePicker, { files: this.state.filesProduct, onChange: this.onChangeProduct, onImageClick: (index, fs) => console.log(index, fs), selectable: files.length < 8, accept: "image/jpg,image/jpge,image/png", multiple: this.state.multiple })))),
+                                React.createElement(antd_mobile_23.WingBlank, null,
+                                    React.createElement(antd_mobile_23.ImagePicker, { files: this.state.filesProduct, onChange: this.onChangeProduct, onImageClick: (index, fs) => console.log(index, fs), selectable: files.length < 8, accept: "image/jpg,image/jpge,image/png", multiple: this.state.multiple })))),
                         React.createElement("div", { className: "", style: { margin: "1rem auto auto", width: "90%", borderBottom: "3px solid #F2F2F2", marginBottom: "13rem" } },
                             React.createElement("span", { style: { color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left" } }, "\u5168\u666F\u5C55\u793A"),
                             React.createElement("div", { style: { marginLeft: "11rem" } },
-                                React.createElement(antd_mobile_24.WingBlank, null,
-                                    React.createElement(antd_mobile_24.ImagePicker, { files: this.state.filesPanorama, onChange: this.onChangePanorama, onImageClick: (index, fs) => console.log(index, fs), selectable: files.length < 8, accept: "image/jpg,image/jpge,image/png", multiple: this.state.multiple })))),
+                                React.createElement(antd_mobile_23.WingBlank, null,
+                                    React.createElement(antd_mobile_23.ImagePicker, { files: this.state.filesPanorama, onChange: this.onChangePanorama, onImageClick: (index, fs) => console.log(index, fs), selectable: files.length < 8, accept: "image/jpg,image/jpge,image/png", multiple: this.state.multiple })))),
                         React.createElement("div", { className: "enterprise-information-submit", onClick: this.submit.bind(this) }, "\u63D0\u4EA4")) :
                     React.createElement("div", null,
                         React.createElement("div", { style: { margin: "30px 0 0 50px", overflow: "hidden" } },
@@ -32274,7 +31894,7 @@ define("426/fullView", ["require", "exports", "react"], function (require, expor
     }
     exports.default = FullView;
 });
-define("426/homeBottom", ["require", "exports", "react", "react-router-dom", "426/compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_43) {
+define("426/homeBottom", ["require", "exports", "react", "react-router-dom", "426/compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_42) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class HomeBottom extends React.Component {
@@ -32283,7 +31903,7 @@ define("426/homeBottom", ["require", "exports", "react", "react-router-dom", "42
             this.props = {
                 history: this.props.history
             };
-            this.globalAction = new compat_43.default();
+            this.globalAction = new compat_42.default();
             this.state = {
                 index: 1,
                 iconImg1In: "./park_m/image/bottomBtn/3d-in.png",
@@ -32343,7 +31963,7 @@ define("426/homeBottom", ["require", "exports", "react", "react-router-dom", "42
     }
     exports.default = HomeBottom;
 });
-define("426/home", ["require", "exports", "react", "react-router-dom", "426/homeBottom", "426/dataService", "426/compat", "css!./styles/iconfont.css", "css!./styles/view.css"], function (require, exports, React, RouterDOM, homeBottom_2, dataService_72, compat_44) {
+define("426/home", ["require", "exports", "react", "react-router-dom", "426/homeBottom", "426/dataService", "426/compat", "css!./styles/iconfont.css", "css!./styles/view.css"], function (require, exports, React, RouterDOM, homeBottom_2, dataService_72, compat_43) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Home extends React.Component {
@@ -32353,7 +31973,7 @@ define("426/home", ["require", "exports", "react", "react-router-dom", "426/home
                 history: this.props.history,
                 children: this.props.children
             };
-            this.globalAction = new compat_44.default();
+            this.globalAction = new compat_43.default();
             this.dataService = new dataService_72.default();
             this.setToken = this.setToken.bind(this);
         }
@@ -32405,7 +32025,7 @@ define("426/home", ["require", "exports", "react", "react-router-dom", "426/home
                     { name: "交通" },
                 ]
             };
-            this.globalAction = new compat_44.default();
+            this.globalAction = new compat_43.default();
         }
         moreIcon(a) {
             console.log('toggleIconbox', a);
@@ -32699,7 +32319,7 @@ define("426/home", ["require", "exports", "react", "react-router-dom", "426/home
     }
     exports.default = Home;
 });
-define("426/identityAuthentication - \u526F\u672C", ["require", "exports", "react", "426/dataService", "antd-mobile"], function (require, exports, React, dataService_73, antd_mobile_25) {
+define("426/identityAuthentication - \u526F\u672C", ["require", "exports", "react", "426/dataService", "antd-mobile"], function (require, exports, React, dataService_73, antd_mobile_24) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class IdentityAuthentication extends React.Component {
@@ -32866,8 +32486,8 @@ define("426/identityAuthentication - \u526F\u672C", ["require", "exports", "reac
                         React.createElement("p", { style: { "color": "#333" } }, "\uFFFD\uFFFD\u05A4\uFFFD\uFFFD\uFFFD\uFFFD"),
                         React.createElement("div", { className: "identityBottonBox" },
                             React.createElement("div", { className: "", style: { position: "relative", left: "13rem", width: "106rem" } },
-                                React.createElement(antd_mobile_25.WingBlank, null,
-                                    React.createElement(antd_mobile_25.ImagePicker, { files: this.state.files, onChange: this.onChange, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple }))),
+                                React.createElement(antd_mobile_24.WingBlank, null,
+                                    React.createElement(antd_mobile_24.ImagePicker, { files: this.state.files, onChange: this.onChange, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple }))),
                             React.createElement("p", null, "\uFFFD\uFFFD\u05A4\uFFFD\uFFFD\u04B5\uFFFD\uFFFD\uFFFD\uFFFD\u0531\uFFFD\uFFFD\uFFFD\u03F4\uFFFD\uFFFD\u2DFF\uFFFD\uFFFD\u036C\uFFFD\uFFFD\u04EA\u04B5\u05B4\uFFFD\uFFFD"),
                             React.createElement("p", null, "\uFFFD\uFFFD\u05A4\u0530\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u0531\uFFFD\uFFFD\uFFFD\u03F4\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD")),
                         React.createElement("p", null,
@@ -32885,7 +32505,7 @@ define("426/identityAuthentication - \u526F\u672C", ["require", "exports", "reac
     }
     exports.default = IdentityAuthentication;
 });
-define("426/identityAuthentication", ["require", "exports", "react", "426/dataService", "antd-mobile"], function (require, exports, React, dataService_74, antd_mobile_26) {
+define("426/identityAuthentication", ["require", "exports", "react", "426/dataService", "antd-mobile"], function (require, exports, React, dataService_74, antd_mobile_25) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class IdentityAuthentication extends React.Component {
@@ -33052,8 +32672,8 @@ define("426/identityAuthentication", ["require", "exports", "react", "426/dataSe
                         React.createElement("p", { style: { "color": "#333" } }, "\u8BA4\u8BC1\u6750\u6599"),
                         React.createElement("div", { className: "identityBottonBox" },
                             React.createElement("div", { className: "", style: { position: "relative", left: "13rem", width: "106rem" } },
-                                React.createElement(antd_mobile_26.WingBlank, null,
-                                    React.createElement(antd_mobile_26.ImagePicker, { files: this.state.files, onChange: this.onChange, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple }))),
+                                React.createElement(antd_mobile_25.WingBlank, null,
+                                    React.createElement(antd_mobile_25.ImagePicker, { files: this.state.files, onChange: this.onChange, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple }))),
                             React.createElement("p", null, "\u8BA4\u8BC1\u4F01\u4E1A\u7BA1\u7406\u5458\u8BF7\u4E0A\u4F20\u79DF\u623F\u5408\u540C\u6216\u8425\u4E1A\u6267\u7167"),
                             React.createElement("p", null, "\u8BA4\u8BC1\u56ED\u533A\u7BA1\u7406\u5458\u8BF7\u4E0A\u4F20\u5DE5\u724C")),
                         React.createElement("p", null,
@@ -33071,13 +32691,13 @@ define("426/identityAuthentication", ["require", "exports", "react", "426/dataSe
     }
     exports.default = IdentityAuthentication;
 });
-define("426/parkCompany", ["require", "exports", "react", "react-router-dom", "426/compat", "426/dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_45, dataService_75, antd_mobile_27) {
+define("426/parkCompany", ["require", "exports", "react", "react-router-dom", "426/compat", "426/dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_44, dataService_75, antd_mobile_26) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParkCompany extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_45.default();
+            this.globalAction = new compat_44.default();
             this.state = {
                 parkCompanycss: "parkCompany",
                 showList: true,
@@ -33132,7 +32752,7 @@ define("426/parkCompany", ["require", "exports", "react", "react-router-dom", "4
         constructor(props) {
             super(props);
             this.dataService = new dataService_75.default();
-            this.globalAction = new compat_45.default();
+            this.globalAction = new compat_44.default();
             this.state = {
                 companyNull: "hide",
                 park_id: 1001,
@@ -33558,8 +33178,8 @@ define("426/parkCompany", ["require", "exports", "react", "react-router-dom", "4
             return (React.createElement("div", { className: "mien" },
                 React.createElement("p", { className: this.state.urlNull, style: { "color": "#333333", "text-align": "center", "font-size": "2.5rem" } }, "\u6682\u65E0\u56FE\u7247\u00B7\u00B7\u00B7"),
                 React.createElement("div", { className: this.state.urlShow },
-                    React.createElement(antd_mobile_27.WingBlank, null,
-                        React.createElement(antd_mobile_27.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
+                    React.createElement(antd_mobile_26.WingBlank, null,
+                        React.createElement(antd_mobile_26.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
                                 window.dispatchEvent(new Event('resize'));
                                 this.setState({ imgHeight: 'auto' });
                             } }))))))));
@@ -33656,8 +33276,8 @@ define("426/parkCompany", ["require", "exports", "react", "react-router-dom", "4
             return (React.createElement("div", { className: "product" },
                 React.createElement("p", { className: this.state.urlNull, style: { "color": "#333333", "text-align": "center", "font-size": "2.5rem" } }, "\u6682\u65E0\u56FE\u7247\u00B7\u00B7\u00B7"),
                 React.createElement("div", { className: this.state.urlShow },
-                    React.createElement(antd_mobile_27.WingBlank, null,
-                        React.createElement(antd_mobile_27.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
+                    React.createElement(antd_mobile_26.WingBlank, null,
+                        React.createElement(antd_mobile_26.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
                                 window.dispatchEvent(new Event('resize'));
                                 this.setState({ imgHeight: 'auto' });
                             } }))))))));
@@ -33665,7 +33285,7 @@ define("426/parkCompany", ["require", "exports", "react", "react-router-dom", "4
     }
     exports.default = ParkCompany;
 });
-define("426/photograph", ["require", "exports", "react", "react-router-dom", "426/dataService", "antd-mobile", "antd-mobile", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, dataService_76, antd_mobile_28, antd_mobile_29) {
+define("426/photograph", ["require", "exports", "react", "react-router-dom", "426/dataService", "antd-mobile", "antd-mobile", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, dataService_76, antd_mobile_27, antd_mobile_28) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Photograph extends React.Component {
@@ -34048,8 +33668,8 @@ define("426/photograph", ["require", "exports", "react", "react-router-dom", "42
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 " \u8FDD\u89C4\u7167\u7247",
                                 React.createElement("div", { className: "imgCom" },
-                                    React.createElement(antd_mobile_28.WingBlank, null,
-                                        React.createElement(antd_mobile_28.ImagePicker, { files: this.state.files, onChange: this.onChange, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple })))),
+                                    React.createElement(antd_mobile_27.WingBlank, null,
+                                        React.createElement(antd_mobile_27.ImagePicker, { files: this.state.files, onChange: this.onChange, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple })))),
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 " \u66DD\u5149\u7C7B\u578B",
@@ -34068,8 +33688,8 @@ define("426/photograph", ["require", "exports", "react", "react-router-dom", "42
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 React.createElement("div", { style: { "fonSize": "2.5rem", "float": "right", "position": "relative", "top": "-0.5rem", "left": "-0.5rem" }, className: "mDate" },
-                                    React.createElement(antd_mobile_29.DatePicker, { value: this.state.timeShow, onChange: this.getTime.bind(this) },
-                                        React.createElement(antd_mobile_29.List.Item, { arrow: "horizontal" }, "\u66DD\u5149\u65F6\u95F4")))),
+                                    React.createElement(antd_mobile_28.DatePicker, { value: this.state.timeShow, onChange: this.getTime.bind(this) },
+                                        React.createElement(antd_mobile_28.List.Item, { arrow: "horizontal" }, "\u66DD\u5149\u65F6\u95F4")))),
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 " \u8FDD\u89C4\u63CF\u8FF0"),
@@ -34260,7 +33880,7 @@ define("426/photograph", ["require", "exports", "react", "react-router-dom", "42
         }
     }
 });
-define("426/infoArea", ["require", "exports", "react", "react-router-dom", "426/dataService", "css!./styles/infoArea.css"], function (require, exports, React, react_router_dom_35, dataService_77) {
+define("426/infoArea", ["require", "exports", "react", "react-router-dom", "426/dataService", "css!./styles/infoArea.css"], function (require, exports, React, react_router_dom_36, dataService_77) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class InfoArea extends React.Component {
@@ -34370,7 +33990,7 @@ define("426/infoArea", ["require", "exports", "react", "react-router-dom", "426/
                                     React.createElement("div", { className: "infoarea-br-data" }, item.time))));
                     }),
                     React.createElement("div", { style: { width: "100%", height: "30%", textAlign: "center", fontSize: "40px", lineHeight: "60px", margin: "20px 0 0 -25px" } }, "\u5230\u5E95\u5566~")),
-                React.createElement(react_router_dom_35.Link, { to: "/isay" },
+                React.createElement(react_router_dom_36.Link, { to: "/isay" },
                     React.createElement("div", { className: "infoarea-add-c" },
                         React.createElement("img", { src: "./park_m/image/add.png", width: "60px", height: "60px" })))));
         }
@@ -34419,7 +34039,7 @@ define("426/information", ["require", "exports", "react", "426/dataService", "cs
     }
     exports.default = Information;
 });
-define("426/personalCenter", ["require", "exports", "react", "react-router-dom", "426/dataService", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_36, dataService_79) {
+define("426/personalCenter", ["require", "exports", "react", "react-router-dom", "426/dataService", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_37, dataService_79) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class PersonalCenter extends React.Component {
@@ -34490,7 +34110,7 @@ define("426/personalCenter", ["require", "exports", "react", "react-router-dom",
                                     color: "#83d5ff", fontSize: "27px", backgroundColor: "#2e9cf3", width: "160px",
                                     height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
                                 }, onClick: this.switchMember.bind(this) }, this.state.userInfo)),
-                        React.createElement(react_router_dom_36.Link, { to: "/modificationAuthentication" },
+                        React.createElement(react_router_dom_37.Link, { to: "/modificationAuthentication" },
                             React.createElement("div", { className: "personal-center-right" },
                                 React.createElement("img", { src: "./park_m/image/w-right.png" }))))),
                 this.state.pathname === "/personalCenter" ?
@@ -34518,25 +34138,25 @@ define("426/personalCenter", ["require", "exports", "react", "react-router-dom",
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5BA2\u670D\u7535\u8BDD"),
                             React.createElement("span", null, "0773-123456")),
                         React.createElement("div", { className: "personal-center-my" },
-                            React.createElement(react_router_dom_36.Link, { to: sessionStorage.getItem("userInfo") === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
+                            React.createElement(react_router_dom_37.Link, { to: sessionStorage.getItem("userInfo") === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
                                 React.createElement("div", { className: "personal-center-my-left" },
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "5"),
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u5DE5\u5355"))),
                             React.createElement("div", { className: "personal-center-my-middle" }),
-                            React.createElement(react_router_dom_36.Link, { to: "/message" },
+                            React.createElement(react_router_dom_37.Link, { to: "/message" },
                                 React.createElement("div", { className: "personal-center-my-right" },
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "6"),
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u6D88\u606F")))))
                     : null,
                 sessionStorage.getItem("userInfo") === "企业管理员" && this.state.pathname !== "/personalCenter" ?
                     React.createElement("div", { className: "personal-center-enterprise" },
-                        React.createElement(react_router_dom_36.Link, { to: "/enterpriseInformation" },
+                        React.createElement(react_router_dom_37.Link, { to: "/enterpriseInformation" },
                             React.createElement("div", { className: "personal-center-enterprise-child" },
                                 React.createElement("img", { src: "./park_m/image/enterprise.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
                                 React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u4F01\u4E1A\u4FE1\u606F\u7BA1\u7406"),
                                 React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
                                     React.createElement("img", { src: "./park_m/image/right.png" })))),
-                        React.createElement(react_router_dom_36.Link, { to: "/rentRoom" },
+                        React.createElement(react_router_dom_37.Link, { to: "/rentRoom" },
                             React.createElement("div", { className: "personal-center-enterprise-child" },
                                 React.createElement("img", { src: "./park_m/image/let.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
                                 React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"),
@@ -34551,7 +34171,7 @@ define("426/personalCenter", ["require", "exports", "react", "react-router-dom",
                                 React.createElement("img", { src: "./park_m/image/right.png", className: this.state.isSpread ? "personal-center-bottom-img" : "" }))),
                         this.state.isSpread ?
                             React.createElement("div", { style: { backgroundColor: "#ffffff", overflow: "hidden", paddingTop: "30px" } }, this.state.parkList.map((item, index) => {
-                                return (React.createElement(react_router_dom_36.Link, { to: item.url },
+                                return (React.createElement(react_router_dom_37.Link, { to: item.url },
                                     React.createElement("div", { key: index, className: "personal-center-park-child" },
                                         React.createElement("img", { src: item.imgUrl, width: "110px", height: "110px" }),
                                         React.createElement("div", { style: { marginTop: "10px" } }, item.name))));
@@ -34560,14 +34180,14 @@ define("426/personalCenter", ["require", "exports", "react", "react-router-dom",
     }
     exports.default = PersonalCenter;
 });
-define("426/repairsOnline", ["require", "exports", "react", "react-router-dom", "426/dataService", "426/compat", "antd-mobile", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, dataService_80, compat_46, antd_mobile_30) {
+define("426/repairsOnline", ["require", "exports", "react", "react-router-dom", "426/dataService", "426/compat", "antd-mobile", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, dataService_80, compat_45, antd_mobile_29) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RepairsOnline extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_80.default();
-            this.globalAction = new compat_46.default();
+            this.globalAction = new compat_45.default();
             this.onChangeImg = (files, type, index) => {
                 console.log(files, type, index);
                 this.setState({
@@ -34803,8 +34423,8 @@ define("426/repairsOnline", ["require", "exports", "react", "react-router-dom", 
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 React.createElement("span", { style: { "color": "#949494" } }, "\u62A5\u4FEE\u7167\u7247"),
                                 React.createElement("div", { className: "imgCom" },
-                                    React.createElement(antd_mobile_30.WingBlank, null,
-                                        React.createElement(antd_mobile_30.ImagePicker, { files: this.state.files, onChange: this.onChangeImg, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple })))),
+                                    React.createElement(antd_mobile_29.WingBlank, null,
+                                        React.createElement(antd_mobile_29.ImagePicker, { files: this.state.files, onChange: this.onChangeImg, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple })))),
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 React.createElement("span", { style: { "color": "#949494" } }, "\u62A5\u4FEE\u7C7B\u578B"),
@@ -34852,13 +34472,13 @@ define("426/repairsOnline", ["require", "exports", "react", "react-router-dom", 
     }
     exports.default = RepairsOnline;
 });
-define("426/parking", ["require", "exports", "react", "react-router-dom", "426/compat", "426/dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_47, dataService_81, antd_mobile_31) {
+define("426/parking", ["require", "exports", "react", "react-router-dom", "426/compat", "426/dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_46, dataService_81, antd_mobile_30) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Parking extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_47.default();
+            this.globalAction = new compat_46.default();
             this.state = {
                 parkingcss: "parking",
                 iconfont: "iconfont iconfont-unturn",
@@ -34962,7 +34582,7 @@ define("426/parking", ["require", "exports", "react", "react-router-dom", "426/c
         constructor(props) {
             super(props);
             this.dataService = new dataService_81.default();
-            this.globalAction = new compat_47.default();
+            this.globalAction = new compat_46.default();
             this.state = {
                 contentULcss: "contentUL-part contentUL",
                 carTypeBox: "hide",
@@ -35391,7 +35011,7 @@ define("426/parking", ["require", "exports", "react", "react-router-dom", "426/c
     class Alteration extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_47.default();
+            this.globalAction = new compat_46.default();
             this.dataService = new dataService_81.default();
             this.state = {
                 componentBox: "componentBox-part",
@@ -35680,7 +35300,7 @@ define("426/parking", ["require", "exports", "react", "react-router-dom", "426/c
         constructor(props) {
             super(props);
             this.dataService = new dataService_81.default();
-            this.globalAction = new compat_47.default();
+            this.globalAction = new compat_46.default();
             this.state = {
                 componentBox: "componentBox-part",
                 contentBox: "contentBox-part",
@@ -35928,14 +35548,14 @@ define("426/parking", ["require", "exports", "react", "react-router-dom", "426/c
                                 React.createElement("p", null,
                                     React.createElement("span", { className: "redStar", style: { "float": "left", "margin-top": "-1.2rem" } }, "*"),
                                     React.createElement("div", { style: { "fonSize": "2.5rem" }, className: "mDate" },
-                                        React.createElement(antd_mobile_31.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.startTime, onChange: this.setStartTime.bind(this) },
-                                            React.createElement(antd_mobile_31.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65F6\u95F4"))))),
+                                        React.createElement(antd_mobile_30.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.startTime, onChange: this.setStartTime.bind(this) },
+                                            React.createElement(antd_mobile_30.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65F6\u95F4"))))),
                             React.createElement("li", { style: { "padding": "1.5rem 0rem" } },
                                 React.createElement("p", null,
                                     React.createElement("span", { className: "redStar", style: { "float": "left", "margin-top": "-1.2rem" } }, "*"),
                                     React.createElement("div", { style: { "fonSize": "2.5rem" }, className: "mDate" },
-                                        React.createElement(antd_mobile_31.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.endTime, onChange: this.setEndTime.bind(this) },
-                                            React.createElement(antd_mobile_31.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65F6\u95F4"))))),
+                                        React.createElement(antd_mobile_30.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.endTime, onChange: this.setEndTime.bind(this) },
+                                            React.createElement(antd_mobile_30.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65F6\u95F4"))))),
                             React.createElement("div", { className: "bookSumbit", onClick: this.visitorSumbit.bind(this) }, "\u63D0\u4EA4"))),
                     React.createElement("div", { className: this.state.parkingListBox },
                         React.createElement("ul", { className: "rollSelectCauseULcss" }, this.state.parkingListUL.map((i, index) => {
@@ -35947,14 +35567,14 @@ define("426/parking", ["require", "exports", "react", "react-router-dom", "426/c
         }
     }
 });
-define("426/narrate", ["require", "exports", "react", "react-router-dom", "426/compat", "426/dataService", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_48, dataService_82) {
+define("426/narrate", ["require", "exports", "react", "react-router-dom", "426/compat", "426/dataService", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_47, dataService_82) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Narrate extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_82.default();
-            this.globalAction = new compat_48.default();
+            this.globalAction = new compat_47.default();
             this.state = {
                 paused: true,
                 activeType: 0,
@@ -36423,7 +36043,7 @@ define("426/workOrderDetail", ["require", "exports", "react", "426/dataService",
     }
     exports.default = workOrderDetail;
 });
-define("426/modificationAuthentication", ["require", "exports", "react", "react-router-dom", "426/dataService", "css!./styles/modificationAuthentication.css"], function (require, exports, React, react_router_dom_37, dataService_86) {
+define("426/modificationAuthentication", ["require", "exports", "react", "react-router-dom", "426/dataService", "css!./styles/modificationAuthentication.css"], function (require, exports, React, react_router_dom_38, dataService_86) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ModificationAuthentication extends React.Component {
@@ -36477,7 +36097,7 @@ define("426/modificationAuthentication", ["require", "exports", "react", "react-
                     React.createElement("div", { style: { paddingLeft: "40px", float: "left" } },
                         React.createElement("span", { style: { color: "#333333", fontSize: "42px" } }, "\u8EAB\u4EFD\u8BA4\u8BC1"),
                         React.createElement("span", { style: { color: "#949494", fontSize: "42px", marginLeft: "50px" } }, "\u8BA4\u8BC1\u6210\u4E3A\u4F01\u4E1A\u7BA1\u7406\u5458")),
-                    React.createElement(react_router_dom_37.Link, { to: "/identityAuthentication" },
+                    React.createElement(react_router_dom_38.Link, { to: "/identityAuthentication" },
                         React.createElement("div", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" } }, "\u8BA4\u8BC1")))));
         }
     }
@@ -36550,7 +36170,7 @@ define("426/message", ["require", "exports", "react", "426/dataService", "css!./
     }
     exports.default = Message;
 });
-define("426/rentRoom", ["require", "exports", "react", "react-router-dom", "css!./styles/rentRoom.css"], function (require, exports, React, react_router_dom_38) {
+define("426/rentRoom", ["require", "exports", "react", "react-router-dom", "css!./styles/rentRoom.css"], function (require, exports, React, react_router_dom_39) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RentRoom extends React.Component {
@@ -36572,7 +36192,7 @@ define("426/rentRoom", ["require", "exports", "react", "react-router-dom", "css!
                         React.createElement("span", null, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"))),
                 React.createElement("div", { className: "rent-room-list" },
                     this.state.workOrderArray.map((item, index) => {
-                        return React.createElement(react_router_dom_38.Link, { to: "/rentRoomDetail" },
+                        return React.createElement(react_router_dom_39.Link, { to: "/rentRoomDetail" },
                             React.createElement("div", { key: index, className: "rent-room-list-child" },
                                 React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 40px" } },
                                     React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, item),
@@ -36590,7 +36210,7 @@ define("426/rentRoom", ["require", "exports", "react", "react-router-dom", "css!
                                                 marginRight: "40px", fontSize: "32px", textAlign: "center", lineHeight: "55px"
                                             } }, "\u9ED8\u8BA4\u5C55\u793A") : null)));
                     }),
-                    React.createElement(react_router_dom_38.Link, { to: "/defaultRentRoom" },
+                    React.createElement(react_router_dom_39.Link, { to: "/defaultRentRoom" },
                         React.createElement("div", { style: { width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "50px", color: "#0B8BF0" } }, "\u9009\u62E9\u9ED8\u8BA4\u5C55\u793A\u623F\u95F4")))));
         }
     }
@@ -36636,7 +36256,7 @@ define("426/rentRoomDetail", ["require", "exports", "react", "css!./styles/rentR
     }
     exports.default = RentRoomDetail;
 });
-define("426/parkWorkOrder", ["require", "exports", "react", "react-router-dom", "css!./styles/workOrder.css"], function (require, exports, React, react_router_dom_39) {
+define("426/parkWorkOrder", ["require", "exports", "react", "react-router-dom", "css!./styles/workOrder.css"], function (require, exports, React, react_router_dom_40) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParkWorkOrder extends React.Component {
@@ -36664,7 +36284,7 @@ define("426/parkWorkOrder", ["require", "exports", "react", "react-router-dom", 
                 })),
                 React.createElement("div", { className: "work-order-list" },
                     this.state.workOrderArray.map((item, index) => {
-                        return React.createElement(react_router_dom_39.Link, { to: "/workOrderDetail" },
+                        return React.createElement(react_router_dom_40.Link, { to: "/workOrderDetail" },
                             React.createElement("div", { key: index, className: "work-order-list-child" },
                                 React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 40px" } },
                                     React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, "\u4F01\u4E1A\u8BA4\u8BC1\u5DE5\u53551"),
@@ -37119,7 +36739,7 @@ define("426/informationChild", ["require", "exports", "react", "426/dataService"
     }
     exports.default = InformationChild;
 });
-define("426/informationDetail", ["require", "exports", "react", "426/dataService", "react-router-dom", "css!./styles/informationDetail.css"], function (require, exports, React, dataService_91, react_router_dom_40) {
+define("426/informationDetail", ["require", "exports", "react", "426/dataService", "react-router-dom", "css!./styles/informationDetail.css"], function (require, exports, React, dataService_91, react_router_dom_41) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class informationDetail extends React.Component {
@@ -37201,7 +36821,7 @@ define("426/informationDetail", ["require", "exports", "react", "426/dataService
                         React.createElement("div", { style: { height: "50px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "36px 30px 0 50px" } }),
                         React.createElement("div", { style: { color: "#333333", fontSize: "40px", fontWeight: "600", lineHeight: "120px" } }, "\u670D\u52A1\u4FE1\u606F")),
                     React.createElement("div", { className: "index-park" }, this.state.parkArr.map((item, index) => {
-                        return (React.createElement(react_router_dom_40.Link, { to: "/home" },
+                        return (React.createElement(react_router_dom_41.Link, { to: "/home" },
                             React.createElement("div", { className: "index-child-park", key: index, onClick: this.initPark.bind(this, 1001) },
                                 React.createElement("div", { className: "index-child-park-left" },
                                     React.createElement("img", { src: "./park_m/image/a.jpg", className: "park-img" })),
@@ -37288,7 +36908,7 @@ define("426/informationDetail", ["require", "exports", "react", "426/dataService
     }
     exports.default = informationDetail;
 });
-define("426/room", ["require", "exports", "react", "react-router-dom", "426/dataService", "css!./styles/room.css"], function (require, exports, React, react_router_dom_41, dataService_92) {
+define("426/room", ["require", "exports", "react", "react-router-dom", "426/dataService", "css!./styles/room.css"], function (require, exports, React, react_router_dom_42, dataService_92) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Room extends React.Component {
@@ -37373,7 +36993,7 @@ define("426/room", ["require", "exports", "react", "react-router-dom", "426/data
                                         React.createElement("img", { src: "./park_m/image/right.png", className: item.isSpread ? "room-spread-right" : null }))),
                                 this.state.floorIndex === index ?
                                     React.createElement("div", { style: { width: "90%", margin: "10px auto", minHeight: "200px", overflow: "hidden" } }, this.state.buildingArr[this.state.buildingIndex].child[this.state.floorIndex].child.map((it, ind) => {
-                                        return (React.createElement(react_router_dom_41.Link, { to: { pathname: "/roomDetail", state: { name: it.name, id: it.id } } },
+                                        return (React.createElement(react_router_dom_42.Link, { to: { pathname: "/roomDetail", state: { name: it.name, id: it.id } } },
                                             React.createElement("div", { key: ind, className: it.State === 1 ? "room-single-add" : "room-single" }, it.name)));
                                     })) : null));
                         }))));
@@ -37381,7 +37001,7 @@ define("426/room", ["require", "exports", "react", "react-router-dom", "426/data
     }
     exports.default = Room;
 });
-define("426/roomDetail", ["require", "exports", "react", "react-router-dom", "426/dataService"], function (require, exports, React, react_router_dom_42, dataService_93) {
+define("426/roomDetail", ["require", "exports", "react", "react-router-dom", "426/dataService"], function (require, exports, React, react_router_dom_43, dataService_93) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RoomDetail extends React.Component {
@@ -37421,17 +37041,17 @@ define("426/roomDetail", ["require", "exports", "react", "react-router-dom", "42
                         React.createElement("span", null, this.state.roomName),
                         React.createElement("span", { style: { color: "#F53636", float: "right", marginRight: "50px" } }, "\u5220\u9664"))),
                 React.createElement("div", { style: { width: "100%", height: "15px", backgroundColor: "#F2F2F2" } }),
-                React.createElement(react_router_dom_42.Link, { to: { pathname: "/roomBase", state: { roomInfo: this.state.roomInfo } } },
+                React.createElement(react_router_dom_43.Link, { to: { pathname: "/roomBase", state: { roomInfo: this.state.roomInfo } } },
                     React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("img", { src: "./park_m/image/room_base.png", style: { margin: "0 20px 15px 10px" } }),
                         React.createElement("span", null, "\u623F\u95F4\u57FA\u672C\u4FE1\u606F"),
                         React.createElement("span", { style: { color: "#0B8BF0", float: "right", marginRight: "50px" } }, "\u4FEE\u6539"))),
-                React.createElement(react_router_dom_42.Link, { to: "/roomPattern" },
+                React.createElement(react_router_dom_43.Link, { to: "/roomPattern" },
                     React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("img", { src: "./park_m/image/pattern.png", style: { margin: "0 20px 15px 10px" } }),
                         React.createElement("span", null, "\u623F\u95F4\u683C\u5C40\u4FE1\u606F"),
                         React.createElement("span", { style: { color: "#0B8BF0", float: "right", marginRight: "50px" } }, "\u4FEE\u6539"))),
-                React.createElement(react_router_dom_42.Link, { to: { pathname: "/roomUse", state: { roomInfo: this.state.roomInfo } } },
+                React.createElement(react_router_dom_43.Link, { to: { pathname: "/roomUse", state: { roomInfo: this.state.roomInfo } } },
                     React.createElement("div", { className: "service-tel", style: { fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("img", { src: "./park_m/image/room_rent.png", style: { margin: "0 20px 15px 10px" } }),
                         React.createElement("span", null, "\u623F\u95F4\u4F7F\u7528\u4FE1\u606F"),
@@ -37685,7 +37305,7 @@ define("426/roomBase", ["require", "exports", "react", "426/dataService"], funct
     }
     exports.default = RoomBase;
 });
-define("426/roomPattern", ["require", "exports", "react", "react-router-dom", "426/dataService", "css!./styles/roomPattern.css"], function (require, exports, React, react_router_dom_43, dataService_96) {
+define("426/roomPattern", ["require", "exports", "react", "react-router-dom", "426/dataService", "css!./styles/roomPattern.css"], function (require, exports, React, react_router_dom_44, dataService_96) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RoomPattern extends React.Component {
@@ -37727,7 +37347,7 @@ define("426/roomPattern", ["require", "exports", "react", "react-router-dom", "4
                     return (React.createElement("div", { key: index, style: { width: "100%", height: "400px", backgroundColor: "#ffffff", marginBottom: "10px" } },
                         React.createElement("div", { style: { overflow: "hidden", padding: "30px 0 0 50px" } },
                             React.createElement("div", { style: { fontSize: "42px", color: "#333333", fontWeight: "600", float: "left" } }, item.name),
-                            React.createElement(react_router_dom_43.Link, { to: { pathname: "/roomPatternUpdate", state: { index: index } } },
+                            React.createElement(react_router_dom_44.Link, { to: { pathname: "/roomPatternUpdate", state: { index: index } } },
                                 React.createElement("div", { style: { float: "right", fontSize: "40px", color: "#0B8BF0", marginRight: "50px" } }, "\u4FEE\u6539"))),
                         React.createElement("div", { style: { width: "100%", height: "300px", lineHeight: "300px", paddingLeft: "50px" } },
                             React.createElement("div", { style: { fontSize: "40px", color: "#6C6C6C", float: "left", marginRight: "20px" } }, "\u7F29\u7565\u56FE\uFF1A"),
@@ -37936,66 +37556,66 @@ define("426/modificationAuthenticationDetail", ["require", "exports", "react", "
     }
     exports.default = modificationAuthenticationDetail;
 });
-define("426/router", ["require", "exports", "react-router-dom", "react", "426/index", "426/home", "426/parkCompany", "426/photograph", "426/infoArea", "426/information", "426/personalCenter", "426/findLease", "426/applyPut", "426/bookSite", "426/repairsOnline", "426/parking", "426/narrate", "426/isay", "426/workOrder", "426/workOrderDetail", "426/modificationAuthentication", "426/message", "426/enterpriseInformation", "426/rentRoom", "426/rentRoomDetail", "426/defaultRentRoom", "426/parkWorkOrder", "426/serviceTel", "426/distribute", "426/searchUser", "426/statisticalStatement", "426/informationChild", "426/informationDetail", "426/attractInvestment", "426/attractInvestmentList", "426/room", "426/roomDetail", "426/roomUse", "426/roomBase", "426/roomPattern", "426/roomPatternUpdate", "426/modificationAuthenticationDetail", "426/identityAuthentication"], function (require, exports, react_router_dom_44, React, index_4, home_4, parkCompany_8, photograph_8, infoArea_4, information_4, personalCenter_4, findLease_8, applyPut_8, bookSite_8, repairsOnline_8, parking_8, narrate_4, isay_4, workOrder_4, workOrderDetail_4, modificationAuthentication_4, message_4, enterpriseInformation_3, rentRoom_3, rentRoomDetail_3, defaultRentRoom_3, parkWorkOrder_3, serviceTel_3, distribute_3, searchUser_3, statisticalStatement_3, informationChild_3, informationDetail_3, attractInvestment_3, attractInvestmentList_3, room_3, roomDetail_3, roomUse_3, roomBase_3, roomPattern_3, roomPatternUpdate_2, modificationAuthenticationDetail_2, identityAuthentication_2) {
+define("426/router", ["require", "exports", "react-router-dom", "react", "426/index", "426/home", "426/parkCompany", "426/photograph", "426/infoArea", "426/information", "426/personalCenter", "426/findLease", "426/applyPut", "426/bookSite", "426/repairsOnline", "426/parking", "426/narrate", "426/isay", "426/workOrder", "426/workOrderDetail", "426/modificationAuthentication", "426/message", "426/enterpriseInformation", "426/rentRoom", "426/rentRoomDetail", "426/defaultRentRoom", "426/parkWorkOrder", "426/serviceTel", "426/distribute", "426/searchUser", "426/statisticalStatement", "426/informationChild", "426/informationDetail", "426/attractInvestment", "426/attractInvestmentList", "426/room", "426/roomDetail", "426/roomUse", "426/roomBase", "426/roomPattern", "426/roomPatternUpdate", "426/modificationAuthenticationDetail", "426/identityAuthentication"], function (require, exports, react_router_dom_45, React, index_4, home_4, parkCompany_8, photograph_8, infoArea_4, information_4, personalCenter_4, findLease_8, applyPut_8, bookSite_8, repairsOnline_8, parking_8, narrate_4, isay_4, workOrder_4, workOrderDetail_4, modificationAuthentication_4, message_4, enterpriseInformation_3, rentRoom_3, rentRoomDetail_3, defaultRentRoom_3, parkWorkOrder_3, serviceTel_3, distribute_3, searchUser_3, statisticalStatement_3, informationChild_3, informationDetail_3, attractInvestment_3, attractInvestmentList_3, room_3, roomDetail_3, roomUse_3, roomBase_3, roomPattern_3, roomPatternUpdate_2, modificationAuthenticationDetail_2, identityAuthentication_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Router extends React.Component {
         render() {
-            return (React.createElement(react_router_dom_44.HashRouter, null,
-                React.createElement(react_router_dom_44.Switch, null,
-                    React.createElement(react_router_dom_44.Route, { exact: true, path: "/", component: index_4.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/parkCompany", component: parkCompany_8.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/photograph", component: photograph_8.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/findLease", component: findLease_8.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/applyPut", component: applyPut_8.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/bookSite", component: bookSite_8.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/repairsOnline", component: repairsOnline_8.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/parking", component: parking_8.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/narrate", component: narrate_4.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/isay", component: isay_4.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/workOrder", component: workOrder_4.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/workOrderDetail", component: workOrderDetail_4.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/parkworkOrder", component: parkWorkOrder_3.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/modificationAuthentication", component: modificationAuthentication_4.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/message", component: message_4.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/enterpriseInformation", component: enterpriseInformation_3.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/rentRoom", component: rentRoom_3.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/rentRoomDetail", component: rentRoomDetail_3.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/defaultRentRoom", component: defaultRentRoom_3.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/serviceTel", component: serviceTel_3.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/distribute", component: distribute_3.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/searchUser", component: searchUser_3.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/statisticalStatement", component: statisticalStatement_3.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/informationDetail", component: informationDetail_3.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/attractInvestment", component: attractInvestment_3.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/attractInvestmentList", component: attractInvestmentList_3.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/room", component: room_3.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/roomDetail", component: roomDetail_3.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/roomUse", component: roomUse_3.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/roomBase", component: roomBase_3.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/roomPattern", component: roomPattern_3.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/roomPatternUpdate", component: roomPatternUpdate_2.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/modificationAuthenticationDetail", component: modificationAuthenticationDetail_2.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/identityAuthentication", component: identityAuthentication_2.default }),
-                    React.createElement(react_router_dom_44.Route, { path: "/home", render: (props) => (React.createElement(home_4.default, Object.assign({}, props),
-                            React.createElement(react_router_dom_44.Route, { path: "/home/infoArea", component: infoArea_4.default }),
-                            React.createElement(react_router_dom_44.Route, { path: "/home/information", component: information_4.default }),
-                            React.createElement(react_router_dom_44.Route, { path: "/home/personalCenter", component: personalCenter_4.default }))) }),
-                    React.createElement(react_router_dom_44.Route, { path: "/", render: (props) => (React.createElement(index_4.default, Object.assign({}, props),
-                            React.createElement(react_router_dom_44.Route, { path: "/informationChild", component: informationChild_3.default }),
-                            React.createElement(react_router_dom_44.Route, { path: "/personalCenter", component: personalCenter_4.default }))) }))));
+            return (React.createElement(react_router_dom_45.HashRouter, null,
+                React.createElement(react_router_dom_45.Switch, null,
+                    React.createElement(react_router_dom_45.Route, { exact: true, path: "/", component: index_4.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/parkCompany", component: parkCompany_8.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/photograph", component: photograph_8.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/findLease", component: findLease_8.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/applyPut", component: applyPut_8.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/bookSite", component: bookSite_8.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/repairsOnline", component: repairsOnline_8.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/parking", component: parking_8.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/narrate", component: narrate_4.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/isay", component: isay_4.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/workOrder", component: workOrder_4.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/workOrderDetail", component: workOrderDetail_4.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/parkworkOrder", component: parkWorkOrder_3.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/modificationAuthentication", component: modificationAuthentication_4.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/message", component: message_4.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/enterpriseInformation", component: enterpriseInformation_3.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/rentRoom", component: rentRoom_3.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/rentRoomDetail", component: rentRoomDetail_3.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/defaultRentRoom", component: defaultRentRoom_3.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/serviceTel", component: serviceTel_3.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/distribute", component: distribute_3.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/searchUser", component: searchUser_3.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/statisticalStatement", component: statisticalStatement_3.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/informationDetail", component: informationDetail_3.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/attractInvestment", component: attractInvestment_3.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/attractInvestmentList", component: attractInvestmentList_3.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/room", component: room_3.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/roomDetail", component: roomDetail_3.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/roomUse", component: roomUse_3.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/roomBase", component: roomBase_3.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/roomPattern", component: roomPattern_3.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/roomPatternUpdate", component: roomPatternUpdate_2.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/modificationAuthenticationDetail", component: modificationAuthenticationDetail_2.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/identityAuthentication", component: identityAuthentication_2.default }),
+                    React.createElement(react_router_dom_45.Route, { path: "/home", render: (props) => (React.createElement(home_4.default, Object.assign({}, props),
+                            React.createElement(react_router_dom_45.Route, { path: "/home/infoArea", component: infoArea_4.default }),
+                            React.createElement(react_router_dom_45.Route, { path: "/home/information", component: information_4.default }),
+                            React.createElement(react_router_dom_45.Route, { path: "/home/personalCenter", component: personalCenter_4.default }))) }),
+                    React.createElement(react_router_dom_45.Route, { path: "/", render: (props) => (React.createElement(index_4.default, Object.assign({}, props),
+                            React.createElement(react_router_dom_45.Route, { path: "/informationChild", component: informationChild_3.default }),
+                            React.createElement(react_router_dom_45.Route, { path: "/personalCenter", component: personalCenter_4.default }))) }))));
         }
     }
     exports.default = Router;
 });
-define("426/index", ["require", "exports", "react", "react-dom", "react-router-dom", "426/router", "426/parkCompany", "426/findLease", "426/applyPut", "426/photograph", "426/bookSite", "426/parking", "426/bottomBtn", "426/repairsOnline", "426/dataService", "426/compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_45, router_5, parkCompany_9, findLease_9, applyPut_9, photograph_9, bookSite_9, parking_9, bottomBtn_5, repairsOnline_9, dataService_99, compat_49) {
+define("426/index", ["require", "exports", "react", "react-dom", "react-router-dom", "426/router", "426/parkCompany", "426/findLease", "426/applyPut", "426/photograph", "426/bookSite", "426/parking", "426/bottomBtn", "426/repairsOnline", "426/dataService", "426/compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_46, router_5, parkCompany_9, findLease_9, applyPut_9, photograph_9, bookSite_9, parking_9, bottomBtn_5, repairsOnline_9, dataService_99, compat_48) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_99.default();
-            this.globalAction = new compat_49.default();
+            this.globalAction = new compat_48.default();
             this.state = {
                 inputValue: "请输入园区名/区域名/商圈名",
                 city: "",
@@ -38408,7 +38028,7 @@ define("426/index", ["require", "exports", "react", "react-dom", "react-router-d
                     React.createElement("div", { className: "mask", onClick: this.clickMask.bind(this) }) : null,
                 React.createElement("div", { className: "index-park" },
                     this.state.parkArr.map((item, index) => {
-                        return (React.createElement(react_router_dom_45.Link, { to: "/home" },
+                        return (React.createElement(react_router_dom_46.Link, { to: "/home" },
                             React.createElement("div", { className: "index-child-park", key: index, onClick: this.initPark.bind(this, 1001) },
                                 React.createElement("div", { className: "index-child-park-left" },
                                     React.createElement("img", { src: this.state.type ? "./park_m/image/a.jpg" : "./park_m/image/b.jpg", className: "park-img" })),
@@ -38505,7 +38125,7 @@ define("426/index", ["require", "exports", "react", "react-dom", "react-router-d
         constructor(props) {
             super(props);
             this.dataService = new dataService_99.default();
-            this.globalAction = new compat_49.default();
+            this.globalAction = new compat_48.default();
             this.state = {
                 username: "",
                 password: "",
@@ -38577,14 +38197,14 @@ define("426/index", ["require", "exports", "react", "react-dom", "react-router-d
     exports.default = Index;
     ReactDOM.render(React.createElement(router_5.default, null), document.getElementById('viewContainer'));
 });
-define("426/index\uFF083\uFF09", ["require", "exports", "react", "react-dom", "react-router-dom", "426/router", "426/parkCompany", "426/findLease", "426/applyPut", "426/photograph", "426/bookSite", "426/parking", "426/bottomBtn", "426/repairsOnline", "426/dataService", "426/compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_46, router_6, parkCompany_10, findLease_10, applyPut_10, photograph_10, bookSite_10, parking_10, bottomBtn_6, repairsOnline_10, dataService_100, compat_50) {
+define("426/index\uFF083\uFF09", ["require", "exports", "react", "react-dom", "react-router-dom", "426/router", "426/parkCompany", "426/findLease", "426/applyPut", "426/photograph", "426/bookSite", "426/parking", "426/bottomBtn", "426/repairsOnline", "426/dataService", "426/compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_47, router_6, parkCompany_10, findLease_10, applyPut_10, photograph_10, bookSite_10, parking_10, bottomBtn_6, repairsOnline_10, dataService_100, compat_49) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_100.default();
-            this.globalAction = new compat_50.default();
+            this.globalAction = new compat_49.default();
             this.state = {
                 inputValue: "请输入园区名/区域名/商圈名",
                 city: "",
@@ -38985,7 +38605,7 @@ define("426/index\uFF083\uFF09", ["require", "exports", "react", "react-dom", "r
                     React.createElement("div", { className: "mask", onClick: this.clickMask.bind(this) }) : null,
                 React.createElement("div", { className: "index-park" },
                     this.state.parkArr.map((item, index) => {
-                        return (React.createElement(react_router_dom_46.Link, { to: "/home" },
+                        return (React.createElement(react_router_dom_47.Link, { to: "/home" },
                             React.createElement("div", { className: "index-child-park", key: index, onClick: this.initPark.bind(this, 1001) },
                                 React.createElement("div", { className: "index-child-park-left" },
                                     React.createElement("img", { src: this.state.type ? "./park_m/image/a.jpg" : "./park_m/image/b.jpg", className: "park-img" })),
@@ -39082,7 +38702,7 @@ define("426/index\uFF083\uFF09", ["require", "exports", "react", "react-dom", "r
         constructor(props) {
             super(props);
             this.dataService = new dataService_100.default();
-            this.globalAction = new compat_50.default();
+            this.globalAction = new compat_49.default();
             this.state = {
                 username: "",
                 password: "",
@@ -39154,14 +38774,14 @@ define("426/index\uFF083\uFF09", ["require", "exports", "react", "react-dom", "r
     exports.default = Index;
     ReactDOM.render(React.createElement(router_6.default, null), document.getElementById('viewContainer'));
 });
-define("426/narrate-s", ["require", "exports", "react", "react-router-dom", "426/compat", "426/dataService", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_51, dataService_101) {
+define("426/narrate-s", ["require", "exports", "react", "react-router-dom", "426/compat", "426/dataService", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_50, dataService_101) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Narrate extends React.Component {
         constructor(props) {
             super(props);
             this.dataService = new dataService_101.default();
-            this.globalAction = new compat_51.default();
+            this.globalAction = new compat_50.default();
             this.state = {
                 paused: true,
                 parkAudio: [],
@@ -39275,13 +38895,13 @@ define("426/narrate-s", ["require", "exports", "react", "react-router-dom", "426
     }
     exports.default = Narrate;
 });
-define("426/parkCompany (2)", ["require", "exports", "react", "react-router-dom", "426/compat", "426/dataService"], function (require, exports, React, RouterDOM, compat_52, dataService_102) {
+define("426/parkCompany (2)", ["require", "exports", "react", "react-router-dom", "426/compat", "426/dataService"], function (require, exports, React, RouterDOM, compat_51, dataService_102) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParkCompany extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_52.default();
+            this.globalAction = new compat_51.default();
             this.state = {
                 parkCompanycss: "parkCompany",
                 showList: true,
@@ -39332,7 +38952,7 @@ define("426/parkCompany (2)", ["require", "exports", "react", "react-router-dom"
         constructor(props) {
             super(props);
             this.dataService = new dataService_102.default();
-            this.globalAction = new compat_52.default();
+            this.globalAction = new compat_51.default();
             this.state = {
                 companyNull: "hide",
                 park_id: 1001,
@@ -39823,13 +39443,13 @@ define("426/parkCompany (2)", ["require", "exports", "react", "react-router-dom"
     }
     exports.default = ParkCompany;
 });
-define("426/parkCompany (3)", ["require", "exports", "react", "react-router-dom", "426/compat", "426/dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_53, dataService_103, antd_mobile_32) {
+define("426/parkCompany (3)", ["require", "exports", "react", "react-router-dom", "426/compat", "426/dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_52, dataService_103, antd_mobile_31) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParkCompany extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_53.default();
+            this.globalAction = new compat_52.default();
             this.state = {
                 parkCompanycss: "parkCompany",
                 showList: true,
@@ -39880,7 +39500,7 @@ define("426/parkCompany (3)", ["require", "exports", "react", "react-router-dom"
         constructor(props) {
             super(props);
             this.dataService = new dataService_103.default();
-            this.globalAction = new compat_53.default();
+            this.globalAction = new compat_52.default();
             this.state = {
                 companyNull: "hide",
                 park_id: 1001,
@@ -40285,8 +39905,8 @@ define("426/parkCompany (3)", ["require", "exports", "react", "react-router-dom"
         }
         render() {
             return (React.createElement("div", { className: "mien" },
-                React.createElement(antd_mobile_32.WingBlank, null,
-                    React.createElement(antd_mobile_32.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
+                React.createElement(antd_mobile_31.WingBlank, null,
+                    React.createElement(antd_mobile_31.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
                             window.dispatchEvent(new Event('resize'));
                             this.setState({ imgHeight: 'auto' });
                         } })))))));
@@ -40355,13 +39975,13 @@ define("426/parkCompany (3)", ["require", "exports", "react", "react-router-dom"
     }
     exports.default = ParkCompany;
 });
-define("426/parkCompany (4)", ["require", "exports", "react", "react-router-dom", "426/compat", "426/dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_54, dataService_104, antd_mobile_33) {
+define("426/parkCompany (4)", ["require", "exports", "react", "react-router-dom", "426/compat", "426/dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_53, dataService_104, antd_mobile_32) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParkCompany extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_54.default();
+            this.globalAction = new compat_53.default();
             this.state = {
                 parkCompanycss: "parkCompany",
                 showList: true,
@@ -40416,7 +40036,7 @@ define("426/parkCompany (4)", ["require", "exports", "react", "react-router-dom"
         constructor(props) {
             super(props);
             this.dataService = new dataService_104.default();
-            this.globalAction = new compat_54.default();
+            this.globalAction = new compat_53.default();
             this.state = {
                 companyNull: "hide",
                 park_id: 1001,
@@ -40841,8 +40461,8 @@ define("426/parkCompany (4)", ["require", "exports", "react", "react-router-dom"
             return (React.createElement("div", { className: "mien" },
                 React.createElement("p", { className: this.state.urlNull, style: { "color": "#333333", "text-align": "center", "font-size": "2.5rem" } }, "\u6682\u65E0\u56FE\u7247\u00B7\u00B7\u00B7"),
                 React.createElement("div", { className: this.state.urlShow },
-                    React.createElement(antd_mobile_33.WingBlank, null,
-                        React.createElement(antd_mobile_33.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
+                    React.createElement(antd_mobile_32.WingBlank, null,
+                        React.createElement(antd_mobile_32.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
                                 window.dispatchEvent(new Event('resize'));
                                 this.setState({ imgHeight: 'auto' });
                             } }))))))));
@@ -40939,8 +40559,8 @@ define("426/parkCompany (4)", ["require", "exports", "react", "react-router-dom"
             return (React.createElement("div", { className: "product" },
                 React.createElement("p", { className: this.state.urlNull, style: { "color": "#333333", "text-align": "center", "font-size": "2.5rem" } }, "\u6682\u65E0\u56FE\u7247\u00B7\u00B7\u00B7"),
                 React.createElement("div", { className: this.state.urlShow },
-                    React.createElement(antd_mobile_33.WingBlank, null,
-                        React.createElement(antd_mobile_33.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
+                    React.createElement(antd_mobile_32.WingBlank, null,
+                        React.createElement(antd_mobile_32.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
                                 window.dispatchEvent(new Event('resize'));
                                 this.setState({ imgHeight: 'auto' });
                             } }))))))));
@@ -40948,7 +40568,7 @@ define("426/parkCompany (4)", ["require", "exports", "react", "react-router-dom"
     }
     exports.default = ParkCompany;
 });
-define("426/personalCenter\uFF082\uFF09", ["require", "exports", "react", "react-router-dom", "426/dataService", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_47, dataService_105) {
+define("426/personalCenter\uFF082\uFF09", ["require", "exports", "react", "react-router-dom", "426/dataService", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_48, dataService_105) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class PersonalCenter extends React.Component {
@@ -40999,7 +40619,7 @@ define("426/personalCenter\uFF082\uFF09", ["require", "exports", "react", "react
                                     color: "#83d5ff", fontSize: "27px", backgroundColor: "#2e9cf3", width: "160px",
                                     height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
                                 } }, this.state.userInfo.roles.role_name)),
-                        React.createElement(react_router_dom_47.Link, { to: "/modificationAuthentication" },
+                        React.createElement(react_router_dom_48.Link, { to: "/modificationAuthentication" },
                             React.createElement("div", { className: "personal-center-right" },
                                 React.createElement("img", { src: "./park_m/image/w-right.png" }))))),
                 this.state.pathname === "/personalCenter" ?
@@ -41027,25 +40647,25 @@ define("426/personalCenter\uFF082\uFF09", ["require", "exports", "react", "react
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5BA2\u670D\u7535\u8BDD"),
                             React.createElement("span", null, "0773-123456")),
                         React.createElement("div", { className: "personal-center-my" },
-                            React.createElement(react_router_dom_47.Link, { to: this.state.userInfo.roles.role_name === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
+                            React.createElement(react_router_dom_48.Link, { to: this.state.userInfo.roles.role_name === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
                                 React.createElement("div", { className: "personal-center-my-left" },
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "5"),
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u5DE5\u5355"))),
                             React.createElement("div", { className: "personal-center-my-middle" }),
-                            React.createElement(react_router_dom_47.Link, { to: "/message" },
+                            React.createElement(react_router_dom_48.Link, { to: "/message" },
                                 React.createElement("div", { className: "personal-center-my-right" },
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "30px", color: "#333333" } }, "6"),
                                     React.createElement("div", { style: { fontSize: "40px", marginTop: "5px", color: "#6C6C6C" } }, "\u6211\u7684\u6D88\u606F")))))
                     : null,
                 this.state.userInfo.roles.role_name === "企业管理员" && this.state.pathname !== "/personalCenter" ?
                     React.createElement("div", { className: "personal-center-enterprise" },
-                        React.createElement(react_router_dom_47.Link, { to: "/enterpriseInformation" },
+                        React.createElement(react_router_dom_48.Link, { to: "/enterpriseInformation" },
                             React.createElement("div", { className: "personal-center-enterprise-child" },
                                 React.createElement("img", { src: "./park_m/image/enterprise.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
                                 React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u4F01\u4E1A\u4FE1\u606F\u7BA1\u7406"),
                                 React.createElement("div", { style: { float: "right", height: "100%", width: "120px", textAlign: "center" } },
                                     React.createElement("img", { src: "./park_m/image/right.png" })))),
-                        React.createElement(react_router_dom_47.Link, { to: "/rentRoom" },
+                        React.createElement(react_router_dom_48.Link, { to: "/rentRoom" },
                             React.createElement("div", { className: "personal-center-enterprise-child" },
                                 React.createElement("img", { src: "./park_m/image/let.png", width: "70px", height: "70px", style: { marginBottom: "10px" } }),
                                 React.createElement("span", { style: { fontSize: "40px", color: "#333333", marginLeft: "30px" } }, "\u79DF\u7528\u623F\u95F4\u7BA1\u7406"),
@@ -41060,7 +40680,7 @@ define("426/personalCenter\uFF082\uFF09", ["require", "exports", "react", "react
                                 React.createElement("img", { src: "./park_m/image/right.png", className: this.state.isSpread ? "personal-center-bottom-img" : "" }))),
                         this.state.isSpread ?
                             React.createElement("div", { style: { backgroundColor: "#ffffff", overflow: "hidden", paddingTop: "30px" } }, this.state.parkList.map((item, index) => {
-                                return (React.createElement(react_router_dom_47.Link, { to: item.url },
+                                return (React.createElement(react_router_dom_48.Link, { to: item.url },
                                     React.createElement("div", { key: index, className: "personal-center-park-child" },
                                         React.createElement("img", { src: item.imgUrl, width: "110px", height: "110px" }),
                                         React.createElement("div", { style: { marginTop: "10px" } }, item.name))));
