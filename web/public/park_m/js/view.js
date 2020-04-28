@@ -31,7 +31,7 @@ define("compat", ["require", "exports"], function (require, exports) {
             console.log("web_call_webgl_initPark", pInfo);
         }
         web_call_webgl_switchCompany(pName) {
-            console.log("web_call_webgl_switchCompany", pName);
+            console.log("web_call_webglffdfdsfdsfds_switchCompany", pName);
         }
         web_call_webgl_switchRoom(pName) {
             console.log("web_call_webgl_SwitchRoom", pName);
