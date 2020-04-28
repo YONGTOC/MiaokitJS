@@ -1,14 +1,12 @@
 ﻿<!DOCTYPE html>
-<html lang="zh-cn" style="height: 100%; margin: 0; padding: 0;">
+<html lang="zh-cn" style="height: 98%; width: 100%; margin: 0; padding: 0;">
 <head>
-    <meta charset="utf-8" />
+    <meta name="referrer" content="no-referrer" charset="utf-8"/>
     <title>移动园区  2020.1</title>
     <script src="./common/miaokit/MiaokitLoader.min.js"></script>
 
     <script>
         let MiaokitJS = new MiaokitModule("Sisyphus", "./data/projects/config.txt");
-
-         
 
         window.onload = function () {
             // 在onload 之前 requir。config
@@ -53,8 +51,6 @@
                 MiaokitJS.App.UI = view.default.g_pIns;
             });
         }
-
-       
     </script>
 
     <script src="./common/util.js"></script>
@@ -89,8 +85,8 @@
 
 </head>
 <body style="height: 100%; margin: 0; padding: 0;">
-    <!--幕布，遮挡3d的提前加载-->
-    <div class="curtain hide " style="background: #fff; margin: auto; width: 100%; height: 100%;
+    <!--幕布，遮挡3d的提前加载 -->
+    <div class="curtain hide" style="background: #fff; margin: auto; width: 100%; height: 100%;
     top: 0rem; bottom: 0rem; left: 0rem; right: 0rem; position: absolute; z-index: 103;">
         <div class="loadEffect">
             <span></span>
@@ -110,8 +106,10 @@
 
     <div id="viewContainer"></div>
 
-    <!--3d交互按钮-->
+    <!--测试threejs-->
     <div id="3Dbuttons">
+
+
         <div class="floor_box">
             <p class="floor_box_up" onclick="floorUp()">
                 <i class="iconfont" style="font-size: 2.6rem">&#xe83a;</i>
@@ -122,6 +120,7 @@
             <div class="activeBoxLeft">
                 <div class="trangleLeft"></div>
             </div>
+
             <div class="activeBoxRight">
                 <div class="trangleRight"></div>
             </div>
@@ -130,22 +129,26 @@
             </p>
         </div>
 
-        <div class="changeD" onclick="changeD()">2D</div>
-        <div class="reset" onclick="reset()">复位</div>
-        <div class="selectDoor">进入室内</div>
-        <div class="selectAdd">+</div>
-        <div class="selectPop">-</div>
     </div>
 
+    <div class="changeD" onclick="changeD()">2D</div>
+    <div class="reset" onclick="reset()">复位</div>
+    <div class="selectDoor">进入室内</div>
+    <div class="selectAdd">+</div>
+    <div class="selectPop">-</div>
+  
+    <div style="position: absolute;top: 130px;left: 0px;z-index: 101;">
+       <button onclick="changeBut()" style="width: 12rem;height: 4rem;font-size: 2.3rem;">测试按钮</button>
+    </div>
     <!--<p id="go">调用预定义的全景图</p>-->
-    <ul style="position: absolute;top: 130px;left:0px;z-index: 101;">
+    <ul style="position: absolute;top: 230px;left:0px;z-index: 101;" class="testBut hide">
         <!--<li>
             <button onclick="roomScene(1)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活房间全景</button>
         </li>
         <li>
             <button onclick="companyScene(2)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活企业全景</button>
         </li>-->
-        <!--<li>
+        <li>
             <button onclick="addReqairs(3, 4,'A座','2F','201-2')" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加报修位置34</button>
         </li>
         <li>
@@ -166,7 +169,7 @@
         <li>
             <button onclick="refreshBooksite(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活场地预约</button>
         </li>
-        <li>
+        <!--<li>
             <button onclick="refreshParking(120)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活地库</button>
         </li>-->
         <!--<li>
@@ -185,41 +188,17 @@
             <button onclick="activeLi(3)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">inFloorindex3</button>
 
         </li>-->
-        <li>
-            <!--<button onclick="changeFullView()" style="width: 18rem;height: 4rem;font-size: 2.3rem;">全景图</button>
-            <button onclick="hideFullView()" style="width: 18rem;height: 4rem;font-size: 2.3rem;">隐藏全景图</button>-->
-            <div class="fullView" onclick="changeFullView()">显示</div>
-        </li>
-
     </ul>
 
     <script>
-        //显示全景图
-        function showFullView() {
-            $('#viewContainer').addClass("hide");
-            $('#3Dbuttons').addClass("hide");
-            $('.fullView').html("全景");
-            console.log("显示全景")
-        }
-
-        //隐藏全景图
-        function hideFullView() {
-            $('#viewContainer').removeClass("hide");
-            $('#3Dbuttons').removeClass("hide");
-            $('.fullView').html("显示");
-            console.log("隐藏全景")
-        }
-
-
-        // 显示/隐藏 全景图切换
-        var v = 0;
-        function changeFullView() {
-            if (v == 0) {
-                v = 1
-                showFullView();
+        var but = 0;
+        function changeBut() {
+            if (but == 0) {
+                $('.testBut').removeClass('hide')
+                but = 1
             } else {
-                v = 0
-                hideFullView();
+                 $('.testBut').addClass('hide')
+                but = 0
             }
         }
 
@@ -267,7 +246,7 @@
             })
         }
 
-        // 外部传floorIndex，列表变化
+          // 外部传floorIndex，列表变化
         function activeLi(index) {
             $(".floor_box ul li").eq(index).addClass("current-active-floor").siblings().removeClass("current-active-floor");
             console.log(index);
@@ -313,18 +292,6 @@
             $('.curtain').addClass("hide");
         }
 
-        //隐藏3d交互按钮
-        function hide3dBut() {
-            console.log("隐藏3d交互按钮");
-            $('#3Dbuttons').addClass("hide");
-        }
-
-        //显示3d交互按钮
-        function show3dBut() {
-            console.log("显示3d交互按钮");
-            $('#3Dbuttons').removeClass("hide");
-        }
-
         // 2/3D 按钮切换
         var d = 0;
         function changeD() {
@@ -351,7 +318,7 @@
             if (a == "down") {
                 $('.changeD').removeClass("changeDUp");
                 $('.reset').removeClass("resetUp");
-                $('.floor_box').removeClass("floor_box_up");
+                 $('.floor_box').removeClass("floor_box_up");
             }
         }
 
