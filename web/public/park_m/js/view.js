@@ -7776,8 +7776,8 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
                 this.props.history.push("/searchUser");
             }
             let obj = {
-                uid: 1,
-                id: this.state.datas.id,
+                uid: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+                id: JSON.parse(sessionStorage.getItem("workOrder")).id,
                 state: index,
                 reply: this.state.reply
             };
@@ -7823,7 +7823,7 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
                     this.state.datas.time),
                 React.createElement("div", { style: { width: "100%", overflow: "hidden", textAlign: "center" } },
                     React.createElement("div", { style: { border: "2px solid #F2F2F2", width: "90%", margin: "30px 0 0 5%" } })),
-                this.state.datas.examine ?
+                this.state.datas.examine.reply ?
                     React.createElement("div", null,
                         React.createElement("div", { style: { margin: "30px 0 0 50px" } },
                             React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u7531"),

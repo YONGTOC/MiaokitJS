@@ -143,8 +143,8 @@ class workOrderDetail extends React.Component<{ history: any }>{
       this.props.history.push("/searchUser")
     }
     let obj = {
-      uid: 1,
-      id: this.state.datas.id,
+      uid: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+      id: JSON.parse(sessionStorage.getItem("workOrder")).id,
       state: index,
       reply: this.state.reply
     }
@@ -198,7 +198,7 @@ class workOrderDetail extends React.Component<{ history: any }>{
           <div style={{ border: "2px solid #F2F2F2", width: "90%", margin: "30px 0 0 5%"}}></div>
         </div>
        
-        {this.state.datas.examine ?
+        {this.state.datas.examine.reply ?
           <div>
             <div style={{ margin: "30px 0 0 50px" }}>
               <span style={{ color: "#949494", fontSize: "40px" }}>由</span>
