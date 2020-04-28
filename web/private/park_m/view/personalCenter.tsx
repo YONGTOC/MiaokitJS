@@ -138,7 +138,7 @@ class PersonalCenter extends React.Component {
       companyBox: "rollSelectCauseBox2",
     })
     //ajax 获取使用企业列表
-    this.dataService.findCompany(this.setCompanyList.bind(this), sessionStorage.getItem("park_id"),"", "")
+    this.dataService.findCompany(this.setCompanyList.bind(this),"","")
   }
 
   //获取到的 企业列表
@@ -197,10 +197,6 @@ class PersonalCenter extends React.Component {
     userInfos.enterprises[0].name = data.response.name;
     userInfos.enterprises[0].id= data.response.company_id;
     sessionStorage.setItem("userInfos", JSON.stringify(userInfos));
- 
-
-
-
   }
 
   // 选中公司
@@ -249,7 +245,7 @@ class PersonalCenter extends React.Component {
       this.setState({ inputValueRelate: "" })
     };
     console.log("searchBtn", this.state.inputValueRelate);
-    this.dataService.findCompany(this.setCompanyList.bind(this), sessionStorage.getItem("park_id"), "", this.state.inputValueRelate);
+    this.dataService.findCompany(this.setCompanyList.bind(this),"", this.state.inputValueRelate);
   }
 
   render() {
@@ -380,7 +376,6 @@ class PersonalCenter extends React.Component {
 
         
         <div className={this.state.companyBox}>
-
                <div className="searchBox">
               <span className="searchBox-text">
                 <i className="iconfont" style={{ "fontSize": "2.3rem" }}>&#xe810;</i>

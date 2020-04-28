@@ -619,7 +619,7 @@ class DataService {
 
   //##18.(场地预定模块-提交信息)提交场地预定申请 ###
   public bookingRoom(pBack, data) {
-  //  console.log("bookingRoom", data);
+   console.log("bookingRoom", data);
    // console.log("bookingRoom", data.room_id)
    // pBack("提交成功！");
     let datas = {
@@ -1184,9 +1184,10 @@ class DataService {
       "pic_amount": "1",
       "pic": obj.pic1,
         "bind_company": [
-        {
-            "company_id":sessionStorage.getItem("enterpriseId"),
-            "company_name": sessionStorage.getItem("enterprise"),
+          {
+
+            "company_id": obj.bind_company[0].company_id,
+            "company_name": obj.bind_company[0].company_name,
         } ],
         "add_company": [
         {
