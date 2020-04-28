@@ -6,6 +6,7 @@ import { ImagePicker, WingBlank, SegmentedControl } from 'antd-mobile';
 
 class IdentityAuthentication extends React.Component<{ history: any }> {
   public state = {
+
     id:"",
     applicant: "",
     phone: "",
@@ -145,19 +146,85 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
    // console.log("headimg", this.state)
   }
 
-  sumbit() {
+  sumbitNew() {
     console.log(this.state);
-
+    let  userId = JSON.parse(sessionStorage.getItem("userInfos")).userId;
     let obj = {
-      //"id": this.state.id,
-      "id": 1,
+      //"id": 用户id
+      "id":  userId,
       "name": this.state.applicant,
       "company_name": this.state.company,
       "phone": this.state.phone,
       "park_id": this.state.park_id,
-      "role_id": this.state.role_id,
+      //"role_id": this.state.role_id,
+      // 只能认证企业管理员
+      "role_id": 5,
       "pic_amount": "1",
       "pic1": this.state.pic1,
+        "bind_company":
+    [
+        {
+            //企业id
+            "company_id":sessionStorage.getItem("enterpriseId"),
+            //企业名称
+            "company_name": sessionStorage.getItem("enterprise"),
+        }
+        ],
+        "add_company":
+    [
+        {
+            //企业名称
+            "company_name":""
+        }
+    ]
+    }
+    if (this.state.applicant == "") {
+      alert("请填写姓名")
+    } else if (this.state.phone == "") {
+      alert("请填写联系电话")
+    } else if (this.state.company == "") {
+      alert("请填写企业名称")
+    } else if (this.state.role_id == "") {
+      alert("请选择角色类型")
+    } else {
+      this.dataService.userAuthentication(this.sumbitSucceed, obj);
+    }
+    
+
+    
+  }
+
+  sumbitAdd() {
+    console.log(this.state);
+    let  userId = JSON.parse(sessionStorage.getItem("userInfos")).userId;
+    let obj = {
+      //"id": 用户id
+      "id":  userId,
+      "name": this.state.applicant,
+      "company_name": this.state.company,
+      "phone": this.state.phone,
+      "park_id": this.state.park_id,
+      //"role_id": this.state.role_id,
+      // 只能认证企业管理员
+      "role_id": 5,
+      "pic_amount": "1",
+      "pic1": this.state.pic1,
+        "bind_company":
+    [
+        {
+            //企业id
+            "company_id":sessionStorage.getItem("enterpriseId"),
+            //企业名称
+            "company_name": sessionStorage.getItem("enterprise"),
+        }
+        ],
+        "add_company":
+    [
+        {
+            //企业名称 companyg_name_in
+            "company_name":""
+        }
+    ]
     }
     if (this.state.applicant == "") {
       alert("请填写姓名")
@@ -204,17 +271,25 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
             </p>
             <p >
               <span className="redStar">*</span>  企业名称
-                 <input type="text" value={this.state.company} placeholder="请输入您的企业名称" style={{ "border": "none", "margin-left": "5rem" }}
+           
+              {this.state.role_name !== "园区管理员" && this.state.role_name !== "企业管理员" ?
+                 <input type="text" value={this.state.company} placeholder="请输入您的企业名称1" style={{"color":"red", "border": "none", "margin-left": "5rem" }}
                 onChange={this.companyChange.bind(this)} />
+                :
+                 <input type="text" value={this.state.company} placeholder="请输入您的企业名称2" style={{ "border": "none", "margin-left": "5rem" }}
+                onChange={this.companyChange.bind(this)} />
+                }
+
+
             </p>
             <p onClick={this.showRoleTypeBox.bind(this)}>
               <span className="redStar">*</span>  角色类型  
-                 <input type="text" value={this.state.role_name} placeholder="选择认证的角色类型" style={{ "border": "none", "margin-left": "5rem" }}
+                 <input type="text" value={"企业管理员"} placeholder="企业管理员" style={{ "border": "none", "margin-left": "5rem" }}
                 />
-              <span className="iconfont" style={{ "fontSize": "3rem", "float": "right" }} >&#xe827;</span>
             </p>
           </div>
-          <div className="applyPutSumbit" onClick={this.sumbit.bind(this)}>提交</div>
+          <div className="applyPutSumbit" onClick={this.sumbitNew.bind(this)}>提交</div>
+          <div className="applyPutSumbit" onClick={this.sumbitAdd.bind(this)}>新增提交</div>
           <div className="identityBotton">
             <p style={{ "color": "#333" }}>认证材料</p>
             <div className="identityBottonBox">
@@ -236,23 +311,27 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
             <p>或者电话联系管理员进行授权(<span style={{"color":"#333"}}>0773-1234567</span>)</p>
           </div>
         </form>
-        <div className={this.state.roleTypeBox}>
-          <ul className="rollSelectCauseULcss">
-            {this.state.roleTypeUL.map((i, index) => {
-              return (
-                <li className={this.state.roleTypeIndexof == index ? "rollSelectCauseli-active" : "rollSelectCauseli"}
-                  onClick={this.inRoleTypeList.bind(this, index, i.id, i.name)}
-                >{i.name}</li>
-              )
-            })}
-          </ul>
-          <div className="rollSelectCuasedBtn">
-            <span className="rollSelectCancel" onClick={this.hideRoleTypeBox.bind(this)} >取消</span>
-            <span className="rollSelectConfirm" onClick={this.getRoleTypeBox.bind(this)}>确认</span>
-          </div>
-        </div>
+     
       </div>
     )
+
+    //<span className="iconfont" style={{ "fontSize": "3rem", "float": "right" }} >&#xe827;</span>
+       //<div className={this.state.roleTypeBox}>
+       //   <ul className="rollSelectCauseULcss">
+       //     {this.state.roleTypeUL.map((i, index) => {
+       //       return (
+       //         <li className={this.state.roleTypeIndexof == index ? "rollSelectCauseli-active" : "rollSelectCauseli"}
+       //           onClick={this.inRoleTypeList.bind(this, index, i.id, i.name)}
+       //         >{i.name}</li>
+       //       )
+       //     })}
+       //   </ul>
+       //   <div className="rollSelectCuasedBtn">
+       //     <span className="rollSelectCancel" onClick={this.hideRoleTypeBox.bind(this)} >取消</span>
+       //     <span className="rollSelectConfirm" onClick={this.getRoleTypeBox.bind(this)}>确认</span>
+       //   </div>
+       // </div>
+
   }
 
 

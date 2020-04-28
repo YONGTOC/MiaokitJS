@@ -18,7 +18,17 @@ interface IState {
   enterprise: string,
   enterpriseId: string,
   messagelength: number
-  workOrderLength: number
+  workOrderLength: number,
+      // 公司选择
+  companyBox: string,
+  companyUL:  Array<any>,
+  companyIndexof: number,
+  company_id_in: string,
+  company_name_in: string,
+  company_id: string,
+  company_name: string,
+  inputValueRelate: string,
+  companyNull: string,
 }
 
 class PersonalCenter extends React.Component {
@@ -37,7 +47,17 @@ class PersonalCenter extends React.Component {
     messagelength: 0,
     workOrderLength: 0,
     enterprise:"",
-    enterpriseId:"",
+    enterpriseId: "",
+        // 公司选择
+    companyBox: "hide",
+    companyUL: [],
+    companyIndexof: 0,
+    company_id_in: "",
+    company_name_in: "",
+    company_id: "",
+    company_name: "",
+    inputValueRelate: "",
+    companyNull: "hide",
   }
 
   public dataService: DataService = new DataService()
@@ -83,48 +103,153 @@ class PersonalCenter extends React.Component {
     this.setState({ isSpread: !this.state.isSpread })
   }
 
-
+  // 修改手机号码
   public phoneChange() {
    let reg01 = /^1[3456789]\d{9}$/;
-    var phone = prompt("请输入新的手机号", "")
-    if (phone != null && phone != "" && reg01.test(phone) ) {
-      console.log("phoneNew", phone)
-      // 提交手机号修改
-    this.dataService.modifyUserName(this.callBackUserName.bind(this),
-      this.state.userInfo.name, this.state.userInfo.phone, this.state.enterpriseId )
-
-    } else {
-      alert("手机号码不正确，固话请添加区号")
-      return;
+    var phoneNew = prompt("请输入新的手机号", "")
+    if (phoneNew != null && phoneNew != "") {
+      //&& reg01.test(phoneNew)
+      if (reg01.test(phoneNew)) {
+        console.log("phoneNew", phoneNew)
+        // 提交手机号修改
+        this.dataService.modifyUserInfo(this.callBackPhoneNew.bind(this),
+          this.state.userInfo.name, phoneNew, this.state.enterpriseId )
+      } else {
+           alert("手机号码不正确，固话请添加区号")
+      }
     }
   }
 
-  public callBackUserName(data) {
-        alert(data.err_msg)
+
+  public callBackPhoneNew(data) {
+     let userInfos = JSON.parse(sessionStorage.getItem("userInfos"))
+    userInfos.phone = data.response.phone
+    sessionStorage.setItem("userInfos", JSON.stringify(userInfos));
+    //setstate phone
+      this.setState({
+      userInfo: JSON.parse(sessionStorage.getItem("userInfos")),
+    })
   }
 
-  //关联企业
+  //显示 关联企业列表
   public showCompanyList() {
     console.log("show公司列表")
     this.setState({
-      companyBox: "rollSelectCauseBox",
+      companyBox: "rollSelectCauseBox2",
     })
+    //ajax 获取使用企业列表
+    this.dataService.findCompany(this.setCompanyList.bind(this), sessionStorage.getItem("park_id"),"", "")
+  }
+
+  //获取到的 企业列表
+  public setCompanyList(data) {
+    console.log("mmmmmmmmmmmmm", data.response);
+    if (data.response.length == 0) {
+      this.setState({
+        companyNull: "show",
+         companyUL:data.response
+    })
+    } else {
+      this.setState({
+        companyNull: "hide",
+      companyUL:data.response
+    })
+    }
+ 
   }
 
     // 隐藏公司列表框
   public hideCompanyBox() {
     this.setState({
       companyBox: "hide",
-    })
+    }, () => {
+        console.log("hide",this.state.company_id, this.state.company_name);
+      })
   }
 
     //确认公司列表选择
   public getCompanyBox() {
     this.setState({
       companyBox: "hide",
-      //company_id: this.state.company_id_in,
-      //company: this.state.company_name_in,
+      company_id: this.state.company_id_in,
+      company_name: this.state.company_name_in,
+    }, () => {
+          this.dataService.modifyUserInfo(this.callBackModifyCompanyName.bind(this),
+      this.state.userInfo.name, this.state.userInfo.phone, this.state.company_id)
+      })
+  
+  }
+
+  public callBackModifyCompanyName(data) {
+   alert(data.err_msg)
+    this.setState({
+      enterprise: data.response.name,
+      company_id:  data.response.company_id
     })
+
+    sessionStorage.setItem("enterprise", data.response.name);
+    sessionStorage.setItem("enterpriseId", data.response.company_id);
+    let userInfos = JSON.parse(sessionStorage.getItem("userInfos"))
+
+    //console.log(userInfos.enterprises[0].name)
+    userInfos.enterprise = data.response.name;
+    userInfos.enterpriseId = data.response.company_id;
+    userInfos.enterprises[0].name = data.response.name;
+    userInfos.enterprises[0].id= data.response.company_id;
+    sessionStorage.setItem("userInfos", JSON.stringify(userInfos));
+ 
+
+
+
+  }
+
+  // 选中公司
+  public inCompanyeList(i, id, name) {
+     //console.log("选中的公司", i, id, name);
+    this.setState({
+      companyIndexof: i,
+      company_id_in: id,
+      company_name_in: name,
+    }, () => {
+       console.log("选中的公司",this.state.company_id_in, this.state.company_name_in);
+      })
+  }
+
+    // 聚焦
+  public foucusRelate() {
+    if (this.state.inputValueRelate == " ") {
+      this.setState({ inputValueRelate: "" })
+    }
+  }
+
+  // 失焦
+  public blurRelate(event) {
+    if (this.state.inputValueRelate == "") {
+      this.setState({ inputValueRelate: " " })
+    }
+  }
+
+  // 输入
+  public changeRelate(event) {
+    this.setState({ inputValueRelate: event.target.value });
+  }
+
+    // 软键盘 搜索
+  public queryKeyDownHandlerRelate(e) {
+    switch (e.keyCode) {
+      case 13://回车事件
+        this.searchCompany();
+        break
+    }
+  }
+
+    //软键盘搜索 
+  public searchCompany() {
+    if (this.state.inputValueRelate == "请输入企业名称"  ) {
+      this.setState({ inputValueRelate: "" })
+    };
+    console.log("searchBtn", this.state.inputValueRelate);
+    this.dataService.findCompany(this.setCompanyList.bind(this), sessionStorage.getItem("park_id"), "", this.state.inputValueRelate);
   }
 
   render() {
@@ -253,8 +378,36 @@ class PersonalCenter extends React.Component {
           </div> : null
         }
 
+        
+        <div className={this.state.companyBox}>
+
+               <div className="searchBox">
+              <span className="searchBox-text">
+                <i className="iconfont" style={{ "fontSize": "2.3rem" }}>&#xe810;</i>
+                <input className="companySearch" type="search" placeholder="请输入企业名称"
+                  value={this.state.inputValueRelate} onFocus={this.foucusRelate.bind(this)}
+                  onBlur={this.blurRelate.bind(this)} onChange={this.changeRelate.bind(this)} onKeyDown={this.queryKeyDownHandlerRelate.bind(this)} />
+            </span>
+            </div>
+          <ul className="rollSelectCauseULcss2">
+             <p className={this.state.companyNull} style={{ "text-align": "center" }} >没有符合搜索条件的结果···</p>
+            {this.state.companyUL.map((i, index) => {
+              return (
+                <li className={this.state.companyIndexof == index ? "rollSelectCauseli-active" : "rollSelectCauseli"}
+                  onClick={this.inCompanyeList.bind(this, index, i.id, i.name)}
+                >{i.name}</li>
+              )
+            })}
+          </ul>
+          <div className="rollSelectCuasedBtn">
+            <span className="rollSelectCancel" onClick={this.hideCompanyBox.bind(this)} >取消</span>
+            <span className="rollSelectConfirm" onClick={this.getCompanyBox.bind(this)}>确认</span>
+          </div>
+        </div>
+
       </div>
     )
+
   }
 }
 

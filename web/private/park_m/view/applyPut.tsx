@@ -277,44 +277,32 @@ class ApplyPut extends React.Component {
 
   //提交
   public sumbitApplyput() {
+    let postData = 0;
     console.log("提交摆点申请", this.state);
     if (this.state.applyList.length == 0) {
       alert("请选择摆点位置");
-      return
     }
-    if (this.state.content == "请将具体内容描述出来。（200字内）") {
+    if (this.state.content == "请将具体内容描述出来。（200字内）" ) {
       alert("请描述具体内容")
-
-    } else  {
-      // console.log("提交摆点申请", this.state);
-      //this.dataService.postAdvertisementPoint(this.sumbitApplyputsucceed, this.state);
-      alert(22222);
-
+    }  else  {
       $.each(this.state.applyList, function (index, item) {
-
         if (item.startTime == "开始日期") {
           alert("请填写开始日期")
-           
+          postData = 0;
         } else if (item.endTime == "结束日期") {
           alert("请填写结束日期")
-          
-        }
+          alert(postData);
+          postData = 0;
+        } else {
+          postData = 1;
+        };
       })
-      return
-    } 
-         alert(3333);
+    }
 
-   
-
-
-    //$.each(this.state.applyList, function (index, item) {
-
-    //  if (item.startTime == "开始日期") {
-    //    alert("请填写开始日期")
-    //  }else if (item.endTime == "结束日期") {
-    //    alert("请填写结束日期")
-    //  };
-    //})
+    if (postData == 1) {
+      //console.log("38888888888888", postData);
+      this.dataService.postAdvertisementPoint(this.sumbitApplyputsucceed, this.state);
+    }
 
   }
 
@@ -470,6 +458,7 @@ class ApplyPut extends React.Component {
     inputValue: "",
     value: '2017-01-25',
     staff_id: "",
+    postData: false,
   }
 }
 
