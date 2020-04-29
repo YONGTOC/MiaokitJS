@@ -593,9 +593,9 @@ class Picshow extends React.Component {
   public setPicshow(data) {
     let picurl = [];
     console.log("setPicshowPPPPPP", data);
-    //$.each(data.response.pic, function (index, item) {
-    //  picurl.push(item.url)
-    //});
+    $.each(data.response.pic, function (index, item) {
+      picurl.push(item.url)
+    });
     if (data.response.pic.length == 0) {
       this.setState({
         roomImg: data.response.pic,
@@ -679,8 +679,13 @@ class Videoshow extends React.Component {
   public setVideoshow(data) {
     if (data.response.video.length == 0) {
       this.setState({
-        roomVideo: data.response.video,
+        roomVideo: [],
         urlNull: "show",
+      })
+    } else if ( !data.response.video[0].url) {
+       this.setState({
+         roomVideo: [],
+         urlNull: "show",
       })
     } else {
       this.setState({

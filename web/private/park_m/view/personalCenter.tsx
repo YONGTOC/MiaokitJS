@@ -247,13 +247,30 @@ class PersonalCenter extends React.Component {
     this.dataService.findCompany(this.setCompanyList.bind(this),"", this.state.inputValueRelate);
   }
 
+    onErrorHeadimageurl(this) {
+    let userInfo = JSON.parse(sessionStorage.getItem("userInfos"));
+      this.setState({
+        userInfo: {
+          name: userInfo.name ,
+          avatar: "./park_m/image/noImg.png",
+          phone: userInfo.phone ,
+          enterprise: "" ,
+          roles: {
+            role_id: userInfo.roles.role_id ,
+            role_name: userInfo.roles.role_name ,
+          }
+        },
+      })
+  }
+
+
   render() {
     return (
       <div className="personal-center">
         <div className="personal-center-top">
           <div className="personal-center-info">
             <div className="personal-center-tx">
-              <img src={this.state.userInfo.avatar == null ? "./park_m/image/tx.jpg" : this.state.userInfo.avatar} className="personal-center-tx-img" />
+              <img src={this.state.userInfo.avatar == null ? "./park_m/image/noImg.png" : this.state.userInfo.avatar}  onError={this.onErrorHeadimageurl.bind(this)} className="personal-center-tx-img"  />
             </div>
             <div style={{ float: "left", color: "#FFFFFF", fontSize: "42px", margin: "10px 0 0 36px" }}>
               <div>{this.state.userInfo.name}</div>
@@ -333,6 +350,15 @@ class PersonalCenter extends React.Component {
                 </div>
               </div>
             </Link>
+            <Link to="/rentRoom">
+              <div className="personal-center-enterprise-child">
+                <img src="./park_m/image/let.png" width="70px" height="70px" style={{ marginBottom: "10px" }} />
+                <span style={{ fontSize: "40px", color: "#333333", marginLeft: "30px" }}>租用房间管理</span>
+                <div style={{ float: "right", height: "100%", width: "120px", textAlign: "center" }}>
+                  <img src="./park_m/image/right.png" />
+                </div>
+              </div>
+            </Link>
           </div> : null
         }
 
@@ -364,7 +390,6 @@ class PersonalCenter extends React.Component {
           </div> : null
         }
 
-        
         <div className={this.state.companyBox}>
                <div className="searchBox">
               <span className="searchBox-text">

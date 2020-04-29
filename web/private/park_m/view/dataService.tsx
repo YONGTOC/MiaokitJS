@@ -1193,7 +1193,7 @@ class DataService {
       "park_id": sessionStorage.getItem("park_id"),
       "role_id":  obj.role_id,
       "pic_amount": "1",
-      "pic": obj.pic1,
+      "pic": obj.pic,
         "bind_company": [
           {
 

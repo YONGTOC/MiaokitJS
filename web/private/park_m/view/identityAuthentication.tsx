@@ -36,7 +36,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     multiple: false,
     filesImg: [],
     pic_amount: "",
-    pic1: "",
+    pic: "",
     name:"",
 
   }
@@ -241,7 +241,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
   }
 
   // 修改img
-  onChange = (files, type, index) => {
+  onChangeImg = (files, type, index) => {
     console.log(files, type, index);
     this.setState({
       filesImg: files,
@@ -252,18 +252,23 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
       let obj = [{
         "imgname": "headimg",
         "imgbase64": this.state.filesImg[0].url,
-      }]
-    this.dataService.uploadImgOss(this.setImg, obj);
+    }]
+
+    if (type == "remove") {
+      this.setState({
+        pic: ""
+      })
+    } else {
+        this.dataService.uploadImgOss(this.setImg, obj);
+    }
+
   }
 
   // 修改提交img数据
   setImg(data) {
-    //console.log("AAAA", data);
-   // console.log("BBB", data[0]);
     this.setState({
-      pic1: data[0],
+      pic: data[0],
     })
-   // console.log("headimg", this.state)
   }
 
   sumbit() {
@@ -279,7 +284,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
       //"role_id": this.state.role_id,
       "role_id": JSON.parse(sessionStorage.getItem("userInfos")).roles.role_id ,
       "pic_amount": "1",
-      "pic1": this.state.pic1,
+      "pic": this.state.pic,
         "bind_company":
     [
         {
@@ -305,6 +310,8 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
       alert("请填写企业名称")
     } else if (this.state.role_id == "") {
       alert("请选择角色类型")
+    } else if (this.state.pic == "") {
+        alert("请上传认证材料照片")
     } else {
       this.dataService.userAuthentication(this.sumbitSucceed, obj);
     }
@@ -361,7 +368,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
                 <WingBlank>
                   <ImagePicker
                     files={this.state.files}
-                    onChange={this.onChange}
+                    onChange={this.onChangeImg}
                     onImageClick={(index, fs) => console.log(index, fs)}
                     selectable={this.state.files.length < 1}
                     multiple={this.state.multiple}
