@@ -15,7 +15,7 @@ interface IState {
 
 export default class parkWorkOrder extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
-    tagList: [{ id: 0, name: "全部" }, { id: 1, name: "审核中" }, { id: 2, name: "已通过"}, { id: 3, name: "未通过"}, { id: 4, name: "已转单" }],
+    tagList: [{ id: "", name: "全部" }, { id: 0, name: "审核中" }, { id: 1, name: "已通过"}, { id: 3, name: "未通过"}, { id: 2, name: "已转单" }],
     tagIndex: 0,
     workOrderArray: [
       { id: "", applicant: "", state_name: "", time: "" }
@@ -41,7 +41,7 @@ export default class parkWorkOrder extends React.Component<{ history: any }>{
     let obj: any = {}
     obj.id = JSON.parse(sessionStorage.getItem("userInfos")).userId
     if (this.state.tagIndex !== 0) {
-      obj.state_type = this.state.tagIndex - 1
+      obj.state_type = this.state.tagList[this.state.tagIndex].id 
     }
     this.dataService.getMyWork(this.callBackGetMyWork.bind(this), obj)
   }
@@ -105,7 +105,7 @@ export default class parkWorkOrder extends React.Component<{ history: any }>{
                     <div style={{
                       float: "right", color: "#ffffff", width: "130px", height: "55px", borderRadius: "50px",
                       marginRight: "40px", fontSize: "32px", textAlign: "center", lineHeight: "55px"
-                    }} className={item.state_name == "审核中" ? "bluebg" : item.state_name == "已通过" ? "greenbg" : item.state_name == "已通过" ? "redbg" : "whitebg"} >{item.state_name}</div>
+                    }} className={item.state_name == "审核中" ? "bluebg" : item.state_name == "已通过" ? "greenbg" : item.state_name == "未通过" ? "redbg" : "whitebg"} >{item.state_name}</div>
                   </div>
                 </div>
               )

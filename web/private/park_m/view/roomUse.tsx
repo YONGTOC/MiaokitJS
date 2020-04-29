@@ -12,6 +12,7 @@ interface IState {
   user: string,
   phone: string,
   rentDate: string,
+  rentEndDate: string,
   state: number,
   isSpread: boolean,
   companyNameList: Array<any>,
@@ -27,8 +28,11 @@ export default class RoomUse extends React.Component<{ history: any }>{
   public dataService: DataService = new DataService()
 
   componentDidMount() {
-    $('#date').click(() => {
-      $('#datePicker').click()
+    $('#startDate').click(() => {
+      $('#startDatePicker').click()
+    })
+    $('#endDate').click(() => {
+      $('#endDatePicker').click()
     })
     if (this.props.location.state) {
       sessionStorage.setItem("roomInfo", JSON.stringify(this.props.location.state.roomInfo))
@@ -41,6 +45,7 @@ export default class RoomUse extends React.Component<{ history: any }>{
     user: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.user,
     phone: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.phone,
     rentDate: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.rent_date,
+    rentEndDate: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.rent_end_date,
     state: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.state,
     isSpread: false,
     companyNameList: [],
@@ -80,7 +85,7 @@ export default class RoomUse extends React.Component<{ history: any }>{
       user: this.state.user,
       phone: this.state.phone,
       rentDate: this.state.rentDate,
-      rentEndDate: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.rent_end_date,
+      rentEndDate: this.state.rentEndDate,
       defaultRoom: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.default_room
     }
     this.dataService.saveRoomRentInfo(this.callBackSaveRoomRentInfo.bind(this), obj)
@@ -94,17 +99,27 @@ export default class RoomUse extends React.Component<{ history: any }>{
 
   changeState(index) {
     this.setState({ state: index }, () => {
-      $('#date').click(() => {
-        $('#datePicker').click()
+      $('#startDate').click(() => {
+        $('#startDatePicker').click()
+      })
+      $('#endDate').click(() => {
+        $('#endDatePicker').click()
       })
     })
   }
 
   // 组件获取开始时间
-  public setStartDate(date) {
+  setStartDate(date) {
     let dateStr = JSON.stringify(date);
     let dateN = dateStr.slice(1, 11);
     this.setState({ rentDate: dateN })
+  }
+
+  // 组件获取开始时间
+  setEndDate(date) {
+    let dateStr = JSON.stringify(date);
+    let dateN = dateStr.slice(1, 11);
+    this.setState({ rentEndDate: dateN })
   }
 
   render() {
@@ -166,11 +181,20 @@ export default class RoomUse extends React.Component<{ history: any }>{
                 {this.state.phone} 
               </div>
             </div>
-            <div className="service-tel" id="date" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
+            <div className="service-tel" id="startDate" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
               <div className="enterprise-information-star"></div>
               <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>租用日期</div>
               <div style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }} >
                 {this.state.rentDate}
+              </div>
+              <img src="./park_m/image/calendar.png" />
+            </div>
+
+            <div className="service-tel" id="endDate" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
+              <div className="enterprise-information-star"></div>
+              <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>到期日期</div>
+              <div style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }} >
+                {this.state.rentEndDate}
               </div>
               <img src="./park_m/image/calendar.png" />
             </div>
@@ -182,7 +206,15 @@ export default class RoomUse extends React.Component<{ history: any }>{
           extra=" "
           onChange={this.setStartDate.bind(this)}
         >
-          <List.Item arrow="horizontal" style={{ position: "absolute", top: "-100px" }} id="datePicker"></List.Item>
+          <List.Item arrow="horizontal" style={{ position: "absolute", top: "-100px" }} id="startDatePicker"></List.Item>
+        </DatePicker>
+
+        <DatePicker
+          mode="date"
+          extra=" "
+          onChange={this.setEndDate.bind(this)}
+        >
+          <List.Item arrow="horizontal" style={{ position: "absolute", top: "-100px" }} id="endDatePicker"></List.Item>
         </DatePicker>
         <div onClick={this.submit.bind(this)}
           style={{ width: "100%", height: "150px", textAlign: "center", lineHeight: "150px", color: "#ffffff", backgroundColor: "#0B8BF0", position: "fixed", bottom: 0, fontSize: "50px" }}>

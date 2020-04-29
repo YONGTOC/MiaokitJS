@@ -16,7 +16,8 @@ interface IState {
   lift: number,
   isElevator: boolean,
   pic: Array<any>,
-  video: Array<any>
+  video: Array<any>,
+  headimageurl: string
 }
 
 export default class RoomBase extends React.Component<{ history: any }>{
@@ -35,6 +36,7 @@ export default class RoomBase extends React.Component<{ history: any }>{
     pic: JSON.parse(sessionStorage.getItem("roomInfo"))[0].pic ? JSON.parse(sessionStorage.getItem("roomInfo"))[0].pic : [], // 图库
     video: JSON.parse(sessionStorage.getItem("roomInfo"))[0].video ? JSON.parse(sessionStorage.getItem("roomInfo"))[0].video : [] , // 视频
     lift: JSON.parse(sessionStorage.getItem("roomInfo"))[0].lift, // 电梯
+    headimageurl: JSON.parse(sessionStorage.getItem("roomInfo"))[0].headimageurl,
     isElevator: false
   }
 
@@ -46,6 +48,9 @@ export default class RoomBase extends React.Component<{ history: any }>{
     })
     $('#b-img').click(() => {
       $('#b-input').click()
+    })
+    $('#h-img').click(() => {
+      $('#h-input').click()
     })
     if (this.props.location.state) {
       sessionStorage.setItem("roomInfo", JSON.stringify(this.props.location.state.roomInfo))
@@ -98,7 +103,7 @@ export default class RoomBase extends React.Component<{ history: any }>{
       inspectionTime: this.state.inspectionTime,
       require: this.state.require,
       lift: this.state.lift,
-      //square: JSON.parse(sessionStorage.getItem("roomInfo"))[0].square,
+      headimageurl: this.state.headimageurl,
       pic: this.state.pic,
       video: this.state.video
     }
@@ -133,6 +138,11 @@ export default class RoomBase extends React.Component<{ history: any }>{
     this.setState({ video: video })
   }
 
+  // 清空缩略图
+  closeHeadimageurl() {
+    this.setState({ headimageurl: "" })
+  }
+
   uploadPic(file) {
     this.dataService.upload(this.callBackUploadPic.bind(this), file)
   }
@@ -160,8 +170,18 @@ export default class RoomBase extends React.Component<{ history: any }>{
     this.uploadVideo(formData)
   }
 
+  updateHeadimage(event) {
+    let formData = new FormData();
+    formData.append("file", event.target.files[0]);
+    this.uploadHeadimage(formData)
+  }
+
   uploadVideo(file) {
     this.dataService.upload(this.callBackUploadVideo.bind(this), file)
+  }
+
+  uploadHeadimage(file) {
+    this.dataService.upload(this.callBackUploadHeadimage.bind(this), file)
   }
 
   callBackUploadVideo(data) {
@@ -175,6 +195,14 @@ export default class RoomBase extends React.Component<{ history: any }>{
     }
   }
 
+  callBackUploadHeadimage(data) {
+    console.log("headimageUrl", data)
+    if (data.return_code == 100) {
+      this.setState({ headimageurl: data.response })
+    } else {
+      alert("上传失败")
+    }
+  }
   
 
   render() {
@@ -238,6 +266,26 @@ export default class RoomBase extends React.Component<{ history: any }>{
             style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
           />
         </div>
+
+        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", height: 360 + Math.floor(this.state.pic.length / 3) * 250 }}>
+          <div className="enterprise-information-star"></div>
+          <div style={{ color: "#949494", height: "80px", width: "20%" }}>缩略图</div>
+
+          {this.state.headimageurl ? 
+            <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", margin: "30px 30px 0 0", float: "left" }}>
+              <img src="./park_m/image/close.png" style={{ position: "absolute", left: "250px" }} onClick={e => this.closeHeadimageurl()} />
+              <img src={this.state.headimageurl} style={{ height: "100%", width: "100%" }} />
+            </div> :
+
+            <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left" }} id="h-img">
+              <img src="./park_m/image/addPicture.png" style={{ height: "60px", width: "60px" }} />
+              <div style={{ color: "#949494", marginTop: "-30px" }}>添加</div>
+            </div>
+           }
+
+          <input type="file" onChange={this.updateHeadimage.bind(this)} id="h-input" style={{ display: "none" }} />
+        </div>
+
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", height: 360 + Math.floor(this.state.pic.length / 3) * 250 }}>
           <div className="enterprise-information-star"></div>
           <div style={{ color: "#949494", height: "80px", width: "20%" }}>图库</div>

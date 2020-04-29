@@ -122,7 +122,7 @@ class WorkOrder extends React.Component<{ history: any }>{
                     <div style={{
                       float: "right", color: "#ffffff", width: "130px", height: "55px", borderRadius: "50px",
                       marginRight: "40px", fontSize: "32px", textAlign: "center", lineHeight: "55px"
-                    }} className={item.state_name == "审核中" ? "bluebg" : item.state_name == "已通过" ? "greenbg" : item.state_name == "已通过" ? "redbg" : "whitebg"} >{item.state_name}</div>
+                    }} className={item.state_name == "审核中" ? "bluebg" : item.state_name == "已通过" ? "greenbg" : item.state_name == "未通过" ? "redbg" : "whitebg"} >{item.state_name}</div>
                   </div>
                 </div>
               )

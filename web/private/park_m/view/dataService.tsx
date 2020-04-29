@@ -1495,7 +1495,7 @@ class DataService {
       data: JSON.stringify({
         id: sessionStorage.getItem("park_id"),
         room_id: sessionStorage.getItem("roomId"),
-        squre: obj.squre,
+        headimageurl: obj.headimageurl,
         price: obj.price,
         contact: obj.contact,
         phone: obj.phone,

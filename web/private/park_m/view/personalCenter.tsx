@@ -38,8 +38,7 @@ class PersonalCenter extends React.Component {
   public readonly state: Readonly<IState> = {
     parkList: [
       { name: "统计报表", imgUrl: "./park_m/image/statistics.png", url: "/statisticalStatement" }, { name: "房间管理", imgUrl: "./park_m/image/room.png", url: "/room" },
-      { name: "工单派发管理", imgUrl: "./park_m/image/distribute.png", url: "/distribute" }, { name: "客服电话", imgUrl: "./park_m/image/service.png", url: "/serviceTel" },
-      { name: "招商管理", imgUrl: "./park_m/image/attractInvestment.png", url: "/attractInvestment" }
+      { name: "客服电话", imgUrl: "./park_m/image/service.png", url: "/serviceTel" }
     ],
     isSpread: false,
     userInfo: { name: "", avatar: "", phone: "", enterprise: "", roles: { role_id: "", role_name: "" } },
@@ -329,15 +328,6 @@ class PersonalCenter extends React.Component {
               <div className="personal-center-enterprise-child">
                 <img src="./park_m/image/enterprise.png" width="70px" height="70px" style={{ marginBottom: "10px" }} />
                 <span style={{ fontSize: "40px", color: "#333333", marginLeft: "30px" }}>企业信息管理</span>
-                <div style={{ float: "right", height: "100%", width: "120px", textAlign: "center" }}>
-                  <img src="./park_m/image/right.png" />
-                </div>
-              </div>
-            </Link>
-            <Link to="/rentRoom">
-              <div className="personal-center-enterprise-child">
-                <img src="./park_m/image/let.png" width="70px" height="70px" style={{ marginBottom: "10px" }} />
-                <span style={{ fontSize: "40px", color: "#333333", marginLeft: "30px" }}>租用房间管理</span>
                 <div style={{ float: "right", height: "100%", width: "120px", textAlign: "center" }}>
                   <img src="./park_m/image/right.png" />
                 </div>

@@ -185,7 +185,7 @@ class workOrderDetail extends React.Component<{ history: any }>{
               <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }} key={index}>
                 <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>{item.name}</div>
                 {item.type === "text" ?
-                  <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "75%" }}>{item.content}</div> :
+                  <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "70%" }}>{item.content}</div> :
                   <div><img src={item.content} /></div>
                 }
               </div>
@@ -209,7 +209,7 @@ class workOrderDetail extends React.Component<{ history: any }>{
             <div style={{ margin: "20px 0 0 50px" }}>
               <span style={{ color: "#949494", fontSize: "40px" }}>审核回复:</span>
             </div>
-            <div style={{ margin: "20px 0 0 50px", color: "#333333", fontSize: "40px", wordBreak: "break-all" }}>
+            <div style={{ margin: "20px 0 0 50px", color: "#333333", fontSize: "40px", wordBreak: "break-all", width: "90%" }}>
               {this.state.datas.examine.reply}
             </div>
           </div> : null
@@ -222,7 +222,7 @@ class workOrderDetail extends React.Component<{ history: any }>{
               <textarea style={{ height: "200px", width: "90%", backgroundColor: "#F2F2F2", marginTop: "30px", fontSize: "40px", color: "#949494" }}
                 value={this.state.reply} onFocus={this.textareaFoucus.bind(this)} onBlur={this.textareaBlur.bind(this)} onChange={this.inputChange.bind(this)}></textarea>
             </div>
-            <div style={{ height: "150px", width: "100%", position: "absolute", bottom: 0, fontSize: "45px" }}>
+            <div style={{ height: "150px", width: "100%", position: "fixed", bottom: 0, fontSize: "45px" }}>
               <div style={{ float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#F2F2F2", color: "#6C6C6C" }} onClick={e => this.submit(0)}>转单</div>
               <div style={{ float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#FE4E4E", color: "#FFFFFF" }} onClick={e => this.submit(3)}>不通过</div>
               <div style={{ float: "left", height: "100%", width: "33.4%", lineHeight: "150px", textAlign: "center", backgroundColor: "#0B8BF0", color: "#FFFFFF" }} onClick={e => this.submit(1)}>通过</div>

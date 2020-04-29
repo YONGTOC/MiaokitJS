@@ -127,7 +127,7 @@ export default class Ring extends React.Component {
               <div style={{ height: this.props.ringRadius * 2, paddingTop: "40px" }}>
                 {this.props.ringList.map((item, index) => {
                   return (
-                    <div style={{ float: "left", width: "20%", height: this.props.ringRadius * 2 / this.state.ringList.length / 1.5, overflow: "hidden", marginLeft: "30px" }} key={index}>
+                    <div style={{ float: "left", width: "30%", height: this.props.ringRadius * 2 / this.state.ringList.length / 1.5, overflow: "hidden", marginLeft: "30px" }} key={index}>
                       <div style={{ height: "30px", width: "30px", backgroundColor: item.color, float: "left", marginTop: "10px" }}></div>
                       <div style={{ float: "left", color: "#333333", fontSize: "32px", marginLeft: "30px" }}>{item.name}</div>
                     </div>

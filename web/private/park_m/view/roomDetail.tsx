@@ -101,6 +101,10 @@ export default class RoomDetail extends React.Component<{ history: any }>{
                 <div style={{ float: "left", width: "300px", margin: "30px 0 0 120px" }}>租用日期</div>
                 <div style={{ float: "left", marginTop: "30px", color: "#F53636" }}>{this.state.roomInfo[0].use_info.rent_date}</div>
               </div>
+              <div style={{ width: "100%", overflow: "hidden" }}>
+                <div style={{ float: "left", width: "300px", margin: "30px 0 0 120px" }}>到期日期</div>
+                <div style={{ float: "left", marginTop: "30px", color: "#F53636" }}>{this.state.roomInfo[0].use_info.rent_end_date}</div>
+              </div>
             </div> : null
           }
         </div>
