@@ -511,7 +511,7 @@ class BookRoom extends React.Component {
       room_id: data.response.id,
       building_name: data.response.building_name,
       floor_name: data.response.floor_name,
-      room_name: data.response.room_name,
+      room_name: data.response.name,
     })
   }
 

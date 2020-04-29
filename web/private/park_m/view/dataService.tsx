@@ -629,10 +629,10 @@ class DataService {
       "phone": data.phone,
       "company_id": data.company_id,
       "company": data.company,
-      "room": data.room_name,
-      "building_id": data.building_id,
-      "floor_id": data.floor_id,
-      "room_id": data.room_id,
+         //公共场地id
+      "public_id":data.room_id,
+        //公共场地名称
+      "public_name":data.room_name,
       "start_date": data.start_date,
       "end_date": data.end_date,
       "theme": data.theme,
@@ -712,7 +712,7 @@ class DataService {
       "company": data.company,
       'staff_id': data.staff_id,
       "staff_name": data.contact,
-      "phone": data.phone,
+      "phone": data.img_url,
       "descript": data.descript,
       "img_url": data.files[0].url
     }
@@ -1178,7 +1178,6 @@ class DataService {
       "company_name": obj.company,
       "phone": obj.phone,
       "park_id": sessionStorage.getItem("park_id"),
-      // 只能认证企业管理员
       "role_id":  obj.role_id,
       "pic_amount": "1",
       "pic": obj.pic1,

@@ -1015,10 +1015,8 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 "phone": data.phone,
                 "company_id": data.company_id,
                 "company": data.company,
-                "room": data.room_name,
-                "building_id": data.building_id,
-                "floor_id": data.floor_id,
-                "room_id": data.room_id,
+                "public_id": data.room_id,
+                "public_name": data.room_name,
                 "start_date": data.start_date,
                 "end_date": data.end_date,
                 "theme": data.theme,
@@ -1071,7 +1069,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 "company": data.company,
                 'staff_id': data.staff_id,
                 "staff_name": data.contact,
-                "phone": data.phone,
+                "phone": data.img_url,
                 "descript": data.descript,
                 "img_url": data.files[0].url
             };
@@ -3371,7 +3369,7 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "antd-mob
                 room_id: data.response.id,
                 building_name: data.response.building_name,
                 floor_name: data.response.floor_name,
-                room_name: data.response.room_name,
+                room_name: data.response.name,
             });
         }
         toggleFold() {
@@ -8156,12 +8154,18 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
             this.onChangeImg = (files, type, index) => {
                 console.log(files, type, index);
                 this.setState({
+                    filesImg: files,
                     files,
                 });
+                console.log("11111", this.state.files);
+                console.log("22222", this.state.filesImg);
+                let obj = [{
+                        "imgname": "headimg",
+                        "imgbase64": this.state.filesImg[0].url,
+                    }];
+                this.dataService.uploadImgOss(this.setImg.bind(this), obj);
             };
             this.state = {
-                files: [],
-                multiple: false,
                 reqairscss: "reqairs-part",
                 iconfont: "iconfont iconfont-unturn",
                 reqairsul: "reqairsul-part reqairsul",
@@ -8191,6 +8195,12 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
                 phone: "",
                 descript: "",
                 photo: "",
+                files: [],
+                multiple: false,
+                filesImg: [],
+                pic_amount: "",
+                pic1: "",
+                name: "",
             };
             this.setTypeUL = this.setTypeUL.bind(this);
             RepairsOnline.getReqairstpostion = this.getReqairstpostion.bind(this);
@@ -8356,6 +8366,14 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
                 company_id: this.state.company_id_in,
                 company: this.state.company_name_in,
             });
+        }
+        setImg(data) {
+            console.log("AAAA", data);
+            console.log("BBB", data[0]);
+            this.setState({
+                img_url: data[0],
+            });
+            console.log("img_url", this.state);
         }
         sumbitReqairs() {
             console.log("提交报修", this.state);
