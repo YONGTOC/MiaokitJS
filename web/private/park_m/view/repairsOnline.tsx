@@ -182,11 +182,11 @@ class RepairsOnline extends React.Component<{ history: any }>{
 
   //报修问题描述   
   public changeDescript(event) {
-    console.log("2222", event)
+    //console.log("2222", event)
     this.setState({
       descript: event.target.value,
     })
-    console.log(this.state)
+   // console.log(this.state)
   }
 
   // 输入具体需求

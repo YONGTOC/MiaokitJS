@@ -155,85 +155,82 @@ class DataService {
   //4.(园区信息-3D显示)获取园区详细信息
   public getParkInfo(pBack, park_id) {
     let thetoken = sessionStorage.getItem("token");
-    $.ajax({
-      url: this.state.rooturl + '/api/getParkInfo',
-      data: {
-        "park_id": park_id,
-        "token": thetoken,
-      },
-      type: "get",
-      success: function (data) {
-        console.log("getParkInfo444444444", data);
-        if (data.status == 113) {
-          // 113 token到期，跳转登录页面
-          // console.log(window.location.pathname);
-          //  window.location.href = window.location.pathname+"#/"
-        } else {
-          pBack(data);
-         // console.log("getParkInfo", data);
-        }
-      }
-     })
-
-
-    //var data = {
-    //  //错误码
-    //  "return_code": "100",
-    //  "response": [
-    //    {
-    //      //id
-    //      "id": "1009",
-    //      //园区图像url
-    //      "headimgurl": "http://xxx.jpg",
-    //      //所在城市
-    //      "province": "桂林",
-    //      //经度
-    //      "longitude": "10.55",
-    //      //纬度
-    //      "latitude": "66.666",
-    //      //园区名字
-    //      "name": "桂林国家高新",
-    //      //地址
-    //      "address": "桂林七星朝阳路D-11",
-    //      //工程列表，列表内为园区使用的工程。
-    //      "project": [
-    //        {
-    //          //id
-    //          "id": "1009",
-    //          //工程名。
-    //          "name": "电子信息",
-    //          //工程类型 1为普通模型 2为航拍实景图 3为sve工程 4为其它
-    //          "type": 1,
-    //          //使用类型 1为完整场景 2为单独内景
-    //          "use_type": 0,
-    //          //工程地址
-    //          "project_url": "http://xxx.bin",
-    //          //经度
-    //          "longitude": "10.55",
-    //          //纬度
-    //          "latitude": "66.666",
-    //          //偏移值
-    //          "offset": "10,20,10",
-    //          //旋转角度
-    //          "rotate": "10",
-    //        }
-    //      ],
-    //      //园区讲解列表
-    //      "audio": [
-    //        { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-    //        { name: "园区配套", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
-    //        { name: "园区建筑", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-    //      ]
+    //$.ajax({
+    //  url: this.state.rooturl + '/api/getParkInfo',
+    //  data: {
+    //    "park_id": park_id,
+    //    "token": thetoken,
+    //  },
+    //  type: "get",
+    //  success: function (data) {
+    //    console.log("getParkInfo444444444", data);
+    //    if (data.status == 113) {
+    //      // 113 token到期，跳转登录页面
+    //      // console.log(window.location.pathname);
+    //      //  window.location.href = window.location.pathname+"#/"
+    //    } else {
+    //      pBack(data);
+    //     // console.log("getParkInfo", data);
     //    }
-
-    //  ],
-    //  //错误代码信息
-    //  "err_msg": ""
-    //}
+    //  }
+    // })
 
 
+    var data = {
+      //错误码
+      "return_code": "100",
+      "response": [
+        {
+          //id
+          "id": "1009",
+          //园区图像url
+          "headimgurl": "http://xxx.jpg",
+          //所在城市
+          "province": "桂林",
+          //经度
+          "longitude": "10.55",
+          //纬度
+          "latitude": "66.666",
+          //园区名字
+          "name": "桂林国家高新",
+          //地址
+          "address": "桂林七星朝阳路D-11",
+          //工程列表，列表内为园区使用的工程。
+          "project": [
+            {
+              //id
+              "id": "1009",
+              //工程名。
+              "name": "电子信息",
+              //工程类型 1为普通模型 2为航拍实景图 3为sve工程 4为其它
+              "type": 1,
+              //使用类型 1为完整场景 2为单独内景
+              "use_type": 0,
+              //工程地址
+              "project_url": "http://xxx.bin",
+              //经度
+              "longitude": "10.55",
+              //纬度
+              "latitude": "66.666",
+              //偏移值
+              "offset": "10,20,10",
+              //旋转角度
+              "rotate": "10",
+            }
+          ],
+          //园区讲解列表
+          "audio": [
+            { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+            { name: "园区配套", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
+            { name: "园区建筑", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+          ]
+        }
 
-    //pBack(data);
+      ],
+      //错误代码信息
+      "err_msg": ""
+    }
+    pBack(data);
   }
 
   // 5. (企业园区模块-搜索类型)获取园区下面企业类型列表
@@ -705,16 +702,17 @@ class DataService {
       "latitude": "66.666",
       "building_id": "a座",
       "floor_id": "1F",
-      "room_id": "202",
+      //测试房间id为 "1",
+      "room_id": "1",
       "room": "201-2",
 
       "company_id": data.company_id,
       "company": data.company,
       'staff_id': data.staff_id,
       "staff_name": data.contact,
-      "phone": data.img_url,
+      "phone": data.phone,
       "descript": data.descript,
-      "img_url": data.files[0].url
+      "img_url": data.img_url,
     }
     console.log("saveRepairInfo", datas);
     let thedata = JSON.stringify(datas)
@@ -734,7 +732,7 @@ class DataService {
           //console.log("getRoomRentSquareType", data);
         }
         if (data.err_msg == "请求成功") {
-          pBack("场地预定申请完成");
+          pBack("在线报修申请完成");
         }
       }
     });

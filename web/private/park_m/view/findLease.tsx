@@ -246,6 +246,15 @@ class LeaseList extends React.Component {
     move3dBut("down")
   }
 
+  
+  onErrorHeadimageurl(this, index) {
+    var items = this.state.companyData;
+    items[index].headimageurl ="./park_m/image/noImg.png";
+    this.setState({
+          companyData: items
+    });
+  }
+
   public render() {
     return (
       <div className={this.state.leaseListcss}>
@@ -263,11 +272,10 @@ class LeaseList extends React.Component {
         <ul className={this.state.leaseul}>
           <p className={this.state.roomNull}>没有符合搜索条件的结果···</p>
           {this.state.roomData.map((i, index) => {
-            if (i.headimageurl !== null) {
               return (
                 <li onClick={this.leaseActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "leaseli-active" : "leaseli"} >
                   <div className={this.state.indexOf == index ? "leaseImgback-active" : "leaseImgback"} >
-                    <img src={i.headimageurl} />
+                    <img  src={i.headimageurl == null ? this.state.imgurlNull : i.headimageurl}   onError={this.onErrorHeadimageurl.bind(this, index)} />
                   </div>
                   <div className="leaseul-middle">
                     <p className={this.state.indexOf == index ? "leaseName-active" : "leaseName"} style={{ "font-size": "2.4rem", "font-weight": "bold"  }}>{i.building_name}-{i.floor_name}-{i.room_name}</p>
@@ -283,27 +291,6 @@ class LeaseList extends React.Component {
                   </div>
                 </li>
               )
-            } else {
-              return (
-                <li onClick={this.leaseActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "leaseli-active" : "leaseli"} >
-                  <div className={this.state.indexOf == index ? "leaseImgback-active" : "leaseImgback"} >
-                    <img src={"./park_m/image/i.png"} />
-                  </div>
-                  <div className="leaseul-middle">
-                    <p className={this.state.indexOf == index ? "leaseName-active" : "leaseName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.building_name}-{i.floor_name}-{i.room_name}</p>
-                    <p style={{ "font-size": "2.5rem" }}><span className="iconfont" style={{ "fontSize": "2.5rem", "margin-right": "1rem" }}>&#xe82a;</span>{i.square}m²</p>
-                    <p style={{ "font-size": "2.5rem" }}><span className="iconfont" style={{ "fontSize": "2.5rem", "margin-right": "1rem" }}>&#xe829;</span>{i.date}</p>
-                  </div>
-                  <div className="leaseul-right">
-                    <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)} className={this.state.indexOf == index ? "show" : "hide"}>更多
-                       <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
-                    </p>
-                    <p className={this.state.indexOf == index ? "leaseType-active" : "leaseType"} >
-                      <span className={this.state.indexOf == index ? "leasePrice-active" : "leasePrice"}>{i.price}</span>元/m²/天</p>
-                  </div>
-                </li>
-              )
-            }
           })}
         </ul>
         <form action='' target="rfFrame">
@@ -359,6 +346,7 @@ class LeaseList extends React.Component {
     searchBoxIcon: "iconfont iconfont-unturn",
     //设置 点击软键盘搜索，页面不刷新
     src: "about:'blank'",
+    imgurlNull: "./park_m/image/noImg.png",
   }
 }
 
