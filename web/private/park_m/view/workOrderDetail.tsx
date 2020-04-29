@@ -107,7 +107,7 @@ class workOrderDetail extends React.Component<{ history: any }>{
   callBackGetRepairInfo(data) {
     console.log("保修", data)
     let tagArray = this.state.tagArray
-    tagArray[2][0].content = data.response.applicant
+    tagArray[3][0].content = data.response.linkman
     tagArray[3][1].content = data.response.phone
     tagArray[3][2].content = data.response.descript
     this.setState({ tagArray: tagArray, datas: data.response })
@@ -209,8 +209,8 @@ class workOrderDetail extends React.Component<{ history: any }>{
             <div style={{ margin: "20px 0 0 50px" }}>
               <span style={{ color: "#949494", fontSize: "40px" }}>审核回复:</span>
             </div>
-            <div style={{ margin: "20px 0 0 50px" }}>
-              <span style={{ color: "#333333", fontSize: "40px" }}>{this.state.datas.examine.reply}</span>
+            <div style={{ margin: "20px 0 0 50px", color: "#333333", fontSize: "40px", wordBreak: "break-all" }}>
+              {this.state.datas.examine.reply}
             </div>
           </div> : null
         }

@@ -1439,6 +1439,19 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 }
             });
         }
+        getThirdServicesInfo(pBack, id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getThirdServicesInfo',
+                data: {
+                    id: id,
+                    token: sessionStorage.getItem("token")
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
         getRoleType(pBack) {
             $.ajax({
                 url: this.state.rooturl + '/api/getRoleType',
@@ -1786,8 +1799,8 @@ define("dataService", ["require", "exports"], function (require, exports) {
             $.ajax({
                 url: this.state.rooturl + '/api/postParkPhone',
                 data: {
-                    id: 1001,
-                    park_id: 1001,
+                    id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+                    park_id: sessionStorage.getItem("park_id"),
                     phone: phone,
                     token: sessionStorage.getItem("token")
                 },
@@ -7750,7 +7763,7 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
         callBackGetRepairInfo(data) {
             console.log("保修", data);
             let tagArray = this.state.tagArray;
-            tagArray[2][0].content = data.response.applicant;
+            tagArray[3][0].content = data.response.linkman;
             tagArray[3][1].content = data.response.phone;
             tagArray[3][2].content = data.response.descript;
             this.setState({ tagArray: tagArray, datas: data.response });
@@ -7832,8 +7845,7 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
                             React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "25px" } }, this.state.datas.examine.checker_date)),
                         React.createElement("div", { style: { margin: "20px 0 0 50px" } },
                             React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u5BA1\u6838\u56DE\u590D:")),
-                        React.createElement("div", { style: { margin: "20px 0 0 50px" } },
-                            React.createElement("span", { style: { color: "#333333", fontSize: "40px" } }, this.state.datas.examine.reply))) : null,
+                        React.createElement("div", { style: { margin: "20px 0 0 50px", color: "#333333", fontSize: "40px", wordBreak: "break-all" } }, this.state.datas.examine.reply)) : null,
                 this.state.stateName === "审核中" && JSON.parse(sessionStorage.getItem("userInfos")).roles.role_name === "园区管理员" ?
                     React.createElement("div", null,
                         React.createElement("div", { style: { padding: "30px 0 0 50px" } },
@@ -7952,6 +7964,7 @@ define("message", ["require", "exports", "react", "dataService", "css!./styles/m
             this.dataService.getMyMsgInfo(this.callBackGetMyMsgInfo.bind(this), "");
         }
         callBackGetMyMsgType(data) {
+            console.log("111", data);
             if (data.return_code == 100) {
                 let tagList = [{ id: 0, name: "全部" }];
                 data.response.forEach(item => {
@@ -8688,7 +8701,8 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
             let listArr = [];
             if (parseInt(sessionStorage.getItem("informationId")) === 2) {
                 datas.forEach(item => {
-                    let obj = { title: "", visitAmount: "", time: "", headimgurl: "", taga: "", tagb: "", contenta: "", contentb: "" };
+                    let obj = { id: "", title: "", visitAmount: "", time: "", headimgurl: "", taga: "", tagb: "", contenta: "", contentb: "" };
+                    obj.id = item.id;
                     obj.title = item.name;
                     obj.visitAmount = item.visit_amount;
                     obj.time = item.time;
@@ -8704,7 +8718,8 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
             }
             else if (parseInt(sessionStorage.getItem("informationId")) === 3) {
                 datas.forEach(item => {
-                    let obj = { title: "", visitAmount: "", time: "", headimgurl: "", taga: "", tagb: "", contenta: "", contentb: "" };
+                    let obj = { id: "", title: "", visitAmount: "", time: "", headimgurl: "", taga: "", tagb: "", contenta: "", contentb: "" };
+                    obj.id = item.id;
                     obj.title = item.title;
                     obj.visitAmount = item.visit_amount;
                     obj.time = item.time;
@@ -8743,6 +8758,7 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
             this.props.history.goBack();
         }
         goDetail(index) {
+            console.log("index", index);
             this.props.history.push({ pathname: "informationDetails", state: { index: index } });
         }
         render() {
@@ -8976,7 +8992,7 @@ define("informationDetails", ["require", "exports", "react", "dataService", "rea
         constructor() {
             super(...arguments);
             this.state = {
-                data: { name: "", start_time: "", end_time: "", position: "", sign_end_time: "", contact: "", contact_tel: "", content: "", fee: "", headimgurl: "", visit_amount: "", time: "" },
+                data: { id: 0, name: "", start_time: "", end_time: "", position: "", sign_end_time: "", contact: "", contact_tel: "", content: "", fee: "", headimgurl: "", visit_amount: "", time: "" },
                 parkArr: [
                     {
                         "id": "1009",
@@ -9003,11 +9019,15 @@ define("informationDetails", ["require", "exports", "react", "dataService", "rea
             this.dataService = new dataService_26.default();
         }
         componentDidMount() {
+            console.log("this.props.history.location", this.props.history.location);
             if (parseInt(sessionStorage.getItem("informationId")) < 2) {
                 this.dataService.getInformation(this.callBack.bind(this), this.props.history.location.state.index);
             }
             else if (parseInt(sessionStorage.getItem("informationId")) === 2) {
                 this.dataService.getActivitiyInfo(this.callBack.bind(this), this.props.history.location.state.index);
+            }
+            else if (parseInt(sessionStorage.getItem("informationId")) === 3) {
+                this.dataService.getThirdServicesInfo(this.callBack.bind(this), this.props.history.location.state.index);
             }
         }
         callBack(data) {
@@ -9022,8 +9042,8 @@ define("informationDetails", ["require", "exports", "react", "dataService", "rea
         }
         submit() {
             let obj = {
-                user_id: 2,
-                activity_id: 1
+                user_id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+                activity_id: this.state.data.id
             };
             this.dataService.postActivitySign(this.callBackPostActivitySign.bind(this), obj);
         }
@@ -9376,7 +9396,11 @@ define("roomUse", ["require", "exports", "react", "dataService", "antd-mobile"],
             }
         }
         changeState(index) {
-            this.setState({ state: index });
+            this.setState({ state: index }, () => {
+                $('#date').click(() => {
+                    $('#datePicker').click();
+                });
+            });
         }
         setStartDate(date) {
             let dateStr = JSON.stringify(date);
@@ -9421,9 +9445,9 @@ define("roomUse", ["require", "exports", "react", "dataService", "antd-mobile"],
                             React.createElement("div", { className: "enterprise-information-star" }),
                             React.createElement("div", { style: { color: "#949494", height: "80px", float: "left", width: "20%" } }, "\u79DF\u7528\u65E5\u671F"),
                             React.createElement("div", { style: { float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" } }, this.state.rentDate),
-                            React.createElement("img", { src: "./park_m/image/calendar.png" })),
-                        React.createElement(antd_mobile_11.DatePicker, { mode: "date", extra: " ", onChange: this.setStartDate.bind(this) },
-                            React.createElement(antd_mobile_11.List.Item, { arrow: "horizontal", style: { position: "absolute", top: "-100px" }, id: "datePicker" }))) : null,
+                            React.createElement("img", { src: "./park_m/image/calendar.png" }))) : null,
+                React.createElement(antd_mobile_11.DatePicker, { mode: "date", extra: " ", onChange: this.setStartDate.bind(this) },
+                    React.createElement(antd_mobile_11.List.Item, { arrow: "horizontal", style: { position: "absolute", top: "-100px" }, id: "datePicker" })),
                 React.createElement("div", { onClick: this.submit.bind(this), style: { width: "100%", height: "150px", textAlign: "center", lineHeight: "150px", color: "#ffffff", backgroundColor: "#0B8BF0", position: "fixed", bottom: 0, fontSize: "50px" } }, "\u63D0\u4EA4")));
         }
     }

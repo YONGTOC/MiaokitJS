@@ -8,7 +8,7 @@ interface IProps {
 }
 
 interface IState {
-  data: { name: string, start_time: string, end_time: string, position: string, sign_end_time: string, contact: string, contact_tel: string, content: string, fee: string, headimgurl: string, visit_amount: string, time: string }，
+  data: { id: number, name: string, start_time: string, end_time: string, position: string, sign_end_time: string, contact: string, contact_tel: string, content: string, fee: string, headimgurl: string, visit_amount: string, time: string }，
   parkArr: Array<any>,
   tagArr: Array<any>,
 
@@ -16,7 +16,7 @@ interface IState {
 
 export default class informationDetail extends React.Component {
   public readonly state: Readonly<IState> = {
-    data: { name: "", start_time: "", end_time: "", position: "", sign_end_time: "", contact: "", contact_tel: "", content: "", fee: "", headimgurl: "", visit_amount: "", time: "" }，
+    data: { id: 0, name: "", start_time: "", end_time: "", position: "", sign_end_time: "", contact: "", contact_tel: "", content: "", fee: "", headimgurl: "", visit_amount: "", time: "" }，
     parkArr: [
       {
         "id": "1009",
@@ -47,10 +47,13 @@ export default class informationDetail extends React.Component {
   public dataService: DataService = new DataService()
 
   componentDidMount() {
+    console.log("this.props.history.location", this.props.history.location)
     if (parseInt(sessionStorage.getItem("informationId")) < 2) {
       this.dataService.getInformation(this.callBack.bind(this), this.props.history.location.state.index)
-    } else if (parseInt(sessionStorage.getItem("informationId")) === 2){
+    } else if (parseInt(sessionStorage.getItem("informationId")) === 2) {
       this.dataService.getActivitiyInfo(this.callBack.bind(this), this.props.history.location.state.index)
+    } else if (parseInt(sessionStorage.getItem("informationId")) === 3) {
+      this.dataService.getThirdServicesInfo(this.callBack.bind(this), this.props.history.location.state.index)
     }
   }
   callBack(data) {
@@ -71,8 +74,8 @@ export default class informationDetail extends React.Component {
 
   submit() {
     let obj = {
-      user_id: 2,
-      activity_id: 1
+      user_id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+      activity_id: this.state.data.id
     }
     this.dataService.postActivitySign(this.callBackPostActivitySign.bind(this), obj)
   }

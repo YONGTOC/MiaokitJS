@@ -1,4 +1,4 @@
-import * as React from "react";
+Ôªøimport * as React from "react";
 import "css!./styles/informationChild.css"
 import DataService from "dataService";
 
@@ -16,9 +16,9 @@ interface IState {
 
 export default class InformationChilds extends React.Component {
   public readonly state: Readonly<IState> = {
-    inputValue: "À—À˜»À‘±", //  ‰»ÎøÚƒ¨»œ÷µ
+    inputValue: "ÊêúÁ¥¢‰∫∫Âëò", // ËæìÂÖ•Ê°ÜÈªòËÆ§ÂÄº
     listArr: [],
-    tagIndex: 0, // —°÷–µƒ±Í«©
+    tagIndex: 0, // ÈÄâ‰∏≠ÁöÑÊ†áÁ≠æ
     tagArr: []
   }
 
@@ -74,13 +74,14 @@ export default class InformationChilds extends React.Component {
     let listArr = []
     if (parseInt(sessionStorage.getItem("informationId")) === 2) {
       datas.forEach(item => {
-        let obj = { title: "", visitAmount: "", time: "", headimgurl: "", taga: "", tagb: "", contenta: "", contentb: "" }
+        let obj = { id: "", title: "", visitAmount: "", time: "", headimgurl: "", taga: "", tagb: "", contenta: "", contentb: "" }
+        obj.id = item.id
         obj.title = item.name
         obj.visitAmount = item.visit_amount
         obj.time = item.time
         obj.headimgurl = item.headimgurl
-        obj.taga = "ªÓ∂Ø ±º‰"
-        obj.tagb = "ªÓ∂ØŒª÷√"
+        obj.taga = "Ê¥ªÂä®Êó∂Èó¥"
+        obj.tagb = "Ê¥ªÂä®‰ΩçÁΩÆ"
         obj.contenta = item.start_time
         obj.contentb = item.position
         listArr.push(obj)
@@ -89,13 +90,14 @@ export default class InformationChilds extends React.Component {
       console.log(listArr)
     } else if (parseInt(sessionStorage.getItem("informationId")) === 3) {
       datas.forEach(item => {
-        let obj = { title: "", visitAmount: "", time: "", headimgurl: "", taga: "", tagb: "", contenta: "", contentb: "" }
+        let obj = { id: "", title: "", visitAmount: "", time: "", headimgurl: "", taga: "", tagb: "", contenta: "", contentb: "" }
+        obj.id = item.id
         obj.title = item.title
         obj.visitAmount = item.visit_amount
         obj.time = item.time
         obj.headimgurl = item.headimgurl
-        obj.taga = "∑˛ŒÒƒ⁄»›"
-        obj.tagb = "¡™œµ∑Ω Ω"
+        obj.taga = "ÊúçÂä°ÂÜÖÂÆπ"
+        obj.tagb = "ËÅîÁ≥ªÊñπÂºè"
         obj.contenta = item.content
         obj.contentb = item.mobile
         listArr.push(obj)
@@ -106,39 +108,40 @@ export default class InformationChilds extends React.Component {
     }
   }
 
-  // æ€Ωπ
+  // ËÅöÁÑ¶
   foucus() {
-    if (this.state.inputValue === "À—À˜»À‘±") {
+    if (this.state.inputValue === "ÊêúÁ¥¢‰∫∫Âëò") {
       this.setState({ inputValue: "" })
     }
   }
 
-  //  ßΩπ
+  // Â§±ÁÑ¶
   blur() {
     if (this.state.inputValue === "") {
-      this.setState({ inputValue: "À—À˜»À‘±" })
+      this.setState({ inputValue: "ÊêúÁ¥¢‰∫∫Âëò" })
     }
   }
 
-  //  ‰»Î
+  // ËæìÂÖ•
   change(event) {
     this.setState({ inputValue: event.target.value })
   }
 
-  // —°÷–±Í«©
+  // ÈÄâ‰∏≠Ê†áÁ≠æ
   clickTag(index) {
     this.setState({ tagIndex: index }, () => {
       this.getTagContent()
     })
   }
 
-  // ∑µªÿ
+  // ËøîÂõû
   goBack() {
     this.props.history.goBack()
   }
 
-  // œÍ«È
+  // ËØ¶ÊÉÖ
   goDetail(index) {
+    console.log("index", index)
     this.props.history.push({ pathname: "informationDetails", state: { index: index } })
   }
 
@@ -150,7 +153,7 @@ export default class InformationChilds extends React.Component {
             <img src="./park_m/image/whiteBack.png" style={{ margin: "0 10px 30px -15px", padding: "15px 15px 15px 15px" }} onClick={this.goBack.bind(this)} />
             <input className="infoarea-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
             <img src="./park_m/image/search.png" className="infoarea-search-img" />
-            <span className="search-user-bt">À—À˜</span>
+            <span className="search-user-bt">ÊêúÁ¥¢</span>
           </div>
         </div>
         <div className="information-child-tag">
@@ -177,8 +180,8 @@ export default class InformationChilds extends React.Component {
                     {item.content}
                   </div>
                   <div style={{ color: "#949494", fontSize: "34px", margin: "30px 0 0 50px" }}>
-                    <div style={{ float: "left" }}>{item.visit_amount}¥Œ‰Ø¿¿</div>
-                    <div style={{ float: "right", marginRight: "50px" }}>{item.time} ∑¢≤º</div>
+                    <div style={{ float: "left" }}>{item.visit_amount}Ê¨°ÊµèËßà</div>
+                    <div style={{ float: "right", marginRight: "50px" }}>{item.time} ÂèëÂ∏É</div>
                   </div>
                 </div> :
                 <div key={index} className="information-child-List-child" onClick={e => this.goDetail(item.id)} >
@@ -188,19 +191,19 @@ export default class InformationChilds extends React.Component {
                     </div>
                     <div style={{ float: "left", fontSize: "45px", margin: "25px 0 0 50px", fontWeight: "600", color: "#333333",width: "60%" }}>
                       <div>{item.title}</div>
-                      <div style={{ color: "#949494", fontSize: "40px", fontWeight: "400", marginTop: "85px", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" }}>{item.taga}£∫{item.contenta}</div>
-                      <div style={{ color: "#949494", fontSize: "40px", fontWeight: "400", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" }}>{item.tagb}£∫{item.contentb}</div>
+                      <div style={{ color: "#949494", fontSize: "40px", fontWeight: "400", marginTop: "85px", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" }}>{item.taga}Ôºö{item.contenta}</div>
+                      <div style={{ color: "#949494", fontSize: "40px", fontWeight: "400", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" }}>{item.tagb}Ôºö{item.contentb}</div>
                     </div>
                   </div>
                   <div style={{ color: "#949494", fontSize: "34px", margin: "30px 0 0 50px", overflow: "hidden" }}>
-                    <div style={{ float: "left" }}>{item.visitAmount}¥Œ‰Ø¿¿</div>
-                    <div style={{ float: "right", marginRight: "50px" }}>{item.time} ∑¢≤º</div>
+                    <div style={{ float: "left" }}>{item.visitAmount}Ê¨°ÊµèËßà</div>
+                    <div style={{ float: "right", marginRight: "50px" }}>{item.time} ÂèëÂ∏É</div>
                   </div>
                 </div>
             )
           })
           }
-          < div style={{ width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>µΩµ◊¿≤~</div>
+          < div style={{ width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>Âà∞Â∫ïÂï¶~</div>
         </div>
       </div>
     )

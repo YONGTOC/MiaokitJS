@@ -93,7 +93,11 @@ export default class RoomUse extends React.Component<{ history: any }>{
   }
 
   changeState(index) {
-    this.setState({ state: index })
+    this.setState({ state: index }, () => {
+      $('#date').click(() => {
+        $('#datePicker').click()
+      })
+    })
   }
 
   // 组件获取开始时间
@@ -170,16 +174,16 @@ export default class RoomUse extends React.Component<{ history: any }>{
               </div>
               <img src="./park_m/image/calendar.png" />
             </div>
-            <DatePicker
-              mode="date"
-              extra=" "
-              onChange={this.setStartDate.bind(this)}
-            >
-              <List.Item arrow="horizontal" style={{ position: "absolute", top: "-100px" }} id="datePicker"></List.Item>
-            </DatePicker>
            
           </div> : null
         }
+        <DatePicker
+          mode="date"
+          extra=" "
+          onChange={this.setStartDate.bind(this)}
+        >
+          <List.Item arrow="horizontal" style={{ position: "absolute", top: "-100px" }} id="datePicker"></List.Item>
+        </DatePicker>
         <div onClick={this.submit.bind(this)}
           style={{ width: "100%", height: "150px", textAlign: "center", lineHeight: "150px", color: "#ffffff", backgroundColor: "#0B8BF0", position: "fixed", bottom: 0, fontSize: "50px" }}>
           提交

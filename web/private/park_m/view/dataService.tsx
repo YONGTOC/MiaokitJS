@@ -1152,6 +1152,21 @@ class DataService {
     })
   }
 
+  // 41.2(资讯模块-第三方服务)通过id，获取第三方服务详情
+  public getThirdServicesInfo(pBack, id) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getThirdServicesInfo',
+      data: {
+        id: id,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
   // 43.(我的个人中心模块-身份认证类型)获取认证的角色类型列表
   public getRoleType(pBack) {
     $.ajax({
@@ -1546,8 +1561,8 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/postParkPhone',
       data: {
-        id: 1001,
-        park_id: 1001,
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+        park_id: sessionStorage.getItem("park_id"),
         phone: phone,
         token: sessionStorage.getItem("token")
       },
