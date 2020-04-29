@@ -182,11 +182,11 @@ class RepairsOnline extends React.Component<{ history: any }>{
 
   //报修问题描述   
   public changeDescript(event) {
-    console.log("2222", event)
+    //console.log("2222", event)
     this.setState({
       descript: event.target.value,
     })
-    console.log(this.state)
+   // console.log(this.state)
   }
 
   // 输入具体需求
@@ -235,8 +235,26 @@ class RepairsOnline extends React.Component<{ history: any }>{
   onChangeImg = (files, type, index) => {
     console.log(files, type, index);
     this.setState({
-      files,
+       filesImg: files,
+        files,
     });
+      console.log("11111", this.state.files)
+    console.log("22222", this.state.filesImg)
+      let obj = [{
+        "imgname": "headimg",
+        "imgbase64": this.state.filesImg[0].url,
+      }]
+    this.dataService.uploadImgOss(this.setImg.bind(this), obj);
+  }
+
+      // 修改提交img数据
+  setImg(data) {
+    console.log("AAAA", data);
+    console.log("BBB", data[0]);
+    this.setState({
+      img_url: data[0],
+    })
+    console.log("img_url", this.state)
   }
 
   //提交报修单
@@ -254,6 +272,8 @@ class RepairsOnline extends React.Component<{ history: any }>{
       this.dataService.saveRepairInfo(this.sumbitReqairssucceed, this.state);
     }
   }
+
+
 
   //提交报修单 -- 成功
   public sumbitReqairssucceed(data) {
@@ -375,9 +395,6 @@ class RepairsOnline extends React.Component<{ history: any }>{
   }
 
   public state = {
-    //照片
-    files: [],
-    multiple: false,
     reqairscss: "reqairs-part",
     iconfont: "iconfont iconfont-unturn",
     reqairsul: "reqairsul-part reqairsul",
@@ -422,6 +439,13 @@ class RepairsOnline extends React.Component<{ history: any }>{
     descript: "",
     //照片
     photo: "",
+    //照片
+    files: [],
+    multiple: false,
+    filesImg: [],
+    pic_amount: "",
+    pic1: "",
+    name:"",
   }
 }
 

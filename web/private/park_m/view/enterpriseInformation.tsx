@@ -293,7 +293,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
     let park_id = sessionStorage.getItem("park_id");
     let enterpriseId = sessionStorage.getItem("enterpriseId");
     // let token= sessionStorage.getItem("token");
-
+    let sum = 1;
 
     console.log("bobo", this.state.elegant.length);
 
@@ -329,16 +329,27 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
     }
     if (this.state.elegant.length == 0) {
       obj.elegant = this.state.filesElegant;
+    }
+    if (obj.elegant.length == 1 ) {
+      alert("请为企业风采，至少添加两张图片");
+      sum = 0;
     };
     if (this.state.product.length == 0) {
       obj.product = this.state.filesProduct;
+    }
+    if (obj.product.length == 1) {
+      alert("请为公司产品，至少添加两张图片");
+      sum = 0;
     };
     if (this.state.panorama.length == 0) {
       obj.panorama = this.state.filesPanorama;
-    };
+    }
 
     console.log("objobjobj2222222", obj);
-    this.dataService.saveCompanyInfo(this.callBackSaveCompanyInfo.bind(this), obj);
+    if (sum == 1) {
+        this.dataService.saveCompanyInfo(this.callBackSaveCompanyInfo.bind(this), obj);
+    }
+    //this.dataService.saveCompanyInfo(this.callBackSaveCompanyInfo.bind(this), obj);
     //sumbit over;
   }
 

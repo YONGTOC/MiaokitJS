@@ -291,7 +291,6 @@ class ApplyPut extends React.Component {
           postData = 0;
         } else if (item.endTime == "结束日期") {
           alert("请填写结束日期")
-          alert(postData);
           postData = 0;
         } else {
           postData = 1;

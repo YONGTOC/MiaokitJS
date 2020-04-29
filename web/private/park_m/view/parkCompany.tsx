@@ -140,26 +140,12 @@ class CompanyList extends React.Component {
     }
   }
 
-  onErrorHeadimageurl() {
-    // var _this = this;
-    //this.setState({
-    // // headimageurl: "./park_m/image/tx.jpg"
-    //  companyData: [{ headimageurl: "./park_m/image/tx.jpg" }]
-    //})
-
-    //$.each(this.state.companyData, function (index, item) {
-    //   _this.setState({
-    //  headimageurl: "./park_m/image/tx.jpg"
-    //})
-    //});
-    //var errorHead = "./park_m/image/tx.jpg"
-    //$.each(this.state.companyData, function (index, item) {
-
-    //})
-
-
-    console.log(this.state.companyData)
-    // console.log(_this.state.companyData)
+  onErrorHeadimageurl(this, index) {
+    var items = this.state.companyData;
+    items[index].headimageurl ="./park_m/image/noImg.png";
+    this.setState({
+          companyData: items
+    });
   }
 
 
@@ -306,11 +292,10 @@ class CompanyList extends React.Component {
         <ul className={this.state.companyul}>
           <p className={this.state.companyNull} style={{ "text-align": "center" }} >没有符合搜索条件的结果···</p>
           {this.state.companyData.map((i, index) => {
-            if (i.headimageurl == null) {
               return (
                 <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyli-active" : "companyli"} >
                   <div className={this.state.indexOf == index ? "companyImgback-active" : "companyImgback"}>
-                    <img src={"./park_m/image/i.png"} onError={this.onErrorHeadimageurl.bind(this)} />
+                    <img src={i.headimageurl == null ? this.state.imgurlNull : i.headimageurl} onError={this.onErrorHeadimageurl.bind(this, index)} />
                   </div>
                   <div className="companyul-middle">
                     <p className={this.state.indexOf == index ? "companyName-active" : "companyName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.name}</p>
@@ -326,27 +311,6 @@ class CompanyList extends React.Component {
                   </div>
                 </li>
               )
-            } else {
-              return (
-                <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyli-active" : "companyli"} >
-                  <div className={this.state.indexOf == index ? "companyImgback-active" : "companyImgback"}>
-                    <img src={i.headimageurl} onError={this.onErrorHeadimageurl.bind(this)} />
-                  </div>
-                  <div className="companyul-middle">
-                    <p className={this.state.indexOf == index ? "companyName-active" : "companyName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.name}</p>
-                    <p style={{ "font-size": "2.5rem", "overflow": "hidden", "text-overflow": "ellipsis", "white-space": "nowrap" }}>
-                      <i className="iconfont" style={{ "fontSize": "2.5rem" }}>&#xe815;</i>
-                      {i.address}</p>
-                  </div>
-                  <div className="companyul-right">
-                    <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)} className={this.state.indexOf == index ? "show" : "hide"} >更多
-                    <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
-                    </p>
-                    <p className={this.state.indexOf == index ? "companyType-active" : "companyType"} >{i.company_type}</p>
-                  </div>
-                </li>
-              )
-            }
           })}
         </ul>
         <form action='' target="rfFrame">
@@ -407,6 +371,8 @@ class CompanyList extends React.Component {
     token: "",
     //设置 点击软键盘搜索，页面不刷新
     src: "about:'blank'",
+    errImg: "./park_m/image/noImg.png",
+   imgurlNull: "./park_m/image/noImg.png",
   }
 
 
@@ -700,7 +666,7 @@ class Mien extends React.Component {
         <p className={this.state.urlNull} style={{ "color": "#333333", "text-align": "center", "font-size": "2.5rem" }}>暂无图片···</p>
         <div className={this.state.urlShow}>
           <WingBlank>
-            <Carousel className="space-carousel"
+            <Carousel className="space-carousel"  
               frameOverflow="visible"
               cellSpacing={10}
               slideWidth={0.8}

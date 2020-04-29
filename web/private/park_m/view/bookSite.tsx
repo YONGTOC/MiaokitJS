@@ -301,7 +301,9 @@ class BookInfo extends React.Component {
     BookInfo.showList = this.showList.bind(this);
     this.toggleFold = this.toggleFold.bind(this);
     BookInfo.getRoomdata = this.getRoomdata.bind(this);
+    BookInfo.hideBookFa = this.hideBookFa.bind(this);
     this.setBookdata = this.setBookdata.bind(this);
+
   }
 
   public dataService: DataService = new DataService();
@@ -318,7 +320,8 @@ class BookInfo extends React.Component {
     this.setState({
      // building_name: data.response.building_name,
      // floor_name: data.response.floor_name,
-     name: data.response.name,
+      name: data.response.name,
+      id:data.response.id,
     })
     SiteInfos.getInfos(data);
     Notes.getNotes(data);
@@ -383,6 +386,15 @@ class BookInfo extends React.Component {
     });
   }
 
+  //供预定页面调用的显示隐藏
+  static hideBookFa() {}
+  public hideBookFa() {
+ 
+    this.setState({
+      infoli:0
+    })
+  }
+
   public render() {
     // <span className="iconfont companyInfoicon" onClick={this.showList.bind(this, "List", "id-01")}>&#xe83b;</span>
     return (
@@ -439,6 +451,8 @@ class BookInfo extends React.Component {
     // 场地信息ul样式
     bookInfoul: "bookInfoul",
     leaseInfoul: "leaseInfoul_br",
+    //场地名称
+    name:"",
   }
 }
 
@@ -467,6 +481,7 @@ class BookRoom extends React.Component {
       //companyUL: dataObj.enterprises,
       //company: dataObj.enterprises[0].name,
       //company_id: dataObj.enterprises[0].id,
+  
     })
 
     if (dataObj.enterprises.length == 0) {
@@ -493,10 +508,10 @@ class BookRoom extends React.Component {
       id: data.response.id,
       building_id: data.response.building_id,
       floor_id: data.response.floor_id,
-      room_id: data.response.room_id,
+      room_id: data.response.id,
       building_name: data.response.building_name,
       floor_name: data.response.floor_name,
-      room_name: data.response.room_name,
+      room_name: data.response.name,
     })
   }
 
@@ -636,15 +651,22 @@ class BookRoom extends React.Component {
 
   }
 
-  static showList(a, id) { };
-  public showList(a, id) {
-    console.log("showList", a);
-    BookSite.toggleView(a, id);
-    this.setState({
-      infoli: 0,
-      bookInfocss: "bookInfos",
-    })
+  showInfos() {
+    //toggleView ( a,id) (Info ,id)
+    BookInfo.hideBookFa()
   }
+
+
+  //static showList(a, id) { };
+  //public showList(a, id) {
+  //  console.log("showList", a);
+  //  BookSite.toggleView(a, id);
+  //  this.setState({
+  //    //infoli: 0,
+  //    infoli: 2,
+  //    bookInfocss: "bookInfos",
+  //  })
+  //}
 
   //提交成功
   public bookSumbitOK(data) {
@@ -661,7 +683,7 @@ class BookRoom extends React.Component {
     return (
       <div className={this.state.bookRoom}>
         <div className={"foleBtn"} >
-          <p className="companyGoHomeLeft" onClick={this.showList.bind(this, "List", "id-01")}>
+          <p className="companyGoHomeLeft" onClick={this.showInfos.bind(this, "List", "id-01")}>
             <i className="iconfont companyInfoicon">&#xe83b;</i>
             <span>返回</span>
           </p>
