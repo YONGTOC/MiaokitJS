@@ -1310,6 +1310,41 @@ class DataService {
       }
     })
   }
+
+  // 52.(我的个人中心模块-我的工单-场地预定转单人员) 场地预定获取可以转单的人员列表
+  public getRefBookingRoomRole(pBack, workId) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getRefBookingRoomRole',
+      data: {
+        work_id: workId,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 53.(我的个人中心模块-我的工单-场地预定转单操作) 场地预定转单操作
+  public changeBookingRoomRole(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/changeBookingRoomRole',
+      data: {
+        work_id: obj.workId,
+        current_role_id: obj.currentRoleId,
+        current_role_name: obj.currentRoleName,
+        next_role_id: obj.nextRoleId,
+        next_role_name: obj.nextRoleName,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
   // 54.(我的个人中心模块-我的工单-企业认证) 通过工单id，获取场地企业认证详细信息接口
   public getRoleAuthenticationInfo(pBack, id) {
     $.ajax({
@@ -1334,6 +1369,40 @@ class DataService {
         id: obj.id,
         state: obj.state,
         reply: obj.reply,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 56.(我的个人中心模块-我的工单-企业认证转单人员) 企业认证获取可以转单的人员列表
+  public getRefRoleAuthenticationRole(pBack, workId) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getRefRoleAuthenticationRole',
+      data: {
+        work_id: workId,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 57.(我的个人中心模块-我的工单-企业认证转单操作) 企业认证转单操作
+  public changeRoleAuthenticationRole(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/changeRoleAuthenticationRole',
+      data: {
+        work_id: obj.workId,
+        current_role_id: obj.currentRoleId,
+        current_role_name: obj.currentRoleName,
+        next_role_id: obj.nextRoleId,
+        next_role_name: obj.nextRoleName,
         token: sessionStorage.getItem("token")
       },
       type: "get",
@@ -1376,6 +1445,40 @@ class DataService {
     })
   }
 
+  // 60.(我的个人中心模块-我的工单-摆点申请转单人员) 摆点申请获取可以转单的人员列表
+  public getAdvertisementPointRole(pBack, workId) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getAdvertisementPointRole',
+      data: {
+        work_id: workId,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 61.(我的个人中心模块-我的工单-摆点申请转单操作) 摆点申请转单操作
+  public changeAdvertisementPointRole(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/changeAdvertisementPointRole',
+      data: {
+        work_id: obj.workId,
+        current_role_id: obj.currentRoleId,
+        current_role_name: obj.currentRoleName,
+        next_role_id: obj.nextRoleId,
+        next_role_name: obj.nextRoleName,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
   // 62.(我的个人中心模块-我的工单-在线报修详情) 通过工单id，在线报修申请详细信息接口
   public getRepairInfo(pBack, id) {  
     $.ajax({
@@ -1400,6 +1503,40 @@ class DataService {
         id: obj.id,
         state: obj.state,
         reply: obj.reply,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 64.(我的个人中心模块-我的工单-在线报修转单人员) 在线报修获取可以转单的人员列表
+  public getRepairInfoRole(pBack, workId) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getRepairInfoRole',
+      data: {
+        work_id: workId,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 65.(我的个人中心模块-我的工单-在线报修转单操作) 在线报修转单操作
+  public changeRepairInfoRole(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/changeRepairInfoRole',
+      data: {
+        work_id: obj.workId,
+        current_role_id: obj.currentRoleId,
+        current_role_name: obj.currentRoleName,
+        next_role_id: obj.nextRoleId,
+        next_role_name: obj.nextRoleName,
         token: sessionStorage.getItem("token")
       },
       type: "get",

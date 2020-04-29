@@ -9,7 +9,7 @@ interface IProps {
 interface IState {
   stateName: string,
   datas: {
-    applicant: string, phone: string, company: string, content: string, time: string, id: number,
+    applicant: string, phone: string, company: string, content: string, time: string, id: number, examine_transfer: Array<any>
     positions: { name: string, start_date: string, end_date: string },
     examine: { checker: string, checker_date: string, reply: string },
   },
@@ -21,7 +21,7 @@ class workOrderDetail extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
     stateName: JSON.parse(sessionStorage.getItem("workOrder")).stateName,
     datas: {
-      applicant: "", phone: "", company: "", content: "", time: "", id: 0,
+      applicant: "", phone: "", company: "", content: "", time: "", id: 0, examine_transfer: [{ checker: "" }, { checker: "", checker_date: "" }],
       positions: { name: "", start_date: "", end_date: "" },
       examine: { checker: "", checker_date: "", reply: "" }
     },
@@ -70,8 +70,11 @@ class workOrderDetail extends React.Component<{ history: any }>{
     tagArray[0][2].content = data.response.company_name[0].company_name
     tagArray[0][3].content = data.response.role_name
     tagArray[0][4].content = data.response.pic_url
-    console.log('bbbbbbb', tagArray)
-    this.setState({ tagArray: tagArray, datas: data.response })
+    this.setState({
+      tagArray: tagArray, datas: data.response,
+      stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "转单" : "未通过"  
+    })
+    console.log("aaaaaaaaaa", this.state.datas.examine_transfer)
   }
 
   callBackGetBookingRoomInfo(data) {
@@ -87,8 +90,10 @@ class workOrderDetail extends React.Component<{ history: any }>{
     tagArray[1][7].content = data.response.end_date.substring(10)
     tagArray[1][8].content = data.response.theme
     tagArray[1][9].content = data.response.content
-    console.log('xxxxxx', tagArray)
-    this.setState({ tagArray: tagArray, datas: data.response })
+    this.setState({
+      tagArray: tagArray, datas: data.response,
+      stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "转单" : "未通过"
+    })
   }
 
   callBackGetAdvertisementPointInfo(data) {
@@ -101,7 +106,10 @@ class workOrderDetail extends React.Component<{ history: any }>{
     tagArray[2][4].content = data.response.positions.name
     tagArray[2][5].content = data.response.positions.start_date
     tagArray[2][6].content = data.response.positions.end_date
-    this.setState({ tagArray: tagArray, datas: data.response })
+    this.setState({
+      tagArray: tagArray, datas: data.response,
+      stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "转单" : "未通过"
+    })
   }
 
   callBackGetRepairInfo(data) {
@@ -110,7 +118,10 @@ class workOrderDetail extends React.Component<{ history: any }>{
     tagArray[3][0].content = data.response.linkman
     tagArray[3][1].content = data.response.phone
     tagArray[3][2].content = data.response.descript
-    this.setState({ tagArray: tagArray, datas: data.response })
+    this.setState({
+      tagArray: tagArray, datas: data.response,
+      stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "转单" : "未通过"
+    })
   }
 
   // 返回
@@ -141,6 +152,7 @@ class workOrderDetail extends React.Component<{ history: any }>{
   submit(index) {
     if (index === 0) {
       this.props.history.push("/searchUser")
+      return
     }
     let obj = {
       uid: JSON.parse(sessionStorage.getItem("userInfos")).userId,
@@ -177,7 +189,7 @@ class workOrderDetail extends React.Component<{ history: any }>{
           <span style={{
             float: "right", color: "#ffffff", width: "130px", height: "55px", borderRadius: "50px",
             marginRight: "40px", fontSize: "32px", textAlign: "center", lineHeight: "55px"
-          }} className={this.state.stateName == "审核中" ? "bluebg" : this.state.stateName == "已通过" ? "greenbg" : "redbg"}>{this.state.stateName}</span>
+          }} className={this.state.stateName == "审核中" ? "bluebg" : this.state.stateName == "已通过" ? "greenbg" : this.state.stateName == "未通过" ? "redbg" : "whitebg"}>{this.state.stateName}</span>
         </div>
 
         { this.state.tagArray[JSON.parse(sessionStorage.getItem("workOrder")).workType - 1].map((item, index) => {
@@ -211,6 +223,23 @@ class workOrderDetail extends React.Component<{ history: any }>{
             </div>
             <div style={{ margin: "20px 0 0 50px", color: "#333333", fontSize: "40px", wordBreak: "break-all", width: "90%" }}>
               {this.state.datas.examine.reply}
+            </div>
+          </div> : null
+        }
+
+        {this.state.datas.examine_transfer ?
+          <div>
+            <div style={{ margin: "30px 0 0 50px" }}>
+              <span style={{ color: "#949494", fontSize: "40px" }}>由</span>
+              <span style={{ color: "#333333", fontSize: "40px", marginLeft: "25px", fontWeight: "600" }}>{this.state.datas.examine_transfer[0].checker}</span>
+              <span style={{ color: "#949494", fontSize: "40px", marginLeft: "25px" }}>转单与</span>
+              <span style={{ color: "#333333", fontSize: "40px", marginLeft: "25px" }}>{this.state.datas.examine_transfer[1].checker_date}</span>
+            </div>
+            <div style={{ margin: "20px 0 0 50px" }}>
+              <span style={{ color: "#949494", fontSize: "40px" }}>转单给:</span>
+            </div>
+            <div style={{ margin: "20px 0 0 50px", color: "#333333", fontSize: "40px", wordBreak: "break-all", width: "90%" }}>
+              {this.state.datas.examine_transfer[1].checker}
             </div>
           </div> : null
         }
