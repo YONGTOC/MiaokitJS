@@ -139,6 +139,7 @@
   
     <div style="position: absolute;top: 130px;left: 0px;z-index: 101;">
        <button onclick="changeBut()" style="width: 12rem;height: 4rem;font-size: 2.3rem;">测试按钮</button>
+       <button onclick="changeLogin()" style="width: 12rem;height: 4rem;font-size: 2.3rem;">测试登录</button>
     </div>
     <!--<p id="go">调用预定义的全景图</p>-->
     <ul style="position: absolute;top: 230px;left:0px;z-index: 101;" class="testBut hide">
@@ -199,6 +200,17 @@
             } else {
                  $('.testBut').addClass('hide')
                 but = 0
+            }
+        }
+
+        login = 0;
+        function changeLogin() {
+            if (login == 0) {
+                  MiaokitJS.App.UI.showLoginBox();
+                login = 1
+            } else {
+                    MiaokitJS.App.UI.hideLoginBox2();
+                login = 0
             }
         }
 

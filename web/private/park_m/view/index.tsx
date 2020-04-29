@@ -80,6 +80,8 @@ class Index extends React.Component {
     this.isLoginData = this.isLoginData.bind(this);
     Index.hideCompanyArr = this.hideCompanyArr.bind(this);
     Index.hideLoginBox = this.hideLoginBox.bind(this);
+    Index.showLoginBox = this.showLoginBox.bind(this);
+    
   }
   public static g_pIns: Index = null;
 
@@ -176,7 +178,7 @@ class Index extends React.Component {
     moreName: "",
     isMask: false, // 遮罩
     isCompanyArr: false,  //判断是否拥有多个企业
-    isLoginBox:true,
+    isLoginBox: false,
    
   }
 
@@ -213,6 +215,34 @@ class Index extends React.Component {
 
     curtainHide();
 
+  }
+
+  //显示登录框
+  static showLoginBox() {}
+  public showLoginBox() {
+    this.setState({
+      isLoginBox:true
+    })
+  }
+
+    //隐藏登录列表
+  static hideLoginBox() { }
+  public hideLoginBox() {
+    this.setState({
+      isLoginBox: false,
+    })
+    this.isLoginData();
+    //获取park list
+    this.dataService.getParks(this.setParks);
+
+  }
+  
+  // 模拟按钮，隐藏登录列表
+  static hideLoginBox2() { }
+  public hideLoginBox2() {
+    this.setState({
+      isLoginBox: false,
+    })
   }
 
     // 判断所属企业
@@ -254,17 +284,6 @@ class Index extends React.Component {
     })
   }
 
-  //隐藏登录列表
-  static hideLoginBox() { }
-  public hideLoginBox() {
-    this.setState({
-      isLoginBox: false,
-    })
-    this.isLoginData();
-    //获取park list
-    this.dataService.getParks(this.setParks);
-
-  }
 
   // 聚焦
   foucus() {
