@@ -2074,7 +2074,6 @@ define("applyPut", ["require", "exports", "react", "react-router-dom", "antd-mob
                     }
                     else if (item.endTime == "结束日期") {
                         alert("请填写结束日期");
-                        alert(postData);
                         postData = 0;
                     }
                     else {
@@ -5287,6 +5286,7 @@ define("enterpriseInformation", ["require", "exports", "react", "dataService", "
             let userid = sessionStorage.getItem("userid");
             let park_id = sessionStorage.getItem("park_id");
             let enterpriseId = sessionStorage.getItem("enterpriseId");
+            let sum = 1;
             console.log("bobo", this.state.elegant.length);
             let obj = {
                 "user_id": userid,
@@ -5307,17 +5307,26 @@ define("enterpriseInformation", ["require", "exports", "react", "dataService", "
             if (this.state.elegant.length == 0) {
                 obj.elegant = this.state.filesElegant;
             }
+            if (obj.elegant.length == 1) {
+                alert("请为企业风采，至少添加两张图片");
+                sum = 0;
+            }
             ;
             if (this.state.product.length == 0) {
                 obj.product = this.state.filesProduct;
+            }
+            if (obj.product.length == 1) {
+                alert("请为公司产品，至少添加两张图片");
+                sum = 0;
             }
             ;
             if (this.state.panorama.length == 0) {
                 obj.panorama = this.state.filesPanorama;
             }
-            ;
             console.log("objobjobj2222222", obj);
-            this.dataService.saveCompanyInfo(this.callBackSaveCompanyInfo.bind(this), obj);
+            if (sum == 1) {
+                this.dataService.saveCompanyInfo(this.callBackSaveCompanyInfo.bind(this), obj);
+            }
         }
         callBackSaveCompanyInfo(data) {
             console.log(data);

@@ -700,7 +700,7 @@ class Mien extends React.Component {
         <p className={this.state.urlNull} style={{ "color": "#333333", "text-align": "center", "font-size": "2.5rem" }}>暂无图片···</p>
         <div className={this.state.urlShow}>
           <WingBlank>
-            <Carousel className="space-carousel"
+            <Carousel className="space-carousel"  
               frameOverflow="visible"
               cellSpacing={10}
               slideWidth={0.8}
