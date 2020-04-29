@@ -322,6 +322,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
 
   sumbitSucceed(data) {
     alert(data);
+    window.history.back();
   }
 
 
