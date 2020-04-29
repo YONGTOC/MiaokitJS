@@ -1191,7 +1191,9 @@ class DataService {
       "company_name": obj.company,
       "phone": obj.phone,
       "park_id": sessionStorage.getItem("park_id"),
-      "role_id":  obj.role_id,
+     // "role_id":  obj.role_id,
+      //只能认证企业管理员
+      "role_id":  5,
       "pic_amount": "1",
       "pic": obj.pic,
         "bind_company": [
