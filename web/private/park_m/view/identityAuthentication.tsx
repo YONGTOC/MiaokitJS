@@ -277,8 +277,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
       "phone": this.state.phone,
       "park_id": this.state.park_id,
       //"role_id": this.state.role_id,
-      // 只能认证企业管理员
-      "role_id": 5,
+      "role_id": JSON.parse(sessionStorage.getItem("userInfos")).roles.role_id ,
       "pic_amount": "1",
       "pic1": this.state.pic1,
         "bind_company":

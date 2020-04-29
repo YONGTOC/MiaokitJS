@@ -685,7 +685,7 @@ class BookRoom extends React.Component {
         <div className={"foleBtn"} >
           <p className="companyGoHomeLeft" onClick={this.showInfos.bind(this, "List", "id-01")}>
             <i className="iconfont companyInfoicon">&#xe83b;</i>
-            <span>返回3</span>
+            <span>返回</span>
           </p>
           <p className="companyGoHomeRight">
             <i className={this.state.iconfont} style={{ "fontSize": "5rem", "color": "#C0C0C0" }} onClick={this.toggleFold.bind(this)} >&#xe849;</i>

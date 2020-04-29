@@ -1169,7 +1169,6 @@ class DataService {
   //44.(我的个人中心模块-身份认证)用户身份认证提交 
   public userAuthentication(pBack, obj) {
     console.log("用户身份认证提交 ", obj);
-    
     $.ajax({
       url: this.state.rooturl + '/api/userAuthentication?token=' + sessionStorage.getItem("token"),
      // data: obj,
@@ -1180,7 +1179,7 @@ class DataService {
       "phone": obj.phone,
       "park_id": sessionStorage.getItem("park_id"),
       // 只能认证企业管理员
-      "role_id": 5,
+      "role_id":  obj.role_id,
       "pic_amount": "1",
       "pic": obj.pic1,
         "bind_company": [
