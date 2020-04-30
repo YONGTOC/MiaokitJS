@@ -47,7 +47,7 @@ class ModificationAuthentication extends React.Component<{ history: any }> {
 
   }
 
-  // 修改用户名字 
+  // 修改用户名字
   modifyUserName() {
  
  
