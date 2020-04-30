@@ -1823,7 +1823,7 @@ define("dataService", ["require", "exports"], function (require, exports) {
             $.ajax({
                 url: this.state.rooturl + '/api/getMyStatistic',
                 data: {
-                    id: 1001,
+                    id: sessionStorage.getItem("park_id"),
                     token: sessionStorage.getItem("token")
                 },
                 type: "get",
@@ -8796,9 +8796,10 @@ define("informationChild", ["require", "exports", "react", "dataService", "css!.
             });
         }
         callBackTagContent(data) {
+            let datas = JSON.parse(data).response ? JSON.parse(data).response : [];
             let listArr = [];
             if (parseInt(sessionStorage.getItem("informationId")) === 2) {
-                JSON.parse(data).response.forEach(item => {
+                datas.forEach(item => {
                     let obj = { title: "", visitAmount: "", time: "", headimgurl: "", taga: "", tagb: "", contenta: "", contentb: "" };
                     obj.title = item.name;
                     obj.visitAmount = item.visit_amount;
@@ -8813,7 +8814,7 @@ define("informationChild", ["require", "exports", "react", "dataService", "css!.
                 this.setState({ listArr: listArr });
             }
             else if (parseInt(sessionStorage.getItem("informationId")) === 3) {
-                JSON.parse(data).response.forEach(item => {
+                datas.forEach(item => {
                     let obj = { title: "", visitAmount: "", time: "", headimgurl: "", taga: "", tagb: "", contenta: "", contentb: "" };
                     obj.title = item.title;
                     obj.visitAmount = item.visit_amount;
@@ -8828,8 +8829,7 @@ define("informationChild", ["require", "exports", "react", "dataService", "css!.
                 this.setState({ listArr: listArr });
             }
             else {
-                console.log("aaaaa", JSON.parse(data).response[0].content.split("<p>"));
-                this.setState({ listArr: JSON.parse(data).response ? JSON.parse(data).response : [] });
+                this.setState({ listArr: datas });
             }
         }
         foucus() {
@@ -8871,9 +8871,9 @@ define("informationChild", ["require", "exports", "react", "dataService", "css!.
                             React.createElement("div", { key: index, className: "information-child-List-child", onClick: e => this.goDetail(item.id) },
                                 React.createElement("div", { style: { fontSize: "42px", color: "#333333", width: "90%", margin: "auto", paddingTop: "30px" } }, item.name),
                                 React.createElement("div", { style: {
-                                        color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", display: "-webkit-box", webkitLineClamp: "3", overflow: "hidden",
-                                        webkitBoxOrient: "vertical", minHeight: "210px"
-                                    } }, item.content),
+                                        color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", overflow: "hidden", minHeight: "210px"
+                                    } },
+                                    React.createElement("div", { style: { float: "left", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "3", overflow: "hidden", height: "220px" }, dangerouslySetInnerHTML: { __html: item.content } })),
                                 React.createElement("div", { style: { color: "#949494", fontSize: "34px", margin: "30px 0 0 50px" } },
                                     React.createElement("div", { style: { float: "left" } },
                                         item.visit_amount,
@@ -9051,9 +9051,9 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
                             React.createElement("div", { key: index, className: "information-child-List-child", onClick: e => this.goDetail(item.id) },
                                 React.createElement("div", { style: { fontSize: "42px", color: "#333333", width: "90%", margin: "auto", paddingTop: "30px" } }, item.name),
                                 React.createElement("div", { style: {
-                                        color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", display: "-webkit-box", webkitLineClamp: "3", overflow: "hidden",
-                                        webkitBoxOrient: "vertical", minHeight: "210px"
-                                    } }, item.content),
+                                        color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", minHeight: "210px", overflow: "hidden",
+                                    } },
+                                    React.createElement("div", { style: { float: "left", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "3", overflow: "hidden", height: "220px" }, dangerouslySetInnerHTML: { __html: item.content } })),
                                 React.createElement("div", { style: { color: "#949494", fontSize: "34px", margin: "30px 0 0 50px" } },
                                     React.createElement("div", { style: { float: "left" } },
                                         item.visit_amount,
@@ -9067,10 +9067,12 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
                                         React.createElement("img", { src: item.headimgurl, style: { width: "100%", height: "100%" } })),
                                     React.createElement("div", { style: { float: "left", fontSize: "45px", margin: "25px 0 0 50px", fontWeight: "600", color: "#333333", width: "60%" } },
                                         React.createElement("div", null, item.title),
-                                        React.createElement("div", { style: { color: "#949494", fontSize: "40px", fontWeight: "400", marginTop: "85px", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" } },
-                                            item.taga,
-                                            "\uFF1A",
-                                            item.contenta),
+                                        React.createElement("div", { style: { color: "#949494", fontSize: "40px", fontWeight: "400", marginTop: "85px", overflow: "hidden" } },
+                                            React.createElement("div", { style: { float: "left", width: "35%" } },
+                                                " ",
+                                                item.taga,
+                                                "\uFF1A"),
+                                            React.createElement("div", { style: { float: "left", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden", width: "65%", height: "50px" }, dangerouslySetInnerHTML: { __html: item.contenta } })),
                                         React.createElement("div", { style: { color: "#949494", fontSize: "40px", fontWeight: "400", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" } },
                                             item.tagb,
                                             "\uFF1A",
@@ -9095,7 +9097,7 @@ define("informationDetail", ["require", "exports", "react", "dataService", "reac
         constructor() {
             super(...arguments);
             this.state = {
-                data: { name: "", start_time: "", end_time: "", position: "", sign_end_time: "", contact: "", contact_tel: "", content: "", fee: "", headimgurl: "", visit_amount: "", time: "" },
+                data: { name: "", start_time: "", end_time: "", position: "", sign_end_time: "", contact: "", contact_tel: "", content: [], fee: "", headimgurl: "", visit_amount: "", time: "" },
                 parkArr: [
                     {
                         "id": "1009",
@@ -9130,7 +9132,14 @@ define("informationDetail", ["require", "exports", "react", "dataService", "reac
             }
         }
         callBack(data) {
-            this.setState({ data: JSON.parse(data).response });
+            let datas = JSON.parse(data).response;
+            let array = datas.content.split("<p>");
+            for (let j = 0; j < array.length; j++) {
+                array[j] = array[j].replace("</p>", "");
+                array[j] = array[j].replace("<br>", "");
+            }
+            datas.content = array;
+            this.setState({ data: datas });
         }
         goBack() {
             this.props.history.goBack();
@@ -9166,7 +9175,9 @@ define("informationDetail", ["require", "exports", "react", "dataService", "reac
                     React.createElement("div", { style: { border: "2px solid #F2F2F2", marginTop: "25px" } }),
                     React.createElement("div", { style: { fontSize: "40px", color: "#333333", width: "90%", margin: "30px auto" } },
                         React.createElement("p", { style: { fontSize: "40px" } }, "\u5404\u76F8\u5173\u5355\u4F4D\uFF1A"),
-                        this.state.data.content),
+                        this.state.data.content.map((it, ind) => {
+                            return (React.createElement("p", { key: ind }, it));
+                        })),
                     React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("div", { style: { height: "50px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "36px 30px 0 50px" } }),
                         React.createElement("div", { style: { color: "#333333", fontSize: "40px", fontWeight: "600", lineHeight: "120px" } }, "\u670D\u52A1\u4FE1\u606F")),
@@ -9265,7 +9276,7 @@ define("informationDetails", ["require", "exports", "react", "dataService", "rea
         constructor() {
             super(...arguments);
             this.state = {
-                data: { id: 0, name: "", start_time: "", end_time: "", position: "", sign_end_time: "", contact: "", contact_tel: "", content: "", fee: "", headimgurl: "", visit_amount: "", time: "", fees: "", mobile: "", title: "" },
+                data: { id: 0, name: "", start_time: "", end_time: "", position: "", sign_end_time: "", contact: "", contact_tel: "", content: [], fee: "", headimgurl: "", visit_amount: "", time: "", fees: "", mobile: "", title: "" },
                 parkArr: [
                     {
                         "id": "1009",
@@ -9340,7 +9351,7 @@ define("informationDetails", ["require", "exports", "react", "dataService", "rea
                     React.createElement("div", { style: { border: "2px solid #F2F2F2", marginTop: "25px" } }),
                     React.createElement("div", { style: { fontSize: "40px", color: "#333333", width: "90%", margin: "30px auto" } },
                         React.createElement("p", { style: { fontSize: "40px" } }, "\u5404\u76F8\u5173\u5355\u4F4D\uFF1A"),
-                        this.state.data.content),
+                        React.createElement("span", { dangerouslySetInnerHTML: { __html: this.state.data.content } })),
                     React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("div", { style: { height: "50px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "36px 30px 0 50px" } }),
                         React.createElement("div", { style: { color: "#333333", fontSize: "40px", fontWeight: "600", lineHeight: "120px" } }, "\u670D\u52A1\u4FE1\u606F")),
@@ -9401,7 +9412,8 @@ define("informationDetails", ["require", "exports", "react", "dataService", "rea
                     React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("div", { style: { height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" } }),
                         React.createElement("div", { style: { color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px" } }, "\u6D3B\u52A8\u8BE6\u60C5")),
-                    React.createElement("div", { style: { width: "90%", margin: "auto", padding: "30px 0 200px 0" } }, this.state.data.content),
+                    React.createElement("div", { style: { width: "90%", margin: "auto", padding: "30px 0 200px 0" } },
+                        React.createElement("span", { dangerouslySetInnerHTML: { __html: this.state.data.content } })),
                     React.createElement("div", { style: {
                             backgroundColor: "#0B8BF0", width: "100%", height: "150px", fontSize: "50px", color: "#ffffff", lineHeight: "150px",
                             textAlign: "center", position: "fixed", bottom: "0px"
@@ -9419,9 +9431,10 @@ define("informationDetails", ["require", "exports", "react", "dataService", "rea
                     React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("div", { style: { height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" } }),
                         React.createElement("div", { style: { color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px" } }, "\u670D\u52A1\u4FE1\u606F")),
-                    React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", overflow: "hidden" } },
+                    React.createElement("div", { style: { width: "100%", minHeight: "120px", borderBottom: "2px solid #F2F2F2", overflow: "hidden" } },
                         React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px", lineHeight: "120px" } }, "\u670D\u52A1\u5185\u5BB9"),
-                        React.createElement("div", { style: { float: "left", height: "100%", width: "60%" } }, this.state.data.content)),
+                        React.createElement("div", { style: { float: "left", height: "100%", width: "60%" } },
+                            React.createElement("div", { dangerouslySetInnerHTML: { __html: this.state.data.content } }))),
                     React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "5px solid #F2F2F2", lineHeight: "120px" } },
                         React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u8054\u7CFB\u7535\u8BDD"),
                         React.createElement("div", { style: { float: "left" } }, this.state.data.mobile)),
@@ -10414,6 +10427,12 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         componentWillMount() {
             this.dataService.getUserInfo(this.callBackGetUserInfo.bind(this));
             curtainHide();
+            let data = sessionStorage.getItem("userInfos");
+            let dataObj = JSON.parse(data);
+            if (dataObj) {
+                console.log("77777777777771", dataObj.name);
+                this.dataService.getParks(this.setParks);
+            }
         }
         callBackGetUserInfo(data) {
             data = JSON.parse(data);
@@ -10823,6 +10842,20 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             this.props.history.push('/parking');
             parking_2.default.inParkingList(data);
         }
+        selfLogin(style) {
+            console.log("selflogin", style);
+            if (style == "park") {
+                LoginTest.parkLogin();
+            }
+            else if (style == "company") {
+                LoginTest.companyLogin();
+            }
+            else if (style == "normal") {
+                LoginTest.ptLogin();
+            }
+            else {
+            }
+        }
     }
     Index.g_pIns = null;
     class IsCompanys extends React.Component {
@@ -10874,6 +10907,9 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
                 username: "",
                 password: "",
             };
+            LoginTest.parkLogin = this.parkLogin.bind(this);
+            LoginTest.companyLogin = this.companyLogin.bind(this);
+            LoginTest.ptLogin = this.ptLogin.bind(this);
         }
         componentDidMount() {
             console.log(44333334, this.state);
@@ -10886,13 +10922,18 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             console.log(this.state.username, this.state.password);
             this.dataService.login("admin", "admin", this.hideLogin);
         }
+        static parkLogin() { }
+        ;
         parkLogin() {
             this.dataService.login("twl01", "123456", this.hideLogin);
         }
+        static companyLogin() { }
+        ;
         companyLogin() {
             console.log(this.state.username, this.state.password);
             this.dataService.login("twl02", "123456", this.hideLogin);
         }
+        static ptLogin() { }
         ptLogin() {
             console.log(this.state.username, this.state.password);
             this.dataService.login("twl03", "123456", this.hideLogin);

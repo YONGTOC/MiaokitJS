@@ -174,10 +174,9 @@ export default class InformationChilds extends React.Component {
                     {item.name}
                   </div>
                   <div style={{
-                    color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", display: "-webkit-box", webkitLineClamp: "3", overflow: "hidden",
-                    webkitBoxOrient: "vertical", minHeight: "210px"
+                    color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", minHeight: "210px", overflow: "hidden",
                   }}>
-                    {item.content}
+                    <div style={{ float: "left", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "3", overflow: "hidden", height: "220px" }} dangerouslySetInnerHTML={{ __html: item.content }}></div>
                   </div>
                   <div style={{ color: "#949494", fontSize: "34px", margin: "30px 0 0 50px" }}>
                     <div style={{ float: "left" }}>{item.visit_amount}次浏览</div>
@@ -191,7 +190,10 @@ export default class InformationChilds extends React.Component {
                     </div>
                     <div style={{ float: "left", fontSize: "45px", margin: "25px 0 0 50px", fontWeight: "600", color: "#333333",width: "60%" }}>
                       <div>{item.title}</div>
-                      <div style={{ color: "#949494", fontSize: "40px", fontWeight: "400", marginTop: "85px", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" }}>{item.taga}：{item.contenta}</div>
+                      <div style={{ color: "#949494", fontSize: "40px", fontWeight: "400", marginTop: "85px", overflow: "hidden" }}>
+                        <div style={{float: "left", width: "35%"}}> {item.taga}：</div>
+                        <div style={{ float: "left", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden", width: "65%", height: "50px" }} dangerouslySetInnerHTML={{ __html: item.contenta }}></div>
+                      </div>
                       <div style={{ color: "#949494", fontSize: "40px", fontWeight: "400", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" }}>{item.tagb}：{item.contentb}</div>
                     </div>
                   </div>

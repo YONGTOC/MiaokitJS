@@ -68,9 +68,10 @@ export default class InformationChild extends React.Component {
   }
 
   callBackTagContent(data) {
+    let datas = JSON.parse(data).response ? JSON.parse(data).response : []
     let listArr = []
     if (parseInt(sessionStorage.getItem("informationId")) === 2) {
-      JSON.parse(data).response.forEach(item => {
+      datas.forEach(item => {
         let obj = { title: "", visitAmount: "", time: "", headimgurl: "", taga: "", tagb: "", contenta: "", contentb: "" }
         obj.title = item.name
         obj.visitAmount = item.visit_amount
@@ -84,7 +85,7 @@ export default class InformationChild extends React.Component {
       })
       this.setState({ listArr: listArr })
     } else if (parseInt(sessionStorage.getItem("informationId")) === 3) {
-      JSON.parse(data).response.forEach(item => {
+      datas.forEach(item => {
         let obj = { title: "", visitAmount: "", time: "", headimgurl: "", taga: "", tagb: "", contenta: "", contentb: "" }
         obj.title = item.title
         obj.visitAmount = item.visit_amount
@@ -98,9 +99,7 @@ export default class InformationChild extends React.Component {
       })
       this.setState({ listArr: listArr })
     } else {
-      console.log("aaaaa", JSON.parse(data).response[0].content.split("<p>"))
-
-      this.setState({ listArr: JSON.parse(data).response ? JSON.parse(data).response : [] })
+      this.setState({ listArr: datas })
     }
   }
 
@@ -167,9 +166,9 @@ export default class InformationChild extends React.Component {
                   {item.name}
                 </div>
                 <div style={{
-                  color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", display: "-webkit-box", webkitLineClamp: "3", overflow: "hidden",
-                  webkitBoxOrient: "vertical",  minHeight: "210px" }}>
-                  {item.content}
+                  color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", overflow: "hidden", minHeight: "210px"
+                  }}>
+                    <div style={{ float: "left", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "3", overflow: "hidden", height: "220px" }} dangerouslySetInnerHTML={{ __html: item.content }}></div>
                 </div>
                 <div style={{ color: "#949494", fontSize: "34px", margin: "30px 0 0 50px" }}>
                   <div style={{ float: "left" }}>{item.visit_amount}次浏览</div>

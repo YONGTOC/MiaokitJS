@@ -1583,7 +1583,7 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/getMyStatistic',
       data: {
-        id: 1001,
+        id: sessionStorage.getItem("park_id"),
         token: sessionStorage.getItem("token")
       },
       type: "get",
