@@ -1232,12 +1232,11 @@ class DataService {
     })
   }
 
-  // 48.(我的个人中心模块-授权的工单类型)获取授权工单类型类型列表
-  public getMyAuthorityWorkType(pBack, id) {
+  // 48.3(我的个人中心模块-授权的工单类型)获取工单类型列表
+  public getWorkType(pBack) {
     $.ajax({
-      url: this.state.rooturl + '/api/getMyAuthorityWorkType',
+      url: this.state.rooturl + '/api/getWorkType',
       data: {
-        id: id,
         token: sessionStorage.getItem("token")
       },
       type: "get",

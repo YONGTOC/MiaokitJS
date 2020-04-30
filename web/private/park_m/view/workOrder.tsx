@@ -27,8 +27,8 @@ class WorkOrder extends React.Component<{ history: any }>{
   public dataService: DataService = new DataService()
 
   componentDidMount() {
-    this.dataService.getMyAuthorityWorkType(this.callBackGetMyAuthorityWorkType.bind(this), 8)
-    this.dataService.getMyAuthorityStateType(this.callBackGetMyAuthorityStateType.bind(this), 1)
+    this.dataService.getWorkType(this.callBackGetMyAuthorityWorkType.bind(this))
+    //this.dataService.getMyAuthorityStateType(this.callBackGetMyAuthorityStateType.bind(this), 1)
     this.getMyWork()
   }
 
@@ -40,9 +40,9 @@ class WorkOrder extends React.Component<{ history: any }>{
     this.setState({ tagList: tagList })
   }
 
-  callBackGetMyAuthorityStateType(data) {
-    console.log(data)
-  }
+  //callBackGetMyAuthorityStateType(data) {
+  //  console.log(data)
+  //}
 
   callBackGetMyWork(data) {
     if (data.response) {

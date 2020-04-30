@@ -1514,11 +1514,10 @@ define("dataService", ["require", "exports"], function (require, exports) {
                 }
             });
         }
-        getMyAuthorityWorkType(pBack, id) {
+        getWorkType(pBack) {
             $.ajax({
-                url: this.state.rooturl + '/api/getMyAuthorityWorkType',
+                url: this.state.rooturl + '/api/getWorkType',
                 data: {
-                    id: id,
                     token: sessionStorage.getItem("token")
                 },
                 type: "get",
@@ -7802,8 +7801,7 @@ define("workOrder", ["require", "exports", "react", "dataService", "css!./styles
             this.dataService = new dataService_16.default();
         }
         componentDidMount() {
-            this.dataService.getMyAuthorityWorkType(this.callBackGetMyAuthorityWorkType.bind(this), 8);
-            this.dataService.getMyAuthorityStateType(this.callBackGetMyAuthorityStateType.bind(this), 1);
+            this.dataService.getWorkType(this.callBackGetMyAuthorityWorkType.bind(this));
             this.getMyWork();
         }
         callBackGetMyAuthorityWorkType(data) {
@@ -7812,9 +7810,6 @@ define("workOrder", ["require", "exports", "react", "dataService", "css!./styles
                 tagList.push(item);
             });
             this.setState({ tagList: tagList });
-        }
-        callBackGetMyAuthorityStateType(data) {
-            console.log(data);
         }
         callBackGetMyWork(data) {
             if (data.response) {
