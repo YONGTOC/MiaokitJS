@@ -168,7 +168,7 @@ export default class InformationChild extends React.Component {
                 <div style={{
                   color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", overflow: "hidden", minHeight: "210px"
                   }}>
-                    <div style={{ float: "left", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "3", overflow: "hidden", height: "220px" }} dangerouslySetInnerHTML={{ __html: item.content }}></div>
+                    <div className="inner-html-c" dangerouslySetInnerHTML={{ __html: item.content }}></div>
                 </div>
                 <div style={{ color: "#949494", fontSize: "34px", margin: "30px 0 0 50px" }}>
                   <div style={{ float: "left" }}>{item.visit_amount}次浏览</div>

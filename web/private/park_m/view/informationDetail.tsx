@@ -109,7 +109,7 @@ export default class informationDetail extends React.Component {
               <p style={{ fontSize: "40px" }}>各相关单位：</p>
               {this.state.data.content.map((it, ind) => {
                 return (
-                  <p key={ind}>
+                  <p key={ind} style={{fontSize: "36px"}}>
                     {it}
                   </p>
                 )

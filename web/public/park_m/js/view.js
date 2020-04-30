@@ -647,6 +647,9 @@ define("dataService", ["require", "exports"], function (require, exports) {
                     console.log(typeof data);
                     let dataJ = JSON.parse(data);
                     console.log("ajax", dataJ);
+                    if (dataJ.err_msg !== "上传成功!") {
+                        alert(dataJ.err_msg);
+                    }
                     if (dataJ.return_code == 100) {
                         pBack(dataJ.response);
                     }
@@ -4274,7 +4277,7 @@ define("identityAuthentication", ["require", "exports", "react", "dataService", 
                 companyUL: [],
                 company_id: "",
                 company_name: "",
-                companyIndexof: 0,
+                companyIndexof: -1,
                 roleTypeBox: "hide",
                 roleTypeUL: [],
                 roleTypeIndexof: 0,
@@ -5908,7 +5911,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                 enterpriseId: "",
                 companyBox: "hide",
                 companyUL: [],
-                companyIndexof: 0,
+                companyIndexof: -1,
                 company_id_in: "",
                 company_name_in: "",
                 company_id: "",
@@ -5926,11 +5929,13 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
             };
             this.dataService.getMyMsgInfo(this.callBackGetMyMsgInfo.bind(this), "");
             this.dataService.getMyWork(this.callBackGetMyWork.bind(this), obj);
+            let data = sessionStorage.getItem("userInfos");
+            let dataObj = JSON.parse(data);
             this.setState({
                 userInfo: JSON.parse(sessionStorage.getItem("userInfos")),
                 pathname: this.props.history.location.pathname,
-                enterprise: sessionStorage.getItem("enterprise"),
-                enterpriseId: sessionStorage.getItem("enterpriseId"),
+                enterprise: dataObj.enterprise,
+                enterpriseId: dataObj.enterpriseId,
             });
         }
         callBackGetMyMsgInfo(data) {
@@ -5954,7 +5959,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "da
                     this.dataService.modifyUserInfo(this.callBackPhoneNew.bind(this), this.state.userInfo.name, phoneNew, this.state.enterpriseId);
                 }
                 else {
-                    alert("手机号码不正确，固话请添加区号");
+                    alert("手机号码不正确");
                 }
             }
         }
@@ -6248,8 +6253,8 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
             else {
                 this.setState({
                     companyUL: [],
-                    company: sessionStorage.getItem("enterprise"),
-                    company_id: sessionStorage.getItem("enterpriseId"),
+                    company: dataObj.enterprise,
+                    company_id: dataObj.enterpriseId,
                 });
             }
         }
@@ -8121,11 +8126,10 @@ define("modificationAuthentication", ["require", "exports", "react", "react-rout
             });
         }
         modifyUserName() {
-            var userNameNew = prompt("请输入新的用户名", "");
-            if (userNameNew != null && userNameNew != "") {
-                console.log("userNameNew", userNameNew);
+            if (this.state.userName != null && this.state.userName != "") {
+                console.log("userNameNew", this.state.userName);
                 let userInfos = JSON.parse(sessionStorage.getItem("userInfos"));
-                this.dataService.modifyUserInfo(this.callBackModifyUserName.bind(this), userNameNew, userInfos.phone, sessionStorage.getItem("enterpriseId"));
+                this.dataService.modifyUserInfo(this.callBackModifyUserName.bind(this), this.state.userName, userInfos.phone, sessionStorage.getItem("enterpriseId"));
             }
         }
         callBackModifyUserName(data) {
@@ -8873,7 +8877,7 @@ define("informationChild", ["require", "exports", "react", "dataService", "css!.
                                 React.createElement("div", { style: {
                                         color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", overflow: "hidden", minHeight: "210px"
                                     } },
-                                    React.createElement("div", { style: { float: "left", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "3", overflow: "hidden", height: "220px" }, dangerouslySetInnerHTML: { __html: item.content } })),
+                                    React.createElement("div", { className: "inner-html-c", dangerouslySetInnerHTML: { __html: item.content } })),
                                 React.createElement("div", { style: { color: "#949494", fontSize: "34px", margin: "30px 0 0 50px" } },
                                     React.createElement("div", { style: { float: "left" } },
                                         item.visit_amount,
@@ -9053,7 +9057,7 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
                                 React.createElement("div", { style: {
                                         color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", minHeight: "210px", overflow: "hidden",
                                     } },
-                                    React.createElement("div", { style: { float: "left", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "3", overflow: "hidden", height: "220px" }, dangerouslySetInnerHTML: { __html: item.content } })),
+                                    React.createElement("div", { className: "inner-html-c", dangerouslySetInnerHTML: { __html: item.content } })),
                                 React.createElement("div", { style: { color: "#949494", fontSize: "34px", margin: "30px 0 0 50px" } },
                                     React.createElement("div", { style: { float: "left" } },
                                         item.visit_amount,
@@ -9072,7 +9076,7 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
                                                 " ",
                                                 item.taga,
                                                 "\uFF1A"),
-                                            React.createElement("div", { style: { float: "left", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden", width: "65%", height: "50px" }, dangerouslySetInnerHTML: { __html: item.contenta } })),
+                                            React.createElement("div", { className: "c-p", style: { float: "left", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden", width: "65%", height: "50px" }, dangerouslySetInnerHTML: { __html: item.contenta } })),
                                         React.createElement("div", { style: { color: "#949494", fontSize: "40px", fontWeight: "400", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" } },
                                             item.tagb,
                                             "\uFF1A",
@@ -9176,7 +9180,7 @@ define("informationDetail", ["require", "exports", "react", "dataService", "reac
                     React.createElement("div", { style: { fontSize: "40px", color: "#333333", width: "90%", margin: "30px auto" } },
                         React.createElement("p", { style: { fontSize: "40px" } }, "\u5404\u76F8\u5173\u5355\u4F4D\uFF1A"),
                         this.state.data.content.map((it, ind) => {
-                            return (React.createElement("p", { key: ind }, it));
+                            return (React.createElement("p", { key: ind, style: { fontSize: "36px" } }, it));
                         })),
                     React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("div", { style: { height: "50px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "36px 30px 0 50px" } }),
@@ -9351,7 +9355,7 @@ define("informationDetails", ["require", "exports", "react", "dataService", "rea
                     React.createElement("div", { style: { border: "2px solid #F2F2F2", marginTop: "25px" } }),
                     React.createElement("div", { style: { fontSize: "40px", color: "#333333", width: "90%", margin: "30px auto" } },
                         React.createElement("p", { style: { fontSize: "40px" } }, "\u5404\u76F8\u5173\u5355\u4F4D\uFF1A"),
-                        React.createElement("span", { dangerouslySetInnerHTML: { __html: this.state.data.content } })),
+                        React.createElement("span", { className: "c-p", dangerouslySetInnerHTML: { __html: this.state.data.content } })),
                     React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" } },
                         React.createElement("div", { style: { height: "50px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "36px 30px 0 50px" } }),
                         React.createElement("div", { style: { color: "#333333", fontSize: "40px", fontWeight: "600", lineHeight: "120px" } }, "\u670D\u52A1\u4FE1\u606F")),
@@ -9413,7 +9417,7 @@ define("informationDetails", ["require", "exports", "react", "dataService", "rea
                         React.createElement("div", { style: { height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" } }),
                         React.createElement("div", { style: { color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px" } }, "\u6D3B\u52A8\u8BE6\u60C5")),
                     React.createElement("div", { style: { width: "90%", margin: "auto", padding: "30px 0 200px 0" } },
-                        React.createElement("span", { dangerouslySetInnerHTML: { __html: this.state.data.content } })),
+                        React.createElement("span", { className: "c-p", dangerouslySetInnerHTML: { __html: this.state.data.content } })),
                     React.createElement("div", { style: {
                             backgroundColor: "#0B8BF0", width: "100%", height: "150px", fontSize: "50px", color: "#ffffff", lineHeight: "150px",
                             textAlign: "center", position: "fixed", bottom: "0px"
@@ -9434,7 +9438,7 @@ define("informationDetails", ["require", "exports", "react", "dataService", "rea
                     React.createElement("div", { style: { width: "100%", minHeight: "120px", borderBottom: "2px solid #F2F2F2", overflow: "hidden" } },
                         React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px", lineHeight: "120px" } }, "\u670D\u52A1\u5185\u5BB9"),
                         React.createElement("div", { style: { float: "left", height: "100%", width: "60%" } },
-                            React.createElement("div", { dangerouslySetInnerHTML: { __html: this.state.data.content } }))),
+                            React.createElement("div", { className: "c-p", dangerouslySetInnerHTML: { __html: this.state.data.content } }))),
                     React.createElement("div", { style: { width: "100%", height: "120px", borderBottom: "5px solid #F2F2F2", lineHeight: "120px" } },
                         React.createElement("div", { style: { float: "left", height: "100%", width: "30%", marginLeft: "50px" } }, "\u8054\u7CFB\u7535\u8BDD"),
                         React.createElement("div", { style: { float: "left" } }, this.state.data.mobile)),

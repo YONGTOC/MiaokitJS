@@ -73,3 +73,16 @@
   font-weight: 600;
   border-bottom: 5px solid #0B8BF0;
 }
+
+.inner-html-c {
+  float: left;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  height: 220px;
+}
+
+.inner-html-c p {
+  font-size: 36px;
+}

@@ -103,7 +103,7 @@ export default class informationDetail extends React.Component {
             <div style={{ border: "2px solid #F2F2F2", marginTop: "25px" }}></div>
             <div style={{ fontSize: "40px", color: "#333333", width: "90%", margin: "30px auto" }}>
               <p style={{ fontSize: "40px" }}>各相关单位：</p>
-              <span dangerouslySetInnerHTML={{ __html: this.state.data.content}}></span>
+              <span className="c-p" dangerouslySetInnerHTML={{ __html: this.state.data.content }}></span>
             </div>
             <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" }}>
               <div style={{ height: "50px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "36px 30px 0 50px" }}></div>
@@ -189,7 +189,7 @@ export default class informationDetail extends React.Component {
               <div style={{ color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px" }}>活动详情</div>
             </div>
             <div style={{ width: "90%", margin: "auto", padding: "30px 0 200px 0" }}>
-              <span dangerouslySetInnerHTML={{ __html: this.state.data.content}}></span>
+              <span className="c-p" dangerouslySetInnerHTML={{ __html: this.state.data.content}}></span>
             </div>
             <div style={{
               backgroundColor: "#0B8BF0", width: "100%", height: "150px", fontSize: "50px", color: "#ffffff", lineHeight: "150px",
@@ -219,7 +219,7 @@ export default class informationDetail extends React.Component {
             <div style={{ width: "100%", minHeight: "120px", borderBottom: "2px solid #F2F2F2", overflow: "hidden" }}>
               <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px", lineHeight: "120px" }}>服务内容</div>
                 <div style={{ float: "left", height: "100%", width: "60%" }}>
-                  <div dangerouslySetInnerHTML={{ __html: this.state.data.content }}></div>
+                  <div className="c-p" dangerouslySetInnerHTML={{ __html: this.state.data.content }}></div>
                 </div>
             </div>
             <div style={{ width: "100%", height: "120px", borderBottom: "5px solid #F2F2F2", lineHeight: "120px" }}>
