@@ -62,7 +62,6 @@ class PersonalCenter extends React.Component {
   public dataService: DataService = new DataService()
 
   componentDidMount() {
-    //this.dataService.getRoleType(this.callBackGetRoleType.bind(this))
     let obj = {
       id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
       work_type: "",
@@ -85,12 +84,6 @@ class PersonalCenter extends React.Component {
 
   callBackGetMyWork(data) {
     this.setState({ workOrderLength: data.response ? data.response.length : 0 })
-  }
-
-  callBackGetUserInfo(data) {
-    console.log("userInfoss", data)
-    this.setState({ userInfo: JSON.parse(data) })
-    sessionStorage.setItem("userInfo", this.state.userInfo.roles.role_name)
   }
 
   callBackGetRoleType(data) {

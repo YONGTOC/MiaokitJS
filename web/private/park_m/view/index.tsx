@@ -187,6 +187,8 @@ class Index extends React.Component {
   }
 
   componentWillMount() {
+    this.dataService.getUserInfo(this.callBackGetUserInfo.bind(this))
+
    // this.dataService.login(this.isLoginData);
 
 
@@ -215,6 +217,20 @@ class Index extends React.Component {
 
     curtainHide();
 
+  }
+
+  callBackGetUserInfo(data) {
+    console.log("userInfos", data)
+    let userInfo = {
+      userId: data.id, name: data.name, phone: data.phone, avatar: data.avatar, enterprise: data.enterprise, enterpriseId: data.enterprises.length > 0 ? data.enterprises[0].id : "",
+      roles: {
+        role_id: data.roles[0].role_id, role_name: data.roles[0].role_name
+      },
+      enterprises: data.enterprises,
+    }
+    sessionStorage.setItem("token", data.token);
+    sessionStorage.setItem("userInfos", JSON.stringify(userInfo));
+    this.dataService.getParks(this.setParks);
   }
 
   //显示登录框
