@@ -49,14 +49,13 @@ class ModificationAuthentication extends React.Component<{ history: any }> {
 
   // 修改用户名字
   modifyUserName() {
-    //this.dataService.modifyUserName(this.callBackModifyUserName.bind(this),
-    //  this.state.userName, this.state.phone, this.state.company_id)
-    var userNameNew = prompt("请输入新的用户名", "")
-    if (userNameNew != null && userNameNew != "") {
-      console.log("userNameNew", userNameNew)  
+ 
+ 
+    if (this.state.userName != null && this.state.userName  != "") {
+      console.log("userNameNew", this.state.userName )  
       let userInfos = JSON.parse(sessionStorage.getItem("userInfos"));
         this.dataService.modifyUserInfo(this.callBackModifyUserName.bind(this),
-           userNameNew , userInfos.phone, sessionStorage.getItem("enterpriseId") )
+           this.state.userName  , userInfos.phone, sessionStorage.getItem("enterpriseId") )
     }
 
 

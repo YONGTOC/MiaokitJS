@@ -51,6 +51,9 @@ class DataService {
         console.log(typeof data);
         let dataJ = JSON.parse(data);
         console.log("ajax", dataJ);
+        if (dataJ.err_msg !=="上传成功!") {
+            alert(dataJ.err_msg);
+        }
         if (dataJ.return_code == 100) {
           pBack(dataJ.response);
         }

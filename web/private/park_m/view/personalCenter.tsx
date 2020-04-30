@@ -50,7 +50,7 @@ class PersonalCenter extends React.Component {
         // 公司选择
     companyBox: "hide",
     companyUL: [],
-    companyIndexof: 0,
+    companyIndexof: -1,
     company_id_in: "",
     company_name_in: "",
     company_id: "",
@@ -70,11 +70,13 @@ class PersonalCenter extends React.Component {
     this.dataService.getMyMsgInfo(this.callBackGetMyMsgInfo.bind(this), "")
     this.dataService.getMyWork(this.callBackGetMyWork.bind(this), obj)
 
+       let data = sessionStorage.getItem("userInfos");
+    let dataObj = JSON.parse(data)
     this.setState({
       userInfo: JSON.parse(sessionStorage.getItem("userInfos")),
       pathname: this.props.history.location.pathname,
-      enterprise: sessionStorage.getItem("enterprise"),
-      enterpriseId: sessionStorage.getItem("enterpriseId"),
+      enterprise:dataObj.enterprise,
+      enterpriseId: dataObj.enterpriseId,
     })
   }
 
@@ -107,7 +109,7 @@ class PersonalCenter extends React.Component {
         this.dataService.modifyUserInfo(this.callBackPhoneNew.bind(this),
           this.state.userInfo.name, phoneNew, this.state.enterpriseId )
       } else {
-           alert("手机号码不正确，固话请添加区号")
+           alert("手机号码不正确")
       }
     }
   }

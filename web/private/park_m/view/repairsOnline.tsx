@@ -23,6 +23,7 @@ class RepairsOnline extends React.Component<{ history: any }>{
     //console.log("--------", contact, phone, staff_id)
     let data = sessionStorage.getItem("userInfos");
     let dataObj = JSON.parse(data)
+
     this.setState({
       contact: dataObj.name,
       phone: dataObj.phone,
@@ -41,8 +42,9 @@ class RepairsOnline extends React.Component<{ history: any }>{
     } else {
       this.setState({
         companyUL:[],
-        company: sessionStorage.getItem("enterprise") ,
-        company_id:sessionStorage.getItem("enterpriseId") ,
+        company: dataObj.enterprise, 
+        company_id: dataObj.enterpriseId,
+
       })
     }
 

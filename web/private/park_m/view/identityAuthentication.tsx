@@ -22,7 +22,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     companyUL: [],
     company_id: "",
     company_name: "",
-    companyIndexof: 0,
+    companyIndexof: -1,
       // 身份选择，废弃
     roleTypeBox: "hide",
     roleTypeUL: [],
