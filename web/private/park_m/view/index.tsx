@@ -220,6 +220,7 @@ class Index extends React.Component {
   }
 
   callBackGetUserInfo(data) {
+    data = JSON.parse(data)
     console.log("userInfos", data)
     let userInfo = {
       userId: data.id, name: data.name, phone: data.phone, avatar: data.avatar, enterprise: data.enterprise, enterpriseId: data.enterprises.length > 0 ? data.enterprises[0].id : "",

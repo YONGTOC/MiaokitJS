@@ -8833,6 +8833,7 @@ define("informationChild", ["require", "exports", "react", "dataService", "css!.
                 this.setState({ listArr: listArr });
             }
             else {
+                console.log("aaaaa", JSON.parse(data).response[0].content.split("<p>"));
                 this.setState({ listArr: JSON.parse(data).response ? JSON.parse(data).response : [] });
             }
         }
@@ -10420,6 +10421,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
             curtainHide();
         }
         callBackGetUserInfo(data) {
+            data = JSON.parse(data);
             console.log("userInfos", data);
             let userInfo = {
                 userId: data.id, name: data.name, phone: data.phone, avatar: data.avatar, enterprise: data.enterprise, enterpriseId: data.enterprises.length > 0 ? data.enterprises[0].id : "",

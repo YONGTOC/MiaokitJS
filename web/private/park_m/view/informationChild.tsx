@@ -98,6 +98,8 @@ export default class InformationChild extends React.Component {
       })
       this.setState({ listArr: listArr })
     } else {
+      console.log("aaaaa", JSON.parse(data).response[0].content.split("<p>"))
+
       this.setState({ listArr: JSON.parse(data).response ? JSON.parse(data).response : [] })
     }
   }
