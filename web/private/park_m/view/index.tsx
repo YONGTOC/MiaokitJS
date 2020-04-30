@@ -217,6 +217,14 @@ class Index extends React.Component {
 
     curtainHide();
 
+        let data = sessionStorage.getItem("userInfos");
+    let dataObj = JSON.parse(data);
+  
+    if (dataObj) {
+      console.log("77777777777771", dataObj.name)
+      this.dataService.getParks(this.setParks);
+    }
+
   }
 
   callBackGetUserInfo(data) {
@@ -935,6 +943,20 @@ class Index extends React.Component {
     Parking.inParkingList(data);
   }
 
+      //自动登录
+  public selfLogin(style) {
+    console.log("selflogin", style);
+    if (style == "park") {
+      LoginTest.parkLogin();
+    } else if (style == "company") {
+      LoginTest.companyLogin();
+    } else if (style == "normal") {
+      LoginTest.ptLogin();
+    } else {
+
+    }
+  }
+
 }
 
 //显示企业列表
@@ -1005,6 +1027,9 @@ class LoginTest extends React.Component {
   public constructor(props) {
     super(props);
 
+    LoginTest.parkLogin = this.parkLogin.bind(this);
+    LoginTest.companyLogin = this.companyLogin.bind(this);
+    LoginTest.ptLogin = this.ptLogin.bind(this);
   }
 
     public dataService: DataService = new DataService();
@@ -1027,20 +1052,24 @@ class LoginTest extends React.Component {
       this.dataService.login("admin","admin",this.hideLogin);
   }
   //园区管理员登录
+    static parkLogin() { };
   public parkLogin() {
    // console.log(this.state.username,this.state.password)
       this.dataService.login("twl01","123456",this.hideLogin);
   }
   // 企业管理员登录
+    static companyLogin() { };
   public companyLogin() {
     console.log(this.state.username,this.state.password)
       this.dataService.login("twl02","123456",this.hideLogin);
   }
-  // 企业管理员登录
+  // 普通用户登录
+    static ptLogin() {}
   public ptLogin() {
     console.log(this.state.username,this.state.password)
       this.dataService.login("twl03","123456",this.hideLogin);
   }
+
 
   public hideLogin() {
     setTimeout(function () { Index.hideLoginBox() }, 1000);
