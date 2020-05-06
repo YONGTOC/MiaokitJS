@@ -1,12 +1,262 @@
 
 declare var MiaokitJS: any;
 
+
+class RoomViewer {
+    /// 房间浏览器：0未开始->1大楼整体->2楼层展开->3聚焦楼层->4聚焦房间->5自由交互->6进行退出->7完成退出。
+    public constructor() {
+    }
+
+    /// 进入房间。
+    public Enter(pIndoor, pLayer, pRoom): void {
+        let pThis = this;
+
+        pThis.m_pCamera = MiaokitJS.App.m_pCameraCtrl;
+
+        if (pThis.m_pIndoor !== pIndoor) {
+            if (pThis.m_pIndoor) {
+                pThis.m_pIndoor.Deactive();
+            }
+
+            pThis.m_pIndoor = pIndoor;
+
+            /// 重新从大楼整体开始浏览
+            pThis.SetState(1);
+        }
+
+        if (pThis.m_pLayer !== pLayer) {
+            pThis.m_pLayer = pLayer;
+            pThis.m_pLayer.m_pView = {
+                m_mTarget: { x: pThis.m_pIndoor.m_pView.m_mTarget.x, y: pThis.m_pIndoor.m_pView.m_mTarget.y + pLayer.m_nIndex * 7.0, z: pThis.m_pIndoor.m_pView.m_mTarget.z },
+                m_nDistance: 100.0,
+                m_nPitch: pThis.m_pIndoor.m_pView.m_nPitch,
+                m_nYaw: pThis.m_pIndoor.m_pView.m_nYaw
+            };
+
+            /// 当前已经展开楼层，重新从聚焦楼层开始浏览
+            if (2 < pThis.m_nState) {
+                pThis.SetState(3);
+            }
+        }
+
+        {
+            pThis.m_pRoom = pRoom;
+
+            pRoom.m_mTarget.y = pThis.m_pLayer.m_pView.m_mTarget.y;
+
+            pThis.m_pRoom.m_pView = {
+                m_mTarget: pRoom.m_mTarget,
+                m_nDistance: 30.0,
+                m_nPitch: 50.0,
+                m_nYaw: pThis.m_pLayer.m_pView.m_nYaw
+            };
+
+            /// 当前已经聚焦楼层，重新开始聚焦房间
+            if (2 < pThis.m_nState) {
+                pThis.SetState(4);
+            }
+        }
+    }
+
+    /// 退出房间。
+    public Exit(): void {
+        let pThis = this;
+
+        if (1 < pThis.m_nState) {
+            pThis.SetState(6);
+        }
+        else {
+            pThis.SetState(7);
+        }
+    }
+
+    /// 更新浏览状态。
+    public Update(): void {
+        let pThis = this;
+
+        if (0 < pThis.m_nState && 5 !== pThis.m_nState) {
+            if (pThis.m_nStepCount > pThis.m_nStep) {
+                let nLerp = ++pThis.m_nStep / pThis.m_nStepCount;
+                let mCurTarget = pThis.m_pCurView.m_mTarget;
+                let mDstTarget = pThis.m_pDstView.m_mTarget;
+                let mTarget = { x: 0.0, y: 0.0, z: 0.0 };
+                let nDistance = 0.0;
+                let nPitch = 0.0;
+                let nYaw = 0.0;
+
+                mTarget.x = mCurTarget.x + (mDstTarget.x - mCurTarget.x) * nLerp;
+                mTarget.y = mCurTarget.y + (mDstTarget.y - mCurTarget.y) * nLerp;
+                mTarget.z = mCurTarget.z + (mDstTarget.z - mCurTarget.z) * nLerp;
+
+                nDistance = pThis.m_pCurView.m_nDistance + (pThis.m_pDstView.m_nDistance - pThis.m_pCurView.m_nDistance) * nLerp;
+                nPitch = pThis.m_pCurView.m_nPitch + (pThis.m_pDstView.m_nPitch - pThis.m_pCurView.m_nPitch) * nLerp;
+                nYaw = pThis.m_pCurView.m_nYaw + (pThis.m_pDstView.m_nYaw - pThis.m_pCurView.m_nYaw) * nLerp;
+
+                pThis.m_pCamera.target = mTarget;
+                pThis.m_pCamera.distance = nDistance;
+                pThis.m_pCamera.pitch = nPitch;
+                pThis.m_pCamera.yaw = nYaw;
+
+                /// 刷新大楼透明度
+                if (2 === pThis.m_nState) {
+                    nDistance = (100.0 > nDistance ? 100.0 : (300.0 < nDistance ? 300.0 : nDistance)) - 100.0;
+
+                    pThis.m_pIndoor.SetBuildingOpacity(nDistance / 200.0 * 255.0);
+                }
+                else if (3 === pThis.m_nState) {
+                    pThis.m_pIndoor.StackLayer(3.0, nLerp, pThis.m_pLayer.m_nIndex);
+                }
+
+                if (pThis.m_nStepCount === pThis.m_nStep) {
+                    pThis.SetState(pThis.m_nState + 1);
+                }
+            }
+        }
+    }
+
+    /// 切换浏览状态。
+    private SetState(nState): void {
+        let pThis = this;
+
+        pThis.m_nState = nState;
+
+        // 大楼整体
+        if (1 === nState) {
+            pThis.m_pCurView = {
+                m_mTarget: pThis.m_pCamera.target,
+                m_nDistance: pThis.m_pCamera.distance,
+                m_nPitch: pThis.m_pCamera.pitch,
+                m_nYaw: pThis.m_pCamera.yaw
+            }
+
+            pThis.m_pDstView = pThis.m_pIndoor.m_pView;
+
+            pThis.m_pCamera.lng = pThis.m_pIndoor.m_pView.m_nLng;
+            pThis.m_pCamera.lat = pThis.m_pIndoor.m_pView.m_nLat;
+
+            pThis.m_nStep = 0;
+            pThis.m_nStepCount = 60;
+
+            pThis.m_pIndoor.FocusBuilding();
+        }
+        // 楼层展开
+        else if (2 === nState) {
+            pThis.m_pCurView = pThis.m_pIndoor.m_pView;
+
+            pThis.m_pDstView = {
+                m_mTarget: pThis.m_pCurView.m_mTarget,
+                m_nDistance: 100.0,
+                m_nPitch: 20.0,
+                m_nYaw: pThis.m_pCurView.m_nYaw
+            }
+
+            pThis.m_nStep = 0;
+            pThis.m_nStepCount = 60;
+        }
+        // 聚焦楼层
+        else if (3 === nState) {
+            pThis.m_pCurView = {
+                m_mTarget: pThis.m_pIndoor.m_pView.m_mTarget,
+                m_nDistance: 100.0,
+                m_nPitch: 20.0,
+                m_nYaw: pThis.m_pIndoor.m_pView.m_nYaw
+            }
+
+            pThis.m_pDstView = pThis.m_pLayer.m_pView;
+
+            pThis.m_nStep = 0;
+            pThis.m_nStepCount = 60;
+        }
+        // 聚焦房间
+        else if (4 === nState) {
+            pThis.m_pCurView = pThis.m_pLayer.m_pView;
+            pThis.m_pDstView = pThis.m_pRoom.m_pView;
+
+            pThis.m_nStep = 0;
+            pThis.m_nStepCount = 60;
+
+            pThis.m_pIndoor.ShowOneLayer(pThis.m_pLayer.m_nIndex);
+        }
+        // 自由交互
+        else if (5 === nState) {
+        }
+        // 进行退出
+        else if (6 === nState) {
+            pThis.m_pCurView = {
+                m_mTarget: pThis.m_pCamera.target,
+                m_nDistance: pThis.m_pCamera.distance,
+                m_nPitch: pThis.m_pCamera.pitch,
+                m_nYaw: pThis.m_pCamera.yaw
+            }
+
+            pThis.m_pDstView = pThis.m_pIndoor.m_pView;
+
+            pThis.m_nStep = 0;
+            pThis.m_nStepCount = 60;
+        }
+        // 完成退出
+        else if (7 === nState) {
+            pThis.m_pIndoor.Deactive();
+
+            pThis.m_nState = 0;
+            pThis.m_nStep = 0;
+            pThis.m_nStepCount = 0;
+            pThis.m_pCurView = null;
+            pThis.m_pDstView = null;
+            pThis.m_pIndoor = null;
+            pThis.m_pLayer = null;
+            pThis.m_pRoom = null;
+        }
+    }
+
+
+    /// 当前浏览进度。
+    public m_nState: number = 0;
+    /// 当前步进。
+    public m_nStep: number = 0;
+    /// 当前步进总数。
+    public m_nStepCount: number = 0;
+    /// 当前视图。
+    public m_pCurView: any = null;
+    /// 当前目标视图。
+    public m_pDstView: any = null;
+    /// 当前内景。
+    public m_pIndoor: any = null;
+    /// 当前楼层。
+    public m_pLayer: any = null;
+    /// 当前房间。
+    public m_pRoom: any = null;
+    /// 摄像机控制器。
+    public m_pCamera: any = null;
+}
+
 class Indoor {
     /// 构造函数。
     public constructor(pTile, pScene) {
         this.m_pTile = pTile;
         this.m_pScene = pScene;
         this.m_pBuilding = pScene.m_pScene.binding;
+
+        if ("A栋" === pScene.building_id) {
+            this.m_pView = {
+                m_nLng: 110.344301,
+                m_nLat: 25.272208,
+                m_mTarget: { x: 227.0, y: 0.0, z: 13.0 },
+                m_nDistance: 300.0,
+                m_nPitch: 25.0,
+                m_nYaw: 185.0
+            };
+        }
+        else {
+            this.m_pView = {
+                m_nLng: 110.344301,
+                m_nLat: 25.272208,
+                m_mTarget: { x: 192.0, y: 0.0, z: -42.0 },
+                m_nDistance: 300.0,
+                m_nPitch: 25.0,
+                m_nYaw: 95.0
+            };
+        }
     }
 
     /// 场景中心点屏幕坐标。
@@ -24,8 +274,100 @@ class Indoor {
         return null;
     }
 
+    /// 聚焦大楼。
+    public FocusBuilding() {
+        let pThis = this;
+
+        let pBuildingObj = pThis.m_pBuilding.object3D;
+        if (pBuildingObj) {
+            pBuildingObj.highlight = true;
+            pBuildingObj.opacity = 255;
+        }
+    }
+
+    /// 刷新大楼透明度。
+    public SetBuildingOpacity(nOpacity) {
+        let pThis = this;
+
+        let pBuildingObj = pThis.m_pBuilding.object3D;
+        if (pBuildingObj) {
+            pBuildingObj.opacity = nOpacity;
+        }
+    }
+
+    /// 层叠楼层。
+    public StackLayer(nOffset, nRate, nStressLayer) {
+        let pThis = this;
+        let nCount = pThis.m_pScene.layerList.length;
+        let nMinHeight = 4.0 * nCount;
+        let nMaxHeight = (4.0 + nOffset) * nCount;
+        let nShowHeight = nRate * nMaxHeight;
+        let nHeight = 0.0;
+        let nCutRate = nMinHeight / nMaxHeight;
+        let pPosition = null;
+        let nIndex = 0;
+
+        pThis.m_pScene.m_pScene.object3D.active = true;
+
+        if (nRate > nCutRate) {
+            nOffset = 4.0 + (nOffset * ((nRate - nCutRate) / (1.0 - nCutRate)));
+        }
+        else {
+            nOffset = 4.0;
+        }
+
+        for (let pLayer of pThis.m_pScene.m_pScene.layers) {
+            let pObject = pLayer.object3D;
+            if (pPosition) {
+                pPosition.y += nOffset;
+                pObject.transform.localPosition = pPosition;
+            }
+            else {
+                pPosition = pObject.transform.localPosition;
+            }
+
+            pLayer._Draw();
+            pLayer.decorationObject3D.active = false;
+
+            pObject.active = nHeight < nShowHeight;
+            pObject.highlight = nIndex === nStressLayer;
+
+            nHeight += nOffset;
+            nIndex++;
+        }
+    }
+
+    /// 显示单层
+    public ShowOneLayer(nIndex) {
+        let pThis = this;
+        let nIndex_ = 0;
+
+        for (let pLayer of pThis.m_pScene.m_pScene.layers) {
+            let bShow = nIndex === nIndex_++;
+            pLayer.object3D.active = bShow;
+            pLayer.object3D.highlight = false;
+            pLayer.decorationObject3D.active = bShow;
+        }
+    }
+
+    /// 关闭室内显示和取消聚焦大楼
+    public Deactive() {
+        let pThis = this;
+
+        let pBuildingObj = pThis.m_pBuilding.object3D;
+        if (pBuildingObj) {
+            pBuildingObj.highlight = false;
+            pBuildingObj.opacity = 255;
+        }
+
+        pThis.m_pScene.m_pScene.object3D.active = false;
+    }
+
+    //======================-------------------------------------------
+
     /// 打开室内场景。
     public Open() {
+        return;
         let pBuildingObj = this.m_pBuilding.object3D;
         if (pBuildingObj) {
             pBuildingObj.highlight = true;
@@ -53,6 +395,7 @@ class Indoor {
 
     /// 关闭室内场景。
     public Close() {
+        return;
         let pBuildingObj = this.m_pBuilding.object3D;
         if (pBuildingObj) {
             pBuildingObj.highlight = false;
@@ -64,6 +407,7 @@ class Indoor {
 
     /// 刷新室内场景显示。
     public Update(mEyePos) {
+        return;
         let pBuildingObj = this.m_pBuilding.object3D;
         if (pBuildingObj) {
             let mPos = pBuildingObj.transform.regionPosition;
@@ -72,9 +416,9 @@ class Indoor {
             let z = mEyePos.z - mPos.z; z *= z;
             let nDistance = Math.sqrt(x + y + z);
 
-            nDistance = (100 > nDistance ? 100 : (500 < nDistance ? 500 : nDistance)) - 100;
+            nDistance = (120 > nDistance ? 120 : (300 < nDistance ? 300 : nDistance)) - 120;
 
-            pBuildingObj.opacity = nDistance / 400.0 * 255.0;
+            pBuildingObj.opacity = nDistance / 180.0 * 255.0;
         }
     }
 
@@ -89,6 +433,8 @@ class Indoor {
     public m_pBuilding: any = null;
     /// 屏幕显示坐标。
     public m_pScreenPos: any = null;
+    /// 内景整体观察视角。
+    public m_pView: any = null;
 }
 
 class Main {
@@ -98,6 +444,8 @@ class Main {
 
         pThis.m_pApp = MiaokitJS.App;
         pThis.m_pApp.m_pProject = this;
+
+        pThis.m_pRoomViewer = new RoomViewer();
     }
 
     /// 数据预加载。
@@ -156,6 +504,8 @@ class Main {
                 return;
             }
         }
+
+        this.m_pRoomViewer.Update();
 
         if (this.m_pGis) {
             this.m_pGis.Update(this.m_pApp.m_pCameraCtrl.lng, this.m_pApp.m_pCameraCtrl.lat, this.m_pApp.m_pCameraCtrl.height);
@@ -274,8 +624,8 @@ class Main {
                 pPoint.x = pPoint.x * pCanvas.width;
                 pPoint.y = pPoint.y * pCanvas.height;
 
-                pCanvasCtx.strokeText(pText, pPoint.x - pRect.width / 2, pPoint.y);
-                pCanvasCtx.fillText(pText, pPoint.x - pRect.width / 2, pPoint.y);
+                pCanvasCtx.strokeText(pText, pPoint.x, pPoint.y);
+                pCanvasCtx.fillText(pText, pPoint.x, pPoint.y);
             }
         }
     }
@@ -313,9 +663,39 @@ class Main {
         // 分两步执行。聚焦半透明楼栋，叠加楼层并高亮企业对应区域
         // 如果尚未完成进入园区，则立即切换到园区
 
-        //if (pCamera.m_pFlyTask) {
-        //}
+        this.m_pApp.m_pCameraCtrl.Fly(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, pCompany.m_pView, 0.05);
+    }
 
+    /// 进入房间。
+    public EnterRoom(pRoom): void {
+        let pThis = this;
+
+        for (let pTile of pThis.m_aTile) {
+            if (pRoom.m_pTile === pTile.m_pName) {
+                if (pTile.m_aIndoor) {
+                    for (let pIndoor of pTile.m_aIndoor) {
+                        if (pRoom.m_pBuilding === pIndoor.m_pScene.building_id) {
+                            let nLayer = 0;
+                            for (let pLayer of pIndoor.m_pScene.layerList) {
+                                if (pRoom.m_pLayer === pLayer.floor_id) {                                    
+                                    pThis.m_pRoomViewer.Enter(pIndoor, { m_nIndex: nLayer }, { m_mTarget: pRoom.m_mTarget });
+                                    break;
+                                }
+
+                                nLayer++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /// 退出查看。
+    public ExitViewer(): void {
+        let pThis = this;
+
+        pThis.m_pRoomViewer.Exit();
     }
 
     /// 加载导航后台数据。
@@ -683,6 +1063,8 @@ class Main {
     private m_pCity: any = null;
     /// 当前锁定室内场景。
     private m_pIndoor: any = null;
+    /// 房间查看器。
+    private m_pRoomViewer: RoomViewer = null;
 }
 
 new Main();

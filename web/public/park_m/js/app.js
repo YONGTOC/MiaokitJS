@@ -1,3 +1,166 @@
+class RoomViewer {
+    constructor() {
+        this.m_nState = 0;
+        this.m_nStep = 0;
+        this.m_nStepCount = 0;
+        this.m_pCurView = null;
+        this.m_pDstView = null;
+        this.m_pIndoor = null;
+        this.m_pLayer = null;
+        this.m_pRoom = null;
+        this.m_pCamera = null;
+    }
+    Enter(pIndoor, pLayer, pRoom) {
+        let pThis = this;
+        pThis.m_pCamera = MiaokitJS.App.m_pCameraCtrl;
+        if (pThis.m_pIndoor !== pIndoor) {
+            if (pThis.m_pIndoor) {
+                pThis.m_pIndoor.Deactive();
+            }
+            pThis.m_pIndoor = pIndoor;
+            pThis.SetState(1);
+        }
+        if (pThis.m_pLayer !== pLayer) {
+            pThis.m_pLayer = pLayer;
+            pThis.m_pLayer.m_pView = {
+                m_mTarget: { x: pThis.m_pIndoor.m_pView.m_mTarget.x, y: pThis.m_pIndoor.m_pView.m_mTarget.y + pLayer.m_nIndex * 7.0, z: pThis.m_pIndoor.m_pView.m_mTarget.z },
+                m_nDistance: 100.0,
+                m_nPitch: pThis.m_pIndoor.m_pView.m_nPitch,
+                m_nYaw: pThis.m_pIndoor.m_pView.m_nYaw
+            };
+            if (2 < pThis.m_nState) {
+                pThis.SetState(3);
+            }
+        }
+        {
+            pThis.m_pRoom = pRoom;
+            pRoom.m_mTarget.y = pThis.m_pLayer.m_pView.m_mTarget.y;
+            pThis.m_pRoom.m_pView = {
+                m_mTarget: pRoom.m_mTarget,
+                m_nDistance: 30.0,
+                m_nPitch: 50.0,
+                m_nYaw: pThis.m_pLayer.m_pView.m_nYaw
+            };
+            if (2 < pThis.m_nState) {
+                pThis.SetState(4);
+            }
+        }
+    }
+    Exit() {
+        let pThis = this;
+        if (1 < pThis.m_nState) {
+            pThis.SetState(6);
+        }
+        else {
+            pThis.SetState(7);
+        }
+    }
+    Update() {
+        let pThis = this;
+        if (0 < pThis.m_nState && 5 !== pThis.m_nState) {
+            if (pThis.m_nStepCount > pThis.m_nStep) {
+                let nLerp = ++pThis.m_nStep / pThis.m_nStepCount;
+                let mCurTarget = pThis.m_pCurView.m_mTarget;
+                let mDstTarget = pThis.m_pDstView.m_mTarget;
+                let mTarget = { x: 0.0, y: 0.0, z: 0.0 };
+                let nDistance = 0.0;
+                let nPitch = 0.0;
+                let nYaw = 0.0;
+                mTarget.x = mCurTarget.x + (mDstTarget.x - mCurTarget.x) * nLerp;
+                mTarget.y = mCurTarget.y + (mDstTarget.y - mCurTarget.y) * nLerp;
+                mTarget.z = mCurTarget.z + (mDstTarget.z - mCurTarget.z) * nLerp;
+                nDistance = pThis.m_pCurView.m_nDistance + (pThis.m_pDstView.m_nDistance - pThis.m_pCurView.m_nDistance) * nLerp;
+                nPitch = pThis.m_pCurView.m_nPitch + (pThis.m_pDstView.m_nPitch - pThis.m_pCurView.m_nPitch) * nLerp;
+                nYaw = pThis.m_pCurView.m_nYaw + (pThis.m_pDstView.m_nYaw - pThis.m_pCurView.m_nYaw) * nLerp;
+                pThis.m_pCamera.target = mTarget;
+                pThis.m_pCamera.distance = nDistance;
+                pThis.m_pCamera.pitch = nPitch;
+                pThis.m_pCamera.yaw = nYaw;
+                if (2 === pThis.m_nState) {
+                    nDistance = (100.0 > nDistance ? 100.0 : (300.0 < nDistance ? 300.0 : nDistance)) - 100.0;
+                    pThis.m_pIndoor.SetBuildingOpacity(nDistance / 200.0 * 255.0);
+                }
+                else if (3 === pThis.m_nState) {
+                    pThis.m_pIndoor.StackLayer(3.0, nLerp, pThis.m_pLayer.m_nIndex);
+                }
+                if (pThis.m_nStepCount === pThis.m_nStep) {
+                    pThis.SetState(pThis.m_nState + 1);
+                }
+            }
+        }
+    }
+    SetState(nState) {
+        let pThis = this;
+        pThis.m_nState = nState;
+        if (1 === nState) {
+            pThis.m_pCurView = {
+                m_mTarget: pThis.m_pCamera.target,
+                m_nDistance: pThis.m_pCamera.distance,
+                m_nPitch: pThis.m_pCamera.pitch,
+                m_nYaw: pThis.m_pCamera.yaw
+            };
+            pThis.m_pDstView = pThis.m_pIndoor.m_pView;
+            pThis.m_pCamera.lng = pThis.m_pIndoor.m_pView.m_nLng;
+            pThis.m_pCamera.lat = pThis.m_pIndoor.m_pView.m_nLat;
+            pThis.m_nStep = 0;
+            pThis.m_nStepCount = 60;
+            pThis.m_pIndoor.FocusBuilding();
+        }
+        else if (2 === nState) {
+            pThis.m_pCurView = pThis.m_pIndoor.m_pView;
+            pThis.m_pDstView = {
+                m_mTarget: pThis.m_pCurView.m_mTarget,
+                m_nDistance: 100.0,
+                m_nPitch: 20.0,
+                m_nYaw: pThis.m_pCurView.m_nYaw
+            };
+            pThis.m_nStep = 0;
+            pThis.m_nStepCount = 60;
+        }
+        else if (3 === nState) {
+            pThis.m_pCurView = {
+                m_mTarget: pThis.m_pIndoor.m_pView.m_mTarget,
+                m_nDistance: 100.0,
+                m_nPitch: 20.0,
+                m_nYaw: pThis.m_pIndoor.m_pView.m_nYaw
+            };
+            pThis.m_pDstView = pThis.m_pLayer.m_pView;
+            pThis.m_nStep = 0;
+            pThis.m_nStepCount = 60;
+        }
+        else if (4 === nState) {
+            pThis.m_pCurView = pThis.m_pLayer.m_pView;
+            pThis.m_pDstView = pThis.m_pRoom.m_pView;
+            pThis.m_nStep = 0;
+            pThis.m_nStepCount = 60;
+            pThis.m_pIndoor.ShowOneLayer(pThis.m_pLayer.m_nIndex);
+        }
+        else if (5 === nState) {
+        }
+        else if (6 === nState) {
+            pThis.m_pCurView = {
+                m_mTarget: pThis.m_pCamera.target,
+                m_nDistance: pThis.m_pCamera.distance,
+                m_nPitch: pThis.m_pCamera.pitch,
+                m_nYaw: pThis.m_pCamera.yaw
+            };
+            pThis.m_pDstView = pThis.m_pIndoor.m_pView;
+            pThis.m_nStep = 0;
+            pThis.m_nStepCount = 60;
+        }
+        else if (7 === nState) {
+            pThis.m_pIndoor.Deactive();
+            pThis.m_nState = 0;
+            pThis.m_nStep = 0;
+            pThis.m_nStepCount = 0;
+            pThis.m_pCurView = null;
+            pThis.m_pDstView = null;
+            pThis.m_pIndoor = null;
+            pThis.m_pLayer = null;
+            pThis.m_pRoom = null;
+        }
+    }
+}
 class Indoor {
     constructor(pTile, pScene) {
         this.m_pTile = null;
@@ -5,9 +168,30 @@ class Indoor {
         this.m_nBuildingType = 0;
         this.m_pBuilding = null;
         this.m_pScreenPos = null;
+        this.m_pView = null;
         this.m_pTile = pTile;
         this.m_pScene = pScene;
         this.m_pBuilding = pScene.m_pScene.binding;
+        if ("A栋" === pScene.building_id) {
+            this.m_pView = {
+                m_nLng: 110.344301,
+                m_nLat: 25.272208,
+                m_mTarget: { x: 227.0, y: 0.0, z: 13.0 },
+                m_nDistance: 300.0,
+                m_nPitch: 25.0,
+                m_nYaw: 185.0
+            };
+        }
+        else {
+            this.m_pView = {
+                m_nLng: 110.344301,
+                m_nLat: 25.272208,
+                m_mTarget: { x: 192.0, y: 0.0, z: -42.0 },
+                m_nDistance: 300.0,
+                m_nPitch: 25.0,
+                m_nYaw: 95.0
+            };
+        }
     }
     get screenPoint() {
         if (this.m_pBuilding) {
@@ -20,7 +204,76 @@ class Indoor {
         }
         return null;
     }
+    FocusBuilding() {
+        let pThis = this;
+        let pBuildingObj = pThis.m_pBuilding.object3D;
+        if (pBuildingObj) {
+            pBuildingObj.highlight = true;
+            pBuildingObj.opacity = 255;
+        }
+    }
+    SetBuildingOpacity(nOpacity) {
+        let pThis = this;
+        let pBuildingObj = pThis.m_pBuilding.object3D;
+        if (pBuildingObj) {
+            pBuildingObj.opacity = nOpacity;
+        }
+    }
+    StackLayer(nOffset, nRate, nStressLayer) {
+        let pThis = this;
+        let nCount = pThis.m_pScene.layerList.length;
+        let nMinHeight = 4.0 * nCount;
+        let nMaxHeight = (4.0 + nOffset) * nCount;
+        let nShowHeight = nRate * nMaxHeight;
+        let nHeight = 0.0;
+        let nCutRate = nMinHeight / nMaxHeight;
+        let pPosition = null;
+        let nIndex = 0;
+        pThis.m_pScene.m_pScene.object3D.active = true;
+        if (nRate > nCutRate) {
+            nOffset = 4.0 + (nOffset * ((nRate - nCutRate) / (1.0 - nCutRate)));
+        }
+        else {
+            nOffset = 4.0;
+        }
+        for (let pLayer of pThis.m_pScene.m_pScene.layers) {
+            let pObject = pLayer.object3D;
+            if (pPosition) {
+                pPosition.y += nOffset;
+                pObject.transform.localPosition = pPosition;
+            }
+            else {
+                pPosition = pObject.transform.localPosition;
+            }
+            pLayer._Draw();
+            pLayer.decorationObject3D.active = false;
+            pObject.active = nHeight < nShowHeight;
+            pObject.highlight = nIndex === nStressLayer;
+            nHeight += nOffset;
+            nIndex++;
+        }
+    }
+    ShowOneLayer(nIndex) {
+        let pThis = this;
+        let nIndex_ = 0;
+        for (let pLayer of pThis.m_pScene.m_pScene.layers) {
+            let bShow = nIndex === nIndex_++;
+            pLayer.object3D.active = bShow;
+            pLayer.object3D.highlight = false;
+            pLayer.decorationObject3D.active = bShow;
+        }
+    }
+    Deactive() {
+        let pThis = this;
+        let pBuildingObj = pThis.m_pBuilding.object3D;
+        if (pBuildingObj) {
+            pBuildingObj.highlight = false;
+            pBuildingObj.opacity = 255;
+        }
+        pThis.m_pScene.m_pScene.object3D.active = false;
+    }
     Open() {
+        return;
         let pBuildingObj = this.m_pBuilding.object3D;
         if (pBuildingObj) {
             pBuildingObj.highlight = true;
@@ -42,6 +295,7 @@ class Indoor {
         }
     }
     Close() {
+        return;
         let pBuildingObj = this.m_pBuilding.object3D;
         if (pBuildingObj) {
             pBuildingObj.highlight = false;
@@ -50,6 +304,7 @@ class Indoor {
         this.m_pScene.m_pScene.object3D.active = false;
     }
     Update(mEyePos) {
+        return;
         let pBuildingObj = this.m_pBuilding.object3D;
         if (pBuildingObj) {
             let mPos = pBuildingObj.transform.regionPosition;
@@ -60,8 +315,8 @@ class Indoor {
             let z = mEyePos.z - mPos.z;
             z *= z;
             let nDistance = Math.sqrt(x + y + z);
-            nDistance = (100 > nDistance ? 100 : (500 < nDistance ? 500 : nDistance)) - 100;
-            pBuildingObj.opacity = nDistance / 400.0 * 255.0;
+            nDistance = (120 > nDistance ? 120 : (300 < nDistance ? 300 : nDistance)) - 120;
+            pBuildingObj.opacity = nDistance / 180.0 * 255.0;
         }
     }
 }
@@ -77,9 +332,11 @@ class Main {
         this.m_nTaskMax = 0;
         this.m_pCity = null;
         this.m_pIndoor = null;
+        this.m_pRoomViewer = null;
         let pThis = this;
         pThis.m_pApp = MiaokitJS.App;
         pThis.m_pApp.m_pProject = this;
+        pThis.m_pRoomViewer = new RoomViewer();
     }
     Preload() {
         let pThis = this;
@@ -120,6 +377,7 @@ class Main {
                 return;
             }
         }
+        this.m_pRoomViewer.Update();
         if (this.m_pGis) {
             this.m_pGis.Update(this.m_pApp.m_pCameraCtrl.lng, this.m_pApp.m_pCameraCtrl.lat, this.m_pApp.m_pCameraCtrl.height);
         }
@@ -213,8 +471,8 @@ class Main {
                 let pRect = pCanvasCtx.measureText(pText);
                 pPoint.x = pPoint.x * pCanvas.width;
                 pPoint.y = pPoint.y * pCanvas.height;
-                pCanvasCtx.strokeText(pText, pPoint.x - pRect.width / 2, pPoint.y);
-                pCanvasCtx.fillText(pText, pPoint.x - pRect.width / 2, pPoint.y);
+                pCanvasCtx.strokeText(pText, pPoint.x, pPoint.y);
+                pCanvasCtx.fillText(pText, pPoint.x, pPoint.y);
             }
         }
     }
@@ -239,6 +497,32 @@ class Main {
         this.m_pApp.m_pCameraCtrl.enabled = true;
     }
     EnterCompany(pCompany) {
+        this.m_pApp.m_pCameraCtrl.Fly(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, pCompany.m_pView, 0.05);
+    }
+    EnterRoom(pRoom) {
+        let pThis = this;
+        for (let pTile of pThis.m_aTile) {
+            if (pRoom.m_pTile === pTile.m_pName) {
+                if (pTile.m_aIndoor) {
+                    for (let pIndoor of pTile.m_aIndoor) {
+                        if (pRoom.m_pBuilding === pIndoor.m_pScene.building_id) {
+                            let nLayer = 0;
+                            for (let pLayer of pIndoor.m_pScene.layerList) {
+                                if (pRoom.m_pLayer === pLayer.floor_id) {
+                                    pThis.m_pRoomViewer.Enter(pIndoor, { m_nIndex: nLayer }, { m_mTarget: pRoom.m_mTarget });
+                                    break;
+                                }
+                                nLayer++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    ExitViewer() {
+        let pThis = this;
+        pThis.m_pRoomViewer.Exit();
     }
     LoadNavData() {
         let pThis = this;

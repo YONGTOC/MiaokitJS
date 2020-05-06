@@ -1117,8 +1117,8 @@ MiaokitJS.ShaderLab.Pipeline = {
             aTarget[9].Height = 1024;
             let aPass = pPipeline.PassList;
             aPass[3].RenderTarget = undefined;
+            aPass[1].ClearTarget.Color = { r: 0.198, g: 0.323, b: 0.45, a: 0.0 };
             pPipeline.LowQuality = [
-                aPass[0],
                 aPass[1],
                 aPass[2],
                 aPass[3]
@@ -1338,9 +1338,9 @@ vec4 vs()
     v_UV = vec4(a_UV, 0.0, 0.0);
     
     vec4 mPosition = vec4(a_Position.xyz, 1.0);
-    mPosition = u_MatG * a_MatW * mPosition;  
+    mPosition = u_MatG * a_MatW * mPosition;
     mPosition.y -= mBuilding.r * (mPosition.y - 5.0);
-
+    
     // 高品质下，计算法线，计算大气散射
     #ifdef HIGH_QUALITY
     float n = a_Normal.z; 
@@ -1510,7 +1510,8 @@ vec4 fs()
     vec4 mLabel = texture(_LabelTex, v_UV.xy);
 
     mColor.rgb = (mColor.rgb * (1.0 - mLabel.a)) + (mLabel.rgb * mLabel.a);
-
+    mColor.a = 1.0;
+    
     // 高品质下，计算BRDF光照，计算大气散射
     #ifdef HIGH_QUALITY    
     mColor.rgb += BRDF(normalize(u_Sunlight.xyz), normalize(v_ViewDir.xyz), v_Normal, vec3(0.0, 0.0, 1.0), vec3(1.0, 0.0, 0.0)) * 0.4;
@@ -1899,7 +1900,6 @@ vec4 fs()
     vec4 mBloom = texture2D(u_MinorTex, v_UV);
 
     mColor += mBloom;
-    mColor.a = 1.0;
     
     return mColor;
 }
