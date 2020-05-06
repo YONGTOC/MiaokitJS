@@ -49,6 +49,9 @@ interface IState {
   elegant: Array<any>,
   product: Array<any>,
   panorama: Array<any>,
+  pic: Array<any>,
+  picPro:  Array<any>,
+  picPan: Array<any>,
 }
 
 
@@ -97,6 +100,11 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
     elegant: [],
     product: [],
     panorama: [],
+    pic: [],
+    picPro: [],
+    picPan: [],
+    
+
   }
 
   public constructor(props) {
@@ -108,6 +116,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
     this.setElegantImg = this.setElegantImg.bind(this);
     this.setProductImg = this.setProductImg.bind(this);
     this.setPanoramaImg = this.setPanoramaImg.bind(this);
+    this.closePic = this.closePic.bind(this);
 
   }
 
@@ -115,12 +124,19 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
 
   componentDidMount() {
     let userid = localStorage.getItem("userId");
-    //this.dataService.getCompanyInfo(this.setCompanyinfo, userId);
+    //this.dataService.getCompanyInfo(this.setCompanyinfo, userId); 
     let enterpriseId = sessionStorage.getItem("enterpriseId");
     this.dataService.getCompanyInfo(this.setCompanyinfo, enterpriseId);
     // this.dataService.getCompanyInfoByUser(this.setCompanyinfo, 2);
     let park_id = sessionStorage.getItem("park_id");
     this.dataService.getCompanyType(this.setCompanyType, park_id);
+
+
+    //if (this.props.location.state) {
+    //   sessionStorage.setItem("roomInfo", JSON.stringify(this.props.location.state.roomInfo))
+    //}
+    console.log(JSON.parse(sessionStorage.getItem("roomInfo")))
+    console.log("pic", this.state.pic)
   }
 
   public setCompanyinfo(data) {
@@ -128,25 +144,37 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
     //企业 logo  filesLogo
     var filesLogos = []
     filesLogos.push({ "id": "", "name": "logoimg", "url": data.response.headimageurl });
+
     var elegantImgs = []
     $.each(data.response.elegant, function (index, item) {
       elegantImgs.push({ "id": item.id, "name": item.name, "url": item.pic_url });
     });
 
-    var productImgs = []
-    $.each(data.response.product, function (index, item) {
-      productImgs.push({ "id": item.id, "name": item.name, "url": item.pic_url });
+
+      var pic = []
+       $.each(data.response.elegant, function (index, item) {
+      pic.push({ "id": item.id, "name": item.name, "url": item.pic_url });
     });
 
-    var panoramaImgs = []
-    $.each(data.response.panorama, function (index, item) {
-      panoramaImgs.push({ "id": item.id, "name": item.name, "url": item.pic_url });
+    var picPro = []
+       $.each(data.response.product, function (index, item) {
+      picPro.push({ "id": item.id, "name": item.name, "url": item.pic_url });
     });
+
+    var picPan = []
+       $.each(data.response.panorama, function (index, item) {
+      picPan.push({ "id": item.id, "name": item.name, "url": item.pic_url });
+    });
+
+    this.setState({
+      pic: pic,
+     picPro: picPro,
+     picPan:picPan,
+    })
 
     let descriptArr;
     if (data.response.descript) {
       let descriptN = data.response.descript;
-      //descriptN.replace(/&#10;/, "\n  &nbsp;")
       descriptN.replace(/&#10;/, "<br />&nbsp;");
       descriptArr = descriptN.split("    ");
     } else {
@@ -176,9 +204,9 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
       elegantImgList: data.response.elegant,
       productImgList: data.response.product,
       panoramaImgList: data.response.panorama,
-      filesElegant: elegantImgs,
-      filesProduct: productImgs,
-      filesPanorama: panoramaImgs,
+      //filesElegant: elegantImgs,
+      //filesProduct: productImgs,
+      //filesPanorama: panoramaImgs,
 
     })
     console.log("hhhhhhhhhhhhhhhhhhhh", this.state);
@@ -297,6 +325,20 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
 
     console.log("bobo", this.state.elegant.length);
 
+    //if (this.state.pic.length == 1) {
+    //  alert("请为企业风采，至少添加两张图片");
+    //  sum = 0;
+    //} else {
+    //      let elegant = this.state.elegant;
+    // $.each(this.state.pic, function (index, item) {
+    //  elegant.push({ "id": item.id, "name": item.name, "url": item.pic_url });
+    //  });
+    //      sum = 1;
+    //}
+
+      //pic.push({ pic_url: data.response, name: "" });
+      //elegant.push({url: elegant.url, name: ""})
+
 
     //let elegants = [];
     let obj = {
@@ -321,35 +363,32 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
       //企业类型id
       "company_type": this.state.companyType_id_in == "" ? this.state.company_type_id : this.state.companyType_id_in,
      // "company_type": this.state.companyType_id_in == "" ? this.state.company_type : this.state.companyType_id_in,
-      "elegant": this.state.elegant,
-      "product": this.state.product,
-      "panorama": this.state.panorama,
+      "elegant": this.state.pic,
+      //"elegant": this.state.pic,
+      "product": this.state.picPro,
+      "panorama": this.state.picPan,
       "headimageurl": this.state.headimageurl,
 
     }
-    if (this.state.elegant.length == 0) {
-      obj.elegant = this.state.filesElegant;
-    }
-    if (obj.elegant.length == 1 ) {
+
+     if (this.state.pic.length == 1) {
       alert("请为企业风采，至少添加两张图片");
       sum = 0;
-    };
-    if (this.state.product.length == 0) {
+    }
+
+    if (this.state.picPro.length == 0) {
       obj.product = this.state.filesProduct;
     }
     if (obj.product.length == 1) {
       alert("请为公司产品，至少添加两张图片");
       sum = 0;
     };
-    if (this.state.panorama.length == 0) {
-      obj.panorama = this.state.filesPanorama;
-    }
 
     console.log("objobjobj2222222", obj);
     if (sum == 1) {
-        this.dataService.saveCompanyInfo(this.callBackSaveCompanyInfo.bind(this), obj);
+      this.dataService.saveCompanyInfo(this.callBackSaveCompanyInfo.bind(this), obj);
     }
-    //this.dataService.saveCompanyInfo(this.callBackSaveCompanyInfo.bind(this), obj);
+
     //sumbit over;
   }
 
@@ -638,6 +677,137 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
     console.log("panorama", this.state.panorama);
   }
 
+
+  //新提交图片 1
+  clupPic() {
+    $('#a-input').click();
+  }
+
+  updatePic(event) {
+    console.log(99999)
+      let formData = new FormData();
+      formData.append("file", event.target.files[0]);
+    this.uploadPic(formData)
+  }
+
+    uploadPic(file) {
+    this.dataService.upload(this.callBackUploadPic.bind(this), file)
+      // this.dataService.uploadImgOss(this.callBackUploadPic.bind(this), file);
+
+  }
+  
+  callBackUploadPic(data) {
+    console.log("callBackUpload", data)
+    if (data.return_code == 100) {
+      let pic = this.state.pic;
+      let elegant = this.state.elegant;
+      pic.push({ url: data.response, name: "" });
+     // elegant.push({url: data.response, name: ""})
+      this.setState({
+        pic: pic,
+       // elegant:elegant,
+      })
+    } else {
+      alert("上传失败")
+    }
+    console.log("rrrrrrrrrrrrrP",this.state)
+  }
+
+    // 清除图片
+  closePic(index) {
+    let pic = this.state.pic;
+     // let elegant = this.state.elegant;
+    pic.splice(index, 1)
+   // elegant.splice(index, 1)
+
+    this.setState({
+      pic: pic,
+     // elegant:elegant,
+    })
+
+
+  }
+
+    //新提交图片 2
+  clupPicPro() {
+    console.log(7777)
+     $('#b-input').click();
+  }
+
+  updatePicPro(event) {
+      let formData = new FormData();
+      formData.append("file", event.target.files[0]);
+      this.uploadPicPro(formData)
+  }
+
+    uploadPicPro(file) {
+    this.dataService.upload(this.callBackUploadPicPro.bind(this), file)
+  }
+  
+  callBackUploadPicPro(data) {
+    console.log("callBackUpload", data)
+    if (data.return_code == 100) {
+      let picPro = this.state.picPro;
+      picPro.push({ url: data.response, name: "" });
+      this.setState({
+        picPro: picPro,
+      })
+    } else {
+      alert("上传失败")
+    }
+    console.log("rrrrrrrrrrrrrP",this.state)
+  }
+
+    // 清除图片
+  closePicPro(index) {
+    let picPro = this.state.picPro;
+    picPro.splice(index, 1)
+    this.setState({
+      picPro: picPro,
+    })
+    console.log("MMMMMMMM",this.state)
+  }
+
+      //新提交图片 3
+  clupPicPan() {
+    console.log(7777)
+     $('#h-input').click();
+  }
+
+  updatePicPan(event) {
+      let formData = new FormData();
+      formData.append("file", event.target.files[0]);
+      this.uploadPicPan(formData)
+  }
+
+    uploadPicPan(file) {
+    this.dataService.upload(this.callBackUploadPicPan.bind(this), file)
+  }
+  
+  callBackUploadPicPan(data) {
+    console.log("callBackUpload", data)
+    if (data.return_code == 100) {
+      let picPan = this.state.picPan;
+      picPan.push({ url: data.response, name: "" });
+      this.setState({
+        picPan: picPan,
+      })
+    } else {
+      alert("上传失败")
+    }
+    console.log("rrrrrrrrrrrrrP",this.state)
+  }
+
+    // 清除图片
+  closePicPan(index) {
+    let picPan = this.state.picPan;
+    picPan.splice(index, 1)
+    this.setState({
+      picPan: picPan,
+    })
+    console.log("MMMMMMMM",this.state)
+  }
+
   render() {
     //  <img src="./park_m/image/photograph.png" width="110px" height="110px" />
     //<div style={{ backgroundColor: "#F2F2F2", height: "120px", width: "120px", float: "left", lineHeight: "120px", textAlign: "center", marginTop: "20px" }}>
@@ -655,7 +825,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
           }
         </div>
         {this.state.modifyState ?
-          <div>
+          <div className="enterprise-information-box">
             <div className="enterprise-information-id">
               <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", marginLeft: "30px", float: "left", width: "25%" }}>企业ID</div>
               <input className="enterprise-information-id-input" value={this.state.inputEnterpriseIDValue} readOnly />
@@ -721,53 +891,71 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
             <textarea style={{ width: "84%", height: "400px", backgroundColor: "#F2F2F2", fontSize: "40px", color: "#949494", border: "none", outline: "none", "padding": "2rem" }} value={this.state.descriptionValue}
               onFocus={this.focusDescription.bind(this)} onBlur={this.blurDescription.bind(this)} onChange={this.changeDescription.bind(this)}></textarea>
 
-            <div className="" style={{ margin: "1rem auto auto", width: "90%", borderBottom: "3px solid #F2F2F2" }}>
-              <span style={{ color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left" }}>企业风采</span>
-              <div style={{ marginLeft: "11rem" }}>
-                <WingBlank>
-                  <ImagePicker
-                    files={this.state.filesElegant}
-                    onChange={this.onChangeElegant}
-                    onImageClick={(index, fs) => console.log(index, fs)}
-                    selectable={files.length < 8}
-                    accept="image/jpg,image/jpge,image/png"
-                    multiple={this.state.multiple}
-                  />
-                </WingBlank>
-              </div>
+            <div className="imgBox elegantImgBox" style={{  }}>
+              <span style={{ color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left","margin-right": "1rem" }}>企业风采</span>
+                <div className="service-tel-B" >
+          {this.state.pic.map((item, index) => {
+            return (
+              <div style={{ width: "12rem", height: "12rem", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", margin: "30px 30px 0 0", float: "left" }} key={index}>
+                <img className="closeIcon" src="./park_m/image/close.png" onClick={e => this.closePic(index)} />
+                <img className="elegantImg" src={item.url}  />
+                </div>
+              )
+            })
+          }
+                <input type="file" onChange={this.updatePic.bind(this)} id="a-input" style={{"display":"none"}} />
+                <div onClick={this.clupPic.bind(this)} style={{ width: "12rem", height: "12rem", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left" }} >
+            <img src="./park_m/image/addPicture.png" style={{ height: "60px", width: "60px" }} />
+            <div style={{ color: "#949494", marginTop: "-30px" }}>添加</div>
+          </div>
+        </div>
             </div>
 
-            <div className="" style={{ margin: "1rem auto auto", width: "90%", borderBottom: "3px solid #F2F2F2" }}>
-              <span style={{ color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left" }}>产品展示</span>
-              <div style={{ marginLeft: "11rem" }}>
-                <WingBlank>
-                  <ImagePicker
-                    files={this.state.filesProduct}
-                    onChange={this.onChangeProduct}
-                    onImageClick={(index, fs) => console.log(index, fs)}
-                    selectable={files.length < 8}
-                    accept="image/jpg,image/jpge,image/png"
-                    multiple={this.state.multiple}
-                  />
-                </WingBlank>
-              </div>
+
+   
+
+            <div className="imgBox elegantImgBox" style={{  }}>
+              <span style={{ color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left","margin-right": "1rem" }}>产品展示</span>
+                <div className="service-tel-B" >
+          {this.state.picPro.map((item, index) => {
+            return (
+              <div style={{ width: "12rem", height: "12rem", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", margin: "30px 30px 0 0", float: "left" }} key={index}>
+                <img className="closeIcon" src="./park_m/image/close.png" onClick={e => this.closePicPro(index)} />
+                <img className="elegantImg" src={item.url}  />
+                </div>
+              )
+            })
+          }
+                <input type="file" onChange={this.updatePicPro.bind(this)} id="b-input" style={{"display":"none"}}/>
+                <div onClick={this.clupPicPro.bind(this)} style={{ width: "12rem", height: "12rem", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left" }} >
+            <img src="./park_m/image/addPicture.png" style={{ height: "60px", width: "60px" }} />
+            <div style={{ color: "#949494", marginTop: "-30px" }}>添加</div>
+          </div>
+        </div>
             </div>
 
-            <div className="" style={{ margin: "1rem auto auto", width: "90%", borderBottom: "3px solid #F2F2F2", marginBottom: "13rem" }}>
-              <span style={{ color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left" }}>全景展示</span>
-              <div style={{ marginLeft: "11rem" }}>
-                <WingBlank>
-                  <ImagePicker
-                    files={this.state.filesPanorama}
-                    onChange={this.onChangePanorama}
-                    onImageClick={(index, fs) => console.log(index, fs)}
-                    selectable={files.length < 8}
-                    accept="image/jpg,image/jpge,image/png"
-                    multiple={this.state.multiple}
-                  />
-                </WingBlank>
-              </div>
+
+            
+            <div className="imgBox elegantImgBox" style={{  }}>
+              <span style={{ color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left","margin-right": "1rem" }}>全景展示</span>
+                <div className="service-tel-B" >
+          {this.state.picPan.map((item, index) => {
+            return (
+              <div style={{ width: "12rem", height: "12rem", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", margin: "30px 30px 0 0", float: "left" }} key={index}>
+                <img className="closeIcon" src="./park_m/image/close.png" onClick={e => this.closePicPan(index)} />
+                <img className="elegantImg" src={item.url}  />
+                </div>
+              )
+            })
+          }
+                <input type="file" onChange={this.updatePicPan.bind(this)} id="h-input" style={{"display":"none"}}/>
+                <div onClick={this.clupPicPan.bind(this)} style={{ width: "12rem", height: "12rem", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left" }} >
+            <img src="./park_m/image/addPicture.png" style={{ height: "60px", width: "60px" }} />
+            <div style={{ color: "#949494", marginTop: "-30px" }}>添加</div>
+          </div>
+        </div>
             </div>
+
 
             <div className="enterprise-information-submit" onClick={this.submit.bind(this)}>
               提交
@@ -827,7 +1015,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
               <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>产品展示</div>
-              <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "70%" }}>
+              <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "70%" }}> 
                 {
                   this.state.productImgList.map((item, index) => {
                     return (
@@ -874,8 +1062,55 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
 
       </div>
     )
+     //<div style={{ marginLeft: "11rem" }}> 
+     //           <WingBlank>
+     //             <ImagePicker
+     //               files={this.state.filesElegant}
+     //               onChange={this.onChangeElegant}
+     //               onImageClick={(index, fs) => console.log(index, fs)}
+     //               selectable={files.length < 8}
+     //               accept="image/jpg,image/jpge,image/png"
+     //               multiple={this.state.multiple}
+     //             />
+     //           </WingBlank>
+     //         </div>
     //  <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "70%","white-space": "pre-line" }}>{this.state.descript}</div>
+            // <div className="imgBox">
+            //  <span style={{ color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left" }}>产品展示</span>
+            //  <div style={{ marginLeft: "11rem" }}>
+            //    <WingBlank>
+            //      <ImagePicker
+            //        files={this.state.filesProduct}
+            //        onChange={this.onChangeProduct}
+            //        onImageClick={(index, fs) => console.log(index, fs)}
+            //        selectable={files.length < 8}
+            //        accept="image/jpg,image/jpge,image/png"
+            //        multiple={this.state.multiple}
+            //      />
+            //    </WingBlank>
+            //  </div>
+            //</div>
+    
+            //<div className="imgBox">
+            //  <span style={{ color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left" }}>全景展示</span>
+            //  <div style={{ marginLeft: "11rem" }}>
+            //    <WingBlank>
+            //      <ImagePicker
+            //        files={this.state.filesPanorama}
+            //        onChange={this.onChangePanorama}
+            //        onImageClick={(index, fs) => console.log(index, fs)}
+            //        selectable={files.length < 8}
+            //        accept="image/jpg,image/jpge,image/png"
+            //        multiple={this.state.multiple}
+            //      />
+            //    </WingBlank>
+            //  </div>
+            //</div>
   }
 }
 
 export default EnterpriseInformation;
+
+
+
+

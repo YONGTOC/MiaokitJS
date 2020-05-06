@@ -187,7 +187,7 @@ class Index extends React.Component {
   }
 
   componentWillMount() {
-    this.dataService.getUserInfo(this.callBackGetUserInfo.bind(this))
+   // this.dataService.getUserInfo(this.callBackGetUserInfo.bind(this))
 
    // this.dataService.login(this.isLoginData);
 
@@ -240,6 +240,7 @@ class Index extends React.Component {
     sessionStorage.setItem("token", data.token);
     sessionStorage.setItem("userInfos", JSON.stringify(userInfo));
     this.dataService.getParks(this.setParks);
+    this.isLoginData();
   }
 
   //显示登录框
@@ -294,8 +295,10 @@ class Index extends React.Component {
            sessionStorage.setItem("enterprise","请先关联企业");
         sessionStorage.setItem("enterpriseId", "请先关联企业");
       } else {
-         sessionStorage.setItem("enterprise", dataObj.enterprises[0].name);
-        sessionStorage.setItem("enterpriseId", dataObj.enterprises[0].id);
+        // sessionStorage.setItem("enterprise", dataObj.enterprises[0].name);
+       // sessionStorage.setItem("enterpriseId", dataObj.enterprises[0].id);
+         sessionStorage.setItem("enterprise", dataObj.enterprise.name);
+        sessionStorage.setItem("enterpriseId", dataObj.enterpriseId);
       }
       
     }
@@ -996,6 +999,9 @@ class IsCompanys extends React.Component {
     });
     sessionStorage.setItem("enterprise", name);
     sessionStorage.setItem("enterpriseId", id);
+    let userInfos = JSON.parse(sessionStorage.getItem("userInfos"))
+    userInfos.enterprise = name;
+    userInfos.enterpriseId = id;
    setTimeout(function (){ Index.hideCompanyArr()},1000);
 
   }

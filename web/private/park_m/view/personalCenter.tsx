@@ -45,7 +45,7 @@ class PersonalCenter extends React.Component {
     pathname: "",
     messagelength: 0,
     workOrderLength: 0,
-    enterprise:"",
+    enterprise:"kkfckfc",
     enterpriseId: "",
         // 公司选择
     companyBox: "hide",
@@ -75,8 +75,11 @@ class PersonalCenter extends React.Component {
     this.setState({
       userInfo: JSON.parse(sessionStorage.getItem("userInfos")),
       pathname: this.props.history.location.pathname,
-      enterprise:dataObj.enterprise,
-      enterpriseId: dataObj.enterpriseId,
+     // enterprise:dataObj.enterprise,
+     // enterpriseId: dataObj.enterpriseId,
+      enterprise: sessionStorage.getItem("enterprise"),
+      enterpriseId: sessionStorage.getItem("enterpriseId"),
+
     })
   }
 
@@ -178,7 +181,8 @@ class PersonalCenter extends React.Component {
    alert(data.err_msg)
     this.setState({
       enterprise: data.response.name,
-      company_id:  data.response.company_id
+      company_id: data.response.company_id
+
     })
 
     sessionStorage.setItem("enterprise", data.response.name);

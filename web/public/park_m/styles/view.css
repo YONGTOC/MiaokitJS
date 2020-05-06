@@ -337,6 +337,7 @@ i {
 }
 
 .iconBox-bottom p {
+    font-size: 2rem;
 }
 
 .iconBox-bottomIn {
@@ -358,6 +359,7 @@ i {
     margin-top: 0rem;
     text-align: center;
     color: #0B8BF0;
+    font-size:2rem;
 }
 
 .iconBox-bottomIn img {
@@ -2992,4 +2994,37 @@ i {
     text-align: center;
     font-size: 2.5rem;
     line-height: 6rem;
+}
+/*身份认证补充 img*/
+.enterprise-information-box {
+    margin-bottom: 20rem;
+}
+.imgBox {
+    margin: 0rem 4.5rem;
+    width: 90%;
+    border-bottom: 3px solid #F2F2F2;
+    display: inline-block;
+    padding-bottom: 2rem;
+}
+.closeIcon {
+    position: relative;
+    left: 9rem;
+    display: inline-block;
+    float: left;
+    z-index: 1;
+}
+.elegantImg {
+    height: 100%;
+    width: 100%;
+    float: left;
+    position: relative;
+    top: -3rem;
+}
+.service-tel-B {
+    width: 44rem;
+    margin-top: 2rem;
+    font-size: 40px;
+    line-height: 120px;
+    display: inline-block;
+    float: right;
 }

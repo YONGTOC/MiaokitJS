@@ -63,7 +63,8 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     this.setState({
       applicant:dataObj.name,
       phone:dataObj.phone,
-      company:dataObj.enterprise,
+      company: dataObj.enterprise,
+      company_id: dataObj.enterpriseId,
       park_id: dataObj.park_id,
       role_name:role_name,
       role_id: role_id,
