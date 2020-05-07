@@ -3,7 +3,7 @@ import "css!./styles/enterpriseInformation.css"
 import DataService from "dataService";
 import { string } from "prop-types";
 import "css!./styles/resetAntdMobile.css"
-import { ImagePicker, WingBlank, SegmentedControl } from 'antd-mobile';
+import { ImagePicker, WingBlank,Toast  } from 'antd-mobile';
 
 interface IProps {
 }
@@ -313,7 +313,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
     if (reg01.test(this.state.phoneValue) || reg02.test(this.state.phoneValue) || this.state.phoneValue == "") {
       console.log("手机号或座机号填写正确")
     } else {
-      alert("手机号码不正确，固话请添加区号")
+       Toast.info('手机号码不正确，固话请添加区号', 2);
       return;
     }
 
@@ -324,21 +324,6 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
     let sum = 1;
 
     console.log("bobo", this.state.elegant.length);
-
-    //if (this.state.pic.length == 1) {
-    //  alert("请为企业风采，至少添加两张图片");
-    //  sum = 0;
-    //} else {
-    //      let elegant = this.state.elegant;
-    // $.each(this.state.pic, function (index, item) {
-    //  elegant.push({ "id": item.id, "name": item.name, "url": item.pic_url });
-    //  });
-    //      sum = 1;
-    //}
-
-      //pic.push({ pic_url: data.response, name: "" });
-      //elegant.push({url: elegant.url, name: ""})
-
 
     //let elegants = [];
     let obj = {
@@ -372,7 +357,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
     }
 
      if (this.state.pic.length == 1) {
-      alert("请为企业风采，至少添加两张图片");
+        Toast.info('请为企业风采，至少添加两张图片', 2);
       sum = 0;
     }
 
@@ -380,7 +365,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
       obj.product = this.state.filesProduct;
     }
     if (obj.product.length == 1) {
-      alert("请为公司产品，至少添加两张图片");
+       Toast.info('请为公司产品，至少添加两张图片', 2);
       sum = 0;
     };
 
@@ -395,7 +380,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
   callBackSaveCompanyInfo(data) {
     console.log(data);
     if (data.err_msg == "更新成功") {
-      alert("提交成功");
+      Toast.info('提交成功', 2);
       this.props.history.goBack()
     }
   }
@@ -708,7 +693,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
        // elegant:elegant,
       })
     } else {
-      alert("上传失败")
+       Toast.info('上传失败', 2);
     }
     console.log("rrrrrrrrrrrrrP",this.state)
   }
@@ -753,7 +738,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
         picPro: picPro,
       })
     } else {
-      alert("上传失败")
+       Toast.info('上传失败', 2);
     }
     console.log("rrrrrrrrrrrrrP",this.state)
   }
@@ -793,7 +778,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
         picPan: picPan,
       })
     } else {
-      alert("上传失败")
+       Toast.info('上传失败', 2);
     }
     console.log("rrrrrrrrrrrrrP",this.state)
   }

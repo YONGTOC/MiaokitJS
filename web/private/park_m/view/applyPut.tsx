@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
-import { DatePicker, List } from 'antd-mobile';
+import { DatePicker, List, Toast } from 'antd-mobile';
 import DataService from "dataService";
 import GlobalAction from "compat";
 import "css!./styles/antd-mobile.css";
@@ -280,17 +280,17 @@ class ApplyPut extends React.Component {
     let postData = 0;
     console.log("提交摆点申请", this.state);
     if (this.state.applyList.length == 0) {
-      alert("请选择摆点位置");
+       Toast.info('请选择摆点位置', 2);
     }
     if (this.state.content == "请将具体内容描述出来。（200字内）" ) {
-      alert("请描述具体内容")
+       Toast.info('请描述具体内容', 2);
     }  else  {
       $.each(this.state.applyList, function (index, item) {
         if (item.startTime == "开始日期") {
-          alert("请填写开始日期")
+          Toast.info('请填写开始日期', 2);
           postData = 0;
         } else if (item.endTime == "结束日期") {
-          alert("请填写结束日期")
+          Toast.info('请填写结束日期', 2);
           postData = 0;
         } else {
           postData = 1;
@@ -307,7 +307,7 @@ class ApplyPut extends React.Component {
 
   // 摆点申请提交 -- 成功
   public sumbitApplyputsucceed(data) {
-    alert(data);
+    Toast.info(data, 2);
     window.history.back();
   }
 

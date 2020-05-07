@@ -3,7 +3,8 @@ import * as RouterDOM from 'react-router-dom';
 import DataService from "dataService";
 import GlobalAction from "compat";
 import "css!./styles/resetAntdMobile.css"
-import { ImagePicker, WingBlank, SegmentedControl } from 'antd-mobile';
+import { ImagePicker, WingBlank, Toast } from 'antd-mobile';
+ 
 
 class RepairsOnline extends React.Component<{ history: any }>{
   public constructor(props) {
@@ -42,8 +43,8 @@ class RepairsOnline extends React.Component<{ history: any }>{
     } else {
       this.setState({
         companyUL:[],
-        company: dataObj.enterprise, 
-        company_id: dataObj.enterpriseId,
+        company: sessionStorage.getItem("enterprise"),
+        company_id: sessionStorage.getItem("enterpriseId"),
 
       })
     }
@@ -263,14 +264,19 @@ class RepairsOnline extends React.Component<{ history: any }>{
   public sumbitReqairs() {
     console.log("提交报修", this.state);
     if (this.state.files.length == 0) {
-      alert("请提交报修照片")
+      Toast.info('请提交报修照片', 2);
     } else if (this.state.type_id == "") {
-      alert("请选择报修类型")
+      Toast.info('请选择报修类型', 2);
     } else if (this.state.position == "") {
-      alert("请填写报修位置")
+      Toast.info('请填写报修位置', 2);
     } else if (this.state.descript == "") {
-      alert("请描述报修问题")
-    } else {
+      Toast.info('请描述报修问题', 2);
+    } else if (this.state.company == "请先关联企业" || this.state.company_id == "请先关联企业" ) {
+      Toast.info('请先前往关联企业', 2);
+    }else if (this.state.phone == "" ) {
+      Toast.info('请先前往填写联系电话', 2);
+    }
+    else {
       this.dataService.saveRepairInfo(this.sumbitReqairssucceed, this.state);
     }
   }
@@ -279,7 +285,7 @@ class RepairsOnline extends React.Component<{ history: any }>{
 
   //提交报修单 -- 成功
   public sumbitReqairssucceed(data) {
-    alert(data);
+     Toast.info(data, 2);
     window.history.back();
   }
 
@@ -432,6 +438,7 @@ class RepairsOnline extends React.Component<{ history: any }>{
     room: "",
     //报修企业
     company: "",
+    company_id:"",
     //联系人
     contact: "",
     //联系人id

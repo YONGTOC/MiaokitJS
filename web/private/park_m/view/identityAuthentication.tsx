@@ -1,7 +1,7 @@
 ﻿import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
 import DataService from "dataService";
-import { ImagePicker, WingBlank, SegmentedControl } from 'antd-mobile';
+import { ImagePicker, WingBlank, Toast } from 'antd-mobile';
 
 
 class IdentityAuthentication extends React.Component<{ history: any }> {
@@ -63,8 +63,8 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     this.setState({
       applicant:dataObj.name,
       phone:dataObj.phone,
-      company: dataObj.enterprise,
-      company_id: dataObj.enterpriseId,
+      company: sessionStorage.getItem("enterprise"),
+      company_id: sessionStorage.getItem("enterpriseId"),
       park_id: dataObj.park_id,
       role_name:role_name,
       role_id: role_id,
@@ -130,15 +130,6 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
         console.log("hide",this.state.company_id, this.state.company_name);
       })
   }
-
-  
-  //public callBackModifyCompanyName(data) {
-  //  alert(data.err_msg)
-  //  this.setState({
-  //    enterprise: data.response.name,
-  //    company_id: data.response.company_id
-  //  })
-  //}
 
       //确认公司列表选择
   public getCompanyBox() {
@@ -304,25 +295,24 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     ]
     }
     if (this.state.applicant == "") {
-      alert("请填写姓名")
+       Toast.info('请填写姓名', 2);
     } else if (this.state.phone == "") {
-      alert("请填写联系电话")
+      Toast.info('请填写联系电话', 2);
     } else if (this.state.company == "") {
-      alert("请填写企业名称")
+      Toast.info('请填写企业名称', 2);
     } else if (this.state.role_id == "") {
-      alert("请选择角色类型")
+      Toast.info('请选择角色类型', 2);
     } else if (this.state.pic == "") {
-        alert("请上传认证材料照片")
+      Toast.info('请上传认证材料照片', 2);
     } else {
       this.dataService.userAuthentication(this.sumbitSucceed, obj);
     }
     
 
-    
   }
 
   sumbitSucceed(data) {
-    alert(data);
+    Toast.info('data', 2);
     window.history.back();
   }
 
