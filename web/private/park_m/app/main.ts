@@ -28,7 +28,7 @@ class RoomViewer {
             pThis.m_pLayer = pLayer;
             pThis.m_pLayer.m_pView = {
                 m_mTarget: { x: pThis.m_pIndoor.m_pView.m_mTarget.x, y: pThis.m_pIndoor.m_pView.m_mTarget.y + pLayer.m_nIndex * 7.0, z: pThis.m_pIndoor.m_pView.m_mTarget.z },
-                m_nDistance: 100.0,
+                m_nDistance: 150.0,
                 m_nPitch: pThis.m_pIndoor.m_pView.m_nPitch,
                 m_nYaw: pThis.m_pIndoor.m_pView.m_nYaw
             };
@@ -99,12 +99,12 @@ class RoomViewer {
 
                 /// 刷新大楼透明度
                 if (2 === pThis.m_nState) {
-                    nDistance = (100.0 > nDistance ? 100.0 : (300.0 < nDistance ? 300.0 : nDistance)) - 100.0;
+                    nDistance = (150.0 > nDistance ? 150.0 : (300.0 < nDistance ? 300.0 : nDistance)) - 150.0;
 
-                    pThis.m_pIndoor.SetBuildingOpacity(nDistance / 200.0 * 255.0);
+                    pThis.m_pIndoor.SetBuildingOpacity(nDistance / 150.0 * 255.0);
                 }
                 else if (3 === pThis.m_nState) {
-                    pThis.m_pIndoor.StackLayer(3.0, nLerp, pThis.m_pLayer.m_nIndex);
+                    pThis.m_pIndoor.StackLayer(1.0, nLerp, pThis.m_pLayer.m_nIndex);
                 }
 
                 if (pThis.m_nStepCount === pThis.m_nStep) {
@@ -145,7 +145,7 @@ class RoomViewer {
 
             pThis.m_pDstView = {
                 m_mTarget: pThis.m_pCurView.m_mTarget,
-                m_nDistance: 100.0,
+                m_nDistance: 150.0,
                 m_nPitch: 20.0,
                 m_nYaw: pThis.m_pCurView.m_nYaw
             }
@@ -157,7 +157,7 @@ class RoomViewer {
         else if (3 === nState) {
             pThis.m_pCurView = {
                 m_mTarget: pThis.m_pIndoor.m_pView.m_mTarget,
-                m_nDistance: 100.0,
+                m_nDistance: 150.0,
                 m_nPitch: 20.0,
                 m_nYaw: pThis.m_pIndoor.m_pView.m_nYaw
             }
@@ -233,42 +233,62 @@ class RoomViewer {
 class Indoor {
     /// 构造函数。
     public constructor(pTile, pScene) {
-        this.m_pTile = pTile;
-        this.m_pScene = pScene;
-        this.m_pBuilding = pScene.m_pScene.binding;
+        let pThis = this;
 
-        if ("A栋" === pScene.building_id) {
-            this.m_pView = {
-                m_nLng: 110.344301,
-                m_nLat: 25.272208,
-                m_mTarget: { x: 227.0, y: 0.0, z: 13.0 },
-                m_nDistance: 300.0,
-                m_nPitch: 25.0,
-                m_nYaw: 185.0
-            };
+        pThis.m_pTile = pTile;
+        pThis.m_pScene = pScene;
+        pThis.m_pBuilding = pScene.m_pScene.binding;
+        pThis.m_pDioramas = null;
+
+        for (let pDior of MiaokitJS.m_pConfig.DIORS) {
+            if (pTile.m_pDior === pDior.m_pName) {
+                pThis.m_pDioramas = pDior;
+                break;
+            }
+        }
+        
+        pThis.m_pView = {
+            m_nLng: pTile.m_nLng,
+            m_nLat: pTile.m_nLng,
+            m_mTarget: pScene.m_pView.m_mTarget,
+            m_nDistance: pScene.m_pView.m_nDistance,
+            m_nPitch: pScene.m_pView.m_nPitch,
+            m_nYaw: pScene.m_pView.m_nYaw
+        };
+    }
+
+    /// 场景名称。
+    public get name() {
+        let pThis = this;
+
+        if (pThis.m_pBuilding) {
+            return pThis.m_pScene.building_id;
         }
         else {
-            this.m_pView = {
-                m_nLng: 110.344301,
-                m_nLat: 25.272208,
-                m_mTarget: { x: 192.0, y: 0.0, z: -42.0 },
-                m_nDistance: 300.0,
-                m_nPitch: 25.0,
-                m_nYaw: 95.0
-            };
+            return pThis.m_pTile.m_pName;
         }
+
+        return "Default";
     }
 
     /// 场景中心点屏幕坐标。
     public get screenPoint() {
-        if (this.m_pBuilding) {
-            let pBuildingObj = this.m_pBuilding.object3D;
+        let pThis = this;
+
+        if (pThis.m_pBuilding) {
+            let pBuildingObj = pThis.m_pBuilding.object3D;
             if (pBuildingObj) {
                 let pPosition = pBuildingObj.transform.regionPosition;
                 let pPoint = MiaokitJS.Miaokit.WorldToScreenPoint(pPosition);
 
                 return pPoint;
             }
+        }
+        else {
+            let pPosition = pThis.m_pView.m_mTarget;
+            let pPoint = MiaokitJS.Miaokit.WorldToScreenPoint(pPosition);
+
+            return pPoint;
         }
 
         return null;
@@ -278,21 +298,33 @@ class Indoor {
     public FocusBuilding() {
         let pThis = this;
 
-        let pBuildingObj = pThis.m_pBuilding.object3D;
-        if (pBuildingObj) {
-            pBuildingObj.highlight = true;
-            pBuildingObj.opacity = 255;
+        if (pThis.m_pBuilding) {
+            let pBuildingObj = pThis.m_pBuilding.object3D;
+            if (pBuildingObj) {
+                pBuildingObj.highlight = true;
+                pBuildingObj.opacity = 255;
+            }
         }
+        else {
+        }        
     }
 
     /// 刷新大楼透明度。
     public SetBuildingOpacity(nOpacity) {
         let pThis = this;
 
-        let pBuildingObj = pThis.m_pBuilding.object3D;
-        if (pBuildingObj) {
-            pBuildingObj.opacity = nOpacity;
+        if (pThis.m_pBuilding) {
+            let pBuildingObj = pThis.m_pBuilding.object3D;
+            if (pBuildingObj) {
+                pBuildingObj.opacity = nOpacity;
+            }
         }
+        else {
+            if (250 < nOpacity && pThis.m_pDioramas) {
+                pThis.m_pDioramas.m_pDior.Deplanation({ x: pThis.m_pView.m_mTarget.x, y: 35.0, z: pThis.m_pView.m_mTarget.z });
+            }
+        }
+        
     }
 
     /// 层叠楼层。
@@ -354,11 +386,19 @@ class Indoor {
     public Deactive() {
         let pThis = this;
 
-        let pBuildingObj = pThis.m_pBuilding.object3D;
-        if (pBuildingObj) {
-            pBuildingObj.highlight = false;
-            pBuildingObj.opacity = 255;
+        if (pThis.m_pBuilding) {
+            let pBuildingObj = pThis.m_pBuilding.object3D;
+            if (pBuildingObj) {
+                pBuildingObj.highlight = false;
+                pBuildingObj.opacity = 255;
+            }
         }
+        else {
+            if (pThis.m_pDioramas) {
+                pThis.m_pDioramas.m_pDior.Recover();
+            }
+        }
+        
 
         pThis.m_pScene.m_pScene.object3D.active = false;
     }
@@ -431,6 +471,8 @@ class Indoor {
     public m_nBuildingType: number = 0;
     /// 建筑对象。
     public m_pBuilding: any = null;
+    /// 实景模型对象。
+    public m_pDioramas: any = null;
     /// 屏幕显示坐标。
     public m_pScreenPos: any = null;
     /// 内景整体观察视角。
@@ -602,7 +644,7 @@ class Main {
             if (pTile.m_aIndoor) {
                 for (let pIndoor of pTile.m_aIndoor) {
                     let pPoint = pIndoor.screenPoint;
-                    let pText = pIndoor.m_pScene.building_id;
+                    let pText = pIndoor.name;
                     let pRect = pCanvasCtx.measureText(pText);
 
                     pPoint.x = pPoint.x * pCanvas.width;
@@ -677,7 +719,7 @@ class Main {
                         if (pRoom.m_pBuilding === pIndoor.m_pScene.building_id) {
                             let nLayer = 0;
                             for (let pLayer of pIndoor.m_pScene.layerList) {
-                                if (pRoom.m_pLayer === pLayer.floor_id) {                                    
+                                if (pRoom.m_pLayer === pLayer.floor_id) {
                                     pThis.m_pRoomViewer.Enter(pIndoor, { m_nIndex: nLayer }, { m_mTarget: pRoom.m_mTarget });
                                     break;
                                 }
@@ -851,7 +893,8 @@ class Main {
                 Icon: "",
                 icon_url: "",
                 layerList: [],
-                m_pScene: pSceneA
+                m_pScene: pSceneA,
+                m_pView: pTile.m_aView[pID]
             };
 
             for (let pLayer of pSceneA.layers) {
@@ -922,10 +965,10 @@ class Main {
         for (let pScene of pTile.m_aScene) {
             let pAdjust = pTile.m_aAdjust[pScene.building_id];
             let pObject = pScene.m_pScene.object3D;
-            let bOutdoor = pScene.building_id === pTile.m_pOutdoor.building_id;
+            let bOutdoor = pScene.building_id === (pTile.m_pOutdoor ? pTile.m_pOutdoor.building_id : "");
 
             pObject.active = bOutdoor ? true : false;
-            console.error("cccccccccccccccccc");
+
             /// 叠加当前场景楼层
             for (let pLayerA of pScene.m_pScene.layers) {
                 if (pAdjust) {
@@ -942,9 +985,7 @@ class Main {
                 }
 
                 if (bOutdoor) {
-                    console.error("3-------------------");
                     pLayerA._Draw();
-                    console.error("4-------------------");
                 }
 
                 /// 前后端楼层对象绑定
@@ -966,8 +1007,10 @@ class Main {
                 pThis["InitComplete"] = null;
 
                 for (let pTile of pThis.m_aTile) {
+                    let pOutdoor = pTile.m_pOutdoor ? pTile.m_pOutdoor.building_id : "";
+
                     for (let pScene of pTile.m_aScene) {
-                        if (pTile.m_pOutdoor.building_id !== pScene.building_id) {
+                        if (pOutdoor !== pScene.building_id) {
                             for (let pLayer of pScene.layerList) {
                                 pLayer.m_pLayer._Draw();
                             }

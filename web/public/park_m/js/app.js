@@ -24,7 +24,7 @@ class RoomViewer {
             pThis.m_pLayer = pLayer;
             pThis.m_pLayer.m_pView = {
                 m_mTarget: { x: pThis.m_pIndoor.m_pView.m_mTarget.x, y: pThis.m_pIndoor.m_pView.m_mTarget.y + pLayer.m_nIndex * 7.0, z: pThis.m_pIndoor.m_pView.m_mTarget.z },
-                m_nDistance: 100.0,
+                m_nDistance: 150.0,
                 m_nPitch: pThis.m_pIndoor.m_pView.m_nPitch,
                 m_nYaw: pThis.m_pIndoor.m_pView.m_nYaw
             };
@@ -77,11 +77,11 @@ class RoomViewer {
                 pThis.m_pCamera.pitch = nPitch;
                 pThis.m_pCamera.yaw = nYaw;
                 if (2 === pThis.m_nState) {
-                    nDistance = (100.0 > nDistance ? 100.0 : (300.0 < nDistance ? 300.0 : nDistance)) - 100.0;
-                    pThis.m_pIndoor.SetBuildingOpacity(nDistance / 200.0 * 255.0);
+                    nDistance = (150.0 > nDistance ? 150.0 : (300.0 < nDistance ? 300.0 : nDistance)) - 150.0;
+                    pThis.m_pIndoor.SetBuildingOpacity(nDistance / 150.0 * 255.0);
                 }
                 else if (3 === pThis.m_nState) {
-                    pThis.m_pIndoor.StackLayer(3.0, nLerp, pThis.m_pLayer.m_nIndex);
+                    pThis.m_pIndoor.StackLayer(1.0, nLerp, pThis.m_pLayer.m_nIndex);
                 }
                 if (pThis.m_nStepCount === pThis.m_nStep) {
                     pThis.SetState(pThis.m_nState + 1);
@@ -110,7 +110,7 @@ class RoomViewer {
             pThis.m_pCurView = pThis.m_pIndoor.m_pView;
             pThis.m_pDstView = {
                 m_mTarget: pThis.m_pCurView.m_mTarget,
-                m_nDistance: 100.0,
+                m_nDistance: 150.0,
                 m_nPitch: 20.0,
                 m_nYaw: pThis.m_pCurView.m_nYaw
             };
@@ -120,7 +120,7 @@ class RoomViewer {
         else if (3 === nState) {
             pThis.m_pCurView = {
                 m_mTarget: pThis.m_pIndoor.m_pView.m_mTarget,
-                m_nDistance: 100.0,
+                m_nDistance: 150.0,
                 m_nPitch: 20.0,
                 m_nYaw: pThis.m_pIndoor.m_pView.m_nYaw
             };
@@ -167,56 +167,80 @@ class Indoor {
         this.m_pScene = null;
         this.m_nBuildingType = 0;
         this.m_pBuilding = null;
+        this.m_pDioramas = null;
         this.m_pScreenPos = null;
         this.m_pView = null;
-        this.m_pTile = pTile;
-        this.m_pScene = pScene;
-        this.m_pBuilding = pScene.m_pScene.binding;
-        if ("A栋" === pScene.building_id) {
-            this.m_pView = {
-                m_nLng: 110.344301,
-                m_nLat: 25.272208,
-                m_mTarget: { x: 227.0, y: 0.0, z: 13.0 },
-                m_nDistance: 300.0,
-                m_nPitch: 25.0,
-                m_nYaw: 185.0
-            };
+        let pThis = this;
+        pThis.m_pTile = pTile;
+        pThis.m_pScene = pScene;
+        pThis.m_pBuilding = pScene.m_pScene.binding;
+        pThis.m_pDioramas = null;
+        for (let pDior of MiaokitJS.m_pConfig.DIORS) {
+            if (pTile.m_pDior === pDior.m_pName) {
+                pThis.m_pDioramas = pDior;
+                break;
+            }
+        }
+        pThis.m_pView = {
+            m_nLng: pTile.m_nLng,
+            m_nLat: pTile.m_nLng,
+            m_mTarget: pScene.m_pView.m_mTarget,
+            m_nDistance: pScene.m_pView.m_nDistance,
+            m_nPitch: pScene.m_pView.m_nPitch,
+            m_nYaw: pScene.m_pView.m_nYaw
+        };
+    }
+    get name() {
+        let pThis = this;
+        if (pThis.m_pBuilding) {
+            return pThis.m_pScene.building_id;
         }
         else {
-            this.m_pView = {
-                m_nLng: 110.344301,
-                m_nLat: 25.272208,
-                m_mTarget: { x: 192.0, y: 0.0, z: -42.0 },
-                m_nDistance: 300.0,
-                m_nPitch: 25.0,
-                m_nYaw: 95.0
-            };
+            return pThis.m_pTile.m_pName;
         }
+        return "Default";
     }
     get screenPoint() {
-        if (this.m_pBuilding) {
-            let pBuildingObj = this.m_pBuilding.object3D;
+        let pThis = this;
+        if (pThis.m_pBuilding) {
+            let pBuildingObj = pThis.m_pBuilding.object3D;
             if (pBuildingObj) {
                 let pPosition = pBuildingObj.transform.regionPosition;
                 let pPoint = MiaokitJS.Miaokit.WorldToScreenPoint(pPosition);
                 return pPoint;
             }
         }
+        else {
+            let pPosition = pThis.m_pView.m_mTarget;
+            let pPoint = MiaokitJS.Miaokit.WorldToScreenPoint(pPosition);
+            return pPoint;
+        }
         return null;
     }
     FocusBuilding() {
         let pThis = this;
-        let pBuildingObj = pThis.m_pBuilding.object3D;
-        if (pBuildingObj) {
-            pBuildingObj.highlight = true;
-            pBuildingObj.opacity = 255;
+        if (pThis.m_pBuilding) {
+            let pBuildingObj = pThis.m_pBuilding.object3D;
+            if (pBuildingObj) {
+                pBuildingObj.highlight = true;
+                pBuildingObj.opacity = 255;
+            }
+        }
+        else {
         }
     }
     SetBuildingOpacity(nOpacity) {
         let pThis = this;
-        let pBuildingObj = pThis.m_pBuilding.object3D;
-        if (pBuildingObj) {
-            pBuildingObj.opacity = nOpacity;
+        if (pThis.m_pBuilding) {
+            let pBuildingObj = pThis.m_pBuilding.object3D;
+            if (pBuildingObj) {
+                pBuildingObj.opacity = nOpacity;
+            }
+        }
+        else {
+            if (250 < nOpacity && pThis.m_pDioramas) {
+                pThis.m_pDioramas.m_pDior.Deplanation({ x: pThis.m_pView.m_mTarget.x, y: 35.0, z: pThis.m_pView.m_mTarget.z });
+            }
         }
     }
     StackLayer(nOffset, nRate, nStressLayer) {
@@ -265,10 +289,17 @@ class Indoor {
     }
     Deactive() {
         let pThis = this;
-        let pBuildingObj = pThis.m_pBuilding.object3D;
-        if (pBuildingObj) {
-            pBuildingObj.highlight = false;
-            pBuildingObj.opacity = 255;
+        if (pThis.m_pBuilding) {
+            let pBuildingObj = pThis.m_pBuilding.object3D;
+            if (pBuildingObj) {
+                pBuildingObj.highlight = false;
+                pBuildingObj.opacity = 255;
+            }
+        }
+        else {
+            if (pThis.m_pDioramas) {
+                pThis.m_pDioramas.m_pDior.Recover();
+            }
         }
         pThis.m_pScene.m_pScene.object3D.active = false;
     }
@@ -454,7 +485,7 @@ class Main {
             if (pTile.m_aIndoor) {
                 for (let pIndoor of pTile.m_aIndoor) {
                     let pPoint = pIndoor.screenPoint;
-                    let pText = pIndoor.m_pScene.building_id;
+                    let pText = pIndoor.name;
                     let pRect = pCanvasCtx.measureText(pText);
                     pPoint.x = pPoint.x * pCanvas.width;
                     pPoint.y = pPoint.y * pCanvas.height;
@@ -647,7 +678,8 @@ class Main {
                 Icon: "",
                 icon_url: "",
                 layerList: [],
-                m_pScene: pSceneA
+                m_pScene: pSceneA,
+                m_pView: pTile.m_aView[pID]
             };
             for (let pLayer of pSceneA.layers) {
                 pID = pLayer.id;
@@ -706,9 +738,8 @@ class Main {
         for (let pScene of pTile.m_aScene) {
             let pAdjust = pTile.m_aAdjust[pScene.building_id];
             let pObject = pScene.m_pScene.object3D;
-            let bOutdoor = pScene.building_id === pTile.m_pOutdoor.building_id;
+            let bOutdoor = pScene.building_id === (pTile.m_pOutdoor ? pTile.m_pOutdoor.building_id : "");
             pObject.active = bOutdoor ? true : false;
-            console.error("cccccccccccccccccc");
             for (let pLayerA of pScene.m_pScene.layers) {
                 if (pAdjust) {
                     let pObject = pLayerA.object3D;
@@ -721,9 +752,7 @@ class Main {
                     }
                 }
                 if (bOutdoor) {
-                    console.error("3-------------------");
                     pLayerA._Draw();
-                    console.error("4-------------------");
                 }
                 for (let pLayerB of pScene.layerList) {
                     if (pLayerB.floor_id === pLayerA.id) {
@@ -739,8 +768,9 @@ class Main {
                 MiaokitJS.Track("Showed Tiles");
                 pThis["InitComplete"] = null;
                 for (let pTile of pThis.m_aTile) {
+                    let pOutdoor = pTile.m_pOutdoor ? pTile.m_pOutdoor.building_id : "";
                     for (let pScene of pTile.m_aScene) {
-                        if (pTile.m_pOutdoor.building_id !== pScene.building_id) {
+                        if (pOutdoor !== pScene.building_id) {
                             for (let pLayer of pScene.layerList) {
                                 pLayer.m_pLayer._Draw();
                             }

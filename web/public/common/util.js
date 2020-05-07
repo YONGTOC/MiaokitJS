@@ -1332,14 +1332,14 @@ varying vec4 v_UV;
 
 vec4 vs()
 {
-    vec4 mBuilding = vec4(0.0, 0.0, 0.0, 0.0);//texture2D(_BuildingTex, a_Normal.xy);
+    vec4 mBuilding = texture2D(_BuildingTex, a_Normal.xy);
     
-    v_Object.a = mBuilding.r;    
+    //v_Object.a = mBuilding.r;    
     v_UV = vec4(a_UV, 0.0, 0.0);
     
     vec4 mPosition = vec4(a_Position.xyz, 1.0);
     mPosition = u_MatG * a_MatW * mPosition;
-    mPosition.y -= mBuilding.r * (mPosition.y - 5.0);
+    mPosition.y -= mBuilding.r * (mPosition.y - 1.0);
     
     // 高品质下，计算法线，计算大气散射
     #ifdef HIGH_QUALITY
@@ -1493,6 +1493,8 @@ vec4 vs()
     Atmosphere(normalize(u_Sunlight.xyz), mPosition_.xyz);
     #endif
     
+    v_Object.a = 0.0;
+    
     return u_MatVP * mPosition_; 
 }
         `,
@@ -1511,7 +1513,7 @@ vec4 fs()
 
     mColor.rgb = (mColor.rgb * (1.0 - mLabel.a)) + (mLabel.rgb * mLabel.a);
     mColor.a = 1.0;
-    
+
     // 高品质下，计算BRDF光照，计算大气散射
     #ifdef HIGH_QUALITY    
     mColor.rgb += BRDF(normalize(u_Sunlight.xyz), normalize(v_ViewDir.xyz), v_Normal, vec3(0.0, 0.0, 1.0), vec3(1.0, 0.0, 0.0)) * 0.4;

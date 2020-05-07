@@ -91,11 +91,11 @@ class GlobalAction {
         }
         else if (5 == pName) {
             MiaokitJS.App.m_pProject.EnterRoom({
-                m_pTile: "惠阳政务中心",
-                m_pBuilding: "B栋",
-                m_pLayer: "B3F",
+                m_pTile: "创新大厦(A座)",
+                m_pBuilding: "Default",
+                m_pLayer: "1F",
                 m_pRoom: "1房间",
-                m_mTarget: { x: 198.0, y: 0.0, z: -42.0 }
+                m_mTarget: { x: -3.0, y: 0.0, z: 1.0 }
             });
         }
 
