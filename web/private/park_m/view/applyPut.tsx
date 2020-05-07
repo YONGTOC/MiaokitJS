@@ -279,6 +279,12 @@ class ApplyPut extends React.Component {
   public sumbitApplyput() {
     let postData = 0;
     console.log("提交摆点申请", this.state);
+    if (this.state.company == "请先关联企业" ) {
+      Toast.info('请先前往关联企业', 2);
+    }
+    if (this.state.phone == "") {
+       Toast.info('请先绑定联系电话', 2);
+    }
     if (this.state.applyList.length == 0) {
        Toast.info('请选择摆点位置', 2);
     }
@@ -336,7 +342,10 @@ class ApplyPut extends React.Component {
                 <span className={"applySpanleft"}><span className="redStar">*</span>申请人</span><p className={"applyRight"}>{this.state.applicant}</p>
               </li>
               <li>
-                <span className="redStar">*</span>手机号码<p className={"applyRight"}>{this.state.phone}</p>
+                <span className="redStar">*</span>手机号码
+                <p className={"applyRight"}>
+                    <input type="text" value={this.state.phone} placeholder="请先绑定电话号码 " style={{ "border": "0" }} readOnly />
+                </p>
               </li>
               <li>
                 <span className="redStar">*</span>申请单位

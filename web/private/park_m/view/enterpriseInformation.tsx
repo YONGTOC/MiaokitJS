@@ -52,6 +52,7 @@ interface IState {
   pic: Array<any>,
   picPro:  Array<any>,
   picPan: Array<any>,
+  user_id:string,
 }
 
 
@@ -103,6 +104,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
     pic: [],
     picPro: [],
     picPan: [],
+    user_id:"",
     
 
   }
@@ -123,20 +125,19 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
   public dataService: DataService = new DataService()
 
   componentDidMount() {
-    let userid = localStorage.getItem("userId");
-    //this.dataService.getCompanyInfo(this.setCompanyinfo, userId); 
+     //this.dataService.getCompanyInfo(this.setCompanyinfo, userId); 
     let enterpriseId = sessionStorage.getItem("enterpriseId");
     this.dataService.getCompanyInfo(this.setCompanyinfo, enterpriseId);
     // this.dataService.getCompanyInfoByUser(this.setCompanyinfo, 2);
     let park_id = sessionStorage.getItem("park_id");
     this.dataService.getCompanyType(this.setCompanyType, park_id);
-
-
-    //if (this.props.location.state) {
-    //   sessionStorage.setItem("roomInfo", JSON.stringify(this.props.location.state.roomInfo))
-    //}
     console.log(JSON.parse(sessionStorage.getItem("roomInfo")))
     console.log("pic", this.state.pic)
+    let data = sessionStorage.getItem("userInfos");
+    let dataObj = JSON.parse(data)
+    this.setState({
+      user_id: dataObj.userId,
+    })
   }
 
   public setCompanyinfo(data) {
@@ -197,6 +198,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
       company_type: data.response.company_type,
       company_type_id: data.response.company_type_id,
       inputCompanyType: data.response.company_type,
+      officialWebsiteValue:data.response.website,
       website: data.response.website,
       // descript: descriptN,
       descriptArr: descriptArr,
@@ -312,23 +314,26 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
 
     if (reg01.test(this.state.phoneValue) || reg02.test(this.state.phoneValue) || this.state.phoneValue == "") {
       console.log("手机号或座机号填写正确")
+    } else if (this.state.phoneValue == "请输入联系人电话") {
+      Toast.info('请输入联系人电话', 2);
+      return;
     } else {
        Toast.info('手机号码不正确，固话请添加区号', 2);
       return;
     }
 
-    let userid = sessionStorage.getItem("userid");
+
     let park_id = sessionStorage.getItem("park_id");
     let enterpriseId = sessionStorage.getItem("enterpriseId");
     // let token= sessionStorage.getItem("token");
     let sum = 1;
 
-    console.log("bobo", this.state.elegant.length);
+    console.log("bobo", this.state);
 
     //let elegants = [];
     let obj = {
       //用户id
-      "user_id": userid,
+      "user_id": this.state.user_id,
       //园区id
       "park_id": park_id,
       //企业id（当为添加新企业时，参数为""）
@@ -355,19 +360,49 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
       "headimageurl": this.state.headimageurl,
 
     }
-
+    // name
+     if ( this.state.inputEnterpriseNameValue == "请输入企业名称" || this.state.inputEnterpriseNameValue == "" ) {
+        Toast.info('请输入企业名称', 2);
+      sum = 0;
+    }
+    if (this.state.contactsValue == "请输入联系人姓名" || this.state.contactsValue == '' ) {
+      Toast.info('请添加联系人姓名', 2);
+      sum = 0;
+    }
+    if (this.state.inputEnterprisePositionValue == "请输入详细地址" || this.state.inputEnterprisePositionValue == '') {
+      Toast.info('请添加企业详细地址', 2);
+      sum = 0;
+    }
+   
+    if (this.state.picPro.length == 0) {
+      obj.product = this.state.filesProduct;
+    }
+    if (!this.state.headimageurl) {
+        Toast.info('请为企业添加logo', 2);
+      sum = 0;
+    }
      if (this.state.pic.length == 1) {
         Toast.info('请为企业风采，至少添加两张图片', 2);
       sum = 0;
-    }
-
-    if (this.state.picPro.length == 0) {
-      obj.product = this.state.filesProduct;
     }
     if (obj.product.length == 1) {
        Toast.info('请为公司产品，至少添加两张图片', 2);
       sum = 0;
     };
+
+    var reg = /^((ht|f)tps?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/;
+   // var reg = /^([\w-]+\.)+[\w-]+(/[\w-./?%&=]*)?$/;
+    if (this.state.officialWebsiteValue == "请输入企业官方网址") {
+
+      if (reg.test(this.state.officialWebsiteValue)) {
+        console.log("网址填写正确");
+      } else {
+        Toast.info("请输入有效网址", 2);
+           sum = 0;
+      }
+
+
+    }
 
     console.log("objobjobj2222222", obj);
     if (sum == 1) {
@@ -440,7 +475,10 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
 
   // 输入企业位置
   changeEnterprisePosition(event) {
-    this.setState({ inputEnterprisePositionValue: event.target.value })
+    this.setState({
+      inputEnterprisePositionValue: event.target.value,
+      address : event.target.value,
+    })
   }
 
   // 聚焦联系人
@@ -709,8 +747,6 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
       pic: pic,
      // elegant:elegant,
     })
-
-
   }
 
     //新提交图片 2
@@ -955,8 +991,8 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
               <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>企业logo</div>
-              <div style={{ color: "#333333", fontSize: "40px", float: "left" }}>
-                <img src={this.state.headimageurl} style={{ width: "11rem" }} onError={this.onErrorHeadimageurl.bind(this)} />
+              <div style={{ float: "left",width: "12rem","height": "12rem"  }}>
+                <img src={this.state.headimageurl} style={{ width: "100%","height": "100%" }} onError={this.onErrorHeadimageurl.bind(this)} />
               </div>
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
@@ -1047,50 +1083,6 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
 
       </div>
     )
-     //<div style={{ marginLeft: "11rem" }}> 
-     //           <WingBlank>
-     //             <ImagePicker
-     //               files={this.state.filesElegant}
-     //               onChange={this.onChangeElegant}
-     //               onImageClick={(index, fs) => console.log(index, fs)}
-     //               selectable={files.length < 8}
-     //               accept="image/jpg,image/jpge,image/png"
-     //               multiple={this.state.multiple}
-     //             />
-     //           </WingBlank>
-     //         </div>
-    //  <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "70%","white-space": "pre-line" }}>{this.state.descript}</div>
-            // <div className="imgBox">
-            //  <span style={{ color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left" }}>产品展示</span>
-            //  <div style={{ marginLeft: "11rem" }}>
-            //    <WingBlank>
-            //      <ImagePicker
-            //        files={this.state.filesProduct}
-            //        onChange={this.onChangeProduct}
-            //        onImageClick={(index, fs) => console.log(index, fs)}
-            //        selectable={files.length < 8}
-            //        accept="image/jpg,image/jpge,image/png"
-            //        multiple={this.state.multiple}
-            //      />
-            //    </WingBlank>
-            //  </div>
-            //</div>
-    
-            //<div className="imgBox">
-            //  <span style={{ color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left" }}>全景展示</span>
-            //  <div style={{ marginLeft: "11rem" }}>
-            //    <WingBlank>
-            //      <ImagePicker
-            //        files={this.state.filesPanorama}
-            //        onChange={this.onChangePanorama}
-            //        onImageClick={(index, fs) => console.log(index, fs)}
-            //        selectable={files.length < 8}
-            //        accept="image/jpg,image/jpge,image/png"
-            //        multiple={this.state.multiple}
-            //      />
-            //    </WingBlank>
-            //  </div>
-            //</div>
   }
 }
 

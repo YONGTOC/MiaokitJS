@@ -107,9 +107,7 @@
     <div id="viewContainer"></div>
 
     <!--测试threejs-->
-    <div id="3Dbuttons">
-
-
+    <div id="floorList">
         <div class="floor_box">
             <p class="floor_box_up" onclick="floorUp()">
                 <i class="iconfont" style="font-size: 2.6rem">&#xe83a;</i>
@@ -128,7 +126,6 @@
                 <i class="iconfont" style="font-size: 2.6rem">&#xe828;</i>
             </p>
         </div>
-
     </div>
 
     <div class="changeD" onclick="changeD()">2D</div>
@@ -169,6 +166,12 @@
         </li>
         <li>
             <button onclick="refreshBooksite(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活场地预约</button>
+        </li> 
+        <li>
+            <button onclick="floorListShow()" style="width: 17rem;height: 4rem;font-size: 2.3rem;">floorListShow</button>
+        </li>
+        <li>
+            <button onclick="floorListHide()" style="width: 17rem;height: 4rem;font-size: 2.3rem;">floorListHide</button>
         </li>
         <!--<li>
             <button onclick="refreshParking(120)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活地库</button>
@@ -217,6 +220,16 @@
         var floorIndex;
         var floorIndexMax;
         var floorId;
+
+        function floorListShow(){
+            $("#floorList").show();
+            console.log("进入建筑，显示楼层列表")
+        };
+
+        function floorListHide(){
+            $("#floorList").hide();
+            console.log("到外景，隐藏楼层列表")
+        };
 
         function floorUp() {
             console.log("up", floorIndex);

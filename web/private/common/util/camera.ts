@@ -273,11 +273,17 @@ class CameraCtrl {
             nOffsetY *= nFactor;
 
             let mTarget = this.target;
-            let rYaw = (this.yaw / 180.0) * Math.PI;
-            mTarget.x += nOffsetX * Math.cos(rYaw);
-            mTarget.z -= nOffsetX * Math.sin(rYaw);
-            mTarget.z += nOffsetY * Math.cos(rYaw);
-            mTarget.x += nOffsetY * Math.sin(rYaw);
+            if (2 === this.m_nViewMode) {
+                mTarget.x += nOffsetX;
+                mTarget.z += nOffsetY;
+            }
+            else {
+                let rYaw = (this.yaw / 180.0) * Math.PI;
+                mTarget.x += nOffsetX * Math.cos(rYaw);
+                mTarget.z -= nOffsetX * Math.sin(rYaw);
+                mTarget.z += nOffsetY * Math.cos(rYaw);
+                mTarget.x += nOffsetY * Math.sin(rYaw);
+            }            
 
             this.target = mTarget;
         }
@@ -315,6 +321,10 @@ class CameraCtrl {
 
     /// 应用最新设置的参数，更新摄像机状态
     public Update(): void {
+        if (!this.m_nEnabled) {
+            return;
+        }
+
         if (this.m_pFlyTask) {
             if (this.m_pFlyTask.Update()) {
                 this.m_pFlyTask = null;
@@ -383,28 +393,48 @@ class CameraCtrl {
                 this.target = mTarget;
             }
 
-            this.m_pTransform.position = { x: 0, y: 0, z: 0 };
-            this.m_pTransform.euler = { x: 0, y: 0, z: 0 };
-            this.m_pTransform.Rotate2({ x: 1, y: 0, z: 0 }, this.pitch, 1);
-            this.m_pTransform.Rotate2({ x: 0, y: 1, z: 0 }, this.yaw, 0);
-            this.m_pTransform.position = this.target;
-            this.m_pTransform.Translate(MiaokitJS.Vector3.Scale(-this.distance, { x: 0, y: 0, z: 1 }), 1);
+            if (2 === this.m_nViewMode) {
+                this.m_pTransform.position = { x: 0, y: 0, z: 0 };
+                this.m_pTransform.euler = { x: 0, y: 0, z: 0 };
+                this.m_pTransform.Rotate2({ x: 1, y: 0, z: 0 }, 90, 0);
+                this.m_pTransform.position = this.target;
+                this.m_pTransform.Translate(MiaokitJS.Vector3.Scale(-this.distance, { x: 0, y: 0, z: 1 }), 1);
+            }
+            else {
+                this.m_pTransform.position = { x: 0, y: 0, z: 0 };
+                this.m_pTransform.euler = { x: 0, y: 0, z: 0 };
+                this.m_pTransform.Rotate2({ x: 1, y: 0, z: 0 }, this.pitch, 1);
+                this.m_pTransform.Rotate2({ x: 0, y: 1, z: 0 }, this.yaw, 0);
+                this.m_pTransform.position = this.target;
+                this.m_pTransform.Translate(MiaokitJS.Vector3.Scale(-this.distance, { x: 0, y: 0, z: 1 }), 1);
+            }            
         }
         /// 漫游模式
         else {
             console.log("未实现漫游模式");
         }
-
-        if (180 === this.iii++) {
-            console.log(this);
-            this.iii = 0;
-        }
     }
-    public iii = 0;
+
+
+    /// 设置摄像机控制器可控状态。
+    public set enabled(enabled: boolean) {
+        this.m_nEnabled = enabled;
+    }
 
     /// 获取当前摄像机控制模式。
     public get ctrlMode(): CTRL_MODE {
         return this.m_eCtrlMode;
+    }
+
+    /// 视图模式。
+    public get viewMode(): number {
+        return this.m_nViewMode;
+    }
+    public set viewMode(mode: number) {
+        if (this.m_nViewMode !== mode) {
+            this.m_nViewMode = mode;
+            MiaokitJS.Miaokit.cameraMode = mode;
+        }
     }
 
     /// 获取当前摄像机状态。
@@ -517,9 +547,13 @@ class CameraCtrl {
     private m_pCamera: any = null;
     /// 摄像机变换组件。
     private m_pTransform: any = null;
+    /// 摄像机控制启用状态。
+    private m_nEnabled: boolean = true;
 
     /// 当前控制模式。
     private m_eCtrlMode: CTRL_MODE = CTRL_MODE.REMOTE;
+    /// 当前视图模式。
+    private m_nViewMode: number = 3;
     /// 当前经度参数。
     private m_nLng: number = 0.0;
     /// 当前经度参数。

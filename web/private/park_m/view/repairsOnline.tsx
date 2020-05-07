@@ -342,9 +342,7 @@ class RepairsOnline extends React.Component<{ history: any }>{
               </li>
               <li>
                 <span className="redStar">*</span><span style={{ "color": "#949494" }}>报修企业</span>
-                <span className="iconfont" style={{ "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" }} >&#xe827;</span>
-                <p className={"applyRight"}
-                  style={{ "font-size": "2.3rem", "padding-left": "2.5rem", "float": "right", "width": "37rem" }}>{this.state.company}</p>
+                   <input type="text" value={this.state.company} placeholder="请先关联企业" style={{ "margin-left": "4rem", "border": "0" }} readOnly />
               </li>
               <li>
                 <span className="redStar">*</span><span style={{ "color": "#949494" }}>联系人</span>
@@ -353,7 +351,7 @@ class RepairsOnline extends React.Component<{ history: any }>{
               </li>
               <li>
                 <span className="redStar">*</span><span style={{ "color": "#949494" }}>电话号码</span>
-                <input type="text" value={this.state.phone} placeholder="请填写联系电话号码 " style={{ "margin-left": "4rem", "border": "0" }}
+                <input type="text" value={this.state.phone} placeholder="请先绑定手机号码 " style={{ "margin-left": "4rem", "border": "0" }}
                   onChange={this.reqairsPhone.bind(this)} readOnly />
               </li>
               <li>

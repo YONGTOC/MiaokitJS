@@ -649,7 +649,7 @@ class BookRoom extends React.Component {
     }else if (this.state.company == "请先关联企业" ) {
       Toast.info('请先前往关联企业', 2);
     }else if (this.state.phone == "") {
-      Toast.info('请先前往填写联系电话', 2);
+      Toast.info('请先绑定手机号码', 2);
     } else {
       this.dataService.bookingRoom(this.bookSumbitOK, this.state);
     }
@@ -686,7 +686,7 @@ class BookRoom extends React.Component {
             </li>
             <li>
               <span className="redStar">*</span>手机号码
-               <input type="text" value={this.state.phone} placeholder="请填写联系电话号码 " style={{ "margin-left": "2rem", "border": "0" }}  readOnly />
+               <input type="text" value={this.state.phone} placeholder="请先绑定手机号码  " style={{ "margin-left": "2rem", "border": "0" }}  readOnly />
             </li>
             <li>
               <span className="redStar">*</span>申请企业
