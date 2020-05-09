@@ -9859,6 +9859,8 @@ define("roomRent", ["require", "exports", "react", "dataService", "css!./styles/
                     ["不限", "楼宇A", "楼宇B", "楼宇C", "楼宇D", "楼宇E", "楼宇F"],
                     ["不限", "楼层1", "楼层2", "楼层3", "楼层4", "楼层5", "楼层6"]
                 ],
+                tagList: ["", "", ""],
+                isModal: false
             };
             this.dataService = new dataService_29.default();
         }
@@ -9898,6 +9900,20 @@ define("roomRent", ["require", "exports", "react", "dataService", "css!./styles/
         clickMask() {
             this.setState({ isMask: false, spreadIndex: 3 });
         }
+        changeTagList(index) {
+            let tagList = this.state.tagList;
+            let tagArray = this.state.tagArray;
+            tagList[this.state.spreadIndex] = index;
+            tagArray[this.state.spreadIndex].name = this.state.datas[this.state.spreadIndex][index];
+            this.setState({ tagList: tagList, tagArray: tagArray });
+            this.clickMask();
+        }
+        openModal() {
+            this.setState({ isModal: true });
+        }
+        closeModal() {
+            this.setState({ isModal: false });
+        }
         render() {
             return (React.createElement("div", { className: "rent-room", style: { backgroundColor: "#ffffff" } },
                 React.createElement("div", { className: "infoarea-top" },
@@ -9917,15 +9933,45 @@ define("roomRent", ["require", "exports", "react", "dataService", "css!./styles/
                     })),
                     this.state.isMask ?
                         React.createElement("div", { style: { width: "100%", height: "900px", backgroundColor: "#ffffff", position: "absolute", top: "23%", marginLeft: "-50px", zIndex: 10, padding: "20px 0 0 50px", overflowY: "auto" } }, this.state.datas[this.state.spreadIndex].map((item, index) => {
-                            return (React.createElement("div", { key: index, style: { fontSize: "36px", height: "120px", lineHeight: "120px" } }, item));
+                            return (React.createElement("div", { key: index, style: { fontSize: "36px", height: "120px", lineHeight: "120px", color: this.state.tagList[this.state.spreadIndex] === index ? "#0B8BF0" : null }, onClick: e => this.changeTagList(index) }, item));
                         })) : null,
                     React.createElement("div", { style: { color: "#F53636", margin: "20px 0 20px 0" } },
                         "\u79DF\u7528\u5230\u671F\u67E5\u8BE2  (",
                         this.state.roomArray.length,
                         " \u95F4)"),
                     this.state.roomArray.map((item, index) => {
-                        return (React.createElement("div", { key: index, style: { color: "#ffffff", backgroundColor: "#FF7E7E", float: "left", minWidth: "180px", height: "80px", lineHeight: "80px", borderRadius: "5px", textAlign: "center", margin: "20px", padding: "0 20px" } }, item.name));
+                        return (React.createElement("div", { key: index, onClick: this.openModal.bind(this), style: {
+                                backgroundColor: "#FF7E7E", float: "left", minWidth: "180px", height: "80px", lineHeight: "80px", borderRadius: "5px", textAlign: "center", margin: "20px", padding: "0 20px",
+                                color: "#ffffff"
+                            } }, item.name));
                     })),
+                this.state.isModal ?
+                    React.createElement("div", { style: { position: "relative", width: "80%", height: "720px", margin: "auto", backgroundColor: "#ffffff", fontSize: "38px", overflow: "hidden", borderRadius: "5px", boxShadow: "0px 3px 10px rgba(0,0,0,0.2)" } },
+                        React.createElement("div", { style: { height: "50px", width: "100%", overflow: "hidden", margin: "30px 0 0 40px" } },
+                            React.createElement("div", { style: { backgroundColor: "#0B8BF0", height: "50px", width: "10px", float: "left" } }),
+                            React.createElement("div", { style: { fontWeight: 600, float: "left", lineHeight: "50px", marginLeft: "20px" } }, "\u623F\u95F4\u79DF\u7528\u8BE6\u60C5"),
+                            React.createElement("img", { src: "./park_m/image/close_h.png", style: { float: "right", marginRight: "80px" }, onClick: this.closeModal.bind(this) })),
+                        React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 30px" } },
+                            React.createElement("div", { style: { float: "left", width: "30%", color: "#949494" } }, "\u623F\u95F4\u540D\u79F0"),
+                            React.createElement("div", { style: { float: "left", width: "70%", color: "#333333" } }, "A\u5EA7-1F-201\u5BA4")),
+                        React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 30px" } },
+                            React.createElement("div", { style: { float: "left", width: "30%", color: "#949494" } }, "\u4F7F\u7528\u72B6\u6001"),
+                            React.createElement("div", { style: { float: "left", width: "70%", color: "#333333" } }, "\u79DF\u7528\u4E2D")),
+                        React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 30px" } },
+                            React.createElement("div", { style: { float: "left", width: "30%", color: "#949494" } }, "\u79DF\u7528\u5355\u4F4D"),
+                            React.createElement("div", { style: { float: "left", width: "70%", color: "#333333" } }, "\u6D59\u6C5F\u6C38\u62D3\u4FE1\u606F\u79D1\u6280\u6709\u9650\u516C\u53F8")),
+                        React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 30px" } },
+                            React.createElement("div", { style: { float: "left", width: "30%", color: "#949494" } }, "\u79DF\u7528\u4EBA"),
+                            React.createElement("div", { style: { float: "left", width: "70%", color: "#333333" } }, "\u5C0F\u660E")),
+                        React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 30px" } },
+                            React.createElement("div", { style: { float: "left", width: "30%", color: "#949494" } }, "\u8054\u7CFB\u7535\u8BDD"),
+                            React.createElement("div", { style: { float: "left", width: "70%", color: "#333333" } }, "123456789")),
+                        React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 30px" } },
+                            React.createElement("div", { style: { float: "left", width: "30%", color: "#949494" } }, "\u79DF\u7528\u65E5\u671F"),
+                            React.createElement("div", { style: { float: "left", width: "70%", color: "#333333" } }, "2020-03-02")),
+                        React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 30px" } },
+                            React.createElement("div", { style: { float: "left", width: "30%", color: "#949494" } }, "\u5230\u671F\u65E5\u671F"),
+                            React.createElement("div", { style: { float: "left", width: "70%", color: "#333333" } }, "2021-03-02"))) : null,
                 this.state.isMask ?
                     React.createElement("div", { className: "mask", onClick: this.clickMask.bind(this), style: { position: "absolute", top: "50%", height: "50%" } }) : null));
         }

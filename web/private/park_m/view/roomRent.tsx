@@ -12,7 +12,9 @@ interface IState {
   roomArray: Array<any>,
   spreadIndex: number,
   isMask: boolean,
-  datas: Array<any>
+  datas: Array<any>,
+  tagList: Array<any>,
+  isModal: boolean
 }
 
 export default class RoomRent extends React.Component<{ history: any }>{
@@ -31,7 +33,8 @@ export default class RoomRent extends React.Component<{ history: any }>{
       ["不限", "楼宇A", "楼宇B", "楼宇C", "楼宇D", "楼宇E", "楼宇F"],
       ["不限", "楼层1", "楼层2", "楼层3", "楼层4", "楼层5", "楼层6"]
     ],
-    
+    tagList: ["", "", ""],
+    isModal: false
   }
 
   public dataService: DataService = new DataService()
@@ -86,6 +89,23 @@ export default class RoomRent extends React.Component<{ history: any }>{
     this.setState({ isMask: false, spreadIndex: 3 })
   }
 
+  changeTagList(index) {
+    let tagList = this.state.tagList
+    let tagArray = this.state.tagArray
+    tagList[this.state.spreadIndex] = index
+    tagArray[this.state.spreadIndex].name = this.state.datas[this.state.spreadIndex][index]
+    this.setState({ tagList: tagList, tagArray: tagArray })
+    this.clickMask()
+  }
+
+  openModal() {
+    this.setState({ isModal: true })
+  }
+
+  closeModal() {
+    this.setState({ isModal: false })
+  }
+
   render() {
     return (
       <div className="rent-room" style={{backgroundColor: "#ffffff"}}>
@@ -119,7 +139,7 @@ export default class RoomRent extends React.Component<{ history: any }>{
               {
                 this.state.datas[this.state.spreadIndex].map((item, index) => {
                   return (
-                    <div key={index} style={{ fontSize: "36px", height: "120px", lineHeight: "120px" }}>
+                    <div key={index} style={{ fontSize: "36px", height: "120px", lineHeight: "120px", color: this.state.tagList[this.state.spreadIndex] === index ? "#0B8BF0" : null }} onClick={e=> this.changeTagList(index)}>
                       {item}
                     </div>
                   )
@@ -131,13 +151,82 @@ export default class RoomRent extends React.Component<{ history: any }>{
           {
             this.state.roomArray.map((item, index) => {
               return (
-                <div key={index} style={{ color: "#ffffff", backgroundColor: "#FF7E7E", float: "left", minWidth: "180px", height: "80px", lineHeight: "80px", borderRadius: "5px", textAlign: "center", margin: "20px", padding: "0 20px" }}>
+                <div key={index} onClick={this.openModal.bind(this)} style={{
+                  backgroundColor: "#FF7E7E", float: "left", minWidth: "180px", height: "80px", lineHeight: "80px", borderRadius: "5px", textAlign: "center", margin: "20px", padding: "0 20px",
+                  color: "#ffffff"
+                }}>
                   {item.name}
                 </div>  
               )
             })
           }
         </div>
+        {this.state.isModal ?
+          <div style={{ position: "relative", width: "80%", height: "720px", margin: "auto", backgroundColor: "#ffffff", fontSize: "38px", overflow: "hidden", borderRadius: "5px", boxShadow: "0px 3px 10px rgba(0,0,0,0.2)" }}>
+            <div style={{ height: "50px", width: "100%", overflow: "hidden", margin: "30px 0 0 40px" }}>
+              <div style={{ backgroundColor: "#0B8BF0", height: "50px", width: "10px", float: "left" }}></div>
+              <div style={{ fontWeight: 600, float: "left", lineHeight: "50px", marginLeft: "20px" }}>房间租用详情</div>
+              <img src="./park_m/image/close_h.png" style={{ float: "right", marginRight: "80px" }} onClick={this.closeModal.bind(this)} />
+            </div>
+            <div style={{ overflow: "hidden", margin: "30px 0 0 30px" }}>
+              <div style={{ float: "left", width: "30%", color: "#949494" }}>
+                房间名称
+            </div>
+              <div style={{ float: "left", width: "70%", color: "#333333" }}>
+                A座-1F-201室
+            </div>
+            </div>
+            <div style={{ overflow: "hidden", margin: "30px 0 0 30px" }}>
+              <div style={{ float: "left", width: "30%", color: "#949494" }}>
+                使用状态
+            </div>
+              <div style={{ float: "left", width: "70%", color: "#333333" }}>
+                租用中
+            </div>
+            </div>
+            <div style={{ overflow: "hidden", margin: "30px 0 0 30px" }}>
+              <div style={{ float: "left", width: "30%", color: "#949494" }}>
+                租用单位
+            </div>
+              <div style={{ float: "left", width: "70%", color: "#333333" }}>
+                浙江永拓信息科技有限公司
+            </div>
+            </div>
+            <div style={{ overflow: "hidden", margin: "30px 0 0 30px" }}>
+              <div style={{ float: "left", width: "30%", color: "#949494" }}>
+                租用人
+            </div>
+              <div style={{ float: "left", width: "70%", color: "#333333" }}>
+                小明
+            </div>
+            </div>
+            <div style={{ overflow: "hidden", margin: "30px 0 0 30px" }}>
+              <div style={{ float: "left", width: "30%", color: "#949494" }}>
+                联系电话
+            </div>
+              <div style={{ float: "left", width: "70%", color: "#333333" }}>
+                123456789
+            </div>
+            </div>
+            <div style={{ overflow: "hidden", margin: "30px 0 0 30px" }}>
+              <div style={{ float: "left", width: "30%", color: "#949494" }}>
+                租用日期
+            </div>
+              <div style={{ float: "left", width: "70%", color: "#333333" }}>
+                2020-03-02
+            </div>
+            </div>
+            <div style={{ overflow: "hidden", margin: "30px 0 0 30px" }}>
+              <div style={{ float: "left", width: "30%", color: "#949494" }}>
+                到期日期
+            </div>
+              <div style={{ float: "left", width: "70%", color: "#333333" }}>
+                2021-03-02
+            </div>
+            </div>
+          </div> : null
+        }
+
         {this.state.isMask ?
           <div className="mask" onClick={this.clickMask.bind(this)} style={{ position: "absolute", top: "50%", height: "50%" }}></div> : null
         }
