@@ -205,26 +205,18 @@ class CompanyList extends React.Component {
 
   public globalAction: GlobalAction = new GlobalAction();
   // 选中某企业
-  public companyActive(data, id) {
+  public companyActive(data, id,title,building, floor, room) {
     console.log("active", data);
     this.setState({
       indexOf: data,
     });
-    // //通知3d，切换公司定位（web获取的是 公司id）
-    //this.globalAction.web_call_webgl_switchCompany(id);
-    // ajax 获取房间sve数据
-    this.dataService.getCompanyInfo(this.switchRoom.bind(this), id);
-  }
-
-  // 切换房间显示
-  public switchRoom(data) {
-    // 通知3d，切换房间定位（web获取的是 房间数据）
     let roomData = {
-      m_pTile: data.response.project_title,
-      m_pBuilding: data.response.building_code,
-      m_pLayer: data.response.floor_code,
-      m_pRoom: data.response.room_code,
+      m_pTile: title,
+      m_pBuilding: building,
+      m_pLayer: floor,
+      m_pRoom: room,
     }
+    // //通知3d，切换公司定位（web获取的是 房间data）
     this.globalAction.web_call_webgl_switchRoom(roomData);
   }
 
@@ -307,7 +299,7 @@ class CompanyList extends React.Component {
           <p className={this.state.companyNull} style={{ "text-align": "center" }} >没有符合搜索条件的结果···</p>
           {this.state.companyData.map((i, index) => {
             return (
-              <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyli-active" : "companyli"} >
+              <li onClick={this.companyActive.bind(this, index, i.id , i.project_title, i.building_code, i.floor_code, i.room_code)} className={this.state.indexOf == index ? "companyli-active" : "companyli"} >
                 <div className={this.state.indexOf == index ? "companyImgback-active" : "companyImgback"}>
                   <img src={i.headimageurl == null ? this.state.imgurlNull : i.headimageurl} onError={this.onErrorHeadimageurl.bind(this, index)} />
                 </div>

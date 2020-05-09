@@ -150,7 +150,7 @@ class BookList extends React.Component {
     BookInfo.getRoomdata(id);
   }
 
-  public bookActive(index, id) {
+  public bookActive(index, id,title,building, floor, room) {
     console.log("active", index, id);
     this.setState({
       indexOf: index,
@@ -158,19 +158,11 @@ class BookList extends React.Component {
     });
     console.log("bookActive", this.state);
     //通知webgl 跳转到 选中房间；
-    //this.globalAction.web_call_webgl_switchRoom(id);
-    // ajax 获取房间sve数据
-    this.dataService.getRoomBookInfo(this.switchRoom.bind(this), id);
-  }
-  
-  // 切换房间显示
-  public switchRoom(data) {
-    // 通知3d，切换房间定位（web获取的是 房间数据）
     let roomData = {
-      m_pTile: data.response.project_title,
-      m_pBuilding: data.response.building_code,
-      m_pLayer: data.response.floor_code,
-      m_pRoom: data.response.room_code,
+       m_pTile: title,
+      m_pBuilding: building,
+      m_pLayer: floor,
+      m_pRoom: room,
     }
     this.globalAction.web_call_webgl_switchRoom(roomData);
   }
@@ -243,7 +235,7 @@ class BookList extends React.Component {
           <li className={this.state.nullBookData}><p>没有符合条件的结果</p></li>
           {this.state.bookData.map((i, index) => {
               return (
-                <li onClick={this.bookActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "bookli-active" : "bookli"}>
+                <li onClick={this.bookActive.bind(this, index, i.id, i.project_title, i.building_code, i.floor_code, i.room_code)} className={this.state.indexOf == index ? "bookli-active" : "bookli"}>
                   <div className={this.state.indexOf == index ? "bookImgback-active" : "bookImgback"}>
                     <img  src={i.headimgurl ==  null ?  this.state.imgurlNull:  i.headimgurl }   />
                   </div>

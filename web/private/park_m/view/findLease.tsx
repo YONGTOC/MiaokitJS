@@ -180,30 +180,21 @@ class LeaseList extends React.Component {
 
 
   //选中某个房间
-  public leaseActive(index, id) {
+  public leaseActive(index, id,title,building, floor, room) {
     console.log("active", index, id);
+    console.log("active2", building, floor,room);
     this.setState({
       indexOf: index,
       roomId: id
     });
     console.log("leaseActive", this.state);
-    //// 通知3d，切换房间定位（web获取的是 房间id）
-    //this.globalAction.web_call_webgl_switchRoom(id);
-        // ajax 获取房间sve数据
-    //getRoomRentInfo  findRoomRentByroomid
-    this.dataService.findRoomRentByroomid(this.switchRoom.bind(this), id);
-
-  }
-
-    // 切换房间显示
-  public switchRoom(data) {
-       // 通知3d，切换房间定位（web获取的是 房间数据）
-    let roomData = {
-      m_pTile: data.response.project_title,
-      m_pBuilding: data.response.building_code,
-      m_pLayer: data.response.floor_code,
-      m_pRoom: data.response.room_code,
+      let roomData = {
+      m_pTile: title,
+      m_pBuilding: building,
+      m_pLayer: floor,
+      m_pRoom: room,
     }
+    //// 通知3d，切换房间定位（web获取的是 房间data）
     this.globalAction.web_call_webgl_switchRoom(roomData);
   }
 
@@ -288,7 +279,7 @@ class LeaseList extends React.Component {
           <p className={this.state.roomNull}>没有符合搜索条件的结果···</p>
           {this.state.roomData.map((i, index) => {
               return (
-                <li onClick={this.leaseActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "leaseli-active" : "leaseli"} >
+                <li onClick={this.leaseActive.bind(this, index, i.id, i.project_title, i.building_code, i.floor_code, i.room_code)} className={this.state.indexOf == index ? "leaseli-active" : "leaseli"} >
                   <div className={this.state.indexOf == index ? "leaseImgback-active" : "leaseImgback"} >
                     <img  src={i.headimageurl == null ? this.state.imgurlNull : i.headimageurl}   onError={this.onErrorHeadimageurl.bind(this, index)} />
                   </div>
@@ -542,7 +533,7 @@ class LeaseInfos extends React.Component {
             </li>
             <li className="jj">
             <span style={{ "padding-right": "7rem" }} >租金</span>
-            <span  style={{ "color": "#F53636" }}>2.8万元/月（2.8元/m²/天）</span>
+            <span  style={{ "color": "#F53636" }}>2800元/月（2.8元/m²/月）</span>
           </li>
             <li>
               <span style={{ "padding-right": "7rem" }}>免租</span>
