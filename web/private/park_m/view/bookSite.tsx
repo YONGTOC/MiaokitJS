@@ -158,7 +158,21 @@ class BookList extends React.Component {
     });
     console.log("bookActive", this.state);
     //通知webgl 跳转到 选中房间；
-    this.globalAction.web_call_webgl_switchRoom(id);
+    //this.globalAction.web_call_webgl_switchRoom(id);
+    // ajax 获取房间sve数据
+    this.dataService.getRoomBookInfo(this.switchRoom.bind(this), id);
+  }
+  
+  // 切换房间显示
+  public switchRoom(data) {
+    // 通知3d，切换房间定位（web获取的是 房间数据）
+    let roomData = {
+      m_pTile: data.response.project_title,
+      m_pBuilding: data.response.building_code,
+      m_pLayer: data.response.floor_code,
+      m_pRoom: data.response.room_code,
+    }
+    this.globalAction.web_call_webgl_switchRoom(roomData);
   }
 
   // 聚焦
@@ -279,7 +293,7 @@ class BookList extends React.Component {
     // 场地列表样式
     bookul: "bookul",
     // 当前序列号
-    indexOf: 0,
+    indexOf: -1,
     park_id: 1,
     // 搜索框内容
     inputValue: "搜索",

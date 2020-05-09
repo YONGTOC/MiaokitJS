@@ -52,7 +52,7 @@ class GlobalAction {
     }
 
     // 切换房间
-    public web_call_webgl_switchRoom(pName) {
+  public web_call_webgl_switchRoom(pName) {
         if (1 == pName) {
             MiaokitJS.App.m_pProject.EnterRoom({
                 m_pTile: "惠阳政务中心",

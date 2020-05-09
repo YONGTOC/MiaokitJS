@@ -601,7 +601,7 @@ class DataService {
         token: sessionStorage.getItem("token"),
       },
       success: function (data) {
-        console.log("getRoomBookInfoajax", data);
+       // console.log("getRoomBookInfoajax", data);
         if (data.status == 113) {
           // 113 token到期，跳转登录页面
           // console.log(window.location.pathname);

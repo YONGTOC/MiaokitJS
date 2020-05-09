@@ -1373,7 +1373,8 @@ i {
 
 .leaseInfoul {
     background: #fff;
-    width: 60rem;
+    /*width: 60rem;*/
+    width: 55rem;
     height: 5rem;
     border-bottom: 0.1rem solid #f2f2f2;
     margin: auto;
@@ -1384,7 +1385,8 @@ i {
     list-style: none;
     float: left;
     color: #6C6C6C;
-    margin: 0rem 4.5rem;
+    /*margin: 0rem 4.5rem;*/ 
+    margin: 0rem 7.5rem;
     padding-bottom: 1rem;
     font-size: 2.5rem;
 }
@@ -1394,7 +1396,8 @@ i {
     float: left;
     color: #333333;
     font-weight: bold;
-    margin: 0rem 4.5rem;
+    /*margin: 0rem 4.5rem;*/
+    margin: 0rem 7.5rem;
     border-bottom: 0.5rem solid #0B8BF0;
     padding-bottom: 1rem;
     font-size: 2.5rem;
@@ -1416,14 +1419,21 @@ i {
 }
 
 .leaseInfosliRight {
-    float: left;
+    /*float: left;*/
+     position: relative;
+    left: -10rem;
 }
 
 .leaseInfosul li {
     line-height: 5rem;
 }
-
-.leaseInfosul li:nth-child(1) {
+.kk{
+    height:4.5rem;
+}
+.room2{
+    float:left;
+}
+/*.leaseInfosul li:nth-child(1) {
     width: 30rem;
     display: inline-block;
     border-left: 0.7rem solid #0B8BF0;
@@ -1431,6 +1441,12 @@ i {
     height: 3rem;
     padding-left: 1rem;
     font-weight: bold;
+}*/
+.botTel {
+    border-top: 0.3rem solid #f2f2f2;
+    display: block;
+    width: 100%;
+    float: left;
 }
 
 /*roomImg -- ’’∆¨’π æ*/
@@ -1460,6 +1476,22 @@ i {
 .picshow img {
     width: 44rem;
     height: 33rem;
+}
+.picBtn {
+    position: absolute;
+    bottom: 4rem;
+    width: 59%;
+    margin: 0px 14rem;
+    line-height: 5rem;
+}
+.picBtnA, .picBtnB {
+    color: #ccc;
+    float: left;
+    width: 14rem;
+    background: #0B8BF0;
+    border-radius: 3rem;
+    text-align: center;
+    margin: 0px 2rem;
 }
 
 /*Photograph -- ÀÊ ÷≈ƒ*/

@@ -142,9 +142,9 @@ class CompanyList extends React.Component {
 
   onErrorHeadimageurl(this, index) {
     var items = this.state.companyData;
-    items[index].headimageurl ="./park_m/image/noImg.png";
+    items[index].headimageurl = "./park_m/image/noImg.png";
     this.setState({
-          companyData: items
+      companyData: items
     });
   }
 
@@ -210,8 +210,22 @@ class CompanyList extends React.Component {
     this.setState({
       indexOf: data,
     });
-    // 通知3d，切换公司定位（web获取的是 公司id）
-    this.globalAction.web_call_webgl_switchCompany(id);
+    // //通知3d，切换公司定位（web获取的是 公司id）
+    //this.globalAction.web_call_webgl_switchCompany(id);
+    // ajax 获取房间sve数据
+    this.dataService.getCompanyInfo(this.switchRoom.bind(this), id);
+  }
+
+  // 切换房间显示
+  public switchRoom(data) {
+    // 通知3d，切换房间定位（web获取的是 房间数据）
+    let roomData = {
+      m_pTile: data.response.project_title,
+      m_pBuilding: data.response.building_code,
+      m_pLayer: data.response.floor_code,
+      m_pRoom: data.response.room_code,
+    }
+    this.globalAction.web_call_webgl_switchRoom(roomData);
   }
 
   // 选中企业类型；
@@ -292,25 +306,25 @@ class CompanyList extends React.Component {
         <ul className={this.state.companyul}>
           <p className={this.state.companyNull} style={{ "text-align": "center" }} >没有符合搜索条件的结果···</p>
           {this.state.companyData.map((i, index) => {
-              return (
-                <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyli-active" : "companyli"} >
-                  <div className={this.state.indexOf == index ? "companyImgback-active" : "companyImgback"}>
-                    <img src={i.headimageurl == null ? this.state.imgurlNull : i.headimageurl} onError={this.onErrorHeadimageurl.bind(this, index)} />
-                  </div>
-                  <div className="companyul-middle">
-                    <p className={this.state.indexOf == index ? "companyName-active" : "companyName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.name}</p>
-                    <p style={{ "font-size": "2.5rem", "overflow": "hidden", "text-overflow": "ellipsis", "white-space": "nowrap" }}>
-                      <i className="iconfont" style={{ "fontSize": "2.5rem" }}>&#xe815;</i>
-                      {i.address}</p>
-                  </div>
-                  <div className="companyul-right">
-                    <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)} className={this.state.indexOf == index ? "show" : "hide"} >更多
+            return (
+              <li onClick={this.companyActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "companyli-active" : "companyli"} >
+                <div className={this.state.indexOf == index ? "companyImgback-active" : "companyImgback"}>
+                  <img src={i.headimageurl == null ? this.state.imgurlNull : i.headimageurl} onError={this.onErrorHeadimageurl.bind(this, index)} />
+                </div>
+                <div className="companyul-middle">
+                  <p className={this.state.indexOf == index ? "companyName-active" : "companyName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.name}</p>
+                  <p style={{ "font-size": "2.5rem", "overflow": "hidden", "text-overflow": "ellipsis", "white-space": "nowrap" }}>
+                    <i className="iconfont" style={{ "fontSize": "2.5rem" }}>&#xe815;</i>
+                    {i.address}</p>
+                </div>
+                <div className="companyul-right">
+                  <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)} className={this.state.indexOf == index ? "show" : "hide"} >更多
                     <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
-                    </p>
-                    <p className={this.state.indexOf == index ? "companyType-active" : "companyType"} >{i.company_type}</p>
-                  </div>
-                </li>
-              )
+                  </p>
+                  <p className={this.state.indexOf == index ? "companyType-active" : "companyType"} >{i.company_type}</p>
+                </div>
+              </li>
+            )
           })}
         </ul>
         <form action='' target="rfFrame">
@@ -358,7 +372,7 @@ class CompanyList extends React.Component {
     // 企业类型
     companyType: [],
     // 当前选中企业li的序列号
-    indexOf: 0,
+    indexOf: -1,
     //当前选中类型序列号
     typeIndexof: 100,
     //搜索关键词
@@ -372,7 +386,7 @@ class CompanyList extends React.Component {
     //设置 点击软键盘搜索，页面不刷新
     src: "about:'blank'",
     errImg: "./park_m/image/noImg.png",
-   imgurlNull: "./park_m/image/noImg.png",
+    imgurlNull: "./park_m/image/noImg.png",
   }
 
 
@@ -666,7 +680,7 @@ class Mien extends React.Component {
         <p className={this.state.urlNull} style={{ "color": "#333333", "text-align": "center", "font-size": "2.5rem" }}>暂无图片···</p>
         <div className={this.state.urlShow}>
           <WingBlank>
-            <Carousel className="space-carousel"  
+            <Carousel className="space-carousel"
               frameOverflow="visible"
               cellSpacing={10}
               slideWidth={0.8}

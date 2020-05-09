@@ -187,9 +187,24 @@ class LeaseList extends React.Component {
       roomId: id
     });
     console.log("leaseActive", this.state);
-    // 通知3d，切换房间定位（web获取的是 房间id）
-    this.globalAction.web_call_webgl_switchRoom(id);
+    //// 通知3d，切换房间定位（web获取的是 房间id）
+    //this.globalAction.web_call_webgl_switchRoom(id);
+        // ajax 获取房间sve数据
+    //getRoomRentInfo  findRoomRentByroomid
+    this.dataService.findRoomRentByroomid(this.switchRoom.bind(this), id);
 
+  }
+
+    // 切换房间显示
+  public switchRoom(data) {
+       // 通知3d，切换房间定位（web获取的是 房间数据）
+    let roomData = {
+      m_pTile: data.response.project_title,
+      m_pBuilding: data.response.building_code,
+      m_pLayer: data.response.floor_code,
+      m_pRoom: data.response.room_code,
+    }
+    this.globalAction.web_call_webgl_switchRoom(roomData);
   }
 
   //切换 目标面积，搜索房间
@@ -335,7 +350,7 @@ class LeaseList extends React.Component {
     square: "全部",
     leaseListcss: "leaseList-part",
     foleBtn: "lease-foleBtn",
-    indexOf: 0,
+    indexOf:-1,
     leaseBtn: "leaseBtn-part",
     leaseul: "leaseul",
     roomData: [],
@@ -437,8 +452,8 @@ class LeaseInfo extends React.Component {
           <div className="leaseInfoul_br">
             <ul className={"leaseInfoul"}>
               <li className={this.state.infoli == 0 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 0)} >租房信息</li>
-              <li className={this.state.infoli == 2 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 2)}>视频讲解</li>
-              <li className={this.state.infoli == 1 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 1)} >照片展示</li>
+              
+              <li className={this.state.infoli == 1 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 1)} >房间展示</li>
             </ul>
           </div>
           <div className="leaseContain">
@@ -455,6 +470,7 @@ class LeaseInfo extends React.Component {
         </div>
       </div>
     )
+    //<li className={this.state.infoli == 2 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 2)}>视频讲解</li>
   }
 
   public state = {
@@ -508,9 +524,7 @@ class LeaseInfos extends React.Component {
         tel: data.response.phone
       })
     }
-    this.setState({
-
-    })
+     document.getElementById("telurl").href = 'tel:' + this.state.tel;
   }
 
   public render() {
@@ -518,7 +532,6 @@ class LeaseInfos extends React.Component {
       <div className={"leaseInfos"}>
         <ul className={"leaseInfosul"}>
           <div className={"leaseInfosliLeft"}>
-            <li>基本信息</li>
             <li>
               <span style={{ "padding-right": "2rem" }}>建筑面积</span>
               <span style={{ "font-weight": "600" }} >{this.state.area}平米</span>
@@ -527,33 +540,50 @@ class LeaseInfos extends React.Component {
               <span style={{ "padding-right": "2rem" }}>所在楼层</span>
               <span style={{ "font-weight": "600" }} >{this.state.floor_name}</span>
             </li>
+            <li className="jj">
+            <span style={{ "padding-right": "7rem" }} >租金</span>
+            <span  style={{ "color": "#F53636" }}>2.8万元/月（2.8元/m²/天）</span>
+          </li>
             <li>
-              <span style={{ "padding-right": "7rem" }}>电梯</span>
-              <span style={{ "font-weight": "600" }}>{this.state.elevator}</span>
+              <span style={{ "padding-right": "7rem" }}>免租</span>
+              <span style={{ "font-weight": "600" }}>可面谈</span>
             </li>
             <li>
-              <span style={{ "padding-right": "7rem" }}>租金</span>
-              <span style={{ "color": "#F53636" }}>{this.state.price}元/m²/天</span>
-            </li>
-            <li>
-              <span style={{ "padding-right": "5rem" }}>联系人</span>
-              <span style={{ "font-weight": "600" }}>{this.state.man}</span>
-            </li>
-            <li>
-              <span style={{ "padding-right": "2rem" }}>联系电话</span>
-              <span style={{ "font-weight": "600" }}>{this.state.tel}</span>
+              <span style={{ "padding-right": "2rem" }}>容纳工位</span>
+              <span style={{ "font-weight": "600" }}>20位</span>
             </li>
           </div>
           <div className={"leaseInfosliRight"}>
-            <li>看房须知</li>
-            <li>看房时间
-              <p style={{ "font-weight": "600", "font-size": "2.3rem", "width": "27rem" }}>{this.state.time}</p>
+            <li>总共楼层
+              <span style={{ "font-weight": "600", "font-size": "2.3rem","marginLeft": "2rem" }}>七层</span>
             </li>
-            <li>租房要求
-              <p style={{ "font-weight": "600", "font-size": "2.3rem", "width": "27rem", "height": "15rem", "overflow-y": "scroll" }}>{this.state.limit}</p>
+            <li>电梯
+              <span style={{ "font-weight": "600", "font-size": "2.3rem","marginLeft": "7rem" }}>{this.state.elevator}</span>
             </li>
+            <li className="kk">
+              <p></p>
+            </li>
+             <li>装修
+              <span style={{ "font-weight": "600", "font-size": "2.3rem","marginLeft": "7rem" }}>毛胚</span>
+            </li>
+           
           </div>
+
+          <li className="room2">
+              <span style={{ "padding-right": "2rem" }}>看房时间</span>
+            <span style={{ "font-weight": "600" }}>{this.state.time}</span>
+          </li>
+          <li className="room2">
+              <span style={{ "padding-right": "2rem" }}>可租时间</span>
+              <span style={{ "font-weight": "600" }}>20XX年X月X日开始起租</span>
+            </li>
         </ul>
+        <div className="botTel">
+          <p className="botTelMan">联系人 <span style={{ "font-weight": "600" }}>李先生</span></p>
+          <div className="telBut"> 
+           <a  href="#" id="telurl" > 免费咨询</a>
+            </div>
+        </div>
       </div>
     )
   }
@@ -568,6 +598,9 @@ class LeaseInfos extends React.Component {
     man: "",
     tel: ""
   }
+  //   <a  href="'tel:'+{this.state.tel}" > 免费咨询</a>
+  //     <a href="tel:18010862041" > 免费咨询</a>
+
 }
 
 
@@ -651,6 +684,10 @@ class Picshow extends React.Component {
             </Carousel>
           </WingBlank>
         </ul>
+        <div className="picBtn">
+          <div className="picBtnA">图片</div>
+          <div className="picBtnB">视频</div>
+        </div>
       </div>
     )
   }

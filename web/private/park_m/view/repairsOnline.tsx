@@ -68,14 +68,14 @@ class RepairsOnline extends React.Component<{ history: any }>{
     if (this.state.reqairscss == "reqairs-all") {
       this.setState({
         reqairscss: "reqairs-part",
-        reqairscssul: "reqairsul-part reqairsul"
+        reqairsul: "reqairsul-part reqairsul",
       })
       // 通知3d，继续加载模型  
       this.globalAction.web_call_webgl_continueloadModuler();
     } else {
       this.setState({
         reqairscss: "reqairs-all",
-        reqairsul: "reqairsul-all reqairsul"
+        reqairsul: "reqairsul-all reqairsul",
       })
       // 通知3d，暂停加载模型
       this.globalAction.web_call_webgl_pauseloadModuler();
