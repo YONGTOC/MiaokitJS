@@ -1,4 +1,4 @@
-import * as React from "react";
+ï»¿import * as React from "react";
 import "css!./styles/room.css"
 import { Link } from 'react-router-dom';
 import DataService from "dataService";
@@ -17,20 +17,21 @@ interface IState {
 
 export default class RoomRent extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
-    inputValue: "ËÑË÷·¿¼ä",
+    inputValue: "æœç´¢æˆ¿é—´",
     tagArray: [
-      { name: "Ñ¡ÔñÈÕÆÚ", isSpread: false }, { name: "Ñ¡ÔñÂ¥Óî", isSpread: false }, { name: "Ñ¡ÔñÂ¥²ã", isSpread: false }
+      { name: "é€‰æ‹©æ—¥æœŸ", isSpread: false }, { name: "é€‰æ‹©æ¥¼å®‡", isSpread: false }, { name: "é€‰æ‹©æ¥¼å±‚", isSpread: false }
     ],
     roomArray: [
-      { name: "100ÊÒ" }, { name: "200ÊÒ" }, { name: "300ÊÒ" }, { name: "400ÊÒ" }, { name: "500ÊÒ" }, { name: "600ÊÒ" }, { name: "700ÊÒ" }, { name: "800ÊÒ" }
+      { name: "100å®¤" }, { name: "200å®¤" }, { name: "300å®¤" }, { name: "400å®¤" }, { name: "500å®¤" }, { name: "600å®¤" }, { name: "700å®¤" }, { name: "800å®¤" }
     ],
     spreadIndex: 3,
     isMask: false,
     datas: [
-      ["²»ÏŞ", "2020Äê6ÔÂ", "2020Äê7ÔÂ", "2020Äê8ÔÂ", "2020Äê9ÔÂ", "2020Äê10ÔÂ", "2020Äê11ÔÂ", "2020Äê12ÔÂ", "2021Äê1ÔÂ", "2021Äê2ÔÂ", "2021Äê3ÔÂ", "2021Äê4ÔÂ", "2021Äê5ÔÂ", "2021Äê6ÔÂ", "2021Äê7ÔÂ"],
-      ["²»ÏŞ", "Â¥ÓîA", "Â¥ÓîB", "Â¥ÓîC", "Â¥ÓîD", "Â¥ÓîE", "Â¥ÓîF"],
-      ["²»ÏŞ", "Â¥²ã1", "Â¥²ã2", "Â¥²ã3", "Â¥²ã4", "Â¥²ã5", "Â¥²ã6"]
-    ]
+      ["ä¸é™", "2020å¹´6æœˆ", "2020å¹´7æœˆ", "2020å¹´8æœˆ", "2020å¹´9æœˆ", "2020å¹´10æœˆ", "2020å¹´11æœˆ", "2020å¹´12æœˆ", "2021å¹´1æœˆ", "2021å¹´2æœˆ", "2021å¹´3æœˆ", "2021å¹´4æœˆ", "2021å¹´5æœˆ", "2021å¹´6æœˆ", "2021å¹´7æœˆ"],
+      ["ä¸é™", "æ¥¼å®‡A", "æ¥¼å®‡B", "æ¥¼å®‡C", "æ¥¼å®‡D", "æ¥¼å®‡E", "æ¥¼å®‡F"],
+      ["ä¸é™", "æ¥¼å±‚1", "æ¥¼å±‚2", "æ¥¼å±‚3", "æ¥¼å±‚4", "æ¥¼å±‚5", "æ¥¼å±‚6"]
+    ],
+    
   }
 
   public dataService: DataService = new DataService()
@@ -48,32 +49,32 @@ export default class RoomRent extends React.Component<{ history: any }>{
     this.setState({ buildingArr: data.response })
   }
 
-  // ¾Û½¹
+  // èšç„¦
   foucus() {
-    if (this.state.inputValue === "ËÑË÷·¿¼ä") {
+    if (this.state.inputValue === "æœç´¢æˆ¿é—´") {
       this.setState({ inputValue: "" })
     }
   }
 
-  // Ê§½¹
+  // å¤±ç„¦
   blur() {
     if (this.state.inputValue === "") {
-      this.setState({ inputValue: "ËÑË÷·¿¼ä" })
+      this.setState({ inputValue: "æœç´¢æˆ¿é—´" })
     }
   }
 
-  // ÊäÈë
+  // è¾“å…¥
   change(event) {
     this.setState({ inputValue: event.target.value })
   }
 
 
-  // ·µ»Ø
+  // è¿”å›
   goBack() {
     this.props.history.goBack()
   }
 
-  // Õ¹¿ª
+  // å±•å¼€
   spread(index) {
     this.setState({
       spreadIndex: this.state.spreadIndex === index ? 3 : index,
@@ -93,13 +94,13 @@ export default class RoomRent extends React.Component<{ history: any }>{
             <img src="./park_m/image/whiteBack.png" style={{ margin: "0 10px 30px -15px", padding: "15px 15px 15px 15px" }} onClick={this.goBack.bind(this)} />
             <input className="infoarea-input" value={this.state.inputValue} onFocus={this.foucus.bind(this)} onBlur={this.blur.bind(this)} onChange={this.change.bind(this)} />
             <img src="./park_m/image/search.png" className="infoarea-search-img" />
-            <span className="search-user-bt">ËÑË÷</span>
+            <span className="search-user-bt">æœç´¢</span>
           </div>
         </div>
         <div style={{ fontSize: "38px", color: "#333333", margin: "0 50px 0 50px" }}>
           <div style={{ height: "50px", width: "100%", overflow: "hidden", marginTop: "50px" }}>
             <div style={{ backgroundColor: "#0B8BF0", height: "50px", width: "10px", float: "left" }}></div>
-            <div style={{ fontWeight: 600, float: "left", lineHeight: "50px", marginLeft: "20px" }}>×âÓÃµ½ÆÚ²éÑ¯</div>
+            <div style={{ fontWeight: 600, float: "left", lineHeight: "50px", marginLeft: "20px" }}>ç§Ÿç”¨åˆ°æœŸæŸ¥è¯¢</div>
           </div>
           <div style={{ overflow: "hidden", marginTop: "40px" }}>
           {
@@ -126,7 +127,7 @@ export default class RoomRent extends React.Component<{ history: any }>{
               }
             </div> : null
           }
-          <div style={{ color: "#F53636", margin: "20px 0 20px 0" }}>×âÓÃµ½ÆÚ²éÑ¯  ({this.state.roomArray.length} ¼ä)</div>
+          <div style={{ color: "#F53636", margin: "20px 0 20px 0" }}>ç§Ÿç”¨åˆ°æœŸæŸ¥è¯¢  ({this.state.roomArray.length} é—´)</div>
           {
             this.state.roomArray.map((item, index) => {
               return (
