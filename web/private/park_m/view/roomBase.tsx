@@ -55,8 +55,6 @@ export default class RoomBase extends React.Component<{ history: any }>{
     if (this.props.location.state) {
       sessionStorage.setItem("roomInfo", JSON.stringify(this.props.location.state.roomInfo))
     }
-    console.log(JSON.parse(sessionStorage.getItem("roomInfo")))
-    console.log("pic", this.state.pic)
   }
 
   // 输入
@@ -107,6 +105,11 @@ export default class RoomBase extends React.Component<{ history: any }>{
       pic: this.state.pic,
       video: this.state.video
     }
+    for (var key in obj) {
+      if (obj[key] === "" && (key !== "video" && key !== "require" && key !== "inspectionTime")) {
+        return alert("请把资料填完整！")
+      }
+    }
     this.dataService.saveRoomBaseInfo(this.callBackSaveRoomBaseInfo.bind(this), obj)
   }
 
@@ -140,7 +143,11 @@ export default class RoomBase extends React.Component<{ history: any }>{
 
   // 清空缩略图
   closeHeadimageurl() {
-    this.setState({ headimageurl: "" })
+    this.setState({ headimageurl: "" }, () => {
+      $('#h-img').click(() => {
+        $('#h-input').click()
+      })
+    })
   }
 
   uploadPic(file) {
@@ -148,7 +155,6 @@ export default class RoomBase extends React.Component<{ history: any }>{
   }
 
   callBackUploadPic(data) {
-    console.log("callBackUpload", data)
     if (data.return_code == 100) {
       let pic = this.state.pic
       pic.push({ url: data.response, name: "" })
@@ -185,7 +191,6 @@ export default class RoomBase extends React.Component<{ history: any }>{
   }
 
   callBackUploadVideo(data) {
-    console.log("callBackUpload", data)
     if (data.return_code == 100) {
       let video = this.state.video
       video.push({ url: data.response, name: "" })
@@ -196,7 +201,6 @@ export default class RoomBase extends React.Component<{ history: any }>{
   }
 
   callBackUploadHeadimage(data) {
-    console.log("headimageUrl", data)
     if (data.return_code == 100) {
       this.setState({ headimageurl: data.response })
     } else {
@@ -267,7 +271,7 @@ export default class RoomBase extends React.Component<{ history: any }>{
           />
         </div>
 
-        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", height: 360 + Math.floor(this.state.pic.length / 3) * 250 }}>
+        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", height: 360 }}>
           <div className="enterprise-information-star"></div>
           <div style={{ color: "#949494", height: "80px", width: "20%" }}>缩略图</div>
 
@@ -276,14 +280,15 @@ export default class RoomBase extends React.Component<{ history: any }>{
               <img src="./park_m/image/close.png" style={{ position: "absolute", left: "250px" }} onClick={e => this.closeHeadimageurl()} />
               <img src={this.state.headimageurl} style={{ height: "100%", width: "100%" }} />
             </div> :
-
-            <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left" }} id="h-img">
-              <img src="./park_m/image/addPicture.png" style={{ height: "60px", width: "60px" }} />
-              <div style={{ color: "#949494", marginTop: "-30px" }}>添加</div>
+            <div>
+              <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left" }} id="h-img">
+                <img src="./park_m/image/addPicture.png" style={{ height: "60px", width: "60px" }} />
+                <div style={{ color: "#949494", marginTop: "-30px" }}>添加</div>
+              </div>
+              <input type="file" onChange={this.updateHeadimage.bind(this)} id="h-input" style={{ display: "none" }} accept="image/*" />
             </div>
            }
 
-          <input type="file" onChange={this.updateHeadimage.bind(this)} id="h-input" style={{ display: "none" }} />
         </div>
 
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", height: 360 + Math.floor(this.state.pic.length / 3) * 250 }}>
@@ -291,15 +296,15 @@ export default class RoomBase extends React.Component<{ history: any }>{
           <div style={{ color: "#949494", height: "80px", width: "20%" }}>图库</div>
           {this.state.pic.map((item, index) => {
             return (
-              <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", margin: "30px 30px 0 0", float: "left" }} key={index}>
+              <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", margin: (index > 2 && index % 3 === 0) ? "30px 30px 0 30px" : "30px 30px 0 0", float: "left" }} key={index}>
                 <img src="./park_m/image/close.png" style={{ position: "absolute", left: (index % 3 + 1) * 250 }} onClick={e => this.closePic(index)} />
                 <img src={item.url} style={{ height: "100%", width: "100%" }} />
                 </div>
               )
             })
           }
-          <input type="file" onChange={this.updatePic.bind(this)} id="a-input" style={{ display: "none" }} />
-          <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left" }} id="a-img">
+          <input type="file" onChange={this.updatePic.bind(this)} id="a-input" style={{ display: "none" }} accept="image/*" />
+          <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left", marginLeft: this.state.pic.length % 3 === 0 ? "30px" : null }} id="a-img">
             <img src="./park_m/image/addPicture.png" style={{ height: "60px", width: "60px" }} />
             <div style={{ color: "#949494", marginTop: "-30px" }}>添加</div>
           </div>
@@ -315,7 +320,7 @@ export default class RoomBase extends React.Component<{ history: any }>{
             )
           })
           }
-          <input type="file" onChange={this.updateVideo.bind(this)} id="b-input" style={{ display: "none" }} />
+          <input type="file" onChange={this.updateVideo.bind(this)} id="b-input" style={{ display: "none" }} accept="video/*" />
           <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left" }} id="b-img">
             <img src="./park_m/image/addPicture.png" style={{ height: "60px", width: "60px" }} />
             <div style={{ color: "#949494", marginTop: "-30px" }}>添加</div>

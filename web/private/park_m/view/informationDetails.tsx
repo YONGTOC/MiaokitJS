@@ -166,7 +166,7 @@ export default class informationDetail extends React.Component {
             </div>
             <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" }}>
               <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>活动地点</div>
-              <div style={{ float: "left" }}>{this.state.data.position}</div>
+              <div style={{ float: "left", width: "60%", display:  "-webkit-box", webkitBoxOrient: "vertical", WebkitLineClamp: 1, overflow: "hidden"}}>{this.state.data.position}</div>
             </div>
             <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" }}>
               <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>活动费用</div>

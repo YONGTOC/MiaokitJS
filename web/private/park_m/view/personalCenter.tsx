@@ -38,7 +38,7 @@ class PersonalCenter extends React.Component {
   public readonly state: Readonly<IState> = {
     parkList: [
       { name: "统计报表", imgUrl: "./park_m/image/statistics.png", url: "/statisticalStatement" }, { name: "房间管理", imgUrl: "./park_m/image/room.png", url: "/room" },
-      { name: "客服电话", imgUrl: "./park_m/image/service.png", url: "/serviceTel" }
+      { name: "客服电话", imgUrl: "./park_m/image/service.png", url: "/serviceTel" }, { name: "租用到期", imgUrl: "./park_m/image/rent_expire.png", url: "/roomRent" }
     ],
     isSpread: false,
     userInfo: { name: "", avatar: "", phone: "", enterprise: "", roles: { role_id: "", role_name: "" } },
@@ -62,6 +62,7 @@ class PersonalCenter extends React.Component {
   public dataService: DataService = new DataService()
 
   componentDidMount() {
+    console.log("enterprise", sessionStorage.getItem("enterprise"))
     let obj = {
       id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
       work_type: "",
@@ -302,9 +303,11 @@ class PersonalCenter extends React.Component {
           <div>
             <div className="personal-center-tag">
               <span style={{ margin: "0 50px 0 50px" }}>手机号码</span><span>{this.state.userInfo.phone}</span>
+              {this.state.enterprise && this.state.enterprise !== "请先关联企业"?
                 <span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }} onClick={this.phoneChange.bind(this)}>
                   修改
-                </span>  
+                </span> : null
+              }
             </div>
             <div className="personal-center-tag">
               <span style={{ margin: "0 50px 0 50px" }}>关联企业</span><span>{this.state.enterprise}</span>

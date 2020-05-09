@@ -975,7 +975,8 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
               </div>
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
-              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>企业位置</div><div style={{ color: "#333333", fontSize: "40px", float: "left" }}>{this.state.address}</div>
+              <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>企业位置</div>
+              <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "70%", display: "-webkit-box", webkitBoxOrient: "vertical", WebkitLineClamp: 1, overflow: "hidden" }}>{this.state.address}</div>
             </div>
             <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
               <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>联系人</div><div style={{ color: "#333333", fontSize: "40px", float: "left" }}>{this.state.contacts}</div>

@@ -528,7 +528,7 @@ class Index extends React.Component {
 
         <div className="index-input-div">
           <div className="index-child-right">
-            <span style={{ fontWeight: "600" }}>{sessionStorage.getItem("city")}</span>
+            <span style={{ fontWeight: "500" }}>{sessionStorage.getItem("city")}</span>
             <img src="./park_m/image/bottom.png" width="50px" height="50px" style={{ marginTop: "-10px" }} />
           </div>
           <div className="index-child-left">
@@ -536,7 +536,7 @@ class Index extends React.Component {
             <img src="./park_m/image/search.png" className="index-search-img" />
           </div>
         </div>
-        <div style={{ width: "100%", color: "#333333", fontWeight: "600", fontSize: "48px", marginTop: "30px", overflow: "hidden" }}>
+        <div style={{ width: "100%", color: "#333333", fontWeight: "600", fontSize: "42px", marginTop: "30px", overflow: "hidden" }}>
           <div className="index-park-a" onClick={this.changeType.bind(this)}>
             <div style={{ position: "relative", backgroundColor: "#ffffff", zIndex: 2, color: this.state.type ? "#0B8BF0" : "#333333" }}>园区</div>
             <div style={{ position: "relative", top: "-62px", backgroundColor: "#ffffff", color: "#ffffff" }}>a</div>
@@ -551,30 +551,30 @@ class Index extends React.Component {
         <div className="index-number">
           {this.state.type ?
             <div onClick={this.changePosition.bind(this)} style={{ overflow: "hidden", float: "left", width: "25%", textAlign: "center" }}>
-              <div style={{ float: "left", fontSize: "42px", fontWeight: "600", color: this.state.position ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state.position ? this.state.position : "位置"}</div>
+              <div style={{ float: "left", fontSize: "38px", fontWeight: "500", color: this.state.position ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state.position ? this.state.position : "位置"}</div>
               <div className={this.state.position ? "corner-add" : "corner"} style={{ transform: this.state.isPosition ? "rotate(180deg)" : "", margin: this.state.isPosition ? "15px 0 0 0" : "" }}></div>
             </div> : null
           }
           {
             this.state.type ? 
-            <div style={{ float: "right", marginRight: "50px" }}>
+            <div style={{ float: "right", fontSize: "38px" }}>
                 已有<span style={{ color: "#0B8BF0", margin: "0 15px 0 15px" }}>{this.state.parkArr.length}</span>家园区上线
             </div> :
             <div style={{ overflow: "hidden", float: "left", width: "100%" }}>
               <div onClick={this.changePositions.bind(this)} style={{ overflow: "hidden", float: "left", width: "25%", textAlign: "center" }}>
-                <div style={{ float: "left", fontSize: "42px", fontWeight: "600", color: this.state._position ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state._position ? this.state._position : "位置"}</div>
+                <div style={{ float: "left", fontSize: "38px", fontWeight: "500", color: this.state._position ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state._position ? this.state._position : "位置"}</div>
                 <div className={this.state._position ? "corner-add" : "corner"} style={{ transform: this.state._isPosition ? "rotate(180deg)" : "", margin: this.state._isPosition ? "15px 0 0 0" : "" }}></div>
               </div>
               <div onClick={this.clickAreas.bind(this)} style={{ overflow: "hidden", float: "left", width: "25%", textAlign: "center" }}>
-                <div style={{ float: "left", fontSize: "42px", fontWeight: "600", color: this.state.areasName ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state.areasName ? this.state.areasName : "面积"}</div>
+                <div style={{ float: "left", fontSize: "38px", fontWeight: "500", color: this.state.areasName ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state.areasName ? this.state.areasName : "面积"}</div>
                 <div className={this.state.areasName ? "corner-add" : "corner"} style={{ transform: this.state.isAreas ? "rotate(180deg)" : "", margin: this.state.isAreas ? "15px 0 0 0" : "" }}></div>
               </div>
               <div onClick={this.clickPrice.bind(this)} style={{ overflow: "hidden", float: "left", width: "25%", textAlign: "center" }}>
-                <div style={{ float: "left", fontSize: "42px", fontWeight: "600", color: this.state.priceName ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state.priceName ? this.state.priceName : "价格"}</div>
+                <div style={{ float: "left", fontSize: "38px", fontWeight: "500", color: this.state.priceName ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state.priceName ? this.state.priceName : "价格"}</div>
                 <div className={this.state.priceName ? "corner-add" : "corner"} style={{ transform: this.state.isPrice ? "rotate(180deg)" : "", margin: this.state.isPrice ? "15px 0 0 0" : "" }}></div>
               </div>
               <div onClick={this.clickMore.bind(this)} style={{ overflow: "hidden", float: "left", width: "25%", textAlign: "center" }}>
-                <div style={{ float: "left", fontSize: "42px", fontWeight: "600", color: this.state.moreName ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state.moreName ? this.state.moreName : "更多"}</div>
+                <div style={{ float: "left", fontSize: "38px", fontWeight: "500", color: this.state.moreName ? "#0B8BF0" : "#333333", width: "80%" }} className="index-white-space">{this.state.moreName ? this.state.moreName : "更多"}</div>
                 <div className={this.state.moreName ? "corner-add" : "corner"} style={{ transform: this.state.isMore ? "rotate(180deg)" : "", margin: this.state.isMore ? "15px 0 0 0" : "" }}></div>
               </div>
             </div>
@@ -584,12 +584,12 @@ class Index extends React.Component {
           <div className="index-position">
             <div style={{overflow: "hidden"}}>
               <div onClick={this.ckArea.bind(this)}
-                style={{ float: "left", backgroundColor: this.state.isArea ? "#0B8BF0" : "#F2F2F2", width: "230px", borderRadius: "5px", height: "75px", lineHeight: "75px", textAlign: "center", color: this.state.isArea ? "#ffffff" : "#6C6C6C" }}
+                style={{ float: "left", backgroundColor: this.state.isArea ? "#0B8BF0" : "#F2F2F2", width: "240px", borderRadius: "5px", height: "70px", lineHeight: "70px", textAlign: "center", color: this.state.isArea ? "#ffffff" : "#6C6C6C" }}
               >
                 区域
               </div>
               <div onClick={this.ckSubway.bind(this)}
-                style={{ float: "left", backgroundColor: this.state.isArea ? "#F2F2F2" : "#0B8BF0", width: "230px", borderRadius: "5px", height: "75px", lineHeight: "75px", textAlign: "center", marginLeft: "50px", color: this.state.isArea ? "#6C6C6C" : "#ffffff" }}
+                style={{ float: "left", backgroundColor: this.state.isArea ? "#F2F2F2" : "#0B8BF0", width: "240px", borderRadius: "5px", height: "70px", lineHeight: "70px", textAlign: "center", marginLeft: "50px", color: this.state.isArea ? "#6C6C6C" : "#ffffff" }}
               >
                 地铁站
               </div>
@@ -601,7 +601,7 @@ class Index extends React.Component {
                     this.state.area.map((item, index) => {
                       return (
                         <div key={index}
-                          style={{ height: "100px", lineHeight: "100px", fontWeight: "600", color: index === this.state.areaIndex ? "#0B8BF0" : "#333333" }}
+                          style={{ height: "120px", lineHeight: "120px", fontWeight: "500", color: index === this.state.areaIndex ? "#0B8BF0" : "#333333" }}
                           onClick={e => this.changeArea(index)}
                         >
                           {item.name}
@@ -615,7 +615,7 @@ class Index extends React.Component {
                     this.state.area[this.state.areaIndex].children.map((item, index) => {
                       return (
                         <div key={index}
-                          style={{ height: "100px", lineHeight: "100px", fontWeight: "600", color: index === this.state.areaChildrenIndex ? "#0B8BF0" : "#333333" }}
+                          style={{ height: "120px", lineHeight: "120px", fontWeight: "500", color: index === this.state.areaChildrenIndex ? "#0B8BF0" : "#333333" }}
                           onClick={e => this.changeAreaChildren(index)}
                         >
                           {item.name}
@@ -632,7 +632,7 @@ class Index extends React.Component {
                     this.state.subway.map((item, index) => {
                       return (
                         <div key={index}
-                          style={{ height: "100px", lineHeight: "100px", fontWeight: "600", color: index === this.state.subwayIndex ? "#0B8BF0" : "#333333" }}
+                          style={{ height: "120px", lineHeight: "120px", fontWeight: "500", color: index === this.state.subwayIndex ? "#0B8BF0" : "#333333" }}
                           onClick={e => this.changeSubway(index)}
                         >
                           {item.name}
@@ -646,7 +646,7 @@ class Index extends React.Component {
                     this.state.subway[this.state.subwayIndex].children.map((item, index) => {
                       return (
                         <div key={index}
-                          style={{ height: "100px", lineHeight: "100px", fontWeight: "600", color: index === this.state.subwayChildrenIndex ? "#0B8BF0" : "#333333" }}
+                          style={{ height: "120px", lineHeight: "120px", fontWeight: "500", color: index === this.state.subwayChildrenIndex ? "#0B8BF0" : "#333333" }}
                           onClick={e => this.changeSubwayChildren(index)}
                         >
                           {item.name}
@@ -664,12 +664,12 @@ class Index extends React.Component {
           <div className="index-position">
             <div style={{ overflow: "hidden" }}>
               <div onClick={this.ckArea.bind(this)}
-                style={{ float: "left", backgroundColor: this.state.isArea ? "#0B8BF0" : "#F2F2F2", width: "230px", borderRadius: "5px", height: "75px", lineHeight: "75px", textAlign: "center", color: this.state.isArea ? "#ffffff" : "#6C6C6C" }}
+                style={{ float: "left", backgroundColor: this.state.isArea ? "#0B8BF0" : "#F2F2F2", width: "240px", borderRadius: "5px", height: "70px", lineHeight: "70px", textAlign: "center", color: this.state.isArea ? "#ffffff" : "#6C6C6C" }}
               >
                 区域
               </div>
               <div onClick={this.ckSubway.bind(this)}
-                style={{ float: "left", backgroundColor: this.state.isArea ? "#F2F2F2" : "#0B8BF0", width: "230px", borderRadius: "5px", height: "75px", lineHeight: "75px", textAlign: "center", marginLeft: "50px", color: this.state.isArea ? "#6C6C6C" : "#ffffff" }}
+                style={{ float: "left", backgroundColor: this.state.isArea ? "#F2F2F2" : "#0B8BF0", width: "240px", borderRadius: "5px", height: "70px", lineHeight: "70px", textAlign: "center", marginLeft: "50px", color: this.state.isArea ? "#6C6C6C" : "#ffffff" }}
               >
                 地铁站
               </div>
@@ -681,7 +681,7 @@ class Index extends React.Component {
                     this.state._area.map((item, index) => {
                       return (
                         <div key={index}
-                          style={{ height: "100px", lineHeight: "100px", fontWeight: "600", color: index === this.state._areaIndex ? "#0B8BF0" : "#333333" }}
+                          style={{ height: "120px", lineHeight: "120px", fontWeight: "500", color: index === this.state._areaIndex ? "#0B8BF0" : "#333333" }}
                           onClick={e => this._changeArea(index)}
                         >
                           {item.name}
@@ -695,7 +695,7 @@ class Index extends React.Component {
                     this.state._area[this.state._areaIndex].children.map((item, index) => {
                       return (
                         <div key={index}
-                          style={{ height: "100px", lineHeight: "100px", fontWeight: "600", color: index === this.state._areaChildrenIndex ? "#0B8BF0" : "#333333" }}
+                          style={{ height: "120px", lineHeight: "120px", fontWeight: "500", color: index === this.state._areaChildrenIndex ? "#0B8BF0" : "#333333" }}
                           onClick={e => this._changeAreaChildren(index)}
                         >
                           {item.name}
@@ -712,7 +712,7 @@ class Index extends React.Component {
                     this.state._subway.map((item, index) => {
                       return (
                         <div key={index}
-                          style={{ height: "100px", lineHeight: "100px", fontWeight: "600", color: index === this.state._subwayIndex ? "#0B8BF0" : "#333333" }}
+                          style={{ height: "120px", lineHeight: "120px", fontWeight: "500", color: index === this.state._subwayIndex ? "#0B8BF0" : "#333333" }}
                           onClick={e => this.changeSubway(index)}
                         >
                           {item.name}
@@ -726,7 +726,7 @@ class Index extends React.Component {
                     this.state._subway[this.state._subwayIndex].children.map((item, index) => {
                       return (
                         <div key={index}
-                          style={{ height: "100px", lineHeight: "100px", fontWeight: "600", color: index === this.state._subwayChildrenIndex ? "#0B8BF0" : "#333333" }}
+                          style={{ height: "120px", lineHeight: "120px", fontWeight: "500", color: index === this.state._subwayChildrenIndex ? "#0B8BF0" : "#333333" }}
                           onClick={e => this._changeSubwayChildren(index)}
                         >
                           {item.name}
@@ -749,7 +749,7 @@ class Index extends React.Component {
                     this.state.areas.map((item, index) => {
                       return (
                         <div key={index}
-                          style={{ height: "100px", lineHeight: "100px", fontWeight: "600", color: index === this.state.areasIndex ? "#0B8BF0" : "#333333" }}
+                          style={{ height: "120px", lineHeight: "120px", fontWeight: "500", color: index === this.state.areasIndex ? "#0B8BF0" : "#333333" }}
                           onClick={e => this.changeAreas(index)}
                         >
                           {item.name}{index !== 0 ? <span>&sup2;</span> : null}
@@ -766,12 +766,12 @@ class Index extends React.Component {
           <div className="index-position">
             <div style={{ overflow: "hidden" }}>
               <div onClick={this.ckTotalPrice.bind(this)}
-                style={{ float: "left", backgroundColor: this.state.isTotalPrice ? "#0B8BF0" : "#F2F2F2", width: "230px", borderRadius: "5px", height: "75px", lineHeight: "75px", textAlign: "center", color: this.state.isTotalPrice ? "#ffffff" : "#6C6C6C" }}
+                style={{ float: "left", backgroundColor: this.state.isTotalPrice ? "#0B8BF0" : "#F2F2F2", width: "240px", borderRadius: "5px", height: "70px", lineHeight: "70px", textAlign: "center", color: this.state.isTotalPrice ? "#ffffff" : "#6C6C6C" }}
               >
                 总价
               </div>
               <div onClick={this.ckUnitPrice.bind(this)}
-                style={{ float: "left", backgroundColor: this.state.isTotalPrice ? "#F2F2F2" : "#0B8BF0", width: "230px", borderRadius: "5px", height: "75px", lineHeight: "75px", textAlign: "center", marginLeft: "50px", color: this.state.isTotalPrice ? "#6C6C6C" : "#ffffff" }}
+                style={{ float: "left", backgroundColor: this.state.isTotalPrice ? "#F2F2F2" : "#0B8BF0", width: "240px", borderRadius: "5px", height: "70px", lineHeight: "70px", textAlign: "center", marginLeft: "50px", color: this.state.isTotalPrice ? "#6C6C6C" : "#ffffff" }}
               >
                 单价
               </div>
@@ -783,7 +783,7 @@ class Index extends React.Component {
                     this.state.totalPrice.map((item, index) => {
                       return (
                         <div key={index}
-                          style={{ height: "100px", lineHeight: "100px", fontWeight: "600", color: index === this.state.totalPriceIndex ? "#0B8BF0" : "#333333" }}
+                          style={{ height: "120px", lineHeight: "120px", fontWeight: "500", color: index === this.state.totalPriceIndex ? "#0B8BF0" : "#333333" }}
                           onClick={e => this.changeTotalPrice(index)}
                         >
                           {item.name}
@@ -800,7 +800,7 @@ class Index extends React.Component {
                     this.state.unitPrice.map((item, index) => {
                       return (
                         <div key={index}
-                          style={{ height: "100px", lineHeight: "100px", fontWeight: "600", color: index === this.state.unitPriceIndex ? "#0B8BF0" : "#333333" }}
+                          style={{ height: "120px", lineHeight: "120px", fontWeight: "500", color: index === this.state.unitPriceIndex ? "#0B8BF0" : "#333333" }}
                           onClick={e => this.changeUnitPrice(index)}
                         >
                           {item.name}
@@ -816,7 +816,7 @@ class Index extends React.Component {
 
         {this.state.isMore ?
           <div className="index-position">
-            <div style={{ color: "#333333", fontSize: "46px", fontWeight: "600", marginBottom: "40px", marginTop: "10px" }}>装修</div>
+            <div style={{ color: "#333333", fontSize: "46px", fontWeight: "500", marginBottom: "40px", marginTop: "10px" }}>装修</div>
             <div style={{ overflow: "hidden" }}>
               {
                 this.state.decorationArr.map((item, index) => {
@@ -835,7 +835,7 @@ class Index extends React.Component {
               }
             </div>
 
-            <div style={{ color: "#333333", fontSize: "46px", fontWeight: "600", marginBottom: "40px", marginTop: "30px" }}>类型</div>
+            <div style={{ color: "#333333", fontSize: "46px", fontWeight: "500", marginBottom: "40px", marginTop: "30px" }}>类型</div>
             <div style={{ overflow: "hidden" }}>
               {
                 this.state.typeArr.map((item, index) => {

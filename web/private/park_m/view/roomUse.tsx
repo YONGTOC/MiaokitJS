@@ -88,6 +88,11 @@ export default class RoomUse extends React.Component<{ history: any }>{
       rentEndDate: this.state.rentEndDate,
       defaultRoom: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.default_room
     }
+    for (var key in obj) {
+      if (obj[key] === "") {
+        return alert("请把资料填完整！")
+      }
+    }
     this.dataService.saveRoomRentInfo(this.callBackSaveRoomRentInfo.bind(this), obj)
   }
 
