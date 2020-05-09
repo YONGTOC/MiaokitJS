@@ -542,7 +542,7 @@ class LeaseInfos extends React.Component {
             </li>
             <li className="jj">
             <span style={{ "padding-right": "7rem" }} >租金</span>
-            <span  style={{ "color": "#F53636" }}>2.8万元/月（2.8元/m²/天）</span>
+            <span  style={{ "color": "#F53636" }}>2800元/月（2.8元/m²/月）</span>
           </li>
             <li>
               <span style={{ "padding-right": "7rem" }}>免租</span>
