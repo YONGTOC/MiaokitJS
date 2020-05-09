@@ -293,7 +293,7 @@ class LeaseList extends React.Component {
                               <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
                     </p>
                     <p className={this.state.indexOf == index ? "leaseType-active" : "leaseType"} >
-                      <span className={this.state.indexOf == index ? "leasePrice-active" : "leasePrice"}>{i.price}</span>元/m²/天</p>
+                      <span className={this.state.indexOf == index ? "leasePrice-active" : "leasePrice"}>{i.price}</span>元/m²/月</p>
                   </div>
                 </li>
               )
@@ -442,7 +442,7 @@ class LeaseInfo extends React.Component {
           </div>
           <div className="leaseInfoul_br">
             <ul className={"leaseInfoul"}>
-              <li className={this.state.infoli == 0 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 0)} >租房信息</li>
+              <li className={this.state.infoli == 0 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 0)} >房间信息</li>
               
               <li className={this.state.infoli == 1 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 1)} >房间展示</li>
             </ul>
@@ -492,6 +492,9 @@ class LeaseInfos extends React.Component {
   static setLeaseInfos(data) { }
   public setLeaseInfos(data) {
     console.log("setLeaseInfosIIII", data);
+    let sum = data.response.squre * data.response.price;
+    let sell_price_sum = data.response.squre * 6000;
+    console.log("zzzzz", sum);
     if (data.response.lift == 1) {
       this.setState({
         area: data.response.squre,
@@ -500,8 +503,12 @@ class LeaseInfos extends React.Component {
         limit: data.response.require,
         elevator: "有",
         price: data.response.price,
+      //  price:0,
         man: data.response.contact,
-        tel: data.response.phone
+        tel: data.response.phone,
+        sum: sum,
+        sell_price:6000,
+        sell_price_sum:sell_price_sum,
       })
     } else {
       this.setState({
@@ -510,9 +517,13 @@ class LeaseInfos extends React.Component {
         floor_name: data.response.floor_name,
         limit: data.response.require,
         elevator: "无",
-        price: data.response.price,
+         price: data.response.price,
+       // price:0,
         man: data.response.contact,
-        tel: data.response.phone
+        tel: data.response.phone,
+        sum: sum,
+        sell_price:6000,
+        sell_price_sum:sell_price_sum,
       })
     }
      document.getElementById("telurl").href = 'tel:' + this.state.tel;
@@ -531,9 +542,13 @@ class LeaseInfos extends React.Component {
               <span style={{ "padding-right": "2rem" }}>所在楼层</span>
               <span style={{ "font-weight": "600" }} >{this.state.floor_name}</span>
             </li>
-            <li className="jj">
+            <li  className={this.state.price == 0 ? "hide" : "jj"}>
             <span style={{ "padding-right": "7rem" }} >租金</span>
-            <span  style={{ "color": "#F53636" }}>2800元/月（2.8元/m²/月）</span>
+            <span  style={{ "color": "#F53636" }}>{this.state.sum}元/月（{this.state.price}元/m²/月）</span>
+            </li>
+            <li  className={this.state.sell_price == 0 ? "hide" : "jj"} >
+            <span style={{ "padding-right": "7rem" }} >售价</span>
+              <span style={{ "color": "#F53636" }}>{this.state.sell_price_sum}元（{this.state.sell_price}元/m²）</span>
           </li>
             <li>
               <span style={{ "padding-right": "7rem" }}>免租</span>
@@ -551,7 +566,7 @@ class LeaseInfos extends React.Component {
             <li>电梯
               <span style={{ "font-weight": "600", "font-size": "2.3rem","marginLeft": "7rem" }}>{this.state.elevator}</span>
             </li>
-            <li className="kk">
+            <li className={this.state.sell_price == 0 ? "kk" : "kk2"} >
               <p></p>
             </li>
              <li>装修
@@ -570,9 +585,9 @@ class LeaseInfos extends React.Component {
             </li>
         </ul>
         <div className="botTel">
-          <p className="botTelMan">联系人 <span style={{ "font-weight": "600" }}>李先生</span></p>
+          <p className="botTelMan">联系人 <span style={{ "font-weight": "600", "marginLeft": "2rem" }}>{this.state.man}</span></p>
           <div className="telBut"> 
-           <a  href="#" id="telurl" > 免费咨询</a>
+           <a  href="#" id="telurl">电话咨询</a>
             </div>
         </div>
       </div>
@@ -585,11 +600,14 @@ class LeaseInfos extends React.Component {
     floor_name: "",
     limit: "",
     elevator: "",
-    price: "",
+    price: 0,
     man: "",
-    tel: ""
+    tel: "",
+    sum: 0,
+    sell_price: 0,
+    sell_price_sum: 0,
   }
-  //   <a  href="'tel:'+{this.state.tel}" > 免费咨询</a>
+  //   <a  href="'tel:'+{this.state.tel}" >免费咨询</a>
   //     <a href="tel:18010862041" > 免费咨询</a>
 
 }
@@ -601,6 +619,7 @@ class Picshow extends React.Component {
     super(props);
 
     Picshow.setPicshow = this.setPicshow.bind(this);
+ 
   }
 
   public componentDidMount() {
@@ -645,39 +664,55 @@ class Picshow extends React.Component {
     }
   }
 
+  public picBtn(a, b) {
+    console.log(a);
+    this.setState({
+      picBtnIndex: a
+    });
+  }
+
   public render() {
 
     return (
       <div className={"picshow"}>
-        <ul>
-          <p className={this.state.urlNull} style={{ "margin": "1rem 0", "text-align": "center", "font-size": "3rem", "color": "#797979" }}>暂无图片···</p>
-          <WingBlank>
-            <Carousel className="space-carousel"
-              frameOverflow="visible"
-              cellSpacing={10}
-              slideWidth={0.8}
-              autoplay
-              infinite
-              afterChange={index => this.setState({ slideIndex: index })}
-            >
-              {this.state.data.map((val, index) => (
-                <img
-                  src={val}
-                  alt=""
-                  style={{ width: '100%', verticalAlign: 'top' }}
-                  onLoad={() => {
-                    // fire window resize event to change height
-                    window.dispatchEvent(new Event('resize'));
-                    this.setState({ imgHeight: 'auto' });
-                  }}
-                />
-              ))}
-            </Carousel>
-          </WingBlank>
-        </ul>
+        {this.state.picBtnIndex == 0 ?
+          <ul>
+            <p className={this.state.urlNull} style={{ "margin": "1rem 0", "text-align": "center", "font-size": "3rem", "color": "#797979" }}>暂无图片···</p>
+            <WingBlank>
+              <Carousel className="space-carousel"
+                frameOverflow="visible"
+                cellSpacing={10}
+                slideWidth={0.8}
+                autoplay
+                infinite
+                afterChange={index => this.setState({ slideIndex: index })}
+              >
+                {this.state.data.map((val, index) => (
+                  <img
+                    src={val}
+                    alt=""
+                    style={{ width: '100%', verticalAlign: 'top' }}
+                    onLoad={() => {
+                      // fire window resize event to change height
+                      window.dispatchEvent(new Event('resize'));
+                      this.setState({ imgHeight: 'auto' });
+                    }}
+                  />
+                ))}
+              </Carousel>
+            </WingBlank>
+          </ul>
+          :
+          <div>
+              < Videoshow/>
+          </div>
+        }
+      
         <div className="picBtn">
-          <div className="picBtnA">图片</div>
-          <div className="picBtnB">视频</div>
+          <div className={this.state.picBtnIndex == 0 ? "picBtnS-active" : "picBtnS"}
+           onClick={this.picBtn.bind(this, 0)}>图片</div>
+          <div className={this.state.picBtnIndex == 1 ? "picBtnS-active" : "picBtnS"}
+           onClick={this.picBtn.bind(this, 1)}>视频</div>
         </div>
       </div>
     )
@@ -689,6 +724,7 @@ class Picshow extends React.Component {
     data: ['1', '2', '3', '4', '5', '6', '7'],
     imgHeight: 176,
     slideIndex: 0,
+    picBtnIndex:0,
   }
 }
 
@@ -698,18 +734,42 @@ class Videoshow extends React.Component {
     super(props);
 
     Videoshow.setVideoshow = this.setVideoshow.bind(this);
+    this.seeVideoState = this.seeVideoState.bind(this);
   }
 
-  public componentDidMount() { }
+  public componentDidMount() {
+    this.seeVideoState();
+   }
+
+  public seeVideoState() {
+     if (this.state.roomVideo.length == 0) {
+      this.setState({
+        urlNull: "show",
+      })
+         console.log(this.state)
+    } else if ( !this.state.roomVideo[0].url) {
+       this.setState({
+         urlNull: "show",
+      })
+    } else {
+      this.setState({
+        urlNull: "hide",
+      })
+    }
+  }
+
 
   // 显示获取的企业视频
   static setVideoshow(data) { }
   public setVideoshow(data) {
+    console.log("4545454", data.response.video.length)
     if (data.response.video.length == 0) {
+      console.log(898989898)
       this.setState({
         roomVideo: [],
         urlNull: "show",
       })
+         console.log(this.state)
     } else if ( !data.response.video[0].url) {
        this.setState({
          roomVideo: [],
@@ -722,6 +782,8 @@ class Videoshow extends React.Component {
       })
     }
     console.log("66666666666666", this.state)
+
+
   }
 
   public render() {

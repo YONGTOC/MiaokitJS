@@ -1192,7 +1192,7 @@ i {
     margin-top: 2rem;
     line-height: 4.5rem;*/  
     float: left;
-    width: 23rem;
+    width: 18rem;
     margin-top: 2rem;
     line-height: 4.5rem;
 }
@@ -1235,7 +1235,7 @@ i {
     border-radius: 0.4rem;
     height: 4rem;
     line-height: 4rem;
-    width: 14rem;
+    width: 19rem;
     margin-top: 9.5rem;
     clear: both;
 }
@@ -1251,7 +1251,7 @@ i {
     border-radius: 0.4rem;
     height: 4rem;
     line-height: 4rem;
-    width: 14rem;
+    width: 19rem;
     margin-top: 9.5rem;
 }
 
@@ -1425,10 +1425,13 @@ i {
 }
 
 .leaseInfosul li {
-    line-height: 5rem;
+    line-height: 4.3rem;
 }
 .kk{
     height:4.5rem;
+}
+.kk2{
+    height:9.5rem;
 }
 .room2{
     float:left;
@@ -1443,12 +1446,38 @@ i {
     font-weight: bold;
 }*/
 .botTel {
+    /*border-top: 0.3rem solid #f2f2f2;
+    display: block;
+    width: 100%;
+    float: left;*/
     border-top: 0.3rem solid #f2f2f2;
     display: block;
     width: 100%;
     float: left;
 }
-
+.botTelMan {
+    width: 30rem;
+    font-size: 3rem;
+    float: left;
+    position: absolute;
+    bottom: 3rem;
+    left: 3rem;
+}
+.telBut {
+    width: 19rem;
+    height: 5.5rem;
+    background: rgba(11,139,240,1);
+    opacity: 1;
+    border-radius: 45px;
+    float: right;
+    text-align: center;
+    position: absolute;
+    right: 5rem;
+    bottom: 2rem;
+}
+#telurl {
+    color: #fff;
+}
 /*roomImg -- ’’∆¨’π æ*/
 .picshow {
     width: 100%;
@@ -1484,14 +1513,32 @@ i {
     margin: 0px 14rem;
     line-height: 5rem;
 }
+.picBtnS {
+    color: #0B8BF0;
+    float: left;
+    width: 14rem;
+    background: #fff;
+    border-radius: 3rem;
+    text-align: center;
+    margin: 0px 2rem;
+}
+.picBtnS-active {
+    background: #0B8BF0;
+    color: #fff;
+    float: left;
+    width: 14rem;
+    border-radius: 3rem;
+    text-align: center;
+    margin: 0px 2rem;
+}
 .picBtnA, .picBtnB {
-    color: #ccc;
+    /*color: #ccc;
     float: left;
     width: 14rem;
     background: #0B8BF0;
     border-radius: 3rem;
     text-align: center;
-    margin: 0px 2rem;
+    margin: 0px 2rem;*/
 }
 
 /*Photograph -- ÀÊ ÷≈ƒ*/
