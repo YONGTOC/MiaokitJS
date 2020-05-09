@@ -187,7 +187,7 @@ class Index extends React.Component {
   }
 
   componentWillMount() {
-   // this.dataService.getUserInfo(this.callBackGetUserInfo.bind(this))
+  this.dataService.getUserInfo(this.callBackGetUserInfo.bind(this))
 
    // this.dataService.login(this.isLoginData);
 
@@ -297,7 +297,7 @@ class Index extends React.Component {
       } else {
         // sessionStorage.setItem("enterprise", dataObj.enterprises[0].name);
        // sessionStorage.setItem("enterpriseId", dataObj.enterprises[0].id);
-         sessionStorage.setItem("enterprise", dataObj.enterprise.name);
+         sessionStorage.setItem("enterprise", dataObj.enterprise);
         sessionStorage.setItem("enterpriseId", dataObj.enterpriseId);
       }
       

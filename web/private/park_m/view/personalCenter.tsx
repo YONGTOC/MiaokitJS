@@ -1,6 +1,7 @@
 ﻿import * as React from "react";
 import "css!./styles/personalCenter.css"
 import { Link } from 'react-router-dom';
+import { Toast  } from 'antd-mobile';
 import DataService from "dataService";
 
 
@@ -113,7 +114,7 @@ class PersonalCenter extends React.Component {
         this.dataService.modifyUserInfo(this.callBackPhoneNew.bind(this),
           this.state.userInfo.name, phoneNew, this.state.enterpriseId )
       } else {
-           alert("手机号码不正确")
+         Toast.info('手机号码不正确', 2);
       }
     }
   }
@@ -179,7 +180,7 @@ class PersonalCenter extends React.Component {
   }
 
   public callBackModifyCompanyName(data) {
-   alert(data.err_msg)
+    Toast.info(data.err_msg, 2);
     this.setState({
       enterprise: data.response.name,
       company_id: data.response.company_id

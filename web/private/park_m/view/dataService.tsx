@@ -1,4 +1,5 @@
 import FindLease from 'findLease';
+import { Toast } from 'antd-mobile';
 
 class DataService {
 
@@ -51,9 +52,7 @@ class DataService {
         console.log(typeof data);
         let dataJ = JSON.parse(data);
         console.log("ajax", dataJ);
-        if (dataJ.err_msg !=="上传成功!") {
-            alert(dataJ.err_msg);
-        }
+          Toast.info(dataJ.err_msg, 2);
         if (dataJ.return_code == 100) {
           pBack(dataJ.response);
         }

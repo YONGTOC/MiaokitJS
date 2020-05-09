@@ -3,7 +3,8 @@ import * as RouterDOM from 'react-router-dom';
 import DataService from "dataService";
 import GlobalAction from "compat";
 import "css!./styles/resetAntdMobile.css"
-import { ImagePicker, WingBlank, SegmentedControl } from 'antd-mobile';
+import { ImagePicker, WingBlank, Toast } from 'antd-mobile';
+ 
 
 class RepairsOnline extends React.Component<{ history: any }>{
   public constructor(props) {
@@ -42,8 +43,8 @@ class RepairsOnline extends React.Component<{ history: any }>{
     } else {
       this.setState({
         companyUL:[],
-        company: dataObj.enterprise, 
-        company_id: dataObj.enterpriseId,
+        company: sessionStorage.getItem("enterprise"),
+        company_id: sessionStorage.getItem("enterpriseId"),
 
       })
     }
@@ -263,14 +264,19 @@ class RepairsOnline extends React.Component<{ history: any }>{
   public sumbitReqairs() {
     console.log("提交报修", this.state);
     if (this.state.files.length == 0) {
-      alert("请提交报修照片")
+      Toast.info('请提交报修照片', 2);
     } else if (this.state.type_id == "") {
-      alert("请选择报修类型")
+      Toast.info('请选择报修类型', 2);
     } else if (this.state.position == "") {
-      alert("请填写报修位置")
+      Toast.info('请填写报修位置', 2);
     } else if (this.state.descript == "") {
-      alert("请描述报修问题")
-    } else {
+      Toast.info('请描述报修问题', 2);
+    } else if (this.state.company == "请先关联企业" || this.state.company_id == "请先关联企业" ) {
+      Toast.info('请先前往关联企业', 2);
+    }else if (this.state.phone == "" ) {
+      Toast.info('请先前往填写联系电话', 2);
+    }
+    else {
       this.dataService.saveRepairInfo(this.sumbitReqairssucceed, this.state);
     }
   }
@@ -279,7 +285,7 @@ class RepairsOnline extends React.Component<{ history: any }>{
 
   //提交报修单 -- 成功
   public sumbitReqairssucceed(data) {
-    alert(data);
+     Toast.info(data, 2);
     window.history.back();
   }
 
@@ -336,9 +342,7 @@ class RepairsOnline extends React.Component<{ history: any }>{
               </li>
               <li>
                 <span className="redStar">*</span><span style={{ "color": "#949494" }}>报修企业</span>
-                <span className="iconfont" style={{ "fontSize": "3rem", "float": "right", " padding": " 0 0 0 3rem", "padding": " 0 0 0 4rem" }} >&#xe827;</span>
-                <p className={"applyRight"}
-                  style={{ "font-size": "2.3rem", "padding-left": "2.5rem", "float": "right", "width": "37rem" }}>{this.state.company}</p>
+                   <input type="text" value={this.state.company} placeholder="请先关联企业" style={{ "margin-left": "4rem", "border": "0" }} readOnly />
               </li>
               <li>
                 <span className="redStar">*</span><span style={{ "color": "#949494" }}>联系人</span>
@@ -347,7 +351,7 @@ class RepairsOnline extends React.Component<{ history: any }>{
               </li>
               <li>
                 <span className="redStar">*</span><span style={{ "color": "#949494" }}>电话号码</span>
-                <input type="text" value={this.state.phone} placeholder="请填写联系电话号码 " style={{ "margin-left": "4rem", "border": "0" }}
+                <input type="text" value={this.state.phone} placeholder="请先绑定手机号码 " style={{ "margin-left": "4rem", "border": "0" }}
                   onChange={this.reqairsPhone.bind(this)} readOnly />
               </li>
               <li>
@@ -432,6 +436,7 @@ class RepairsOnline extends React.Component<{ history: any }>{
     room: "",
     //报修企业
     company: "",
+    company_id:"",
     //联系人
     contact: "",
     //联系人id

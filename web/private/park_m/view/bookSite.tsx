@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
-import { DatePicker, List } from 'antd-mobile';
+import { DatePicker, List , Toast} from 'antd-mobile';
 import DataService from "dataService";
 import GlobalAction from "compat";
 import "css!./styles/antd-mobile.css";
@@ -483,6 +483,7 @@ class BookRoom extends React.Component {
       //company_id: dataObj.enterprises[0].id,
   
     })
+  
 
     if (dataObj.enterprises.length == 0) {
       this.setState({
@@ -638,13 +639,17 @@ class BookRoom extends React.Component {
     // console.log("bookSumbit", this.state);
     // console.log("bookSumbit", this.state.start_date);
     if (this.state.start_date == "") {
-      alert("请选择开始时间")
+       Toast.info('请选择开始时间', 2);
     } else if (this.state.end_date == "") {
-      alert("请选择结束时间")
+       Toast.info('请选择结束时间', 2);
     } else if (this.state.theme == "") {
-      alert("请输入会议主题")
+      Toast.info('请输入会议主题', 2);
     } else if (this.state.content == "") {
-      alert("请输入会议具体需求")
+      Toast.info('请输入会议具体需求', 2);
+    }else if (this.state.company == "请先关联企业" ) {
+      Toast.info('请先前往关联企业', 2);
+    }else if (this.state.phone == "") {
+      Toast.info('请先绑定手机号码', 2);
     } else {
       this.dataService.bookingRoom(this.bookSumbitOK, this.state);
     }
@@ -652,34 +657,16 @@ class BookRoom extends React.Component {
   }
 
   showInfos() {
-    //toggleView ( a,id) (Info ,id)
     BookInfo.hideBookFa()
   }
 
-
-  //static showList(a, id) { };
-  //public showList(a, id) {
-  //  console.log("showList", a);
-  //  BookSite.toggleView(a, id);
-  //  this.setState({
-  //    //infoli: 0,
-  //    infoli: 2,
-  //    bookInfocss: "bookInfos",
-  //  })
-  //}
-
   //提交成功
   public bookSumbitOK(data) {
-    alert(data);
+    Toast.info(data, 2);
     BookInfo.showList("List", "");
-
   }
 
-
   public render() {
-    //<div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
-    //  <i className={this.state.iconfont} style={{ "fontSize": "5rem" }}>&#xe849;</i>
-    //</div>
     return (
       <div className={this.state.bookRoom}>
         <div className={"foleBtn"} >
@@ -699,7 +686,7 @@ class BookRoom extends React.Component {
             </li>
             <li>
               <span className="redStar">*</span>手机号码
-              <p className={"bookRight"} style={{ "padding-left": "1rem", "padding-top": "0.5rem" }}>{this.state.phone}</p>
+               <input type="text" value={this.state.phone} placeholder="请先绑定手机号码  " style={{ "margin-left": "2rem", "border": "0" }}  readOnly />
             </li>
             <li>
               <span className="redStar">*</span>申请企业
