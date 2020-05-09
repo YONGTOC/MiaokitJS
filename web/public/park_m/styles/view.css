@@ -337,6 +337,7 @@ i {
 }
 
 .iconBox-bottom p {
+    font-size: 2rem;
 }
 
 .iconBox-bottomIn {
@@ -358,6 +359,7 @@ i {
     margin-top: 0rem;
     text-align: center;
     color: #0B8BF0;
+    font-size:2rem;
 }
 
 .iconBox-bottomIn img {
@@ -1185,18 +1187,28 @@ i {
 }
 
 .leaseul-middle {
-    float: left;
+    /*float: left;
     width: 25rem;
+    margin-top: 2rem;
+    line-height: 4.5rem;*/  
+    float: left;
+    width: 18rem;
     margin-top: 2rem;
     line-height: 4.5rem;
 }
-
+.leaseul-middle p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .leaseName {
     color: #949494;
+
 }
 
 .leaseName-active {
     color: #fff;
+ 
 }
 
 .leaseul-right {
@@ -1212,21 +1224,34 @@ i {
 }
 
 .leaseType {
-    color: #949494;
+    /*color: #949494;
     border-radius: 0.4rem;
     height: 4rem;
     line-height: 4rem;
     width: 12rem;
     margin-top: 9.5rem;
+    clear: both;*/ 
+    color: #949494;
+    border-radius: 0.4rem;
+    height: 4rem;
+    line-height: 4rem;
+    width: 19rem;
+    margin-top: 9.5rem;
     clear: both;
 }
 
 .leaseType-active {
-    color: #E4F3FF;
+    /*color: #E4F3FF;
     border-radius: 0.4rem;
     height: 4rem;
     line-height: 4rem;
     width: 12rem;
+    margin-top: 9.5rem;*/
+    color: #E4F3FF;
+    border-radius: 0.4rem;
+    height: 4rem;
+    line-height: 4rem;
+    width: 19rem;
     margin-top: 9.5rem;
 }
 
@@ -1348,7 +1373,8 @@ i {
 
 .leaseInfoul {
     background: #fff;
-    width: 60rem;
+    /*width: 60rem;*/
+    width: 55rem;
     height: 5rem;
     border-bottom: 0.1rem solid #f2f2f2;
     margin: auto;
@@ -1359,7 +1385,8 @@ i {
     list-style: none;
     float: left;
     color: #6C6C6C;
-    margin: 0rem 4.5rem;
+    /*margin: 0rem 4.5rem;*/ 
+    margin: 0rem 7.5rem;
     padding-bottom: 1rem;
     font-size: 2.5rem;
 }
@@ -1369,7 +1396,8 @@ i {
     float: left;
     color: #333333;
     font-weight: bold;
-    margin: 0rem 4.5rem;
+    /*margin: 0rem 4.5rem;*/
+    margin: 0rem 7.5rem;
     border-bottom: 0.5rem solid #0B8BF0;
     padding-bottom: 1rem;
     font-size: 2.5rem;
@@ -1391,14 +1419,24 @@ i {
 }
 
 .leaseInfosliRight {
-    float: left;
+    /*float: left;*/
+     position: relative;
+    left: -10rem;
 }
 
 .leaseInfosul li {
-    line-height: 5rem;
+    line-height: 4.3rem;
 }
-
-.leaseInfosul li:nth-child(1) {
+.kk{
+    height:4.5rem;
+}
+.kk2{
+    height:9.5rem;
+}
+.room2{
+    float:left;
+}
+/*.leaseInfosul li:nth-child(1) {
     width: 30rem;
     display: inline-block;
     border-left: 0.7rem solid #0B8BF0;
@@ -1406,6 +1444,12 @@ i {
     height: 3rem;
     padding-left: 1rem;
     font-weight: bold;
+}*/
+.botTel {
+    border-top: 0.3rem solid #f2f2f2;
+    display: block;
+    width: 100%;
+    float: left;
 }
 
 /*roomImg -- 照片展示*/
@@ -1435,6 +1479,22 @@ i {
 .picshow img {
     width: 44rem;
     height: 33rem;
+}
+.picBtn {
+    position: absolute;
+    bottom: 4rem;
+    width: 59%;
+    margin: 0px 14rem;
+    line-height: 5rem;
+}
+.picBtnA, .picBtnB {
+    color: #ccc;
+    float: left;
+    width: 14rem;
+    background: #0B8BF0;
+    border-radius: 3rem;
+    text-align: center;
+    margin: 0px 2rem;
 }
 
 /*Photograph -- 随手拍*/
@@ -1905,7 +1965,20 @@ i {
     height: 37rem;
 }
 
+.rollSelectCauseULcss2 {
+    width: 96%;
+    height: 27rem;
+    margin-top: 13rem;
+    overflow-y: scroll;
+    height: 30rem;
+}
+
 .rollSelectCauseULcss li {
+    text-align: center;
+    line-height: 7rem;
+}
+
+.rollSelectCauseULcss2 li {
     text-align: center;
     line-height: 7rem;
 }
@@ -2213,11 +2286,15 @@ i {
 }
 
 .bookInfoul {
-    background: #fff;
+    /*background: #fff;
     width: 54rem;
     height: 7rem;
     border-bottom: 0.2rem solid #f2f2f2;
+    margin: auto;*/
+    width: 55rem;
+    height: 6rem;
     margin: auto;
+    line-height: 2rem;
 }
 
 .bookInfoli {
@@ -2279,27 +2356,31 @@ i {
 
 .siteInfosbox {
     clear: both;
-    font-size: 2.5rem;
     line-height: 5rem;
     font-weight: 400;
     letter-spacing: 0.3rem;
     padding-right: 1rem;
     overflow-y: scroll;
     height: 32rem;
+    margin: 0  3rem;
 }
-
+.siteInfosbox p {
+    font-size: 2.5rem;
+}
 .notesBox {
     clear: both;
     font-size: 2.5rem;
     line-height: 5rem;
     font-weight: 400;
     letter-spacing: 0.2rem;
-    width: 57rem;
+    width: 55rem;
     margin: auto;
     overflow-y: scroll;
     height: 32rem;
 }
-
+.notesBox p{
+    font-size:2.5rem;
+}
 .bookSumbit {
     width: 100%;
     height: 7rem;
@@ -2948,4 +3029,37 @@ i {
     text-align: center;
     font-size: 2.5rem;
     line-height: 6rem;
+}
+/*身份认证补充 img*/
+.enterprise-information-box {
+    margin-bottom: 20rem;
+}
+.imgBox {
+    margin: 0rem 4.5rem;
+    width: 90%;
+    border-bottom: 3px solid #F2F2F2;
+    display: inline-block;
+    padding-bottom: 2rem;
+}
+.closeIcon {
+    position: relative;
+    left: 9rem;
+    display: inline-block;
+    float: left;
+    z-index: 1;
+}
+.elegantImg {
+    height: 100%;
+    width: 100%;
+    float: left;
+    position: relative;
+    top: -3rem;
+}
+.service-tel-B {
+    width: 44rem;
+    margin-top: 2rem;
+    font-size: 40px;
+    line-height: 120px;
+    display: inline-block;
+    float: right;
 }

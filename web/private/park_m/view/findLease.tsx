@@ -180,16 +180,22 @@ class LeaseList extends React.Component {
 
 
   //选中某个房间
-  public leaseActive(index, id) {
+  public leaseActive(index, id,title,building, floor, room) {
     console.log("active", index, id);
+    console.log("active2", building, floor,room);
     this.setState({
       indexOf: index,
       roomId: id
     });
     console.log("leaseActive", this.state);
-    // 通知3d，切换房间定位（web获取的是 房间id）
-    this.globalAction.web_call_webgl_switchRoom(id);
-
+      let roomData = {
+      m_pTile: title,
+      m_pBuilding: building,
+      m_pLayer: floor,
+      m_pRoom: room,
+    }
+    //// 通知3d，切换房间定位（web获取的是 房间data）
+    this.globalAction.web_call_webgl_switchRoom(roomData);
   }
 
   //切换 目标面积，搜索房间
@@ -246,6 +252,15 @@ class LeaseList extends React.Component {
     move3dBut("down")
   }
 
+  
+  onErrorHeadimageurl(this, index) {
+    var items = this.state.companyData;
+    items[index].headimageurl ="./park_m/image/noImg.png";
+    this.setState({
+          companyData: items
+    });
+  }
+
   public render() {
     return (
       <div className={this.state.leaseListcss}>
@@ -263,14 +278,13 @@ class LeaseList extends React.Component {
         <ul className={this.state.leaseul}>
           <p className={this.state.roomNull}>没有符合搜索条件的结果···</p>
           {this.state.roomData.map((i, index) => {
-            if (i.headimageurl !== null) {
               return (
-                <li onClick={this.leaseActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "leaseli-active" : "leaseli"} >
+                <li onClick={this.leaseActive.bind(this, index, i.id, i.project_title, i.building_code, i.floor_code, i.room_code)} className={this.state.indexOf == index ? "leaseli-active" : "leaseli"} >
                   <div className={this.state.indexOf == index ? "leaseImgback-active" : "leaseImgback"} >
-                    <img src={i.headimageurl} />
+                    <img  src={i.headimageurl == null ? this.state.imgurlNull : i.headimageurl}   onError={this.onErrorHeadimageurl.bind(this, index)} />
                   </div>
                   <div className="leaseul-middle">
-                    <p className={this.state.indexOf == index ? "leaseName-active" : "leaseName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.building_name}-{i.floor_name}-{i.room_name}</p>
+                    <p className={this.state.indexOf == index ? "leaseName-active" : "leaseName"} style={{ "font-size": "2.4rem", "font-weight": "bold"  }}>{i.building_name}-{i.floor_name}-{i.room_name}</p>
                     <p style={{ "font-size": "2.5rem" }}><span className="iconfont" style={{ "fontSize": "2.5rem", "margin-right": "1rem" }}>&#xe82a;</span>{i.square}m²</p>
                     <p style={{ "font-size": "2.5rem" }}><span className="iconfont" style={{ "fontSize": "2.5rem", "margin-right": "1rem" }}>&#xe829;</span>{i.date}</p>
                   </div>
@@ -279,31 +293,10 @@ class LeaseList extends React.Component {
                               <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
                     </p>
                     <p className={this.state.indexOf == index ? "leaseType-active" : "leaseType"} >
-                      <span className={this.state.indexOf == index ? "leasePrice-active" : "leasePrice"}>{i.price}</span>元/m²/天</p>
+                      <span className={this.state.indexOf == index ? "leasePrice-active" : "leasePrice"}>{i.price}</span>元/m²/月</p>
                   </div>
                 </li>
               )
-            } else {
-              return (
-                <li onClick={this.leaseActive.bind(this, index, i.id)} className={this.state.indexOf == index ? "leaseli-active" : "leaseli"} >
-                  <div className={this.state.indexOf == index ? "leaseImgback-active" : "leaseImgback"} >
-                    <img src={"./park_m/image/i.png"} />
-                  </div>
-                  <div className="leaseul-middle">
-                    <p className={this.state.indexOf == index ? "leaseName-active" : "leaseName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.building_name}-{i.floor_name}-{i.room_name}</p>
-                    <p style={{ "font-size": "2.5rem" }}><span className="iconfont" style={{ "fontSize": "2.5rem", "margin-right": "1rem" }}>&#xe82a;</span>{i.square}m²</p>
-                    <p style={{ "font-size": "2.5rem" }}><span className="iconfont" style={{ "fontSize": "2.5rem", "margin-right": "1rem" }}>&#xe829;</span>{i.date}</p>
-                  </div>
-                  <div className="leaseul-right">
-                    <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)} className={this.state.indexOf == index ? "show" : "hide"}>更多
-                       <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
-                    </p>
-                    <p className={this.state.indexOf == index ? "leaseType-active" : "leaseType"} >
-                      <span className={this.state.indexOf == index ? "leasePrice-active" : "leasePrice"}>{i.price}</span>元/m²/天</p>
-                  </div>
-                </li>
-              )
-            }
           })}
         </ul>
         <form action='' target="rfFrame">
@@ -348,7 +341,7 @@ class LeaseList extends React.Component {
     square: "全部",
     leaseListcss: "leaseList-part",
     foleBtn: "lease-foleBtn",
-    indexOf: 0,
+    indexOf:-1,
     leaseBtn: "leaseBtn-part",
     leaseul: "leaseul",
     roomData: [],
@@ -359,6 +352,7 @@ class LeaseList extends React.Component {
     searchBoxIcon: "iconfont iconfont-unturn",
     //设置 点击软键盘搜索，页面不刷新
     src: "about:'blank'",
+    imgurlNull: "./park_m/image/noImg.png",
   }
 }
 
@@ -448,9 +442,9 @@ class LeaseInfo extends React.Component {
           </div>
           <div className="leaseInfoul_br">
             <ul className={"leaseInfoul"}>
-              <li className={this.state.infoli == 0 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 0)} >租房信息</li>
-              <li className={this.state.infoli == 2 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 2)}>视频讲解</li>
-              <li className={this.state.infoli == 1 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 1)} >照片展示</li>
+              <li className={this.state.infoli == 0 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 0)} >房间信息</li>
+              
+              <li className={this.state.infoli == 1 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 1)} >房间展示</li>
             </ul>
           </div>
           <div className="leaseContain">
@@ -467,6 +461,7 @@ class LeaseInfo extends React.Component {
         </div>
       </div>
     )
+    //<li className={this.state.infoli == 2 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 2)}>视频讲解</li>
   }
 
   public state = {
@@ -497,6 +492,9 @@ class LeaseInfos extends React.Component {
   static setLeaseInfos(data) { }
   public setLeaseInfos(data) {
     console.log("setLeaseInfosIIII", data);
+    let sum = data.response.squre * data.response.price;
+    let sell_price_sum = data.response.squre * 6000;
+    console.log("zzzzz", sum);
     if (data.response.lift == 1) {
       this.setState({
         area: data.response.squre,
@@ -505,8 +503,12 @@ class LeaseInfos extends React.Component {
         limit: data.response.require,
         elevator: "有",
         price: data.response.price,
+      //  price:0,
         man: data.response.contact,
-        tel: data.response.phone
+        tel: data.response.phone,
+        sum: sum,
+        sell_price:6000,
+        sell_price_sum:sell_price_sum,
       })
     } else {
       this.setState({
@@ -515,14 +517,16 @@ class LeaseInfos extends React.Component {
         floor_name: data.response.floor_name,
         limit: data.response.require,
         elevator: "无",
-        price: data.response.price,
+         price: data.response.price,
+       // price:0,
         man: data.response.contact,
-        tel: data.response.phone
+        tel: data.response.phone,
+        sum: sum,
+        sell_price:6000,
+        sell_price_sum:sell_price_sum,
       })
     }
-    this.setState({
-
-    })
+     document.getElementById("telurl").href = 'tel:' + this.state.tel;
   }
 
   public render() {
@@ -530,7 +534,6 @@ class LeaseInfos extends React.Component {
       <div className={"leaseInfos"}>
         <ul className={"leaseInfosul"}>
           <div className={"leaseInfosliLeft"}>
-            <li>基本信息</li>
             <li>
               <span style={{ "padding-right": "2rem" }}>建筑面积</span>
               <span style={{ "font-weight": "600" }} >{this.state.area}平米</span>
@@ -539,33 +542,54 @@ class LeaseInfos extends React.Component {
               <span style={{ "padding-right": "2rem" }}>所在楼层</span>
               <span style={{ "font-weight": "600" }} >{this.state.floor_name}</span>
             </li>
+            <li  className={this.state.price == 0 ? "hide" : "jj"}>
+            <span style={{ "padding-right": "7rem" }} >租金</span>
+            <span  style={{ "color": "#F53636" }}>{this.state.sum}元/月（{this.state.price}元/m²/月）</span>
+            </li>
+            <li  className={this.state.sell_price == 0 ? "hide" : "jj"} >
+            <span style={{ "padding-right": "7rem" }} >售价</span>
+              <span style={{ "color": "#F53636" }}>{this.state.sell_price_sum}元（{this.state.sell_price}元/m²）</span>
+          </li>
             <li>
-              <span style={{ "padding-right": "7rem" }}>电梯</span>
-              <span style={{ "font-weight": "600" }}>{this.state.elevator}</span>
+              <span style={{ "padding-right": "7rem" }}>免租</span>
+              <span style={{ "font-weight": "600" }}>可面谈</span>
             </li>
             <li>
-              <span style={{ "padding-right": "7rem" }}>租金</span>
-              <span style={{ "color": "#F53636" }}>{this.state.price}元/m²/天</span>
-            </li>
-            <li>
-              <span style={{ "padding-right": "5rem" }}>联系人</span>
-              <span style={{ "font-weight": "600" }}>{this.state.man}</span>
-            </li>
-            <li>
-              <span style={{ "padding-right": "2rem" }}>联系电话</span>
-              <span style={{ "font-weight": "600" }}>{this.state.tel}</span>
+              <span style={{ "padding-right": "2rem" }}>容纳工位</span>
+              <span style={{ "font-weight": "600" }}>20位</span>
             </li>
           </div>
           <div className={"leaseInfosliRight"}>
-            <li>看房须知</li>
-            <li>看房时间
-              <p style={{ "font-weight": "600", "font-size": "2.3rem", "width": "27rem" }}>{this.state.time}</p>
+            <li>总共楼层
+              <span style={{ "font-weight": "600", "font-size": "2.3rem","marginLeft": "2rem" }}>七层</span>
             </li>
-            <li>租房要求
-              <p style={{ "font-weight": "600", "font-size": "2.3rem", "width": "27rem", "height": "15rem", "overflow-y": "scroll" }}>{this.state.limit}</p>
+            <li>电梯
+              <span style={{ "font-weight": "600", "font-size": "2.3rem","marginLeft": "7rem" }}>{this.state.elevator}</span>
             </li>
+            <li className={this.state.sell_price == 0 ? "kk" : "kk2"} >
+              <p></p>
+            </li>
+             <li>装修
+              <span style={{ "font-weight": "600", "font-size": "2.3rem","marginLeft": "7rem" }}>毛胚</span>
+            </li>
+           
           </div>
+
+          <li className="room2">
+              <span style={{ "padding-right": "2rem" }}>看房时间</span>
+            <span style={{ "font-weight": "600" }}>{this.state.time}</span>
+          </li>
+          <li className="room2">
+              <span style={{ "padding-right": "2rem" }}>可租时间</span>
+              <span style={{ "font-weight": "600" }}>20XX年X月X日开始起租</span>
+            </li>
         </ul>
+        <div className="botTel">
+          <p className="botTelMan">联系人 <span style={{ "font-weight": "600" }}>李先生</span></p>
+          <div className="telBut"> 
+           <a  href="#" id="telurl">电话咨询</a>
+            </div>
+        </div>
       </div>
     )
   }
@@ -576,10 +600,16 @@ class LeaseInfos extends React.Component {
     floor_name: "",
     limit: "",
     elevator: "",
-    price: "",
+    price: 0,
     man: "",
-    tel: ""
+    tel: "",
+    sum: 0,
+    sell_price: 0,
+    sell_price_sum: 0,
   }
+  //   <a  href="'tel:'+{this.state.tel}" >免费咨询</a>
+  //     <a href="tel:18010862041" > 免费咨询</a>
+
 }
 
 
@@ -605,9 +635,9 @@ class Picshow extends React.Component {
   public setPicshow(data) {
     let picurl = [];
     console.log("setPicshowPPPPPP", data);
-    //$.each(data.response.pic, function (index, item) {
-    //  picurl.push(item.url)
-    //});
+    $.each(data.response.pic, function (index, item) {
+      picurl.push(item.url)
+    });
     if (data.response.pic.length == 0) {
       this.setState({
         roomImg: data.response.pic,
@@ -663,6 +693,10 @@ class Picshow extends React.Component {
             </Carousel>
           </WingBlank>
         </ul>
+        <div className="picBtn">
+          <div className="picBtnA">图片</div>
+          <div className="picBtnB">视频</div>
+        </div>
       </div>
     )
   }
@@ -691,8 +725,13 @@ class Videoshow extends React.Component {
   public setVideoshow(data) {
     if (data.response.video.length == 0) {
       this.setState({
-        roomVideo: data.response.video,
+        roomVideo: [],
         urlNull: "show",
+      })
+    } else if ( !data.response.video[0].url) {
+       this.setState({
+         roomVideo: [],
+         urlNull: "show",
       })
     } else {
       this.setState({

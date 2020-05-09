@@ -20,15 +20,15 @@ class WorkOrder extends React.Component<{ history: any }>{
     ],
     tagIndex: 0,
     workOrderArray: [
-      { id: "", applicant: [{Name: ""}], state_name: "", time: ""}
+      { id: "", applicant: "", state_name: "", time: ""}
     ]
   }
 
   public dataService: DataService = new DataService()
 
   componentDidMount() {
-    this.dataService.getMyAuthorityWorkType(this.callBackGetMyAuthorityWorkType.bind(this), 8)
-    this.dataService.getMyAuthorityStateType(this.callBackGetMyAuthorityStateType.bind(this), 1)
+    this.dataService.getWorkType(this.callBackGetMyAuthorityWorkType.bind(this))
+    //this.dataService.getMyAuthorityStateType(this.callBackGetMyAuthorityStateType.bind(this), 1)
     this.getMyWork()
   }
 
@@ -40,9 +40,9 @@ class WorkOrder extends React.Component<{ history: any }>{
     this.setState({ tagList: tagList })
   }
 
-  callBackGetMyAuthorityStateType(data) {
-    console.log(data)
-  }
+  //callBackGetMyAuthorityStateType(data) {
+  //  console.log(data)
+  //}
 
   callBackGetMyWork(data) {
     if (data.response) {
@@ -52,11 +52,13 @@ class WorkOrder extends React.Component<{ history: any }>{
     }
   }
 
+
+
   getMyWork() {
-    let obj = {
-      id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
-      work_type: this.state.tagIndex,
-      state_type: 1
+    let obj:any = {}
+    obj.id = JSON.parse(sessionStorage.getItem("userInfos")).userId
+    if (this.state.tagIndex !== 0) {
+      obj.work_type = this.state.tagIndex
     }
     this.dataService.getMyWork(this.callBackGetMyWork.bind(this), obj)
   }
@@ -78,7 +80,7 @@ class WorkOrder extends React.Component<{ history: any }>{
       id: this.state.workOrderArray[index].id,
       workType: this.state.workOrderArray[index].work_type,
       name: this.state.workOrderArray[index].work_type == 1 ? "身份认证工单" : this.state.workOrderArray[index].work_type == 2 ?
-      "场地预定工单" : this.state.workOrderArray[index].work_type == 3 ? "摆点申请工单" : "在线保修工单",
+      "场地预定工单" : this.state.workOrderArray[index].work_type == 3 ? "摆点申请工单" : this.state.workOrderArray[index].work_type == 4 ? "在线保修工单" : null,
       stateName: this.state.workOrderArray[index].state_name
     }
     sessionStorage.setItem("workOrder", JSON.stringify(obj))
@@ -108,19 +110,19 @@ class WorkOrder extends React.Component<{ history: any }>{
                 <div key={index} className="work-order-list-child" onClick={e=> this.goWorkOrderDetail(index)}>
                   <div style={{ overflow: "hidden", margin: "30px 0 0 40px" }}>
                     <div style={{ float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" }}>
-                      {item.work_type == 1 ? "身份认证工单" : item.work_type == 2 ? "场地预定工单" : item.work_type == 3 ? "摆点申请工单" : "在线保修工单" }
+                      { item.work_type == 1 ? "身份认证工单" : item.work_type == 2 ? "场地预定工单" : item.work_type == 3 ? "摆点申请工单" : item.work_type == 4 ? "在线保修工单" : "" }
                     </div>
                     <img style={{ float: "right", marginRight: "40px"}} src="./park_m/image/right.png"/>
                   </div>
                   <div style={{ fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" }}>
-                    申请人：{item.applicant[0].Name}
+                    申请人：{item.applicant}
                   </div>
                   <div style={{ fontSize: "38px", color: "#949494", margin: "10px 0 0 40px", overflow: "hidden" }}>
                     <div style={{ float: "left" }}>申请时间：{item.time}</div>
                     <div style={{
                       float: "right", color: "#ffffff", width: "130px", height: "55px", borderRadius: "50px",
                       marginRight: "40px", fontSize: "32px", textAlign: "center", lineHeight: "55px"
-                    }} className={item.state_name == "审核中" ? "bluebg" : item.state_name == "已通过" ? "greenbg" : item.state_name == "已通过" ? "redbg" : "whitebg"} >{item.state_name}</div>
+                    }} className={item.state_name == "审核中" ? "bluebg" : item.state_name == "已通过" ? "greenbg" : item.state_name == "未通过" ? "redbg" : "whitebg"} >{item.state_name}</div>
                   </div>
                 </div>
               )

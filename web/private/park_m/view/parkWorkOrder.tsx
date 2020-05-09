@@ -15,32 +15,19 @@ interface IState {
 
 export default class parkWorkOrder extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
-    tagList: [{ id: 0, name: "全部" }, { id: 1, name: "审核中" }, { id: 2, name: "已通过"}, { id: 3, name: "未通过"}, { id: 4, name: "已转单" }],
+    tagList: [{ id: "", name: "全部" }, { id: 0, name: "审核中" }, { id: 1, name: "已通过"}, { id: 3, name: "未通过"}, { id: 2, name: "已转单" }],
     tagIndex: 0,
     workOrderArray: [
-      { id: "", applicant: [{ Name: "" }], state_name: "", time: "" }
+      { id: "", applicant: "", state_name: "", time: "" }
     ]
   }
 
   public dataService: DataService = new DataService()
 
   componentDidMount() {
-    this.dataService.getMyAuthorityWorkType(this.callBackGetMyAuthorityWorkType.bind(this), 8)
-    this.dataService.getMyAuthorityStateType(this.callBackGetMyAuthorityStateType.bind(this), 1)
     this.getMyWork()
   }
 
-  callBackGetMyAuthorityWorkType(data) {
-    let tagList = this.state.tagList
-    data.response.forEach(item => {
-      tagList.push(item)
-    })
-    this.setState({ tagList: tagList })
-  }
-
-  callBackGetMyAuthorityStateType(data) {
-    console.log(data)
-  }
 
   callBackGetMyWork(data) {
     if (data.response) {
@@ -51,10 +38,10 @@ export default class parkWorkOrder extends React.Component<{ history: any }>{
   }
 
   getMyWork() {
-    let obj = {
-      id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
-      work_type: this.state.tagIndex,
-      state_type: 1
+    let obj: any = {}
+    obj.id = JSON.parse(sessionStorage.getItem("userInfos")).userId
+    if (this.state.tagIndex !== 0) {
+      obj.state_type = this.state.tagList[this.state.tagIndex].id 
     }
     this.dataService.getMyWork(this.callBackGetMyWork.bind(this), obj)
   }
@@ -111,14 +98,14 @@ export default class parkWorkOrder extends React.Component<{ history: any }>{
                     <img style={{ float: "right", marginRight: "40px" }} src="./park_m/image/right.png" />
                   </div>
                   <div style={{ fontSize: "38px", color: "#949494", margin: "30px 0 0 40px" }}>
-                    申请人：{item.applicant[0].Name}
+                    申请人：{item.applicant}
                   </div>
                   <div style={{ fontSize: "38px", color: "#949494", margin: "10px 0 0 40px", overflow: "hidden" }}>
                     <div style={{ float: "left" }}>申请时间：{item.time}</div>
                     <div style={{
                       float: "right", color: "#ffffff", width: "130px", height: "55px", borderRadius: "50px",
                       marginRight: "40px", fontSize: "32px", textAlign: "center", lineHeight: "55px"
-                    }} className={item.state_name == "审核中" ? "bluebg" : item.state_name == "已通过" ? "greenbg" : item.state_name == "已通过" ? "redbg" : "whitebg"} >{item.state_name}</div>
+                    }} className={item.state_name == "审核中" ? "bluebg" : item.state_name == "已通过" ? "greenbg" : item.state_name == "未通过" ? "redbg" : "whitebg"} >{item.state_name}</div>
                   </div>
                 </div>
               )

@@ -34,6 +34,7 @@ import InformationDetails from "informationDetails";
 import AttractInvestment from "attractInvestment";
 import AttractInvestmentList from "attractInvestmentList";
 import Room from "room";
+import RoomRent from "roomRent";
 import RoomDetail from "roomDetail";
 import RoomUse from "roomUse";
 import RoomBase from "roomBase";
@@ -79,6 +80,7 @@ class Router extends React.Component {
           <Route path="/attractInvestment" component={AttractInvestment} />
           <Route path="/attractInvestmentList" component={AttractInvestmentList} />
           <Route path="/room" component={Room} />
+          <Route path="/roomRent" component={RoomRent} />
           <Route path="/roomDetail" component={RoomDetail} />
           <Route path="/roomUse" component={RoomUse} />
           <Route path="/roomBase" component={RoomBase} />

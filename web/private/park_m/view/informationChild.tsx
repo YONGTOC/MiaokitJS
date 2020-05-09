@@ -31,7 +31,6 @@ export default class InformationChild extends React.Component {
   componentWillMount() {
     sessionStorage.setItem("informationId", "0")
     this.getTag()
-    this.getTagContent()
   }
 
   getTag() {
@@ -48,8 +47,8 @@ export default class InformationChild extends React.Component {
 
   getTagContent() {
     let obj = {
-      park_id: 1,
-      type_id: this.state.tagIndex + 1
+      park_id: sessionStorage.getItem("park_id"),
+      type_id: this.state.tagArr[this.state.tagIndex].id
     }
     if (parseInt(sessionStorage.getItem("informationId")) === 0) {
       this.dataService.getPreferentialPolicies(this.callBackTagContent.bind(this), obj)
@@ -63,13 +62,16 @@ export default class InformationChild extends React.Component {
   }
 
   callBackTag(data) {
-    this.setState({ tagArr: JSON.parse(data).response })
+    this.setState({ tagArr: JSON.parse(data).response }, () => {
+      this.getTagContent()
+    })
   }
 
   callBackTagContent(data) {
+    let datas = JSON.parse(data).response ? JSON.parse(data).response : []
     let listArr = []
     if (parseInt(sessionStorage.getItem("informationId")) === 2) {
-      JSON.parse(data).response.forEach(item => {
+      datas.forEach(item => {
         let obj = { title: "", visitAmount: "", time: "", headimgurl: "", taga: "", tagb: "", contenta: "", contentb: "" }
         obj.title = item.name
         obj.visitAmount = item.visit_amount
@@ -82,9 +84,8 @@ export default class InformationChild extends React.Component {
         listArr.push(obj)
       })
       this.setState({ listArr: listArr })
-      console.log(listArr)
     } else if (parseInt(sessionStorage.getItem("informationId")) === 3) {
-      JSON.parse(data).response.forEach(item => {
+      datas.forEach(item => {
         let obj = { title: "", visitAmount: "", time: "", headimgurl: "", taga: "", tagb: "", contenta: "", contentb: "" }
         obj.title = item.title
         obj.visitAmount = item.visit_amount
@@ -98,7 +99,7 @@ export default class InformationChild extends React.Component {
       })
       this.setState({ listArr: listArr })
     } else {
-      this.setState({ listArr: JSON.parse(data).response ? JSON.parse(data).response : [] })
+      this.setState({ listArr: datas })
     }
   }
 
@@ -160,29 +161,29 @@ export default class InformationChild extends React.Component {
           {this.state.listArr.map((item, index) => {
             return (
               parseInt(sessionStorage.getItem("informationId")) < 2 ?
-              <div key={index} className="information-child-List-child" onClick={e => this.goDetail(index)} >
+              <div key={index} className="information-child-List-child" onClick={e => this.goDetail(item.id)} >
                 <div style={{ fontSize: "42px", color: "#333333", width: "90%", margin: "auto", paddingTop: "30px" }}>
                   {item.name}
                 </div>
                 <div style={{
-                  color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", display: "-webkit-box", webkitLineClamp: "3", overflow: "hidden",
-                  webkitBoxOrient: "vertical" }}>
-                  {item.content}
+                  color: "#949494", fontSize: "36px", margin: "10px 0 0 50px", width: "90%", overflow: "hidden", minHeight: "210px"
+                  }}>
+                    <div className="inner-html-c" dangerouslySetInnerHTML={{ __html: item.content }}></div>
                 </div>
                 <div style={{ color: "#949494", fontSize: "34px", margin: "30px 0 0 50px" }}>
                   <div style={{ float: "left" }}>{item.visit_amount}次浏览</div>
                   <div style={{ float: "right", marginRight: "50px" }}>{item.time} 发布</div>
                 </div>
               </div> :
-              <div key={index} className="information-child-List-child" onClick={e => this.goDetail(index)} >
+              <div key={index} className="information-child-List-child" onClick={e => this.goDetail(item.id)} >
                 <div style={{ overflow: "hidden"}}>
                   <div style={{ width: "250px", height: "260px", float: "left", margin: "30px 0 0 50px", borderRadius: "10px" }}>
                     <img src={item.headimgurl} style={{ width: "100%", height: "100%" }} />
                   </div>
-                  <div style={{ float: "left", fontSize: "45px", margin: "25px 0 0 50px", fontWeight: "600", color: "#333333" }}>
+                  <div style={{ float: "left", fontSize: "45px", margin: "25px 0 0 50px", fontWeight: "600", color: "#333333", width: "60%" }}>
                     <div>{item.title}</div>
-                    <div style={{ color: "#949494", fontSize: "40px", fontWeight: "400", marginTop: "85px" }}>{item.taga}：{item.contenta}</div>
-                    <div style={{ color: "#949494", fontSize: "40px", fontWeight: "400" }}>{item.tagb}：{item.contentb}</div>
+                    <div style={{ color: "#949494", fontSize: "40px", fontWeight: "400", marginTop: "85px", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" }}>{item.taga}：{item.contenta}</div>
+                    <div style={{ color: "#949494", fontSize: "40px", fontWeight: "400", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" }}>{item.tagb}：{item.contentb}</div>
                   </div>
                 </div>
                 <div style={{ color: "#949494", fontSize: "34px", margin: "30px 0 0 50px", overflow: "hidden" }}>

@@ -1,4 +1,5 @@
 import FindLease from 'findLease';
+import { Toast } from 'antd-mobile';
 
 class DataService {
 
@@ -51,6 +52,7 @@ class DataService {
         console.log(typeof data);
         let dataJ = JSON.parse(data);
         console.log("ajax", dataJ);
+          Toast.info(dataJ.err_msg, 2);
         if (dataJ.return_code == 100) {
           pBack(dataJ.response);
         }
@@ -74,7 +76,7 @@ class DataService {
         console.log(data)
 
         let userInfo = {
-          userId: data.id, name: data.name, phone: data.phone, avatar: data.avatar, enterprise: data.enterprise, enterpriseId: data.enterprises[0].id,
+          userId: data.id, name: data.name, phone: data.phone, avatar: data.avatar, enterprise: data.enterprise, enterpriseId: data.enterprises.length > 0 ? data.enterprises[0].id : "" ,
           roles: {
             role_id: data.roles[0].role_id, role_name: data.roles[0].role_name
           },
@@ -155,85 +157,82 @@ class DataService {
   //4.(园区信息-3D显示)获取园区详细信息
   public getParkInfo(pBack, park_id) {
     let thetoken = sessionStorage.getItem("token");
-    $.ajax({
-      url: this.state.rooturl + '/api/getParkInfo',
-      data: {
-        "park_id": park_id,
-        "token": thetoken,
-      },
-      type: "get",
-      success: function (data) {
-        console.log("getParkInfo444444444", data);
-        if (data.status == 113) {
-          // 113 token到期，跳转登录页面
-          // console.log(window.location.pathname);
-          //  window.location.href = window.location.pathname+"#/"
-        } else {
-          pBack(data);
-         // console.log("getParkInfo", data);
-        }
-      }
-     })
-
-
-    //var data = {
-    //  //错误码
-    //  "return_code": "100",
-    //  "response": [
-    //    {
-    //      //id
-    //      "id": "1009",
-    //      //园区图像url
-    //      "headimgurl": "http://xxx.jpg",
-    //      //所在城市
-    //      "province": "桂林",
-    //      //经度
-    //      "longitude": "10.55",
-    //      //纬度
-    //      "latitude": "66.666",
-    //      //园区名字
-    //      "name": "桂林国家高新",
-    //      //地址
-    //      "address": "桂林七星朝阳路D-11",
-    //      //工程列表，列表内为园区使用的工程。
-    //      "project": [
-    //        {
-    //          //id
-    //          "id": "1009",
-    //          //工程名。
-    //          "name": "电子信息",
-    //          //工程类型 1为普通模型 2为航拍实景图 3为sve工程 4为其它
-    //          "type": 1,
-    //          //使用类型 1为完整场景 2为单独内景
-    //          "use_type": 0,
-    //          //工程地址
-    //          "project_url": "http://xxx.bin",
-    //          //经度
-    //          "longitude": "10.55",
-    //          //纬度
-    //          "latitude": "66.666",
-    //          //偏移值
-    //          "offset": "10,20,10",
-    //          //旋转角度
-    //          "rotate": "10",
-    //        }
-    //      ],
-    //      //园区讲解列表
-    //      "audio": [
-    //        { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-    //        { name: "园区配套", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
-    //        { name: "园区建筑", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
-    //      ]
+    //$.ajax({
+    //  url: this.state.rooturl + '/api/getParkInfo',
+    //  data: {
+    //    "park_id": park_id,
+    //    "token": thetoken,
+    //  },
+    //  type: "get",
+    //  success: function (data) {
+    //    console.log("getParkInfo444444444", data);
+    //    if (data.status == 113) {
+    //      // 113 token到期，跳转登录页面
+    //      // console.log(window.location.pathname);
+    //      //  window.location.href = window.location.pathname+"#/"
+    //    } else {
+    //      pBack(data);
+    //     // console.log("getParkInfo", data);
     //    }
-
-    //  ],
-    //  //错误代码信息
-    //  "err_msg": ""
-    //}
+    //  }
+    // })
 
 
+    var data = {
+      //错误码
+      "return_code": "100",
+      "response": [
+        {
+          //id
+          "id": "1009",
+          //园区图像url
+          "headimgurl": "http://xxx.jpg",
+          //所在城市
+          "province": "桂林",
+          //经度
+          "longitude": "10.55",
+          //纬度
+          "latitude": "66.666",
+          //园区名字
+          "name": "桂林国家高新",
+          //地址
+          "address": "桂林七星朝阳路D-11",
+          //工程列表，列表内为园区使用的工程。
+          "project": [
+            {
+              //id
+              "id": "1009",
+              //工程名。
+              "name": "电子信息",
+              //工程类型 1为普通模型 2为航拍实景图 3为sve工程 4为其它
+              "type": 1,
+              //使用类型 1为完整场景 2为单独内景
+              "use_type": 0,
+              //工程地址
+              "project_url": "http://xxx.bin",
+              //经度
+              "longitude": "10.55",
+              //纬度
+              "latitude": "66.666",
+              //偏移值
+              "offset": "10,20,10",
+              //旋转角度
+              "rotate": "10",
+            }
+          ],
+          //园区讲解列表
+          "audio": [
+            { name: "园区交通", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+            { name: "园区配套", url: "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3" },
+            { name: "园区建筑", url: "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3" },
+          ]
+        }
 
-    //pBack(data);
+      ],
+      //错误代码信息
+      "err_msg": ""
+    }
+    pBack(data);
   }
 
   // 5. (企业园区模块-搜索类型)获取园区下面企业类型列表
@@ -255,21 +254,18 @@ class DataService {
   }
 
   //6 通过园区id，企业类型，关键词搜索园区下面企业列表
-  public findCompany(pBack, park_id, company_type_id, companyName) {
-    // id=1
-    // console.log("findCompany", park_id, company_type_id, name);
-    let thetoken = sessionStorage.getItem("token");
+  public findCompany(pBack, company_type_id, companyName) {
+    let url = this.state.rooturl + '/api/findCompany?park_id=' + sessionStorage.getItem("park_id") + "&name=" + companyName
+    if (company_type_id) {
+      url = url + "&company_type_id=" + company_type_id
+    }
     $.ajax({
-      url: this.state.rooturl + '/api/findCompany',
+      url: url,
       data: {
-        "park_id": park_id,
-        "company_type_id": company_type_id,
-        "token": thetoken,
-        "name": companyName
+        "token": sessionStorage.getItem("token"),
       },
       type: "get",
       success: function (data) {
-        console.log("findCompany企业列表", data);
         if (data.status == 113) {
           // 113 token到期，跳转登录页面
          // console.log(window.location.pathname);
@@ -605,7 +601,7 @@ class DataService {
         token: sessionStorage.getItem("token"),
       },
       success: function (data) {
-        console.log("getRoomBookInfoajax", data);
+       // console.log("getRoomBookInfoajax", data);
         if (data.status == 113) {
           // 113 token到期，跳转登录页面
           // console.log(window.location.pathname);
@@ -622,7 +618,7 @@ class DataService {
 
   //##18.(场地预定模块-提交信息)提交场地预定申请 ###
   public bookingRoom(pBack, data) {
-  //  console.log("bookingRoom", data);
+   console.log("bookingRoom", data);
    // console.log("bookingRoom", data.room_id)
    // pBack("提交成功！");
     let datas = {
@@ -632,10 +628,10 @@ class DataService {
       "phone": data.phone,
       "company_id": data.company_id,
       "company": data.company,
-      "room": data.room_name,
-      "building_id": data.building_id,
-      "floor_id": data.floor_id,
-      "room_id": data.room_id,
+         //公共场地id
+      "public_id":data.room_id,
+        //公共场地名称
+      "public_name":data.room_name,
       "start_date": data.start_date,
       "end_date": data.end_date,
       "theme": data.theme,
@@ -708,7 +704,8 @@ class DataService {
       "latitude": "66.666",
       "building_id": "a座",
       "floor_id": "1F",
-      "room_id": "202",
+      //测试房间id为 "1",
+      "room_id": "1",
       "room": "201-2",
 
       "company_id": data.company_id,
@@ -717,7 +714,7 @@ class DataService {
       "staff_name": data.contact,
       "phone": data.phone,
       "descript": data.descript,
-      "img_url": data.files[0].url
+      "img_url": data.img_url,
     }
     console.log("saveRepairInfo", datas);
     let thedata = JSON.stringify(datas)
@@ -737,7 +734,7 @@ class DataService {
           //console.log("getRoomRentSquareType", data);
         }
         if (data.err_msg == "请求成功") {
-          pBack("场地预定申请完成");
+          pBack("在线报修申请完成");
         }
       }
     });
@@ -1137,14 +1134,30 @@ class DataService {
   }
 
   // 42.(我的个人中心模块-修改认证)用户修改用户名
-  public modifyUserName(pBack, username,phone,company_id) {
+  public modifyUserInfo(pBack, username,phone,company_id) {
+  //public modifyUserName(pBack, username,phone,company_id) {
     $.ajax({
-      url: this.state.rooturl + '/api/modifyUserName',
+      url: this.state.rooturl + '/api/modifyUserInfo',
       data: {
         id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
         username: username,
         phone: phone,
         company_id: company_id,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 41.2(资讯模块-第三方服务)通过id，获取第三方服务详情
+  public getThirdServicesInfo(pBack, id) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getThirdServicesInfo',
+      data: {
+        id: id,
         token: sessionStorage.getItem("token")
       },
       type: "get",
@@ -1173,7 +1186,30 @@ class DataService {
     console.log("用户身份认证提交 ", obj);
     $.ajax({
       url: this.state.rooturl + '/api/userAuthentication?token=' + sessionStorage.getItem("token"),
-      data: obj,
+     // data: obj,
+     data: JSON.stringify({
+      "id":  obj.id,
+      "name": obj.name,
+      "company_name": obj.company,
+      "phone": obj.phone,
+      "park_id": sessionStorage.getItem("park_id"),
+     // "role_id":  obj.role_id,
+      //只能认证企业管理员
+      "role_id":  5,
+      "pic_amount": "1",
+      "pic": obj.pic,
+        "bind_company": [
+          {
+
+            "company_id": obj.bind_company[0].company_id,
+            "company_name": obj.bind_company[0].company_name,
+        } ],
+        "add_company": [
+        {
+            "company_name":""
+        }
+    ]
+      }),
       type: "post",
       success: function (data) {
         console.log(data.err_msg);
@@ -1198,12 +1234,11 @@ class DataService {
     })
   }
 
-  // 48.(我的个人中心模块-授权的工单类型)获取授权工单类型类型列表
-  public getMyAuthorityWorkType(pBack, id) {
+  // 48.3(我的个人中心模块-授权的工单类型)获取工单类型列表
+  public getWorkType(pBack) {
     $.ajax({
-      url: this.state.rooturl + '/api/getMyAuthorityWorkType',
+      url: this.state.rooturl + '/api/getWorkType',
       data: {
-        id: id,
         token: sessionStorage.getItem("token")
       },
       type: "get",
@@ -1230,12 +1265,14 @@ class DataService {
 
   // 49.(我的个人中心模块-我的工单) 获取我的工单信息列表，全部工单类型的获取
   public getMyWork(pBack, obj) {
+    let url = this.state.rooturl + "/api/getMyWork?"
+    for (let key in obj) {
+      url = url + key + "=" + obj[key] + "&"
+    }
+    url = url.substring(0, url.length - 1)
     $.ajax({
-      url: this.state.rooturl + '/api/getMyWork',
+      url: url,
       data: {
-        id: obj.id,
-        work_type: obj.work_type,
-        state_type: obj.state_type,
         token: sessionStorage.getItem("token")
       },
       type: "get",
@@ -1276,6 +1313,41 @@ class DataService {
       }
     })
   }
+
+  // 52.(我的个人中心模块-我的工单-场地预定转单人员) 场地预定获取可以转单的人员列表
+  public getRefBookingRoomRole(pBack, workId) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getRefBookingRoomRole',
+      data: {
+        work_id: workId,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 53.(我的个人中心模块-我的工单-场地预定转单操作) 场地预定转单操作
+  public changeBookingRoomRole(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/changeBookingRoomRole',
+      data: {
+        work_id: obj.workId,
+        current_role_id: obj.currentRoleId,
+        current_role_name: obj.currentRoleName,
+        next_role_id: obj.nextRoleId,
+        next_role_name: obj.nextRoleName,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
   // 54.(我的个人中心模块-我的工单-企业认证) 通过工单id，获取场地企业认证详细信息接口
   public getRoleAuthenticationInfo(pBack, id) {
     $.ajax({
@@ -1300,6 +1372,40 @@ class DataService {
         id: obj.id,
         state: obj.state,
         reply: obj.reply,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 56.(我的个人中心模块-我的工单-企业认证转单人员) 企业认证获取可以转单的人员列表
+  public getRefRoleAuthenticationRole(pBack, workId) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getRefRoleAuthenticationRole',
+      data: {
+        work_id: workId,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 57.(我的个人中心模块-我的工单-企业认证转单操作) 企业认证转单操作
+  public changeRoleAuthenticationRole(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/changeRoleAuthenticationRole',
+      data: {
+        work_id: obj.workId,
+        current_role_id: obj.currentRoleId,
+        current_role_name: obj.currentRoleName,
+        next_role_id: obj.nextRoleId,
+        next_role_name: obj.nextRoleName,
         token: sessionStorage.getItem("token")
       },
       type: "get",
@@ -1342,6 +1448,40 @@ class DataService {
     })
   }
 
+  // 60.(我的个人中心模块-我的工单-摆点申请转单人员) 摆点申请获取可以转单的人员列表
+  public getAdvertisementPointRole(pBack, workId) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getAdvertisementPointRole',
+      data: {
+        work_id: workId,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 61.(我的个人中心模块-我的工单-摆点申请转单操作) 摆点申请转单操作
+  public changeAdvertisementPointRole(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/changeAdvertisementPointRole',
+      data: {
+        work_id: obj.workId,
+        current_role_id: obj.currentRoleId,
+        current_role_name: obj.currentRoleName,
+        next_role_id: obj.nextRoleId,
+        next_role_name: obj.nextRoleName,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
   // 62.(我的个人中心模块-我的工单-在线报修详情) 通过工单id，在线报修申请详细信息接口
   public getRepairInfo(pBack, id) {  
     $.ajax({
@@ -1366,6 +1506,40 @@ class DataService {
         id: obj.id,
         state: obj.state,
         reply: obj.reply,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 64.(我的个人中心模块-我的工单-在线报修转单人员) 在线报修获取可以转单的人员列表
+  public getRepairInfoRole(pBack, workId) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getRepairInfoRole',
+      data: {
+        work_id: workId,
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 65.(我的个人中心模块-我的工单-在线报修转单操作) 在线报修转单操作
+  public changeRepairInfoRole(pBack, obj) {
+    $.ajax({
+      url: this.state.rooturl + '/api/changeRepairInfoRole',
+      data: {
+        work_id: obj.workId,
+        current_role_id: obj.currentRoleId,
+        current_role_name: obj.currentRoleName,
+        next_role_id: obj.nextRoleId,
+        next_role_name: obj.nextRoleName,
         token: sessionStorage.getItem("token")
       },
       type: "get",
@@ -1411,7 +1585,7 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/getMyStatistic',
       data: {
-        id: 1001,
+        id: sessionStorage.getItem("park_id"),
         token: sessionStorage.getItem("token")
       },
       type: "get",
@@ -1459,13 +1633,13 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/saveRoomBaseInfo?token=' + sessionStorage.getItem("token"),
       data: JSON.stringify({
-        id: 1001,
+        id: sessionStorage.getItem("park_id"),
         room_id: sessionStorage.getItem("roomId"),
-        squre: obj.squre,
+        headimageurl: obj.headimageurl,
         price: obj.price,
         contact: obj.contact,
         phone: obj.phone,
-        inspectionTime: obj.inspectionTime,
+        inspection_time: obj.inspectionTime,
         require: obj.require,
         lift: obj.lift,
         square: obj.square,
@@ -1524,8 +1698,8 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/postParkPhone',
       data: {
-        id: 1001,
-        park_id: 1001,
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+        park_id: sessionStorage.getItem("park_id"),
         phone: phone,
         token: sessionStorage.getItem("token")
       },

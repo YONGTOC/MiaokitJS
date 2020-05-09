@@ -9,23 +9,24 @@
 }
 .index-input-div {
   width: 100%;
-  height: 90px;
+  height: 80px;
   margin-top: 30px;
 }
 .index-input {
-  width: 95%; 
+  width: 100%;
   height: 100%;
   background: rgba(243,243,243,1);
+  color: #949494;
   opacity: 1;
   border-radius: 50px;
   padding-left: 14%;
-  font-size: 38px;
+  font-size: 34px;
   outline: none;
   border: none;
 }
 .index-search-img {
   position: relative;
-  top: -65px;
+  top: -58px;
   left: 5%;
   width: 40px;
   height: 40px;
@@ -34,7 +35,7 @@
   float: left;
   width: 70%;
   height: 100%;
-  margin: 0 0 0 50px;
+  margin: 0 0 0 30px;
 }
 .index-park-a {
   float: left;
@@ -53,8 +54,8 @@
 .index-child-right {
   height: 100%;
   float: left;
-  font-size: 42px;
-  line-height: 90px;
+  font-size: 38px;
+  line-height: 80px;
   color: #333333;
   font-weight: 500;
   margin-left: 50px;
@@ -239,7 +240,7 @@
   background-color: #ffffff;
   z-index: 100;
   margin-top: -3px;
-  font-size: 42px;
+  font-size: 36px;
   color: #333333;
   padding-left: 50px;
 }

@@ -7,7 +7,7 @@ interface IProps {
 }
 
 interface IState {
-  squre: number,
+  square: number,
   price: number,
   contact: string,
   phone: string,
@@ -16,7 +16,8 @@ interface IState {
   lift: number,
   isElevator: boolean,
   pic: Array<any>,
-  video: Array<any>
+  video: Array<any>,
+  headimageurl: string
 }
 
 export default class RoomBase extends React.Component<{ history: any }>{
@@ -26,15 +27,16 @@ export default class RoomBase extends React.Component<{ history: any }>{
   }
 
   public readonly state: Readonly<IState> = {
-    squre: JSON.parse(sessionStorage.getItem("roomInfo"))[0].squre, // 建筑面积
+    square: JSON.parse(sessionStorage.getItem("roomInfo"))[0].square, // 建筑面积
     price: JSON.parse(sessionStorage.getItem("roomInfo"))[0].price, // 租金
     contact: JSON.parse(sessionStorage.getItem("roomInfo"))[0].contact, // 联系人
     phone: JSON.parse(sessionStorage.getItem("roomInfo"))[0].phone, // 联系电话
     inspectionTime: JSON.parse(sessionStorage.getItem("roomInfo"))[0].inspection_time, // 看房时间
     require: JSON.parse(sessionStorage.getItem("roomInfo"))[0].require, // 租房要求
-    pic: JSON.parse(sessionStorage.getItem("roomInfo"))[0].pic, // 图库
-    video: JSON.parse(sessionStorage.getItem("roomInfo"))[0].video, // 视频
+    pic: JSON.parse(sessionStorage.getItem("roomInfo"))[0].pic ? JSON.parse(sessionStorage.getItem("roomInfo"))[0].pic : [], // 图库
+    video: JSON.parse(sessionStorage.getItem("roomInfo"))[0].video ? JSON.parse(sessionStorage.getItem("roomInfo"))[0].video : [] , // 视频
     lift: JSON.parse(sessionStorage.getItem("roomInfo"))[0].lift, // 电梯
+    headimageurl: JSON.parse(sessionStorage.getItem("roomInfo"))[0].headimageurl,
     isElevator: false
   }
 
@@ -47,16 +49,17 @@ export default class RoomBase extends React.Component<{ history: any }>{
     $('#b-img').click(() => {
       $('#b-input').click()
     })
+    $('#h-img').click(() => {
+      $('#h-input').click()
+    })
     if (this.props.location.state) {
       sessionStorage.setItem("roomInfo", JSON.stringify(this.props.location.state.roomInfo))
     }
-    console.log(JSON.parse(sessionStorage.getItem("roomInfo")))
-    console.log("pic", this.state.pic)
   }
 
   // 输入
   changea(event) {
-    this.setState({ squre: event.target.value })
+    this.setState({ square: event.target.value })
   }
 
   // 输入
@@ -91,16 +94,21 @@ export default class RoomBase extends React.Component<{ history: any }>{
 
   submit() {
     let obj = {
-      squre: this.state.squre,
+      square: this.state.square,
       price: this.state.price,
       contact: this.state.contact,
       phone: this.state.phone,
       inspectionTime: this.state.inspectionTime,
       require: this.state.require,
       lift: this.state.lift,
-      square: JSON.parse(sessionStorage.getItem("roomInfo"))[0].square,
+      headimageurl: this.state.headimageurl,
       pic: this.state.pic,
       video: this.state.video
+    }
+    for (var key in obj) {
+      if (obj[key] === "" && (key !== "video" && key !== "require" && key !== "inspectionTime")) {
+        return alert("请把资料填完整！")
+      }
     }
     this.dataService.saveRoomBaseInfo(this.callBackSaveRoomBaseInfo.bind(this), obj)
   }
@@ -133,12 +141,20 @@ export default class RoomBase extends React.Component<{ history: any }>{
     this.setState({ video: video })
   }
 
+  // 清空缩略图
+  closeHeadimageurl() {
+    this.setState({ headimageurl: "" }, () => {
+      $('#h-img').click(() => {
+        $('#h-input').click()
+      })
+    })
+  }
+
   uploadPic(file) {
     this.dataService.upload(this.callBackUploadPic.bind(this), file)
   }
 
   callBackUploadPic(data) {
-    console.log("callBackUpload", data)
     if (data.return_code == 100) {
       let pic = this.state.pic
       pic.push({ url: data.response, name: "" })
@@ -160,12 +176,21 @@ export default class RoomBase extends React.Component<{ history: any }>{
     this.uploadVideo(formData)
   }
 
+  updateHeadimage(event) {
+    let formData = new FormData();
+    formData.append("file", event.target.files[0]);
+    this.uploadHeadimage(formData)
+  }
+
   uploadVideo(file) {
     this.dataService.upload(this.callBackUploadVideo.bind(this), file)
   }
 
+  uploadHeadimage(file) {
+    this.dataService.upload(this.callBackUploadHeadimage.bind(this), file)
+  }
+
   callBackUploadVideo(data) {
-    console.log("callBackUpload", data)
     if (data.return_code == 100) {
       let video = this.state.video
       video.push({ url: data.response, name: "" })
@@ -175,6 +200,13 @@ export default class RoomBase extends React.Component<{ history: any }>{
     }
   }
 
+  callBackUploadHeadimage(data) {
+    if (data.return_code == 100) {
+      this.setState({ headimageurl: data.response })
+    } else {
+      alert("上传失败")
+    }
+  }
   
 
   render() {
@@ -194,7 +226,7 @@ export default class RoomBase extends React.Component<{ history: any }>{
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
           <div className="enterprise-information-star"></div>
           <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>建筑面积</div>
-          <input onChange={this.changea.bind(this)} value={this.state.squre}
+          <input onChange={this.changea.bind(this)} value={this.state.square}
             style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
           />
         </div>
@@ -203,15 +235,15 @@ export default class RoomBase extends React.Component<{ history: any }>{
           <div style={{ color: "#949494", height: "80px", float: "left", width: "20%", marginRight: "30px" }}>所在楼层</div>
           <div style={{ float: "left" }}>{JSON.parse(sessionStorage.getItem("roomInfo"))[0].floor_code}</div>
         </div>
-        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
+        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }} onClick={this.changeElevator.bind(this)}>
           <div className="enterprise-information-star"></div>
           <div style={{ color: "#949494", height: "80px", float: "left", width: "20%", marginRight: "30px" }}>电梯</div>
           <div style={{ color: "#6C6C6C", float: "left" }}>{this.state.lift == 1 ? "有" : "没有"}</div>
-          <div style={{ height: "100%", float: "right" }} onClick={this.changeElevator.bind(this)}>
+          <div style={{ height: "100%", float: "right" }}>
             <img src="./park_m/image/right.png" style={{ margin: "-10px 40px 0 0", transform: this.state.isElevator ? "rotate(90deg)" : "" }} />
           </div>
           {this.state.isElevator ? 
-            <div style={{ position: "relative", top: "120px", width: "100%", height: "200px", backgroundColor: "#ffffff" }}>
+            <div style={{ position: "relative", top: "120px", width: "97%", height: "200px", backgroundColor: "#ffffff", border: "1px solid #797272" }}>
               <div style={{ width: "500px", height: "100px", margin: "auto", paddingRight: "100px", textAlign: "center" }} onClick={e => this.closeElevator(true)}>有</div>
               <div style={{ width: "500px", height: "100px", margin: "auto", paddingRight: "100px", textAlign: "center" }} onClick={e => this.closeElevator(false)}>没有</div>
             </div> : null
@@ -238,20 +270,41 @@ export default class RoomBase extends React.Component<{ history: any }>{
             style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
           />
         </div>
+
+        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", height: 360 }}>
+          <div className="enterprise-information-star"></div>
+          <div style={{ color: "#949494", height: "80px", width: "20%" }}>缩略图</div>
+
+          {this.state.headimageurl ? 
+            <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", margin: "30px 30px 0 0", float: "left" }}>
+              <img src="./park_m/image/close.png" style={{ position: "absolute", left: "250px" }} onClick={e => this.closeHeadimageurl()} />
+              <img src={this.state.headimageurl} style={{ height: "100%", width: "100%" }} />
+            </div> :
+            <div>
+              <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left" }} id="h-img">
+                <img src="./park_m/image/addPicture.png" style={{ height: "60px", width: "60px" }} />
+                <div style={{ color: "#949494", marginTop: "-30px" }}>添加</div>
+              </div>
+              <input type="file" onChange={this.updateHeadimage.bind(this)} id="h-input" style={{ display: "none" }} accept="image/*" />
+            </div>
+           }
+
+        </div>
+
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", height: 360 + Math.floor(this.state.pic.length / 3) * 250 }}>
           <div className="enterprise-information-star"></div>
           <div style={{ color: "#949494", height: "80px", width: "20%" }}>图库</div>
           {this.state.pic.map((item, index) => {
             return (
-              <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", margin: "30px 30px 0 0", float: "left" }} key={index}>
+              <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", margin: (index > 2 && index % 3 === 0) ? "30px 30px 0 30px" : "30px 30px 0 0", float: "left" }} key={index}>
                 <img src="./park_m/image/close.png" style={{ position: "absolute", left: (index % 3 + 1) * 250 }} onClick={e => this.closePic(index)} />
                 <img src={item.url} style={{ height: "100%", width: "100%" }} />
                 </div>
               )
             })
           }
-          <input type="file" onChange={this.updatePic.bind(this)} id="a-input" style={{ display: "none" }} />
-          <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left" }} id="a-img">
+          <input type="file" onChange={this.updatePic.bind(this)} id="a-input" style={{ display: "none" }} accept="image/*" />
+          <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left", marginLeft: this.state.pic.length % 3 === 0 ? "30px" : null }} id="a-img">
             <img src="./park_m/image/addPicture.png" style={{ height: "60px", width: "60px" }} />
             <div style={{ color: "#949494", marginTop: "-30px" }}>添加</div>
           </div>
@@ -267,7 +320,7 @@ export default class RoomBase extends React.Component<{ history: any }>{
             )
           })
           }
-          <input type="file" onChange={this.updateVideo.bind(this)} id="b-input" style={{ display: "none" }} />
+          <input type="file" onChange={this.updateVideo.bind(this)} id="b-input" style={{ display: "none" }} accept="video/*" />
           <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left" }} id="b-img">
             <img src="./park_m/image/addPicture.png" style={{ height: "60px", width: "60px" }} />
             <div style={{ color: "#949494", marginTop: "-30px" }}>添加</div>

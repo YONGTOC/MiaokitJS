@@ -26,6 +26,7 @@ class Message extends React.Component<{ history: any }>{
   }
 
   callBackGetMyMsgType(data) {
+    console.log("111", data)
     if (data.return_code == 100) {
       let tagList = [{id: 0, name: "全部"}]
       data.response.forEach(item => {

@@ -8,7 +8,7 @@ interface IProps {
 }
 
 interface IState {
-  data: { name: string, start_time: string, end_time: string, position: string, sign_end_time: string, contact: string, contact_tel: string, content: string, fee: string, headimgurl: string, visit_amount: string, time: string }，
+  data: { name: string, start_time: string, end_time: string, position: string, sign_end_time: string, contact: string, contact_tel: string, content: any, fee: string, headimgurl: string, visit_amount: string, time: string }，
   parkArr: Array<any>,
   tagArr: Array<any>,
 
@@ -16,7 +16,7 @@ interface IState {
 
 export default class informationDetail extends React.Component {
   public readonly state: Readonly<IState> = {
-    data: { name: "", start_time: "", end_time: "", position: "", sign_end_time: "", contact: "", contact_tel: "", content: "", fee: "", headimgurl: "", visit_amount: "", time: "" }，
+    data: { name: "", start_time: "", end_time: "", position: "", sign_end_time: "", contact: "", contact_tel: "", content: [], fee: "", headimgurl: "", visit_amount: "", time: "" }，
     parkArr: [
       {
         "id": "1009",
@@ -48,13 +48,20 @@ export default class informationDetail extends React.Component {
 
   componentDidMount() {
     if (parseInt(sessionStorage.getItem("informationId")) < 2) {
-      this.dataService.getInformation(this.callBack.bind(this), 2)
+      this.dataService.getInformation(this.callBack.bind(this), this.props.history.location.state.index)
     } else if (parseInt(sessionStorage.getItem("informationId")) === 2){
-      this.dataService.getActivitiyInfo(this.callBack.bind(this), 1)
+      this.dataService.getActivitiyInfo(this.callBack.bind(this), this.props.history.location.state.index)
     }
   }
   callBack(data) {
-    this.setState({ data: JSON.parse(data).response })
+    let datas = JSON.parse(data).response
+    let array = datas.content.split("<p>")
+    for (let j = 0; j < array.length; j++) {
+      array[j] = array[j].replace("</p>", "")
+      array[j] = array[j].replace("<br>", "")
+    }
+    datas.content = array
+    this.setState({ data: datas })
   }
 
 
@@ -100,7 +107,14 @@ export default class informationDetail extends React.Component {
             <div style={{ border: "2px solid #F2F2F2", marginTop: "25px" }}></div>
             <div style={{ fontSize: "40px", color: "#333333", width: "90%", margin: "30px auto" }}>
               <p style={{ fontSize: "40px" }}>各相关单位：</p>
-              {this.state.data.content}
+              {this.state.data.content.map((it, ind) => {
+                return (
+                  <p key={ind} style={{fontSize: "36px"}}>
+                    {it}
+                  </p>
+                )
+              })
+              }
             </div>
             <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" }}>
               <div style={{ height: "50px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "36px 30px 0 50px" }}></div>

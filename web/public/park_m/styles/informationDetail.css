@@ -12,3 +12,6 @@
 .information-detail::-webkit-scrollbar {
   display: none;
 }
+.c-p p{
+  font-size: 40px;
+}

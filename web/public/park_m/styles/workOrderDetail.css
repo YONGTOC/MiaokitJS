@@ -6,6 +6,8 @@
   width: 100%;
   z-index: 100;
   background-color: #FFFFFF;
+  overflow-y: auto;
+  padding-bottom: 200px;
 }
 .work-order-detail-back {
   font-size: 40px;

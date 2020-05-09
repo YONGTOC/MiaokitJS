@@ -88,3 +88,8 @@ am-picker-popup {
 .am-list-extra{
     color:#333333 !important;
 }
+.am-toast-text {
+    width: 30rem !important;
+    font-size: 3rem;
+    background-color: rgba(58, 58, 58, 0.5);
+}

@@ -1,7 +1,7 @@
 ﻿import * as React from "react";
 import * as RouterDOM from 'react-router-dom';
 import DataService from "dataService";
-import { ImagePicker, WingBlank, SegmentedControl } from 'antd-mobile';
+import { ImagePicker, WingBlank, Toast } from 'antd-mobile';
 
 
 class IdentityAuthentication extends React.Component<{ history: any }> {
@@ -13,6 +13,17 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     roleType: "",
     park_id:"",
     // 公司选择
+          // 公司选择
+    companyBox: "hide",
+    inputValueRelate: "",
+     company_id_in:"",
+    company_name_in: "",
+       companyNull: "hide",
+    companyUL: [],
+    company_id: "",
+    company_name: "",
+    companyIndexof: -1,
+      // 身份选择，废弃
     roleTypeBox: "hide",
     roleTypeUL: [],
     roleTypeIndexof: 0,
@@ -25,20 +36,25 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     multiple: false,
     filesImg: [],
     pic_amount: "",
-    pic1: "",
+    pic: "",
+    name:"",
+
   }
 
   public constructor(props) {
     super(props);
 
-    this.setRoleTypeUL = this.setRoleTypeUL.bind(this);
+   // this.setRoleTypeUL = this.setRoleTypeUL.bind(this);
     this.setImg = this.setImg.bind(this);
   }
 
   public componentDidMount() {
-    this.dataService.getRoleType(this.setRoleTypeUL);
+  //  this.dataService.getRoleType(this.setRoleTypeUL);
     let data = sessionStorage.getItem("userInfos");
     let dataObj = JSON.parse(data)
+    let role_name = JSON.parse(sessionStorage.getItem("userInfos")).roles.role_name;
+    let role_id = JSON.parse(sessionStorage.getItem("userInfos")).roles.role_id;
+    let name = JSON.parse(sessionStorage.getItem("userInfos")).name;
 
     //this.state.applicant = sessionStorage.getItem("userName");
     //this.state.phone = sessionStorage.getItem("phone");
@@ -47,8 +63,12 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     this.setState({
       applicant:dataObj.name,
       phone:dataObj.phone,
-      company:dataObj.enterprise,
-      park_id:dataObj.park_id,
+      company: sessionStorage.getItem("enterprise"),
+      company_id: sessionStorage.getItem("enterpriseId"),
+      park_id: dataObj.park_id,
+      role_name:role_name,
+      role_id: role_id,
+      name: dataObj.name,
     })
   }
 
@@ -71,10 +91,103 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     })
   }
 
+  // 显示所有企业列表
   public companyChange(event) {
-    this.setState({
-      company: event.target.value
+    console.log(555555555555555)
+    //this.setState({
+    //  company: event.target.value
+    //})
+  this.setState({
+      companyBox: "rollSelectCauseBox2",
     })
+   //ajax 获取使用企业列表
+    this.dataService.findCompany(this.setCompanyList.bind(this),"", this.state.inputValueRelate);
+
+  }
+  
+  //获取到的 企业列表
+  public setCompanyList(data) {
+    console.log("mmmmmmmmmmmmm", data.response);
+    if (data.response.length == 0) {
+      this.setState({
+        companyNull: "show",
+         companyUL:data.response
+    })
+    } else {
+      this.setState({
+        companyNull: "hide",
+      companyUL:data.response
+    })
+    }
+ 
+  }
+
+      // 隐藏公司列表框
+  public hideCompanyBox() {
+    this.setState({
+      companyBox: "hide",
+    }, () => {
+        console.log("hide",this.state.company_id, this.state.company_name);
+      })
+  }
+
+      //确认公司列表选择
+  public getCompanyBox() {
+    this.setState({
+      companyBox: "hide",
+      company_id: this.state.company_id_in,
+      company_name: this.state.company_name_in,
+      company:this.state.company_name_in,
+    })
+  }
+
+    // 选中公司
+  public inCompanyeList(i, id, name) {
+     //console.log("选中的公司", i, id, name);
+    this.setState({
+      companyIndexof: i,
+      company_id_in: id,
+      company_name_in: name,
+    }, () => {
+       console.log("选中的公司",this.state.company_id_in, this.state.company_name_in);
+      })
+  }
+  
+    // 聚焦
+  public foucusRelate() {
+    if (this.state.inputValueRelate == " ") {
+      this.setState({ inputValueRelate: "" })
+    }
+  }
+
+  // 失焦
+  public blurRelate(event) {
+    if (this.state.inputValueRelate == "") {
+      this.setState({ inputValueRelate: " " })
+    }
+  }
+
+  // 输入
+  public changeRelate(event) {
+    this.setState({ inputValueRelate: event.target.value });
+  }
+
+    // 软键盘 搜索
+  public queryKeyDownHandlerRelate(e) {
+    switch (e.keyCode) {
+      case 13://回车事件
+        this.searchCompany();
+        break
+    }
+  }
+
+      //软键盘搜索 
+  public searchCompany() {
+    if (this.state.inputValueRelate == "请输入企业名称"  ) {
+      this.setState({ inputValueRelate: "" })
+    };
+    console.log("searchBtn", this.state.inputValueRelate);
+    this.dataService.findCompany(this.setCompanyList.bind(this),"", this.state.inputValueRelate);
   }
 
   //角色类型选择
@@ -85,14 +198,14 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     })
   }
 
-  // 写入角色类型
-  public setRoleTypeUL(data) {
-    this.setState({
-      roleTypeUL: data.response,
-      role_id: data.response[0].id,
-      role_name: data.response[0].name,
-    })
-  }
+  //// 写入角色类型
+  //public setRoleTypeUL(data) {
+  //  this.setState({
+  //    roleTypeUL: data.response,
+  //    role_id: data.response[0].id,
+  //    role_name: data.response[0].name,
+  //  })
+  //}
 
   //选中角色类型
   inRoleTypeList(i, id, name) {
@@ -120,7 +233,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
   }
 
   // 修改img
-  onChange = (files, type, index) => {
+  onChangeImg = (files, type, index) => {
     console.log(files, type, index);
     this.setState({
       filesImg: files,
@@ -131,56 +244,81 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
       let obj = [{
         "imgname": "headimg",
         "imgbase64": this.state.filesImg[0].url,
-      }]
-    this.dataService.uploadImgOss(this.setImg, obj);
+    }]
+
+    if (type == "remove") {
+      this.setState({
+        pic: ""
+      })
+    } else {
+        this.dataService.uploadImgOss(this.setImg, obj);
+    }
+
   }
 
   // 修改提交img数据
   setImg(data) {
-    //console.log("AAAA", data);
-   // console.log("BBB", data[0]);
     this.setState({
-      pic1: data[0],
+      pic: data[0],
     })
-   // console.log("headimg", this.state)
   }
 
   sumbit() {
     console.log(this.state);
-
+    let  userId = JSON.parse(sessionStorage.getItem("userInfos")).userId;
     let obj = {
-      //"id": this.state.id,
-      "id": 1,
+      //"id": 用户id
+      "id":  userId,
       "name": this.state.applicant,
       "company_name": this.state.company,
       "phone": this.state.phone,
       "park_id": this.state.park_id,
-      "role_id": this.state.role_id,
+      //"role_id": this.state.role_id,
+      "role_id": JSON.parse(sessionStorage.getItem("userInfos")).roles.role_id ,
       "pic_amount": "1",
-      "pic1": this.state.pic1,
+      "pic": this.state.pic,
+        "bind_company":
+    [
+        {
+            //企业id
+            "company_id":this.state.company_id,
+            //企业名称
+            "company_name": this.state.company,
+        }
+        ],
+        "add_company":
+    [
+        {
+            //企业名称 companyg_name_in
+            "company_name":""
+        }
+    ]
     }
     if (this.state.applicant == "") {
-      alert("请填写姓名")
+       Toast.info('请填写姓名', 2);
     } else if (this.state.phone == "") {
-      alert("请填写联系电话")
+      Toast.info('请填写联系电话', 2);
     } else if (this.state.company == "") {
-      alert("请填写企业名称")
+      Toast.info('请填写企业名称', 2);
     } else if (this.state.role_id == "") {
-      alert("请选择角色类型")
+      Toast.info('请选择角色类型', 2);
+    } else if (this.state.pic == "") {
+      Toast.info('请上传认证材料照片', 2);
     } else {
       this.dataService.userAuthentication(this.sumbitSucceed, obj);
     }
     
 
-    
   }
 
   sumbitSucceed(data) {
-    alert(data);
+    Toast.info('data', 2);
+    window.history.back();
   }
 
 
   public render() {
+    console.log("33333333333",this.state.role_name)
     //<i className="iconfont identityBottonIcon" >&#xe821;</i>
     return (
       <div className="modification-authentication">
@@ -204,17 +342,16 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
             </p>
             <p >
               <span className="redStar">*</span>  企业名称
-                 <input type="text" value={this.state.company} placeholder="请输入您的企业名称" style={{ "border": "none", "margin-left": "5rem" }}
-                onChange={this.companyChange.bind(this)} />
+                <input type="text" value={this.state.company} placeholder="" style={{"border": "none", "margin-left": "5rem" }}  />
+                  <span onClick={this.companyChange.bind(this)}  className="iconfont" style={{ "fontSize": "3rem", "float": "right" }} >&#xe827;</span>
             </p>
             <p onClick={this.showRoleTypeBox.bind(this)}>
               <span className="redStar">*</span>  角色类型  
-                 <input type="text" value={this.state.role_name} placeholder="选择认证的角色类型" style={{ "border": "none", "margin-left": "5rem" }}
+                 <input type="text" value={"企业管理员"} placeholder="企业管理员" style={{ "border": "none", "margin-left": "5rem" }}
                 />
-              <span className="iconfont" style={{ "fontSize": "3rem", "float": "right" }} >&#xe827;</span>
             </p>
           </div>
-          <div className="applyPutSumbit" onClick={this.sumbit.bind(this)}>提交</div>
+               <div className="applyPutSumbit" onClick={this.sumbit.bind(this)}>提交</div>
           <div className="identityBotton">
             <p style={{ "color": "#333" }}>认证材料</p>
             <div className="identityBottonBox">
@@ -223,7 +360,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
                 <WingBlank>
                   <ImagePicker
                     files={this.state.files}
-                    onChange={this.onChange}
+                    onChange={this.onChangeImg}
                     onImageClick={(index, fs) => console.log(index, fs)}
                     selectable={this.state.files.length < 1}
                     multiple={this.state.multiple}
@@ -236,23 +373,52 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
             <p>或者电话联系管理员进行授权(<span style={{"color":"#333"}}>0773-1234567</span>)</p>
           </div>
         </form>
-        <div className={this.state.roleTypeBox}>
-          <ul className="rollSelectCauseULcss">
-            {this.state.roleTypeUL.map((i, index) => {
+
+       <div className={this.state.companyBox}>
+               <div className="searchBox">
+              <span className="searchBox-text">
+                <i className="iconfont" style={{ "fontSize": "2.3rem" }}>&#xe810;</i>
+                <input className="companySearch" type="search" placeholder="请输入企业名称"
+                  value={this.state.inputValueRelate} onFocus={this.foucusRelate.bind(this)}
+                  onBlur={this.blurRelate.bind(this)} onChange={this.changeRelate.bind(this)} onKeyDown={this.queryKeyDownHandlerRelate.bind(this)} />
+            </span>
+            </div>
+          <ul className="rollSelectCauseULcss2">
+             <p className={this.state.companyNull} style={{ "text-align": "center" }} >没有符合搜索条件的结果···</p>
+            {this.state.companyUL.map((i, index) => {
               return (
-                <li className={this.state.roleTypeIndexof == index ? "rollSelectCauseli-active" : "rollSelectCauseli"}
-                  onClick={this.inRoleTypeList.bind(this, index, i.id, i.name)}
+                <li className={this.state.companyIndexof == index ? "rollSelectCauseli-active" : "rollSelectCauseli"}
+                  onClick={this.inCompanyeList.bind(this, index, i.id, i.name)}
                 >{i.name}</li>
               )
             })}
           </ul>
           <div className="rollSelectCuasedBtn">
-            <span className="rollSelectCancel" onClick={this.hideRoleTypeBox.bind(this)} >取消</span>
-            <span className="rollSelectConfirm" onClick={this.getRoleTypeBox.bind(this)}>确认</span>
+            <span className="rollSelectCancel" onClick={this.hideCompanyBox.bind(this)} >取消</span>
+            <span className="rollSelectConfirm" onClick={this.getCompanyBox.bind(this)}>确认</span>
           </div>
         </div>
+
       </div>
     )
+
+    //<span className="iconfont" style={{ "fontSize": "3rem", "float": "right" }} >&#xe827;</span>
+       //<div className={this.state.roleTypeBox}>
+       //   <ul className="rollSelectCauseULcss">
+       //     {this.state.roleTypeUL.map((i, index) => {
+       //       return (
+       //         <li className={this.state.roleTypeIndexof == index ? "rollSelectCauseli-active" : "rollSelectCauseli"}
+       //           onClick={this.inRoleTypeList.bind(this, index, i.id, i.name)}
+       //         >{i.name}</li>
+       //       )
+       //     })}
+       //   </ul>
+       //   <div className="rollSelectCuasedBtn">
+       //     <span className="rollSelectCancel" onClick={this.hideRoleTypeBox.bind(this)} >取消</span>
+       //     <span className="rollSelectConfirm" onClick={this.getRoleTypeBox.bind(this)}>确认</span>
+       //   </div>
+       // </div>
+
   }
 
 

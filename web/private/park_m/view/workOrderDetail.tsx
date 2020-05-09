@@ -9,7 +9,7 @@ interface IProps {
 interface IState {
   stateName: string,
   datas: {
-    applicant: string, phone: string, company: string, content: string, time: string, id: number,
+    applicant: string, phone: string, company: string, content: string, time: string, id: number, examine_transfer: Array<any>
     positions: { name: string, start_date: string, end_date: string },
     examine: { checker: string, checker_date: string, reply: string },
   },
@@ -21,7 +21,7 @@ class workOrderDetail extends React.Component<{ history: any }>{
   public readonly state: Readonly<IState> = {
     stateName: JSON.parse(sessionStorage.getItem("workOrder")).stateName,
     datas: {
-      applicant: "", phone: "", company: "", content: "", time: "", id: 0,
+      applicant: "", phone: "", company: "", content: "", time: "", id: 0, examine_transfer: [{ checker: "" }, { checker: "", checker_date: "" }],
       positions: { name: "", start_date: "", end_date: "" },
       examine: { checker: "", checker_date: "", reply: "" }
     },
@@ -51,7 +51,6 @@ class workOrderDetail extends React.Component<{ history: any }>{
   public dataService: DataService = new DataService()
 
   componentDidMount() {
-    console.log(JSON.parse(sessionStorage.getItem("workOrder")).workType)
     if (JSON.parse(sessionStorage.getItem("workOrder")).workType == 1) {
       this.dataService.getRoleAuthenticationInfo(this.callBackGetRoleAuthenticationInfo.bind(this), JSON.parse(sessionStorage.getItem("workOrder")).id)
     } else if (JSON.parse(sessionStorage.getItem("workOrder")).workType == 2) {
@@ -64,30 +63,37 @@ class workOrderDetail extends React.Component<{ history: any }>{
   }
 
   callBackGetRoleAuthenticationInfo(data) {
+    console.log('aaaaaaaa', data)
     let tagArray = this.state.tagArray
     tagArray[0][0].content = data.response.name
     tagArray[0][1].content = data.response.phone
-    tagArray[0][2].content = data.response.company_name
+    tagArray[0][2].content = data.response.company_name[0].company_name
     tagArray[0][3].content = data.response.role_name
-    tagArray[0][4].content = data.response.photo
-    console.log('aaaaaaaa', tagArray)
-    this.setState({ tagArray: tagArray, datas: data.response })
+    tagArray[0][4].content = data.response.pic_url
+    this.setState({
+      tagArray: tagArray, datas: data.response,
+      stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "转单" : "未通过"  
+    })
+    console.log("aaaaaaaaaa", this.state.datas.examine_transfer)
   }
 
   callBackGetBookingRoomInfo(data) {
+    console.log('bbbbbbbbb', data)
     let tagArray = this.state.tagArray
     tagArray[1][0].content = data.response.applicant
     tagArray[1][1].content = data.response.phone
     tagArray[1][2].content = data.response.company
-    tagArray[1][3].content = data.response.room
+    tagArray[1][3].content = data.response.publicplace
     tagArray[1][4].content = data.response.start_date.substring(0, 10)
     tagArray[1][5].content = data.response.start_date.substring(10)
     tagArray[1][6].content = data.response.end_date.substring(0, 10)
     tagArray[1][7].content = data.response.end_date.substring(10)
     tagArray[1][8].content = data.response.theme
     tagArray[1][9].content = data.response.content
-    console.log('xxxxxx', tagArray)
-    this.setState({ tagArray: tagArray, datas: data.response })
+    this.setState({
+      tagArray: tagArray, datas: data.response,
+      stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "转单" : "未通过"
+    })
   }
 
   callBackGetAdvertisementPointInfo(data) {
@@ -100,16 +106,22 @@ class workOrderDetail extends React.Component<{ history: any }>{
     tagArray[2][4].content = data.response.positions.name
     tagArray[2][5].content = data.response.positions.start_date
     tagArray[2][6].content = data.response.positions.end_date
-    this.setState({ tagArray: tagArray, datas: data.response })
+    this.setState({
+      tagArray: tagArray, datas: data.response,
+      stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "转单" : "未通过"
+    })
   }
 
   callBackGetRepairInfo(data) {
     console.log("保修", data)
     let tagArray = this.state.tagArray
-    tagArray[2][0].content = data.response.applicant
+    tagArray[3][0].content = data.response.linkman
     tagArray[3][1].content = data.response.phone
     tagArray[3][2].content = data.response.descript
-    this.setState({ tagArray: tagArray, datas: data.response })
+    this.setState({
+      tagArray: tagArray, datas: data.response,
+      stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "转单" : "未通过"
+    })
   }
 
   // 返回
@@ -140,10 +152,11 @@ class workOrderDetail extends React.Component<{ history: any }>{
   submit(index) {
     if (index === 0) {
       this.props.history.push("/searchUser")
+      return
     }
     let obj = {
-      uid: 1,
-      id: this.state.datas.id,
+      uid: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+      id: JSON.parse(sessionStorage.getItem("workOrder")).id,
       state: index,
       reply: this.state.reply
     }
@@ -176,14 +189,17 @@ class workOrderDetail extends React.Component<{ history: any }>{
           <span style={{
             float: "right", color: "#ffffff", width: "130px", height: "55px", borderRadius: "50px",
             marginRight: "40px", fontSize: "32px", textAlign: "center", lineHeight: "55px"
-          }} className={this.state.stateName == "审核中" ? "bluebg" : this.state.stateName == "已通过" ? "greenbg" : "redbg"}>{this.state.stateName}</span>
+          }} className={this.state.stateName == "审核中" ? "bluebg" : this.state.stateName == "已通过" ? "greenbg" : this.state.stateName == "未通过" ? "redbg" : "whitebg"}>{this.state.stateName}</span>
         </div>
 
         { this.state.tagArray[JSON.parse(sessionStorage.getItem("workOrder")).workType - 1].map((item, index) => {
             return (
               <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }} key={index}>
                 <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>{item.name}</div>
-                <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "75%" }}>{item.content}</div>
+                {item.type === "text" ?
+                  <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "70%" }}>{item.content}</div> :
+                  <div><img src={item.content} /></div>
+                }
               </div>
             )
           })
@@ -194,8 +210,7 @@ class workOrderDetail extends React.Component<{ history: any }>{
           <div style={{ border: "2px solid #F2F2F2", width: "90%", margin: "30px 0 0 5%"}}></div>
         </div>
        
-
-        {this.state.datas.examine && sessionStorage.getItem("userInfo") === "园区成员" ?
+        {this.state.datas.examine.reply ?
           <div>
             <div style={{ margin: "30px 0 0 50px" }}>
               <span style={{ color: "#949494", fontSize: "40px" }}>由</span>
@@ -206,25 +221,43 @@ class workOrderDetail extends React.Component<{ history: any }>{
             <div style={{ margin: "20px 0 0 50px" }}>
               <span style={{ color: "#949494", fontSize: "40px" }}>审核回复:</span>
             </div>
-            <div style={{ margin: "20px 0 0 50px" }}>
-              <span style={{ color: "#333333", fontSize: "40px" }}>{this.state.datas.examine.reply}</span>
+            <div style={{ margin: "20px 0 0 50px", color: "#333333", fontSize: "40px", wordBreak: "break-all", width: "90%" }}>
+              {this.state.datas.examine.reply}
             </div>
-          </div>
-          : this.state.stateName === "审核中" && sessionStorage.getItem("userInfo") === "园区管理员" ?
+          </div> : null
+        }
+
+        {this.state.datas.examine_transfer ?
           <div>
-            <div style={{padding: "30px 0 0 50px"}}>
+            <div style={{ margin: "30px 0 0 50px" }}>
+              <span style={{ color: "#949494", fontSize: "40px" }}>由</span>
+              <span style={{ color: "#333333", fontSize: "40px", marginLeft: "25px", fontWeight: "600" }}>{this.state.datas.examine_transfer[0].checker}</span>
+              <span style={{ color: "#949494", fontSize: "40px", marginLeft: "25px" }}>转单与</span>
+              <span style={{ color: "#333333", fontSize: "40px", marginLeft: "25px" }}>{this.state.datas.examine_transfer[1].checker_date}</span>
+            </div>
+            <div style={{ margin: "20px 0 0 50px" }}>
+              <span style={{ color: "#949494", fontSize: "40px" }}>转单给:</span>
+            </div>
+            <div style={{ margin: "20px 0 0 50px", color: "#333333", fontSize: "40px", wordBreak: "break-all", width: "90%" }}>
+              {this.state.datas.examine_transfer[1].checker}
+            </div>
+          </div> : null
+        }
+
+        {this.state.stateName === "审核中" && JSON.parse(sessionStorage.getItem("userInfos")).roles.role_name === "园区管理员" ?
+          <div>
+            <div style={{ padding: "30px 0 0 50px" }}>
               <div className="isay-star"></div><div style={{ marginLeft: "30px", fontSize: "40px", color: "#333333" }}>审核回复：</div>
               <textarea style={{ height: "200px", width: "90%", backgroundColor: "#F2F2F2", marginTop: "30px", fontSize: "40px", color: "#949494" }}
-              value={this.state.reply} onFocus={this.textareaFoucus.bind(this)} onBlur={this.textareaBlur.bind(this)} onChange={this.inputChange.bind(this)}></textarea>
+                value={this.state.reply} onFocus={this.textareaFoucus.bind(this)} onBlur={this.textareaBlur.bind(this)} onChange={this.inputChange.bind(this)}></textarea>
             </div>
-            <div style={{ height: "150px", width: "100%", position: "absolute", bottom: 0, fontSize: "45px" }}>
+            <div style={{ height: "150px", width: "100%", position: "fixed", bottom: 0, fontSize: "45px" }}>
               <div style={{ float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#F2F2F2", color: "#6C6C6C" }} onClick={e => this.submit(0)}>转单</div>
               <div style={{ float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#FE4E4E", color: "#FFFFFF" }} onClick={e => this.submit(3)}>不通过</div>
               <div style={{ float: "left", height: "100%", width: "33.4%", lineHeight: "150px", textAlign: "center", backgroundColor: "#0B8BF0", color: "#FFFFFF" }} onClick={e => this.submit(1)}>通过</div>
             </div>
-          </div>
-          : null
-        }
+          </div> : null
+         }
         
       </div>
     )
