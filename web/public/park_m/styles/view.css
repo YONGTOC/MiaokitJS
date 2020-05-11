@@ -159,6 +159,8 @@ i {
     z-index: 1000;
     background: rgba(0,0,0,0.5);
     top: 0;
+    /*width: 100%;
+    height: 100%;*/
 }
 
 .iconBox {
@@ -1192,7 +1194,7 @@ i {
     margin-top: 2rem;
     line-height: 4.5rem;*/  
     float: left;
-    width: 18rem;
+    width: 19rem;
     margin-top: 2rem;
     line-height: 4.5rem;
 }
@@ -1235,7 +1237,7 @@ i {
     border-radius: 0.4rem;
     height: 4rem;
     line-height: 4rem;
-    width: 19rem;
+    width: 18rem;
     margin-top: 9.5rem;
     clear: both;
 }
@@ -1251,7 +1253,7 @@ i {
     border-radius: 0.4rem;
     height: 4rem;
     line-height: 4rem;
-    width: 19rem;
+    width: 18rem;
     margin-top: 9.5rem;
 }
 
@@ -1474,6 +1476,7 @@ i {
     position: absolute;
     right: 5rem;
     bottom: 2rem;
+    line-height:5rem;
 }
 #telurl {
     color: #fff;
@@ -3106,4 +3109,98 @@ i {
     line-height: 120px;
     display: inline-block;
     float: right;
+}
+
+/*Ô°Çø½éÉÜ*/
+.intro {
+    padding: 0 4rem;
+    line-height: 4rem;
+    overflow-y: scroll;
+    line-height: 4.5rem;
+}
+.intro-part {
+    height: 35rem;
+}
+.intro-all {
+    height: 88rem;
+}
+.intro p {
+    font-size: 2.5rem !important;
+}
+.introT {
+    color: #333333;
+    font-weight: bold;
+    font-size: 2.5rem;
+    margin-left: 4.5rem;
+}
+.parkInfoText {
+    color: #333333;
+    font-weight: bold;
+    font-size: 2.5rem;
+}
+/*findSell*/
+.sellType {
+    /*color: #949494;
+    border-radius: 0.4rem;
+    height: 4rem;
+    line-height: 4rem;
+    width: 12rem;
+    margin-top: 9.5rem;
+    clear: both;*/
+    color: #949494;
+    border-radius: 0.4rem;
+    height: 4rem;
+    line-height: 4rem;
+    width: 18rem;
+    clear: both;
+}
+
+.sellType-active {
+    /*color: #E4F3FF;
+    border-radius: 0.4rem;
+    height: 4rem;
+    line-height: 4rem;
+    width: 12rem;
+    margin-top: 9.5rem;*/
+    color: #E4F3FF;
+    border-radius: 0.4rem;
+    height: 4rem;
+    line-height: 4rem;
+    width: 18rem;
+}
+.sellPrice {
+    /*width: 56px;
+    height: 53px;
+    font-size: 3.5rem;
+    font-weight: 600;
+    line-height: 53px;
+    color: rgba(245,54,54,1);
+    margin-right: 0.6rem;*/
+    width: 56px;
+    height: 53px;
+    font-size: 3rem;
+    font-weight: 600;
+    line-height: 53px;
+    color: #F53636;
+}
+
+.sellPrice-active {
+    /*width: 56px;
+    height: 53px;
+    font-size: 3.5rem;
+    font-weight: 600;
+    line-height: 53px;
+    color: rgb(255, 255, 255);
+    margin-right: 0.6rem;*/
+    font-size: 3rem;
+    font-weight: bold;
+    line-height: 53px;
+    color: rgb(255, 255, 255);
+}
+.sellul-right {
+    float: right;
+    margin-top: 2rem;
+    line-height: 5rem;
+    text-align: center;
+    margin-right: 2rem;
 }

@@ -54,7 +54,7 @@ class FindLease extends React.Component {
     return (
       <div className={this.state.FindLeasecss}>
         <p className={this.state.companyInfotit}>
-          <span>招租查询</span>
+          <span>办公出租</span>
         </p>
         <div className={this.state.showList == true ? "show" : "hide"}>
           <LeaseList />
