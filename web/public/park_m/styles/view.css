@@ -1194,7 +1194,7 @@ i {
     margin-top: 2rem;
     line-height: 4.5rem;*/  
     float: left;
-    width: 19rem;
+    width: 29rem;
     margin-top: 2rem;
     line-height: 4.5rem;
 }
@@ -1214,10 +1214,11 @@ i {
 }
 
 .leaseul-right {
-    float: left;
+    float: right;
     margin-top: 2rem;
     line-height: 5rem;
     text-align: center;
+    margin-right: 2rem;
 }
 
 .leaseul-right p:nth-child(1) {
@@ -1238,7 +1239,7 @@ i {
     height: 4rem;
     line-height: 4rem;
     width: 18rem;
-    margin-top: 9.5rem;
+    /*margin-top: 9.5rem;*/
     clear: both;
 }
 
@@ -1254,7 +1255,7 @@ i {
     height: 4rem;
     line-height: 4rem;
     width: 18rem;
-    margin-top: 9.5rem;
+    /*margin-top: 9.5rem;*/
 }
 
 .leasePrice {
@@ -1415,6 +1416,10 @@ i {
     clear: both;
     font-size: 2.5rem;
 }
+.leaseInfosul2 {
+    clear: both;
+    font-size: 2.5rem;
+}
 
 .leaseInfosliLeft {
     float: left;
@@ -1433,10 +1438,11 @@ i {
     height:4.5rem;
 }
 .kk2{
-    height:9.5rem;
+    height:8.5rem;
 }
 .room2{
     float:left;
+    width:100%;
 }
 /*.leaseInfosul li:nth-child(1) {
     width: 30rem;
@@ -1452,7 +1458,7 @@ i {
     display: block;
     width: 100%;
     float: left;*/
-    border-top: 0.3rem solid #f2f2f2;
+    /*border-top: 0.3rem solid #f2f2f2;*/
     display: block;
     width: 100%;
     float: left;
@@ -3139,6 +3145,7 @@ i {
     font-size: 2.5rem;
 }
 /*findSell*/
+
 .sellType {
     /*color: #949494;
     border-radius: 0.4rem;
@@ -3203,4 +3210,45 @@ i {
     line-height: 5rem;
     text-align: center;
     margin-right: 2rem;
+}
+.sellul {
+    font-size: 2.5rem;
+    clear: both;
+    margin-top: 2rem;
+}
+.LL1 {
+    float: left;
+    position: relative;
+    top: -22.5rem;
+    left: 33rem;
+}
+.LL2 {
+    float: left;
+    position: relative;
+    top: -19rem;
+    right: -17.5rem;
+}
+.LL3 {
+    float: left;
+    position: relative;
+    top: -11rem;
+    right: -3.2rem;
+}
+.LL1B {
+    float: left;
+    position: relative;
+    top: -30rem;
+    left: 33rem;
+}
+.LL2B {
+    float: left;
+    position: relative;
+    top: -26rem;
+    right: -17.5rem;
+}
+.LL3B {
+    float: left;
+    position: relative;
+    top: -11rem;
+    right: -3.2rem;
 }

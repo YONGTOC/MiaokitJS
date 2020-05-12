@@ -338,7 +338,7 @@ class DataService {
     $.ajax({
       url: this.state.rooturl + '/api/findRoomRent',
       data: {
-        "park_id": park_id,
+        "park_id": sessionStorage.getItem("park_id"),
         "token": thetoken,
         "square": square
       },
@@ -1743,50 +1743,17 @@ class DataService {
 
   // 106.(园区信息-首页)获取园区信息-园区简介区位优势优惠政策园区风采展示信息
   public getParkShowInfo(pBack, park_id) {
-    //$.ajax({
-    //  url: this.state.rooturl + '/api/getParkShowInfo?token=' + sessionStorage.getItem("token"),
-    //  dataType: "json",
-    //  data: {
-    //    park_id
-    //  },
-    //  type: "get",
-    //  success: function (data) {
-    //    pBack(data)
-    //  }
-    //})
-    var data = {
-      //错误码
-      "return_code": "100",
-      "response": [
-        {
-          //id
-          "id": "1009",
-          //园区名字
-          "name": "桂林国家高新",
-          //占地面积
-          "squre": "15000",
-          //建筑面积
-          "floorage": "1588888",
-          //建园时间
-          "construction_time": "2007年4月",
-          //园区简介
-          "introduction": "<p>xxx科技园区是一个xxxxxxx</p>",
-          //地理位置。
-          "location": "广西桂林市七星区朝阳路D-120号",
-          //区位优势
-          "location_advantage": "<p>园区位于桂林市七星区，交通便利，到达机场约40分钟车程，到达高铁站7公里。</p><p>与七星万达广场相近，周边生活配套设施完善。</p>",
-          //优惠政策
-          "preferential_policy": "<p>入驻企业可享受高新区相关扶持鼓励政策：</p><p>房租减免、税收优惠、高级人才引进、毕业生补贴、社保补贴等。。</p>",
-          //园区风采
-          "elegant": "园区风采园区风采园区风采园区风采",
-        }
-
-      ],
-      //错误代码信息
-      "err_msg": ""
-    }
-
-    pBack(data);
+    $.ajax({
+      url: this.state.rooturl + '/api/getParkShowInfo?token=' + sessionStorage.getItem("token"),
+      dataType: "json",
+      data: {
+        park_id: sessionStorage.getItem("park_id"),
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
   }
 
 
