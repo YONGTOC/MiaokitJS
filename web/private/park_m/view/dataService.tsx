@@ -331,7 +331,7 @@ class DataService {
   }
 
   //9 通过园区id, 获取招租的场地列表接口(findRoomRent);
-  public findRoomRentByparkid(pBack, park_id, square) {
+  public findRoomRentByparkid(pBack, park_id, square,state, sell_state) {
     // id =1
     console.log("findRoomRentByparkid", pBack, park_id, square);
     let thetoken = sessionStorage.getItem("token");
@@ -340,7 +340,9 @@ class DataService {
       data: {
         "park_id": sessionStorage.getItem("park_id"),
         "token": thetoken,
-        "square": square
+        "square": square,
+        "state": state,
+        "sell_state":sell_state,
       },
       type: "get",
       success: function (data) {
