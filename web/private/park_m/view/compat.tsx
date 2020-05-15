@@ -15,7 +15,7 @@ class GlobalAction {
                 m_nYaw: 90.0
             }
         });
-        console.log("web_call_webgl_initPark", pInfo);
+        console.log("web_call_webgl_initP58484848ark", pInfo);
     }
 
     //切换公司
