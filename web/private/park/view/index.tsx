@@ -10,10 +10,7 @@ import DataService from "dataService";
 
 import "css!./styles/view.css"
 import { HashRouter, Route, Redirect, Switch } from 'react-router-dom';
-<<<<<<< HEAD
  
-=======
->>>>>>> d3af9502db6a77299a292aac21a1ff92b692d029
 
 interface IProps {}
 
@@ -39,20 +36,12 @@ class Index extends React.Component<IProps, IState> {
 
     public static g_pIns: Index = null;
 
-<<<<<<< HEAD
-    // ·ÖÏí
-=======
-    // åˆ†äº«
->>>>>>> d3af9502db6a77299a292aac21a1ff92b692d029
+    // ï¿½ï¿½ï¿½ï¿½
     toggleShare = (e) => {
         this.setState({ isShare: !this.state.isShare })
     }
 
-<<<<<<< HEAD
-    // È«ÆÁ
-=======
-    // å…¨å±
->>>>>>> d3af9502db6a77299a292aac21a1ff92b692d029
+    // È«ï¿½ï¿½
     fullScreen = (e) => {
         this.setState({ isFullScreen: !this.state.isFullScreen })
     }
@@ -84,81 +73,49 @@ class Index extends React.Component<IProps, IState> {
     public iconSon = ref => { this.iconChild = ref };
 
   
-<<<<<<< HEAD
-    //do ´«²Î¾ö¶¨ÏÔÊ¾ÇøÓò £¬ 1 - Ô°Çø½éÉÜ; 2 - ÇøÓòÓÅÊÆ; 3 - ÕÐÉÌÁÐ±í; 4 - Èë×¤ÆóÒµ; 10 - ¶¥²¿Ê÷ÐÎÁÐ±í;
-=======
-    //do ä¼ å‚å†³å®šæ˜¾ç¤ºåŒºåŸŸ ï¼Œ 1 - å›­åŒºä»‹ç»; 2 - åŒºåŸŸä¼˜åŠ¿; 3 - æ‹›å•†åˆ—è¡¨; 4 - å…¥é©»ä¼ä¸š; 10 - é¡¶éƒ¨æ ‘å½¢åˆ—è¡¨;
->>>>>>> d3af9502db6a77299a292aac21a1ff92b692d029
+    //do ï¿½ï¿½ï¿½Î¾ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ 1 - Ô°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½; 2 - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½; 3 - ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½; 4 - ï¿½ï¿½×¤ï¿½ï¿½Òµ; 10 - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½;
     public showLeftview(a) {
         // LeftNav.showList-- ListArea.showList
         LeftNav.showList(a);
     }
-<<<<<<< HEAD
-    // Òþ²Ø×é¼þ
-=======
-    // éšè—ç»„ä»¶
->>>>>>> d3af9502db6a77299a292aac21a1ff92b692d029
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public hideLeftview(a) {
         LeftNav.indexCh(a);
         LeftNav.showList(a);
     }
 
-<<<<<<< HEAD
-    //Ë¢ÐÂÊ÷ÐÎÍ¼Êý¾Ý
-=======
-    //åˆ·æ–°æ ‘å½¢å›¾æ•°æ®
->>>>>>> d3af9502db6a77299a292aac21a1ff92b692d029
+    //Ë¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½
     public updateTree(data) {
         // LeftNav.refreshTree -- TreeArea.setTreedata
         LeftNav.refreshTree(data);
     }
 
-<<<<<<< HEAD
-    //¼¤»î·¿¼ä×é¼þ
-=======
-    //æ¿€æ´»æˆ¿é—´ç»„ä»¶
->>>>>>> d3af9502db6a77299a292aac21a1ff92b692d029
+    //ï¿½ï¿½ï¿½î·¿ï¿½ï¿½ï¿½ï¿½ï¿½
     public updateBusiness(a) {
         console.log("flushRoom", a);
         // LeftNav.outBusinessdata(a) -- BusinessArea.outRoomdata(a);
         LeftNav.updateBusiness(a)
     }
-<<<<<<< HEAD
-    // ¼¤»îÆóÒµ×é¼þ
-=======
-    // æ¿€æ´»ä¼ä¸šç»„ä»¶
->>>>>>> d3af9502db6a77299a292aac21a1ff92b692d029
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½
     public updateCompany(a) {
         console.log("flushRoom", a);
         // LeftNav.outCompanydata  --  CompanyArea.outRoomdata(a);
         LeftNav.updateCompany(a)
     }
 
-<<<<<<< HEAD
-    // ¼¤»î·¿¼äÈ«¾°
-=======
-    // æ¿€æ´»æˆ¿é—´å…¨æ™¯
->>>>>>> d3af9502db6a77299a292aac21a1ff92b692d029
+    // ï¿½ï¿½ï¿½î·¿ï¿½ï¿½È«ï¿½ï¿½
     public roomScene(a) {
         console.log("roomScene", a);
     }
 
-<<<<<<< HEAD
-    //¼¤»î·¿¼ä½²½â
-=======
-    //æ¿€æ´»æˆ¿é—´è®²è§£
->>>>>>> d3af9502db6a77299a292aac21a1ff92b692d029
+    //ï¿½ï¿½ï¿½î·¿ï¿½ä½²ï¿½ï¿½
     public roomAduio(a) {
         IconView.play(a);
     }
 
     public dataService: DataService = new DataService();
 
-<<<<<<< HEAD
-    // µã»÷µØÍ¼µã£¬»ñÈ¡»Øµ÷
-=======
-    // ç‚¹å‡»åœ°å›¾ç‚¹ï¼ŒèŽ·å–å›žè°ƒ
->>>>>>> d3af9502db6a77299a292aac21a1ff92b692d029
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ã£¬ï¿½ï¿½È¡ï¿½Øµï¿½
     public callback(a, pBack) {
         this.dataService.callback(a, pBack);
     }

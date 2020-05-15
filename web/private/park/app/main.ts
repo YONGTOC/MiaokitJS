@@ -1,11 +1,8 @@
-<<<<<<< HEAD
-console.log("xccccccccccccccc");
-=======
 
 declare var MiaokitJS: any;
 
 class Main {
-    /// ¹¹Ôìº¯Êý¡£
+    /// ï¿½ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½
     public constructor() {
         let pThis = this;
 
@@ -13,7 +10,7 @@ class Main {
         pThis.m_pApp.m_pProject = this;
     }
 
-    /// Êý¾ÝÔ¤¼ÓÔØ¡£
+    /// ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½Ø¡ï¿½
     public Preload() {
         let pThis = this;
 
@@ -24,7 +21,7 @@ class Main {
         pThis.LoadNavData();
     }
 
-    /// ¿ªÊ¼Ö÷³ÌÐò¡£
+    /// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public Start(): void {
         let pThis = this;
 
@@ -42,7 +39,7 @@ class Main {
         pThis.InitStartMovie();
     }
     private iii = 0;
-    /// Ö¡¸üÐÂ·½·¨¡£
+    /// Ö¡ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½
     public Update(): void {
         if ((this.iii++) % 180 === 0) {
             console.log(this.m_pApp.m_pCameraCtrl);
@@ -67,22 +64,22 @@ class Main {
         if (this.m_nLoading || 0 < nTaskCount) {
             this.m_nTaskMax = this.m_nTaskMax < nTaskCount ? nTaskCount : this.m_nTaskMax;
 
-            /// Ë¢ÐÂÖ÷½ø¶ÈÌõ
+            /// Ë¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             if (this.m_nLoading || this["InitComplete"]) {
             }
-            /// Ë¢ÐÂ¸¨½ø¶ÈÌõ
+            /// Ë¢ï¿½Â¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             else {
             }
         }
         else {
-            /// ¹Ø±ÕÖ÷½ø¶ÈÌõ£¬Æô¶¯Íê³É
+            /// ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             if (this["InitComplete"]) {
                 this.m_nTaskMax = 0;
                 this["InitComplete"]();
             }
-            /// ÔÚÔËÐÐ¹ý³ÌÖÐ¿ÉÄÜËæÊ±´¥·¢¼ÓÔØÈÎÎñ£¬´ËÊ±ÏÔÊ¾¸¨½ø¶ÈÌõ
+            /// ï¿½ï¿½ï¿½ï¿½ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½Ð¿ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ñ£¬´ï¿½Ê±ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             else {
-                /// Èç¹ûÉÏÒ»Ö¡ÓÐÏÔÊ¾½ø¶ÈÌõ£¬ÔÚ´ËÒþ²Ø½ø¶ÈÌõ
+                /// ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ö¡ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½Ø½ï¿½ï¿½ï¿½ï¿½ï¿½
                 if (0 < this.m_nTaskMax) {
                     MiaokitJS.Track("Loaded Tasks");
                     this.m_nTaskMax = 0;
@@ -91,7 +88,7 @@ class Main {
         }
     }
 
-    /// ³õÊ¼»¯¿ªÊ¼¶¯»­¡£
+    /// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private InitStartMovie(): void {
         let pThis: any = this;
         let pCamera = this.m_pApp.m_pCameraCtrl;
@@ -300,11 +297,11 @@ class Main {
             //},
         ];
 
-        /// Ìí¼Ó¿ªÊ¼¶¯»­
+        /// ï¿½ï¿½ï¿½Ó¿ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
         pThis.m_pStartMovie = (function () {
             let nIndex = 0;
             let pFlash = function () {
-                /// µÈ´ý³ÌÐò³õÊ¼»¯µ½×î¸ßÐÔÄÜ
+                /// ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 if (0 < nIndex && 120 > pThis.m_nTick) {
                     return false;
                 }
@@ -343,7 +340,7 @@ class Main {
         })();
     }
 
-    /// ¼ÓÔØµ¼º½ºóÌ¨Êý¾Ý¡£
+    /// ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½Ì¨ï¿½ï¿½ï¿½Ý¡ï¿½
     private LoadNavData(): void {
         let pThis = this;
 
@@ -394,10 +391,10 @@ class Main {
 
                                         for (let pSite of aSite) {
                                             pSite.HyID = parseInt(pSite.HyID);
-                                            pSite.buildingID = "Ä¬ÈÏÖµ";
+                                            pSite.buildingID = "Ä¬ï¿½ï¿½Öµ";
                                             pSite.layer = null;
 
-                                            // ÒÑ¾­½«·Ç¹«¹²ÉèÊ©Í¼±êÀàÐÍIDÉèÎª0
+                                            // ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ï¿½ï¿½Ê©Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½Îª0
                                             if (2 > pSite.HyID) {
                                                 pSite.HyID = 0;
                                             }
@@ -454,7 +451,7 @@ class Main {
         }
     }
 
-    /// SVEÍßÆ¬¼¤»î·½·¨¡£
+    /// SVEï¿½ï¿½Æ¬ï¿½ï¿½ï¿½î·½ï¿½ï¿½ï¿½ï¿½
     private ActiveTile(pTile): void {
         let pThis = this;
 
@@ -565,7 +562,7 @@ class Main {
             pObject.transform.euler = pTile.m_mRotate;
             pObject.active = bOutdoor ? true : false;
 
-            /// µþ¼Óµ±Ç°³¡¾°Â¥²ã
+            /// ï¿½ï¿½ï¿½Óµï¿½Ç°ï¿½ï¿½ï¿½ï¿½Â¥ï¿½ï¿½
             for (let pLayerA of pScene.m_pScene.layers) {
                 if (pAdjust) {
                     let pObject = pLayerA.object3D;
@@ -584,7 +581,7 @@ class Main {
                     pLayerA._Draw();
                 }
 
-                /// Ç°ºó¶ËÂ¥²ã¶ÔÏó°ó¶¨
+                /// Ç°ï¿½ï¿½ï¿½Â¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 for (let pLayerB of pScene.layerList) {
                     if (pLayerB.floor_id === pLayerA.id) {
                         pLayerB.m_pLayer = pLayerA;
@@ -615,7 +612,7 @@ class Main {
         }
     }
 
-    /// ÏÔÊ¾ÊÒÄÚ¡£
+    /// ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Ú¡ï¿½
     private ShowIndoor(nTile, nScene, nType): void {
         let pTile = this.m_aTile[nTile];
         if (pTile) {
@@ -656,7 +653,7 @@ class Main {
         }
     }
 
-    /// Òþ²ØÊÒÄÚ¡£
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¡ï¿½
     private HideIndoor(nTile, nScene): void {
         let pTile = this.m_aTile[nTile];
         if (pTile) {
@@ -676,21 +673,20 @@ class Main {
     }
 
 
-    /// Ó¦ÓÃ¿ò¼Ü¶ÔÏó¡£
+    /// Ó¦ï¿½Ã¿ï¿½Ü¶ï¿½ï¿½ï¿½
     private m_pApp: any = null;
-    /// GIS¶ÔÏó¡£
+    /// GISï¿½ï¿½ï¿½ï¿½
     private m_pGis: any = null;
-    /// Êµ¾°¶ÔÏóÊý×é¡£
+    /// Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é¡£
     private m_aDioramas: any[] = null;
-    /// SVEÍßÆ¬Êý×é¡£
+    /// SVEï¿½ï¿½Æ¬ï¿½ï¿½ï¿½é¡£
     private m_aTile: any[] = null;
-    /// µ±Ç°ÍßÆ¬¼ÓÔØ½ø¶È¡£
+    /// ï¿½ï¿½Ç°ï¿½ï¿½Æ¬ï¿½ï¿½ï¿½Ø½ï¿½ï¿½È¡ï¿½
     private m_nLoading: number = 0;
-    /// µ±Ç°½ø¶ÈÌõ×î´óÖµ¡£
+    /// ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½
     private m_nTaskMax: number = 0;
-    /// ¿ªÊ¼¶¯»­¡£
+    /// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private m_pStartMovie: any = null;
 }
 
 new Main();
->>>>>>> d3af9502db6a77299a292aac21a1ff92b692d029
