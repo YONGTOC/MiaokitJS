@@ -1074,7 +1074,7 @@ class LoginTest extends React.Component {
     static ptLogin() {}
   public ptLogin() {
     console.log(this.state.username,this.state.password)
-      this.dataService.login("twl03","123456",this.hideLogin);
+      this.dataService.login("test","123456",this.hideLogin);
   }
 
 

@@ -114,9 +114,7 @@
     <div id="viewContainer"></div>
 
     <!--测试threejs-->
-    <div id="3Dbuttons">
-
-
+    <div id="floorList">
         <div class="floor_box">
             <p class="floor_box_up" onclick="floorUp()">
                 <i class="iconfont" style="font-size: 2.6rem">&#xe83a;</i>
@@ -135,7 +133,6 @@
                 <i class="iconfont" style="font-size: 2.6rem">&#xe828;</i>
             </p>
         </div>
-
     </div>
 
     <div class="changeD" onclick="changeD()">2D</div>
@@ -146,6 +143,7 @@
   
     <div style="position: absolute;top: 130px;left: 0px;z-index: 101;">
        <button onclick="changeBut()" style="width: 12rem;height: 4rem;font-size: 2.3rem;">测试按钮</button>
+       <button onclick="changeLogin()" style="width: 12rem;height: 4rem;font-size: 2.3rem; display:none;">测试登录</button>
     </div>
     <!--<p id="go">调用预定义的全景图</p>-->
     <ul style="position: absolute;top: 230px;left:0px;z-index: 101;" class="testBut hide">
@@ -175,6 +173,12 @@
         </li>
         <li>
             <button onclick="refreshBooksite(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活场地预约</button>
+        </li> 
+        <li>
+            <button onclick="floorListShow()" style="width: 17rem;height: 4rem;font-size: 2.3rem;">floorListShow</button>
+        </li>
+        <li>
+            <button onclick="floorListHide()" style="width: 17rem;height: 4rem;font-size: 2.3rem;">floorListHide</button>
         </li>
         <!--<li>
             <button onclick="refreshParking(120)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活地库</button>
@@ -198,9 +202,6 @@
     </ul>
 
     <script>
-
-            console.log(233)
-
         var but = 0;
         function changeBut() {
             if (but == 0) {
@@ -212,9 +213,30 @@
             }
         }
 
+        login = 0;
+        function changeLogin() {
+            if (login == 0) {
+                  MiaokitJS.App.UI.showLoginBox();
+                login = 1
+            } else {
+                    MiaokitJS.App.UI.hideLoginBox2();
+                login = 0
+            }
+        }
+
         var floorIndex;
         var floorIndexMax;
         var floorId;
+
+        function floorListShow(){
+            $("#floorList").show();
+            console.log("进入建筑，显示楼层列表")
+        };
+
+        function floorListHide(){
+            $("#floorList").hide();
+            console.log("到外景，隐藏楼层列表")
+        };
 
         function floorUp() {
             console.log("up", floorIndex);
