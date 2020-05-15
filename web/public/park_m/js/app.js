@@ -285,7 +285,13 @@ class Indoor {
             pLayer.object3D.active = bShow;
             pLayer.object3D.highlight = false;
             pLayer.decorationObject3D.active = bShow;
+            if (bShow) {
+                pThis.FocusRoom(pLayer, { x: -40.0, y: 0.0, z: 0.0 });
+            }
         }
+    }
+    FocusRoom(pLayer, mPoint) {
+        pLayer.HighlightRoom(mPoint);
     }
     Deactive() {
         let pThis = this;
