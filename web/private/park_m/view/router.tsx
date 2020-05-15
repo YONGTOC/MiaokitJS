@@ -43,11 +43,14 @@ import RoomPattern from "roomPattern";
 import RoomPatternUpdate from "roomPatternUpdate";
 import ModificationAuthenticationDetail from "modificationAuthenticationDetail";
 import IdentityAuthentication from "identityAuthentication";
+import ParkInfo from "parkInfo";
+import FindSell from "findSell";
 
 
 //园区企业--parkCompany;  随手拍 -- photograph；招租查询--findLease； 摆点申请-- applyPut； 
 //场地预定-- bookSite；在线报修-- repairsOnline；停车服务-- parking
 //Index，3d沙盘； 微圈 --infoArea； 资讯--information；我的 --personalCenter；
+// parkInfo--园区介绍 ；
 
 class Router extends React.Component {
   render() {
@@ -90,6 +93,8 @@ class Router extends React.Component {
           <Route path="/roomPatternUpdate" component={RoomPatternUpdate} />
           <Route path="/modificationAuthenticationDetail" component={ModificationAuthenticationDetail} />
           <Route path="/identityAuthentication" component={IdentityAuthentication} />
+          <Route path="/parkInfo" component={ParkInfo} />
+          <Route path="/findSell" component={FindSell} />
           <Route path="/home" render={(props) => (
             <Home {...props}>
               <Route path="/home/infoArea" component={InfoArea} />

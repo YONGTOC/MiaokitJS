@@ -187,10 +187,10 @@ class Index extends React.Component {
   }
 
   componentWillMount() {
+
   this.dataService.getUserInfo(this.callBackGetUserInfo.bind(this))
 
-   // this.dataService.login(this.isLoginData);
-
+  //    this.dataService.login("youke","123456", this.visitor.bind(this));
 
     //let _this = this
     //if (!sessionStorage.getItem("city")) {
@@ -226,6 +226,7 @@ class Index extends React.Component {
     }
 
   }
+
 
   callBackGetUserInfo(data) {
     data = JSON.parse(data)
