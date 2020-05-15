@@ -392,17 +392,14 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
 
     var reg = /^((ht|f)tps?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/;
    // var reg = /^([\w-]+\.)+[\w-]+(/[\w-./?%&=]*)?$/;
-    if (this.state.officialWebsiteValue == "请输入企业官方网址") {
-
-      if (reg.test(this.state.officialWebsiteValue)) {
-        console.log("网址填写正确");
-      } else {
-        Toast.info("请输入有效网址", 2);
-           sum = 0;
-      }
-
-
-    }
+    //if (this.state.officialWebsiteValue == "请输入企业官方网址") {
+    //  if (reg.test(this.state.officialWebsiteValue)) {
+    //    console.log("网址填写正确");
+    //  } else {
+    //    Toast.info("请输入有效网址", 2);
+    //       sum = 0;
+    //  }
+    //}
 
     console.log("objobjobj2222222", obj);
     if (sum == 1) {
