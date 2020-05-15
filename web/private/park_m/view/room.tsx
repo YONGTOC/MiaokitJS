@@ -75,13 +75,12 @@ export default class Room extends React.Component<{ history: any }>{
   spread(index) {
     let buildingArr = this.state.buildingArr
     buildingArr[this.state.buildingIndex].child[index].isSpread = !buildingArr[this.state.buildingIndex].child[index].isSpread
-    console.log(buildingArr)
-    this.setState({ buildingArr: buildingArr, floorIndex: index })
+    this.setState({ buildingArr: buildingArr, floorIndex: this.state.floorIndex === index ? "" : index })
   }
 
   render() {
     return (
-      <div className="rent-room">
+      <div className="rent-room" style={{backgroundColor: "#ffffff"}}>
         <div className="infoarea-top">
           <div className="infoarea-child-top">
             <img src="./park_m/image/whiteBack.png" style={{ margin: "0 10px 30px -15px", padding: "15px 15px 15px 15px" }} onClick={this.goBack.bind(this)} />

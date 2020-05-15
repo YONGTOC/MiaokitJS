@@ -1,6 +1,5 @@
 ﻿import * as React from "react";
 import "css!./styles/room.css"
-import { Link } from 'react-router-dom';
 import DataService from "dataService";
 
 interface IProps {
@@ -12,9 +11,10 @@ interface IState {
   roomArray: Array<any>,
   spreadIndex: number,
   isMask: boolean,
-  datas: Array<any>,
+  datas: any
   tagList: Array<any>,
-  isModal: boolean
+  isModal: boolean,
+  modalIndex: number
 }
 
 export default class RoomRent extends React.Component<{ history: any }>{
@@ -29,27 +29,54 @@ export default class RoomRent extends React.Component<{ history: any }>{
     spreadIndex: 3,
     isMask: false,
     datas: [
-      ["不限", "2020年6月", "2020年7月", "2020年8月", "2020年9月", "2020年10月", "2020年11月", "2020年12月", "2021年1月", "2021年2月", "2021年3月", "2021年4月", "2021年5月", "2021年6月", "2021年7月"],
-      ["不限", "楼宇A", "楼宇B", "楼宇C", "楼宇D", "楼宇E", "楼宇F"],
-      ["不限", "楼层1", "楼层2", "楼层3", "楼层4", "楼层5", "楼层6"]
+      [
+        { name: "不限" }, { name: "2020-6" }, { name: "2020-7" }, { name: "2020-8" }, { name: "2020-9" }, { name: "2020-10" }, { name: "2020-11" }, { name: "2020-12" },
+        { name: "2021-1" }, { name: "2021-2" }, { name: "2021-3" }, { name: "2021-4" }, { name: "2021-5" }, { name: "2021-6" }, { name: "2021-7" }
+      ],
+      [{ name: "不限" }],
+      [{ name: "不限" }]
     ],
     tagList: ["", "", ""],
-    isModal: false
+    isModal: false,
+    modalIndex: 0
   }
 
   public dataService: DataService = new DataService()
 
   componentDidMount() {
-    this.dataService.getParkBuildingInfo(this.callBackParkBuildingInfo.bind(this))
+    this.getExpiredRoomInfo()
+    this.dataService.getParkBuildingAndFloorLevel(this.callBackGetParkBuildingAndFloorLevel.bind(this))
   }
 
-  callBackParkBuildingInfo(data) {
-    data.response.forEach(item => {
-      item.child.forEach(it => {
-        it.isSpread = false
-      })
+  getExpiredRoomInfo() {
+    let obj = {
+      id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+      parkId: sessionStorage.getItem("park_id"),
+      date: this.state.datas[0][this.state.tagList[0]] ? this.state.datas[0][this.state.tagList[0]].name !== "不限" ? this.state.datas[0][this.state.tagList[0]].name : "" : "",
+      buildingId: this.state.datas[1][this.state.tagList[1]] ? this.state.datas[1][this.state.tagList[1]].id : "",
+      floorId: this.state.datas[2][this.state.tagList[2]] ? this.state.datas[2][this.state.tagList[2]].id : ""
+    }
+    this.dataService.getExpiredRoomInfo(this.callBackGetExpiredRoomInfo.bind(this), obj)
+  }
+
+  callBackGetExpiredRoomInfo(data) {
+    let datas = this.state.datas
+    this.setState({ roomArray: data.response }, () => {
+      if (this.state.tagList[1] !== "") {
+        if (this.state.tagList[1] === 0) {
+          datas[2] = [{ name: "不限" }]
+        } else {
+          datas[2] = [...[{ name: "不限" }], ...datas[1][this.state.tagList[1]].child]
+        }
+        this.setState({ datas: datas })
+      }
     })
-    this.setState({ buildingArr: data.response })
+  }
+
+  callBackGetParkBuildingAndFloorLevel(data) {
+    let datas = this.state.datas
+    datas[1] = [...[{ name: "不限" }], ...data.response]
+    this.setState({ datas: datas })
   }
 
   // 聚焦
@@ -93,13 +120,14 @@ export default class RoomRent extends React.Component<{ history: any }>{
     let tagList = this.state.tagList
     let tagArray = this.state.tagArray
     tagList[this.state.spreadIndex] = index
-    tagArray[this.state.spreadIndex].name = this.state.datas[this.state.spreadIndex][index]
-    this.setState({ tagList: tagList, tagArray: tagArray })
+    tagArray[this.state.spreadIndex].name = this.state.datas[this.state.spreadIndex][index].name
+    this.setState({ tagList: tagList, tagArray: tagArray,  })
     this.clickMask()
+    this.getExpiredRoomInfo()
   }
 
-  openModal() {
-    this.setState({ isModal: true })
+  openModal(index) {
+    this.setState({ isModal: true, modalIndex: index })
   }
 
   closeModal() {
@@ -140,7 +168,7 @@ export default class RoomRent extends React.Component<{ history: any }>{
                 this.state.datas[this.state.spreadIndex].map((item, index) => {
                   return (
                     <div key={index} style={{ fontSize: "36px", height: "120px", lineHeight: "120px", color: this.state.tagList[this.state.spreadIndex] === index ? "#0B8BF0" : null }} onClick={e=> this.changeTagList(index)}>
-                      {item}
+                      {item.name}
                     </div>
                   )
                 })
@@ -151,18 +179,18 @@ export default class RoomRent extends React.Component<{ history: any }>{
           {
             this.state.roomArray.map((item, index) => {
               return (
-                <div key={index} onClick={this.openModal.bind(this)} style={{
+                <div key={index} onClick={e=> this.openModal(index)} style={{
                   backgroundColor: "#FF7E7E", float: "left", minWidth: "180px", height: "80px", lineHeight: "80px", borderRadius: "5px", textAlign: "center", margin: "20px", padding: "0 20px",
                   color: "#ffffff"
                 }}>
-                  {item.name}
+                  {item.room_name}
                 </div>  
               )
             })
           }
         </div>
         {this.state.isModal ?
-          <div style={{ position: "relative", width: "80%", height: "720px", margin: "auto", backgroundColor: "#ffffff", fontSize: "38px", overflow: "hidden", borderRadius: "5px", boxShadow: "0px 3px 10px rgba(0,0,0,0.2)" }}>
+          <div style={{ position: "fixed", width: "80%", height: "720px", marginLeft: "10%", backgroundColor: "#ffffff", fontSize: "38px", overflow: "hidden", borderRadius: "5px", boxShadow: "0px 3px 10px rgba(0,0,0,0.2)" }}>
             <div style={{ height: "50px", width: "100%", overflow: "hidden", margin: "30px 0 0 40px" }}>
               <div style={{ backgroundColor: "#0B8BF0", height: "50px", width: "10px", float: "left" }}></div>
               <div style={{ fontWeight: 600, float: "left", lineHeight: "50px", marginLeft: "20px" }}>房间租用详情</div>
@@ -173,7 +201,7 @@ export default class RoomRent extends React.Component<{ history: any }>{
                 房间名称
             </div>
               <div style={{ float: "left", width: "70%", color: "#333333" }}>
-                A座-1F-201室
+                {this.state.roomArray[this.state.modalIndex].room_name}
             </div>
             </div>
             <div style={{ overflow: "hidden", margin: "30px 0 0 30px" }}>
@@ -189,40 +217,40 @@ export default class RoomRent extends React.Component<{ history: any }>{
                 租用单位
             </div>
               <div style={{ float: "left", width: "70%", color: "#333333" }}>
-                浙江永拓信息科技有限公司
+                {this.state.roomArray[this.state.modalIndex].company_name}
             </div>
             </div>
             <div style={{ overflow: "hidden", margin: "30px 0 0 30px" }}>
               <div style={{ float: "left", width: "30%", color: "#949494" }}>
                 租用人
-            </div>
+              </div>
               <div style={{ float: "left", width: "70%", color: "#333333" }}>
-                小明
-            </div>
+                {this.state.roomArray[this.state.modalIndex].user}
+              </div>
             </div>
             <div style={{ overflow: "hidden", margin: "30px 0 0 30px" }}>
               <div style={{ float: "left", width: "30%", color: "#949494" }}>
                 联系电话
-            </div>
+              </div>
               <div style={{ float: "left", width: "70%", color: "#333333" }}>
-                123456789
-            </div>
+                {this.state.roomArray[this.state.modalIndex].phone}
+              </div>
             </div>
             <div style={{ overflow: "hidden", margin: "30px 0 0 30px" }}>
               <div style={{ float: "left", width: "30%", color: "#949494" }}>
                 租用日期
-            </div>
+              </div>
               <div style={{ float: "left", width: "70%", color: "#333333" }}>
-                2020-03-02
-            </div>
+                {this.state.roomArray[this.state.modalIndex].rent_date}
+              </div>
             </div>
             <div style={{ overflow: "hidden", margin: "30px 0 0 30px" }}>
               <div style={{ float: "left", width: "30%", color: "#949494" }}>
                 到期日期
-            </div>
+              </div>
               <div style={{ float: "left", width: "70%", color: "#333333" }}>
-                2021-03-02
-            </div>
+                {this.state.roomArray[this.state.modalIndex].rent_end_date}
+              </div>
             </div>
           </div> : null
         }

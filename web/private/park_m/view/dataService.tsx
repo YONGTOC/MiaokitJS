@@ -1741,6 +1741,44 @@ class DataService {
     })
   }
 
+  // 107.(我的个人中心-租用到期-楼宇，楼层层级列表)通过园区的id，获取楼宇，楼层层级列表
+  public getParkBuildingAndFloorLevel(pBack) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getParkBuildingAndFloorLevel?token=' + sessionStorage.getItem("token"),
+      dataType: "json",
+      data: {
+        id: sessionStorage.getItem("park_id"),
+        park_id: sessionStorage.getItem("park_id")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 108.(我的个人中心-租用到期-搜索到期房间列表)通过园区的id，到期时间，园区大楼，楼层， 获取搜索到期房间列表
+  public getExpiredRoomInfo(pBack, obj) {
+    console.log("obj", obj)
+    $.ajax({
+      url: this.state.rooturl + '/api/getExpiredRoomInfo?token=' + sessionStorage.getItem("token"),
+      dataType: "json",
+      data: {
+        id: obj.id,
+        park_id: obj.parkId,
+        room_name: obj.roomName,
+        date: obj.date,
+        building_id: obj.buildingId,
+        floor_id: obj.floorId
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+
 
   public state = {
     rooturl: "http://parkadmin.yongtoc.com",

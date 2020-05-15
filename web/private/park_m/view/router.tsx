@@ -38,6 +38,7 @@ import RoomRent from "roomRent";
 import RoomDetail from "roomDetail";
 import RoomUse from "roomUse";
 import RoomBase from "roomBase";
+import RoomBaseUpdate from "roomBaseUpdate";
 import RoomPattern from "roomPattern";
 import RoomPatternUpdate from "roomPatternUpdate";
 import ModificationAuthenticationDetail from "modificationAuthenticationDetail";
@@ -84,6 +85,7 @@ class Router extends React.Component {
           <Route path="/roomDetail" component={RoomDetail} />
           <Route path="/roomUse" component={RoomUse} />
           <Route path="/roomBase" component={RoomBase} />
+          <Route path="/roomBaseUpdate" component={RoomBaseUpdate} />
           <Route path="/roomPattern" component={RoomPattern} />
           <Route path="/roomPatternUpdate" component={RoomPatternUpdate} />
           <Route path="/modificationAuthenticationDetail" component={ModificationAuthenticationDetail} />

@@ -17,7 +17,12 @@ class Information extends React.Component {
     headline: [{name: ""}],
     informationList: [
       { name: "优惠政策", imgUrl: "./park_m/image/preferentialPolicy.png" }, { name: "园区咨询", imgUrl: "./park_m/image/information.png" },
-      { name: "园区活动", imgUrl: "./park_m/image/activity.png" }, { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }
+      { name: "园区活动", imgUrl: "./park_m/image/activity.png" }, { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" },
+      { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }, { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }
+      , { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }, { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }, { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }
+      , { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }, { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }, { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }
+      , { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }, { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }, { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }, { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" },
+      { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }, { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }, { name: "第三方服务", imgUrl: "./park_m/image/thirdParty.png" }
     ]
   }
 

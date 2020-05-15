@@ -139,11 +139,27 @@ export default class RoomUse extends React.Component<{ history: any }>{
         <div style={{ width: "100%", height: "15px", backgroundColor: "#F2F2F2" }}></div>
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", height: "220px" }}>
           <div className="enterprise-information-star"></div>
-          <div style={{ color: "#949494", height: "80px" }}>房间状态</div>
+          <div style={{ color: "#949494", height: "80px" }}>出租状态</div>
           <div>
             {["租用中", "招租中", "不出租"].map((item, index) => {
               return (
                 <div style={{ float: "left" }} onClick={e=> this.changeState(index)}>
+                  <img key={index} style={{ margin: "0 20px 10px 0" }}
+                    src={index == this.state.state ? "./park_m/image/checked.png" : "./park_m/image/unchecked.png"} />
+                  <span style={{ marginRight: "50px" }}>{item}</span>
+                </div>
+              )
+            })
+            }
+          </div>
+        </div>
+        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", height: "220px" }}>
+          <div className="enterprise-information-star"></div>
+          <div style={{ color: "#949494", height: "80px" }}>出售状态</div>
+          <div>
+            {["出售中", "已出售"].map((item, index) => {
+              return (
+                <div style={{ float: "left" }} onClick={e => this.changeState(index)}>
                   <img key={index} style={{ margin: "0 20px 10px 0" }}
                     src={index == this.state.state ? "./park_m/image/checked.png" : "./park_m/image/unchecked.png"} />
                   <span style={{ marginRight: "50px" }}>{item}</span>
