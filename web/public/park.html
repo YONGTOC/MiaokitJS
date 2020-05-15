@@ -9,25 +9,40 @@
 
     <link href="./common/antd/dist/antd.min.css" rel="stylesheet" type="text/css">
     <script>
-        let MiaokitJS = new MiaokitModule({
-            m_bUnity: false,
-            m_pUnityPath: "./common/miaokit/MiaokitU3D/Build/MiaokitU3D.json",
-            m_pModulePath: "./common/miaokit/Miaokit.wasm",
-            m_pServer: "./data/project/"
-        });
+        //let MiaokitJS = new MiaokitModule({
+        //    m_bUnity: false,
+        //    m_pUnityPath: "./common/miaokit/MiaokitU3D/Build/MiaokitU3D.json",
+        //    m_pModulePath: "./common/miaokit/Miaokit.wasm",
+        //    m_pServer: "./data/project/"
+        //});
 
-        MiaokitJS["m_aTiles"].push({
-            m_pPath: "./data/project/project.lzma.bin",
-            m_pData: null,
-            m_pTile: null,
-            Active: function () {
-                MiaokitJS.App.ActiveTile(this.m_pTile);
-            }
-        });
+        //MiaokitJS["m_aTiles"].push({
+        //    m_pPath: "./data/project/project.lzma.bin",
+        //    m_pData: null,
+        //    m_pTile: null,
+        //    Active: function () {
+        //        MiaokitJS.App.ActiveTile(this.m_pTile);
+        //    }
+        //});
 
-        MiaokitJS.Preload();
+        //MiaokitJS.Preload();
+
+            let MiaokitJS = new MiaokitModule("Sisyphus", "./data/projects/config.txt");
 
         window.onload = function () {
+            //window.oncontextmenu = function (e) {
+            //    e.preventDefault();
+            //};
+
+            //MiaokitJS.Load(function () {
+            //    MiaokitJS.App.Start();
+            //}, function (nEventID) {
+            //    MiaokitJS.App.Update();
+            //    });
+
+            
+            MiaokitJS.Track("Window.onload");
+
             window.oncontextmenu = function (e) {
                 e.preventDefault();
             };
@@ -48,7 +63,6 @@
                     "moment": "../common/moment.min",
                     "antd": "../common/antd/dist/antd.min",
                     "Index": "js/view",
-                    "photo-sphere-viewer": "../common/photo-sphere-viewer",
 
                     "g2plot": "../common/g2plot",
 

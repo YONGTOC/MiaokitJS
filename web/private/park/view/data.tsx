@@ -14,7 +14,7 @@ class Data extends React.Component {
         }
     }
 
-    //  ÔÚµÚÒ»´ÎäÖÈ¾ºóµ÷ÓÃ
+    //  ï¿½Úµï¿½Ò»ï¿½ï¿½ï¿½ï¿½È¾ï¿½ï¿½ï¿½ï¿½ï¿½
     public componentDidMount() {
     }
 
@@ -24,12 +24,12 @@ class Data extends React.Component {
         return (
             <div className="data">
                 <div className="data-top">
-                    <div className="data-title" style={{ float: "left", marginLeft: "3%", marginTop: "-5px" }}>¹ðÁÖÐÅÏ¢²úÒµÔ°Êý¾Ý·ÖÎö</div>
+                    <div className="data-title" style={{ float: "left", marginLeft: "3%", marginTop: "-5px" }}>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ÒµÔ°ï¿½ï¿½ï¿½Ý·ï¿½ï¿½ï¿½</div>
                     <Link to="/"><div style={{ float: "right", marginRight: "15px", color: "#FFFFFF" }}><Industry /></div></Link>
                     <div style={{ border: "1px solid #A1D4CF", float: "right", height: "10px", marginTop: "50px", marginRight: "12px" }}></div>
                     <div style={{ fontSize: "15px", color: "#FFFFFF", float: "right", marginRight: "12px" }}>12:10:20</div>
                     <div style={{ border: "1px solid #A1D4CF", float: "right", height: "10px", marginTop: "50px", marginRight: "12px" }}></div>
-                    <div style={{ color: "#FFFFFF", fontSize: "15px", float: "right", marginRight: "12px" }}>20 ¡ãC</div>
+                    <div style={{ color: "#FFFFFF", fontSize: "15px", float: "right", marginRight: "12px" }}>20 ï¿½ï¿½C</div>
                     <div style={{ float: "right", marginRight: "3px" }}><Sun /></div>
                 </div>
 

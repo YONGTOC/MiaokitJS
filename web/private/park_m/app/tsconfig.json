@@ -2,8 +2,8 @@
   "compileOnSave": true,
   "compilerOptions": {
     "module": "system",
-    "outDir": "../../../public/mobilePark/js",
-    "outFile": "../../../public/mobilePark/js/app.js",
+    "outDir": "../../../public/park_m/js",
+    "outFile": "../../../public/park_m/js/app.js",
     "noImplicitAny": false,
     "noEmitOnError": true,
     "removeComments": true,

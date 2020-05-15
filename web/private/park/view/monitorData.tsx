@@ -5,27 +5,27 @@ import { Ring, Area } from "g2plot";
 
 const data = [
     {
-        type: '·ÖÀàÒ»',
+        type: 'ï¿½ï¿½ï¿½ï¿½Ò»',
         value: 27,
     },
     {
-        type: '·ÖÀà¶þ',
+        type: 'ï¿½ï¿½ï¿½ï¿½ï¿½',
         value: 25,
     },
     {
-        type: '·ÖÀàÈý',
+        type: 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½',
         value: 18,
     },
     {
-        type: '·ÖÀàËÄ',
+        type: 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½',
         value: 15,
     },
     {
-        type: '·ÖÀàÎå',
+        type: 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½',
         value: 10,
     },
     {
-        type: 'ÆäËü',
+        type: 'ï¿½ï¿½ï¿½ï¿½',
         value: 10,
     },
 ];
@@ -33,64 +33,64 @@ const data = [
 
 const brokenLineData = [
     {
-        month: '1ÔÂ',
+        month: '1ï¿½ï¿½',
         value: 30,
     },
     {
-        month: '2ÔÂ',
+        month: '2ï¿½ï¿½',
         value: 50,
     },
     {
-        month: '3ÔÂ',
+        month: '3ï¿½ï¿½',
         value: 80,
     },
     {
-        month: '4ÔÂ',
+        month: '4ï¿½ï¿½',
         value: 100,
     },
     {
-        month: '5ÔÂ',
+        month: '5ï¿½ï¿½',
         value: 80,
     },
     {
-        month: '6ÔÂ',
+        month: '6ï¿½ï¿½',
         value: 50,
     },
     {
-        month: '7ÔÂ',
+        month: '7ï¿½ï¿½',
         value: 30,
     },
     {
-        month: '1ÔÂ',
+        month: '1ï¿½ï¿½',
         value: 20,
     },
     {
-        month: '2ÔÂ',
+        month: '2ï¿½ï¿½',
         value: 60,
     },
     {
-        month: '3ÔÂ',
+        month: '3ï¿½ï¿½',
         value: 120,
     },
     {
-        month: '4ÔÂ',
+        month: '4ï¿½ï¿½',
         value: 70,
     },
     {
-        month: '5ÔÂ',
+        month: '5ï¿½ï¿½',
         value: 50,
     },
     {
-        month: '6ÔÂ',
+        month: '6ï¿½ï¿½',
         value: 30,
     },
     {
-        month: '7ÔÂ',
+        month: '7ï¿½ï¿½',
         value: 20,
     },
 ];
 
-const htmlcontent = { name: "×ÜÁ¿", value: "100 %" };
+const htmlcontent = { name: "ï¿½ï¿½ï¿½ï¿½", value: "100 %" };
 
 interface IProps {
 
@@ -105,13 +105,13 @@ export default class MonitorData extends React.Component<IProps, IState> {
    
     public readonly state: Readonly<IState> = {
         monitorData: [
-            { name: "·¿¼äÃæ»ý", allTag: "×ÜÃæ»ý", allNumber: "20,000", usingTag: "ÒÑÊ¹ÓÃ", usingNumber: "5,000", remainTag: "Ê£Óà", remainNumber: "15,000", unit: "(©O)" },
-            { name: "¹¦ºÄÍ³¼Æ", allTag: "×Ü¹¦ºÄ", allNumber: "2,600", usingTag: "ÒÑÊ¹ÓÃ", usingNumber: "2,000", remainTag: "Ê£Óà", remainNumber: "600", unit: "(kw)" },
-            { name: "³µÎ»", allTag: "×Ü³µÎ»", allNumber: "600", usingTag: "ÒÑÊ¹ÓÃ", usingNumber: "300", remainTag: "Ê£Óà", remainNumber: "300", unit: "(¸ö)" }
+            { name: "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", allTag: "ï¿½ï¿½ï¿½ï¿½ï¿½", allNumber: "20,000", usingTag: "ï¿½ï¿½Ê¹ï¿½ï¿½", usingNumber: "5,000", remainTag: "Ê£ï¿½ï¿½", remainNumber: "15,000", unit: "(ï¿½O)" },
+            { name: "ï¿½ï¿½ï¿½ï¿½Í³ï¿½ï¿½", allTag: "ï¿½Ü¹ï¿½ï¿½ï¿½", allNumber: "2,600", usingTag: "ï¿½ï¿½Ê¹ï¿½ï¿½", usingNumber: "2,000", remainTag: "Ê£ï¿½ï¿½", remainNumber: "600", unit: "(kw)" },
+            { name: "ï¿½ï¿½Î»", allTag: "ï¿½Ü³ï¿½Î»", allNumber: "600", usingTag: "ï¿½ï¿½Ê¹ï¿½ï¿½", usingNumber: "300", remainTag: "Ê£ï¿½ï¿½", remainNumber: "300", unit: "(ï¿½ï¿½)" }
         ],
         infoData: [
-            { name: "½ñÈÕÓÃË®Á¿", number: "200", unit: "¶Ö", img: "./park/image/monitorData/water.png" },
-            { name: "½ñÈÕÓÃµçÁ¿", number: "1200", unit: "¶È", img: "./park/image/monitorData/electricity.png" }]
+            { name: "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë®ï¿½ï¿½", number: "200", unit: "ï¿½ï¿½", img: "./park/image/monitorData/water.png" },
+            { name: "ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½", number: "1200", unit: "ï¿½ï¿½", img: "./park/image/monitorData/electricity.png" }]
     }
             
         
@@ -207,7 +207,7 @@ export default class MonitorData extends React.Component<IProps, IState> {
                         float: "left", marginTop: "4px", marginRight: "5px"
                     }}>
                     </div>
-                    <span style={{ color: "#FFFFFF", fontSize: "16px" }}>ÖÇÄÜÊý¾Ý¼à¿Ø</span>
+                    <span style={{ color: "#FFFFFF", fontSize: "16px" }}>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¼ï¿½ï¿½</span>
                 </div>
                 {
                     this.state.monitorData.map((item, index) => {
@@ -242,7 +242,7 @@ export default class MonitorData extends React.Component<IProps, IState> {
                         float: "left", marginTop: "4px", marginRight: "5px"
                     }}>
                     </div>
-                    <span style={{ color: "#FFFFFF", fontSize: "16px" }}>Ë®µçÐÅÏ¢Í³¼Æ</span>
+                    <span style={{ color: "#FFFFFF", fontSize: "16px" }}>Ë®ï¿½ï¿½ï¿½ï¿½Ï¢Í³ï¿½ï¿½</span>
                 </div>
                 {
                     this.state.infoData.map((item, index) => {
@@ -261,11 +261,11 @@ export default class MonitorData extends React.Component<IProps, IState> {
 
                 <div id="brokenLine" style={{ width: "300px", height: "120px", overflow: "hidden", marginLeft: "35px" }}></div>
                 <div className="electricity-view">
-                    <div className="span-g">ÆóÒµ½ñÈÕÆ½¾ùÓÃË®Á¿</div>
+                    <div className="span-g">ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½Ë®ï¿½ï¿½</div>
                     <div className="span-h">6</div>
                 </div>
                 <div className="water-view">
-                    <div className="span-g">ÆóÒµ½ñÈÕÆ½¾ùÓÃµçÁ¿</div>
+                    <div className="span-g">ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½</div>
                     <div className="span-h">2</div>
                 </div>
             </div>

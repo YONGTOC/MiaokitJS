@@ -28,7 +28,7 @@ define("compat", ["require", "exports"], function (require, exports) {
                     m_nYaw: 90.0
                 }
             });
-            console.log("web_call_webgl_initPark", pInfo);
+            console.log("web_call_webgl_initP58484848ark", pInfo);
         }
         web_call_webgl_switchCompany(pName) {
             if (2 == pName) {
@@ -180,7 +180,7 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
         render() {
             return (React.createElement("div", { className: this.state.FindLeasecss },
                 React.createElement("p", { className: this.state.companyInfotit },
-                    React.createElement("span", null, "\u62DB\u79DF\u67E5\u8BE2")),
+                    React.createElement("span", null, "\u529E\u516C\u51FA\u79DF")),
                 React.createElement("div", { className: this.state.showList == true ? "show" : "hide" },
                     React.createElement(LeaseList, null)),
                 React.createElement("div", { className: this.state.showInfo == true ? "show" : "hide" },
@@ -220,7 +220,7 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
         }
         componentDidMount() {
             this.dataService.getRoomRentSquareType(this.getRoomRentSquareType, this.state.park_id);
-            this.dataService.findRoomRentByparkid(this.setRoomRent, this.state.park_id, "");
+            this.dataService.findRoomRentByparkid(this.setRoomRent, this.state.park_id, "", 1, -1);
         }
         getRoomRentSquareType(data) {
             console.log("getRoomRentSquareType", data);
@@ -290,21 +290,19 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
                 });
             }
         }
-        leaseActive(index, id) {
+        leaseActive(index, id, title, building, floor, room) {
             console.log("active", index, id);
+            console.log("active2", building, floor, room);
             this.setState({
                 indexOf: index,
                 roomId: id
             });
             console.log("leaseActive", this.state);
-            this.dataService.findRoomRentByroomid(this.switchRoom.bind(this), id);
-        }
-        switchRoom(data) {
             let roomData = {
-                m_pTile: data.response.project_title,
-                m_pBuilding: data.response.building_code,
-                m_pLayer: data.response.floor_code,
-                m_pRoom: data.response.room_code,
+                m_pTile: title,
+                m_pBuilding: building,
+                m_pLayer: floor,
+                m_pRoom: room,
             };
             this.globalAction.web_call_webgl_switchRoom(roomData);
         }
@@ -337,10 +335,10 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
         }
         searchRoomRent() {
             if (this.state.square == "全部") {
-                this.dataService.findRoomRentByparkid(this.setRoomRent, this.state.park_id, " ");
+                this.dataService.findRoomRentByparkid(this.setRoomRent, this.state.park_id, "", 1, -1);
             }
             else {
-                this.dataService.findRoomRentByparkid(this.setRoomRent, this.state.park_id, this.state.square);
+                this.dataService.findRoomRentByparkid(this.setRoomRent, this.state.park_id, this.state.square, 1, -1);
             }
             console.log("searchBtn", this.state.inputValue, this.state.square);
         }
@@ -367,7 +365,7 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
                 React.createElement("ul", { className: this.state.leaseul },
                     React.createElement("p", { className: this.state.roomNull }, "\u6CA1\u6709\u7B26\u5408\u641C\u7D22\u6761\u4EF6\u7684\u7ED3\u679C\u00B7\u00B7\u00B7"),
                     this.state.roomData.map((i, index) => {
-                        return (React.createElement("li", { onClick: this.leaseActive.bind(this, index, i.id), className: this.state.indexOf == index ? "leaseli-active" : "leaseli" },
+                        return (React.createElement("li", { onClick: this.leaseActive.bind(this, index, i.id, i.project_title, i.building_code, i.floor_code, i.room_code), className: this.state.indexOf == index ? "leaseli-active" : "leaseli", style: { display: ("1" == i.state) ? "block" : "none" } },
                             React.createElement("div", { className: this.state.indexOf == index ? "leaseImgback-active" : "leaseImgback" },
                                 React.createElement("img", { src: i.headimageurl == null ? this.state.imgurlNull : i.headimageurl, onError: this.onErrorHeadimageurl.bind(this, index) })),
                             React.createElement("div", { className: "leaseul-middle" },
@@ -379,18 +377,15 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
                                     i.room_name),
                                 React.createElement("p", { style: { "font-size": "2.5rem" } },
                                     React.createElement("span", { className: "iconfont", style: { "fontSize": "2.5rem", "margin-right": "1rem" } }, "\uE82A"),
-                                    i.square,
+                                    i.floorage,
                                     "m\u00B2"),
-                                React.createElement("p", { style: { "font-size": "2.5rem" } },
-                                    React.createElement("span", { className: "iconfont", style: { "fontSize": "2.5rem", "margin-right": "1rem" } }, "\uE829"),
-                                    i.date)),
+                                React.createElement("p", { className: this.state.indexOf == index ? "leaseType-active" : "leaseType" },
+                                    React.createElement("span", { className: this.state.indexOf == index ? "leasePrice-active" : "leasePrice" }, i.price),
+                                    "\u5143/m\u00B2\u00B7\u6708")),
                             React.createElement("div", { className: "leaseul-right" },
                                 React.createElement("p", { onClick: this.showInfo.bind(this, "Info", i.id, i.name), className: this.state.indexOf == index ? "show" : "hide" },
                                     "\u66F4\u591A",
-                                    React.createElement("i", { className: "iconfont", style: { "fontSize": "2rem" } }, "\uE827")),
-                                React.createElement("p", { className: this.state.indexOf == index ? "leaseType-active" : "leaseType" },
-                                    React.createElement("span", { className: this.state.indexOf == index ? "leasePrice-active" : "leasePrice" }, i.price),
-                                    "\u5143/m\u00B2/\u5929"))));
+                                    React.createElement("i", { className: "iconfont", style: { "fontSize": "2rem" } }, "\uE827")))));
                     })),
                 React.createElement("form", { action: '', target: "rfFrame" },
                     React.createElement("div", { className: this.state.leaseBtn },
@@ -455,11 +450,13 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
                 this.setState({
                     leaseInfocss: "leaseInfo-part",
                 });
+                LeaseInfos.botTelHide();
             }
             else {
                 this.setState({
                     leaseInfocss: "leaseInfo",
                 });
+                LeaseInfos.botTelShow();
             }
             if (this.state.iconfont == "iconfont iconfont-unturn") {
                 this.setState({
@@ -511,46 +508,78 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
         constructor(props) {
             super(props);
             this.state = {
-                area: "",
-                time: "",
+                floorage: "",
+                inspection_time: "",
                 floor_name: "",
                 limit: "",
                 elevator: "",
-                price: "",
+                price: 0,
                 man: "",
-                tel: ""
+                tel: "",
+                sum: 0,
+                sell_price: 0,
+                sell_price_sum: 0,
+                date: "",
+                decorate_name: "",
+                title: "",
+                free_rent: "",
+                station_amount: "",
+                floor_sum: "",
+                botTel: "botTel",
+                sell_state: 0,
             };
             LeaseInfos.setLeaseInfos = this.setLeaseInfos.bind(this);
+            LeaseInfos.botTelShow = this.botTelShow.bind(this);
+            LeaseInfos.botTelHide = this.botTelHide.bind(this);
         }
         componentDidMount() { }
         static setLeaseInfos(data) { }
         setLeaseInfos(data) {
             console.log("setLeaseInfosIIII", data);
+            let sum = data.response.floorage * data.response.price;
+            let sum_z = sum.toFixed(0);
+            let sell_price_sum = data.response.floorage * data.response.sell_price;
+            let sell_price_sum_z = sell_price_sum.toFixed(0);
+            let iselevator;
             if (data.response.lift == 1) {
-                this.setState({
-                    area: data.response.squre,
-                    time: data.response.inspection_time,
-                    floor_name: data.response.floor_name,
-                    limit: data.response.require,
-                    elevator: "有",
-                    price: data.response.price,
-                    man: data.response.contact,
-                    tel: data.response.phone
-                });
+                iselevator = "有";
             }
             else {
-                this.setState({
-                    area: data.response.squre,
-                    time: data.response.inspection_time,
-                    floor_name: data.response.floor_name,
-                    limit: data.response.require,
-                    elevator: "无",
-                    price: data.response.price,
-                    man: data.response.contact,
-                    tel: data.response.phone
-                });
+                iselevator = "无";
             }
+            console.log("zzzzz", sum);
+            this.setState({
+                floorage: data.response.floorage,
+                inspection_time: data.response.inspection_time,
+                floor_name: data.response.floor_name,
+                limit: data.response.require,
+                elevator: iselevator,
+                price: data.response.price,
+                man: data.response.contact,
+                tel: data.response.phone,
+                sum: sum_z,
+                sell_price: data.response.sell_price,
+                sell_price_sum: sell_price_sum_z,
+                date: data.response.date,
+                decorate_name: data.response.decorate_name,
+                free_rent: data.response.free_rent,
+                station_amount: data.response.station_amount,
+                floor_sum: data.response.floor_sum,
+                sell_state: data.response.sell_state,
+            });
             document.getElementById("telurl").href = 'tel:' + this.state.tel;
+        }
+        static botTelShow() { }
+        botTelShow() {
+            this.setState({
+                botTel: "botTel"
+            });
+        }
+        static botTelHide() { }
+        botTelHide() {
+            this.setState({
+                botTel: "hide"
+            });
         }
         render() {
             return (React.createElement("div", { className: "leaseInfos" },
@@ -559,44 +588,57 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
                         React.createElement("li", null,
                             React.createElement("span", { style: { "padding-right": "2rem" } }, "\u5EFA\u7B51\u9762\u79EF"),
                             React.createElement("span", { style: { "font-weight": "600" } },
-                                this.state.area,
+                                this.state.floorage,
                                 "\u5E73\u7C73")),
                         React.createElement("li", null,
                             React.createElement("span", { style: { "padding-right": "2rem" } }, "\u6240\u5728\u697C\u5C42"),
                             React.createElement("span", { style: { "font-weight": "600" } }, this.state.floor_name)),
-                        React.createElement("li", { className: "jj" },
+                        React.createElement("li", { className: this.state.price == 0 ? "hide" : "jj" },
                             React.createElement("span", { style: { "padding-right": "7rem" } }, "\u79DF\u91D1"),
-                            React.createElement("span", { style: { "color": "#F53636" } }, "2.8\u4E07\u5143/\u6708\uFF082.8\u5143/m\u00B2/\u5929\uFF09")),
+                            React.createElement("span", { style: { "color": "#F53636" } },
+                                this.state.sum,
+                                "\u5143/\u6708\uFF08",
+                                this.state.price,
+                                "\u5143/m\u00B2\u00B7\u6708\uFF09")),
+                        React.createElement("li", { className: this.state.sell_state == 0 ? "jj" : "hide" },
+                            React.createElement("span", { style: { "padding-right": "7rem" } }, "\u552E\u4EF7"),
+                            React.createElement("span", { style: { "color": "#F53636" } },
+                                this.state.sell_price_sum,
+                                "\u5143\uFF08",
+                                this.state.sell_price,
+                                "\u5143/m\u00B2\uFF09")),
                         React.createElement("li", null,
                             React.createElement("span", { style: { "padding-right": "7rem" } }, "\u514D\u79DF"),
-                            React.createElement("span", { style: { "font-weight": "600" } }, "\u53EF\u9762\u8C08")),
+                            React.createElement("span", { style: { "font-weight": "600" } }, this.state.free_rent)),
                         React.createElement("li", null,
                             React.createElement("span", { style: { "padding-right": "2rem" } }, "\u5BB9\u7EB3\u5DE5\u4F4D"),
-                            React.createElement("span", { style: { "font-weight": "600" } }, "20\u4F4D"))),
+                            React.createElement("span", { style: { "font-weight": "600" } }, this.state.station_amount))),
                     React.createElement("div", { className: "leaseInfosliRight" },
                         React.createElement("li", null,
                             "\u603B\u5171\u697C\u5C42",
-                            React.createElement("span", { style: { "font-weight": "600", "font-size": "2.3rem", "marginLeft": "2rem" } }, "\u4E03\u5C42")),
+                            React.createElement("span", { style: { "font-weight": "600", "font-size": "2.3rem", "marginLeft": "2rem" } },
+                                this.state.floor_sum,
+                                "\u5C42")),
                         React.createElement("li", null,
                             "\u7535\u68AF",
                             React.createElement("span", { style: { "font-weight": "600", "font-size": "2.3rem", "marginLeft": "7rem" } }, this.state.elevator)),
-                        React.createElement("li", { className: "kk" },
+                        React.createElement("li", { className: this.state.sell_price == 0 ? "kk" : "kk2" },
                             React.createElement("p", null)),
                         React.createElement("li", null,
                             "\u88C5\u4FEE",
-                            React.createElement("span", { style: { "font-weight": "600", "font-size": "2.3rem", "marginLeft": "7rem" } }, "\u6BDB\u80DA"))),
+                            React.createElement("span", { style: { "font-weight": "600", "font-size": "2.3rem", "marginLeft": "7rem" } }, this.state.decorate_name))),
                     React.createElement("li", { className: "room2" },
                         React.createElement("span", { style: { "padding-right": "2rem" } }, "\u770B\u623F\u65F6\u95F4"),
-                        React.createElement("span", { style: { "font-weight": "600" } }, this.state.time)),
+                        React.createElement("span", { style: { "font-weight": "600" } }, this.state.inspection_time)),
                     React.createElement("li", { className: "room2" },
-                        React.createElement("span", { style: { "padding-right": "2rem" } }, "\u53EF\u79DF\u65F6\u95F4"),
-                        React.createElement("span", { style: { "font-weight": "600" } }, "20XX\u5E74X\u6708X\u65E5\u5F00\u59CB\u8D77\u79DF"))),
-                React.createElement("div", { className: "botTel" },
+                        React.createElement("span", { style: { "padding-right": "2rem" } }, "\u53D1\u5E03\u65F6\u95F4"),
+                        React.createElement("span", { style: { "font-weight": "600" } }, this.state.date))),
+                React.createElement("div", { className: this.state.botTel },
                     React.createElement("p", { className: "botTelMan" },
                         "\u8054\u7CFB\u4EBA ",
-                        React.createElement("span", { style: { "font-weight": "600" } }, "\u674E\u5148\u751F")),
+                        React.createElement("span", { style: { "font-weight": "600", "marginLeft": "2rem" } }, this.state.man)),
                     React.createElement("div", { className: "telBut" },
-                        React.createElement("a", { href: "#", id: "telurl" }, " \u514D\u8D39\u54A8\u8BE2")))));
+                        React.createElement("a", { href: "#", id: "telurl" }, "\u7535\u8BDD\u54A8\u8BE2")))));
         }
     }
     class Picshow extends React.Component {
@@ -608,6 +650,7 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
                 data: ['1', '2', '3', '4', '5', '6', '7'],
                 imgHeight: 176,
                 slideIndex: 0,
+                picBtnIndex: 0,
             };
             Picshow.setPicshow = this.setPicshow.bind(this);
         }
@@ -639,18 +682,28 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
                 });
             }
         }
+        picBtn(a, b) {
+            console.log(a);
+            this.setState({
+                picBtnIndex: a
+            });
+        }
         render() {
             return (React.createElement("div", { className: "picshow" },
-                React.createElement("ul", null,
-                    React.createElement("p", { className: this.state.urlNull, style: { "margin": "1rem 0", "text-align": "center", "font-size": "3rem", "color": "#797979" } }, "\u6682\u65E0\u56FE\u7247\u00B7\u00B7\u00B7"),
-                    React.createElement(antd_mobile_1.WingBlank, null,
-                        React.createElement(antd_mobile_1.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
-                                window.dispatchEvent(new Event('resize'));
-                                this.setState({ imgHeight: 'auto' });
-                            } })))))),
+                this.state.picBtnIndex == 0 ?
+                    React.createElement("ul", null,
+                        React.createElement("p", { className: this.state.urlNull, style: { "margin": "1rem 0", "text-align": "center", "font-size": "3rem", "color": "#797979" } }, "\u6682\u65E0\u56FE\u7247\u00B7\u00B7\u00B7"),
+                        React.createElement(antd_mobile_1.WingBlank, null,
+                            React.createElement(antd_mobile_1.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
+                                    window.dispatchEvent(new Event('resize'));
+                                    this.setState({ imgHeight: 'auto' });
+                                } }))))))
+                    :
+                        React.createElement("div", null,
+                            React.createElement(Videoshow, null)),
                 React.createElement("div", { className: "picBtn" },
-                    React.createElement("div", { className: "picBtnA" }, "\u56FE\u7247"),
-                    React.createElement("div", { className: "picBtnB" }, "\u89C6\u9891"))));
+                    React.createElement("div", { className: this.state.picBtnIndex == 0 ? "picBtnS-active" : "picBtnS", onClick: this.picBtn.bind(this, 0) }, "\u56FE\u7247"),
+                    React.createElement("div", { className: this.state.picBtnIndex == 1 ? "picBtnS-active" : "picBtnS", onClick: this.picBtn.bind(this, 1) }, "\u89C6\u9891"))));
         }
     }
     class Videoshow extends React.Component {
@@ -661,15 +714,39 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
                 roomVideo: [],
             };
             Videoshow.setVideoshow = this.setVideoshow.bind(this);
+            this.seeVideoState = this.seeVideoState.bind(this);
         }
-        componentDidMount() { }
+        componentDidMount() {
+            this.seeVideoState();
+        }
+        seeVideoState() {
+            if (this.state.roomVideo.length == 0) {
+                this.setState({
+                    urlNull: "show",
+                });
+                console.log(this.state);
+            }
+            else if (!this.state.roomVideo[0].url) {
+                this.setState({
+                    urlNull: "show",
+                });
+            }
+            else {
+                this.setState({
+                    urlNull: "hide",
+                });
+            }
+        }
         static setVideoshow(data) { }
         setVideoshow(data) {
+            console.log("4545454", data.response.video.length);
             if (data.response.video.length == 0) {
+                console.log(898989898);
                 this.setState({
                     roomVideo: [],
                     urlNull: "show",
                 });
+                console.log(this.state);
             }
             else if (!data.response.video[0].url) {
                 this.setState({
@@ -909,15 +986,17 @@ define("dataService", ["require", "exports", "antd-mobile"], function (require, 
                 }
             });
         }
-        findRoomRentByparkid(pBack, park_id, square) {
+        findRoomRentByparkid(pBack, park_id, square, state, sell_state) {
             console.log("findRoomRentByparkid", pBack, park_id, square);
             let thetoken = sessionStorage.getItem("token");
             $.ajax({
                 url: this.state.rooturl + '/api/findRoomRent',
                 data: {
-                    "park_id": park_id,
+                    "park_id": sessionStorage.getItem("park_id"),
                     "token": thetoken,
-                    "square": square
+                    "square": square,
+                    "state": state,
+                    "sell_state": sell_state,
                 },
                 type: "get",
                 success: function (data) {
@@ -2052,6 +2131,19 @@ define("dataService", ["require", "exports", "antd-mobile"], function (require, 
                 }
             });
         }
+        getParkShowInfo(pBack, park_id) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getParkShowInfo?token=' + sessionStorage.getItem("token"),
+                dataType: "json",
+                data: {
+                    park_id: sessionStorage.getItem("park_id"),
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data);
+                }
+            });
+        }
     }
     exports.default = DataService;
 });
@@ -2647,21 +2739,18 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "antd-mob
             console.log("more", a, id, name, e);
             BookInfo.getRoomdata(id);
         }
-        bookActive(index, id) {
+        bookActive(index, id, title, building, floor, room) {
             console.log("active", index, id);
             this.setState({
                 indexOf: index,
                 roomId: id
             });
             console.log("bookActive", this.state);
-            this.dataService.getRoomBookInfo(this.switchRoom.bind(this), id);
-        }
-        switchRoom(data) {
             let roomData = {
-                m_pTile: data.response.project_title,
-                m_pBuilding: data.response.building_code,
-                m_pLayer: data.response.floor_code,
-                m_pRoom: data.response.room_code,
+                m_pTile: title,
+                m_pBuilding: building,
+                m_pLayer: floor,
+                m_pRoom: room,
             };
             this.globalAction.web_call_webgl_switchRoom(roomData);
         }
@@ -2712,7 +2801,7 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "antd-mob
                     React.createElement("li", { className: this.state.nullBookData },
                         React.createElement("p", null, "\u6CA1\u6709\u7B26\u5408\u6761\u4EF6\u7684\u7ED3\u679C")),
                     this.state.bookData.map((i, index) => {
-                        return (React.createElement("li", { onClick: this.bookActive.bind(this, index, i.id), className: this.state.indexOf == index ? "bookli-active" : "bookli" },
+                        return (React.createElement("li", { onClick: this.bookActive.bind(this, index, i.id, i.project_title, i.building_code, i.floor_code, i.room_code), className: this.state.indexOf == index ? "bookli-active" : "bookli" },
                             React.createElement("div", { className: this.state.indexOf == index ? "bookImgback-active" : "bookImgback" },
                                 React.createElement("img", { src: i.headimgurl == null ? this.state.imgurlNull : i.headimgurl })),
                             React.createElement("div", { className: "bookul-middle" },
@@ -3228,6 +3317,20 @@ define("bottomBtn", ["require", "exports", "react", "react-router-dom", "compat"
     }
     exports.default = BottomBtn;
 });
+define("companyInfo", ["require", "exports", "react"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class CompanyInfo extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {};
+        }
+        render() {
+            return (React.createElement("div", null, "CompanyInfoCompanyInfoCompanyInfoCompanyInfoCompanyInfo"));
+        }
+    }
+    exports.default = CompanyInfo;
+});
 define("compat_online", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -3714,15 +3817,6 @@ define("enterpriseInformation", ["require", "exports", "react", "dataService", "
             }
             ;
             var reg = /^((ht|f)tps?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/;
-            if (this.state.officialWebsiteValue == "请输入企业官方网址") {
-                if (reg.test(this.state.officialWebsiteValue)) {
-                    console.log("网址填写正确");
-                }
-                else {
-                    antd_mobile_5.Toast.info("请输入有效网址", 2);
-                    sum = 0;
-                }
-            }
             console.log("objobjobj2222222", obj);
             if (sum == 1) {
                 this.dataService.saveCompanyInfo(this.callBackSaveCompanyInfo.bind(this), obj);
@@ -4118,7 +4212,681 @@ define("enterpriseInformation", ["require", "exports", "react", "dataService", "
     }
     exports.default = EnterpriseInformation;
 });
-define("homeBottom", ["require", "exports", "react", "react-router-dom", "compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_5) {
+define("findSell", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_5, dataService_5, antd_mobile_6) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class FindLease extends React.Component {
+        constructor(props) {
+            super(props);
+            this.globalAction = new compat_5.default();
+            this.state = {
+                FindLeasecss: "findLease",
+                showList: true,
+                showInfo: false,
+                companyInfotit: "companyInfotit",
+            };
+            FindLease.toggleView = this.toggleView.bind(this);
+            FindLease.getLeaseinfoByroomid = this.getLeaseinfoByroomid.bind(this);
+        }
+        componentDidMount() {
+            move3dBut("up");
+        }
+        static getLeaseinfoByroomid(id) { }
+        getLeaseinfoByroomid(id) {
+            console.log("getCompanyinfo", id);
+            this.toggleView("Info", id);
+            LeaseInfo.getLeaseInfo(id);
+        }
+        static toggleView(a, id) { }
+        ;
+        toggleView(a, id) {
+            console.log("fl", a);
+            console.log("fl", id);
+            if (a == "Info") {
+                this.setState({
+                    showList: false,
+                    showInfo: true,
+                    companyInfotit: "hide"
+                });
+            }
+            else {
+                this.setState({
+                    showList: true,
+                    showInfo: false,
+                    companyInfotit: "companyInfotit"
+                });
+            }
+        }
+        render() {
+            return (React.createElement("div", { className: this.state.FindLeasecss },
+                React.createElement("p", { className: this.state.companyInfotit },
+                    React.createElement("span", null, "\u529E\u516C\u51FA\u552E")),
+                React.createElement("div", { className: this.state.showList == true ? "show" : "hide" },
+                    React.createElement(LeaseList, null)),
+                React.createElement("div", { className: this.state.showInfo == true ? "show" : "hide" },
+                    React.createElement(LeaseInfo, null))));
+        }
+    }
+    exports.default = FindLease;
+    class LeaseList extends React.Component {
+        constructor(props) {
+            super(props);
+            this.dataService = new dataService_5.default();
+            this.globalAction = new compat_5.default();
+            this.state = {
+                roomNull: "hide",
+                park_id: "1001",
+                roomId: "",
+                inputValue: "搜索",
+                square: "全部",
+                leaseListcss: "leaseList-part",
+                foleBtn: "lease-foleBtn",
+                indexOf: -1,
+                leaseBtn: "leaseBtn-part",
+                leaseul: "leaseul",
+                roomData: [],
+                areaType: [],
+                typeIndexof: 100,
+                iconfont: "iconfont iconfont-unturn",
+                searchBoxIcon: "iconfont iconfont-unturn",
+                src: "about:'blank'",
+                imgurlNull: "./park_m/image/noImg.png",
+            };
+            this.showInfo = this.showInfo.bind(this);
+            this.getRoomRentSquareType = this.getRoomRentSquareType.bind(this);
+            this.setRoomRent = this.setRoomRent.bind(this);
+            this.searchRoomRent = this.searchRoomRent.bind(this);
+            this.change = this.change.bind(this);
+        }
+        componentDidMount() {
+            this.dataService.getRoomRentSquareType(this.getRoomRentSquareType, this.state.park_id);
+            this.dataService.findRoomRentByparkid(this.setRoomRent, this.state.park_id, "", -1, 0);
+        }
+        getRoomRentSquareType(data) {
+            console.log("getRoomRentSquareType", data);
+            this.setState({
+                areaType: data.response,
+            });
+        }
+        setRoomRent(data) {
+            console.log("setRoomRent", data);
+            if (data.response.length == 0) {
+                this.setState({
+                    roomData: data.response,
+                    roomNull: "show",
+                });
+            }
+            else {
+                this.setState({
+                    roomData: data.response,
+                    roomNull: "hide",
+                });
+            }
+        }
+        showInfo(a, id, name, e) {
+            FindLease.toggleView(a, id);
+            LeaseInfo.getLeaseInfo(id);
+            console.log("more", a, id, name, e);
+        }
+        toggleFold() {
+            console.log("tftft");
+            if (this.state.leaseListcss == "leaseList-all") {
+                this.setState({
+                    leaseListcss: "leaseList-part",
+                    leaseul: "leaseul"
+                });
+                this.globalAction.web_call_webgl_continueloadModuler();
+            }
+            else {
+                this.setState({
+                    leaseListcss: "leaseList-all",
+                    leaseul: "leaseul-all"
+                });
+                this.globalAction.web_call_webgl_pauseloadModuler();
+            }
+            if (this.state.iconfont == "iconfont iconfont-unturn") {
+                this.setState({
+                    iconfont: "iconfont iconfont-turn",
+                });
+            }
+            else {
+                this.setState({
+                    iconfont: "iconfont iconfont-unturn",
+                });
+            }
+        }
+        foldBtn() {
+            console.log("foldBtn");
+            if (this.state.leaseBtn == "leaseBtn-part") {
+                this.setState({
+                    leaseBtn: "leaseBtn-all",
+                    searchBoxIcon: "iconfont iconfont-turn",
+                });
+            }
+            else {
+                this.setState({
+                    leaseBtn: "leaseBtn-part",
+                    searchBoxIcon: "iconfont iconfont-unturn",
+                });
+            }
+        }
+        leaseActive(index, id, title, building, floor, room) {
+            console.log("active", index, id);
+            console.log("active2", building, floor, room);
+            this.setState({
+                indexOf: index,
+                roomId: id
+            });
+            console.log("leaseActive", this.state);
+            let roomData = {
+                m_pTile: title,
+                m_pBuilding: building,
+                m_pLayer: floor,
+                m_pRoom: room,
+            };
+            this.globalAction.web_call_webgl_switchRoom(roomData);
+        }
+        typeActive(indexof, name) {
+            console.log("typeActive-1", indexof);
+            console.log("typeActive-2", name);
+            this.setState({
+                typeIndexof: indexof,
+                square: name,
+                inputValue: name,
+            }, () => {
+                this.searchRoomRent();
+            });
+        }
+        foucus() {
+            if (this.state.inputValue == "搜索") {
+                this.setState({ inputValue: "" });
+            }
+        }
+        blur(event) {
+            if (this.state.inputValue == "") {
+                this.setState({ inputValue: "搜索" });
+            }
+        }
+        change(event) {
+            this.setState({
+                inputValue: event.target.value,
+                square: event.target.value,
+            });
+        }
+        searchRoomRent() {
+            if (this.state.square == "全部") {
+                this.dataService.findRoomRentByparkid(this.setRoomRent, this.state.park_id, " ", -1, 0);
+            }
+            else {
+                this.dataService.findRoomRentByparkid(this.setRoomRent, this.state.park_id, this.state.square, -1, 0);
+            }
+            console.log("searchBtn", this.state.inputValue, this.state.square);
+        }
+        mapReturnpark() {
+            this.globalAction.web_call_webgl_mapReturnpark();
+            move3dBut("down");
+        }
+        onErrorHeadimageurl(index) {
+            var items = this.state.companyData;
+            items[index].headimageurl = "./park_m/image/noImg.png";
+            this.setState({
+                companyData: items
+            });
+        }
+        render() {
+            return (React.createElement("div", { className: this.state.leaseListcss },
+                React.createElement("div", { className: "foleBtn" },
+                    React.createElement("p", { className: "companyGoHomeLeft", onClick: this.mapReturnpark.bind(this) },
+                        React.createElement(RouterDOM.Link, { to: "/home", style: { color: "#949494" } },
+                            React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B"),
+                            React.createElement("span", null, "\u8FD4\u56DE"))),
+                    React.createElement("p", { className: "companyGoHomeRight" },
+                        React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem", "color": "#C0C0C0" }, onClick: this.toggleFold.bind(this) }, "\uE849"))),
+                React.createElement("ul", { className: this.state.leaseul },
+                    React.createElement("p", { className: this.state.roomNull }, "\u6CA1\u6709\u7B26\u5408\u641C\u7D22\u6761\u4EF6\u7684\u7ED3\u679C\u00B7\u00B7\u00B7"),
+                    this.state.roomData.map((i, index) => {
+                        return (React.createElement("li", { onClick: this.leaseActive.bind(this, index, i.id, i.project_title, i.building_code, i.floor_code, i.room_code), className: this.state.indexOf == index ? "leaseli-active" : "leaseli", style: { display: ("0.00" == i.sell_state) ? "block" : "none" } },
+                            React.createElement("div", { className: this.state.indexOf == index ? "leaseImgback-active" : "leaseImgback" },
+                                React.createElement("img", { src: i.headimageurl == null ? this.state.imgurlNull : i.headimageurl, onError: this.onErrorHeadimageurl.bind(this, index) })),
+                            React.createElement("div", { className: "leaseul-middle" },
+                                React.createElement("p", { className: this.state.indexOf == index ? "leaseName-active" : "leaseName", style: { "font-size": "2.4rem", "font-weight": "bold" } },
+                                    i.building_name,
+                                    "-",
+                                    i.floor_name,
+                                    "-",
+                                    i.room_name),
+                                React.createElement("p", { style: { "font-size": "2.5rem" } },
+                                    React.createElement("span", { className: "iconfont", style: { "fontSize": "2.5rem", "margin-right": "1rem" } }, "\uE82A"),
+                                    i.floorage,
+                                    "m\u00B2"),
+                                React.createElement("p", { className: this.state.indexOf == index ? "sellType-active" : "sellType" },
+                                    React.createElement("span", { className: this.state.indexOf == index ? "sellPrice-active" : "sellPrice" }, i.sell_price),
+                                    "\u5143/m\u00B2")),
+                            React.createElement("div", { className: "sellul-right" },
+                                React.createElement("p", { onClick: this.showInfo.bind(this, "Info", i.id, i.name), className: this.state.indexOf == index ? "show" : "hide" },
+                                    "\u66F4\u591A",
+                                    React.createElement("i", { className: "iconfont", style: { "fontSize": "2rem" } }, "\uE827")))));
+                    })),
+                React.createElement("form", { action: '', target: "rfFrame" },
+                    React.createElement("div", { className: this.state.leaseBtn },
+                        React.createElement("div", { className: "searchBox", onClick: this.foldBtn.bind(this) },
+                            React.createElement("span", { className: "searchBox-text" },
+                                React.createElement("span", { className: "iconfont", style: { "fontSize": "2.3rem" } }, "\uE810"),
+                                React.createElement("span", { style: { "color": "#333333", "margin-left": "1rem" } }, this.state.square == "全部" ? "全部" : this.state.square + "m²")),
+                            React.createElement("span", { className: "searchBox-type" },
+                                React.createElement("i", { className: this.state.searchBoxIcon, style: { "fontSize": "3rem", position: "relative", top: "0.3rem" } }, "\uE828 "))),
+                        React.createElement("ul", { className: "areaTypeul" },
+                            React.createElement("li", { className: this.state.typeIndexof == 100 ? "areaTypeli-active" : "areaTypeli", onClick: this.typeActive.bind(this, 100, "全部", "id-全部") }, "\u5168\u90E8"),
+                            this.state.areaType.map((i, index) => {
+                                return (React.createElement("li", { onClick: this.typeActive.bind(this, index, i), className: this.state.typeIndexof == index ? "areaTypeli-active" : "areaTypeli" },
+                                    i,
+                                    "m\u00B2"));
+                            })))),
+                React.createElement("iframe", { id: "rfFrame", name: "rfFrame", src: this.state.src, style: { display: "none" } }, "   ")));
+        }
+    }
+    class LeaseInfo extends React.Component {
+        constructor(props) {
+            super(props);
+            this.dataService = new dataService_5.default();
+            this.state = {
+                leaseInfocss: "leaseInfo",
+                roomName: "",
+                building: "",
+                floor: "",
+                room: "",
+                building_name: "",
+                floor_name: "",
+                room_name: "",
+                infoli: 0,
+                iconfont: "iconfont iconfont-turn",
+            };
+            this.showList = this.showList.bind(this);
+            LeaseInfo.getLeaseInfo = this.getLeaseInfo.bind(this);
+            this.setLeaseInfo = this.setLeaseInfo.bind(this);
+        }
+        static getLeaseInfo(id) { }
+        getLeaseInfo(id) {
+            this.dataService.findRoomRentByroomid(this.setLeaseInfo, id);
+        }
+        setLeaseInfo(data) {
+            console.log("setLeaseInfo", data);
+            this.setState({
+                building_name: data.response.building_name,
+                floor_name: data.response.floor_name,
+                room_name: data.response.room_name,
+            });
+            LeaseInfos.setLeaseInfos(data);
+            Picshow.setPicshow(data);
+            Videoshow.setVideoshow(data);
+        }
+        componentDidMount() {
+        }
+        showList(a, id) {
+            FindLease.toggleView(a, id);
+        }
+        toggleFold() {
+            if (this.state.leaseInfocss == "leaseInfo") {
+                this.setState({
+                    leaseInfocss: "leaseInfo-part",
+                });
+                LeaseInfos.botTelHide();
+            }
+            else {
+                this.setState({
+                    leaseInfocss: "leaseInfo",
+                });
+                LeaseInfos.botTelShow();
+            }
+            if (this.state.iconfont == "iconfont iconfont-unturn") {
+                this.setState({
+                    iconfont: "iconfont iconfont-turn",
+                });
+            }
+            else {
+                this.setState({
+                    iconfont: "iconfont iconfont-unturn",
+                });
+            }
+        }
+        infoClick(indexof) {
+            console.log("infoClick", indexof);
+            this.setState({
+                infoli: indexof,
+            });
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("p", { className: "companyInfotit" },
+                    React.createElement("span", null,
+                        this.state.building_name,
+                        "-",
+                        this.state.floor_name,
+                        "-",
+                        this.state.room_name)),
+                React.createElement("div", { className: this.state.leaseInfocss },
+                    React.createElement("div", { className: "foleBtn" },
+                        React.createElement("p", { className: "companyGoHomeLeft", style: { color: "#949494" }, onClick: this.showList.bind(this, "List", "id-01") },
+                            React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B"),
+                            React.createElement("span", null, "\u8FD4\u56DE")),
+                        React.createElement("p", { className: "companyGoHomeRight" },
+                            React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem", "color": "#C0C0C0" }, onClick: this.toggleFold.bind(this) }, "\uE849"))),
+                    React.createElement("div", { className: "leaseInfoul_br" },
+                        React.createElement("ul", { className: "leaseInfoul" },
+                            React.createElement("li", { className: this.state.infoli == 0 ? "leaseInfoli-active" : "leaseInfoli", onClick: this.infoClick.bind(this, 0) }, "\u552E\u623F\u4FE1\u606F"),
+                            React.createElement("li", { className: this.state.infoli == 1 ? "leaseInfoli-active" : "leaseInfoli", onClick: this.infoClick.bind(this, 1) }, "\u623F\u95F4\u5C55\u793A"))),
+                    React.createElement("div", { className: "leaseContain" },
+                        React.createElement("div", { className: this.state.infoli == 0 ? "show" : "hide" },
+                            React.createElement(LeaseInfos, null)),
+                        React.createElement("div", { className: this.state.infoli == 1 ? "show" : "hide" },
+                            React.createElement(Picshow, null)),
+                        React.createElement("div", { className: this.state.infoli == 2 ? "show" : "hide" },
+                            React.createElement(Videoshow, null))))));
+        }
+    }
+    class LeaseInfos extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                floorage: "",
+                inspection_time: "",
+                floor_name: "",
+                limit: "",
+                elevator: "",
+                price: 0,
+                man: "",
+                tel: "",
+                sum: 0,
+                sell_price: 0,
+                sell_price_sum: 0,
+                date: "",
+                decorate_name: "",
+                title: "",
+                free_rent: "",
+                station_amount: "",
+                floor_sum: "",
+                botTel: "botTel",
+                sell_state: 0,
+                state: 0,
+            };
+            LeaseInfos.setLeaseInfos = this.setLeaseInfos.bind(this);
+            LeaseInfos.botTelShow = this.botTelShow.bind(this);
+            LeaseInfos.botTelHide = this.botTelHide.bind(this);
+        }
+        componentDidMount() { }
+        static setLeaseInfos(data) { }
+        setLeaseInfos(data) {
+            console.log("setLeaseInfosIIII", data);
+            let sum = data.response.floorage * data.response.price;
+            let sum_z = sum.toFixed(0);
+            let sell_price_sum = data.response.floorage * data.response.sell_price;
+            let sell_price_sum_z = sell_price_sum.toFixed(0);
+            let iselevator;
+            if (data.response.lift == 1) {
+                iselevator = "有";
+            }
+            else {
+                iselevator = "无";
+            }
+            console.log("zzzzz", sum);
+            this.setState({
+                floorage: data.response.floorage,
+                inspection_time: data.response.inspection_time,
+                floor_name: data.response.floor_name,
+                limit: data.response.require,
+                elevator: iselevator,
+                price: data.response.price,
+                man: data.response.contact,
+                tel: data.response.phone,
+                sum: sum_z,
+                sell_price: data.response.sell_price,
+                sell_price_sum: sell_price_sum_z,
+                date: data.response.date,
+                decorate_name: data.response.decorate_name,
+                free_rent: data.response.free_rent,
+                station_amount: data.response.station_amount,
+                floor_sum: data.response.floor_sum,
+                sell_state: data.response.sell_state,
+                state: data.response.state,
+            });
+            document.getElementById("telurl").href = 'tel:' + this.state.tel;
+        }
+        static botTelShow() { }
+        botTelShow() {
+            this.setState({
+                botTel: "botTel"
+            });
+        }
+        static botTelHide() { }
+        botTelHide() {
+            this.setState({
+                botTel: "hide"
+            });
+        }
+        render() {
+            return (React.createElement("div", { className: "sellInfos" },
+                React.createElement("ul", { className: "sellul" },
+                    React.createElement("li", null,
+                        React.createElement("span", { style: { "padding-right": "2rem" } }, "\u5EFA\u7B51\u9762\u79EF"),
+                        React.createElement("span", { style: { "font-weight": "600" } },
+                            this.state.floorage,
+                            "\u5E73\u7C73")),
+                    React.createElement("li", null,
+                        React.createElement("span", { style: { "padding-right": "2rem" } }, "\u6240\u5728\u697C\u5C42"),
+                        React.createElement("span", { style: { "font-weight": "600" } }, this.state.floor_name)),
+                    React.createElement("li", { className: this.state.state == 1 ? "sj" : "hide" },
+                        React.createElement("span", { style: { "padding-right": "7rem" } }, "\u79DF\u91D1"),
+                        React.createElement("span", { style: { "color": "#F53636" } },
+                            this.state.sum,
+                            "\u5143/\u6708\uFF08",
+                            this.state.price,
+                            "\u5143/m\u00B2\u00B7\u6708\uFF09")),
+                    React.createElement("li", { className: this.state.sell_state == 0 ? "jj" : "hide" },
+                        React.createElement("span", { style: { "padding-right": "7rem" } }, "\u552E\u4EF7"),
+                        React.createElement("span", { style: { "color": "#F53636" } },
+                            this.state.sell_price_sum,
+                            "\u5143\uFF08",
+                            this.state.sell_price,
+                            "\u5143/m\u00B2\uFF09")),
+                    React.createElement("li", { className: this.state.state == 1 ? "smj" : "hide" },
+                        React.createElement("span", { style: { "padding-right": "7rem" } }, "\u514D\u79DF"),
+                        React.createElement("span", { style: { "font-weight": "600" } }, this.state.free_rent)),
+                    React.createElement("li", null,
+                        React.createElement("span", { style: { "padding-right": "2rem" } }, "\u5BB9\u7EB3\u5DE5\u4F4D"),
+                        React.createElement("span", { style: { "font-weight": "600" } }, this.state.station_amount)),
+                    React.createElement("li", { className: "room2" },
+                        React.createElement("span", { style: { "padding-right": "2rem" } }, "\u770B\u623F\u65F6\u95F4"),
+                        React.createElement("span", { style: { "font-weight": "600" } }, this.state.inspection_time)),
+                    React.createElement("li", { className: "room2" },
+                        React.createElement("span", { style: { "padding-right": "2rem" } }, "\u53D1\u5E03\u65F6\u95F4"),
+                        React.createElement("span", { style: { "font-weight": "600" } }, this.state.date)),
+                    React.createElement("li", { className: this.state.state == 1 ? "LL1B" : "LL1" },
+                        "\u603B\u5171\u697C\u5C42",
+                        React.createElement("span", { style: { "font-weight": "600", "font-size": "2.3rem", "marginLeft": "2rem" } },
+                            this.state.floor_sum,
+                            "\u5C42")),
+                    React.createElement("li", { className: this.state.state == 1 ? "LL2B" : "LL2" },
+                        "\u7535\u68AF",
+                        React.createElement("span", { style: { "font-weight": "600", "font-size": "2.3rem", "marginLeft": "7rem" } }, this.state.elevator)),
+                    React.createElement("li", { className: this.state.state == 1 ? "LL3B" : "LL3" },
+                        "\u88C5\u4FEE",
+                        React.createElement("span", { style: { "font-weight": "600", "font-size": "2.3rem", "marginLeft": "7rem" } }, this.state.decorate_name)),
+                    React.createElement("li", null)),
+                React.createElement("div", { className: this.state.botTel },
+                    React.createElement("p", { className: "botTelMan" },
+                        "\u8054\u7CFB\u4EBA ",
+                        React.createElement("span", { style: { "font-weight": "600", "marginLeft": "2rem" } }, this.state.man)),
+                    React.createElement("div", { className: "telBut" },
+                        React.createElement("a", { href: "#", id: "telurl" }, "\u7535\u8BDD\u54A8\u8BE2")))));
+        }
+    }
+    class Picshow extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                roomImg: [],
+                urlNull: "hide",
+                data: ['1', '2', '3', '4', '5', '6', '7'],
+                imgHeight: 176,
+                slideIndex: 0,
+                picBtnIndex: 0,
+            };
+            Picshow.setPicshow = this.setPicshow.bind(this);
+        }
+        componentDidMount() {
+            setTimeout(() => {
+                this.setState({
+                    data: ['1', '2', '3', '4', '5', '6', '7'],
+                });
+            }, 100);
+        }
+        static setPicshow(data) { }
+        setPicshow(data) {
+            let picurl = [];
+            console.log("setPicshowPPPPPP", data);
+            $.each(data.response.pic, function (index, item) {
+                picurl.push(item.url);
+            });
+            if (data.response.pic.length == 0) {
+                this.setState({
+                    roomImg: data.response.pic,
+                    urlNull: "show",
+                });
+            }
+            else {
+                this.setState({
+                    roomImg: data.response.pic,
+                    urlNull: "hide",
+                    data: picurl,
+                });
+            }
+        }
+        picBtn(a, b) {
+            console.log(a);
+            this.setState({
+                picBtnIndex: a
+            });
+        }
+        render() {
+            return (React.createElement("div", { className: "picshow" },
+                this.state.picBtnIndex == 0 ?
+                    React.createElement("ul", null,
+                        React.createElement("p", { className: this.state.urlNull, style: { "margin": "1rem 0", "text-align": "center", "font-size": "3rem", "color": "#797979" } }, "\u6682\u65E0\u56FE\u7247\u00B7\u00B7\u00B7"),
+                        React.createElement(antd_mobile_6.WingBlank, null,
+                            React.createElement(antd_mobile_6.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
+                                    window.dispatchEvent(new Event('resize'));
+                                    this.setState({ imgHeight: 'auto' });
+                                } }))))))
+                    :
+                        React.createElement("div", null,
+                            React.createElement(Videoshow, null)),
+                React.createElement("div", { className: "picBtn" },
+                    React.createElement("div", { className: this.state.picBtnIndex == 0 ? "picBtnS-active" : "picBtnS", onClick: this.picBtn.bind(this, 0) }, "\u56FE\u7247"),
+                    React.createElement("div", { className: this.state.picBtnIndex == 1 ? "picBtnS-active" : "picBtnS", onClick: this.picBtn.bind(this, 1) }, "\u89C6\u9891"))));
+        }
+    }
+    class Videoshow extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                urlNull: "hide",
+                roomVideo: [],
+            };
+            Videoshow.setVideoshow = this.setVideoshow.bind(this);
+            this.seeVideoState = this.seeVideoState.bind(this);
+        }
+        componentDidMount() {
+            this.seeVideoState();
+        }
+        seeVideoState() {
+            if (this.state.roomVideo.length == 0) {
+                this.setState({
+                    urlNull: "show",
+                });
+                console.log(this.state);
+            }
+            else if (!this.state.roomVideo[0].url) {
+                this.setState({
+                    urlNull: "show",
+                });
+            }
+            else {
+                this.setState({
+                    urlNull: "hide",
+                });
+            }
+        }
+        static setVideoshow(data) { }
+        setVideoshow(data) {
+            console.log("4545454", data.response.video.length);
+            if (data.response.video.length == 0) {
+                console.log(898989898);
+                this.setState({
+                    roomVideo: [],
+                    urlNull: "show",
+                });
+                console.log(this.state);
+            }
+            else if (!data.response.video[0].url) {
+                this.setState({
+                    roomVideo: [],
+                    urlNull: "show",
+                });
+            }
+            else {
+                this.setState({
+                    roomVideo: data.response.video,
+                    urlNull: "hide",
+                });
+            }
+            console.log("66666666666666", this.state);
+        }
+        render() {
+            return (React.createElement("div", { className: "picshow" },
+                React.createElement("ul", null,
+                    React.createElement("p", { className: this.state.urlNull, style: { "margin": "1rem 0", "text-align": "center", "font-size": "3rem", "color": "#797979" } }, "\u6682\u65E0\u89C6\u9891\u00B7\u00B7\u00B7"),
+                    this.state.roomVideo.map((i, index) => {
+                        return (React.createElement("li", { style: { "width": "56rem", " height": "36rem" } },
+                            React.createElement("video", { src: i.url, style: { "width": "100%", "height": "100%" }, controls: true }, "\u5F53\u524D\u6D4F\u89C8\u5668\u4E0D\u652F\u6301video\u64AD\u653E")));
+                    }))));
+        }
+    }
+});
+define("fullView", ["require", "exports", "react"], function (require, exports, React) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class FullView extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                isShow: false,
+                fullViewHide: "iconfont fullViewHide",
+            };
+            FullView.isShow = this.isShow.bind(this);
+        }
+        static isShow() { }
+        ;
+        isShow() {
+            console.log(2222);
+            this.setState({
+                isShow: true,
+            });
+        }
+        isHide() {
+            this.setState({
+                isShow: false,
+            });
+            this.props.history.goBack();
+            show3dBut();
+        }
+        render() {
+            return (React.createElement("div", { className: this.state.isShow == true ? "show" : "hide" },
+                React.createElement("i", { className: this.state.fullViewHide, onClick: this.isHide.bind(this) }, "\uE83B")));
+        }
+    }
+    exports.default = FullView;
+});
+define("homeBottom", ["require", "exports", "react", "react-router-dom", "compat", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_6) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class HomeBottom extends React.Component {
@@ -4127,7 +4895,7 @@ define("homeBottom", ["require", "exports", "react", "react-router-dom", "compat
             this.props = {
                 history: this.props.history
             };
-            this.globalAction = new compat_5.default();
+            this.globalAction = new compat_6.default();
             this.state = {
                 index: 1,
                 iconImg1In: "./park_m/image/bottomBtn/3d-in.png",
@@ -4173,21 +4941,21 @@ define("homeBottom", ["require", "exports", "react", "react-router-dom", "compat
                 React.createElement(RouterDOM.Link, { to: "/home" },
                     React.createElement("div", { className: this.state.index == 1 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 1) },
                         React.createElement("img", { src: this.state.index == 1 ? this.state.iconImg1In : this.state.iconImg1Un }),
-                        React.createElement("p", null, "\u9996\u9875"))),
+                        React.createElement("p", null, "3D\u6C99\u76D8"))),
                 React.createElement(RouterDOM.Link, { to: "/home/information" },
                     React.createElement("div", { className: this.state.index == 3 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 3) },
                         React.createElement("img", { src: this.state.index == 3 ? this.state.iconImg3In : this.state.iconImg3Un }),
-                        React.createElement("p", null, "\u8D44\u8BAF"))),
+                        React.createElement("p", null, "\u56ED\u533A\u8D44\u8BAF"))),
                 React.createElement(RouterDOM.Link, { to: "/home/personalCenter" },
                     React.createElement("div", { className: this.state.index == 4 ? "iconBox-bottomIn" : "iconBox-bottom", onClick: this.toggleIcon.bind(this, 4) },
                         React.createElement("img", { src: this.state.index == 4 ? this.state.iconImg4In : this.state.iconImg4Un }),
-                        React.createElement("p", null, "\u6211\u7684")))));
+                        React.createElement("p", null, "\u56ED\u533A\u4E2D\u5FC3")))));
         }
         ;
     }
     exports.default = HomeBottom;
 });
-define("home", ["require", "exports", "react", "react-router-dom", "homeBottom", "dataService", "compat", "css!./styles/iconfont.css", "css!./styles/view.css"], function (require, exports, React, RouterDOM, homeBottom_1, dataService_5, compat_6) {
+define("home", ["require", "exports", "react", "react-router-dom", "homeBottom", "dataService", "compat", "css!./styles/iconfont.css", "css!./styles/view.css"], function (require, exports, React, RouterDOM, homeBottom_1, dataService_6, compat_7) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Home extends React.Component {
@@ -4197,8 +4965,8 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
                 history: this.props.history,
                 children: this.props.children
             };
-            this.globalAction = new compat_6.default();
-            this.dataService = new dataService_5.default();
+            this.globalAction = new compat_7.default();
+            this.dataService = new dataService_6.default();
             this.setToken = this.setToken.bind(this);
         }
         componentDidMount() {
@@ -4248,7 +5016,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
                     { name: "交通" },
                 ]
             };
-            this.globalAction = new compat_6.default();
+            this.globalAction = new compat_7.default();
         }
         moreIcon(a) {
             console.log('toggleIconbox', a);
@@ -4510,31 +5278,39 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
                 React.createElement("div", { className: "foleBtn", onClick: this.toggleFold.bind(this) },
                     React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "4.5rem", "color": "#C0C0C0" } }, "\uE849")),
                 React.createElement("div", { className: "foleIconbox" },
+                    React.createElement(RouterDOM.Link, { to: "/parkInfo" },
+                        React.createElement("div", { className: this.state.foleIcon },
+                            React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#1C90E2", "height": "6rem" } }, "\uE80E"),
+                            React.createElement("p", null, "\u56ED\u533A\u4ECB\u7ECD"))),
+                    React.createElement(RouterDOM.Link, { to: "/findLease" },
+                        React.createElement("div", { className: this.state.foleIcon },
+                            React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#866FF1", "height": "6rem" } }, "\uE824"),
+                            React.createElement("p", null, "\u529E\u516C\u51FA\u79DF"))),
+                    React.createElement(RouterDOM.Link, { to: "/findSell" },
+                        React.createElement("div", { className: this.state.foleIcon },
+                            React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#F0594C", "height": "6rem" } }, "\uE854"),
+                            React.createElement("p", null, "\u529E\u516C\u51FA\u552E"))),
                     React.createElement(RouterDOM.Link, { to: "/parkCompany" },
                         React.createElement("div", { className: this.state.foleIcon },
                             React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#1C90E2", "height": "6rem" } }, "\uE81E"),
                             React.createElement("p", null, "\u56ED\u533A\u4F01\u4E1A"))),
-                    React.createElement(RouterDOM.Link, { to: "/findLease" },
-                        React.createElement("div", { className: this.state.foleIcon },
-                            React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#866FF1", "height": "6rem" } }, "\uE824"),
-                            React.createElement("p", null, "\u62DB\u79DF\u67E5\u8BE2"))),
                     React.createElement(RouterDOM.Link, { to: "/applyPut" },
                         React.createElement("div", { className: this.state.foleIcon },
                             React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#208FE6", "height": "6rem" } }, "\uE81F"),
                             React.createElement("p", null, "\u6446\u70B9\u7533\u8BF7"))),
                     React.createElement(RouterDOM.Link, { to: "/bookSite" },
                         React.createElement("div", { className: this.state.foleIcon },
-                            React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#208FE6", "height": "6rem" } }, "\uE820"),
+                            React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#26AC8F", "height": "6rem" } }, "\uE820"),
                             React.createElement("p", null, "\u573A\u5730\u9884\u5B9A"))),
                     React.createElement(RouterDOM.Link, { to: "/repairsOnline" },
                         React.createElement("div", { className: this.state.foleIcon },
-                            React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#26AC8F", "height": "6rem" } }, "\uE822"),
+                            React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#208FE6", "height": "6rem" } }, "\uE822"),
                             React.createElement("p", null, "\u5728\u7EBF\u62A5\u4FEE"))))));
         }
     }
     exports.default = Home;
 });
-define("identityAuthentication", ["require", "exports", "react", "dataService", "antd-mobile"], function (require, exports, React, dataService_6, antd_mobile_6) {
+define("identityAuthentication", ["require", "exports", "react", "dataService", "antd-mobile"], function (require, exports, React, dataService_7, antd_mobile_7) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class IdentityAuthentication extends React.Component {
@@ -4570,7 +5346,7 @@ define("identityAuthentication", ["require", "exports", "react", "dataService", 
                 pic: "",
                 name: "",
             };
-            this.dataService = new dataService_6.default();
+            this.dataService = new dataService_7.default();
             this.onChangeImg = (files, type, index) => {
                 console.log(files, type, index);
                 this.setState({
@@ -4753,26 +5529,26 @@ define("identityAuthentication", ["require", "exports", "react", "dataService", 
                 ]
             };
             if (this.state.applicant == "") {
-                antd_mobile_6.Toast.info('请填写姓名', 2);
+                antd_mobile_7.Toast.info('请填写姓名', 2);
             }
             else if (this.state.phone == "") {
-                antd_mobile_6.Toast.info('请填写联系电话', 2);
+                antd_mobile_7.Toast.info('请填写联系电话', 2);
             }
             else if (this.state.company == "") {
-                antd_mobile_6.Toast.info('请填写企业名称', 2);
+                antd_mobile_7.Toast.info('请填写企业名称', 2);
             }
             else if (this.state.role_id == "") {
-                antd_mobile_6.Toast.info('请选择角色类型', 2);
+                antd_mobile_7.Toast.info('请选择角色类型', 2);
             }
             else if (this.state.pic == "") {
-                antd_mobile_6.Toast.info('请上传认证材料照片', 2);
+                antd_mobile_7.Toast.info('请上传认证材料照片', 2);
             }
             else {
                 this.dataService.userAuthentication(this.sumbitSucceed, obj);
             }
         }
         sumbitSucceed(data) {
-            antd_mobile_6.Toast.info('data', 2);
+            antd_mobile_7.Toast.info('data', 2);
             window.history.back();
         }
         render() {
@@ -4806,8 +5582,8 @@ define("identityAuthentication", ["require", "exports", "react", "dataService", 
                         React.createElement("p", { style: { "color": "#333" } }, "\u8BA4\u8BC1\u6750\u6599"),
                         React.createElement("div", { className: "identityBottonBox" },
                             React.createElement("div", { className: "", style: { position: "relative", left: "13rem", width: "106rem" } },
-                                React.createElement(antd_mobile_6.WingBlank, null,
-                                    React.createElement(antd_mobile_6.ImagePicker, { files: this.state.files, onChange: this.onChangeImg, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple }))),
+                                React.createElement(antd_mobile_7.WingBlank, null,
+                                    React.createElement(antd_mobile_7.ImagePicker, { files: this.state.files, onChange: this.onChangeImg, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple }))),
                             React.createElement("p", null, "\u8BA4\u8BC1\u4F01\u4E1A\u7BA1\u7406\u5458\u8BF7\u4E0A\u4F20\u79DF\u623F\u5408\u540C\u6216\u8425\u4E1A\u6267\u7167"),
                             React.createElement("p", null, "\u8BA4\u8BC1\u56ED\u533A\u7BA1\u7406\u5458\u8BF7\u4E0A\u4F20\u5DE5\u724C")),
                         React.createElement("p", null,
@@ -4831,13 +5607,13 @@ define("identityAuthentication", ["require", "exports", "react", "dataService", 
     }
     exports.default = IdentityAuthentication;
 });
-define("parkCompany", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_7, dataService_7, antd_mobile_7) {
+define("parkCompany", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_8, dataService_8, antd_mobile_8) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ParkCompany extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_7.default();
+            this.globalAction = new compat_8.default();
             this.state = {
                 parkCompanycss: "parkCompany",
                 showList: true,
@@ -4891,8 +5667,8 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
     class CompanyList extends React.Component {
         constructor(props) {
             super(props);
-            this.dataService = new dataService_7.default();
-            this.globalAction = new compat_7.default();
+            this.dataService = new dataService_8.default();
+            this.globalAction = new compat_8.default();
             this.state = {
                 companyNull: "hide",
                 park_id: 1001,
@@ -5002,19 +5778,16 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                 });
             }
         }
-        companyActive(data, id) {
+        companyActive(data, id, title, building, floor, room) {
             console.log("active", data);
             this.setState({
                 indexOf: data,
             });
-            this.dataService.getCompanyInfo(this.switchRoom.bind(this), id);
-        }
-        switchRoom(data) {
             let roomData = {
-                m_pTile: data.response.project_title,
-                m_pBuilding: data.response.building_code,
-                m_pLayer: data.response.floor_code,
-                m_pRoom: data.response.room_code,
+                m_pTile: title,
+                m_pBuilding: building,
+                m_pLayer: floor,
+                m_pRoom: room,
             };
             this.globalAction.web_call_webgl_switchRoom(roomData);
         }
@@ -5074,7 +5847,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
                 React.createElement("ul", { className: this.state.companyul },
                     React.createElement("p", { className: this.state.companyNull, style: { "text-align": "center" } }, "\u6CA1\u6709\u7B26\u5408\u641C\u7D22\u6761\u4EF6\u7684\u7ED3\u679C\u00B7\u00B7\u00B7"),
                     this.state.companyData.map((i, index) => {
-                        return (React.createElement("li", { onClick: this.companyActive.bind(this, index, i.id), className: this.state.indexOf == index ? "companyli-active" : "companyli" },
+                        return (React.createElement("li", { onClick: this.companyActive.bind(this, index, i.id, i.project_title, i.building_code, i.floor_code, i.room_code), className: this.state.indexOf == index ? "companyli-active" : "companyli" },
                             React.createElement("div", { className: this.state.indexOf == index ? "companyImgback-active" : "companyImgback" },
                                 React.createElement("img", { src: i.headimageurl == null ? this.state.imgurlNull : i.headimageurl, onError: this.onErrorHeadimageurl.bind(this, index) })),
                             React.createElement("div", { className: "companyul-middle" },
@@ -5109,7 +5882,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
     class CompanyInfo extends React.Component {
         constructor(props) {
             super(props);
-            this.dataService = new dataService_7.default();
+            this.dataService = new dataService_8.default();
             this.state = {
                 companyInfocss: "companyInfo",
                 companyName: "浙江永拓信息科技有限公司",
@@ -5315,8 +6088,8 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
             return (React.createElement("div", { className: "mien" },
                 React.createElement("p", { className: this.state.urlNull, style: { "color": "#333333", "text-align": "center", "font-size": "2.5rem" } }, "\u6682\u65E0\u56FE\u7247\u00B7\u00B7\u00B7"),
                 React.createElement("div", { className: this.state.urlShow },
-                    React.createElement(antd_mobile_7.WingBlank, null,
-                        React.createElement(antd_mobile_7.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
+                    React.createElement(antd_mobile_8.WingBlank, null,
+                        React.createElement(antd_mobile_8.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
                                 window.dispatchEvent(new Event('resize'));
                                 this.setState({ imgHeight: 'auto' });
                             } }))))))));
@@ -5413,8 +6186,8 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
             return (React.createElement("div", { className: "product" },
                 React.createElement("p", { className: this.state.urlNull, style: { "color": "#333333", "text-align": "center", "font-size": "2.5rem" } }, "\u6682\u65E0\u56FE\u7247\u00B7\u00B7\u00B7"),
                 React.createElement("div", { className: this.state.urlShow },
-                    React.createElement(antd_mobile_7.WingBlank, null,
-                        React.createElement(antd_mobile_7.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
+                    React.createElement(antd_mobile_8.WingBlank, null,
+                        React.createElement(antd_mobile_8.Carousel, { className: "space-carousel", frameOverflow: "visible", cellSpacing: 10, slideWidth: 0.8, autoplay: true, infinite: true, afterChange: index => this.setState({ slideIndex: index }) }, this.state.data.map((val, index) => (React.createElement("img", { src: val, alt: "", style: { width: '100%', verticalAlign: 'top' }, onLoad: () => {
                                 window.dispatchEvent(new Event('resize'));
                                 this.setState({ imgHeight: 'auto' });
                             } }))))))));
@@ -5422,7 +6195,7 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
     }
     exports.default = ParkCompany;
 });
-define("photograph", ["require", "exports", "react", "react-router-dom", "dataService", "antd-mobile", "antd-mobile", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, dataService_8, antd_mobile_8, antd_mobile_9) {
+define("photograph", ["require", "exports", "react", "react-router-dom", "dataService", "antd-mobile", "antd-mobile", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, dataService_9, antd_mobile_9, antd_mobile_10) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Photograph extends React.Component {
@@ -5490,7 +6263,7 @@ define("photograph", ["require", "exports", "react", "react-router-dom", "dataSe
     class IllegalList extends React.Component {
         constructor(props) {
             super(props);
-            this.dataService = new dataService_8.default();
+            this.dataService = new dataService_9.default();
             this.state = {
                 park_id: "1009",
                 iconfont: "iconfont iconfont-unturn",
@@ -5596,7 +6369,7 @@ define("photograph", ["require", "exports", "react", "react-router-dom", "dataSe
     class IllegalUpload extends React.Component {
         constructor(props) {
             super(props);
-            this.dataService = new dataService_8.default();
+            this.dataService = new dataService_9.default();
             this.onChange = (files, type, index) => {
                 console.log(files, type, index);
                 this.setState({
@@ -5751,29 +6524,29 @@ define("photograph", ["require", "exports", "react", "react-router-dom", "dataSe
         sumbitIllfrom() {
             console.log("sumbit", this.state);
             if (this.state.files.length == 0) {
-                antd_mobile_9.Toast.info('请提交违规照片', 2);
+                antd_mobile_10.Toast.info('请提交违规照片', 2);
             }
             else if (this.state.type_id == "") {
-                antd_mobile_9.Toast.info('请选择曝光类型', 2);
+                antd_mobile_10.Toast.info('请选择曝光类型', 2);
             }
             else if (this.state.position == "") {
-                antd_mobile_9.Toast.info('请输入曝光位置', 2);
+                antd_mobile_10.Toast.info('请输入曝光位置', 2);
             }
             else if (this.state.car_license == "") {
-                antd_mobile_9.Toast.info('请输入违规车牌号', 2);
+                antd_mobile_10.Toast.info('请输入违规车牌号', 2);
             }
             else if (this.state.time == "") {
-                antd_mobile_9.Toast.info('请填写曝光时间', 2);
+                antd_mobile_10.Toast.info('请填写曝光时间', 2);
             }
             else if (this.state.descript == "") {
-                antd_mobile_9.Toast.info('请描述违规问题', 2);
+                antd_mobile_10.Toast.info('请描述违规问题', 2);
             }
             else {
                 this.dataService.postTakingPhotoInfo(this.sumbitIllsuccess, this.state);
             }
         }
         sumbitIllsuccess(data) {
-            antd_mobile_9.Toast.info(data, 2);
+            antd_mobile_10.Toast.info(data, 2);
             this.setState({
                 car_license: "",
                 time: "",
@@ -5805,8 +6578,8 @@ define("photograph", ["require", "exports", "react", "react-router-dom", "dataSe
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 " \u8FDD\u89C4\u7167\u7247",
                                 React.createElement("div", { className: "imgCom" },
-                                    React.createElement(antd_mobile_8.WingBlank, null,
-                                        React.createElement(antd_mobile_8.ImagePicker, { files: this.state.files, onChange: this.onChange, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple })))),
+                                    React.createElement(antd_mobile_9.WingBlank, null,
+                                        React.createElement(antd_mobile_9.ImagePicker, { files: this.state.files, onChange: this.onChange, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple })))),
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 " \u66DD\u5149\u7C7B\u578B",
@@ -5825,8 +6598,8 @@ define("photograph", ["require", "exports", "react", "react-router-dom", "dataSe
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 React.createElement("div", { style: { "fonSize": "2.5rem", "float": "right", "position": "relative", "top": "-0.5rem", "left": "-0.5rem" }, className: "mDate" },
-                                    React.createElement(antd_mobile_9.DatePicker, { value: this.state.timeShow, onChange: this.getTime.bind(this) },
-                                        React.createElement(antd_mobile_9.List.Item, { arrow: "horizontal" }, "\u66DD\u5149\u65F6\u95F4")))),
+                                    React.createElement(antd_mobile_10.DatePicker, { value: this.state.timeShow, onChange: this.getTime.bind(this) },
+                                        React.createElement(antd_mobile_10.List.Item, { arrow: "horizontal" }, "\u66DD\u5149\u65F6\u95F4")))),
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 " \u8FDD\u89C4\u63CF\u8FF0"),
@@ -5845,7 +6618,7 @@ define("photograph", ["require", "exports", "react", "react-router-dom", "dataSe
     class IllegalInfo extends React.Component {
         constructor(props) {
             super(props);
-            this.dataService = new dataService_8.default();
+            this.dataService = new dataService_9.default();
             this.state = {
                 iconfont: "iconfont iconfont-turn",
                 illegalInfocss: "illegalInfo-part",
@@ -6017,7 +6790,7 @@ define("photograph", ["require", "exports", "react", "react-router-dom", "dataSe
         }
     }
 });
-define("infoArea", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/infoArea.css"], function (require, exports, React, react_router_dom_3, dataService_9) {
+define("infoArea", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/infoArea.css"], function (require, exports, React, react_router_dom_3, dataService_10) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class InfoArea extends React.Component {
@@ -6030,7 +6803,7 @@ define("infoArea", ["require", "exports", "react", "react-router-dom", "dataServ
                 tagIndex: 0,
                 content: { content: "", replylist: [{ username: "", time: "", content: "" }] }
             };
-            this.dataService = new dataService_9.default();
+            this.dataService = new dataService_10.default();
         }
         componentDidMount() {
             this.getMicroCircleList();
@@ -6134,7 +6907,7 @@ define("infoArea", ["require", "exports", "react", "react-router-dom", "dataServ
     }
     exports.default = InfoArea;
 });
-define("information", ["require", "exports", "react", "dataService", "css!./styles/information.css"], function (require, exports, React, dataService_10) {
+define("information", ["require", "exports", "react", "dataService", "css!./styles/information.css"], function (require, exports, React, dataService_11) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Information extends React.Component {
@@ -6150,7 +6923,7 @@ define("information", ["require", "exports", "react", "dataService", "css!./styl
             this.props = {
                 history: this.props.history
             };
-            this.dataService = new dataService_10.default();
+            this.dataService = new dataService_11.default();
         }
         componentDidMount() {
             this.dataService.getHeadlines(this.callBackGetHeadlines.bind(this), 1);
@@ -6176,7 +6949,7 @@ define("information", ["require", "exports", "react", "dataService", "css!./styl
     }
     exports.default = Information;
 });
-define("personalCenter", ["require", "exports", "react", "react-router-dom", "antd-mobile", "dataService", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_4, antd_mobile_10, dataService_11) {
+define("personalCenter", ["require", "exports", "react", "react-router-dom", "antd-mobile", "dataService", "css!./styles/personalCenter.css"], function (require, exports, React, react_router_dom_4, antd_mobile_11, dataService_12) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class PersonalCenter extends React.Component {
@@ -6207,7 +6980,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "an
                 inputValueRelate: "",
                 companyNull: "hide",
             };
-            this.dataService = new dataService_11.default();
+            this.dataService = new dataService_12.default();
         }
         componentDidMount() {
             console.log("enterprise", sessionStorage.getItem("enterprise"));
@@ -6248,7 +7021,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "an
                     this.dataService.modifyUserInfo(this.callBackPhoneNew.bind(this), this.state.userInfo.name, phoneNew, this.state.enterpriseId);
                 }
                 else {
-                    antd_mobile_10.Toast.info('手机号码不正确', 2);
+                    antd_mobile_11.Toast.info('手机号码不正确', 2);
                 }
             }
         }
@@ -6299,7 +7072,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "an
             });
         }
         callBackModifyCompanyName(data) {
-            antd_mobile_10.Toast.info(data.err_msg, 2);
+            antd_mobile_11.Toast.info(data.err_msg, 2);
             this.setState({
                 enterprise: data.response.name,
                 company_id: data.response.company_id
@@ -6462,14 +7235,14 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "an
     }
     exports.default = PersonalCenter;
 });
-define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dataService", "compat", "antd-mobile", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, dataService_12, compat_8, antd_mobile_11) {
+define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dataService", "compat", "antd-mobile", "css!./styles/resetAntdMobile.css"], function (require, exports, React, RouterDOM, dataService_13, compat_9, antd_mobile_12) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RepairsOnline extends React.Component {
         constructor(props) {
             super(props);
-            this.dataService = new dataService_12.default();
-            this.globalAction = new compat_8.default();
+            this.dataService = new dataService_13.default();
+            this.globalAction = new compat_9.default();
             this.onChangeImg = (files, type, index) => {
                 console.log(files, type, index);
                 this.setState({
@@ -6696,29 +7469,29 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
         sumbitReqairs() {
             console.log("提交报修", this.state);
             if (this.state.files.length == 0) {
-                antd_mobile_11.Toast.info('请提交报修照片', 2);
+                antd_mobile_12.Toast.info('请提交报修照片', 2);
             }
             else if (this.state.type_id == "") {
-                antd_mobile_11.Toast.info('请选择报修类型', 2);
+                antd_mobile_12.Toast.info('请选择报修类型', 2);
             }
             else if (this.state.position == "") {
-                antd_mobile_11.Toast.info('请填写报修位置', 2);
+                antd_mobile_12.Toast.info('请填写报修位置', 2);
             }
             else if (this.state.descript == "") {
-                antd_mobile_11.Toast.info('请描述报修问题', 2);
+                antd_mobile_12.Toast.info('请描述报修问题', 2);
             }
             else if (this.state.company == "请先关联企业" || this.state.company_id == "请先关联企业") {
-                antd_mobile_11.Toast.info('请先前往关联企业', 2);
+                antd_mobile_12.Toast.info('请先前往关联企业', 2);
             }
             else if (this.state.phone == "") {
-                antd_mobile_11.Toast.info('请先前往填写联系电话', 2);
+                antd_mobile_12.Toast.info('请先前往填写联系电话', 2);
             }
             else {
                 this.dataService.saveRepairInfo(this.sumbitReqairssucceed, this.state);
             }
         }
         sumbitReqairssucceed(data) {
-            antd_mobile_11.Toast.info(data, 2);
+            antd_mobile_12.Toast.info(data, 2);
             window.history.back();
         }
         render() {
@@ -6739,8 +7512,8 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 React.createElement("span", { style: { "color": "#949494" } }, "\u62A5\u4FEE\u7167\u7247"),
                                 React.createElement("div", { className: "imgCom" },
-                                    React.createElement(antd_mobile_11.WingBlank, null,
-                                        React.createElement(antd_mobile_11.ImagePicker, { files: this.state.files, onChange: this.onChangeImg, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple })))),
+                                    React.createElement(antd_mobile_12.WingBlank, null,
+                                        React.createElement(antd_mobile_12.ImagePicker, { files: this.state.files, onChange: this.onChangeImg, onImageClick: (index, fs) => console.log(index, fs), selectable: this.state.files.length < 1, multiple: this.state.multiple })))),
                             React.createElement("li", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 React.createElement("span", { style: { "color": "#949494" } }, "\u62A5\u4FEE\u7C7B\u578B"),
@@ -6787,13 +7560,13 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
     }
     exports.default = RepairsOnline;
 });
-define("parking", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_9, dataService_13, antd_mobile_12) {
+define("parking", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "antd-mobile"], function (require, exports, React, RouterDOM, compat_10, dataService_14, antd_mobile_13) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Parking extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_9.default();
+            this.globalAction = new compat_10.default();
             this.state = {
                 parkingcss: "parking",
                 iconfont: "iconfont iconfont-unturn",
@@ -6896,8 +7669,8 @@ define("parking", ["require", "exports", "react", "react-router-dom", "compat", 
     class Apply extends React.Component {
         constructor(props) {
             super(props);
-            this.dataService = new dataService_13.default();
-            this.globalAction = new compat_9.default();
+            this.dataService = new dataService_14.default();
+            this.globalAction = new compat_10.default();
             this.state = {
                 contentULcss: "contentUL-part contentUL",
                 carTypeBox: "hide",
@@ -7326,8 +8099,8 @@ define("parking", ["require", "exports", "react", "react-router-dom", "compat", 
     class Alteration extends React.Component {
         constructor(props) {
             super(props);
-            this.globalAction = new compat_9.default();
-            this.dataService = new dataService_13.default();
+            this.globalAction = new compat_10.default();
+            this.dataService = new dataService_14.default();
             this.state = {
                 componentBox: "componentBox-part",
                 contentBox: "contentBox-part",
@@ -7614,8 +8387,8 @@ define("parking", ["require", "exports", "react", "react-router-dom", "compat", 
     class Visitor extends React.Component {
         constructor(props) {
             super(props);
-            this.dataService = new dataService_13.default();
-            this.globalAction = new compat_9.default();
+            this.dataService = new dataService_14.default();
+            this.globalAction = new compat_10.default();
             this.state = {
                 componentBox: "componentBox-part",
                 contentBox: "contentBox-part",
@@ -7863,14 +8636,14 @@ define("parking", ["require", "exports", "react", "react-router-dom", "compat", 
                                 React.createElement("p", null,
                                     React.createElement("span", { className: "redStar", style: { "float": "left", "margin-top": "-1.2rem" } }, "*"),
                                     React.createElement("div", { style: { "fonSize": "2.5rem" }, className: "mDate" },
-                                        React.createElement(antd_mobile_12.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.startTime, onChange: this.setStartTime.bind(this) },
-                                            React.createElement(antd_mobile_12.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65F6\u95F4"))))),
+                                        React.createElement(antd_mobile_13.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.startTime, onChange: this.setStartTime.bind(this) },
+                                            React.createElement(antd_mobile_13.List.Item, { arrow: "horizontal" }, "\u5F00\u59CB\u65F6\u95F4"))))),
                             React.createElement("li", { style: { "padding": "1.5rem 0rem" } },
                                 React.createElement("p", null,
                                     React.createElement("span", { className: "redStar", style: { "float": "left", "margin-top": "-1.2rem" } }, "*"),
                                     React.createElement("div", { style: { "fonSize": "2.5rem" }, className: "mDate" },
-                                        React.createElement(antd_mobile_12.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.endTime, onChange: this.setEndTime.bind(this) },
-                                            React.createElement(antd_mobile_12.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65F6\u95F4"))))),
+                                        React.createElement(antd_mobile_13.DatePicker, { style: { "fonSize": "2.5rem" }, value: this.state.endTime, onChange: this.setEndTime.bind(this) },
+                                            React.createElement(antd_mobile_13.List.Item, { arrow: "horizontal" }, "\u7ED3\u675F\u65F6\u95F4"))))),
                             React.createElement("div", { className: "bookSumbit", onClick: this.visitorSumbit.bind(this) }, "\u63D0\u4EA4"))),
                     React.createElement("div", { className: this.state.parkingListBox },
                         React.createElement("ul", { className: "rollSelectCauseULcss" }, this.state.parkingListUL.map((i, index) => {
@@ -7882,14 +8655,14 @@ define("parking", ["require", "exports", "react", "react-router-dom", "compat", 
         }
     }
 });
-define("narrate", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_10, dataService_14) {
+define("narrate", ["require", "exports", "react", "react-router-dom", "compat", "dataService", "css!./styles/view.css"], function (require, exports, React, RouterDOM, compat_11, dataService_15) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Narrate extends React.Component {
         constructor(props) {
             super(props);
-            this.dataService = new dataService_14.default();
-            this.globalAction = new compat_10.default();
+            this.dataService = new dataService_15.default();
+            this.globalAction = new compat_11.default();
             this.state = {
                 paused: true,
                 activeType: 0,
@@ -7996,7 +8769,7 @@ define("narrate", ["require", "exports", "react", "react-router-dom", "compat", 
     }
     exports.default = Narrate;
 });
-define("isay", ["require", "exports", "react", "dataService", "css!./styles/isay.css"], function (require, exports, React, dataService_15) {
+define("isay", ["require", "exports", "react", "dataService", "css!./styles/isay.css"], function (require, exports, React, dataService_16) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Isay extends React.Component {
@@ -8008,7 +8781,7 @@ define("isay", ["require", "exports", "react", "dataService", "css!./styles/isay
                 inputValue: "不能少于3个字且不能大于33个字",
                 textareaValue: "请将留言内容描述出来（200字内）"
             };
-            this.dataService = new dataService_15.default();
+            this.dataService = new dataService_16.default();
         }
         callBackSaveMyMicroCircle(data) {
             console.log(data);
@@ -8084,7 +8857,7 @@ define("isay", ["require", "exports", "react", "dataService", "css!./styles/isay
     }
     exports.default = Isay;
 });
-define("workOrder", ["require", "exports", "react", "dataService", "css!./styles/workOrder.css"], function (require, exports, React, dataService_16) {
+define("workOrder", ["require", "exports", "react", "dataService", "css!./styles/workOrder.css"], function (require, exports, React, dataService_17) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class WorkOrder extends React.Component {
@@ -8099,7 +8872,7 @@ define("workOrder", ["require", "exports", "react", "dataService", "css!./styles
                     { id: "", applicant: "", state_name: "", time: "" }
                 ]
             };
-            this.dataService = new dataService_16.default();
+            this.dataService = new dataService_17.default();
         }
         componentDidMount() {
             this.dataService.getWorkType(this.callBackGetMyAuthorityWorkType.bind(this));
@@ -8178,7 +8951,7 @@ define("workOrder", ["require", "exports", "react", "dataService", "css!./styles
     }
     exports.default = WorkOrder;
 });
-define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./styles/workOrderDetail.css"], function (require, exports, React, dataService_17) {
+define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./styles/workOrderDetail.css"], function (require, exports, React, dataService_18) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class workOrderDetail extends React.Component {
@@ -8213,7 +8986,7 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
                 ],
                 reply: "200字内"
             };
-            this.dataService = new dataService_17.default();
+            this.dataService = new dataService_18.default();
         }
         componentDidMount() {
             if (JSON.parse(sessionStorage.getItem("workOrder")).workType == 1) {
@@ -8390,7 +9163,7 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
     }
     exports.default = workOrderDetail;
 });
-define("modificationAuthentication", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/modificationAuthentication.css"], function (require, exports, React, react_router_dom_5, dataService_18) {
+define("modificationAuthentication", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/modificationAuthentication.css"], function (require, exports, React, react_router_dom_5, dataService_19) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ModificationAuthentication extends React.Component {
@@ -8406,7 +9179,7 @@ define("modificationAuthentication", ["require", "exports", "react", "react-rout
                 location: this.props.location,
                 history: this.props.history
             };
-            this.dataService = new dataService_18.default();
+            this.dataService = new dataService_19.default();
         }
         componentDidMount() {
             let userName = JSON.parse(sessionStorage.getItem("userInfos")).name;
@@ -8475,7 +9248,7 @@ define("modificationAuthentication", ["require", "exports", "react", "react-rout
     }
     exports.default = ModificationAuthentication;
 });
-define("message", ["require", "exports", "react", "dataService", "css!./styles/message.css"], function (require, exports, React, dataService_19) {
+define("message", ["require", "exports", "react", "dataService", "css!./styles/message.css"], function (require, exports, React, dataService_20) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Message extends React.Component {
@@ -8486,7 +9259,7 @@ define("message", ["require", "exports", "react", "dataService", "css!./styles/m
                 tagIndex: 0,
                 workOrderArray: []
             };
-            this.dataService = new dataService_19.default();
+            this.dataService = new dataService_20.default();
         }
         componentDidMount() {
             this.dataService.getMyMsgType(this.callBackGetMyMsgType.bind(this));
@@ -8629,7 +9402,7 @@ define("rentRoomDetail", ["require", "exports", "react", "css!./styles/rentRoomD
     }
     exports.default = RentRoomDetail;
 });
-define("parkWorkOrder", ["require", "exports", "react", "dataService", "css!./styles/workOrder.css"], function (require, exports, React, dataService_20) {
+define("parkWorkOrder", ["require", "exports", "react", "dataService", "css!./styles/workOrder.css"], function (require, exports, React, dataService_21) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class parkWorkOrder extends React.Component {
@@ -8642,7 +9415,7 @@ define("parkWorkOrder", ["require", "exports", "react", "dataService", "css!./st
                     { id: "", applicant: "", state_name: "", time: "" }
                 ]
             };
-            this.dataService = new dataService_20.default();
+            this.dataService = new dataService_21.default();
         }
         componentDidMount() {
             this.getMyWork();
@@ -8713,7 +9486,7 @@ define("parkWorkOrder", ["require", "exports", "react", "dataService", "css!./st
     }
     exports.default = parkWorkOrder;
 });
-define("serviceTel", ["require", "exports", "react", "dataService", "css!./styles/serviceTel.css"], function (require, exports, React, dataService_21) {
+define("serviceTel", ["require", "exports", "react", "dataService", "css!./styles/serviceTel.css"], function (require, exports, React, dataService_22) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ServiceTel extends React.Component {
@@ -8722,7 +9495,7 @@ define("serviceTel", ["require", "exports", "react", "dataService", "css!./style
             this.state = {
                 inputValue: "0773-123456"
             };
-            this.dataService = new dataService_21.default();
+            this.dataService = new dataService_22.default();
         }
         componentDidMount() {
         }
@@ -8767,7 +9540,7 @@ define("serviceTel", ["require", "exports", "react", "dataService", "css!./style
     }
     exports.default = ServiceTel;
 });
-define("searchUser", ["require", "exports", "react", "dataService", "css!./styles/searchUser.css"], function (require, exports, React, dataService_22) {
+define("searchUser", ["require", "exports", "react", "dataService", "css!./styles/searchUser.css"], function (require, exports, React, dataService_23) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class SearchUser extends React.Component {
@@ -8778,7 +9551,7 @@ define("searchUser", ["require", "exports", "react", "dataService", "css!./style
                 listArr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
                 tagIndex: 0,
             };
-            this.dataService = new dataService_22.default();
+            this.dataService = new dataService_23.default();
         }
         componentDidMount() {
             if (JSON.parse(sessionStorage.getItem("workOrder")).workType == 1) {
@@ -8955,7 +9728,7 @@ define("ring", ["require", "exports", "react", "css!./styles/ring.css"], functio
     }
     exports.default = Ring;
 });
-define("statisticalStatement", ["require", "exports", "react", "ring", "dataService", "css!./styles/statisticalStatement.css"], function (require, exports, React, ring_1, dataService_23) {
+define("statisticalStatement", ["require", "exports", "react", "ring", "dataService", "css!./styles/statisticalStatement.css"], function (require, exports, React, ring_1, dataService_24) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class StatisticalStatement extends React.Component {
@@ -8979,7 +9752,7 @@ define("statisticalStatement", ["require", "exports", "react", "ring", "dataServ
                     { array: [], name: "入驻分类统计", sum: 0 }
                 ]
             };
-            this.dataService = new dataService_23.default();
+            this.dataService = new dataService_24.default();
         }
         componentDidMount() {
             this.dataService.getMyStatistic(this.callBackGetMyStatistic.bind(this));
@@ -9036,7 +9809,7 @@ define("statisticalStatement", ["require", "exports", "react", "ring", "dataServ
     }
     exports.default = StatisticalStatement;
 });
-define("informationChild", ["require", "exports", "react", "dataService", "css!./styles/informationChild.css"], function (require, exports, React, dataService_24) {
+define("informationChild", ["require", "exports", "react", "dataService", "css!./styles/informationChild.css"], function (require, exports, React, dataService_25) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class InformationChild extends React.Component {
@@ -9052,7 +9825,7 @@ define("informationChild", ["require", "exports", "react", "dataService", "css!.
                 history: this.props.history,
                 location: this.props.location
             };
-            this.dataService = new dataService_24.default();
+            this.dataService = new dataService_25.default();
         }
         componentWillMount() {
             sessionStorage.setItem("informationId", "0");
@@ -9208,7 +9981,7 @@ define("informationChild", ["require", "exports", "react", "dataService", "css!.
     }
     exports.default = InformationChild;
 });
-define("informationChilds", ["require", "exports", "react", "dataService", "css!./styles/informationChild.css"], function (require, exports, React, dataService_25) {
+define("informationChilds", ["require", "exports", "react", "dataService", "css!./styles/informationChild.css"], function (require, exports, React, dataService_26) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class InformationChilds extends React.Component {
@@ -9224,7 +9997,7 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
                 history: this.props.history,
                 location: this.props.location
             };
-            this.dataService = new dataService_25.default();
+            this.dataService = new dataService_26.default();
         }
         componentWillMount() {
             if (this.props.location.state) {
@@ -9390,7 +10163,7 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
     }
     exports.default = InformationChilds;
 });
-define("informationDetail", ["require", "exports", "react", "dataService", "react-router-dom", "css!./styles/informationDetail.css"], function (require, exports, React, dataService_26, react_router_dom_7) {
+define("informationDetail", ["require", "exports", "react", "dataService", "react-router-dom", "css!./styles/informationDetail.css"], function (require, exports, React, dataService_27, react_router_dom_7) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class informationDetail extends React.Component {
@@ -9421,7 +10194,7 @@ define("informationDetail", ["require", "exports", "react", "dataService", "reac
             this.props = {
                 history: this.props.history
             };
-            this.dataService = new dataService_26.default();
+            this.dataService = new dataService_27.default();
         }
         componentDidMount() {
             if (parseInt(sessionStorage.getItem("informationId")) < 2) {
@@ -9569,7 +10342,7 @@ define("informationDetail", ["require", "exports", "react", "dataService", "reac
     }
     exports.default = informationDetail;
 });
-define("informationDetails", ["require", "exports", "react", "dataService", "react-router-dom", "css!./styles/informationDetail.css"], function (require, exports, React, dataService_27, react_router_dom_8) {
+define("informationDetails", ["require", "exports", "react", "dataService", "react-router-dom", "css!./styles/informationDetail.css"], function (require, exports, React, dataService_28, react_router_dom_8) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class informationDetail extends React.Component {
@@ -9600,7 +10373,7 @@ define("informationDetails", ["require", "exports", "react", "dataService", "rea
             this.props = {
                 history: this.props.history
             };
-            this.dataService = new dataService_27.default();
+            this.dataService = new dataService_28.default();
         }
         componentDidMount() {
             console.log("this.props.history.location", this.props.history.location);
@@ -9745,7 +10518,7 @@ define("informationDetails", ["require", "exports", "react", "dataService", "rea
     }
     exports.default = informationDetail;
 });
-define("room", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/room.css"], function (require, exports, React, react_router_dom_9, dataService_28) {
+define("room", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/room.css"], function (require, exports, React, react_router_dom_9, dataService_29) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Room extends React.Component {
@@ -9757,7 +10530,7 @@ define("room", ["require", "exports", "react", "react-router-dom", "dataService"
                 buildingIndex: "",
                 floorIndex: ""
             };
-            this.dataService = new dataService_28.default();
+            this.dataService = new dataService_29.default();
         }
         componentDidMount() {
             this.dataService.getParkBuildingInfo(this.callBackParkBuildingInfo.bind(this));
@@ -9838,7 +10611,7 @@ define("room", ["require", "exports", "react", "react-router-dom", "dataService"
     }
     exports.default = Room;
 });
-define("roomRent", ["require", "exports", "react", "dataService", "css!./styles/room.css"], function (require, exports, React, dataService_29) {
+define("roomRent", ["require", "exports", "react", "dataService", "css!./styles/room.css"], function (require, exports, React, dataService_30) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RoomRent extends React.Component {
@@ -9862,7 +10635,7 @@ define("roomRent", ["require", "exports", "react", "dataService", "css!./styles/
                 tagList: ["", "", ""],
                 isModal: false
             };
-            this.dataService = new dataService_29.default();
+            this.dataService = new dataService_30.default();
         }
         componentDidMount() {
             this.dataService.getParkBuildingInfo(this.callBackParkBuildingInfo.bind(this));
@@ -9978,7 +10751,7 @@ define("roomRent", ["require", "exports", "react", "dataService", "css!./styles/
     }
     exports.default = RoomRent;
 });
-define("roomDetail", ["require", "exports", "react", "react-router-dom", "dataService"], function (require, exports, React, react_router_dom_10, dataService_30) {
+define("roomDetail", ["require", "exports", "react", "react-router-dom", "dataService"], function (require, exports, React, react_router_dom_10, dataService_31) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RoomDetail extends React.Component {
@@ -9988,7 +10761,7 @@ define("roomDetail", ["require", "exports", "react", "react-router-dom", "dataSe
                 location: this.props.location,
                 history: this.props.history
             };
-            this.dataService = new dataService_30.default();
+            this.dataService = new dataService_31.default();
             this.state = {
                 roomName: "",
                 roomInfo: [{ use_info: { state: 1, company_name: "", user: "", phone: "", rent_date: "" } }]
@@ -10057,7 +10830,7 @@ define("roomDetail", ["require", "exports", "react", "react-router-dom", "dataSe
     }
     exports.default = RoomDetail;
 });
-define("roomUse", ["require", "exports", "react", "dataService", "antd-mobile"], function (require, exports, React, dataService_31, antd_mobile_13) {
+define("roomUse", ["require", "exports", "react", "dataService", "antd-mobile"], function (require, exports, React, dataService_32, antd_mobile_14) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RoomUse extends React.Component {
@@ -10067,7 +10840,7 @@ define("roomUse", ["require", "exports", "react", "dataService", "antd-mobile"],
                 location: this.props.location,
                 history: this.props.history
             };
-            this.dataService = new dataService_31.default();
+            this.dataService = new dataService_32.default();
             this.state = {
                 companyName: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.company_name,
                 user: JSON.parse(sessionStorage.getItem("roomInfo"))[0].use_info.user,
@@ -10197,16 +10970,16 @@ define("roomUse", ["require", "exports", "react", "dataService", "antd-mobile"],
                             React.createElement("div", { style: { color: "#949494", height: "80px", float: "left", width: "20%" } }, "\u5230\u671F\u65E5\u671F"),
                             React.createElement("div", { style: { float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" } }, this.state.rentEndDate),
                             React.createElement("img", { src: "./park_m/image/calendar.png" }))) : null,
-                React.createElement(antd_mobile_13.DatePicker, { mode: "date", extra: " ", onChange: this.setStartDate.bind(this) },
-                    React.createElement(antd_mobile_13.List.Item, { arrow: "horizontal", style: { position: "absolute", top: "-100px" }, id: "startDatePicker" })),
-                React.createElement(antd_mobile_13.DatePicker, { mode: "date", extra: " ", onChange: this.setEndDate.bind(this) },
-                    React.createElement(antd_mobile_13.List.Item, { arrow: "horizontal", style: { position: "absolute", top: "-100px" }, id: "endDatePicker" })),
+                React.createElement(antd_mobile_14.DatePicker, { mode: "date", extra: " ", onChange: this.setStartDate.bind(this) },
+                    React.createElement(antd_mobile_14.List.Item, { arrow: "horizontal", style: { position: "absolute", top: "-100px" }, id: "startDatePicker" })),
+                React.createElement(antd_mobile_14.DatePicker, { mode: "date", extra: " ", onChange: this.setEndDate.bind(this) },
+                    React.createElement(antd_mobile_14.List.Item, { arrow: "horizontal", style: { position: "absolute", top: "-100px" }, id: "endDatePicker" })),
                 React.createElement("div", { onClick: this.submit.bind(this), style: { width: "100%", height: "150px", textAlign: "center", lineHeight: "150px", color: "#ffffff", backgroundColor: "#0B8BF0", position: "fixed", bottom: 0, fontSize: "50px" } }, "\u63D0\u4EA4")));
         }
     }
     exports.default = RoomUse;
 });
-define("roomBase", ["require", "exports", "react", "dataService"], function (require, exports, React, dataService_32) {
+define("roomBase", ["require", "exports", "react", "dataService"], function (require, exports, React, dataService_33) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RoomBase extends React.Component {
@@ -10229,7 +11002,7 @@ define("roomBase", ["require", "exports", "react", "dataService"], function (req
                 headimageurl: JSON.parse(sessionStorage.getItem("roomInfo"))[0].headimageurl,
                 isElevator: false
             };
-            this.dataService = new dataService_32.default();
+            this.dataService = new dataService_33.default();
         }
         componentDidMount() {
             $('#a-img').click(() => {
@@ -10457,7 +11230,7 @@ define("roomBase", ["require", "exports", "react", "dataService"], function (req
     }
     exports.default = RoomBase;
 });
-define("roomPattern", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/roomPattern.css"], function (require, exports, React, react_router_dom_11, dataService_33) {
+define("roomPattern", ["require", "exports", "react", "react-router-dom", "dataService", "css!./styles/roomPattern.css"], function (require, exports, React, react_router_dom_11, dataService_34) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RoomPattern extends React.Component {
@@ -10469,7 +11242,7 @@ define("roomPattern", ["require", "exports", "react", "react-router-dom", "dataS
             this.state = {
                 roomInfo: [{ part: [] }]
             };
-            this.dataService = new dataService_33.default();
+            this.dataService = new dataService_34.default();
         }
         componentDidMount() {
             this.dataService.getRoomInfo(this.callBackGetRoomInfo.bind(this), sessionStorage.getItem("roomId"));
@@ -10523,7 +11296,7 @@ define("roomPattern", ["require", "exports", "react", "react-router-dom", "dataS
     }
     exports.default = RoomPattern;
 });
-define("roomPatternUpdate", ["require", "exports", "react", "dataService", "css!./styles/roomPatternUpdate.css"], function (require, exports, React, dataService_34) {
+define("roomPatternUpdate", ["require", "exports", "react", "dataService", "css!./styles/roomPatternUpdate.css"], function (require, exports, React, dataService_35) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class roomPatternUpdate extends React.Component {
@@ -10538,7 +11311,7 @@ define("roomPatternUpdate", ["require", "exports", "react", "dataService", "css!
                 fileArr: [],
                 name: JSON.parse(sessionStorage.getItem("roomInfo"))[0].part[this.props.location.state.index].name
             };
-            this.dataService = new dataService_34.default();
+            this.dataService = new dataService_35.default();
         }
         componentDidMount() {
             sessionStorage.setItem("part", JSON.stringify(JSON.parse(sessionStorage.getItem("roomInfo"))[0].part[this.props.location.state.index]));
@@ -10645,7 +11418,7 @@ define("roomPatternUpdate", ["require", "exports", "react", "dataService", "css!
     }
     exports.default = roomPatternUpdate;
 });
-define("modificationAuthenticationDetail", ["require", "exports", "react", "dataService", "css!./styles/roomPattern.css"], function (require, exports, React, dataService_35) {
+define("modificationAuthenticationDetail", ["require", "exports", "react", "dataService", "css!./styles/roomPattern.css"], function (require, exports, React, dataService_36) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class modificationAuthenticationDetail extends React.Component {
@@ -10659,7 +11432,7 @@ define("modificationAuthenticationDetail", ["require", "exports", "react", "data
                 file: "",
                 name: JSON.parse(sessionStorage.getItem("roomInfo"))[0].part[0].name
             };
-            this.dataService = new dataService_35.default();
+            this.dataService = new dataService_36.default();
         }
         componentDidMount() {
         }
@@ -10712,7 +11485,278 @@ define("modificationAuthenticationDetail", ["require", "exports", "react", "data
     }
     exports.default = modificationAuthenticationDetail;
 });
-define("router", ["require", "exports", "react-router-dom", "react", "index", "home", "parkCompany", "photograph", "infoArea", "information", "personalCenter", "findLease", "applyPut", "bookSite", "repairsOnline", "parking", "narrate", "isay", "workOrder", "workOrderDetail", "modificationAuthentication", "message", "enterpriseInformation", "rentRoom", "rentRoomDetail", "defaultRentRoom", "parkWorkOrder", "serviceTel", "distribute", "searchUser", "statisticalStatement", "informationChild", "informationChilds", "informationDetail", "informationDetails", "attractInvestment", "attractInvestmentList", "room", "roomRent", "roomDetail", "roomUse", "roomBase", "roomPattern", "roomPatternUpdate", "modificationAuthenticationDetail", "identityAuthentication"], function (require, exports, react_router_dom_12, React, index_1, home_1, parkCompany_1, photograph_1, infoArea_1, information_1, personalCenter_1, findLease_1, applyPut_1, bookSite_1, repairsOnline_1, parking_1, narrate_1, isay_1, workOrder_1, workOrderDetail_1, modificationAuthentication_1, message_1, enterpriseInformation_1, rentRoom_1, rentRoomDetail_1, defaultRentRoom_1, parkWorkOrder_1, serviceTel_1, distribute_1, searchUser_1, statisticalStatement_1, informationChild_1, informationChilds_1, informationDetail_1, informationDetails_1, attractInvestment_1, attractInvestmentList_1, room_1, roomRent_1, roomDetail_1, roomUse_1, roomBase_1, roomPattern_1, roomPatternUpdate_1, modificationAuthenticationDetail_1, identityAuthentication_1) {
+define("parkInfo", ["require", "exports", "react", "react-router-dom", "dataService", "compat"], function (require, exports, React, RouterDOM, dataService_37, compat_12) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class ParkInfo extends React.Component {
+        constructor(props) {
+            super(props);
+            this.dataService = new dataService_37.default();
+            this.globalAction = new compat_12.default();
+            this.state = {
+                applyPutcss: "applyPut-part ",
+                iconfont: "iconfont iconfont-unturn",
+                companyInfoul: "companyInfoul",
+                infoli: 0,
+            };
+        }
+        componentDidMount() {
+            let park_id = sessionStorage.getItem("park_id");
+            this.dataService.getParkShowInfo(this.setParkInfo, park_id);
+        }
+        static setParkInfo(data) { }
+        setParkInfo(data) {
+            if (data) {
+                Intro.getNotes(data);
+                Advantage.getNotes(data);
+                Sale.getNotes(data);
+                Elegant.getNotes(data);
+            }
+        }
+        mapReturnpark() {
+            this.globalAction.web_call_webgl_mapReturnpark();
+        }
+        toggleFold() {
+            console.log("tftft");
+            if (this.state.applyPutcss == "applyPut-all") {
+                this.setState({
+                    applyPutcss: "applyPut-part",
+                    applyPutul: " applyPutul-part applyPutul",
+                });
+                this.globalAction.web_call_webgl_continueloadModuler();
+                Intro.textCss("part");
+                Advantage.textCss("part");
+                Sale.textCss("part");
+                Elegant.textCss("part");
+            }
+            else {
+                this.setState({
+                    applyPutcss: "applyPut-all",
+                    applyPutul: " applyPutul-all applyPutul",
+                });
+                this.globalAction.web_call_webgl_pauseloadModuler();
+                Intro.textCss("all");
+                Advantage.textCss("all");
+                Sale.textCss("all");
+                Elegant.textCss("part");
+            }
+            if (this.state.iconfont == "iconfont iconfont-unturn") {
+                this.setState({
+                    iconfont: "iconfont iconfont-turn",
+                });
+            }
+            else {
+                this.setState({
+                    iconfont: "iconfont iconfont-unturn",
+                });
+            }
+        }
+        infoClick(indexof) {
+            console.log("infoClick", indexof);
+            this.setState({
+                infoli: indexof,
+            });
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("p", { className: "companyInfotit" },
+                    React.createElement("span", null, "\u56ED\u533A\u4ECB\u7ECD")),
+                React.createElement("div", { className: this.state.applyPutcss },
+                    React.createElement("div", { className: "foleBtn" },
+                        React.createElement(RouterDOM.Link, { to: "/home" },
+                            React.createElement("p", { className: "companyGoHomeLeft", style: { color: "#949494" }, onClick: this.mapReturnpark.bind(this) },
+                                React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B"),
+                                React.createElement("span", null, "\u8FD4\u56DE"))),
+                        React.createElement("p", { className: "companyGoHomeRight" },
+                            React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "5rem", "color": "#C0C0C0" }, onClick: this.toggleFold.bind(this) }, "\uE849"))),
+                    React.createElement("ul", { className: this.state.companyInfoul },
+                        React.createElement("li", { className: this.state.infoli == 0 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 0) }, "\u56ED\u533A\u7B80\u4ECB"),
+                        React.createElement("li", { className: this.state.infoli == 1 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 1) }, "\u533A\u4F4D\u4F18\u52BF"),
+                        React.createElement("li", { className: this.state.infoli == 2 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 2) }, "\u4F18\u60E0\u653F\u7B56"),
+                        React.createElement("li", { className: this.state.infoli == 3 ? "companyInfoli-active" : "companyInfoli", onClick: this.infoClick.bind(this, 3) }, "\u56ED\u533A\u98CE\u91C7")),
+                    React.createElement("div", { className: "infoContain" },
+                        React.createElement("div", { className: this.state.infoli == 0 ? "show" : "hide" },
+                            React.createElement(Intro, null)),
+                        React.createElement("div", { className: this.state.infoli == 1 ? "show" : "hide" },
+                            React.createElement(Advantage, null)),
+                        React.createElement("div", { className: this.state.infoli == 2 ? "show" : "hide" },
+                            React.createElement(Sale, null)),
+                        React.createElement("div", { className: this.state.infoli == 3 ? "show" : "hide" },
+                            React.createElement(Elegant, null))))));
+        }
+    }
+    class Intro extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                intro: "intro intro-part",
+                square: "",
+                floorage: "",
+                construction_time: "",
+            };
+            Intro.textCss = this.textCss.bind(this);
+            Intro.getNotes = this.getNotes.bind(this);
+        }
+        static textCss(css) { }
+        textCss(css) {
+            if (css == "part") {
+                this.setState({
+                    intro: "intro intro-part"
+                });
+            }
+            else {
+                this.setState({
+                    intro: "intro intro-all"
+                });
+            }
+        }
+        static getNotes(data) { }
+        ;
+        getNotes(data) {
+            let datas = data.response[0];
+            console.log("NotesNotes", datas);
+            console.log("NotesNotes", datas.introduction);
+            this.setState({
+                square: datas.square,
+                floorage: datas.floorage,
+                construction_time: datas.construction_time,
+            });
+            if (datas.introduction) {
+                console.log(" 233232222222222", datas.introduction);
+                document.getElementById("introText").innerHTML = datas.introduction;
+            }
+        }
+        componentWillMount() { }
+        render() {
+            return (React.createElement("div", { className: this.state.intro },
+                React.createElement("p", null,
+                    "\u5360\u5730\u9762\u79EF",
+                    React.createElement("span", { className: "introT" }, this.state.square)),
+                React.createElement("p", null,
+                    "\u5EFA\u7B51\u9762\u79EF",
+                    React.createElement("span", { className: "introT" }, this.state.floorage)),
+                React.createElement("p", null,
+                    "\u5EFA\u56ED\u65F6\u95F4",
+                    React.createElement("span", { className: "introT" }, this.state.construction_time)),
+                React.createElement("p", null, " "),
+                React.createElement("div", { id: "introText", className: "parkInfoText" })));
+        }
+    }
+    class Advantage extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                intro: "intro intro-part",
+                location: "",
+            };
+            Advantage.textCss = this.textCss.bind(this);
+            Advantage.getNotes = this.getNotes.bind(this);
+        }
+        componentWillMount() { }
+        static textCss(css) { }
+        textCss(css) {
+            if (css == "part") {
+                this.setState({
+                    intro: "intro intro-part"
+                });
+            }
+            else {
+                this.setState({
+                    intro: "intro intro-all"
+                });
+            }
+        }
+        static getNotes(data) { }
+        ;
+        getNotes(data) {
+            console.log("NotesNotes", data);
+            let datas = data.response[0];
+            document.getElementById("advantageText").innerHTML = datas.location_advantage;
+            this.setState({
+                location: datas.location,
+            });
+        }
+        render() {
+            return (React.createElement("div", { className: this.state.intro },
+                React.createElement("p", null,
+                    "\u5730\u7406\u4F4D\u7F6E",
+                    React.createElement("span", { className: "introT" }, this.state.location)),
+                React.createElement("div", { id: "advantageText", className: "parkInfoText" })));
+        }
+    }
+    class Sale extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                intro: "intro intro-part",
+            };
+            Sale.textCss = this.textCss.bind(this);
+            Sale.getNotes = this.getNotes.bind(this);
+        }
+        componentWillMount() { }
+        static textCss(css) { }
+        textCss(css) {
+            if (css == "part") {
+                this.setState({
+                    intro: "intro intro-part"
+                });
+            }
+            else {
+                this.setState({
+                    intro: "intro intro-all"
+                });
+            }
+        }
+        static getNotes(data) { }
+        ;
+        getNotes(data) {
+            console.log("NotesNotes", data);
+            let datas = data.response[0];
+            document.getElementById("saleText").innerHTML = datas.preferential_policy;
+        }
+        render() {
+            return (React.createElement("div", { className: this.state.intro },
+                React.createElement("div", { id: "saleText", className: "parkInfoText" })));
+        }
+    }
+    class Elegant extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                intro: "intro intro-part",
+            };
+            Elegant.textCss = this.textCss.bind(this);
+            Elegant.getNotes = this.getNotes.bind(this);
+        }
+        componentWillMount() { }
+        static textCss(css) { }
+        textCss(css) {
+            if (css == "part") {
+                this.setState({
+                    intro: "intro intro-part"
+                });
+            }
+            else {
+                this.setState({
+                    intro: "intro intro-all"
+                });
+            }
+        }
+        static getNotes(data) { }
+        ;
+        getNotes(data) {
+            console.log("NotesNotes", data);
+            let datas = data.response[0];
+            document.getElementById("elegantText").innerHTML = datas.elegant;
+        }
+        render() {
+            return (React.createElement("div", { className: this.state.intro },
+                React.createElement("div", { id: "elegantText", className: "parkInfoText" })));
+        }
+    }
+    exports.default = ParkInfo;
+});
+define("router", ["require", "exports", "react-router-dom", "react", "index", "home", "parkCompany", "photograph", "infoArea", "information", "personalCenter", "findLease", "applyPut", "bookSite", "repairsOnline", "parking", "narrate", "isay", "workOrder", "workOrderDetail", "modificationAuthentication", "message", "enterpriseInformation", "rentRoom", "rentRoomDetail", "defaultRentRoom", "parkWorkOrder", "serviceTel", "distribute", "searchUser", "statisticalStatement", "informationChild", "informationChilds", "informationDetail", "informationDetails", "attractInvestment", "attractInvestmentList", "room", "roomRent", "roomDetail", "roomUse", "roomBase", "roomPattern", "roomPatternUpdate", "modificationAuthenticationDetail", "identityAuthentication", "parkInfo", "findSell"], function (require, exports, react_router_dom_12, React, index_1, home_1, parkCompany_1, photograph_1, infoArea_1, information_1, personalCenter_1, findLease_1, applyPut_1, bookSite_1, repairsOnline_1, parking_1, narrate_1, isay_1, workOrder_1, workOrderDetail_1, modificationAuthentication_1, message_1, enterpriseInformation_1, rentRoom_1, rentRoomDetail_1, defaultRentRoom_1, parkWorkOrder_1, serviceTel_1, distribute_1, searchUser_1, statisticalStatement_1, informationChild_1, informationChilds_1, informationDetail_1, informationDetails_1, attractInvestment_1, attractInvestmentList_1, room_1, roomRent_1, roomDetail_1, roomUse_1, roomBase_1, roomPattern_1, roomPatternUpdate_1, modificationAuthenticationDetail_1, identityAuthentication_1, parkInfo_1, findSell_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Router extends React.Component {
@@ -10754,6 +11798,8 @@ define("router", ["require", "exports", "react-router-dom", "react", "index", "h
                     React.createElement(react_router_dom_12.Route, { path: "/roomPatternUpdate", component: roomPatternUpdate_1.default }),
                     React.createElement(react_router_dom_12.Route, { path: "/modificationAuthenticationDetail", component: modificationAuthenticationDetail_1.default }),
                     React.createElement(react_router_dom_12.Route, { path: "/identityAuthentication", component: identityAuthentication_1.default }),
+                    React.createElement(react_router_dom_12.Route, { path: "/parkInfo", component: parkInfo_1.default }),
+                    React.createElement(react_router_dom_12.Route, { path: "/findSell", component: findSell_1.default }),
                     React.createElement(react_router_dom_12.Route, { path: "/home", render: (props) => (React.createElement(home_1.default, Object.assign({}, props),
                             React.createElement(react_router_dom_12.Route, { path: "/home/infoArea", component: infoArea_1.default }),
                             React.createElement(react_router_dom_12.Route, { path: "/home/information", component: information_1.default }),
@@ -10767,14 +11813,14 @@ define("router", ["require", "exports", "react-router-dom", "react", "index", "h
     }
     exports.default = Router;
 });
-define("index", ["require", "exports", "react", "react-dom", "react-router-dom", "router", "parkCompany", "findLease", "applyPut", "photograph", "bookSite", "parking", "bottomBtn", "repairsOnline", "dataService", "compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_13, router_1, parkCompany_2, findLease_2, applyPut_2, photograph_2, bookSite_2, parking_2, bottomBtn_1, repairsOnline_2, dataService_36, compat_11) {
+define("index", ["require", "exports", "react", "react-dom", "react-router-dom", "router", "parkCompany", "findLease", "applyPut", "photograph", "bookSite", "parking", "bottomBtn", "repairsOnline", "dataService", "compat", "css!./styles/index.css"], function (require, exports, React, ReactDOM, react_router_dom_13, router_1, parkCompany_2, findLease_2, applyPut_2, photograph_2, bookSite_2, parking_2, bottomBtn_1, repairsOnline_2, dataService_38, compat_13) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Index extends React.Component {
         constructor(props) {
             super(props);
-            this.dataService = new dataService_36.default();
-            this.globalAction = new compat_11.default();
+            this.dataService = new dataService_38.default();
+            this.globalAction = new compat_13.default();
             this.state = {
                 inputValue: "请输入园区名/区域名/商圈名",
                 city: "",
@@ -11356,8 +12402,8 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
     class LoginTest extends React.Component {
         constructor(props) {
             super(props);
-            this.dataService = new dataService_36.default();
-            this.globalAction = new compat_11.default();
+            this.dataService = new dataService_38.default();
+            this.globalAction = new compat_13.default();
             this.state = {
                 username: "",
                 password: "",
@@ -11391,7 +12437,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         static ptLogin() { }
         ptLogin() {
             console.log(this.state.username, this.state.password);
-            this.dataService.login("twl03", "123456", this.hideLogin);
+            this.dataService.login("test", "123456", this.hideLogin);
         }
         hideLogin() {
             setTimeout(function () { Index.hideLoginBox(); }, 1000);

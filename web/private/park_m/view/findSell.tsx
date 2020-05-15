@@ -281,7 +281,7 @@ class LeaseList extends React.Component {
             return (
               <li onClick={this.leaseActive.bind(this, index, i.id, i.project_title, i.building_code, i.floor_code, i.room_code)}
                 className={this.state.indexOf == index ? "leaseli-active" : "leaseli"}
-                style={{ display: ("0.00" == i.sell_price) ? "none" : "block" }}>
+                style={{ display: ("0.00" == i.sell_state) ? "block" : "none" }}>
                 <div className={this.state.indexOf == index ? "leaseImgback-active" : "leaseImgback"} >
                   <img src={i.headimageurl == null ? this.state.imgurlNull : i.headimageurl} onError={this.onErrorHeadimageurl.bind(this, index)} />
                 </div>
@@ -294,7 +294,7 @@ class LeaseList extends React.Component {
                 </div>
                 <div className="sellul-right">
                   <p onClick={this.showInfo.bind(this, "Info", i.id, i.name)} className={this.state.indexOf == index ? "show" : "hide"}>更多
-                              <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
+                       <i className="iconfont" style={{ "fontSize": "2rem" }}>&#xe827;</i>
                   </p>
 
                 </div>
@@ -449,7 +449,7 @@ class LeaseInfo extends React.Component {
           </div>
           <div className="leaseInfoul_br">
             <ul className={"leaseInfoul"}>
-              <li className={this.state.infoli == 0 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 0)} >房间信息</li>
+              <li className={this.state.infoli == 0 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 0)} >售房信息</li>
 
               <li className={this.state.infoli == 1 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 1)} >房间展示</li>
             </ul>
@@ -564,7 +564,7 @@ class LeaseInfos extends React.Component {
             </li>
             <li className={this.state.state == 1 ? "sj" : "hide"}>
               <span style={{ "padding-right": "7rem" }} >租金</span>
-              <span style={{ "color": "#F53636" }}>{this.state.sum}元/月（{this.state.price}元/m²/月）</span>
+              <span style={{ "color": "#F53636" }}>{this.state.sum}元/月（{this.state.price}元/m²·月）</span>
             </li>
                <li className={this.state.sell_state == 0 ? "jj" : "hide"} >
               <span style={{ "padding-right": "7rem" }} >售价</span>

@@ -33,7 +33,7 @@ export default class Share extends React.Component<IProps, IState> {
         document.execCommand("Copy");
         oInput.className = 'oInput';
         oInput.style.display = 'none';
-        message.success('¸´ÖÆ³É¹¦!', 1)
+        message.success('ï¿½ï¿½ï¿½Æ³É¹ï¿½!', 1)
         this.props.toggleShare()
     }
 
@@ -44,14 +44,14 @@ export default class Share extends React.Component<IProps, IState> {
     render() {
         return (
             <div className="share">
-                <div className="share-title">Ô°Çø·ÖÏí</div>
+                <div className="share-title">Ô°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</div>
                 <div className="url">
-                    <span className="share-span-a">Á´½Ó</span>
+                    <span className="share-span-a">ï¿½ï¿½ï¿½ï¿½</span>
                     <span className="share-span-b" id="copy">{this.state.value}</span>
                 </div>
                 <div className="share-bt">
-                    <div className="share-span-c" onClick={this.cancel}>È¡Ïû</div>
-                    <div className="share-span-d" onClick={this.copy}>¸´ÖÆÁ´½Ó</div>
+                    <div className="share-span-c" onClick={this.cancel}>È¡ï¿½ï¿½</div>
+                    <div className="share-span-d" onClick={this.copy}>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</div>
                 </div>
             </div>
         )

@@ -389,7 +389,7 @@ i {
     font-size: 3rem;
 }
 
-/*message -- ×ÊÑ¶*/
+/*message -- ï¿½ï¿½Ñ¶*/
 .messageBox {
     position: fixed;
     width: 100%;
@@ -401,7 +401,7 @@ i {
     font-size: 3rem;
 }
 
-/**AboutMeBox--¸öÈËÖÐÐÄ*/
+/**AboutMeBox--ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 .aboutMebox {
     position: fixed;
     width: 100%;
@@ -412,7 +412,7 @@ i {
     background: #fff;
     font-size: 3rem;
 }
-/*narrateBox -- ½²½â*/
+/*narrateBox -- ï¿½ï¿½ï¿½ï¿½*/
 .audioBox {
     position: fixed;
     width: 100%;
@@ -498,7 +498,7 @@ i {
 }
 
 
-/**ParkCompany  -- Ô°ÇøÆóÒµ*/
+/**ParkCompany  -- Ô°ï¿½ï¿½ï¿½ï¿½Òµ*/
 .parkCompany {
     position: fixed;
     width: 100%;
@@ -856,7 +856,7 @@ i {
     font-size: 2.5rem;
 }
 
-/*infos /-- ÆóÒµÐÅÏ¢*/
+/*infos /-- ï¿½ï¿½Òµï¿½ï¿½Ï¢*/
 .infos {
 }
 
@@ -936,7 +936,7 @@ i {
     color: #0B8BF0;
 }
 
-/*ÆóÒµÏêÇé --details*/
+/*ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½ --details*/
 .details {
     height: 35rem;
     overflow-y: scroll;
@@ -950,7 +950,7 @@ i {
     margin: auto;
     line-height: 4.5rem;
 }
-/*mien -- ·ç²É*/
+/*mien -- ï¿½ï¿½ï¿½*/
 .mien {
     width: 100%;
     height: 33rem;
@@ -1021,7 +1021,7 @@ i {
     height: 33rem;
 }
 
-/*ÕÐ×â²éÑ¯*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯*/
 .findLease {
     position: fixed;
     width: 100%;
@@ -1464,7 +1464,7 @@ i {
     float: left;
 }
 .botTelMan {
-    width: 30rem;
+    width: 31rem;
     font-size: 3rem;
     float: left;
     position: absolute;
@@ -1487,7 +1487,7 @@ i {
 #telurl {
     color: #fff;
 }
-/*roomImg -- ÕÕÆ¬Õ¹Ê¾*/
+/*roomImg -- ï¿½ï¿½Æ¬Õ¹Ê¾*/
 .picshow {
     width: 100%;
     height: 33rem;
@@ -1550,7 +1550,7 @@ i {
     margin: 0px 2rem;*/
 }
 
-/*Photograph -- ËæÊÖÅÄ*/
+/*Photograph -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 .photograph {
     position: fixed;
     width: 100%;
@@ -1970,7 +1970,7 @@ i {
     border-radius: 0.5rem;
 }*/
 
-/*rollSelect -- ¹²ÓÃÑ¡Ôñ*/
+/*rollSelect -- ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½*/
 .illcauseBox {
     position: fixed;
     width: 100%;
@@ -2068,9 +2068,9 @@ i {
     color: rgb(242,242,242);
     border-radius: 0.5rem;
 }
-/*¹²ÓÃÑ¡Ôñ  -- over*/
+/*ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½  -- over*/
 
-/*applyPut -- °ÚµãÉêÇë*/
+/*applyPut -- ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½*/
 .applyPut-part {
     position: fixed;
     width: 100%;
@@ -2210,7 +2210,7 @@ i {
 
 .applySpanright {
 }
-/*BookSite ³¡µØÔ¤Ô¼*/
+/*BookSite ï¿½ï¿½ï¿½ï¿½Ô¤Ô¼*/
 .bookSite {
     position: fixed;
     width: 100%;
@@ -2550,7 +2550,7 @@ i {
     font-size: 2.3rem;
     line-height: 2.5rem;
 }
-/*ÔÚÏß±¨ÐÞ -- RepairsOnline*/
+/*ï¿½ï¿½ï¿½ß±ï¿½ï¿½ï¿½ -- RepairsOnline*/
 .repairsOnline {
     position: fixed;
     width: 100%;
@@ -2651,7 +2651,7 @@ i {
     float: right;
 }
 
-/**Í£³µ·þÎñ parking/*/
+/**Í£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ parking/*/
 .parkingBox {
 }
 
@@ -2998,7 +2998,7 @@ i {
     bottom: 49rem;
 }
 
-/*loginÆóÒµÑ¡Ôñ¿ò*/
+/*loginï¿½ï¿½ÒµÑ¡ï¿½ï¿½ï¿½*/
 .isCompanyBox {
     background: rgba(0,0,0,.65);
     width: 100%;
@@ -3029,7 +3029,7 @@ i {
     text-align: center;
 }
 
-/*logintest ²âÊÔÓÃ»§½ÇÉ«Ñ¡Ôñ¿ò*/
+/*logintest ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½É«Ñ¡ï¿½ï¿½ï¿½*/
 .userBox {
     background: rgba(0,0,0,.65);
     width: 100%;
@@ -3083,7 +3083,7 @@ i {
     font-size: 2.5rem;
     line-height: 6rem;
 }
-/*Éí·ÝÈÏÖ¤²¹³ä img*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ img*/
 .enterprise-information-box {
     margin-bottom: 20rem;
 }
@@ -3117,7 +3117,7 @@ i {
     float: right;
 }
 
-/*Ô°Çø½éÉÜ*/
+/*Ô°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 .intro {
     padding: 0 4rem;
     line-height: 4rem;

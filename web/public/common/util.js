@@ -1069,9 +1069,9 @@ MiaokitJS.ShaderLab.Pipeline = {
         }
     ],
     InternalShader: [
-        "Default", "Wall", "Default", "Default",
+        "Default", "Wall", "Wall", "Default",
         "Default", "Default", "Default", "GIS",
-        "Mapbox", "Mapbox2", "Dioramas", "Panoramas",
+        "Mapbox", "RoomPanor", "Dioramas", "Panoramas",
         "Cosmos", "Ground", "Sky", "Present"
     ],
     Init: function () {
@@ -1249,19 +1249,31 @@ MiaokitJS.Shader["Wall"] = {
     type: "Render",
     mark: ["Opaque"],
     vs_src: `
+varying vec3 v_Normal;
+
 vec4 vs()
 {
+    v_Normal = ObjectToWorldNormal(a_Normal);
+
     vec4 mPosition = vec4(a_Position.xyz, 1.0);
     mPosition = u_MatG * a_MatW * mPosition;
 
     return u_MatVP * mPosition;
-    //return ObjectToClipPos(a_Position.xyz);
 }
         `,
     fs_src: `
+varying vec3 v_Normal;
+
 vec4 fs()
 {
-    return vec4(0.2, 0.2, 0.2, 1.0);
+    vec4 mColor = vec4(0.9255, 0.9412, 0.9647, 1.0);
+    float nDiffuse = clamp(dot(v_Normal, normalize(u_Sunlight.xyz)), 0.0, 1.0);
+    
+    nDiffuse = nDiffuse * 0.4 + 0.3;
+    nDiffuse *= 1.8;
+    mColor.rgb *= nDiffuse;
+
+    return mColor;
 }
         `
 };
@@ -1585,6 +1597,73 @@ varying vec4 v_UV;
 vec4 fs()
 {
     vec4 mColor = texture(u_MainTex, vec2(1.0 - v_UV.x, v_UV.y));
+    mColor.a = 1.0;
+    
+    return mColor;
+}
+        `
+};
+MiaokitJS.Shader["RoomPanor"] = {
+    name: "RoomPanor",
+    type: "Clear",
+    mark: ["Opaque"],
+    uniform_values: [["u_MainTex", 1]],
+    vs_src: `
+varying vec3 v_Position;
+varying vec3 v_Center;
+
+vec4 vs()
+{
+    vec4 mPosition = vec4(a_Position.xyz, 1.0);
+    mPosition = u_MatG * a_MatW * mPosition;
+    
+    v_Position = mPosition.xyz;
+    v_Center = (u_MatG * a_MatW * vec4(-37.9, 1.5, 3.65, 1.0)).xyz;
+    
+    return u_MatVP * mPosition;
+}
+        `,
+    fs_src: `
+varying vec3 v_Position;
+varying vec3 v_Center;
+
+vec4 fs()
+{
+    // 这里u_EyePos是世界空间坐标
+    vec3 _Eye = u_EyePos.xyz;
+    vec3 _Ray = normalize(_Eye - v_Position);
+    vec3 _LineC = v_Center - v_Position;
+    
+    float _LenProj = dot(_LineC, _Ray);
+    float _LenC = length(_LineC);
+    float _Dist = _LenC * _LenC - _LenProj * _LenProj;
+    float _R = 1.5;
+    
+    vec3 _ProjC = v_Position + _Ray * _LenProj;
+    
+    _LenProj = sqrt(_R * _R - _Dist);
+    _ProjC = _ProjC - _Ray * _LenProj;
+    
+    vec3 mView = _ProjC - v_Center;
+    
+    /////////////////////////////////////////////////////////
+    
+    //vec3 mView = normalize(v_Position - v_Center);
+    
+    float nLength = length(mView);    
+    float nLat = asin(mView.y / nLength);
+    float nLengthXZ = cos(nLat) * nLength;
+    float nLng = acos(mView.x / nLengthXZ);
+    
+    if(0.0 > mView.z)
+    {
+        nLng = 6.283185308 - nLng;
+    }
+    
+    float x = nLng / 6.283185308;
+    float y = 1.0 - ((nLat + 1.570796327) / 3.141592654);
+    
+    vec4 mColor = texture(u_MainTex, vec2(x, y));
     mColor.a = 1.0;
     
     return mColor;

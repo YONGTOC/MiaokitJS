@@ -281,7 +281,7 @@ class LeaseList extends React.Component {
             return (
               <li onClick={this.leaseActive.bind(this, index, i.id, i.project_title, i.building_code, i.floor_code, i.room_code)}
                 className={this.state.indexOf == index ? "leaseli-active" : "leaseli"}
-                style={{ display: ("0.00" == i.price) ? "none" : "block" }}>
+                style={{ display: ("1" == i.state) ? "block" : "none" }}>
                 <div className={this.state.indexOf == index ? "leaseImgback-active" : "leaseImgback"} >
                   <img src={i.headimageurl == null ? this.state.imgurlNull : i.headimageurl} onError={this.onErrorHeadimageurl.bind(this, index)} />
                 </div>
@@ -289,7 +289,7 @@ class LeaseList extends React.Component {
                   <p className={this.state.indexOf == index ? "leaseName-active" : "leaseName"} style={{ "font-size": "2.4rem", "font-weight": "bold" }}>{i.building_name}-{i.floor_name}-{i.room_name}</p>
                   <p style={{ "font-size": "2.5rem" }}><span className="iconfont" style={{ "fontSize": "2.5rem", "margin-right": "1rem" }}>&#xe82a;</span>{i.floorage}m²</p>
                   <p className={this.state.indexOf == index ? "leaseType-active" : "leaseType"} >
-                    <span className={this.state.indexOf == index ? "leasePrice-active" : "leasePrice"}>{i.price}</span>元/m²/月
+                    <span className={this.state.indexOf == index ? "leasePrice-active" : "leasePrice"}>{i.price}</span>元/m²·月
                   </p>
                 </div>
                 <div className="leaseul-right">
@@ -448,7 +448,7 @@ class LeaseInfo extends React.Component {
           </div>
           <div className="leaseInfoul_br">
             <ul className={"leaseInfoul"}>
-              <li className={this.state.infoli == 0 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 0)} >房间信息</li>
+              <li className={this.state.infoli == 0 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 0)} >租房信息</li>
 
               <li className={this.state.infoli == 1 ? "leaseInfoli-active" : "leaseInfoli"} onClick={this.infoClick.bind(this, 1)} >房间展示</li>
             </ul>
@@ -563,7 +563,7 @@ class LeaseInfos extends React.Component {
             </li>
             <li className={this.state.price == 0 ? "hide" : "jj"}>
               <span style={{ "padding-right": "7rem" }} >租金</span>
-              <span style={{ "color": "#F53636" }}>{this.state.sum}元/月（{this.state.price}元/m²/月）</span>
+              <span style={{ "color": "#F53636" }}>{this.state.sum}元/月（{this.state.price}元/m²·月）</span>
             </li>
             <li className={this.state.sell_state == 0 ? "jj" : "hide"} >
               <span style={{ "padding-right": "7rem" }} >售价</span>

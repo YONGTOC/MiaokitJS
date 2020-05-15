@@ -12,7 +12,6 @@
     "sourceMap": false,
     "baseUrl": "../../../public",
     "paths": {
-        "*": ["types/*"],
       "antd": [ "common/antd/lib/index" ]
     }
   }
