@@ -210,13 +210,21 @@ class CompanyList extends React.Component {
     this.setState({
       indexOf: data,
     });
+
+        // 请求单个房间数据，后通知3d；
+    this.dataService.getCompanyInfo(this.callWebglSwitchRoom.bind(this), id);
+  }
+
+    public callWebglSwitchRoom(data) {
     let roomData = {
-      m_pTile: title,
-      m_pBuilding: building,
-      m_pLayer: floor,
-      m_pRoom: room,
+      m_pTile: data.response.project_title,
+      m_pBuilding: data.response.building_code,
+      m_pLayer: data.response.floor_code,
+      m_pRoom: data.response.room_code,
+      m_pPart: data.response.parts,
     }
-    // //通知3d，切换公司定位（web获取的是 房间data）
+    //console.log("SR222", roomData);
+     //通知3d，切换公司定位（web获取的是 房间data）
     this.globalAction.web_call_webgl_switchRoom(roomData);
   }
 

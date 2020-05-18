@@ -188,13 +188,20 @@ class LeaseList extends React.Component {
       roomId: id
     });
     console.log("leaseActive", this.state);
+       // 请求单个房间数据，后通知3d；
+    this.dataService.findRoomRentByroomid(this.callWebglSwitchRoom.bind(this), id);
+  }
+
+      public callWebglSwitchRoom(data) {
     let roomData = {
-      m_pTile: title,
-      m_pBuilding: building,
-      m_pLayer: floor,
-      m_pRoom: room,
+      m_pTile: data.response.project_title,
+      m_pBuilding: data.response.building_code,
+      m_pLayer: data.response.floor_code,
+      m_pRoom: data.response.room_code,
+      m_pPart: data.response.part,
     }
-    //// 通知3d，切换房间定位（web获取的是 房间data）
+    //console.log("SR222", roomData);
+     //通知3d，切换公司定位（web获取的是 房间data）
     this.globalAction.web_call_webgl_switchRoom(roomData);
   }
 
@@ -281,7 +288,7 @@ class LeaseList extends React.Component {
             return (
               <li onClick={this.leaseActive.bind(this, index, i.id, i.project_title, i.building_code, i.floor_code, i.room_code)}
                 className={this.state.indexOf == index ? "leaseli-active" : "leaseli"}
-                style={{ display: ("0.00" == i.sell_state) ? "block" : "none" }}>
+                style={{ display: ("0" == i.sell_state) ? "block" : "none" }}>
                 <div className={this.state.indexOf == index ? "leaseImgback-active" : "leaseImgback"} >
                   <img src={i.headimageurl == null ? this.state.imgurlNull : i.headimageurl} onError={this.onErrorHeadimageurl.bind(this, index)} />
                 </div>

@@ -168,15 +168,15 @@ class Intro extends React.Component {
   static getNotes(data) { };
   public getNotes(data) {
     let datas = data.response[0];
-    console.log("NotesNotes", datas);
-    console.log("NotesNotes", datas.introduction);
+   // console.log("NotesNotes", datas);
+   // console.log("NotesNotes", datas.introduction);
     this.setState({
       square: datas.square,
       floorage: datas.floorage,
       construction_time: datas.construction_time,
     })
     if (datas.introduction) {
-      console.log(" 233232222222222", datas.introduction);
+    //  console.log(" 233232222222222", datas.introduction);
       document.getElementById("introText").innerHTML = datas.introduction;
     }
 
