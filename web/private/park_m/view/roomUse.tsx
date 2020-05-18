@@ -139,11 +139,27 @@ export default class RoomUse extends React.Component<{ history: any }>{
         <div style={{ width: "100%", height: "15px", backgroundColor: "#F2F2F2" }}></div>
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", height: "220px" }}>
           <div className="enterprise-information-star"></div>
-          <div style={{ color: "#949494", height: "80px" }}>房间状态</div>
+          <div style={{ color: "#949494", height: "80px" }}>出租状态</div>
           <div>
             {["租用中", "招租中", "不出租"].map((item, index) => {
               return (
-                <div style={{ float: "left" }} onClick={e=> this.changeState(index)}>
+                <div style={{ float: "left" }} onClick={e => this.changeState(index)}>
+                  <img key={index} style={{ margin: "0 20px 10px 0" }}
+                    src={index == this.state.state ? "./park_m/image/checked.png" : "./park_m/image/unchecked.png"} />
+                  <span style={{ marginRight: "50px" }}>{item}</span>
+                </div>
+              )
+            })
+            }
+          </div>
+        </div>
+        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", height: "220px" }}>
+          <div className="enterprise-information-star"></div>
+          <div style={{ color: "#949494", height: "80px" }}>出售状态</div>
+          <div>
+            {["出售中", "已出售"].map((item, index) => {
+              return (
+                <div style={{ float: "left" }} onClick={e => this.changeState(index)}>
                   <img key={index} style={{ margin: "0 20px 10px 0" }}
                     src={index == this.state.state ? "./park_m/image/checked.png" : "./park_m/image/unchecked.png"} />
                   <span style={{ marginRight: "50px" }}>{item}</span>
@@ -162,12 +178,12 @@ export default class RoomUse extends React.Component<{ history: any }>{
                 style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
               />
             </div>
-            {this.state.isSpread ? 
+            {this.state.isSpread ?
               <div style={{ width: "70%", height: "600px", backgroundColor: "#ffffff", position: "absolute", left: "28%", border: "1px solid #797272" }}>
                 {this.state.companyNameList.map((item, index) => {
                   return (
-                    <div key={index} style={{ height: "100px", fontSize: "40px", lineHeight: "100px" }} onClick={e=> this.clickCompanyName(index)}>{item.name}</div>
-                    )
+                    <div key={index} style={{ height: "100px", fontSize: "40px", lineHeight: "100px" }} onClick={e => this.clickCompanyName(index)}>{item.name}</div>
+                  )
                 })
                 }
               </div> : null
@@ -183,7 +199,7 @@ export default class RoomUse extends React.Component<{ history: any }>{
               <div className="enterprise-information-star"></div>
               <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>联系电话</div>
               <div style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}>
-                {this.state.phone} 
+                {this.state.phone}
               </div>
             </div>
             <div className="service-tel" id="startDate" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
@@ -203,7 +219,7 @@ export default class RoomUse extends React.Component<{ history: any }>{
               </div>
               <img src="./park_m/image/calendar.png" />
             </div>
-           
+
           </div> : null
         }
         <DatePicker
@@ -224,7 +240,7 @@ export default class RoomUse extends React.Component<{ history: any }>{
         <div onClick={this.submit.bind(this)}
           style={{ width: "100%", height: "150px", textAlign: "center", lineHeight: "150px", color: "#ffffff", backgroundColor: "#0B8BF0", position: "fixed", bottom: 0, fontSize: "50px" }}>
           提交
-        </div> 
+        </div>
       </div>
     )
   }

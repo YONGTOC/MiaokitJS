@@ -41,7 +41,7 @@ class PersonalCenter extends React.Component {
       { name: "统计报表", imgUrl: "./park_m/image/statistics.png", url: "/statisticalStatement" }, { name: "房间管理", imgUrl: "./park_m/image/room.png", url: "/room" },
       { name: "客服电话", imgUrl: "./park_m/image/service.png", url: "/serviceTel" }, { name: "租用到期", imgUrl: "./park_m/image/rent_expire.png", url: "/roomRent" }
     ],
-    isSpread: false,
+    isSpread: true,
     userInfo: { name: "", avatar: "", phone: "", enterprise: "", roles: { role_id: "", role_name: "" } },
     pathname: "",
     messagelength: 0,

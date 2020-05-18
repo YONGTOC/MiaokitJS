@@ -20,6 +20,7 @@ import ModificationAuthentication from "modificationAuthentication";
 import Message from "message";
 import EnterpriseInformation from "enterpriseInformation";
 import RentRoom from "rentRoom";
+import RoomBaseUpdate from "roomBaseUpdate";
 import RentRoomDetail from "rentRoomDetail";
 import DefaultRentRoom from "defaultRentRoom";
 import ParkWorkOrder from "parkWorkOrder";
@@ -73,6 +74,7 @@ class Router extends React.Component {
           <Route path="/message" component={Message} />
           <Route path="/enterpriseInformation" component={EnterpriseInformation} />
           <Route path="/rentRoom" component={RentRoom} />
+          <Route path="/roomBaseUpdate" component={RoomBaseUpdate} />
           <Route path="/rentRoomDetail" component={RentRoomDetail} />
           <Route path="/defaultRentRoom" component={DefaultRentRoom} />
           <Route path="/serviceTel" component={ServiceTel} />
