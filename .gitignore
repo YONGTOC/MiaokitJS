@@ -1,14 +1,5 @@
 /.git/
 /.vs/
-/unity/*
-!/unity/Assets
-!/unity/Packages
-!/unity/Plugins
-!/unity/ProjectSettings
-!/unity/MiaokitU3D.csproj
-!/unity/MiaokitU3D.sln
-/www/examples/temp/
 /web/private/node_modules
 /web/public/data
-/web/public/_park
 /web/public/common/antd/lib

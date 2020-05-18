@@ -218,11 +218,14 @@ class Indoor {
         pThis.m_pView = {
             m_nLng: pTile.m_nLng,
             m_nLat: pTile.m_nLng,
-            m_mTarget: pScene.m_pView.m_mTarget,
+            m_mTarget: { x: pScene.m_pView.m_mTarget.x, y: pScene.m_pView.m_mTarget.y, z: pScene.m_pView.m_mTarget.z },
             m_nDistance: pScene.m_pView.m_nDistance,
             m_nPitch: pScene.m_pView.m_nPitch,
             m_nYaw: pScene.m_pView.m_nYaw
         };
+        if (MiaokitJS.m_pConfig.GIS.m_pTerrainServer) {
+            pThis.m_pView.m_mTarget.y += pThis.m_pTile.m_nHeight;
+        }
     }
     get name() {
         let pThis = this;
