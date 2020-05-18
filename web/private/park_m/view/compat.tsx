@@ -3,7 +3,7 @@ declare var MiaokitJS: any;
 
 
 class GlobalAction {
-    //通知3d，要加载的园区模型  
+    //通知3d，要加载的园区模型    
     public web_call_webgl_initPark(pInfo) {
         MiaokitJS.App.m_pProject.EnterPark({
             m_pView: {
