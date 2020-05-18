@@ -256,11 +256,15 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
                 roomId: id
             });
             console.log("leaseActive", this.state);
+            this.dataService.findRoomRentByroomid(this.callWebglSwitchRoom.bind(this), id);
+        }
+        callWebglSwitchRoom(data) {
             let roomData = {
-                m_pTile: title,
-                m_pBuilding: building,
-                m_pLayer: floor,
-                m_pRoom: room,
+                m_pTile: data.response.project_title,
+                m_pBuilding: data.response.building_code,
+                m_pLayer: data.response.floor_code,
+                m_pRoom: data.response.room_code,
+                m_pPart: data.response.part,
             };
             this.globalAction.web_call_webgl_switchRoom(roomData);
         }
@@ -4369,11 +4373,15 @@ define("findSell", ["require", "exports", "react", "react-router-dom", "compat",
                 roomId: id
             });
             console.log("leaseActive", this.state);
+            this.dataService.findRoomRentByroomid(this.callWebglSwitchRoom.bind(this), id);
+        }
+        callWebglSwitchRoom(data) {
             let roomData = {
-                m_pTile: title,
-                m_pBuilding: building,
-                m_pLayer: floor,
-                m_pRoom: room,
+                m_pTile: data.response.project_title,
+                m_pBuilding: data.response.building_code,
+                m_pLayer: data.response.floor_code,
+                m_pRoom: data.response.room_code,
+                m_pPart: data.response.part,
             };
             this.globalAction.web_call_webgl_switchRoom(roomData);
         }
@@ -4436,7 +4444,7 @@ define("findSell", ["require", "exports", "react", "react-router-dom", "compat",
                 React.createElement("ul", { className: this.state.leaseul },
                     React.createElement("p", { className: this.state.roomNull }, "\u6CA1\u6709\u7B26\u5408\u641C\u7D22\u6761\u4EF6\u7684\u7ED3\u679C\u00B7\u00B7\u00B7"),
                     this.state.roomData.map((i, index) => {
-                        return (React.createElement("li", { onClick: this.leaseActive.bind(this, index, i.id, i.project_title, i.building_code, i.floor_code, i.room_code), className: this.state.indexOf == index ? "leaseli-active" : "leaseli", style: { display: ("0.00" == i.sell_state) ? "block" : "none" } },
+                        return (React.createElement("li", { onClick: this.leaseActive.bind(this, index, i.id, i.project_title, i.building_code, i.floor_code, i.room_code), className: this.state.indexOf == index ? "leaseli-active" : "leaseli", style: { display: ("0" == i.sell_state) ? "block" : "none" } },
                             React.createElement("div", { className: this.state.indexOf == index ? "leaseImgback-active" : "leaseImgback" },
                                 React.createElement("img", { src: i.headimageurl == null ? this.state.imgurlNull : i.headimageurl, onError: this.onErrorHeadimageurl.bind(this, index) })),
                             React.createElement("div", { className: "leaseul-middle" },
@@ -5774,11 +5782,15 @@ define("parkCompany", ["require", "exports", "react", "react-router-dom", "compa
             this.setState({
                 indexOf: data,
             });
+            this.dataService.getCompanyInfo(this.callWebglSwitchRoom.bind(this), id);
+        }
+        callWebglSwitchRoom(data) {
             let roomData = {
-                m_pTile: title,
-                m_pBuilding: building,
-                m_pLayer: floor,
-                m_pRoom: room,
+                m_pTile: data.response.project_title,
+                m_pBuilding: data.response.building_code,
+                m_pLayer: data.response.floor_code,
+                m_pRoom: data.response.room_code,
+                m_pPart: data.response.parts,
             };
             this.globalAction.web_call_webgl_switchRoom(roomData);
         }
@@ -7491,8 +7503,8 @@ define("repairsOnline", ["require", "exports", "react", "react-router-dom", "dat
                     React.createElement("span", null, "\u5728\u7EBF\u62A5\u4FEE")),
                 React.createElement("div", { className: this.state.reqairscss },
                     React.createElement("div", { className: "foleBtn" },
-                        React.createElement(RouterDOM.Link, { to: "/home", onClick: this.mapReturnpark.bind(this) },
-                            React.createElement("p", { className: "companyGoHomeLeft", style: { color: "#949494" } },
+                        React.createElement(RouterDOM.Link, { to: "/home" },
+                            React.createElement("p", { className: "companyGoHomeLeft", style: { color: "#949494" }, onClick: this.mapReturnpark.bind(this) },
                                 React.createElement("i", { className: "iconfont companyInfoicon" }, "\uE83B"),
                                 React.createElement("span", null, "\u8FD4\u56DE"))),
                         React.createElement("p", { className: "companyGoHomeRight" },
@@ -11737,15 +11749,12 @@ define("parkInfo", ["require", "exports", "react", "react-router-dom", "dataServ
         ;
         getNotes(data) {
             let datas = data.response[0];
-            console.log("NotesNotes", datas);
-            console.log("NotesNotes", datas.introduction);
             this.setState({
                 square: datas.square,
                 floorage: datas.floorage,
                 construction_time: datas.construction_time,
             });
             if (datas.introduction) {
-                console.log(" 233232222222222", datas.introduction);
                 document.getElementById("introText").innerHTML = datas.introduction;
             }
         }
@@ -12561,7 +12570,7 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         static ptLogin() { }
         ptLogin() {
             console.log(this.state.username, this.state.password);
-            this.dataService.login("twl03", "123456", this.hideLogin);
+            this.dataService.login("test", "123456", this.hideLogin);
         }
         hideLogin() {
             setTimeout(function () { Index.hideLoginBox(); }, 1000);

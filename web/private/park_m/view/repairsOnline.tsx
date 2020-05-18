@@ -283,7 +283,7 @@ class RepairsOnline extends React.Component<{ history: any }>{
 
 
 
-  //提交报修单 -- 成功
+  //提交报修单 -- 成功 
   public sumbitReqairssucceed(data) {
      Toast.info(data, 2);
     window.history.back();
@@ -303,8 +303,8 @@ class RepairsOnline extends React.Component<{ history: any }>{
 
         <div className={this.state.reqairscss}>
           <div className={"foleBtn"}>
-            <RouterDOM.Link to="/home" onClick={this.mapReturnpark.bind(this)}>
-              <p className="companyGoHomeLeft" style={{ color: "#949494" }} >
+            <RouterDOM.Link to="/home">
+              <p className="companyGoHomeLeft" style={{ color: "#949494" }} onClick={this.mapReturnpark.bind(this)} >
                 <i className="iconfont companyInfoicon">&#xe83b;</i>
                 <span>返回</span>
               </p>
