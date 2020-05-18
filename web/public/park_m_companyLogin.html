@@ -11,8 +11,6 @@
         window.onload = function () {
             // 在onload 之前 requir。config  
 
-
-
             MiaokitJS.Track("Window.onload");
 
             window.oncontextmenu = function (e) {
@@ -53,10 +51,8 @@
 
                   //这里开始调用 组件方法；  
                  MiaokitJS.App.UI.selfLogin("company");
+                 curtainHide();
             });
-
-            console.log(669)
-        
         }
     </script>
 
@@ -93,7 +89,7 @@
 </head>
 <body style="height: 100%; margin: 0; padding: 0;">
     <!--幕布，遮挡3d的提前加载 -->
-    <div class="curtain hide" style="background: #fff; margin: auto; width: 100%; height: 100%;
+    <div class="curtain " style="background: #fff; margin: auto; width: 100%; height: 100%;
     top: 0rem; bottom: 0rem; left: 0rem; right: 0rem; position: absolute; z-index: 103;">
         <div class="loadEffect">
             <span></span>
@@ -115,7 +111,7 @@
 
     <!--测试threejs-->
     <div id="floorList">
-        <div class="floor_box">
+        <div class="floor_box hide">
             <p class="floor_box_up" onclick="floorUp()">
                 <i class="iconfont" style="font-size: 2.6rem">&#xe83a;</i>
             </p>
@@ -175,29 +171,19 @@
             <button onclick="refreshBooksite(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活场地预约</button>
         </li> 
         <li>
-            <button onclick="floorListShow()" style="width: 17rem;height: 4rem;font-size: 2.3rem;">floorListShow</button>
+            <button onclick="webgl_call_web_show_floor_list(floorData)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">floorListShow</button>
         </li>
         <li>
-            <button onclick="floorListHide()" style="width: 17rem;height: 4rem;font-size: 2.3rem;">floorListHide</button>
+            <button onclick="webgl_call_web_hide_floor_list()" style="width: 17rem;height: 4rem;font-size: 2.3rem;">floorListHide</button>
+        </li>
+        <li>
+            <button onclick="webgl_call_web_active_floor('id-3f')" style="width: 17rem;height: 4rem;font-size: 2.3rem;">进入3F</button>
         </li>
         <!--<li>
             <button onclick="refreshParking(120)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活地库</button>
         </li>-->
         <!--<li>
             <button onclick="addapplyPut(0000)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">添加摆点位置56</button>
-        </li>-->
-        <!--<li>
-            <button onclick="inFloor('id-1f')" style="width: 18rem;height: 4rem;font-size: 2.3rem;">inFloorid1</button>
-            <button onclick="inFloor('id-2f')" style="width: 18rem;height: 4rem;font-size: 2.3rem;">inFloorid2</button>
-            <button onclick="inFloor('id-3f')" style="width: 18rem;height: 4rem;font-size: 2.3rem;">inFloorid3</button>
-            <button onclick="inFloor('id-4f')" style="width: 18rem;height: 4rem;font-size: 2.3rem;">inFloorid4</button>
-        </li>-->
-        <!--<li>
-            <button onclick="activeLi(0)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">inFloorindex0</button>
-            <button onclick="activeLi(1)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">inFloorindex1</button>
-            <button onclick="activeLi(2)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">inFloorindex2</button>
-            <button onclick="activeLi(3)" style="width: 18rem;height: 4rem;font-size: 2.3rem;">inFloorindex3</button>
-
         </li>-->
     </ul>
 
@@ -224,17 +210,41 @@
             }
         }
 
+
+
         var floorIndex;
         var floorIndexMax;
         var floorId;
+ 
+        var floorData = [];
+        floorData = [
+            { id: "id-1f", name: "1F" },
+            { id: "id-2f", name: "2F" },
+            { id: "id-3f", name: "3F" },
+            { id: "id-4f", name: "4F" },
+            { id: "id-5f", name: "5F" },
+            { id: "id-6f", name: "6F" },
+            { id: "id-7f", name: "7F" },
+        ]
 
-        function floorListShow(){
-            $("#floorList").show();
-            console.log("进入建筑，显示楼层列表")
+        var html = "";
+        // floorListShow          // 写入floor列表
+        function webgl_call_web_show_floor_list(floorData) {
+            $('.floor_box').removeClass('hide');
+            console.log("进入建筑，显示楼层列表");
+            // 注入floor数据，显示ui；
+            $.each(floorData, function (index, item) {
+                html += '<li data-id="' + item.id + '" onclick="activeLi(' + index + ')">' + item.name + '</li>';
+                console.log(floorData.length);
+                floorIndexMax = floorData.length
+            });
+            $(".floor_box_ul ul").html(html);
         };
 
-        function floorListHide(){
-            $("#floorList").hide();
+              //    floorListHide
+        function webgl_call_web_hide_floor_list() {
+           // $("#floorList").hide();
+            $('.floor_box').addClass('hide');
             console.log("到外景，隐藏楼层列表")
         };
 
@@ -257,23 +267,24 @@
         }
 
         // 外部传floorId，列表变化
-        function inFloor(id) {
+       function webgl_call_web_active_floor(id) {
             console.log(id);
             $.each(floorData, function (index, item) {
                 if (id == item.id) {
                     console.log(index);
                     activeLi(index);
+                    floorIndex = index;
                 }
-                floorIndex = index;
-            })
+            });
+             console.log("3d_to_web_floorid--21：", floorIndex);
         }
 
         //传递 floorId给 3d；
-        function getFloorIdTo3d(index) {
+        function web_call_webgl_active_floor(index) {
             $.each(floorData, function (index, item) {
                 if (floorIndex == index) {
-                    console.log("getFloorIdTo3d", index);
-                    console.log("getFloorIdTo3d--", floorData[index].id);
+                    //console.log("getFloorIdTo3d", index);
+                    console.log("web_call_webgl_active_floor_floorid:", floorData[index].id);
                 }
             })
         }
@@ -296,27 +307,8 @@
             }
             floorIndex = index;
             //传递 floorId给 3d；
-            getFloorIdTo3d(index);
+            web_call_webgl_active_floor(index);
         }
-
-        // 写入floor列表
-        var floorData = [
-            { id: "id-1f", name: "1F" },
-            { id: "id-2f", name: "2F" },
-            { id: "id-3f", name: "3F" },
-            { id: "id-4f", name: "4F" },
-            { id: "id-5f", name: "5F" },
-            { id: "id-6f", name: "6F" },
-            { id: "id-7f", name: "7F" },
-        ]
-
-        var html = "";
-        $.each(floorData, function (index, item) {
-            html += '<li data-id="' + item.id + '" onclick="activeLi(' + index + ')">' + item.name + '</li>';
-            console.log(floorData.length);
-            floorIndexMax = floorData.length
-        });
-        $(".floor_box_ul ul").html(html);
 
 
         //react加载完成，隐藏幕布

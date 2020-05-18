@@ -65,8 +65,8 @@ define("compat", ["require", "exports"], function (require, exports) {
                 MiaokitJS.App.m_pProject.EnterRoom(pName);
             }
         }
-        web_call_webgl_switchMark(pName, pInfo) {
-            console.log("web_call_webgl_switchMark", pName, pInfo);
+        web_call_webgl_switchMark(pName, pInfo, pData) {
+            console.log("web_call_webgl_switchMark(切换标识)", pName, pInfo, pData);
         }
         web_call_webgl_mapReturnpark() {
             MiaokitJS.App.m_pProject.ExitViewer();
@@ -86,6 +86,9 @@ define("compat", ["require", "exports"], function (require, exports) {
         }
         web_call_webgl_cancelApplyPut(data) {
             console.log("web_call_webgl_cancelApplyPut", data);
+        }
+        web_call_webgl_parkRoomList(data) {
+            console.log("94# web_call_webgl_parkRoomList", data);
         }
     }
     exports.default = GlobalAction;
@@ -309,10 +312,11 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
             move3dBut("down");
         }
         onErrorHeadimageurl(index) {
-            var items = this.state.companyData;
+            console.log('rrrrddrrr');
+            var items = this.state.roomData;
             items[index].headimageurl = "./park_m/image/noImg.png";
             this.setState({
-                companyData: items
+                roomData: items
             });
         }
         render() {
@@ -2090,6 +2094,19 @@ define("dataService", ["require", "exports", "antd-mobile"], function (require, 
                 type: "get",
                 success: function (data) {
                     pBack(data);
+                }
+            });
+        }
+        getParkPointList(pBack, type, name) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getParkPointList?token=' + sessionStorage.getItem("token"),
+                data: {
+                    park_id: sessionStorage.getItem("park_id"),
+                    point_type: type,
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data, type, name);
                 }
             });
         }
@@ -4393,10 +4410,10 @@ define("findSell", ["require", "exports", "react", "react-router-dom", "compat",
             move3dBut("down");
         }
         onErrorHeadimageurl(index) {
-            var items = this.state.companyData;
+            var items = this.state.roomData;
             items[index].headimageurl = "./park_m/image/noImg.png";
             this.setState({
-                companyData: items
+                roomData: items
             });
         }
         render() {
@@ -11890,7 +11907,6 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         }
         componentWillMount() {
             this.dataService.getUserInfo(this.callBackGetUserInfo.bind(this));
-            curtainHide();
             let data = sessionStorage.getItem("userInfos");
             let dataObj = JSON.parse(data);
             if (dataObj) {
@@ -11979,7 +11995,12 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         initPark(park_id) {
             console.log("initPark", park_id);
             sessionStorage.setItem("park_id", park_id);
+            this.dataService.getParkBuildingInfo(this.roomList.bind(this));
             this.globalAction.web_call_webgl_initPark(park_id);
+        }
+        roomList(data) {
+            console.log('roomList', data);
+            this.globalAction.web_call_webgl_parkRoomList(data.response);
         }
         setParks(data) {
             this.setState({
@@ -12449,4 +12470,364 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
     }
     exports.default = Index;
     ReactDOM.render(React.createElement(router_1.default, null), document.getElementById('viewContainer'));
+});
+define("home (2)", ["require", "exports", "react", "react-router-dom", "homeBottom", "dataService", "compat", "css!./styles/iconfont.css", "css!./styles/view.css"], function (require, exports, React, RouterDOM, homeBottom_2, dataService_39, compat_14) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class Home extends React.Component {
+        constructor(props) {
+            super(props);
+            this.props = {
+                history: this.props.history,
+                children: this.props.children
+            };
+            this.globalAction = new compat_14.default();
+            this.dataService = new dataService_39.default();
+            this.setToken = this.setToken.bind(this);
+        }
+        componentDidMount() {
+        }
+        setToken(data) {
+            console.log("setToken", data);
+            localStorage.setItem("token", data.token);
+        }
+        backParklist() {
+            this.globalAction.web_call_webgl_pauseloadModuler();
+        }
+        render() {
+            return (React.createElement("div", null,
+                React.createElement("div", { className: "backParklist", onClick: this.backParklist.bind(this) },
+                    React.createElement(RouterDOM.Link, { to: "/" },
+                        React.createElement("i", { className: "iconfont", style: { "fontSize": "4rem", "color": "#6C6C6C" } }, "\uE83B"))),
+                React.createElement(TopBtn, null),
+                React.createElement(FoldBtn, null),
+                this.props.children,
+                React.createElement(homeBottom_2.default, { history: this.props.history })));
+        }
+    }
+    class TopBtn extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                topView: "topView",
+                topIcon1: "iconBox",
+                topIcon2: "iconBox",
+                topIcon3: "iconBox",
+                topIcon4: "iconBox",
+                topIcon5: "iconBox",
+                topIcon: "iconBox",
+                playIcon: "iconBox",
+                moreIcon: "iconBox",
+                topClose: "hide",
+                topViewBack: "",
+                topIcon3info: 0,
+                topIcon4info: 0,
+                topIcon5info: 0,
+                mapIcon: [
+                    { name: "交通" },
+                    { name: "商圈" },
+                    { name: "公交站" },
+                    { name: "全景" },
+                    { name: "停车场" },
+                    { name: "交通" },
+                ],
+                JTData: [],
+            };
+            this.globalAction = new compat_14.default();
+            this.dataService = new dataService_39.default();
+        }
+        moreIcon(a) {
+            console.log('toggleIconbox', a);
+            this.setState({
+                topView: "topView-big",
+                moreIcon: "hide",
+                topClose: "topClose",
+                topIcon1: "iconBox-big",
+                topIcon2: "iconBox-big",
+                topIcon3: "iconBox-big",
+                topIcon4: "iconBox-big",
+                topIcon5: "iconBox-big",
+                topViewBack: "topViewBack",
+            });
+            if (this.state.topIcon1 == "iconBoxIn" && this.state.topIcon2 == "iconBoxIn") {
+                this.setState({
+                    topIcon1: "iconBox-bigIn",
+                    topIcon2: "iconBox-bigIn",
+                });
+            }
+            else if (this.state.topIcon1 == "iconBoxIn") {
+                console.log(this.state.topIcon1);
+                this.setState({
+                    topIcon1: "iconBox-bigIn",
+                });
+            }
+            else if (this.state.topIcon2 == "iconBoxIn") {
+                console.log(this.state.topIcon1);
+                this.setState({
+                    topIcon2: "iconBox-bigIn",
+                });
+            }
+            ;
+            if (this.state.topIcon3info == 1) {
+                this.setState({
+                    topIcon3: "iconBox-bigIn",
+                });
+            }
+            if (this.state.topIcon4info == 1) {
+                this.setState({
+                    topIcon4: "iconBox-bigIn",
+                });
+            }
+            if (this.state.topIcon5info == 1) {
+                this.setState({
+                    topIcon5: "iconBox-bigIn",
+                });
+            }
+        }
+        topClose(a) {
+            console.log('topClose', a);
+            this.setState({
+                topView: "topView",
+                moreIcon: "iconBox",
+                topClose: "hide",
+                topViewBack: " ",
+            });
+            if (this.state.topIcon1 == "iconBox-bigIn" && this.state.topIcon2 == "iconBox-bigIn") {
+                this.setState({
+                    topIcon1: "iconBoxIn",
+                    topIcon2: "iconBoxIn",
+                });
+            }
+            else if (this.state.topIcon1 == "iconBox-bigIn") {
+                this.setState({
+                    topIcon1: "iconBoxIn",
+                    topIcon2: "iconBox",
+                });
+            }
+            else if (this.state.topIcon1 == "iconBox-bigIn") {
+                this.setState({
+                    topIcon1: "iconBox",
+                    topIcon2: "iconBoxIn",
+                });
+            }
+            else {
+                this.setState({
+                    topIcon1: "iconBox",
+                    topIcon2: "iconBox",
+                    topIcon3: "iconBox",
+                    topIcon4: "iconBox",
+                    topIcon5: "iconBox",
+                });
+            }
+        }
+        getMarkData(name, state, type) {
+            this.callMark(name, state, type);
+            if (state == "true") {
+                this.dataService.getParkPointList(this.callMark.bind(this), type, name);
+            }
+            else {
+            }
+        }
+        callMark(data, type, name) {
+            console.log('cccMark', data, type, name);
+        }
+        switchMark(a, bInfo) {
+            console.log('switchMark', a);
+            if (a == "交通") {
+                if (this.state.topIcon1 == "iconBoxIn" || this.state.topIcon1 == "iconBox-bigIn") {
+                    if (this.state.topView == "topView-big") {
+                        this.setState({
+                            topIcon1: "iconBox-big",
+                        });
+                    }
+                    else {
+                        this.setState({
+                            topIcon1: "iconBox",
+                        });
+                    }
+                    this.getMarkData(a, 'false', 1);
+                }
+                else {
+                    if (this.state.topView == "topView-big") {
+                        this.setState({
+                            topIcon1: "iconBox-bigIn",
+                        });
+                    }
+                    else {
+                        this.setState({
+                            topIcon1: "iconBoxIn",
+                        });
+                    }
+                    this.getMarkData(a, 'true', 1);
+                }
+            }
+            else if (a == "商圈") {
+                if (this.state.topIcon2 == "iconBoxIn" || this.state.topIcon2 == "iconBox-bigIn") {
+                    if (this.state.topView == "topView-big") {
+                        this.setState({
+                            topIcon2: "iconBox-big",
+                        });
+                    }
+                    else {
+                        this.setState({
+                            topIcon2: "iconBox",
+                        });
+                    }
+                }
+                else {
+                    if (this.state.topView == "topView-big") {
+                        this.setState({
+                            topIcon2: "iconBox-bigIn",
+                        });
+                    }
+                    else {
+                        this.setState({
+                            topIcon2: "iconBoxIn",
+                        });
+                    }
+                }
+            }
+            else if (a == "公交车") {
+                if (this.state.topIcon3 == "iconBox-big") {
+                    this.setState({
+                        topIcon3: "iconBox-bigIn",
+                        topIcon3info: 1,
+                    });
+                }
+                else {
+                    this.setState({
+                        topIcon3: "iconBox-big",
+                        topIcon3info: 0,
+                    });
+                }
+            }
+            else if (a == "全景") {
+                if (this.state.topIcon4 == "iconBox-big") {
+                    this.setState({
+                        topIcon4: "iconBox-bigIn",
+                        topIcon4info: 1,
+                    });
+                }
+                else {
+                    this.setState({
+                        topIcon4: "iconBox-big",
+                        topIcon4info: 0,
+                    });
+                }
+            }
+            else if (a == "停车场") {
+                if (this.state.topIcon5 == "iconBox-big") {
+                    this.setState({
+                        topIcon5: "iconBox-bigIn",
+                        topIcon5info: 1,
+                    });
+                }
+                else {
+                    this.setState({
+                        topIcon5: "iconBox-big",
+                        topIcon5info: 0,
+                    });
+                }
+            }
+        }
+        render() {
+            return (React.createElement("div", { className: this.state.topViewBack },
+                React.createElement("div", { className: this.state.topView },
+                    React.createElement("div", { className: this.state.topIcon1, onClick: this.switchMark.bind(this, "交通"), style: { "border-top": "0rem solid #646464" } },
+                        React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE816"),
+                        React.createElement("p", null, "\u4EA4\u901A")),
+                    React.createElement("div", { className: this.state.topIcon2, onClick: this.switchMark.bind(this, "商圈") },
+                        React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE81A"),
+                        React.createElement("p", null, "\u5546\u5708")),
+                    React.createElement("div", { className: this.state.moreIcon, onClick: this.moreIcon.bind(this, 10) },
+                        React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE819"),
+                        React.createElement("p", null, "\u66F4\u591A")),
+                    React.createElement("div", { className: this.state.topIcon3, onClick: this.switchMark.bind(this, "公交车"), style: { "border-top": "0rem solid #646464" } },
+                        React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE817"),
+                        React.createElement("p", null, "\u516C\u4EA4\u8F66")),
+                    React.createElement("div", { className: this.state.topIcon4, onClick: this.switchMark.bind(this, "全景") },
+                        React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE818"),
+                        React.createElement("p", null, "\u5168\u666F")),
+                    React.createElement("div", { className: this.state.topIcon5, onClick: this.switchMark.bind(this, "停车场") },
+                        React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE81B"),
+                        React.createElement("p", null, "\u505C\u8F66\u573A")),
+                    React.createElement("div", { className: this.state.topClose, onClick: this.topClose.bind(this, 10) },
+                        React.createElement("i", { className: "iconfont", style: { "fontSize": "3rem" } }, "\uE81C"))),
+                React.createElement(RouterDOM.Link, { to: "/narrate" },
+                    React.createElement("div", { className: "playIconbox", style: { "color": "#707070" } },
+                        React.createElement("div", { className: this.state.playIcon, style: { "border-top": "0rem solid #646464" } },
+                            React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE81D"),
+                            React.createElement("p", null, "\u8BB2\u89E3"))))));
+        }
+    }
+    class FoldBtn extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                foleIcon: "foleIcon",
+                foldView: "foldView-part",
+                iconfont: "iconfont iconfont-unturn",
+            };
+        }
+        toggleFold() {
+            if (this.state.foldView == "foldView") {
+                this.setState({
+                    foldView: " foldView-part"
+                });
+                window.move3dBut("down");
+            }
+            else {
+                this.setState({
+                    foldView: "foldView"
+                });
+                window.move3dBut("up");
+            }
+            if (this.state.iconfont == "iconfont iconfont-unturn") {
+                this.setState({
+                    iconfont: "iconfont iconfont-turn",
+                });
+            }
+            else {
+                this.setState({
+                    iconfont: "iconfont iconfont-unturn",
+                });
+            }
+            console.log(this.state.foldView);
+        }
+        render() {
+            return (React.createElement("div", { className: this.state.foldView },
+                React.createElement("div", { className: "foleBtn", onClick: this.toggleFold.bind(this) },
+                    React.createElement("i", { className: this.state.iconfont, style: { "fontSize": "4.5rem", "color": "#C0C0C0" } }, "\uE849")),
+                React.createElement("div", { className: "foleIconbox" },
+                    React.createElement(RouterDOM.Link, { to: "/parkInfo" },
+                        React.createElement("div", { className: this.state.foleIcon },
+                            React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#1C90E2", "height": "6rem" } }, "\uE80E"),
+                            React.createElement("p", null, "\u56ED\u533A\u4ECB\u7ECD"))),
+                    React.createElement(RouterDOM.Link, { to: "/findLease" },
+                        React.createElement("div", { className: this.state.foleIcon },
+                            React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#866FF1", "height": "6rem" } }, "\uE824"),
+                            React.createElement("p", null, "\u529E\u516C\u51FA\u79DF"))),
+                    React.createElement(RouterDOM.Link, { to: "/findSell" },
+                        React.createElement("div", { className: this.state.foleIcon },
+                            React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#F0594C", "height": "6rem" } }, "\uE854"),
+                            React.createElement("p", null, "\u529E\u516C\u51FA\u552E"))),
+                    React.createElement(RouterDOM.Link, { to: "/parkCompany" },
+                        React.createElement("div", { className: this.state.foleIcon },
+                            React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#1C90E2", "height": "6rem" } }, "\uE81E"),
+                            React.createElement("p", null, "\u56ED\u533A\u4F01\u4E1A"))),
+                    React.createElement(RouterDOM.Link, { to: "/applyPut" },
+                        React.createElement("div", { className: this.state.foleIcon },
+                            React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#208FE6", "height": "6rem" } }, "\uE81F"),
+                            React.createElement("p", null, "\u6446\u70B9\u7533\u8BF7"))),
+                    React.createElement(RouterDOM.Link, { to: "/bookSite" },
+                        React.createElement("div", { className: this.state.foleIcon },
+                            React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#26AC8F", "height": "6rem" } }, "\uE820"),
+                            React.createElement("p", null, "\u573A\u5730\u9884\u5B9A"))),
+                    React.createElement(RouterDOM.Link, { to: "/repairsOnline" },
+                        React.createElement("div", { className: this.state.foleIcon },
+                            React.createElement("i", { className: "iconfont", style: { "fontSize": "6rem", "color": "#208FE6", "height": "6rem" } }, "\uE822"),
+                            React.createElement("p", null, "\u5728\u7EBF\u62A5\u4FEE"))))));
+        }
+    }
+    exports.default = Home;
 });

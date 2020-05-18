@@ -1,5 +1,6 @@
 import FindLease from 'findLease';
 import { Toast } from 'antd-mobile';
+import { func } from 'prop-types';
 
 class DataService {
 
@@ -1743,6 +1744,26 @@ class DataService {
     })
   }
 
+  //101 (园区信息-3D显示-兴趣点列表) 获取园区兴趣点列表信息
+  //getParkPointList
+  public getParkPointList(pBack,type,name) {
+//    "park_id":"1001"
+////兴趣点类型 0所有 1交通 2商圈 3公交站 4全景图 5停车场
+//"point_type":1
+    $.ajax({
+      url: this.state.rooturl + '/api/getParkPointList?token=' + sessionStorage.getItem("token"),
+      data: {
+         park_id: sessionStorage.getItem("park_id"),
+        point_type: type,
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data,type,name);
+
+      }
+    })
+  }
+
   // 106.(园区信息-首页)获取园区信息-园区简介区位优势优惠政策园区风采展示信息
   public getParkShowInfo(pBack, park_id) {
     $.ajax({
@@ -1758,6 +1779,7 @@ class DataService {
     })
   }
 
+  
 
   public state = {
     rooturl: "http://parkadmin.yongtoc.com",

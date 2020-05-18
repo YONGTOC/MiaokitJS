@@ -215,7 +215,7 @@ class Index extends React.Component {
     //  });
     //}
 
-    curtainHide();
+    //curtainHide();
 
         let data = sessionStorage.getItem("userInfos");
     let dataObj = JSON.parse(data);
@@ -224,6 +224,9 @@ class Index extends React.Component {
       console.log("77777777777771", dataObj.name)
       this.dataService.getParks(this.setParks);
     }
+
+
+
 
   }
 
@@ -337,8 +340,17 @@ class Index extends React.Component {
   public initPark(this,park_id) {
     console.log("initPark", park_id)
     sessionStorage.setItem("park_id", park_id);
+
+    //通过园区的id，获取园区大楼，及大楼下楼层，及楼层下房间列表
+    this.dataService.getParkBuildingInfo(this.roomList.bind(this));
     this.globalAction.web_call_webgl_initPark(park_id);
   }
+
+  public roomList(data) {
+    console.log('roomList', data);
+    this.globalAction.web_call_webgl_parkRoomList(data.response);
+  }
+
 
   //加载园区信息列表
   public setParks(data) {

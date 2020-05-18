@@ -261,10 +261,10 @@ class LeaseList extends React.Component {
 
 
   onErrorHeadimageurl(this, index) {
-    var items = this.state.companyData;
+    var items = this.state.roomData;
     items[index].headimageurl = "./park_m/image/noImg.png";
     this.setState({
-      companyData: items
+      roomData: items
     });
   }
 

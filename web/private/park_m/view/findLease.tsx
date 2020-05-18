@@ -253,7 +253,7 @@ class LeaseList extends React.Component {
 
   //返回园区map
   public mapReturnpark() {
-    //通知3d，返回园区视角
+    //通知3d，返回园区视角 
     this.globalAction.web_call_webgl_mapReturnpark();
     //3dBut-down
     move3dBut("down")
@@ -261,10 +261,11 @@ class LeaseList extends React.Component {
 
 
   onErrorHeadimageurl(this, index) {
-    var items = this.state.companyData;
+    console.log('rrrrddrrr')
+    var items = this.state.roomData;
     items[index].headimageurl = "./park_m/image/noImg.png";
     this.setState({
-      companyData: items
+      roomData: items
     });
   }
 
