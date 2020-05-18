@@ -15,7 +15,7 @@ class App extends React.Component<{ history: any }>{
 
 
   componentDidMount() {
- 
+    console.log("还原")
   }
 
 
