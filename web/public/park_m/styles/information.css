@@ -20,6 +20,8 @@
   height: 100%;
   width: 100%;
   padding-top: 100px;
+  overflow-y: auto;
+  padding-bottom: 200px;
 }
 .information-content-child {
   height: 290px;
