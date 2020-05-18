@@ -89,7 +89,7 @@ class Index extends React.Component {
   public globalAction: GlobalAction = new GlobalAction();
 
   public readonly state: Readonly<IState> = {
-    inputValue: "请输入园区名/区域名/商圈名", // 输入框默认值
+    inputValue: "请输入园区名/区域名/商圈名", // 输入框默认值 
     city: "", // 城市
     parkArr: [
       {   
@@ -147,7 +147,7 @@ class Index extends React.Component {
     ],
     areas: [{ name: "不限" }, { name: "0-100m" }, { name: "100-200m" }, { name: "200-300m" }, { name: "300-500m" }, { name: "500-1000m" }, { name: ">1000m" }],
     totalPrice: [{ name: "不限" }, { name: "0-0.5万元/月" }, { name: "1.5-3万元/月" }, { name: "3-5万元/月" }, { name: "5-10万元/月" }, { name: "10万元/月以上" }],
-    unitPrice: [{ name: "不限" }, { name: "1-0.5万元/月" }, { name: "1.5-3万元/月" }, { name: "3-5万元/月" }, { name: "5-10万元/月" }, { name: "10万元/月以上" }],
+    unitPrice: [{ name: "不限" }, { name: "1-0.5元/m²·月" }, { name: "1.5-3元/m²·月" }, { name: "3-5元/m²·月" }, { name: "5-10元/m²·月" }, { name: "10元/m²·月" }],
     isPosition: false, // 园区弹出
     position: "", // 园区位置名字 
     isArea: true, // 园区区域和地铁切换

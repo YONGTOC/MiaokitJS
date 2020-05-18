@@ -1,11 +1,10 @@
 import FindLease from 'findLease';
 import { Toast } from 'antd-mobile';
-import { func } from 'prop-types';
 
 class DataService {
 
   public componentDidMount() {
-    // console.log(sessionStorage.getItem("token"));
+    // console.log(sessionStorage.getItem("token"));  
 
     // this.setToken = this.setToken.bind(this);
   }
@@ -1744,26 +1743,6 @@ class DataService {
     })
   }
 
-  //101 (园区信息-3D显示-兴趣点列表) 获取园区兴趣点列表信息
-  //getParkPointList
-  public getParkPointList(pBack,type,name) {
-//    "park_id":"1001"
-////兴趣点类型 0所有 1交通 2商圈 3公交站 4全景图 5停车场
-//"point_type":1
-    $.ajax({
-      url: this.state.rooturl + '/api/getParkPointList?token=' + sessionStorage.getItem("token"),
-      data: {
-         park_id: sessionStorage.getItem("park_id"),
-        point_type: type,
-      },
-      type: "get",
-      success: function (data) {
-        pBack(data,type,name);
-
-      }
-    })
-  }
-
   // 106.(园区信息-首页)获取园区信息-园区简介区位优势优惠政策园区风采展示信息
   public getParkShowInfo(pBack, park_id) {
     $.ajax({
@@ -1779,7 +1758,43 @@ class DataService {
     })
   }
 
-  
+  // 107.(我的个人中心-租用到期-楼宇，楼层层级列表)通过园区的id，获取楼宇，楼层层级列表
+  public getParkBuildingAndFloorLevel(pBack) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getParkBuildingAndFloorLevel?token=' + sessionStorage.getItem("token"),
+      dataType: "json",
+      data: {
+        id: sessionStorage.getItem("park_id"),
+        park_id: sessionStorage.getItem("park_id")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
+  // 108.(我的个人中心-租用到期-搜索到期房间列表)通过园区的id，到期时间，园区大楼，楼层， 获取搜索到期房间列表
+  public getExpiredRoomInfo(pBack, obj) {
+    console.log("obj", obj)
+    $.ajax({
+      url: this.state.rooturl + '/api/getExpiredRoomInfo?token=' + sessionStorage.getItem("token"),
+      dataType: "json",
+      data: {
+        id: obj.id,
+        park_id: obj.parkId,
+        room_name: obj.roomName,
+        date: obj.date,
+        building_id: obj.buildingId,
+        floor_id: obj.floorId
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
 
   public state = {
     rooturl: "http://parkadmin.yongtoc.com",
