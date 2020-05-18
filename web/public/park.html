@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn" style="height: 100%; margin: 0; padding: 0;">
+<head>
+    <meta charset="utf-8" />
+    <title>园区可视化 2020.1</title>
+
+    <script src="./common/miaokit/MiaokitLoader.min.js"></script>
+    <script src="./common/requirejs/require.js"></script>
+
+    <link href="./common/antd/dist/antd.min.css" rel="stylesheet" type="text/css">
+    <script>
+        //let MiaokitJS = new MiaokitModule({
+        //    m_bUnity: false,
+        //    m_pUnityPath: "./common/miaokit/MiaokitU3D/Build/MiaokitU3D.json",
+        //    m_pModulePath: "./common/miaokit/Miaokit.wasm",
+        //    m_pServer: "./data/project/"
+        //});
+
+        //MiaokitJS["m_aTiles"].push({
+        //    m_pPath: "./data/project/project.lzma.bin",
+        //    m_pData: null,
+        //    m_pTile: null,
+        //    Active: function () {
+        //        MiaokitJS.App.ActiveTile(this.m_pTile);
+        //    }
+        //});
+
+        //MiaokitJS.Preload();
+
+            let MiaokitJS = new MiaokitModule("Sisyphus", "./data/projects/config.txt");
+
+        window.onload = function () {
+            //window.oncontextmenu = function (e) {
+            //    e.preventDefault();
+            //};
+
+            //MiaokitJS.Load(function () {
+            //    MiaokitJS.App.Start();
+            //}, function (nEventID) {
+            //    MiaokitJS.App.Update();
+            //    });
+
+            
+            MiaokitJS.Track("Window.onload");
+
+            window.oncontextmenu = function (e) {
+                e.preventDefault();
+            };
+
+            MiaokitJS.Load(function () {
+                MiaokitJS.App.Start();
+            }, function (nEventID) {
+                MiaokitJS.App.Update();
+            });
+
+            require.config({
+                baseUrl: "park",
+                paths: {
+                    "react": "../common/react/react.production.min",
+                    "react-dom": "../common/react/react-dom.production.min",
+                    "react-router": "../common/react/react-router.min",
+                    "react-router-dom": "../common/react/react-router-dom.min",
+                    "moment": "../common/moment.min",
+                    "antd": "../common/antd/dist/antd.min",
+                    "Index": "js/view",
+
+                    "g2plot": "../common/g2plot",
+
+                },
+                // 所有模块(*)中的CSS依赖("css")从指定地址中加载("common/requirejs/css.min.js")
+                // 模块中导入CSS依赖的方式为: import "css!./x.css"。!是插件依赖与样式文件地址的分隔符
+                map: {
+                    "*": {
+                        "css": "common/requirejs/css.min.js",
+                    }
+                }
+            });
+
+
+            require(['Index'], function (view) {
+                MiaokitJS.App.UI = view.default.g_pIns;
+            });
+
+
+        }
+    </script>
+    <script src="./common/util.js"></script>
+    <script src="./common/iconfont.js"></script>
+
+</head>
+<body style="height: 100%; margin: 0; padding: 0;">
+
+    <!-- html,body { height: 100%;margin: 0; padding: 0;} div height: 100% 才会起效，因为继承父级高度-->
+    <!-- 微信端不能为任意尺寸，否则会崩溃 -->
+    <div id="unityContainer" style="width: 100%; height: 100%; background:blue; margin: auto"></div>
+    <!--<div id="viewContainer" style="width: 100%; height: 100%; background:blue; margin: auto"></div>-->
+    <div id="viewContainer"></div>
+
+    <!--测试按钮，外部js调用组件内方法-->
+    <ul style="position: absolute;bottom: 40px;right:100px;z-index: 101;">
+        <li>
+            <button onclick="flushTree()">传入数据，刷新tree</button>
+        </li>
+        <li>
+            <button onclick="showLeftview(3)">显示组件3</button>
+        </li>
+        <li>
+            <button onclick="hideLeftview(99)">隐藏组件</button>
+        </li>
+        <li>
+            <button onclick="flushBusiness()">激活招商列表组件 </button>
+        </li>
+        <li>
+            <button onclick="flushCompany(1)">激活入驻企业组件</button>
+        </li>
+        <li>
+            <button onclick="callback(1, pBack)">外部传id,pBack，回调</button>
+        </li>
+        <li>
+            <button onclick="roomScene(1)">激活房间全景</button>
+        </li>
+        <li>
+            <button onclick="roomAduio()">激活房间讲解</button>
+        </li>
+    </ul>
+
+    <script>
+        // 临时代码，测试 外部js调用组件内方法
+        function flushTree() {
+            let newTree = {
+                equipmentList: [
+                    {
+                        "equipmentType": "newtree",
+                        "equipmentID": "1",
+                        "buildList": [
+                            {
+                                "buildname": "A座",
+                                "areaList": [
+                                    {
+                                        "areaName": "A区",
+                                        "floorList": [
+                                            {
+                                                "floorName": "A-1F",
+                                                "equipments": [
+                                                    { "equipmentName": "机房1-A组列头柜" },
+                                                    { "equipmentName": "机房1-B组列头柜" },
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "areaName": "B区",
+                                        "floorList": [
+                                            {
+                                                "floorName": "B-1F",
+                                                "equipments": [
+                                                    { "equipmentName": "机房1-A组列头柜" },
+                                                    { "equipmentName": "机房1-B组列头柜" },
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                ]
+                            }
+                        ]
+                    }
+                ],
+            }
+            // 更新树形图数据
+            MiaokitJS.App.UI.updateTree(newTree);
+            // 显示树形图
+            MiaokitJS.App.UI.showLeftview(10);
+        }
+
+        // 测试 供外部展开子组件显示；
+        //传入参数， 1 - 园区介绍; 2 - 区域优势; 3 - 招商列表; 4 - 入驻企业; 10 - 顶部树形列表;
+        function showLeftview(a) {
+            MiaokitJS.App.UI.showLeftview(a);
+        }
+
+        function hideLeftview(a) {
+            MiaokitJS.App.UI.hideLeftview(a);
+        }
+
+        // 激活招商列表组件 
+        function flushBusiness() {
+            let newBusiness = {
+                roomList: [
+                    {
+                        "roomID": "id-A座-4F-B411(update)",
+                        "roomName": "A座-4F-B411(update)",
+                        "roomArea": "51",
+                        "addTime": "2019-7-11",
+                    },
+                    {
+                        "roomID": "id-A座-4F-B412(update)",
+                        "roomName": "A座-4F-B412(update)",
+                        "roomArea": "52",
+                        "addTime": "2019-7-15",
+                    },
+                ],
+            }
+            MiaokitJS.App.UI.updateBusiness(newBusiness);
+            MiaokitJS.App.UI.showLeftview(3);
+        }
+
+        // 激活入驻企业组件  
+        function flushCompany() {
+            let newCompany = {
+                companyList: [
+                    {
+                        "companyID": "id-浙江永拓信息科技有限公司(update)",
+                        "companyName": "浙江永拓信息科技有限公司(update)",
+                        "address": "E座B区-3F-301",
+                        "type": "科技服务"
+
+                    },
+                    {
+                        "companyID": "id-桂林银行(update)",
+                        "companyName": "桂林银行(update)",
+                        "address": "A座A区-1F-101",
+                        "type": "金融保险"
+                    },
+                ],
+            }
+            MiaokitJS.App.UI.updateCompany(newCompany);
+            MiaokitJS.App.UI.showLeftview(4);
+        }
+
+        //传入id，回调
+        function callback(a, pBack) {
+            console.log("callback", a);
+            MiaokitJS.App.UI.callback(a,pBack)
+        }
+
+        // 外部方法供组件内部调用； TopNav.outerAction
+        function outerAction(a) {
+            console.log("neiAction", a);
+        }
+
+         // 激活房间全景
+        function roomScene(a) {
+            MiaokitJS.App.UI.roomScene(a);
+        }
+
+         //激活房间讲解
+        function roomAduio() {
+            var voice = "http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3";
+            MiaokitJS.App.UI.roomAduio(voice);
+        }
+
+    </script>
+
+
+</body>
+
+</html>

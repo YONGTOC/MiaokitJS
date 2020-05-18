@@ -1,0 +1,620 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui" />
+    <meta name="renderer" content="webkit" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="format-detection" content="email=no" />
+    <meta name="revised" content="dielang, 2017/09/22" />
+    <meta name="author" content="yongtop-tec" />
+    <meta name="description" content="惠阳政务中心" />
+
+    <title>惠阳政务中心</title>
+
+    <script src="./common/miaokit/MiaokitLoader.min.js"></script>
+    <script>
+        let MiaokitJS = new MiaokitModule("Sisyphus", "./data/projects/config.txt");
+
+        window.onload = function () {
+            MiaokitJS.Track("Window.onload");
+
+            window.oncontextmenu = function (e) {
+                e.preventDefault();
+            };
+
+            MiaokitJS.Load(function () {
+                MiaokitJS.App.Start();
+            }, function (nEventID) {
+                MiaokitJS.App.Update();
+            });
+        }
+    </script>
+
+    <link rel="stylesheet" href="./easygo/css/style.css" />
+    <link rel="stylesheet" href="./easygo/css/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="./easygo/css/icomoon.css" />
+
+    <script src="./common/jquery.js"></script>
+    <script src="./common/jquery.mobile-1.4.5.min.js"></script>
+    <script src="./common/lazy-load-img.min.js"></script>
+    <script src="./common/util.js"></script>
+
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+    <script src="https://indoor.yunweizhi.net/locationLib/1.2.5/locationlib.js"></script>
+    <script src="https://webapi.amap.com/maps?v=1.4.14&key=8f7b2fefdf8ce375c7badee5a2d60a48"></script>
+
+    <script src="./easygo/js/app.js"></script>
+    <script src="./easygo/js/view.js"></script>
+</head>
+
+<body>
+    <!--两个IFRAME的引入的页面的启动影响非常大，开销有4秒多-->
+    <!--主面板开始-->
+    <div class="hlb_wrapper">
+        <!--导航开始-->
+        <div data-role="page" id="page-index" class="index" style="background: url(./easygo/images/bg_blue.png) center;">
+            <!--顶部进度条开始-->
+            <div class="top-process">
+                <div id="topprocessbar" style="width:0%;"></div>
+            </div>
+            <!--顶部进度条结束-->
+            <!--主进度条-->
+            <div class="processcontainer">
+                <div id="processcontainer-container">
+                    <div class="stick"></div>
+                    <div class="stick"></div>
+                    <div class="stick"></div>
+                    <div class="stick"></div>
+                    <div class="stick"></div>
+                    <div class="stick"></div>
+
+                    <h1>Loading...</h1>
+                </div>
+                <div id="processbar" style="width:0%;"></div>
+            </div>
+            <!--主进度条-->
+            <div class="webgl_content" id="unityContainer" style="height: 100%;">
+                <div class="select-add" id="shusan" style="top: 4rem;">紧急疏散</div>
+                <div class="two_d_btn" style="top: 168px;">
+                    <a href="#">2D</a>
+                </div>
+                <div class="index-serch">
+                    <div class="center-container">
+                        <a href="#pop-input-start" data-inline="true" class="input-a" style="width: 100%">
+                            <input type="search" name="search" class="a-input" placeholder="请输入目的地" />
+                        </a>
+                    </div>
+                </div>
+                <div class="current-address" style="visibility: visible">
+                    <div class="compass"></div>
+                </div>
+                <div class="lockScene"></div>
+                <div class="InfoToast" style="display:none;">
+                    <div class="Info-Img-Box"> <img src="./easygo/images/ex.png" alt="" id="Info-Img"> </div><span>10米后通过出入口进入1层</span>
+                </div>
+                <div class="select-add" id="select-add"><span>进入室内</span></div>
+                <div class="floor-box-div"></div>
+                <div class="floor_box" id="floor-box">
+                    <ul></ul>
+                </div>
+                <!--复位-->
+                <div class="reset">
+                    <ul>
+                        <li class="ico-reset"></li>
+                    </ul>
+                </div>
+                <!-- 提示弹窗 -->
+                <div class="messagebox" id="msgBox">
+                    <img src="./easygo/images/loading.gif" alt="搜索中">
+                    <p class="msgtxt">正在搜索蓝牙信号</p>
+                </div>
+                <!-- 提示弹窗end -->
+                <!--search_direction_box-->
+                <div class="search_direction_box" style="display:none;">
+                    <div class="search_direction_box-container">
+                        <div class="search-box">
+                            <ul class="search-dot-list">
+                                <li class="search-dot"></li>
+                                <li class="search-dot"></li>
+                                <li class="search-dot"></li>
+                                <li class="search-dot"></li>
+                                <li class="search-dot"></li>
+                            </ul>
+                            <div class="start_positon clearfix">
+                                <div class="start_input">
+                                    <a href="#pop-input-start" data-status="start">
+                                        <input type="text" name="start_position" id="start_position" placeholder="点此输入起点"
+                                               data-role="none" />
+                                        <div class="search-right-text">
+                                            <span id="start-build"></span><span id="start-floor"></span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="end_positon">
+                                <div class="end_input">
+                                    <a href="#pop-input-start">
+                                        <input type="text" name="end_position" id="end_position" placeholder="点此输入终点" data-role="none" />
+                                        <div class="search-right-text">
+                                            <span id="end-build"></span><span id="end-floor"></span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <ul class="search-path clearfix">
+                                <li class="path active">推荐路线</li>
+                                <li class="path">优先楼梯</li>
+                                <li class="path">优先电梯</li>
+                            </ul>
+                        </div>
+                        <div class="history-rollback-wrapper">
+                            <ul class="search-path-floor"></ul>
+                        </div>
+                        <div class="navbox-line"></div>
+                        <div id="nav-bottom" class="clearfix">
+                            <div class="pre-navigate">
+                                <button id="autostep" class="autostep-btn ui-btn ui-shadow ui-corner-all">模拟导航</button>
+                                <button id="search-go" class="navigation_btn" style="width: 142px;">
+                                    <span class="search-nav-icon"></span><span class="search-nav-text">开始导航</span>
+                                </button>
+                                <a id="search-cancel">取消</a>
+                            </div>
+                            <div class="navigating-btn" style="display:none;">
+                                <button id="replanning">重新规划</button>
+                                <button class="btn-exit-rollback">结束导航</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--search_direction_box end-->
+                <!-- search-navigate-btn -->
+                <div class="search-navigate-btn-container">
+                    <ul class="clearfix">
+                        <li class="search-navigate-block fl"><a>首页</a></li>
+                        <li class="search-navigate-block fl">
+                            <a href="#page-saishi">赛事</a>
+                        </li>
+                        <li class="search-navigate-btn" id="search-navigate-btn">
+                            <div class="before-box-nav">
+                                <span class="search-navigate-btn-icon"></span>
+                                <span class="text-to-nav">路线</span>
+                            </div>
+                        </li>
+                        <li class="search-navigate-block fr"><a href="#page-jianjie">简介</a></li>
+                        <li class="search-navigate-block fr"><a href="#page-sheshi">设施</a></li>
+                    </ul>
+
+                </div>
+                <!-- search-navigate-btn end -->
+                <!-- 线路回放显示开始 -->
+                <!-- <div class="history-rollback-wrapper">
+                            <ul></ul>
+                            <div class="exit-wrapper">
+                                <div class="btn-exit-rollback">退出回放</div>
+                            </div>
+                        </div>
+                        <div class="nav-again" id="nav-again">
+                            <div class="again-btn" id="again-btn">再次导航</div>
+                            <span class="canel" id="again-canel">取消</span>
+                        </div> -->
+                <!-- 线路回放显示结束 -->
+                <!--分类查找路点面板开始-->
+                <div class="base-position-list" style="display: none">
+                    <p>关闭</p>
+                    <ul></ul>
+                </div>
+                <!--分类查找路点面板结束-->
+                <!--设置起点/终点-->
+                <ul class="choose-set-point" style="display:none;">
+                    <li class="post">
+                        <span class="text"></span>
+                        <div><span class="post-text"></span></div>
+                    </li>
+                    <li class="choose-right">
+                        <div class="end-icon">
+                            <span type="end" class="set">到这去</span>
+                        </div>
+                        <div class="close-choose"></div>
+                    </li>
+                </ul>
+                <!--设置起点/终点-->
+            </div>
+            <!--侧边栏目开始-->
+            <div id="left-slide">
+                <ul></ul>
+            </div>
+            <!--侧边栏目结束-->
+            <!--音频-->
+            <audio id="voice" style="visibility: hidden">
+                <source src="data:audio/mp3;base64,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"
+                        type="audio/mp3" />
+            </audio>
+        </div>
+        <!--导航结束-->
+        <!--医院介绍开始-->
+        <div data-role="page" id="page-hospital">
+            <div class="hospital_box">
+                <div class="hospital_img"><img src="./easygo/images/default.png" /></div>
+                <div class="container">
+                    <div class="hospital_name"></div>
+                    <div class="hospital_content"></div>
+                    <!--detail_box-->
+                    <div class="detail_box">
+                        <!--发展历史-->
+                        <div class="hospital_item history">
+                            <div class="vertical-line"></div>
+                            <div class="name"></div>
+                            <div class="line"></div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="content history-content"></div>
+                        <!--发展历史 end-->
+                        <!--科室设置-->
+                        <div class="hospital_item kssz">
+                            <div class="vertical-line"></div>
+                            <div class="name"></div>
+                            <div class="line"></div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="content kssz-content"></div>
+                        <!--科室设置 end-->
+                    </div>
+                    <!--detail_box end-->
+                </div>
+            </div>
+        </div>
+        <!--医院介绍结束-->
+        <!--科室介绍开始-->
+        <div data-role="page" id="page-departments">
+            <div class="dep_box">
+                <div class="departments_list">
+                    <ul></ul>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="empty_height"></div>
+        </div>
+        <!--科室介绍结束-->
+        <!--专家介绍开始-->
+        <div data-role="page" id="page-expert">
+            <div class="dep_box">
+                <div class="departments_list">
+                    <ul></ul>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="empty_height"></div>
+        </div>
+        <!--专家介绍结束-->
+        <!--专家列表开始-->
+        <div data-role="page" id="page-expert-list">
+            <div class="dep_box" style="background-color: #f2f2f2;">
+                <div class="expert_list">
+                    <ul></ul>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="empty_height" style="background-color:#f2f2f2;"></div>
+            <!--专家列表结束-->
+        </div>
+        <!--专家详情开始-->
+        <div data-role="page" id="page-expert-detail">
+            <div class="dep_box" style="padding-top: 0px;">
+                <div class="head-box">
+                    <div class="head-img">
+                        <div class="img-container">
+                            <img src="./easygo/images/default.png" alt="头像" />
+                        </div>
+                    </div>
+                    <div class="personal-msg">
+                        <span class="name"></span>
+                        <p class="expert-msg"></p>
+                    </div>
+                    <div class="department-msg">
+                        <span class="go-ahead">直达科室</span>
+                    </div>
+                </div>
+                <div class="horizon-line"></div>
+                <div class="work-table">
+                    <div class="table-head">
+                        <div class="vertical-line"></div>
+                        <div class="title">出诊时间</div>
+                    </div>
+                    <table cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td></td>
+                            <td>周一</td>
+                            <td>周二</td>
+                            <td>周三</td>
+                            <td>周四</td>
+                            <td>周五</td>
+                            <td>周六</td>
+                            <td>周日</td>
+                        </tr>
+                        <tr class="am">
+                            <td>上午</td>
+                            <td><span></span></td>
+                            <td><span></span></td>
+                            <td><span></span></td>
+                            <td><span></span></td>
+                            <td><span></span></td>
+                            <td><span></span></td>
+                            <td><span></span></td>
+                        </tr>
+                        <tr class="pm">
+                            <td>下午</td>
+                            <td><span></span></td>
+                            <td><span></span></td>
+                            <td><span></span></td>
+                            <td><span></span></td>
+                            <td><span></span></td>
+                            <td><span></span></td>
+                            <td><span></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="expert-personal-detail">
+                    <div class="expert-head">
+                        <div class="vertical-line"></div>
+                        <div class="title">专家介绍</div>
+                    </div>
+                    <div class="content"></div>
+                </div>
+            </div>
+            <div class="empty_height"></div>
+        </div>
+        <!--专家详情结束-->
+        <!--科室详情开始-->
+        <div data-role="page" id="page-dep-detail">
+            <div class="dep_box" style="padding: 20px;">
+                <div class="dep_title"></div>
+                <div class="dep_detail"></div>
+                <div class="img-container">
+                    <img src="./easygo/images/default.png" alt="科室图片" />
+                </div>
+            </div>
+            <div class="empty_height"></div>
+        </div>
+        <!--科室详情开始-->
+        <!--自助诊导开始-->
+        <div data-role="page" id="page-self-service">
+            <div class="self-head-tag" style="top:0.5rem;">
+                部位
+            </div>
+            <ul class="self-sex-tag">
+                <li class="self-tag-current">男</li>
+                <li class="self-tag-normal">女</li>
+            </ul>
+            <!-- <ul class="self-adult-tag">
+              <li class="self-tag-current">成人</li>
+              <li class="self-tag-normal">儿童</li>
+            </ul> -->
+            <div class="reversal">转身</div>
+            <div class="container">
+                <div class="person-model">
+                    <img src="./easygo/images/default.png" alt="" width="1080" height="1920" usemap="#Map" />
+                    <map name="Map" id="Map">
+                        <area dataid="toubu" alt="" title="" href="#头部" shape="poly"
+                              coords="482,161,524,153,565,150,595,161,632,177,640,208,645,238,641,259,636,278,639,299,629,320,620,330,611,343,597,366,572,388,552,392,531,394,513,385,490,368,474,329,462,319,452,302,450,284,450,257,448,210,459,187" />
+                        <area dataid="yanjingbu" alt="" title="" href="#咽颈部" shape="poly"
+                              coords="598,375,592,381,585,385,578,392,564,395,549,397,531,397,521,393,503,384,496,380,487,374,490,385,491,400,491,411,488,416,473,423,465,428,451,432,491,435,527,437,559,437,585,435,607,436,621,431,623,422,605,415,596,407" />
+                        <area dataid="xiongbu" alt="" title="" href="#胸部" shape="poly"
+                              coords="362,557,354,531,361,508,377,471,389,452,416,445,438,436,457,438,487,443,532,443,570,447,601,444,627,437,642,428,668,437,697,444,694,463,692,500,702,534,713,556,705,572,702,608,694,638,683,649,640,652,595,655,532,632,521,648,494,658,455,659,414,663,387,656,374,578" />
+                        <area dataid="fubu" alt="" title="" href="#腹部" shape="poly"
+                              coords="392,664,407,665,421,666,437,666,456,667,481,665,500,663,514,659,530,650,539,642,558,647,568,651,584,660,603,659,625,658,650,658,670,658,687,654,685,670,680,683,674,701,670,717,664,732,665,749,672,768,678,791,681,814,684,836,687,857,687,876,663,875,634,873,603,874,576,878,537,879,511,877,480,877,454,873,426,871,409,876,398,878,400,822,408,785,416,760,415,728" />
+                        <area dataid="shengzhibuwei" alt="" title="" href="#生殖部位" shape="poly"
+                              coords="395,884,434,879,453,879,492,884,508,884,540,884,593,884,622,879,654,881,684,883,685,906,685,931,684,947,695,973,694,998,697,1026,695,1033,659,1028,641,1029,615,1032,592,1036,576,1047,552,1047,546,1024,545,1018,536,1018,529,1018,524,1022,523,1032,522,1047,507,1046,478,1042,457,1038,434,1038,405,1039,385,1044,377,1045" />
+                        <area dataid="tuibu" alt="" title="" href="#腿部" shape="poly"
+                              coords="384,1099,386,1074,386,1057,386,1050,404,1049,424,1047,445,1046,460,1043,474,1045,489,1049,504,1052,516,1056,529,1056,527,1046,538,1038,545,1048,555,1058,567,1059,585,1052,602,1049,612,1041,637,1038,657,1037,674,1037,691,1040,698,1045,699,1053,694,1067,690,1089,690,1124,688,1150,679,1183,682,1198,682,1236,676,1266,674,1295,675,1324,678,1351,678,1385,678,1423,665,1484,655,1520,651,1553,645,1580,649,1609,651,1633,646,1657,647,1686,655,1713,666,1733,659,1750,647,1759,618,1756,589,1755,576,1753,577,1718,582,1689,581,1654,589,1625,594,1607,584,1550,577,1496,579,1441,575,1359,569,1285,567,1243,559,1205,560,1138,555,1072,554,1062,524,1060,521,1071,519,1106,518,1149,516,1187,516,1210,509,1262,503,1300,500,1338,499,1380,496,1439,499,1491,496,1535,487,1579,481,1615,489,1632,494,1649,494,1677,498,1708,500,1728,508,1747,500,1759,471,1756,446,1756,430,1759,414,1753,419,1714,430,1686,430,1649,429,1556,418,1504,402,1415,400,1265,398,1183" />
+                        <area dataid="shoubu" alt="" title="" href="#手部" shape="poly"
+                              coords="383,659,368,675,357,696,337,729,319,762,304,801,293,827,273,869,250,908,221,951,199,976,202,1018,198,1049,198,1087,190,1099,182,1059,179,1052,170,1075,164,1106,151,1121,149,1089,159,1053,146,1076,135,1105,115,1130,113,1109,127,1067,132,1046,116,1058,101,1082,83,1099,91,1069,112,1032,120,1012,113,1002,96,1011,78,1013,74,1006,93,991,122,973,146,961,161,943,171,915,183,863,209,814,227,777,258,698,283,632,303,593,316,575,319,552,330,526,366,468,377,459,365,480,357,503,347,532,364,572,373,593" />
+                        <area dataid="shoubu" alt="" title="" href="#手部" shape="poly"
+                              coords="704,447,700,464,699,484,702,516,715,549,716,562,713,574,710,588,707,603,703,620,699,636,698,648,721,676,737,712,763,754,783,803,796,819,815,864,842,908,869,950,883,967,879,995,886,1030,885,1065,889,1094,896,1087,900,1056,904,1046,909,1065,916,1089,924,1112,936,1107,926,1062,925,1048,931,1060,941,1081,958,1122,968,1124,972,1113,958,1075,948,1038,954,1036,993,1093,1001,1088,999,1075,980,1047,983,1050,965,1002,971,997,983,1003,998,1013,1014,1004,985,983,940,958,915,922,887,833,849,741,793,604,740,491" />
+                    </map>
+                </div>
+            </div>
+            <!--自助诊导[列表]部位侧栏开始-->
+            <div id="self-part-slide">
+                <ul></ul>
+            </div>
+            <!--自助诊导[列表]部位侧栏结束-->
+            <!--自助诊导[列表]疾病侧栏开始-->
+            <div id="self-sickness-slide" style="display: none;">
+                <ul></ul>
+            </div>
+            <!--自助诊导[列表]疾病侧栏结束-->
+            <!--自助诊导[图片]部位侧栏开始-->
+            <div id="self-model-slide">
+                <ul></ul>
+            </div>
+            <!--自助诊导[图片]部位侧栏结束-->
+            <!--自助诊导[图片]疾病侧栏开始-->
+            <div id="self-illness-slide" style="display: none;">
+                <ul></ul>
+            </div>
+            <!--自助诊导[图片]疾病侧栏结束-->
+        </div>
+        <!--自助诊导结束-->
+        <!--自助导诊结果开始-->
+        <div data-role="page" id="page-self-service-rusult">
+            <ul></ul>
+        </div>
+        <!--自助导诊结果结束-->
+        <!--点击输入地址弹层开始-->
+        <div data-role="page" id="pop-input-start">
+            <div class="input-head">
+                <div class="arrow-left"></div>
+                <div class="visual-input">
+                    <span class="ico-search"></span>
+                    <input data-role="none" type="text" placeholder="请输入起点" />
+                    <span class="ico-close">&times;</span>
+                </div>
+            </div>
+            <div class="input-head-line"></div>
+            <ul class="search-list"></ul>
+        </div>
+        <!--点击输入地址弹层结束-->
+        <!-- 新主页开始 -->
+        <div data-role="page" id="page-index-new">
+            <div class="index-box">
+                <!-- 轮播图 -->
+                <!-- <div class="top-slide">
+                  <ul>
+                    <li class="img-container">
+                      <img src="./easygo/images/hospital_img.png" alt="">
+                    </li>
+                  </ul>
+                  <div class="dot-list">
+                                <ul>
+                                    <li class="a-dot active"></li>
+                                </ul>
+                            </div>
+                </div> -->
+                <!-- 两个链接跳转到不同页面 -->
+                <div class="center-container">
+                    <a href="#pop-input-start" data-inline="true" class="input-a" id="new-search">
+                        <input type="search" name="search" class="a-input" placeholder="请输入目的地" />
+                    </a>
+                    <a href="#page-index" class="a-btn" data-role="button" data-inline="true">院内地图</a>
+                </div>
+                <!-- 手势 -->
+                <div class="select-container">
+                    <ul class="all-select">
+                        <li class="left-select">
+                            <ul>
+                                <a href="#pop-input-start">
+                                    <li class="select-block">
+                                        <img src="./easygo/images/icent5.png" alt="" />
+                                        <span>挂号收费</span>
+                                    </li>
+                                </a>
+                                <a href="#pop-input-start">
+                                    <li class="select-block">
+                                        <img src="./easygo/images/icent_2.png" alt="" />
+                                        <span>门诊</span>
+                                    </li>
+                                </a>
+
+                                <a href="#pop-input-start">
+                                    <li class="select-block">
+                                        <img src="./easygo/images/icent7.png" alt="" />
+                                        <span>药房</span>
+                                    </li>
+                                </a>
+                                <a href="#pop-input-start">
+                                    <li class="select-block">
+                                        <img src="./easygo/images/icent8.png" alt="" />
+                                        <span>化验</span>
+                                    </li>
+                                </a>
+                                <a href="#pop-input-start">
+                                    <li class="select-block">
+                                        <img src="./easygo/images/icent10.png" alt="" />
+                                        <span>报告机</span>
+                                    </li>
+                                </a>
+                                <a href="#pop-input-start">
+                                    <li class="select-block">
+                                        <img src="./easygo/images/icent11.png" alt="" />
+                                        <span>自助机</span>
+                                    </li>
+                                </a>
+                            </ul>
+                        </li>
+                    </ul>
+                    <!-- <div class="dot-list">
+                      <ul>
+                        <li class="a-dot active"></li>
+                        <li class="a-dot"></li>
+                      </ul>
+                    </div> -->
+                </div>
+                <div id="left-slide-new" style="top: 0px;">
+                    <ul></ul>
+                </div>
+                <!-- 和语音播报一样的房间列表 -->
+                <div class="room-list">
+                    <ul class="box-list">
+                        <li class="a-box">
+                            <ul class="floor-list"></ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="empty_height"></div>
+        </div>
+        <!-- 新主页结束 -->
+        <!-- 蓝牙提示页 -->
+        <div id="page-bluetooth">
+            <div class="bluetooth-box">
+                <p class="text-1">蓝牙未打开</p>
+                <p class="text-2">室内定位需要打开手机蓝牙</p>
+                <a href="#" class="bottom-text">跳过</a>
+            </div>
+        </div>
+        <!-- 蓝牙提示页结束 -->
+        <!-- x -->
+        <!--<div data-role="page" id="page-saishi">
+            <iframe src="https://api.heshenghua.net/#/event-info" frameborder="0"
+                    style="height: 100vh;width: 100vw;"></iframe>
+        </div>-->
+        <!-- end -->
+        <!-- x -->
+        <!--<div data-role="page" id="page-jianjie">
+            <iframe src="https://api.heshenghua.net/#/venue-introduction" frameborder="0"
+                    style="height: 100vh;width: 100vw;"></iframe>
+        </div>-->
+        <!-- end -->
+        <!-- 设施列表 -->
+        <div data-role="page" id="page-sheshi">
+            <ul class="search-list-toilet"></ul>
+        </div>
+        <!-- 设施列表end -->
+        <!--底部导航开始-->
+        <div class="bottom_menu">
+            <ul>
+                <li>
+                    <a href="#page-index" data-transition="slide" pageid="index">
+                        <div class="bottom-ico nav_icon_current"></div>
+                        <span class="current">导航</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#page-self-service" data-transition="slide" pageid="self-service">
+                        <div class="bottom-ico self_icon"></div>
+                        <span>自助导诊</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#page-expert" data-transition="slide" pageid="expert">
+                        <div class="bottom-ico expert_icon"></div>
+                        <span>专家介绍</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#page-departments" data-transition="slide" pageid="departments">
+                        <div class="bottom-ico departments_icon"></div>
+                        <span>科室介绍</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#page-hospital" data-transition="slide" pageid="hospital">
+                        <div class="bottom-ico hospital_icon"></div>
+                        <span>医院介绍</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!--底部导航结束-->
+    </div>
+    <!--遮罩层-->
+    <div class="mash" style="display: none;"></div>
+    <!--遮罩层-->
+    <!--高德容器-->
+    <div id="GDcontainer" style="display: none;"></div>
+    <!--高德容器结束-->
+</body>
+
+</html>

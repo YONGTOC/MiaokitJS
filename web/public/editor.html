@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn" style="height: 100%; margin: 0; padding: 0;">
+<head>
+    <meta charset="utf-8">
+    <title>MiaokitJS Editor 2020.1</title>
+
+    <script src="./common/miaokit/MiaokitLoader.min.js"></script>
+    <!--<script src="./common/requirejs/require.js"></script>-->
+    <!--<link href="./common/antd/dist/antd.min.css" rel="stylesheet" type="text/css">-->
+
+    <script>
+        //let UI = undefined;
+        //let Root = undefined;
+        let MiaokitJS = new MiaokitModule("Sisyphus", "./data/projects/config.txt");
+
+        window.onload = function () {
+            MiaokitJS.Track("Window.onload");
+
+            window.oncontextmenu = function (e) {
+                e.preventDefault();
+            };
+
+            MiaokitJS.Load(function () {
+                MiaokitJS.App.Start();
+            }, function (nEventID) {
+                MiaokitJS.App.Update();
+            });
+        }
+
+        window.onload1 = function () {
+            require.config({
+                baseUrl: "editor",
+                paths: {
+                    "react": "../common/react/react.production.min",
+                    "react-dom": "../common/react/react-dom.production.min",
+                    "react-router": "../common/react/react-router.production.min",
+                    "react-router-dom": "../common/react/react-router-dom.production.min",
+                    "moment": "../common/moment.min",
+                    "antd": "../common/antd/dist/antd.min",
+                    "view": "js/view",
+                },
+                // 所有模块(*)中的CSS依赖("css")从指定地址中加载("common/requirejs/css.min.js")
+                // 模块中导入CSS依赖的方式为: css!./x.css。!是插件依赖与样式文件地址的分隔符
+                map: {
+                    "*": {
+                        "css": "common/requirejs/css.min.js",
+                    }
+                }
+            });
+
+            require(['view'], function (view) {
+                UI = view.default.g_pIns;
+
+                MiaokitJS.Load(function () {
+                    MiaokitJS.App.Start();
+                }, function (nEventID) {
+                    UI.Update(Root);
+                    MiaokitJS.App.Update();
+                });
+            });
+
+            window.oncontextmenu = function (e) {
+                e.preventDefault();
+            };
+            /* 待兼容事项：
+             * PC资源路径配置
+             * 工程文件是否需要解压配置
+             * 对象名称获取接口（对象名称仅在JS端设置，如果JS端有设置名称则返回JS端的名称，避免C++内存管理）。模块内部名称设置接口
+             * 摄像机视距调整
+             * 以抗锯齿方式绘制不透明物体，测试写入。绘制不透明物体到纹理，测试不写入。将透明纹理混合到画布，不测试不写入。
+             * 将HDR对象绘制到HDR纹理
+             * 输出颜色前要做一个统一处理，大气衍射处理，模型高亮处理，HDR处理，屏幕拾取处理（判断是否处在光标位置，将ID记录在0,0位置）
+             * 需要一个额外的缓存记录对象ID
+             * 材质系统和渲染管线由JS端配置，材质由JS端主动创建，Sisyphus场景同时分配JSID。
+             * 网格材质生命期管理，预制件材质类型匹配
+             * 管线通道中增设glCullFace，glPolygonOffset设置，使用分层渲染，远近两组对象的绘制使用使用不同的裁剪距离设置。
+             *
+             * 绘制不含被选中对象深度缓存
+             * 只绘制高亮物体，做深度测试（这样可以判断边缘是被隐藏的边缘：对象区域B通道为1，对象可见区域通道G为1）
+             * 降采样
+             * 边缘检测
+             * 对边缘检测结果进行模糊
+             * 混合结果
+             * 需要6遍处理，（放大对象再绘制的方法，如果选中整个场景会带来巨额开销）
+             * 在鼠标位置绘制ID。
+             *
+             * 绘制被选中对象，进行边缘检测，绘制其它对象，对边缘进行模糊，叠加（乘法）
+             *
+             * 最理想方法：
+             * 绘制不透明轮廓
+             * 绘制不透明
+             * 绘制透明轮廓
+             * 提取轮廓线（A值小于1的区域）
+             * 绘制透明，提取高光，提取ID，抹除ID
+             *
+             * 提取命中对象，在着色器中进行与不透明深度的深度测试，
+             * 加载模型URL类型需要配置。
+             *
+             */
+        };
+    </script>
+
+    <script src="./common/util.js"></script>
+    <script src="./easygo/js/app.js"></script>
+
+</head>
+<body style="height: 100%; margin: 0; padding: 0;">
+    <!-- html,body { height: 100%;margin: 0; padding: 0;} div height: 100% 才会起效，因为继承父级高度-->
+    <!-- 微信端不能为任意尺寸，否则会崩溃 -->
+    <div id="unityContainer" style="width: 100%; height: 100%; background:blue; margin: auto"></div>
+    <!--<div id="viewContainer" style="width: 100%; height: 100%; background:blue; margin: auto"></div>-->
+</body>
+</html>
