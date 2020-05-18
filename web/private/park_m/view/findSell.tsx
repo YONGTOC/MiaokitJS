@@ -188,7 +188,7 @@ class LeaseList extends React.Component {
       roomId: id
     });
     console.log("leaseActive", this.state);
-       // 请求单个房间数据，后通知3d；
+       // 请求单个房间数据，后通知3d； 
     this.dataService.findRoomRentByroomid(this.callWebglSwitchRoom.bind(this), id);
   }
 

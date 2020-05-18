@@ -1070,7 +1070,7 @@ class LoginTest extends React.Component {
     console.log(this.state.username,this.state.password)
       this.dataService.login("twl02","123456",this.hideLogin);
   }
-  // 普通用户登录
+  // 普通用户登录 
     static ptLogin() {}
   public ptLogin() {
     console.log(this.state.username,this.state.password)

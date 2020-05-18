@@ -283,7 +283,7 @@ class RepairsOnline extends React.Component<{ history: any }>{
 
 
 
-  //提交报修单 -- 成功
+  //提交报修单 -- 成功 
   public sumbitReqairssucceed(data) {
      Toast.info(data, 2);
     window.history.back();

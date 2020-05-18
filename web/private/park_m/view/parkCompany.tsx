@@ -204,7 +204,7 @@ class CompanyList extends React.Component {
   }
 
   public globalAction: GlobalAction = new GlobalAction();
-  // 选中某企业
+  // 选中某企业 
   public companyActive(data, id,title,building, floor, room) {
     console.log("active", data);
     this.setState({
