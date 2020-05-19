@@ -362,10 +362,12 @@
             if (d == 0) {
                 d = 1
                 $('.changeD').html("3D");
+                MiaokitJS.App.m_pProject.SwitchCameraMode(2);
                 console.log("地图显示2D模式");
             } else {
                 d = 0
                 $('.changeD').html("2D");
+                MiaokitJS.App.m_pProject.SwitchCameraMode(3);
                 console.log("地图显示3D模式");
             }
         }
@@ -388,6 +390,7 @@
 
         //回复当前最佳视角
         function reset() {
+            MiaokitJS.App.m_pProject.ResetCamera();
             console.log("3D回复当前最佳视角");
         }
 

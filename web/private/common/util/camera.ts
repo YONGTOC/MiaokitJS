@@ -432,7 +432,7 @@ class CameraCtrl {
     }
     public set viewMode(mode: number) {
         if (this.m_nViewMode !== mode) {
-            this.m_nViewMode = mode;
+            this.m_nViewMode = mode;            
             MiaokitJS.Miaokit.cameraMode = mode;
         }
     }

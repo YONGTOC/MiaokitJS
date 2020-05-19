@@ -125,6 +125,23 @@ class RoomViewer {
         }
     }
     ;
+    ResetCamera() {
+        let pThis = this;
+        if (5 === pThis.m_nState) {
+            if (pThis.m_nStepCount === pThis.m_nStep) {
+                pThis.m_pCurView = {
+                    m_mTarget: pThis.m_pCamera.target,
+                    m_nDistance: pThis.m_pCamera.distance,
+                    m_nPitch: pThis.m_pCamera.pitch,
+                    m_nYaw: pThis.m_pCamera.yaw
+                };
+                pThis.m_nStep = 0;
+                pThis.m_nStepCount = 1;
+                return true;
+            }
+        }
+        return false;
+    }
     SetState(nState) {
         let pThis = this;
         pThis.m_nState = nState;
@@ -447,6 +464,7 @@ class Main {
         this.m_nLoading = 0;
         this.m_nTaskMax = 0;
         this.m_pCity = null;
+        this.m_pPark = null;
         this.m_pIndoor = null;
         this.m_pRoomViewer = null;
         let pThis = this;
@@ -683,6 +701,7 @@ class Main {
         if (MiaokitJS.m_pConfig.GIS.m_pTerrainServer) {
             pPark.m_pView.m_mTarget.y += 167;
         }
+        this.m_pPark = pPark;
         this.m_pApp.m_pCameraCtrl.Fly(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, pPark.m_pView, 0.05);
     }
     EnterPanoramas(pPanor) {
@@ -758,6 +777,14 @@ class Main {
     ExitViewer() {
         let pThis = this;
         pThis.m_pRoomViewer.Exit();
+    }
+    ResetCamera() {
+        if (!this.m_pRoomViewer.ResetCamera()) {
+            this.m_pApp.m_pCameraCtrl.Jump(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, this.m_pPark.m_pView);
+        }
+    }
+    SwitchCameraMode(nMode) {
+        MiaokitJS.App.m_pCameraCtrl.viewMode = nMode;
     }
     LoadNavData() {
         let pThis = this;

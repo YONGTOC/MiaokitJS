@@ -165,6 +165,29 @@ class RoomViewer {
         }
     };
 
+    /// 重置摄像机状态。
+    public ResetCamera(): boolean {
+        let pThis = this;
+
+        if (5 === pThis.m_nState) {
+            if (pThis.m_nStepCount === pThis.m_nStep) {
+                pThis.m_pCurView = {
+                    m_mTarget: pThis.m_pCamera.target,
+                    m_nDistance: pThis.m_pCamera.distance,
+                    m_nPitch: pThis.m_pCamera.pitch,
+                    m_nYaw: pThis.m_pCamera.yaw
+                };
+
+                pThis.m_nStep = 0;
+                pThis.m_nStepCount = 1;
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /// 切换浏览状态。
     private SetState(nState): void {
         let pThis = this;
@@ -902,6 +925,8 @@ class Main {
             pPark.m_pView.m_mTarget.y += 167;
         }
 
+        this.m_pPark = pPark;
+
         this.m_pApp.m_pCameraCtrl.Fly(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, pPark.m_pView, 0.05);
     }
 
@@ -997,6 +1022,18 @@ class Main {
         let pThis = this;
 
         pThis.m_pRoomViewer.Exit();
+    }
+
+    /// 重置摄像机。
+    public ResetCamera(): void {
+        if (!this.m_pRoomViewer.ResetCamera()) {
+            this.m_pApp.m_pCameraCtrl.Jump(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, this.m_pPark.m_pView);
+        }
+    }
+
+    /// 切换摄像机2/3D模式。
+    public SwitchCameraMode(nMode): void {
+        MiaokitJS.App.m_pCameraCtrl.viewMode = nMode;
     }
 
     /// 加载导航后台数据。
@@ -1365,6 +1402,8 @@ class Main {
 
     /// 当前聚焦城市。
     private m_pCity: any = null;
+    /// 当前聚焦园区。
+    private m_pPark: any = null;
     /// 当前锁定室内场景。
     private m_pIndoor: any = null;
     /// 房间查看器。
