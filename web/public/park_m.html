@@ -178,7 +178,7 @@
             <button onclick="webgl_call_web_active_floor('id-3f')" style="width: 17rem;height: 4rem;font-size: 2.3rem;">进入3F</button>
         </li>
         <li>
-            <button onclick="saveShareContent('{A:111,B:3333}','testDD')" style="width: 17rem;height: 4rem;font-size: 2.3rem;">自动下载</button>
+            <button onclick="saveShareContent('{A:111,B:3333}','testDD.txt')" style="width: 17rem;height: 4rem;font-size: 2.3rem;">自动下载</button>
         </li>
         <!--<li>
             <button onclick="refreshParking(120)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活地库</button>
@@ -189,14 +189,6 @@
     </ul>
 
     <script>
-        if (navigator.onLine) { 
-        //正常工作
-        console.log('正常联网')
-        } else { 
-        //执行离线状态时的任务
-        alert('网络断开,请查看您的网络连接')
-        } 
-
         // 下载
         function saveShareContent(content, fileName) {
             console.log('下载', content, fileName)
@@ -310,7 +302,6 @@
                 if (floorIndex == index) {
                     //console.log("getFloorIdTo3d", index);
                     console.log("web_call_webgl_active_floor_floorid:", floorData[index].id);
-
                 }
             })
         }
@@ -355,9 +346,6 @@
             //web_call_webgl_active_floor  getFloorIdTo3d
             web_call_webgl_active_floor(index);
         }
-
-
-
 
         //react加载完成，隐藏幕布
         function curtainHide() {

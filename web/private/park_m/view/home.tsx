@@ -98,8 +98,6 @@ class TopBtn extends React.Component {
     ]
   }
 
-
-
   //显示更多标识
   public moreIcon(a) {
     console.log('toggleIconbox', a);
@@ -181,7 +179,25 @@ class TopBtn extends React.Component {
 
   }
 
+
   public globalAction: GlobalAction = new GlobalAction();
+  public dataService: DataService = new DataService();
+
+  // 点亮icon
+  public callMark(type,name) {
+    this.dataService.getParkPointList(this.markBack.bind(this), type,name);
+  }
+
+  // 通知3d 数据
+  public markBack(data,name) {
+    console.log('mark', data.response,name);
+     this.globalAction.web_call_webgl_switchMark(name, 'true',data.response);
+  }
+
+  // 关闭icon
+  public markClose(name) {
+     this.globalAction.web_call_webgl_switchMark(name, 'false',null);
+  }
 
   // 切换地图标识;0--隐藏标识； 1--显示标识
   public switchMark(a, bInfo) {
@@ -198,7 +214,8 @@ class TopBtn extends React.Component {
             topIcon1: "iconBox",
           })
         }
-        this.globalAction.web_call_webgl_switchMark(a, 0);
+          this.markClose(a)
+       // this.globalAction.web_call_webgl_switchMark(a, 0);
       } else {
         if (this.state.topView == "topView-big") {
           this.setState({
@@ -209,7 +226,8 @@ class TopBtn extends React.Component {
             topIcon1: "iconBoxIn",
           })
         }
-        this.globalAction.web_call_webgl_switchMark(a, 1);
+           this.callMark(1,a)
+       // this.globalAction.web_call_webgl_switchMark(a, 1);
       }
     } else if (a == "商圈") {
       // 判断当前是否为选中状态
@@ -223,7 +241,8 @@ class TopBtn extends React.Component {
             topIcon2: "iconBox",
           })
         }
-        this.globalAction.web_call_webgl_switchMark(a, 0);
+         this.markClose(a)
+       // this.globalAction.web_call_webgl_switchMark(a, 0);
       } else {
         if (this.state.topView == "topView-big") {
           this.setState({
@@ -234,7 +253,8 @@ class TopBtn extends React.Component {
             topIcon2: "iconBoxIn",
           })
         }
-        this.globalAction.web_call_webgl_switchMark(a, 1);
+          this.callMark(2,a)
+       // this.globalAction.web_call_webgl_switchMark(a, 1);
       }
     } else if (a == "公交车") {
       if (this.state.topIcon3 == "iconBox-big") {
@@ -242,13 +262,15 @@ class TopBtn extends React.Component {
           topIcon3: "iconBox-bigIn",
           topIcon3info: 1,
         })
-        this.globalAction.web_call_webgl_switchMark(a, 1);
+           this.callMark(3,a)
+       // this.globalAction.web_call_webgl_switchMark(a, 1);
       } else {
         this.setState({
           topIcon3: "iconBox-big",
           topIcon3info: 0,
         })
-        this.globalAction.web_call_webgl_switchMark(a, 0);
+           this.markClose(a)
+       // this.globalAction.web_call_webgl_switchMark(a, 0);
       }
     } else if (a == "全景") {
       if (this.state.topIcon4 == "iconBox-big") {
@@ -256,13 +278,15 @@ class TopBtn extends React.Component {
           topIcon4: "iconBox-bigIn",
           topIcon4info: 1,
         })
-        this.globalAction.web_call_webgl_switchMark(a, 1);
+         this.callMark(4,a)
+        //this.globalAction.web_call_webgl_switchMark(a, 1);
       } else {
         this.setState({
           topIcon4: "iconBox-big",
           topIcon4info: 0,
         })
-        this.globalAction.web_call_webgl_switchMark(a, 0);
+           this.markClose(a)
+       // this.globalAction.web_call_webgl_switchMark(a, 0);
       }
     } else if (a == "停车场") {
       if (this.state.topIcon5 == "iconBox-big") {
@@ -270,13 +294,15 @@ class TopBtn extends React.Component {
           topIcon5: "iconBox-bigIn",
           topIcon5info: 1,
         })
-        this.globalAction.web_call_webgl_switchMark(a, 1);
+         this.callMark(5,a)
+      //  this.globalAction.web_call_webgl_switchMark(a, 1);
       } else {
         this.setState({
           topIcon5: "iconBox-big",
           topIcon5info: 0,
         })
-        this.globalAction.web_call_webgl_switchMark(a, 0);
+           this.markClose(a)
+       // this.globalAction.web_call_webgl_switchMark(a, 0);
       }
     }
 
