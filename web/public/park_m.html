@@ -213,19 +213,20 @@
         var floorId;
 
         var floorData = [];
-        floorData = [
-            { id: "id-1f", name: "1F" },
-            { id: "id-2f", name: "2F" },
-            { id: "id-3f", name: "3F" },
-            { id: "id-4f", name: "4F" },
-            { id: "id-5f", name: "5F" },
-            { id: "id-6f", name: "6F" },
-            { id: "id-7f", name: "7F" },
-        ]
+        //floorData = [
+        //    { id: "id-1f", name: "1F" },
+        //    { id: "id-2f", name: "2F" },
+        //    { id: "id-3f", name: "3F" },
+        //    { id: "id-4f", name: "4F" },
+        //    { id: "id-5f", name: "5F" },
+        //    { id: "id-6f", name: "6F" },
+        //    { id: "id-7f", name: "7F" },
+        //]
 
         var html = "";
         // floorListShow          // 写入floor列表
-        function webgl_call_web_show_floor_list(floorData) {
+        function webgl_call_web_show_floor_list(_floorData) {
+            floorData = _floorData;
             $('.floor_box').removeClass('hide');
             console.log("进入建筑，显示楼层列表");
             // 注入floor数据，显示ui；
@@ -279,9 +280,13 @@
         //传递 floorId给 3d；
         //    getFloorIdTo3d
         function web_call_webgl_active_floor(index) {
+            console.log("vvvvvvvvvvvv", index);
             $.each(floorData, function (index, item) {
                 if (floorIndex == index) {
-                    //console.log("getFloorIdTo3d", index);
+                    console.log("getFloorIdTo3d", index);
+
+                    MiaokitJS.App.m_pProject.m_pRoomViewer.SwitchLayer(floorData[index].id);
+
                     console.log("web_call_webgl_active_floor_floorid:", floorData[index].id);
                 }
             })
@@ -306,7 +311,7 @@
             floorIndex = index;
             //传递 floorId给 3d；
             //web_call_webgl_active_floor  getFloorIdTo3d
-            web_call_webgl_active_floor(index);
+            //web_call_webgl_active_floor(index);
         }
 
 

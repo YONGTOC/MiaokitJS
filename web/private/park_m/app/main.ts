@@ -1,7 +1,8 @@
 
 declare var MiaokitJS: any;
-declare var floorListShow: any;
-declare var floorListHide: any;
+declare var webgl_call_web_hide_floor_list: any;
+declare var webgl_call_web_show_floor_list: any;
+declare var webgl_call_web_active_floor: any;
 
 
 class RoomViewer {
@@ -58,8 +59,6 @@ class RoomViewer {
                 pThis.SetState(4);
             }
         }
-
-        floorListShow();
     }
 
     /// 退出房间。
@@ -73,14 +72,70 @@ class RoomViewer {
             pThis.SetState(7);
         }
 
-        floorListHide();
+        webgl_call_web_hide_floor_list();
+    }
+
+    /// 切换楼层。
+    public SwitchLayer(pID): void {
+        let pThis = this;
+        let pLayer = null;
+
+        if (5 !== pThis.m_nState) {
+            return;
+        }
+
+        for (pLayer of pThis.m_pIndoor.m_pScene.m_pScene.layers) {
+            let bShow = pLayer._id === pID;
+
+            pLayer.object3D.active = bShow;
+            pLayer.object3D.highlight = false;
+            pLayer.decorationObject3D.active = bShow;
+
+            if (bShow) {
+                webgl_call_web_active_floor(pID);
+            }
+        }
+
+        pThis.m_pCurView = {
+            m_mTarget: pThis.m_pCamera.target,
+            m_nDistance: pThis.m_pCamera.distance,
+            m_nPitch: pThis.m_pCamera.pitch,
+            m_nYaw: pThis.m_pCamera.yaw
+        };
+
+        pThis.m_pDstView = pThis.m_pLayer.m_pView;
+
+        pThis.m_nStep = 0;
+        pThis.m_nStepCount = 60;
+
+        pThis.m_pDrawPOI = function (pCanvas, pCanvasCtx) {
+            pCanvas.font = "16px Microsoft YaHei";
+            pCanvas.strokeStyle = "black";
+            pCanvas.lineWidth = 2;
+            pCanvas.fillStyle = "#FFFFFF";
+
+            let pTransform = pLayer.object3D.transform;
+            for (let pSite of pLayer.sites) {
+                let pGisPosition = pTransform.TransformPoint(pSite.position);
+                let pPosition = MiaokitJS.Miaokit.GisToWorld(pGisPosition);
+                let pPoint = MiaokitJS.Miaokit.WorldToScreenPoint(pPosition);
+                let pText = pSite.id;
+                let pRect = pCanvasCtx.measureText(pText);
+
+                pPoint.x = pPoint.x * pCanvas.width;
+                pPoint.y = pPoint.y * pCanvas.height;
+
+                pCanvasCtx.strokeText(pText, pPoint.x - pRect.width / 2, pPoint.y);
+                pCanvasCtx.fillText(pText, pPoint.x - pRect.width / 2, pPoint.y);
+            }
+        };
     }
 
     /// 更新浏览状态。
     public Update(): void {
         let pThis = this;
 
-        if (0 < pThis.m_nState && 5 !== pThis.m_nState) {
+        if (0 < pThis.m_nState) {
             if (pThis.m_nStepCount > pThis.m_nStep) {
                 let nLerp = ++pThis.m_nStep / pThis.m_nStepCount;
                 let mCurTarget = pThis.m_pCurView.m_mTarget;
@@ -113,7 +168,7 @@ class RoomViewer {
                     pThis.m_pIndoor.StackLayer(1.0, nLerp, pThis.m_pLayer.m_nIndex);
                 }
 
-                if (pThis.m_nStepCount === pThis.m_nStep) {
+                if (pThis.m_nStepCount === pThis.m_nStep && 5 !== pThis.m_nState) {
                     pThis.SetState(pThis.m_nState + 1);
                 }
             }
@@ -185,7 +240,7 @@ class RoomViewer {
             pThis.m_nStepCount = 60;
 
             let pLayer = pThis.m_pLayer.m_pLayer.m_pLayer;
-            console.log(pThis.m_pLayer, pThis.m_pIndoor);
+
             pThis.m_pDrawPOI = function (pCanvas, pCanvasCtx) {
                 pCanvas.font = "16px Microsoft YaHei";
                 pCanvas.strokeStyle = "black";
@@ -216,39 +271,44 @@ class RoomViewer {
             pThis.m_nStep = 0;
             pThis.m_nStepCount = 60;
 
-            pThis.m_pIndoor.ShowOneLayer(pThis.m_pLayer.m_nIndex, pThis.m_pRoom.m_mPoiPos);
+            pThis.m_pIndoor.ShowOneLayer(pThis.m_pLayer.m_nIndex, pThis.m_pRoom.m_aPart);
         }
         // 自由交互
         else if (5 === nState) {
+            pThis.m_pIndoor.ShowLayerList(pThis.m_pLayer.m_nIndex);
         }
         // 进行退出
         else if (6 === nState) {
-            pThis.m_pCurView = {
-                m_mTarget: pThis.m_pCamera.target,
-                m_nDistance: pThis.m_pCamera.distance,
-                m_nPitch: pThis.m_pCamera.pitch,
-                m_nYaw: pThis.m_pCamera.yaw
+            if (pThis.m_pIndoor) {
+                pThis.m_pCurView = {
+                    m_mTarget: pThis.m_pCamera.target,
+                    m_nDistance: pThis.m_pCamera.distance,
+                    m_nPitch: pThis.m_pCamera.pitch,
+                    m_nYaw: pThis.m_pCamera.yaw
+                }
+
+                pThis.m_pDstView = pThis.m_pIndoor.m_pView;
+
+                pThis.m_nStep = 0;
+                pThis.m_nStepCount = 60;
+                pThis.m_pDrawPOI = null;
             }
-
-            pThis.m_pDstView = pThis.m_pIndoor.m_pView;
-
-            pThis.m_nStep = 0;
-            pThis.m_nStepCount = 60;
-            pThis.m_pDrawPOI = null;
         }
         // 完成退出
         else if (7 === nState) {
-            pThis.m_pIndoor.Deactive();
+            if (pThis.m_pIndoor) {
+                pThis.m_pIndoor.Deactive();
 
-            pThis.m_nState = 0;
-            pThis.m_nStep = 0;
-            pThis.m_nStepCount = 0;
-            pThis.m_pCurView = null;
-            pThis.m_pDstView = null;
-            pThis.m_pIndoor = null;
-            pThis.m_pLayer = null;
-            pThis.m_pRoom = null;
-            pThis.m_pDrawPOI = null;
+                pThis.m_nState = 0;
+                pThis.m_nStep = 0;
+                pThis.m_nStepCount = 0;
+                pThis.m_pCurView = null;
+                pThis.m_pDstView = null;
+                pThis.m_pIndoor = null;
+                pThis.m_pLayer = null;
+                pThis.m_pRoom = null;
+                pThis.m_pDrawPOI = null;
+            }
         }
     }
 
@@ -291,7 +351,7 @@ class Indoor {
                 break;
             }
         }
-        
+
         pThis.m_pView = {
             m_nLng: pTile.m_nLng,
             m_nLat: pTile.m_nLng,
@@ -355,7 +415,7 @@ class Indoor {
             }
         }
         else {
-        }        
+        }
     }
 
     /// 刷新大楼透明度。
@@ -373,7 +433,7 @@ class Indoor {
                 pThis.m_pDioramas.m_pDior.Deplanation({ x: pThis.m_pView.m_mTarget.x, y: 35.0, z: pThis.m_pView.m_mTarget.z });
             }
         }
-        
+
     }
 
     /// 层叠楼层。
@@ -418,8 +478,8 @@ class Indoor {
         }
     }
 
-    /// 显示单层
-    public ShowOneLayer(nIndex, mRoom) {
+    /// 显示单层。
+    public ShowOneLayer(nIndex, aRoom) {
         let pThis = this;
         let nIndex_ = 0;
 
@@ -430,14 +490,52 @@ class Indoor {
             pLayer.decorationObject3D.active = bShow;
 
             if (bShow) {
-                pThis.FocusRoom(pLayer, mRoom);
+                pThis.FocusRoom(pLayer, aRoom);
+            }
+        }
+    }
+
+    /// 显示楼层列表。
+    public ShowLayerList(nIndex) {
+        let pThis = this;
+        let aList = [];
+
+        for (let pLayer of pThis.m_pScene.m_pScene.layers) {
+            aList.push({
+                id: pLayer._id,
+                name: pLayer._id
+            });
+        }
+
+        webgl_call_web_show_floor_list(aList);
+        webgl_call_web_active_floor(aList[nIndex].id);
+    }
+
+    /// 切换楼层。
+    public SwitchRoom(nIndex) {
+        let pThis = this;
+        let nIndex_ = 0;
+
+        for (let pLayer of pThis.m_pScene.m_pScene.layers) {
+            let bShow = nIndex === nIndex_++;
+            pLayer.object3D.active = bShow;
+            pLayer.object3D.highlight = false;
+            pLayer.decorationObject3D.active = bShow;
+
+            if (bShow) {
+                webgl_call_web_active_floor(pLayer._id);
             }
         }
     }
 
     /// 聚焦房间。
-    public FocusRoom(pLayer, mPoint) {
-        pLayer.HighlightRoom(mPoint);
+    public FocusRoom(pLayer, aPoint) {
+        let bAdd = false;
+
+        for (let pPoint of aPoint) {
+            pLayer.HighlightRoom(pPoint.point, bAdd);
+            bAdd = true;
+        }
     }
 
     /// 关闭室内显示和取消聚焦大楼
@@ -456,7 +554,7 @@ class Indoor {
                 pThis.m_pDioramas.m_pDior.Recover();
             }
         }
-        
+
 
         pThis.m_pScene.m_pScene.object3D.active = false;
     }
@@ -544,7 +642,7 @@ class Main {
 
         pThis.m_pApp = MiaokitJS.App;
         pThis.m_pApp.m_pProject = this;
-
+        
         pThis.m_pRoomViewer = new RoomViewer();
     }
 
@@ -579,7 +677,7 @@ class Main {
             m_nLng: pThis.m_pCity.m_nLng,
             m_nLat: pThis.m_pCity.m_nLat,
             m_mTarget: { x: 0.0, y: 0.0, z: 0.0 },
-            m_nDistance: 300.000,
+            m_nDistance: 3000.000,
             m_nPitch: 20.0,
             m_nYaw: 90.0
         });
@@ -734,6 +832,10 @@ class Main {
 
     /// 进入园区。
     public EnterPark(pPark): void {
+        if (MiaokitJS.m_pConfig.GIS.m_pTerrainServer) {
+            pPark.m_pView.m_mTarget.y += 167;
+        }
+
         this.m_pApp.m_pCameraCtrl.Fly(MiaokitJS.UTIL.CTRL_MODE.PANORAMA, pPark.m_pView, 0.05);
     }
 
@@ -787,7 +889,29 @@ class Main {
                                             let pGisPosition = pTransform.TransformPoint(pPoiPos);
                                             let pPosition = MiaokitJS.Miaokit.GisToWorld(pGisPosition);
 
-                                            pThis.m_pRoomViewer.Enter(pIndoor, { m_nIndex: nLayer, m_pLayer: pLayer }, { m_mTarget: pPosition, m_mPoiPos: pPoiPos });
+                                            let aPart = pRoom.m_pPart;
+                                            if (!aPart || aPart.length === 0) {
+                                                aPart = [{
+                                                    id: 0,
+                                                    name: pRoom.m_pRoom,
+                                                    position: pRoom.m_pRoom,
+                                                    headimageurl: null,
+                                                    panoramaurl: null,
+                                                    point: pPoiPos
+                                                }];
+                                            }
+                                            else {
+                                                for (let pPart of aPart) {
+                                                    for (let pSite_ of pLayer.m_pLayer.sites) {
+                                                        if (pPart.position === pSite_.id) {
+                                                            pPart.point = pSite_.position;
+                                                            continue;
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            pThis.m_pRoomViewer.Enter(pIndoor, { m_nIndex: nLayer, m_pLayer: pLayer }, { m_pID: pRoom.m_pRoom, m_mTarget: pPosition, m_mPoiPos: pPoiPos, m_aPart: aPart });
                                             return;
                                         }
                                     }

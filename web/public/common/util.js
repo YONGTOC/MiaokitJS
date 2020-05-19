@@ -1351,7 +1351,7 @@ vec4 vs()
     
     vec4 mPosition = vec4(a_Position.xyz, 1.0);
     mPosition = u_MatG * a_MatW * mPosition;
-    mPosition.y -= mBuilding.r * (mPosition.y - 1.0);
+    mPosition.y -= mBuilding.r * (mPosition.y - 1.0 - 167.0);
     
     // 高品质下，计算法线，计算大气散射
     #ifdef HIGH_QUALITY
