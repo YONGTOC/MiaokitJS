@@ -1,5 +1,6 @@
 ﻿import * as React from "react";
 import DataService from "dataService";
+import { Link } from 'react-router-dom';
 
 interface IProps {
   location: any,
@@ -34,7 +35,7 @@ export default class RoomBase extends React.Component<{ history: any }>{
     inspectionTime: JSON.parse(sessionStorage.getItem("roomInfo"))[0].inspection_time, // 看房时间
     require: JSON.parse(sessionStorage.getItem("roomInfo"))[0].require, // 租房要求
     pic: JSON.parse(sessionStorage.getItem("roomInfo"))[0].pic ? JSON.parse(sessionStorage.getItem("roomInfo"))[0].pic : [], // 图库
-    video: JSON.parse(sessionStorage.getItem("roomInfo"))[0].video ? JSON.parse(sessionStorage.getItem("roomInfo"))[0].video : [] , // 视频
+    video: JSON.parse(sessionStorage.getItem("roomInfo"))[0].video ? JSON.parse(sessionStorage.getItem("roomInfo"))[0].video : [], // 视频
     lift: JSON.parse(sessionStorage.getItem("roomInfo"))[0].lift, // 电梯
     headimageurl: JSON.parse(sessionStorage.getItem("roomInfo"))[0].headimageurl,
     isElevator: false
@@ -207,7 +208,7 @@ export default class RoomBase extends React.Component<{ history: any }>{
       alert("上传失败")
     }
   }
-  
+
 
   render() {
     return (
@@ -222,50 +223,69 @@ export default class RoomBase extends React.Component<{ history: any }>{
         <div style={{ fontSize: "40px", color: "#333333", fontWeight: "600", height: "50px", lineHeight: "50px", overflow: "hidden", margin: "30px 0 0 50px" }}>
           <div style={{ width: "10px", height: "100%", backgroundColor: "#0B8BF0", float: "left", marginRight: "30px" }} ></div>
           <div style={{ float: "left", fontSize: "40px" }}>基本信息</div>
+          <Link to="/roomBaseUpdate"><div style={{ color: "#0B8BF0", float: "right", marginRight: "50px" }}>修改</div></Link>
         </div>
-        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
-          <div className="enterprise-information-star"></div>
-          <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>建筑面积</div>
-          <input onChange={this.changea.bind(this)} value={this.state.square}
-            style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
-          />
-        </div>
-        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
-          <div className="enterprise-information-star"></div>
-          <div style={{ color: "#949494", height: "80px", float: "left", width: "20%", marginRight: "30px" }}>所在楼层</div>
-          <div style={{ float: "left" }}>{JSON.parse(sessionStorage.getItem("roomInfo"))[0].floor_code}</div>
-        </div>
-        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }} onClick={this.changeElevator.bind(this)}>
-          <div className="enterprise-information-star"></div>
-          <div style={{ color: "#949494", height: "80px", float: "left", width: "20%", marginRight: "30px" }}>电梯</div>
-          <div style={{ color: "#6C6C6C", float: "left" }}>{this.state.lift == 1 ? "有" : "没有"}</div>
-          <div style={{ height: "100%", float: "right" }}>
-            <img src="./park_m/image/right.png" style={{ margin: "-10px 40px 0 0", transform: this.state.isElevator ? "rotate(90deg)" : "" }} />
+
+        <div style={{ fontSize: "40px", margin: "50px 0 50px 85px" }}>
+          <div style={{ overflow: "hidden" }}>
+            <div style={{ float: "left", color: "#6C6C6C", width: "25%" }}>建筑面积</div><div style={{ float: "left", width: "20%", color: "#333333", fontWeight: "600" }}>150平米</div><div style={{ float: "left", color: "#6C6C6C", width: "25%", marginLeft: "35px" }}>总共楼层</div><div style={{ float: "left", width: "20%", color: "#333333", fontWeight: "600" }}>六层</div>
           </div>
-          {this.state.isElevator ? 
-            <div style={{ position: "relative", top: "120px", width: "97%", height: "200px", backgroundColor: "#ffffff", border: "1px solid #797272" }}>
-              <div style={{ width: "500px", height: "100px", margin: "auto", paddingRight: "100px", textAlign: "center" }} onClick={e => this.closeElevator(true)}>有</div>
-              <div style={{ width: "500px", height: "100px", margin: "auto", paddingRight: "100px", textAlign: "center" }} onClick={e => this.closeElevator(false)}>没有</div>
-            </div> : null
-          }
+          <div style={{ overflow: "hidden" }}>
+            <div style={{ float: "left", color: "#6C6C6C", width: "25%" }}>所在楼层</div><div style={{ float: "left", width: "20%", color: "#333333", fontWeight: "600" }}>3楼</div><div style={{ float: "left", color: "#6C6C6C", width: "25%", marginLeft: "35px" }}>电梯</div><div style={{ float: "left", width: "20%", color: "#333333", fontWeight: "600" }}>有</div>
+          </div>
         </div>
+
+        <div style={{ fontSize: "40px", color: "#333333", fontWeight: "600", height: "50px", lineHeight: "50px", overflow: "hidden", margin: "30px 0 0 50px" }}>
+          <div style={{ width: "10px", height: "100%", backgroundColor: "#0B8BF0", float: "left", marginRight: "30px" }} ></div>
+          <div style={{ float: "left", fontSize: "40px" }}>出租信息</div>
+        </div>
+
+        <div style={{ fontSize: "40px", color: "#949494", margin: "35px 0 0 45px" }}>房源标题</div>
+        <div></div>
+
+        <input style={{ margin: "30px 0 0 50px", backgroundColor: "#F2F2F2", width: "90%", height: "120px", border: "none", outline: "none", fontSize: "40px", color: "#6C6C6C", paddingLeft: "50px" }} />
+
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
           <div className="enterprise-information-star"></div>
-          <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>租金</div>
-          <input onChange={this.changeb.bind(this)} value={this.state.price}
-            style={{ float: "left", width: "70%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
-          />
-        </div>
-        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
-          <div className="enterprise-information-star"></div>
-          <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>联系人</div>
-          <input onChange={this.changec.bind(this)} value={this.state.contact}
+          <div style={{ color: "#949494", height: "80px", float: "left", width: "30%" }}>租金</div>
+          <input onChange={this.changea.bind(this)} value={this.state.square}
             style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
           />
         </div>
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
           <div className="enterprise-information-star"></div>
-          <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>联系电话</div>
+          <div style={{ color: "#949494", height: "80px", float: "left", width: "30%", marginRight: "30px" }}>免租情况</div>
+          <div style={{ float: "left" }}>{JSON.parse(sessionStorage.getItem("roomInfo"))[0].floor_code}</div>
+        </div>
+        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }} onClick={this.changeElevator.bind(this)}>
+          <div className="enterprise-information-star"></div>
+          <div style={{ color: "#949494", height: "80px", float: "left", width: "30%", marginRight: "30px" }}>装修情况</div>
+          <div style={{ color: "#6C6C6C", float: "left" }}>{this.state.lift == 1 ? "有" : "没有"}</div>
+          <div style={{ height: "100%", float: "right" }}>
+            <img src="./park_m/image/right.png" style={{ margin: "-10px 40px 0 0", transform: this.state.isElevator ? "rotate(90deg)" : "" }} />
+          </div>
+          {this.state.isElevator ?
+            <div style={{ position: "relative", top: "120px", width: "97%", height: "200px", backgroundColor: "#ffffff", border: "1px solid #797272" }}>
+              <div style={{ width: "500px", height: "100px", margin: "auto", paddingRight: "100px" }} onClick={e => this.closeElevator(true)}>有</div>
+              <div style={{ width: "500px", height: "100px", margin: "auto", paddingRight: "100px" }} onClick={e => this.closeElevator(false)}>没有</div>
+            </div> : null
+          }
+        </div>
+        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
+          <div className="enterprise-information-star"></div>
+          <div style={{ color: "#949494", height: "80px", float: "left", width: "30%" }}>容纳工位</div>
+          <input onChange={this.changeb.bind(this)} value={this.state.price}
+            style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
+          />
+        </div>
+        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", paddingLeft: "60px" }}>
+          <div style={{ color: "#949494", height: "80px", float: "left", width: "30%" }}>看房时间</div>
+          <input onChange={this.changec.bind(this)} value={this.state.contact}
+            style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
+          />
+        </div>
+        <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", paddingLeft: "60px" }}>
+          <div style={{ color: "#949494", height: "80px", float: "left", width: "30%" }}>最早可租时间</div>
           <input onChange={this.changed.bind(this)} value={this.state.phone}
             style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
           />
@@ -275,7 +295,7 @@ export default class RoomBase extends React.Component<{ history: any }>{
           <div className="enterprise-information-star"></div>
           <div style={{ color: "#949494", height: "80px", width: "20%" }}>缩略图</div>
 
-          {this.state.headimageurl ? 
+          {this.state.headimageurl ?
             <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", margin: "30px 30px 0 0", float: "left" }}>
               <img src="./park_m/image/close.png" style={{ position: "absolute", left: "250px" }} onClick={e => this.closeHeadimageurl()} />
               <img src={this.state.headimageurl} style={{ height: "100%", width: "100%" }} />
@@ -287,21 +307,21 @@ export default class RoomBase extends React.Component<{ history: any }>{
               </div>
               <input type="file" onChange={this.updateHeadimage.bind(this)} id="h-input" style={{ display: "none" }} accept="image/*" />
             </div>
-           }
+          }
 
         </div>
 
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", height: 360 + Math.floor(this.state.pic.length / 3) * 250 }}>
           <div className="enterprise-information-star"></div>
-          <div style={{ color: "#949494", height: "80px", width: "20%" }}>图库</div>
+          <div style={{ color: "#949494", height: "80px" }}>房间图片</div>
           {this.state.pic.map((item, index) => {
             return (
               <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", margin: (index > 2 && index % 3 === 0) ? "30px 30px 0 30px" : "30px 30px 0 0", float: "left" }} key={index}>
                 <img src="./park_m/image/close.png" style={{ position: "absolute", left: (index % 3 + 1) * 250 }} onClick={e => this.closePic(index)} />
                 <img src={item.url} style={{ height: "100%", width: "100%" }} />
-                </div>
-              )
-            })
+              </div>
+            )
+          })
           }
           <input type="file" onChange={this.updatePic.bind(this)} id="a-input" style={{ display: "none" }} accept="image/*" />
           <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left", marginLeft: this.state.pic.length % 3 === 0 ? "30px" : null }} id="a-img">
@@ -328,16 +348,16 @@ export default class RoomBase extends React.Component<{ history: any }>{
         </div>
         <div style={{ fontSize: "40px", color: "#333333", fontWeight: "600", height: "50px", lineHeight: "50px", overflow: "hidden", margin: "30px 0 0 50px" }}>
           <div style={{ width: "10px", height: "100%", backgroundColor: "#0B8BF0", float: "left", marginRight: "30px" }} ></div>
-          <div style={{ float: "left", fontSize: "40px" }}>基本信息</div>
+          <div style={{ float: "left", fontSize: "40px" }}>联系人信息</div>
         </div>
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", marginLeft: "30px" }}>
-          <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>看房时间</div>
+          <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>联系人</div>
           <input onChange={this.changee.bind(this)} value={this.state.inspectionTime}
             style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
           />
         </div>
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", marginLeft: "30px" }}>
-          <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>租房要求</div>
+          <div style={{ color: "#949494", height: "80px", float: "left", width: "20%" }}>联系电话</div>
           <input onChange={this.changef.bind(this)} value={this.state.require}
             style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
           />
