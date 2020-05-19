@@ -145,7 +145,8 @@ class GlobalAction {
   }
 
   //通知3d，通过园区的id，获取园区大楼，及大楼下楼层，及楼层下房间列表  
-  public web_call_webgl_parkRoomList(data) {
+    public web_call_webgl_parkRoomList(data) {
+        MiaokitJS.App.m_pProject.m_aRooms = data;
      console.log("94# web_call_webgl_parkRoomList", data)
   }
     //  over

@@ -84,15 +84,16 @@ class RoomViewer {
             return;
         }
 
-        for (pLayer of pThis.m_pIndoor.m_pScene.m_pScene.layers) {
-            let bShow = pLayer._id === pID;
+        for (let pLayer_ of pThis.m_pIndoor.m_pScene.m_pScene.layers) {
+            let bShow = pLayer_._id === pID;
 
-            pLayer.object3D.active = bShow;
-            pLayer.object3D.highlight = false;
-            pLayer.decorationObject3D.active = bShow;
+            pLayer_.object3D.active = bShow;
+            pLayer_.object3D.highlight = false;
+            pLayer_.decorationObject3D.active = bShow;
 
             if (bShow) {
                 webgl_call_web_active_floor(pID);
+                pLayer = pLayer_;
             }
         }
 
@@ -108,27 +109,7 @@ class RoomViewer {
         pThis.m_nStep = 0;
         pThis.m_nStepCount = 60;
 
-        pThis.m_pDrawPOI = function (pCanvas, pCanvasCtx) {
-            pCanvas.font = "16px Microsoft YaHei";
-            pCanvas.strokeStyle = "black";
-            pCanvas.lineWidth = 2;
-            pCanvas.fillStyle = "#FFFFFF";
-
-            let pTransform = pLayer.object3D.transform;
-            for (let pSite of pLayer.sites) {
-                let pGisPosition = pTransform.TransformPoint(pSite.position);
-                let pPosition = MiaokitJS.Miaokit.GisToWorld(pGisPosition);
-                let pPoint = MiaokitJS.Miaokit.WorldToScreenPoint(pPosition);
-                let pText = pSite.id;
-                let pRect = pCanvasCtx.measureText(pText);
-
-                pPoint.x = pPoint.x * pCanvas.width;
-                pPoint.y = pPoint.y * pCanvas.height;
-
-                pCanvasCtx.strokeText(pText, pPoint.x - pRect.width / 2, pPoint.y);
-                pCanvasCtx.fillText(pText, pPoint.x - pRect.width / 2, pPoint.y);
-            }
-        };
+        pThis.m_pDrawPOI = MiaokitJS.App.m_pProject.DrawIndoorPOI(pThis.m_pIndoor.m_pTile.m_pName, pThis.m_pIndoor.m_pScene.building_id, pID);
     }
 
     /// 更新浏览状态。
@@ -239,29 +220,7 @@ class RoomViewer {
             pThis.m_nStep = 0;
             pThis.m_nStepCount = 60;
 
-            let pLayer = pThis.m_pLayer.m_pLayer.m_pLayer;
-
-            pThis.m_pDrawPOI = function (pCanvas, pCanvasCtx) {
-                pCanvas.font = "16px Microsoft YaHei";
-                pCanvas.strokeStyle = "black";
-                pCanvas.lineWidth = 2;
-                pCanvas.fillStyle = "#FFFFFF";
-
-                let pTransform = pLayer.object3D.transform;
-                for (let pSite of pLayer.sites) {
-                    let pGisPosition = pTransform.TransformPoint(pSite.position);
-                    let pPosition = MiaokitJS.Miaokit.GisToWorld(pGisPosition);
-                    let pPoint = MiaokitJS.Miaokit.WorldToScreenPoint(pPosition);
-                    let pText = pSite.id;
-                    let pRect = pCanvasCtx.measureText(pText);
-
-                    pPoint.x = pPoint.x * pCanvas.width;
-                    pPoint.y = pPoint.y * pCanvas.height;
-
-                    pCanvasCtx.strokeText(pText, pPoint.x - pRect.width / 2, pPoint.y);
-                    pCanvasCtx.fillText(pText, pPoint.x - pRect.width / 2, pPoint.y);
-                }
-            };
+            pThis.m_pDrawPOI = MiaokitJS.App.m_pProject.DrawIndoorPOI(pThis.m_pIndoor.m_pTile.m_pName, pThis.m_pIndoor.m_pScene.building_id, pThis.m_pLayer.m_pLayer.id);
         }
         // 聚焦房间
         else if (4 === nState) {
@@ -642,7 +601,7 @@ class Main {
 
         pThis.m_pApp = MiaokitJS.App;
         pThis.m_pApp.m_pProject = this;
-        
+
         pThis.m_pRoomViewer = new RoomViewer();
     }
 
@@ -828,6 +787,113 @@ class Main {
                 pCanvasCtx.fillText(pText, pPoint.x, pPoint.y);
             }
         }
+    }
+
+    /// 绘制室内POI。
+    public DrawIndoorPOI(pTile_, pBuilding_, pFloor_) {
+        let pThis = this;
+        let aBuilding = pThis.m_aRooms;
+
+        for (let pBuilding of aBuilding) {
+            if (pTile_ === pBuilding.project_title && pBuilding_ === pBuilding.code) {
+                if (!pBuilding.tile) {
+                    for (let pTile of pThis.m_aTile) {
+                        if (pBuilding.project_title === pTile.m_pName) {
+                            pBuilding.tile = pTile;
+
+                            for (let pScene of pTile.m_aScene) {
+                                if (pBuilding_ === pScene.building_id) {
+                                    pBuilding.scene = pScene;
+                                    break;
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+                }
+
+                if (pBuilding.scene) {
+                    for (let pFloor of pBuilding.child) {
+                        if (pFloor_ === pFloor.code) {
+                            if (!pFloor.layer) {
+                                for (let pLayer of pBuilding.scene.layerList) {
+                                    if (pFloor_ === pLayer.id) {
+                                        pFloor.layer = pLayer;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (pFloor.layer) {
+                                let pTransform = pFloor.layer.m_pLayer.object3D.transform;
+                                let pGisPosition = pTransform.position;
+                                let pPosition = MiaokitJS.Miaokit.GisToWorld(pGisPosition);
+
+                                let bReset = false;
+
+                                if (pFloor.position) {
+                                    let x = Math.abs(pPosition.x - pFloor.position.x);
+                                    let y = Math.abs(pPosition.y - pFloor.position.y);
+                                    let z = Math.abs(pPosition.z - pFloor.position.z);
+
+                                    if (x > 1.0 || y > 1.0 || z > 1.0) {
+                                        bReset = true;
+                                    }
+                                }
+                                else {
+                                    bReset = true;
+                                }
+
+                                if (bReset) {
+                                    pFloor.position = pPosition;
+
+                                    for (let pSite of pFloor.layer.m_pLayer.sites) {
+                                        let pID = pSite.id;
+
+                                        for (let pRoom of pFloor.child) {
+                                            if (pRoom.code === pID) {
+                                                pGisPosition = pTransform.TransformPoint(pSite.position);
+                                                pPosition = MiaokitJS.Miaokit.GisToWorld(pGisPosition);
+
+                                                pRoom.position = pPosition;
+
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                let pDraw = function (pCanvas, pCanvasCtx) {
+                                    pCanvas.font = "16px Microsoft YaHei";
+                                    pCanvas.strokeStyle = "black";
+                                    pCanvas.lineWidth = 2;
+                                    pCanvas.fillStyle = "#FFFFFF";
+
+                                    for (let pRoom of pFloor.child) {
+                                        if (pRoom.position) {
+                                            let pPoint = MiaokitJS.Miaokit.WorldToScreenPoint(pRoom.position);
+                                            let pText = pRoom.name;
+                                            let pRect = pCanvasCtx.measureText(pText);
+
+                                            pPoint.x = pPoint.x * pCanvas.width;
+                                            pPoint.y = pPoint.y * pCanvas.height;
+
+                                            pCanvasCtx.strokeText(pText, pPoint.x - pRect.width / 2, pPoint.y);
+                                            pCanvasCtx.fillText(pText, pPoint.x - pRect.width / 2, pPoint.y);
+                                        }
+                                    }
+                                };
+
+                                return pDraw;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     /// 进入园区。
@@ -1290,6 +1356,8 @@ class Main {
     private m_aDioramas: any[] = null;
     /// SVE瓦片数组。
     private m_aTile: any[] = null;
+    /// 后台房间列表。
+    private m_aRooms: any = null;
     /// 当前瓦片加载进度。
     private m_nLoading: number = 0;
     /// 当前进度条最大值。

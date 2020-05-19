@@ -88,6 +88,7 @@ define("compat", ["require", "exports"], function (require, exports) {
             console.log("web_call_webgl_cancelApplyPut", data);
         }
         web_call_webgl_parkRoomList(data) {
+            MiaokitJS.App.m_pProject.m_aRooms = data;
             console.log("94# web_call_webgl_parkRoomList", data);
         }
     }
@@ -2103,39 +2104,6 @@ define("dataService", ["require", "exports", "antd-mobile"], function (require, 
                 dataType: "json",
                 data: {
                     park_id: sessionStorage.getItem("park_id"),
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getParkBuildingAndFloorLevel(pBack) {
-            $.ajax({
-                url: this.state.rooturl + '/api/getParkBuildingAndFloorLevel?token=' + sessionStorage.getItem("token"),
-                dataType: "json",
-                data: {
-                    id: sessionStorage.getItem("park_id"),
-                    park_id: sessionStorage.getItem("park_id")
-                },
-                type: "get",
-                success: function (data) {
-                    pBack(data);
-                }
-            });
-        }
-        getExpiredRoomInfo(pBack, obj) {
-            console.log("obj", obj);
-            $.ajax({
-                url: this.state.rooturl + '/api/getExpiredRoomInfo?token=' + sessionStorage.getItem("token"),
-                dataType: "json",
-                data: {
-                    id: obj.id,
-                    park_id: obj.parkId,
-                    room_name: obj.roomName,
-                    date: obj.date,
-                    building_id: obj.buildingId,
-                    floor_id: obj.floorId
                 },
                 type: "get",
                 success: function (data) {

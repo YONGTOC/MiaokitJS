@@ -499,7 +499,7 @@ class App {
         }
         if (MiaokitJS.m_pConfig.DIORS) {
             for (let pDior of MiaokitJS.m_pConfig.DIORS) {
-                pDior.m_pDior = new MiaokitJS.Dioramas3MX(pDior.m_pPath, !this.m_pGis ? null : {
+                pDior.m_pDior = new MiaokitJS.Dioramas3MX(pDior.m_pPath, pDior.m_pMark, !this.m_pGis ? null : {
                     m_pGis: this.m_pGis,
                     m_mLngLat: pDior.m_mLngLat,
                     m_mOffset: pDior.m_nOffset,
