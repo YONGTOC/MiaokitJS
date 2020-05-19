@@ -341,7 +341,7 @@ class Index extends React.Component {
     console.log("initPark", park_id)
     sessionStorage.setItem("park_id", park_id);
 
-    //通过园区的id，获取园区大楼，及大楼下楼层，及楼层下房间列表 
+    //通过园区的id，获取园区大楼，及大楼下楼层，及楼层下房间列表  
     this.dataService.getParkBuildingInfo(this.roomList.bind(this));
     this.globalAction.web_call_webgl_initPark(park_id);
   }
