@@ -144,7 +144,7 @@ class GlobalAction {
         console.log("web_call_webgl_cancelApplyPut", data)
   }
 
-  //通知3d，通过园区的id，获取园区大楼，及大楼下楼层，及楼层下房间列表
+  //通知3d，通过园区的id，获取园区大楼，及大楼下楼层，及楼层下房间列表 
   public web_call_webgl_parkRoomList(data) {
      console.log("94# web_call_webgl_parkRoomList", data)
   }

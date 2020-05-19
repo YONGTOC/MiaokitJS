@@ -37,7 +37,7 @@
                     "antd-mobile": "../common/antd/antd-mobile.min",
                 },
                 // 所有模块(*)中的CSS依赖("css")从指定地址中加载("common/requirejs/css.min.js")
-                // 模块中导入CSS依赖的方式为: import "css!./x.css"。!是插件依赖与样式文件地址的分隔符 
+                // 模块中导入CSS依赖的方式为: import "css!./x.css"。!是插件依赖与样式文件地址的分隔符
                 map: {
                     "*": {
                         "css": "common/requirejs/css.min.js",
@@ -48,7 +48,7 @@
             require(['index'], function (view) {
                 MiaokitJS.App.UI = view.default.g_pIns;
 
-                 //这里开始调用 组件方法；
+                //这里开始调用 组件方法；
                 curtainHide();
             });
         }
@@ -177,6 +177,9 @@
         <li>
             <button onclick="webgl_call_web_active_floor('id-3f')" style="width: 17rem;height: 4rem;font-size: 2.3rem;">进入3F</button>
         </li>
+        <li>
+            <button onclick="saveShareContent('{A:111,B:3333}','testDD')" style="width: 17rem;height: 4rem;font-size: 2.3rem;">自动下载</button>
+        </li>
         <!--<li>
             <button onclick="refreshParking(120)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活地库</button>
         </li>-->
@@ -186,6 +189,29 @@
     </ul>
 
     <script>
+        if (navigator.onLine) { 
+        //正常工作
+        console.log('正常联网')
+        } else { 
+        //执行离线状态时的任务
+        alert('网络断开,请查看您的网络连接')
+        } 
+
+        // 下载
+        function saveShareContent(content, fileName) {
+            console.log('下载', content, fileName)
+            let downLink = document.createElement('a')
+            downLink.download = fileName
+            //字符内容转换为blod地址
+            let blob = new Blob([content])
+            downLink.href = URL.createObjectURL(blob)
+            // 链接插入到页面
+            document.body.appendChild(downLink)
+            downLink.click()
+            // 移除下载链接
+            document.body.removeChild(downLink)
+        }
+
         var but = 0;
         function changeBut() {
             if (but == 0) {
@@ -213,15 +239,15 @@
         var floorId;
 
         var floorData = [];
-       //var _floorData = [
-       //     { id: "id-1f", name: "1F" },
-       //     { id: "id-2f", name: "2F" },
-       //     { id: "id-3f", name: "3F" },
-       //     { id: "id-4f", name: "4F" },
-       //     { id: "id-5f", name: "5F" },
-       //     { id: "id-6f", name: "6F" },
-       //     { id: "id-7f", name: "7F" },
-       // ]
+        //var _floorData = [
+        //     { id: "id-1f", name: "1F" },
+        //     { id: "id-2f", name: "2F" },
+        //     { id: "id-3f", name: "3F" },
+        //     { id: "id-4f", name: "4F" },
+        //     { id: "id-5f", name: "5F" },
+        //     { id: "id-6f", name: "6F" },
+        //     { id: "id-7f", name: "7F" },
+        // ]
 
         var html = "";
         // floorListShow          // 写入floor列表
@@ -240,13 +266,13 @@
 
         //    floorListHide
         function webgl_call_web_hide_floor_list() {
-           // $("#floorList").hide();
+            // $("#floorList").hide();
             $('.floor_box').addClass('hide');
             console.log("到外景，隐藏楼层列表")
         };
 
         function floorUp() {
-           // console.log("up", floorIndex);
+            // console.log("up", floorIndex);
             if (floorIndex > 0) {
                 activeList(floorIndex - 1);
             } else {
@@ -274,7 +300,7 @@
                     activeLi(index);
                 }
             });
-             console.log("webgl_call_web_active_floor_floorid--21：", floorIndex);
+            console.log("webgl_call_web_active_floor_floorid--21：", floorIndex);
         }
 
         //传递 floorId给 3d；
@@ -327,7 +353,7 @@
             floorIndex = index;
             //传递 floorId给 3d；
             //web_call_webgl_active_floor  getFloorIdTo3d
-             web_call_webgl_active_floor(index);
+            web_call_webgl_active_floor(index);
         }
 
 
@@ -335,7 +361,7 @@
 
         //react加载完成，隐藏幕布
         function curtainHide() {
-           // console.log("curtainHide,curtainHide");
+            // console.log("curtainHide,curtainHide");
             $('.curtain').addClass("hide");
         }
 
