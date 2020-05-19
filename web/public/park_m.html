@@ -169,7 +169,7 @@
             <button onclick="refreshBooksite(10087)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活场地预约</button>
         </li>
         <li>
-            <button onclick="webgl_call_web_show_floor_list(floorData)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">floorListShow</button>
+            <button onclick="webgl_call_web_show_floor_list(_floorData)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">floorListShow</button>
         </li>
         <li>
             <button onclick="webgl_call_web_hide_floor_list()" style="width: 17rem;height: 4rem;font-size: 2.3rem;">floorListHide</button>
@@ -213,24 +213,25 @@
         var floorId;
 
         var floorData = [];
-        floorData = [
-            { id: "id-1f", name: "1F" },
-            { id: "id-2f", name: "2F" },
-            { id: "id-3f", name: "3F" },
-            { id: "id-4f", name: "4F" },
-            { id: "id-5f", name: "5F" },
-            { id: "id-6f", name: "6F" },
-            { id: "id-7f", name: "7F" },
-        ]
+       //var _floorData = [
+       //     { id: "id-1f", name: "1F" },
+       //     { id: "id-2f", name: "2F" },
+       //     { id: "id-3f", name: "3F" },
+       //     { id: "id-4f", name: "4F" },
+       //     { id: "id-5f", name: "5F" },
+       //     { id: "id-6f", name: "6F" },
+       //     { id: "id-7f", name: "7F" },
+       // ]
 
         var html = "";
         // floorListShow          // 写入floor列表
-        function webgl_call_web_show_floor_list(floorData) {
+        function webgl_call_web_show_floor_list(_floorData) {
+            floorData = _floorData;
             $('.floor_box').removeClass('hide');
             console.log("进入建筑，显示楼层列表");
             // 注入floor数据，显示ui；
             $.each(floorData, function (index, item) {
-                html += '<li data-id="' + item.id + '" onclick="activeLi(' + index + ')">' + item.name + '</li>';
+                html += '<li data-id="' + item.id + '" onclick="activeList(' + index + ')">' + item.name + '</li>';
                 console.log(floorData.length);
                 floorIndexMax = floorData.length
             });
@@ -247,7 +248,7 @@
         function floorUp() {
            // console.log("up", floorIndex);
             if (floorIndex > 0) {
-                activeLi(floorIndex - 1);
+                activeList(floorIndex - 1);
             } else {
                 console.log("upover")
             }
@@ -256,7 +257,7 @@
         function floorDown() {
             console.log("down", floorIndex);
             if (floorIndex + 1 < floorIndexMax) {
-                activeLi(floorIndex + 1);
+                activeList(floorIndex + 1);
             } else {
                 console.log("downover")
             }
@@ -265,12 +266,12 @@
         // 外部传floorId，列表变化
         // webgl_call_web_show_floor_active  inFloor
         function webgl_call_web_active_floor(id) {
-            console.log("3d_to_web_floorid：", id);
+            //console.log("3d_to_web_floorid：", id);
             $.each(floorData, function (index, item) {
                 if (id == item.id) {
                     console.log(index);
-                    activeLi(index);
                     floorIndex = index;
+                    activeLi(index);
                 }
             });
              console.log("webgl_call_web_active_floor_floorid--21：", floorIndex);
@@ -283,6 +284,7 @@
                 if (floorIndex == index) {
                     //console.log("getFloorIdTo3d", index);
                     console.log("web_call_webgl_active_floor_floorid:", floorData[index].id);
+
                 }
             })
         }
@@ -304,10 +306,31 @@
                 $(".floor_box ul").css("top", x + "rem");
             }
             floorIndex = index;
+        }
+
+        // idnex,列表变化
+        function activeList(index) {
+            $(".floor_box ul li").eq(index).addClass("current-active-floor").siblings().removeClass("current-active-floor");
+            //console.log(index);
+            if (index < 1) {
+                $(".floor_box ul").css("top", "6rem");
+            }
+            if (index == 1) {
+                $(".floor_box ul").css("top", "0rem");
+            }
+            if (index > 1) {
+                var x;
+                var i = index - 1;
+                x = -(6 * i);
+                $(".floor_box ul").css("top", x + "rem");
+            }
+            floorIndex = index;
             //传递 floorId给 3d；
             //web_call_webgl_active_floor  getFloorIdTo3d
-            web_call_webgl_active_floor(index);
+             web_call_webgl_active_floor(index);
         }
+
+
 
 
         //react加载完成，隐藏幕布
