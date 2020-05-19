@@ -181,6 +181,9 @@
         <li>
             <button onclick="webgl_call_web_active_floor('id-3f')" style="width: 17rem;height: 4rem;font-size: 2.3rem;">进入3F</button>
         </li>
+        <li>
+            <button onclick="saveShareContent('{A:111,B:3333}','testDD.txt')" style="width: 17rem;height: 4rem;font-size: 2.3rem;">自动下载</button>
+        </li>
         <!--<li>
             <button onclick="refreshParking(120)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活地库</button>
         </li>-->
@@ -190,6 +193,21 @@
     </ul>
 
     <script>
+                // 下载
+        function saveShareContent(content, fileName) {
+            console.log('下载', content, fileName)
+            let downLink = document.createElement('a')
+            downLink.download = fileName
+            //字符内容转换为blod地址
+            let blob = new Blob([content])
+            downLink.href = URL.createObjectURL(blob)
+            // 链接插入到页面
+            document.body.appendChild(downLink)
+            downLink.click()
+            // 移除下载链接
+            document.body.removeChild(downLink)
+        }
+
         var but = 0;
         function changeBut() {
             if (but == 0) {
@@ -306,8 +324,6 @@
                 $(".floor_box ul").css("top", x + "rem");
             }
             floorIndex = index;
-            //传递 floorId给 3d；
-            //web_call_webgl_active_floor(index);
         }
 
                 // idnex,列表变化
