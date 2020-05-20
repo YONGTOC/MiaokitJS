@@ -162,7 +162,7 @@ class TopBtn extends React.Component {
         topIcon1: "iconBoxIn",
         topIcon2: "iconBox",
       })
-    } else if (this.state.topIcon1 == "iconBox-bigIn") {
+    } else if (this.state.topIcon2 == "iconBox-bigIn") {
       this.setState({
         topIcon1: "iconBox",
         topIcon2: "iconBoxIn",

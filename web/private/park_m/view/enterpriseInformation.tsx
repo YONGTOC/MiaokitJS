@@ -953,8 +953,8 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
             </div>
 
 
-            
-            <div className="imgBox elegantImgBox" style={{  }}>
+
+            <div className="imgBox elegantImgBox" style={{"display":"none"}}>
               <span style={{ color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left","margin-right": "1rem" }}>全景展示</span>
                 <div className="service-tel-B" >
           {this.state.picPan.map((item, index) => {
@@ -1046,7 +1046,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
                 }
               </div>
             </div>
-            <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }}>
+            <div style={{ margin: "30px 0 0 50px", overflow: "hidden" }} className="hide">
               <div style={{ color: "#949494", fontSize: "40px", float: "left", width: "25%" }}>全景展示</div>
               <div style={{ color: "#333333", fontSize: "40px", float: "left", width: "70%" }}>
                 {

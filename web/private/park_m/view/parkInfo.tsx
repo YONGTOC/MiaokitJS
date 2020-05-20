@@ -60,7 +60,7 @@ class ParkInfo extends React.Component {
       Intro.textCss("all");
       Advantage.textCss("all");
       Sale.textCss("all");
-      Elegant.textCss("part");
+      Elegant.textCss("all");
     }
     if (this.state.iconfont == "iconfont iconfont-unturn") {
       this.setState({
@@ -243,7 +243,7 @@ class Advantage extends React.Component {
   public render() {
     return (
       <div className={this.state.intro}>
-        <p>地理位置<span className="introT" >{this.state.location}</span></p>
+        <p>地理位置<span className="introT_dlwz" >{this.state.location}</span></p>
         <div id="advantageText" className="parkInfoText">
         </div>
       </div>

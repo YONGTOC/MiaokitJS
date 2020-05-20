@@ -11,6 +11,7 @@ import BookSite from "bookSite";
 import Parking from "parking";
 import BottomBtn from "bottomBtn";
 import RepairsOnline from "repairsOnline";
+import Home from "home";
 
 import DataService from "dataService";
 import GlobalAction from "compat";
@@ -315,6 +316,8 @@ class Index extends React.Component {
       isCompanyArr: false,
     })
   }
+
+  
 
 
   // 聚焦
@@ -972,6 +975,7 @@ class Index extends React.Component {
 
     }
   }
+
 
 }
 

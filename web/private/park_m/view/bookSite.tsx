@@ -352,23 +352,28 @@ class BookInfo extends React.Component {
         this.setState({
           bookInfocss: "bookInfos-all",
           //leaseul: "leaseul"
+             bookSumbit:"hide",
         })
       } else {
         this.setState({
           bookInfocss: "bookInfos",
           // leaseul: "leaseul-all"
+               bookSumbit:"hide",
         })
       }
     } else {
       if (this.state.bookInfocss == "bookInfos") {
         this.setState({
           bookInfocss: "bookInfos-part",
-          //leaseul: "leaseul"
+          //leaseul: "leaseul";  bookSumbit :hide;
+          bookSumbit:"hide"
         })
+
       } else {
         this.setState({
           bookInfocss: "bookInfos",
-          // leaseul: "leaseul-all"
+          bookSumbit:"bookSumbit",
+          // leaseul: "leaseul-all";   bookSumbit :bookSumbit;
         })
       }
     }
@@ -387,17 +392,27 @@ class BookInfo extends React.Component {
   // 切换显示子组件
   public infoClick(indexof) {
     console.log("infoClick", indexof);
-    this.setState({
-      infoli: indexof,
-    });
+    if (indexof == 2) {
+      this.setState({
+        infoli: indexof,
+        bookSumbit: "hide",
+      });
+    } else {
+      this.setState({
+        infoli: indexof,
+        bookSumbit: "bookSumbit",
+      });
+    }
+ 
+    
   }
 
   //供预定页面调用的显示隐藏
   static hideBookFa() {}
   public hideBookFa() {
- 
     this.setState({
-      infoli:0
+      infoli: 0,
+      bookSumbit:"bookSumbit",
     })
   }
 
@@ -434,10 +449,11 @@ class BookInfo extends React.Component {
           <div className={this.state.infoli == 2 ? "show" : "hide"}>
             <BookRoom />
           </div>
-          <div className={this.state.infoli !== 2 ? "bookSumbit" : "hide"} onClick={this.infoClick.bind(this, 2)}>预定</div>
+          <div className={this.state.bookSumbit} onClick={this.infoClick.bind(this, 2)}>预定</div>
         </div>
       </div>
     )
+    //   <div className={this.state.infoli !== 2  ? "bookSumbit" : "hide"} onClick={this.infoClick.bind(this, 2)}>预定</div>
 
   }
 
@@ -458,7 +474,8 @@ class BookInfo extends React.Component {
     bookInfoul: "bookInfoul",
     leaseInfoul: "leaseInfoul_br",
     //场地名称
-    name:"",
+    name: "",
+    bookSumbit:"bookSumbit",
   }
 }
 
@@ -519,6 +536,7 @@ class BookRoom extends React.Component {
       building_name: data.response.building_name,
       floor_name: data.response.floor_name,
       room_name: data.response.name,
+      times_list:data.response.times,
     })
   }
 
@@ -536,8 +554,9 @@ class BookRoom extends React.Component {
     if (this.state.bookRoom == "bookRoom-part") {
       this.setState({
         bookRoom: "bookRoom-all",
-        bookformcss: "bookform-all "
+        bookformcss: "bookform-all ",
       })
+      //
       // 通知3d，暂停加载模型
       this.globalAction.web_call_webgl_pauseloadModuler();
     } else {
@@ -577,7 +596,16 @@ class BookRoom extends React.Component {
   }
 
   public setStartTime(date) {
+    console.log('开始时间', date);
+
+    // 判断date 晚于当前时间；
     const d = new Date(date)
+    var now = new Date();
+   // console.log('当前时间', now);
+    if (now > d) {    
+        Toast.info('开始时间，不能早于当前时间');
+    } else {
+      //console.log('当前时间2222222');
     const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate())
     const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds())
     const startDate = resDate + " " + resTime
@@ -587,11 +615,19 @@ class BookRoom extends React.Component {
       start_date: startDate,
       // start_time: resTime
     });
-    console.log("start输入index2", this.state.startTime);
+    }
+  // console.log("start输入index2", this.state.startTime);
+    //over
   }
 
   public setEndTime(date) {
+    console.log('结束时间', date);
     const d = new Date(date)
+    var now = new Date();
+
+    if (now > d) {
+      Toast.info('结束时间，不能早于当前时间');
+    } else {
     const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate())
     const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds())
     const endDate = resDate + " " + resTime
@@ -601,7 +637,9 @@ class BookRoom extends React.Component {
       end_date: endDate,
       // end_time: resTime
     });
+    }
     // console.log("end输入index2", this.state.endTime);
+     //over
   }
 
   // 显示公司列表
@@ -642,9 +680,18 @@ class BookRoom extends React.Component {
   public dataService: DataService = new DataService();
   // 提交预约申请 
   public bookSumbit() {
-    // console.log("bookSumbit", this.state);
-    // console.log("bookSumbit", this.state.start_date);
-    if (this.state.start_date == "") {
+
+    console.log('endTime--',this.state.endTime)
+    console.log('startTime--', this.state.startTime);
+ 
+    var s=new Date(this.state.start_date).getTime();
+    var d = new Date(this.state.end_date).getTime();
+
+    if (s > d) {   // 开始时间 晚于 结束时间
+      Toast.info('开始时间，不能晚于结束时间');
+    } else if ( d-s < 3600000  )  {   //    结束时间 - 开始时间 < 一分钟
+       Toast.info('最短使用时间：一小时');
+    }else if (this.state.start_date == "") {
        Toast.info('请选择开始时间', 2);
     } else if (this.state.end_date == "") {
        Toast.info('请选择结束时间', 2);
@@ -663,7 +710,8 @@ class BookRoom extends React.Component {
   }
 
   showInfos() {
-    BookInfo.hideBookFa()
+    BookInfo.hideBookFa();
+
   }
 
   //提交成功
@@ -731,17 +779,35 @@ class BookRoom extends React.Component {
               </p>
             </li>
             <li style={{ "border": "0", "padding": "1rem 0 0 0" }}>
-              <p><span className="redStar">*</span><span style={{ "font-size": "2.3rem", "margin-": "1rem" }}>会议主题：</span></p>
+              <p><span className="redStar">*</span><span style={{ "font-size": "2.3rem", "margin-top": "1rem" }}>会议主题：</span></p>
               <textarea className="bookTheme" value={this.state.theme}
                 onChange={this.changebookTheme.bind(this)} onFocus={this.foucusbookTheme.bind(this)} ></textarea>
             </li>
             <li>
               <p><span className="redStar">*</span><span style={{ "font-size": "2.3rem" }}>具体需求：</span></p>
-              <textarea className="bookContent" value={this.state.content} style={{ "margin-bottom": "10rem" }}
+              <textarea className="bookContent" value={this.state.content} style={{ "margin-bottom": "0rem" }}
                 placeholder="请将具体需求描述出来。（200字内）"
                 onChange={this.changebookContent.bind(this)}></textarea>
             </li>
           </ul>
+
+          <table className="bookTable" style={{ "margin-bottom": "15rem" }}>
+            <tr >
+              <th>序号</th>
+              <th>开始时间</th>
+              <th>结束时间</th>
+            </tr>
+              {this.state.times_list.map((i,index) => {
+              return (
+                <tr >
+                  <th>{index + 1}</th>
+                  <th>{i.starttime.substring(0,16)}</th>
+                  <th>{i.endtime}</th>
+                </tr>
+                )
+          })}
+          </table>
+
           <div className="bookSumbit" onClick={this.bookSumbit.bind(this)}>提交</div>
         </form>
 
@@ -808,6 +874,7 @@ class BookRoom extends React.Component {
     theme: "50字内",
     //具体需求
     content: "",
+    times_list:[],
   }
 
 }
