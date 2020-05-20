@@ -129,11 +129,13 @@
         </div>
     </div>
 
-    <div class="changeD" onclick="changeD()">2D</div>
-    <div class="reset" onclick="reset()">复位</div>
-    <div class="selectDoor">进入室内</div>
-    <div class="selectAdd">+</div>
-    <div class="selectPop">-</div>
+        <div class="modelBtn">
+            <div class="changeD" onclick="changeD()">2D</div>
+            <div class="reset" onclick="reset()">复位</div>
+            <div class="selectDoor">进入室内</div>
+            <div class="selectAdd">+</div>
+            <div class="selectPop">-</div>
+        </div>
 
     <div style="position: absolute;top: 130px;left: 0px;z-index: 101;">
         <button onclick="changeBut()" style="width: 12rem;height: 4rem;font-size: 2.3rem;">测试按钮</button>
@@ -181,7 +183,10 @@
             <button onclick="saveShareContent('{A:111,B:3333}','testDD.txt')" style="width: 17rem;height: 4rem;font-size: 2.3rem;">自动下载</button>
         </li>
          <li>
-            <button class="VR" onclick="changeVR()" style="width: 17rem;height: 4rem;font-size: 2.3rem;">全景图</button>
+            <button  onclick="webgl_call_web_showVR()" style="width: 12rem;height: 4rem;font-size: 2.3rem;">打开全景</button>
+        </li>
+        <li>
+            <button class="closeVR hide" onclick="web_call_webgl_closeVR()" style="width: 12rem;height: 4rem;font-size: 2.3rem;">关闭全景</button>
         </li>
         <!--<li>
             <button onclick="refreshParking(120)" style="width: 17rem;height: 4rem;font-size: 2.3rem;">激活地库</button>
@@ -192,22 +197,40 @@
     </ul>
 
     <script>
-         var vr = 0;
-        function changeVR() {
-            if (vr == 0) {
-                $('#viewContainer').hide();
-                $('.modelBtn').hide();
-                $('.VR').html('全景图显示')
-                vr = 1
-                console.log('全景图显示')
-            } else {
-                $('#viewContainer').show();
-                   $('.modelBtn').show();
-                 $('.VR').html('全景图隐藏')
-                vr = 0
-                console.log('全景图隐藏')
-            }
+        // hide-3d 调 web ；show web通知3d
+        function webgl_call_web_showVR() {
+            console.log('全景图开启,隐藏所有');
+            $('#viewContainer').hide();
+            $('.modelBtn').hide();
+            $('.closeVR').removeClass('hide');
         }
+
+        function web_call_webgl_closeVR() {
+            console.log('全景图隐藏,显示所有');
+            $('#viewContainer').show();
+            $('.modelBtn').show();
+            $('.closeVR').addClass('hide');
+        }
+
+
+
+        // var vr = 0;
+        //function changeVR() {
+        //    if (vr == 0) {
+        //        $('#viewContainer').hide();
+        //        $('.modelBtn').hide();
+        //        $('.VR').html('全景图显示')
+        //        vr = 1
+        //        console.log('全景图显示')
+
+        //    } else {
+        //        $('#viewContainer').show();
+        //           $('.modelBtn').show();
+        //         $('.VR').html('全景图隐藏')
+        //        vr = 0
+        //        console.log('全景图隐藏')
+        //    }
+        //}
 
         // 下载
         function saveShareContent(content, fileName) {
