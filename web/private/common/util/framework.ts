@@ -189,19 +189,11 @@ class App {
                         }
                     }
 
-                    if (pThis["pObject2"]) {
-                        pThis["pObject2"].Destory();
-                        pThis["pObject2"] = null;
-                    }
-                    else if (pThis["pObject"]) {
-                        pThis["pObject"].Destory();
-                        pThis["pObject"] = null;
-                    }
-                    //console.log("双击:", null);
+                    pThis.m_pProject.OnClick(2, e);
                 }
                 /// 鼠标单击
                 else {
-                    //console.log("单击:", null);
+                    pThis.m_pProject.OnClick(1, e);
                 }
 
                 nClickTime = MiaokitJS.Time();

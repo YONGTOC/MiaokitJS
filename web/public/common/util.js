@@ -600,16 +600,10 @@ class App {
                             pThis.m_pCameraCtrl.Fly(MiaokitJS.SVECLASS.CTRL_MODE.PANORAMA, pSelect.m_pViewState);
                         }
                     }
-                    if (pThis["pObject2"]) {
-                        pThis["pObject2"].Destory();
-                        pThis["pObject2"] = null;
-                    }
-                    else if (pThis["pObject"]) {
-                        pThis["pObject"].Destory();
-                        pThis["pObject"] = null;
-                    }
+                    pThis.m_pProject.OnClick(2, e);
                 }
                 else {
+                    pThis.m_pProject.OnClick(1, e);
                 }
                 nClickTime = MiaokitJS.Time();
             }
@@ -1583,6 +1577,16 @@ vec4 vs()
     nZ = mPosition.z;
     mPosition.y = nY * nCos - nZ * nSin;
     mPosition.z = nY * nSin + nZ * nCos;
+
+    // 使指南针朝向正确
+    nCos = cos(-0.35 * 3.141592654);
+    nSin = sin(-0.35 * 3.141592654);
+    nX = mPosition.x;
+    nZ = mPosition.z;
+    mPosition.x = nX * nCos - nZ * nSin;
+    mPosition.z = nX * nSin + nZ * nCos;
+
+    // 设置中心点位置
     mPosition.xyz += u_Position.xyz;
     
     // 纹理映射坐标

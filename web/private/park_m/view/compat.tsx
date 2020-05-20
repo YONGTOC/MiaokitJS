@@ -109,7 +109,8 @@ class GlobalAction {
     }
 
     //切换标识； 0 false--隐藏标识；1 true--显示标识
-    public web_call_webgl_switchMark(pName, pInfo ,pData) {
+    public web_call_webgl_switchMark(pName, pInfo, pData) {
+        MiaokitJS.App.m_pProject.ShowOutdoorPOI(pName, pInfo ? pData : null);
         console.log("web_call_webgl_switchMark(切换标识)", pName, pInfo, pData);
     }
 

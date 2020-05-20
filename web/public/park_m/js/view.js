@@ -66,6 +66,7 @@ define("compat", ["require", "exports"], function (require, exports) {
             }
         }
         web_call_webgl_switchMark(pName, pInfo, pData) {
+            MiaokitJS.App.m_pProject.ShowOutdoorPOI(pName, pInfo ? pData : null);
             console.log("web_call_webgl_switchMark(切换标识)", pName, pInfo, pData);
         }
         web_call_webgl_mapReturnpark() {
