@@ -9,19 +9,10 @@
     <script>
         let MiaokitJS = new MiaokitModule("Sisyphus", "./data/projects/config1.txt");
 
+       
+
+
         window.onload = function () {
-            // 在onload 之前 requir。config
-            MiaokitJS.Track("Window.onload");
-
-            window.oncontextmenu = function (e) {
-                e.preventDefault();
-            };
-
-            MiaokitJS.Load(function () {
-                MiaokitJS.App.Start();
-            }, function (nEventID) {
-                MiaokitJS.App.Update();
-            });
 
             require.config({
                 baseUrl: "park_m",
@@ -43,7 +34,24 @@
                         "css": "common/requirejs/css.min.js",
                     }
                 }
+        });
+
+
+
+            // 在onload 之前 requir。config
+            MiaokitJS.Track("Window.onload");
+
+            window.oncontextmenu = function (e) {
+                e.preventDefault();
+            };
+
+            MiaokitJS.Load(function () {
+                MiaokitJS.App.Start();
+            }, function (nEventID) {
+                MiaokitJS.App.Update();
             });
+
+     
 
 
 
@@ -57,7 +65,8 @@
     </script>
 
     <script src="./common/util.js"></script>
-    <script src="./park_m/js/app.js"></script>
+    <script src="./park_m/js/app.js"></script>  
+    <!--<script src="./park_m/js/view.js"></script>-->  
 
     <script src="./common/requirejs/require.js"></script>
     <script src="./common/jquery.js"></script>
@@ -130,9 +139,7 @@
             </p>
         </div>
     </div>
-    <div class="VRstate hide" onclick="web_call_webgl_closeVR()" >
-        全景
-    </div>
+    <div class="VRstate hide" onclick="web_call_webgl_closeVR()" > 退出 </div>
         <div class="modelBtn">
               <div class="nearGap" onclick="nearGap()">+</div>
             <div class="farGap" onclick="farGap()">-</div>    

@@ -202,7 +202,7 @@ class TopBtn extends React.Component {
   // 切换地图标识;0--隐藏标识； 1--显示标识
   public switchMark(a, bInfo) {
     console.log('switchMark', a);
-    if (a == "交通") {
+    if (a == "全景") {
       // 判断当前是否为选中状态
       if (this.state.topIcon1 == "iconBoxIn" || this.state.topIcon1 == "iconBox-bigIn") {
         if (this.state.topView == "topView-big") {
@@ -272,7 +272,7 @@ class TopBtn extends React.Component {
            this.markClose(a)
        // this.globalAction.web_call_webgl_switchMark(a, 0);
       }
-    } else if (a == "全景") {
+    } else if (a == "交通") {
       if (this.state.topIcon4 == "iconBox-big") {
         this.setState({
           topIcon4: "iconBox-bigIn",
@@ -312,7 +312,7 @@ class TopBtn extends React.Component {
     return (
       <div className={this.state.topViewBack}>
         <div className={this.state.topView}>
-          <div className={this.state.topIcon4} onClick={this.switchMark.bind(this, "全景")}>
+          <div className={this.state.topIcon1} onClick={this.switchMark.bind(this, "全景")} style={{ "border-top": "0rem solid #646464" }}>
             <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe818;</i>
             <p>全景</p>
           </div>
@@ -328,14 +328,13 @@ class TopBtn extends React.Component {
             <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe817;</i>
             <p>公交车</p>
           </div>
-       
+          <div className={this.state.topIcon4} onClick={this.switchMark.bind(this, "交通")}>
+            <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe816;</i>
+            <p>交通</p>
+          </div>
           <div className={this.state.topIcon5} onClick={this.switchMark.bind(this, "停车场")}>
             <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe81b;</i>
             <p>停车场</p>
-          </div>
-          <div className={this.state.topIcon1} onClick={this.switchMark.bind(this, "交通")} style={{ "border-top": "0rem solid #646464" }}>
-            <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe816;</i>
-            <p>交通</p>
           </div>
           <div className={this.state.topClose} onClick={this.topClose.bind(this, 10)}>
             <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe81c;</i>
