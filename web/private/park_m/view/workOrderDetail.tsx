@@ -160,6 +160,9 @@ class workOrderDetail extends React.Component<{ history: any }>{
       state: index,
       reply: this.state.reply
     }
+    if (!this.state.reply || this.state.reply === "200字内") {
+      return alert("请填写回复!")
+    }
     if (JSON.parse(sessionStorage.getItem("workOrder")).workType == 1) {
       this.dataService.changeRoleAuthenticationInfo(this.callBack.bind(this), obj)
     } else if (JSON.parse(sessionStorage.getItem("workOrder")).workType == 2) {

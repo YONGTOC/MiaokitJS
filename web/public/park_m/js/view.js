@@ -2212,7 +2212,35 @@ define("applyPut", ["require", "exports", "react", "react-router-dom", "antd-mob
                 applyPutcss: "applyPut-part ",
                 iconfont: "iconfont iconfont-unturn",
                 applyPutul: "applyPutul-part applyPutul",
-                applyList: [],
+                applyList: [
+                    {
+                        id: "1",
+                        code: "menko_1",
+                        name: "门口1",
+                        startTime: "开始日期",
+                        endTime: "结束日期",
+                        address: "门口1",
+                        start_date: '',
+                        end_date: '',
+                        longitude: '',
+                        latitude: '',
+                        start_time: 0,
+                        end_time: 0,
+                    }, {
+                        id: "2",
+                        code: "menko_2",
+                        name: "门口2",
+                        startTime: "开始日期",
+                        endTime: "结束日期",
+                        address: "门口1",
+                        start_date: '',
+                        end_date: '',
+                        longitude: '',
+                        latitude: '',
+                        start_time: '',
+                        end_time: '',
+                    },
+                ],
                 address: "",
                 content: "请将具体内容描述出来。（200字内）",
                 inputValue: "",
@@ -2220,7 +2248,6 @@ define("applyPut", ["require", "exports", "react", "react-router-dom", "antd-mob
                 staff_id: "",
                 postData: false,
             };
-            ApplyPut.addapplyPut = this.addapplyPut.bind(this);
             this.delApply = this.delApply.bind(this);
         }
         componentDidMount() {
@@ -2275,18 +2302,6 @@ define("applyPut", ["require", "exports", "react", "react-router-dom", "antd-mob
         }
         mapReturnpark() {
             this.globalAction.web_call_webgl_mapReturnpark();
-        }
-        static addapplyPut(data) { }
-        ;
-        addapplyPut(data) {
-            let arr = this.state.applyList;
-            arr.push({
-                startTime: "开始日期", endTime: "结束日期", id: data.id, name: data.name,
-            });
-            this.setState({
-                applyList: arr
-            });
-            console.log(this.state);
         }
         foucus(event) {
             console.log("address聚焦2", event.target.value);
@@ -2351,31 +2366,49 @@ define("applyPut", ["require", "exports", "react", "react-router-dom", "antd-mob
             console.log("end输入index2", this.state.applyList);
         }
         setStartDate(date) {
-            var dateStr = JSON.stringify(date);
-            var dateN = dateStr.slice(1, 11);
-            var index = this.state.timeIndex;
-            let applyList = this.state.applyList;
-            console.log("start输入index1", dateN);
-            applyList[index].startTime = dateN;
-            applyList[index].start_date = dateN;
-            this.setState({
-                applyList: applyList,
-                applyPutStartTimeBox: "hide"
-            });
+            const d = new Date(date);
+            var now = new Date();
+            console.log(d, now);
+            if (now > d) {
+                antd_mobile_3.Toast.info('开始时间，不能早于当前时间');
+            }
+            else {
+                var dateStr = JSON.stringify(date);
+                var dateN = dateStr.slice(1, 11);
+                var index = this.state.timeIndex;
+                let applyList = this.state.applyList;
+                console.log("start输入index1", dateN);
+                applyList[index].startTime = dateN;
+                applyList[index].start_date = dateN;
+                applyList[index].start_time = date;
+                this.setState({
+                    applyList: applyList,
+                    applyPutStartTimeBox: "hide"
+                });
+            }
             console.log("start输入index2", this.state.applyList);
         }
         setEndDate(date) {
-            var dateStr = JSON.stringify(date);
-            var dateN = dateStr.slice(1, 11);
-            var index = this.state.timeIndex;
-            let applyList = this.state.applyList;
-            console.log("end输入index1", dateN);
-            applyList[index].endTime = dateN;
-            applyList[index].end_date = dateN;
-            this.setState({
-                applyList: applyList,
-                applyPutEndTimeBox: "hide"
-            });
+            const d = new Date(date);
+            var now = new Date();
+            console.log(d, now);
+            if (now > d) {
+                antd_mobile_3.Toast.info('结束时间，不能早于当前时间');
+            }
+            else {
+                var dateStr = JSON.stringify(date);
+                var dateN = dateStr.slice(1, 11);
+                var index = this.state.timeIndex;
+                let applyList = this.state.applyList;
+                console.log("end输入index1", dateN);
+                applyList[index].endTime = dateN;
+                applyList[index].end_date = dateN;
+                applyList[index].end_time = date;
+                this.setState({
+                    applyList: applyList,
+                    applyPutEndTimeBox: "hide"
+                });
+            }
             console.log("end输入index2", this.state.applyList);
         }
         clickStart(event) {
@@ -2437,12 +2470,18 @@ define("applyPut", ["require", "exports", "react", "react-router-dom", "antd-mob
             }
             else {
                 $.each(this.state.applyList, function (index, item) {
+                    var dayChou_s = new Date(item.startTime).getTime();
+                    var dayChou_e = new Date(item.endTime).getTime();
                     if (item.startTime == "开始日期") {
                         antd_mobile_3.Toast.info('请填写开始日期', 2);
                         postData = 0;
                     }
                     else if (item.endTime == "结束日期") {
                         antd_mobile_3.Toast.info('请填写结束日期', 2);
+                        postData = 0;
+                    }
+                    else if (dayChou_s > dayChou_e) {
+                        antd_mobile_3.Toast.info('结束日期不能早于开始日期');
                         postData = 0;
                     }
                     else {
@@ -2883,6 +2922,7 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "antd-mob
                 bookInfoul: "bookInfoul",
                 leaseInfoul: "leaseInfoul_br",
                 name: "",
+                bookSumbit: "bookSumbit",
             };
             BookInfo.showList = this.showList.bind(this);
             this.toggleFold = this.toggleFold.bind(this);
@@ -2921,11 +2961,13 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "antd-mob
                 if (this.state.bookInfocss == "bookInfos") {
                     this.setState({
                         bookInfocss: "bookInfos-all",
+                        bookSumbit: "hide",
                     });
                 }
                 else {
                     this.setState({
                         bookInfocss: "bookInfos",
+                        bookSumbit: "hide",
                     });
                 }
             }
@@ -2933,11 +2975,13 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "antd-mob
                 if (this.state.bookInfocss == "bookInfos") {
                     this.setState({
                         bookInfocss: "bookInfos-part",
+                        bookSumbit: "hide"
                     });
                 }
                 else {
                     this.setState({
                         bookInfocss: "bookInfos",
+                        bookSumbit: "bookSumbit",
                     });
                 }
             }
@@ -2954,14 +2998,24 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "antd-mob
         }
         infoClick(indexof) {
             console.log("infoClick", indexof);
-            this.setState({
-                infoli: indexof,
-            });
+            if (indexof == 2) {
+                this.setState({
+                    infoli: indexof,
+                    bookSumbit: "hide",
+                });
+            }
+            else {
+                this.setState({
+                    infoli: indexof,
+                    bookSumbit: "bookSumbit",
+                });
+            }
         }
         static hideBookFa() { }
         hideBookFa() {
             this.setState({
-                infoli: 0
+                infoli: 0,
+                bookSumbit: "bookSumbit",
             });
         }
         render() {
@@ -2986,7 +3040,7 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "antd-mob
                         React.createElement(Notes, null)),
                     React.createElement("div", { className: this.state.infoli == 2 ? "show" : "hide" },
                         React.createElement(BookRoom, null)),
-                    React.createElement("div", { className: this.state.infoli !== 2 ? "bookSumbit" : "hide", onClick: this.infoClick.bind(this, 2) }, "\u9884\u5B9A"))));
+                    React.createElement("div", { className: this.state.bookSumbit, onClick: this.infoClick.bind(this, 2) }, "\u9884\u5B9A"))));
         }
     }
     class BookRoom extends React.Component {
@@ -3022,6 +3076,7 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "antd-mob
                 end_time: "",
                 theme: "50字内",
                 content: "",
+                times_list: [],
             };
             BookRoom.getRoomdata = this.getRoomdata.bind(this);
         }
@@ -3060,6 +3115,7 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "antd-mob
                 building_name: data.response.building_name,
                 floor_name: data.response.floor_name,
                 room_name: data.response.name,
+                times_list: data.response.times,
             });
         }
         toggleFold() {
@@ -3076,7 +3132,7 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "antd-mob
             if (this.state.bookRoom == "bookRoom-part") {
                 this.setState({
                     bookRoom: "bookRoom-all",
-                    bookformcss: "bookform-all "
+                    bookformcss: "bookform-all ",
                 });
                 this.globalAction.web_call_webgl_pauseloadModuler();
             }
@@ -3107,26 +3163,39 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "antd-mob
             return s < 10 ? '0' + s : s;
         }
         setStartTime(date) {
+            console.log('开始时间', date);
             const d = new Date(date);
-            const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate());
-            const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds());
-            const startDate = resDate + " " + resTime;
-            console.log("start输入index656", startDate);
-            this.setState({
-                startTime: date,
-                start_date: startDate,
-            });
-            console.log("start输入index2", this.state.startTime);
+            var now = new Date();
+            if (now > d) {
+                antd_mobile_4.Toast.info('开始时间，不能早于当前时间');
+            }
+            else {
+                const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate());
+                const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds());
+                const startDate = resDate + " " + resTime;
+                console.log("start输入index656", startDate);
+                this.setState({
+                    startTime: date,
+                    start_date: startDate,
+                });
+            }
         }
         setEndTime(date) {
+            console.log('结束时间', date);
             const d = new Date(date);
-            const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate());
-            const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds());
-            const endDate = resDate + " " + resTime;
-            this.setState({
-                endTime: date,
-                end_date: endDate,
-            });
+            var now = new Date();
+            if (now > d) {
+                antd_mobile_4.Toast.info('结束时间，不能早于当前时间');
+            }
+            else {
+                const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate());
+                const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds());
+                const endDate = resDate + " " + resTime;
+                this.setState({
+                    endTime: date,
+                    end_date: endDate,
+                });
+            }
         }
         showCompanyBox() {
             this.setState({
@@ -3155,7 +3224,17 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "antd-mob
             });
         }
         bookSumbit() {
-            if (this.state.start_date == "") {
+            console.log('endTime--', this.state.endTime);
+            console.log('startTime--', this.state.startTime);
+            var s = new Date(this.state.start_date).getTime();
+            var d = new Date(this.state.end_date).getTime();
+            if (s > d) {
+                antd_mobile_4.Toast.info('开始时间，不能晚于结束时间');
+            }
+            else if (d - s < 3600000) {
+                antd_mobile_4.Toast.info('最短使用时间：一小时');
+            }
+            else if (this.state.start_date == "") {
                 antd_mobile_4.Toast.info('请选择开始时间', 2);
             }
             else if (this.state.end_date == "") {
@@ -3227,13 +3306,24 @@ define("bookSite", ["require", "exports", "react", "react-router-dom", "antd-mob
                         React.createElement("li", { style: { "border": "0", "padding": "1rem 0 0 0" } },
                             React.createElement("p", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
-                                React.createElement("span", { style: { "font-size": "2.3rem", "margin-": "1rem" } }, "\u4F1A\u8BAE\u4E3B\u9898\uFF1A")),
+                                React.createElement("span", { style: { "font-size": "2.3rem", "margin-top": "1rem" } }, "\u4F1A\u8BAE\u4E3B\u9898\uFF1A")),
                             React.createElement("textarea", { className: "bookTheme", value: this.state.theme, onChange: this.changebookTheme.bind(this), onFocus: this.foucusbookTheme.bind(this) })),
                         React.createElement("li", null,
                             React.createElement("p", null,
                                 React.createElement("span", { className: "redStar" }, "*"),
                                 React.createElement("span", { style: { "font-size": "2.3rem" } }, "\u5177\u4F53\u9700\u6C42\uFF1A")),
-                            React.createElement("textarea", { className: "bookContent", value: this.state.content, style: { "margin-bottom": "10rem" }, placeholder: "\u8BF7\u5C06\u5177\u4F53\u9700\u6C42\u63CF\u8FF0\u51FA\u6765\u3002\uFF08200\u5B57\u5185\uFF09", onChange: this.changebookContent.bind(this) }))),
+                            React.createElement("textarea", { className: "bookContent", value: this.state.content, style: { "margin-bottom": "0rem" }, placeholder: "\u8BF7\u5C06\u5177\u4F53\u9700\u6C42\u63CF\u8FF0\u51FA\u6765\u3002\uFF08200\u5B57\u5185\uFF09", onChange: this.changebookContent.bind(this) }))),
+                    React.createElement("table", { className: "bookTable", style: { "margin-bottom": "15rem" } },
+                        React.createElement("tr", null,
+                            React.createElement("th", null, "\u5E8F\u53F7"),
+                            React.createElement("th", null, "\u5F00\u59CB\u65F6\u95F4"),
+                            React.createElement("th", null, "\u7ED3\u675F\u65F6\u95F4")),
+                        this.state.times_list.map((i, index) => {
+                            return (React.createElement("tr", null,
+                                React.createElement("th", null, index + 1),
+                                React.createElement("th", null, i.starttime.substring(0, 16)),
+                                React.createElement("th", null, i.endtime)));
+                        })),
                     React.createElement("div", { className: "bookSumbit", onClick: this.bookSumbit.bind(this) }, "\u63D0\u4EA4")),
                 React.createElement("div", { className: this.state.companyBox },
                     React.createElement("ul", { className: "rollSelectCauseULcss" }, this.state.companyUL.map((i, index) => {
@@ -4178,7 +4268,7 @@ define("enterpriseInformation", ["require", "exports", "react", "dataService", "
                                 React.createElement("div", { onClick: this.clupPicPro.bind(this), style: { width: "12rem", height: "12rem", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left" } },
                                     React.createElement("img", { src: "./park_m/image/addPicture.png", style: { height: "60px", width: "60px" } }),
                                     React.createElement("div", { style: { color: "#949494", marginTop: "-30px" } }, "\u6DFB\u52A0")))),
-                        React.createElement("div", { className: "imgBox elegantImgBox", style: {} },
+                        React.createElement("div", { className: "imgBox elegantImgBox", style: { "display": "none" } },
                             React.createElement("span", { style: { color: "#949494", fontSize: "40px", lineHeight: "160px", float: "left", "margin-right": "1rem" } }, "\u5168\u666F\u5C55\u793A"),
                             React.createElement("div", { className: "service-tel-B" },
                                 this.state.picPan.map((item, index) => {
@@ -4234,7 +4324,7 @@ define("enterpriseInformation", ["require", "exports", "react", "dataService", "
                                 return (React.createElement("div", { key: index, style: { float: "left", width: "12rem", height: "12rem", margin: "0 20px 20px 0" } },
                                     React.createElement("img", { src: item.pic_url, width: "100%", height: "100%", onError: this.onErrorProduct.bind(this) })));
                             }))),
-                        React.createElement("div", { style: { margin: "30px 0 0 50px", overflow: "hidden" } },
+                        React.createElement("div", { style: { margin: "30px 0 0 50px", overflow: "hidden" }, className: "hide" },
                             React.createElement("div", { style: { color: "#949494", fontSize: "40px", float: "left", width: "25%" } }, "\u5168\u666F\u5C55\u793A"),
                             React.createElement("div", { style: { color: "#333333", fontSize: "40px", float: "left", width: "70%" } }, this.state.panoramaImgList.map((item, index) => {
                                 return (React.createElement("div", { key: index, style: { float: "left", width: "12rem", height: "12rem", margin: "0 20px 20px 0" } },
@@ -5130,7 +5220,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
                     topIcon2: "iconBox",
                 });
             }
-            else if (this.state.topIcon1 == "iconBox-bigIn") {
+            else if (this.state.topIcon2 == "iconBox-bigIn") {
                 this.setState({
                     topIcon1: "iconBox",
                     topIcon2: "iconBoxIn",
@@ -5158,7 +5248,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
         }
         switchMark(a, bInfo) {
             console.log('switchMark', a);
-            if (a == "交通") {
+            if (a == "全景") {
                 if (this.state.topIcon1 == "iconBoxIn" || this.state.topIcon1 == "iconBox-bigIn") {
                     if (this.state.topView == "topView-big") {
                         this.setState({
@@ -5183,7 +5273,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
                             topIcon1: "iconBoxIn",
                         });
                     }
-                    this.callMark(1, a);
+                    this.callMark(4, a);
                 }
             }
             else if (a == "商圈") {
@@ -5230,13 +5320,13 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
                     this.markClose(a);
                 }
             }
-            else if (a == "全景") {
+            else if (a == "交通") {
                 if (this.state.topIcon4 == "iconBox-big") {
                     this.setState({
                         topIcon4: "iconBox-bigIn",
                         topIcon4info: 1,
                     });
-                    this.callMark(4, a);
+                    this.callMark(1, a);
                 }
                 else {
                     this.setState({
@@ -5266,9 +5356,9 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
         render() {
             return (React.createElement("div", { className: this.state.topViewBack },
                 React.createElement("div", { className: this.state.topView },
-                    React.createElement("div", { className: this.state.topIcon1, onClick: this.switchMark.bind(this, "交通"), style: { "border-top": "0rem solid #646464" } },
-                        React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE816"),
-                        React.createElement("p", null, "\u4EA4\u901A")),
+                    React.createElement("div", { className: this.state.topIcon1, onClick: this.switchMark.bind(this, "全景"), style: { "border-top": "0rem solid #646464" } },
+                        React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE818"),
+                        React.createElement("p", null, "\u5168\u666F")),
                     React.createElement("div", { className: this.state.topIcon2, onClick: this.switchMark.bind(this, "商圈") },
                         React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE81A"),
                         React.createElement("p", null, "\u5546\u5708")),
@@ -5278,9 +5368,9 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
                     React.createElement("div", { className: this.state.topIcon3, onClick: this.switchMark.bind(this, "公交车"), style: { "border-top": "0rem solid #646464" } },
                         React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE817"),
                         React.createElement("p", null, "\u516C\u4EA4\u8F66")),
-                    React.createElement("div", { className: this.state.topIcon4, onClick: this.switchMark.bind(this, "全景") },
-                        React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE818"),
-                        React.createElement("p", null, "\u5168\u666F")),
+                    React.createElement("div", { className: this.state.topIcon4, onClick: this.switchMark.bind(this, "交通") },
+                        React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE816"),
+                        React.createElement("p", null, "\u4EA4\u901A")),
                     React.createElement("div", { className: this.state.topIcon5, onClick: this.switchMark.bind(this, "停车场") },
                         React.createElement("i", { className: "iconfont", style: { "fontSize": "5rem" } }, "\uE81B"),
                         React.createElement("p", null, "\u505C\u8F66\u573A")),
@@ -9145,6 +9235,9 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
                 state: index,
                 reply: this.state.reply
             };
+            if (!this.state.reply || this.state.reply === "200字内") {
+                return alert("请填写回复!");
+            }
             if (JSON.parse(sessionStorage.getItem("workOrder")).workType == 1) {
                 this.dataService.changeRoleAuthenticationInfo(this.callBack.bind(this), obj);
             }
@@ -9358,12 +9451,12 @@ define("message", ["require", "exports", "react", "dataService", "css!./styles/m
                     this.state.workOrderArray.map((item, index) => {
                         return React.createElement("div", { key: index, className: "work-order-list-child" },
                             React.createElement("div", { style: { overflow: "hidden", margin: "30px 0 0 40px" } },
-                                React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, item.name)),
-                            React.createElement("div", { style: { fontSize: "38px", color: "#DB0A0A", margin: "30px 0 0 40px" } },
-                                "\u623F\u95F4\u4F4D\u7F6E\uFF1A",
-                                item.position),
-                            React.createElement("div", { style: { fontSize: "38px", color: "#DB0A0A", margin: "10px 0 0 40px" } },
-                                "\u5230\u671F\u65F6\u95F4\uFF1A",
+                                React.createElement("div", { style: { float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" } }, "\u60A8\u53C2\u52A0\u7684\u6D3B\u52A8\u5373\u5C06\u5F00\u59CB")),
+                            React.createElement("div", { style: { fontSize: "38px", margin: "30px 0 0 40px" } },
+                                "\u6D3B\u52A8\u540D\u79F0\uFF1A",
+                                item.name),
+                            React.createElement("div", { style: { fontSize: "38px", margin: "10px 0 0 40px" } },
+                                "\u6D3B\u52A8\u65F6\u95F4\uFF1A",
                                 item.time));
                     }),
                     this.state.workOrderArray.length > 0 ?
@@ -10184,7 +10277,7 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
             }
         }
         callBackTag(data) {
-            this.setState({ tagArr: JSON.parse(data).response }, () => {
+            this.setState({ tagArr: [...[{ id: 0, name: "全部" }], ...JSON.parse(data).response] }, () => {
                 this.getTagContent();
             });
         }
@@ -11841,7 +11934,7 @@ define("parkInfo", ["require", "exports", "react", "react-router-dom", "dataServ
                 Intro.textCss("all");
                 Advantage.textCss("all");
                 Sale.textCss("all");
-                Elegant.textCss("part");
+                Elegant.textCss("all");
             }
             if (this.state.iconfont == "iconfont iconfont-unturn") {
                 this.setState({
@@ -11980,7 +12073,7 @@ define("parkInfo", ["require", "exports", "react", "react-router-dom", "dataServ
             return (React.createElement("div", { className: this.state.intro },
                 React.createElement("p", null,
                     "\u5730\u7406\u4F4D\u7F6E",
-                    React.createElement("span", { className: "introT" }, this.state.location)),
+                    React.createElement("span", { className: "introT_dlwz" }, this.state.location)),
                 React.createElement("div", { id: "advantageText", className: "parkInfoText" })));
         }
     }

@@ -64,7 +64,7 @@ export default class InformationChilds extends React.Component {
   }
 
   callBackTag(data) {
-    this.setState({ tagArr: JSON.parse(data).response }, () => {
+    this.setState({ tagArr: [...[{id: 0, name: "全部"}], ...JSON.parse(data).response] }, () => {
       this.getTagContent()
     })
   }
