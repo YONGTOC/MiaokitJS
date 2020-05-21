@@ -102,7 +102,10 @@ export default class AttractInvestmentList extends React.Component<{ history: an
             )
           })
           }
-          <div style={{ width: "100%", height: "350px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>到底啦~</div>
+          { this.state.listArr.length > 0 ?
+            <div style={{ width: "100%", height: "350px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>到底啦~</div> :
+            <div style={{ width: "100%", height: "350px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>暂无匹配数据</div> 
+          }
         </div>
         {!this.state.deleteState ?
           <div className="rent-room-detail-bottom">

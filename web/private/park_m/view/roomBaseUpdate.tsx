@@ -10,6 +10,7 @@ interface IProps {
 interface IState {
   isElevator: boolean,
   lift: number,
+  square: string
 }
 
 export default class RoomBaseUpdate extends React.Component<{ history: any }>{
@@ -19,8 +20,9 @@ export default class RoomBaseUpdate extends React.Component<{ history: any }>{
   }
 
   public readonly state: Readonly<IState> = {
-    isElevator: false，
+    isElevator: false,
     lift: JSON.parse(sessionStorage.getItem("roomInfo"))[0].lift, // 电梯
+    square: JSON.parse(sessionStorage.getItem("roomInfo"))[0].square, // 建筑面积
 
   }
 
@@ -79,7 +81,7 @@ export default class RoomBaseUpdate extends React.Component<{ history: any }>{
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }}>
           <div className="enterprise-information-star"></div>
           <div style={{ color: "#949494", height: "80px", float: "left", width: "30%" }}>建筑面积</div>
-          <input onChange={this.changeb.bind(this)} value=""
+          <input onChange={this.changeb.bind(this)} value={this.state.square}
             style={{ float: "left", width: "65%", height: "120px", border: "none", outline: "none", marginTop: "-1px", paddingLeft: "30px", color: "#6C6C6C" }}
           />
         </div>
@@ -99,7 +101,7 @@ export default class RoomBaseUpdate extends React.Component<{ history: any }>{
         </div>
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2" }} onClick={this.changeElevator.bind(this)}>
           <div className="enterprise-information-star"></div>
-          <div style={{ color: "#949494", height: "80px", float: "left", width: "30%", marginRight: "30px" }}>装修情况</div>
+          <div style={{ color: "#949494", height: "80px", float: "left", width: "30%", marginRight: "30px" }}>电梯</div>
           <div style={{ color: "#6C6C6C", float: "left" }}>{this.state.lift == 1 ? "有" : "没有"}</div>
           <div style={{ height: "100%", float: "right" }}>
             <img src="./park_m/image/right.png" style={{ margin: "-10px 40px 0 0", transform: this.state.isElevator ? "rotate(90deg)" : "" }} />

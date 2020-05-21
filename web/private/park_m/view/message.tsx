@@ -26,7 +26,6 @@ class Message extends React.Component<{ history: any }>{
   }
 
   callBackGetMyMsgType(data) {
-    console.log("111", data)
     if (data.return_code == 100) {
       let tagList = [{id: 0, name: "全部"}]
       data.response.forEach(item => {
@@ -39,17 +38,14 @@ class Message extends React.Component<{ history: any }>{
   }
 
   callBackGetMyMsgInfo(data) {
-    console.log(data)
     if (data.return_code == 100) {
       this.setState({ workOrderArray: data.response })
     }
   }
 
-  changeTag(index) {
-    this.setState({ tagIndex: index }, ()=> {
-      this.dataService.getMyMsgInfo(this.callBackGetMyMsgInfo.bind(this), this.state.tagIndex)
-    })
-
+  changeTag(index, id) {
+    this.setState({ tagIndex: index })
+    this.dataService.getMyMsgInfo(this.callBackGetMyMsgInfo.bind(this), id)
   }
   
   // 返回
@@ -67,7 +63,7 @@ class Message extends React.Component<{ history: any }>{
         <div className="work-order-tag">
           {
             this.state.tagList.map((item, index) => {
-              return <div key={index} className={index === this.state.tagIndex ? "work-order-tag-child-add" : "work-order-tag-child"} onClick={e => this.changeTag(index)}>
+              return <div key={index} className={index === this.state.tagIndex ? "work-order-tag-child-add" : "work-order-tag-child"} onClick={e => this.changeTag(index, item.id)}>
                 {item.name}
               </div>
             })
@@ -89,7 +85,10 @@ class Message extends React.Component<{ history: any }>{
               </div>
             })
           }
-          <div style={{ width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "30px" }}>到底啦~</div>
+          {this.state.workOrderArray.length > 0 ?
+            <div style={{ width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "30px" }}>到底啦~</div> :
+            <div style={{ width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginTop: "30px" }}>暂无匹配数据</div> 
+          }
         </div>
       </div>
     )

@@ -157,7 +157,10 @@ class InfoArea extends React.Component {
             </div>
           })
           }
-          <div style={{ width: "100%", height: "30%", textAlign: "center", fontSize: "40px", lineHeight: "60px", margin: "20px 0 0 -25px" }}>到底啦~</div>
+          {this.state.listArr.length > 0 ?
+            <div style={{ width: "100%", height: "30%", textAlign: "center", fontSize: "40px", lineHeight: "60px", margin: "20px 0 0 -25px" }}>到底啦~</div> :
+            <div style={{ width: "100%", height: "30%", textAlign: "center", fontSize: "40px", lineHeight: "60px", margin: "20px 0 0 -25px" }}>暂无匹配数据</div>
+          }
         </div>
         <Link to="/isay">
           <div className="infoarea-add-c">

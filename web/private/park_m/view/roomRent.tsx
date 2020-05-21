@@ -14,7 +14,8 @@ interface IState {
   datas: any
   tagList: Array<any>,
   isModal: boolean,
-  modalIndex: number
+  modalIndex: number,
+  timeId: number
 }
 
 export default class RoomRent extends React.Component<{ history: any }>{
@@ -38,7 +39,8 @@ export default class RoomRent extends React.Component<{ history: any }>{
     ],
     tagList: ["", "", ""],
     isModal: false,
-    modalIndex: 0
+    modalIndex: 0,
+    timeId: 0
   }
 
   public dataService: DataService = new DataService()
@@ -52,6 +54,7 @@ export default class RoomRent extends React.Component<{ history: any }>{
     let obj = {
       id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
       parkId: sessionStorage.getItem("park_id"),
+      roomName: this.state.inputValue === "搜索房间" ? "" : this.state.inputValue,
       date: this.state.datas[0][this.state.tagList[0]] ? this.state.datas[0][this.state.tagList[0]].name !== "不限" ? this.state.datas[0][this.state.tagList[0]].name : "" : "",
       buildingId: this.state.datas[1][this.state.tagList[1]] ? this.state.datas[1][this.state.tagList[1]].id : "",
       floorId: this.state.datas[2][this.state.tagList[2]] ? this.state.datas[2][this.state.tagList[2]].id : ""
@@ -96,6 +99,7 @@ export default class RoomRent extends React.Component<{ history: any }>{
   // 输入
   change(event) {
     this.setState({ inputValue: event.target.value })
+    this.debounce()
   }
 
 
@@ -134,6 +138,14 @@ export default class RoomRent extends React.Component<{ history: any }>{
     this.setState({ isModal: false })
   }
 
+  debounce() {
+    let timeId
+    clearTimeout(this.state.timeId)
+    timeId = setTimeout(() => {
+      this.getExpiredRoomInfo()
+    }, 500)
+    this.setState({ timeId: timeId })
+  }
   render() {
     return (
       <div className="rent-room" style={{ backgroundColor: "#ffffff" }}>
