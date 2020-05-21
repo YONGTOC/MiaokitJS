@@ -54,19 +54,13 @@ class BottomBtn extends React.Component {
     return (
       <div className={"bottomView"}>
         <RouterDOM.Link to="/" >
-          <div className={this.state.index == 1 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 1)}>
+          <div className={this.state.index == 1 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 1)} style={{width: "50%", margin: 0}}>
             <img src={this.state.index == 1 ? this.state.iconImg1In : this.state.iconImg1Un} />
             <p>首页</p>
           </div>
         </RouterDOM.Link  >
-        <RouterDOM.Link to="/informationChild" >
-          <div className={this.state.index == 3 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 3)}>
-            <img src={this.state.index == 3 ? this.state.iconImg3In : this.state.iconImg3Un} />
-            <p>政策</p>
-          </div>
-        </RouterDOM.Link>
         <RouterDOM.Link to="/personalCenter" >
-          <div className={this.state.index == 4 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 4)}>
+          <div className={this.state.index == 4 ? "iconBox-bottomIn" : "iconBox-bottom"} onClick={this.toggleIcon.bind(this, 4)} style={{ width: "50%", margin: 0 }}>
             <img src={this.state.index == 4 ? this.state.iconImg4In : this.state.iconImg4Un} />
             <p>我的</p>
           </div>

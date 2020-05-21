@@ -152,7 +152,9 @@ export default class InformationChild extends React.Component {
           {this.state.tagArr.map((item, index) => {
             return (
               <div key={index} className={index !== this.state.tagIndex ? "information-child-c" : "information-child-add-c"}
-                onClick={e => this.clickTag(index)} style={{ width: 100 / this.state.tagArr.length + "%"}}>{item.name}</div>
+                onClick={e => this.clickTag(index)} style={{ width: 100 / this.state.tagArr.length + "%" }}>
+                <span style={{ borderBottom: index === this.state.tagIndex ? "5px solid #0B8BF0" : "", paddingBottom: index === this.state.tagIndex ? "20px" : 0 }}>{item.name}</span>
+              </div>
             )
           })
           }
@@ -194,7 +196,10 @@ export default class InformationChild extends React.Component {
             )
           })
           }
-          < div style={{ width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>到底啦~</div>
+          {this.state.listArr.length > 0 ?
+            <div style={{ width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>到底啦~</div> :
+            <div style={{ width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>暂无匹配数据</div>
+          }
         </div>
       </div>
     )

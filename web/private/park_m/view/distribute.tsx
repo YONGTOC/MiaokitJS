@@ -55,7 +55,10 @@ class Distribute extends React.Component<{ history: any }>{
             )
           })
           }
-          <div style={{ width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>到底啦~</div>
+          {this.state.distributeList.length > 0 ?
+            <div style={{ width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>到底啦~</div> :
+            <div style={{ width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>暂无匹配数据</div> 
+          }
         </div>
       </div>
     )

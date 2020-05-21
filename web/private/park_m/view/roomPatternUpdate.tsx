@@ -27,12 +27,6 @@ export default class roomPatternUpdate extends React.Component<{ history: any }>
 
   componentDidMount() {
     sessionStorage.setItem("part", JSON.stringify(JSON.parse(sessionStorage.getItem("roomInfo"))[0].part[this.props.location.state.index]))
-    $('#a-img').click(()=> {
-      $('#a-input').click()
-    })
-    $('#b-img').click(() => {
-      $('#b-input').click()
-    })
     let fileArr = this.state.fileArr
     fileArr[0] = JSON.parse(sessionStorage.getItem("part")).headimageurl
     fileArr[1] = JSON.parse(sessionStorage.getItem("part")).panoramaurl
@@ -131,10 +125,7 @@ export default class roomPatternUpdate extends React.Component<{ history: any }>
             <div style={{ float: "left", width: "50%" }}>
               <div>缩略图:</div>
               <div style={{ width: "250px", height: "250px", marginTop: "50px" }} className={this.state.fileArr[0] !== "" ? "" : "room-add-a"} >
-                {this.state.fileArr[0] !== "" ?
-                  <img src="./park_m/image/close.png" style={{ position: "absolute", left: "260px" }} onClick={e=> this.close(0)} /> : null
-                }
-                <input type="file" onChange={this.updateA.bind(this)} id="a-input" style={{ display: "none" }} />
+
                 <img src={this.state.fileArr[0] !== "" ? this.state.fileArr[0] : "./park_m/image/addPicture.png"} width="100%" height="100%" id="a-img"
                   className={this.state.fileArr[0] !== "" ? "" : "room-add-img"}/>
               </div>
@@ -142,10 +133,7 @@ export default class roomPatternUpdate extends React.Component<{ history: any }>
             <div style={{ float: "left", width: "50%" }}>
               <div>全景图:</div>
               <div style={{ width: "250px", height: "250px", marginTop: "50px" }} className={this.state.fileArr[1] !== "" ? "" : "room-add-a"}>
-                {this.state.fileArr[1] !== "" ?
-                  <img src="./park_m/image/close.png" style={{ position: "absolute", left: "712px" }} onClick={e=> this.close(1)} /> : null
-                }
-                <input type="file" onChange={this.updateB.bind(this)} id="b-input" style={{ display: "none" }} />
+            
                 <img src={this.state.fileArr[1] !== "" ? this.state.fileArr[1] : "./park_m/image/addPicture.png"} width="100%" height="100%" id="b-img"
                   className={this.state.fileArr[1] !== "" ? "" : "room-add-img" } />
               </div>

@@ -92,10 +92,6 @@ export default class RoomPattern extends React.Component<{ history: any }>{
 
           }
         </div>
-        <div onClick={this.add.bind(this)}
-          style={{ width: "100%", height: "150px", textAlign: "center", lineHeight: "150px", color: "#ffffff", backgroundColor: "#0B8BF0", position: "fixed", bottom: 0, fontSize: "50px" }}>
-          新增
-        </div>
       </div>
     )
   }

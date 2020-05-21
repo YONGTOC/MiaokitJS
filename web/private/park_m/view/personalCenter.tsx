@@ -273,12 +273,8 @@ class PersonalCenter extends React.Component {
             <div className="personal-center-tx">
               <img src={this.state.userInfo.avatar == null ? "./park_m/image/noImg.png" : this.state.userInfo.avatar}  onError={this.onErrorHeadimageurl.bind(this)} className="personal-center-tx-img"  />
             </div>
-            <div style={{ float: "left", color: "#FFFFFF", fontSize: "42px", margin: "10px 0 0 36px" }}>
+            <div style={{ float: "left", color: "#FFFFFF", fontSize: "42px", margin: "45px 0 0 36px" }}>
               <div>{this.state.userInfo.name}</div>
-              <div style={{
-                color: "#83d5ff", fontSize: "27px", backgroundColor: "#2e9cf3", width: "160px",
-                height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
-              }}>{this.state.userInfo.roles.role_name}</div>
             </div>
             <Link to={{pathname: "/modificationAuthentication", state: {name: this.state.userInfo.name}}}>
               <div className="personal-center-right">

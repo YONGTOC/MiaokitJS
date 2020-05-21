@@ -1079,6 +1079,7 @@ class DataService {
       url: this.state.rooturl + '/api/getActivitiyInfo',
       data: {
         id: id,
+        user_id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
         token: sessionStorage.getItem("token")
       },
       type: "get",
@@ -1630,23 +1631,47 @@ class DataService {
     })
   }
 
+  // 95.2 (我的个人中心-房间管理-装修情况类型信息) 通过园区的id，获取装修情况类型信息
+  public getRoomDecorateType(pBack) {
+    $.ajax({
+      url: this.state.rooturl + '/api/getRoomDecorateType',
+      data: {
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+        park_id: sessionStorage.getItem("park_id"),
+        token: sessionStorage.getItem("token")
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data)
+      }
+    })
+  }
+
   // 96.(我的个人中心-房间管理-提交房间基础信息) 提交房间基础信息
   public saveRoomBaseInfo(pBack, obj) {
+    console.log(obj)
     $.ajax({
       url: this.state.rooturl + '/api/saveRoomBaseInfo?token=' + sessionStorage.getItem("token"),
       data: JSON.stringify({
-        id: sessionStorage.getItem("park_id"),
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
         room_id: sessionStorage.getItem("roomId"),
-        headimageurl: obj.headimageurl,
+        square: obj.square,
+        lift: obj.lift,
+        title: obj.title,
         price: obj.price,
+        free_rent: obj.freeRent,
+        decorate_name: obj.decorateName,
+        decorate_id: obj.decorateId,
+        station_amount: obj.stationAmount,
+        inspection_time: obj.inspectionTime,
+        enable_rent_time: obj.enableRentTime,
+        headimageurl: obj.headimageurl,
+        pic: obj.pic,
+        video: obj.video,
         contact: obj.contact,
         phone: obj.phone,
-        inspection_time: obj.inspectionTime,
         require: obj.require,
-        lift: obj.lift,
-        square: obj.square,
-        pic: obj.pic,
-        video: obj.video
+        sell_price: obj.sellPrice
       }),
       type: "post",
       success: function (data) {
@@ -1669,7 +1694,8 @@ class DataService {
         phone: obj.phone,
         rent_date: obj.rentDate,
         rent_end_date: obj.rentEndDate,
-        default_room: obj.defaultRoom
+        default_room: obj.defaultRoom,
+        sell_state: obj.sellState
       }),
       type: "post",
       success: function (data) {
@@ -1764,7 +1790,7 @@ class DataService {
       url: this.state.rooturl + '/api/getParkBuildingAndFloorLevel?token=' + sessionStorage.getItem("token"),
       dataType: "json",
       data: {
-        id: sessionStorage.getItem("park_id"),
+        id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
         park_id: sessionStorage.getItem("park_id")
       },
       type: "get",

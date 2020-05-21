@@ -142,7 +142,7 @@ export default class informationDetail extends React.Component {
             </div>
 
           </div> : parseInt(sessionStorage.getItem("informationId")) === 2 ?
-          <div style={{ fontSize: "36px", color: "#333333" }}>
+          <div style={{ fontSize: "33px", color: "#333333" }}>
             <div style={{ width: "100%", height: "600px" }}>
               <img src={this.state.data.headimgurl} style={{ width: "100%", height: "100%" }} />
               <div style={{
@@ -153,12 +153,12 @@ export default class informationDetail extends React.Component {
                 <span style={{ fontSize: "40px", color: "#ffffff", marginRight: "15px" }}>详情内容</span>
               </div>
             </div>
-            <div style={{ width: "100%", height: "120px", fontSize: "42px", color: "#333333", fontWeight: "600", borderBottom: "5px solid #F2F2F2", lineHeight: "120px", textAlign: "center" }}>
+            <div style={{ width: "100%", height: "120px", fontSize: "38px", color: "#333333", fontWeight: "600", borderBottom: "5px solid #F2F2F2", lineHeight: "120px", textAlign: "center" }}>
               {this.state.data.name}
             </div>
             <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" }}>
               <div style={{ height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" }}></div>
-              <div style={{ color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px"}}>活动信息</div>
+              <div style={{ color: "#333333", fontSize: "38px", fontWeight: "600", lineHeight: "120px"}}>活动信息</div>
             </div>
             <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2", lineHeight: "120px" }}>
               <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px" }}>活动时间</div>
@@ -186,19 +186,19 @@ export default class informationDetail extends React.Component {
             </div>
             <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" }}>
               <div style={{ height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" }}></div>
-              <div style={{ color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px" }}>活动详情</div>
+              <div style={{ color: "#333333", fontSize: "38px", fontWeight: "600", lineHeight: "120px" }}>活动详情</div>
             </div>
             <div style={{ width: "90%", margin: "auto", padding: "30px 0 200px 0" }}>
               <span className="c-p" dangerouslySetInnerHTML={{ __html: this.state.data.content}}></span>
             </div>
             <div style={{
-              backgroundColor: "#0B8BF0", width: "100%", height: "150px", fontSize: "50px", color: "#ffffff", lineHeight: "150px",
+                backgroundColor: new Date(this.state.data.sign_end_time).getTime() > new Date().getTime() ? "#0B8BF0" : "rgb(190, 193, 195)", width: "100%", height: "150px", fontSize: "50px", color: "#ffffff", lineHeight: "150px",
               textAlign: "center", position: "fixed", bottom: "0px"
             }} onClick={this.submit.bind(this)}>
-              我要报名
+                {new Date(this.state.data.sign_end_time).getTime() > new Date().getTime() ? "我要报名" : "已结束"}
             </div>
           </div> :
-          <div style={{ fontSize: "36px", color: "#333333" }}>
+          <div style={{ fontSize: "33px", color: "#333333" }}>
             <div style={{ width: "100%", height: "600px" }}>
               <img src={this.state.data.headimgurl} style={{ width: "100%", height: "100%" }} />
               <div style={{
@@ -209,12 +209,12 @@ export default class informationDetail extends React.Component {
                 <span style={{ fontSize: "40px", color: "#ffffff", marginRight: "15px" }}>详情内容</span>
               </div>
             </div>
-            <div style={{ width: "100%", height: "120px", fontSize: "42px", color: "#333333", fontWeight: "600", borderBottom: "5px solid #F2F2F2", lineHeight: "120px", textAlign: "center" }}>
+            <div style={{ width: "100%", height: "120px", fontSize: "38px", color: "#333333", fontWeight: "600", borderBottom: "5px solid #F2F2F2", lineHeight: "120px", textAlign: "center" }}>
                 {this.state.data.title}
             </div>
             <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" }}>
               <div style={{ height: "60px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "30px 30px 0 50px" }}></div>
-              <div style={{ color: "#333333", fontSize: "42px", fontWeight: "600", lineHeight: "120px" }}>服务信息</div>
+              <div style={{ color: "#333333", fontSize: "38px", fontWeight: "600", lineHeight: "120px" }}>服务信息</div>
             </div>
             <div style={{ width: "100%", minHeight: "120px", borderBottom: "2px solid #F2F2F2", overflow: "hidden" }}>
               <div style={{ float: "left", height: "100%", width: "30%", marginLeft: "50px", lineHeight: "120px" }}>服务内容</div>

@@ -80,7 +80,13 @@ export default class RoomDetail extends React.Component<{ history: any }>{
           <div style={{ width: "100%", overflow: "hidden" }}>
             <div style={{ float: "left", width: "300px", margin: "30px 0 0 120px" }}>使用状态</div>
             <div style={{ float: "left", color: "#333333", marginTop: "30px" }}>
-              {this.state.roomInfo[0].use_info.state == 0 ? "租用中" : this.state.roomInfo[0].use_info.state == 1 ? "招租中" : "不出租"}
+              { this.state.roomInfo[0].use_info.sell_state != 1 ?
+                this.state.roomInfo[0].use_info.state == 0 ? "租用中" : this.state.roomInfo[0].use_info.state == 1 ? "招租中" : "不出租" : null
+              }
+              {this.state.roomInfo[0].use_info.sell_state != 1 && this.state.roomInfo[0].use_info.state != 0 ? "，" : null}
+              { this.state.roomInfo[0].use_info.state != 0 ?
+                this.state.roomInfo[0].use_info.sell_state == 0 ? "出售中" : this.state.roomInfo[0].use_info.sell_state == 1 ? "已售出" : "不出售" : null
+              }
             </div>
           </div>
           {this.state.roomInfo[0].use_info.state == 0 ?

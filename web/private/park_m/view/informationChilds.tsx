@@ -160,7 +160,9 @@ export default class InformationChilds extends React.Component {
           {this.state.tagArr.map((item, index) => {
             return (
               <div key={index} className={index !== this.state.tagIndex ? "information-child-c" : "information-child-add-c"}
-                onClick={e => this.clickTag(index)} style={{ width: 100 / this.state.tagArr.length + "%" }}>{item.name}</div>
+                onClick={e => this.clickTag(index)} style={{ width: 100 / this.state.tagArr.length + "%" }}>
+                <span style={{ borderBottom: index === this.state.tagIndex ? "5px solid #0B8BF0" : "", paddingBottom: index === this.state.tagIndex ? "20px" : 0 }}>{item.name}</span>
+              </div>
             )
           })
           }
@@ -186,6 +188,12 @@ export default class InformationChilds extends React.Component {
                 <div key={index} className="information-child-List-child" onClick={e => this.goDetail(item.id)} >
                   <div style={{ overflow: "hidden" }}>
                     <div style={{ width: "250px", height: "260px", float: "left", margin: "30px 0 0 50px", borderRadius: "10px" }}>
+                      {new Date(item.contenta).getTime() < new Date().getTime() ?
+                        <div style={{ position: "relative", top: "208px", fontSize: "38px", color: "#ffffff", height: "5px", textAlign: "center", zIndex: 2 }}>已结束</div> : null
+                      }
+                      {new Date(item.contenta).getTime() < new Date().getTime() ?
+                        <div style={{ position: "relative", top: "200px", height: "65px", backgroundColor: "black", opacity: 0.4, zIndex: 1 }}></div> : null
+                      }
                       <img src={item.headimgurl} style={{ width: "100%", height: "100%" }} />
                     </div>
                     <div style={{ float: "left", fontSize: "45px", margin: "25px 0 0 50px", fontWeight: "600", color: "#333333",width: "60%" }}>
@@ -205,7 +213,10 @@ export default class InformationChilds extends React.Component {
             )
           })
           }
-          < div style={{ width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>到底啦~</div>
+          {this.state.listArr.length > 0 ?
+            <div style={{ width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>到底啦~</div> :
+            <div style={{ width: "100%", height: "100px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>暂无匹配数据</div>
+          }
         </div>
       </div>
     )

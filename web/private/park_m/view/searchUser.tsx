@@ -113,7 +113,10 @@ class SearchUser extends React.Component<{ history: any }>{
             )
           })
           }
-          <div style={{ width: "100%", height: "350px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>到底啦~</div>
+          {this.state.listArr.length > 0 ?
+            <div style={{ width: "100%", height: "350px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>到底啦~</div> :
+            <div style={{ width: "100%", height: "350px", textAlign: "center", fontSize: "40px", lineHeight: "100px" }}>暂无匹配数据</div>
+          }
         </div>
         <div className="rent-room-detail-bottom">
           <div style={{ float: "left", width: "50%", height: "100%", textAlign: "center", lineHeight: "130px", color: "#6C6C6C", backgroundColor: "#F2F2F2" }} onClick={this.goBack.bind(this)}>取消</div>

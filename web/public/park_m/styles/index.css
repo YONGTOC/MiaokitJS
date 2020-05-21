@@ -153,12 +153,17 @@
 }
 .index-child-park-right {
   float: left;
+  width: 58%;
 }
 .index-park-name {
   color: #333333;
   font-size: 40px;
   font-weight: 600;
   margin-left: 25px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
 }
 .index-park-position-name {
   color: #6C6C6C;
@@ -196,7 +201,6 @@
   height: 100%;
   width: 20%;
   text-align: center;
-  margin-right: 60px;
 }
 .index-distance {
   margin-top: 39%;

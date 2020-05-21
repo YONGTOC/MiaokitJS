@@ -26,13 +26,13 @@ class HomeBottom extends React.Component {
       this.setState({ index: 1 }, () => {
         this.toggleIcon(this.state.index)
       });
-    } else if (this.props.history.location.pathname === "/home/informationChild") {
-      this.setState({ index: 3 }, () => {
+    } else if (this.props.history.location.pathname === "/home/personalCenter") {
+      this.setState({ index: 4 }, () => {
         this.toggleIcon(this.state.index)
       })
 
     } else {
-      this.setState({ index: 4 }, () => {
+      this.setState({ index: 3 }, () => {
         this.toggleIcon(this.state.index)
       })
     }
