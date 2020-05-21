@@ -212,12 +212,18 @@
     <script>
         //nearGap()
         function nearGap() {
-             console.log("3D推近视角");
+            let nDistance = MiaokitJS.App.m_pCameraCtrl.distance;
+            MiaokitJS.App.m_pCameraCtrl.distance = nDistance * 0.8;
+
+            console.log("3D推近视角");
         }
 
         //farGap
-         function farGap() {
-             console.log("3D拉远视角");
+        function farGap() {
+            let nDistance = MiaokitJS.App.m_pCameraCtrl.distance;
+            MiaokitJS.App.m_pCameraCtrl.distance = nDistance * 1.2;
+
+            console.log("3D拉远视角");
         }
 
         // hide-3d 调 web ；show web通知3d
@@ -238,6 +244,7 @@
             $('.testBut').removeClass('hide');
             $('.closeVR').addClass('hide');
             $('.VRstate').addClass('hide');
+            MiaokitJS.App.m_pProject.ClosePanoramas();
         }
 
         // 下载

@@ -201,6 +201,9 @@ class CameraCtrl {
         };
     }
     Move(nOffsetX, nOffsetY, nWidth, nHeight) {
+        if (!this.m_nEnabled) {
+            return;
+        }
         if (CTRL_MODE.REMOTE === this.ctrlMode || CTRL_MODE.EAGLE === this.ctrlMode) {
             let nDistance = this.distance;
             let nLng = this.lng;
@@ -243,6 +246,12 @@ class CameraCtrl {
         }
     }
     Rotate(nOffsetX, nOffsetY, nWidth, nHeight) {
+        if (!this.m_nEnabled) {
+            return;
+        }
+        if (2 === this.m_nViewMode) {
+            return;
+        }
         if (CTRL_MODE.REMOTE !== this.ctrlMode) {
             let nPitch = this.pitch;
             let nYaw = this.yaw;
@@ -259,6 +268,9 @@ class CameraCtrl {
         }
     }
     Scale(nDelta, nWidth, nHeight) {
+        if (!this.m_nEnabled) {
+            return;
+        }
         let nDistance = this.distance;
         nDistance += nDelta * nDistance * 0.05;
         this.distance = nDistance;
@@ -328,6 +340,7 @@ class CameraCtrl {
                 this.m_pTransform.Rotate2({ x: 1, y: 0, z: 0 }, 90, 0);
                 this.m_pTransform.position = this.target;
                 this.m_pTransform.Translate(MiaokitJS.Vector3.Scale(-this.distance, { x: 0, y: 0, z: 1 }), 1);
+                MiaokitJS.Miaokit.cameraTarget = this.target;
             }
             else {
                 this.m_pTransform.position = { x: 0, y: 0, z: 0 };
@@ -336,6 +349,7 @@ class CameraCtrl {
                 this.m_pTransform.Rotate2({ x: 0, y: 1, z: 0 }, this.yaw, 0);
                 this.m_pTransform.position = this.target;
                 this.m_pTransform.Translate(MiaokitJS.Vector3.Scale(-this.distance, { x: 0, y: 0, z: 1 }), 1);
+                MiaokitJS.Miaokit.cameraTarget = this.target;
             }
         }
         else {
@@ -409,7 +423,7 @@ class CameraCtrl {
         }
     }
     get yaw() {
-        return this.m_nYaw;
+        return this.m_nYaw % 360.0;
     }
     set yaw(value) {
         if (CTRL_MODE.EAGLE === this.m_eCtrlMode || CTRL_MODE.PANORAMA === this.m_eCtrlMode || CTRL_MODE.WANDER === this.m_eCtrlMode) {
