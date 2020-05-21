@@ -33,7 +33,7 @@
                     "moment": "../common/moment.min",
                     "antd": "../common/antd/dist/antd.min",
                     "index": "js/view",
-                    "g2plot": "../common/g2plot",
+                    //"g2plot": "../common/g2plot",
                     "antd-mobile": "../common/antd/antd-mobile.min",
                 },
                 // 所有模块(*)中的CSS依赖("css")从指定地址中加载("common/requirejs/css.min.js")
@@ -44,6 +44,8 @@
                     }
                 }
             });
+
+
 
             require(['index'], function (view) {
                 MiaokitJS.App.UI = view.default.g_pIns;
@@ -132,11 +134,13 @@
         全景
     </div>
         <div class="modelBtn">
+              <div class="nearGap" onclick="nearGap()">+</div>
+            <div class="farGap" onclick="farGap()">-</div>    
             <div class="changeD" onclick="changeD()">2D</div>
             <div class="reset" onclick="reset()">复位</div>
-            <div class="selectDoor">进入室内</div>
-            <div class="selectAdd">+</div>
-            <div class="selectPop">-</div>
+            <!--<div class="selectDoor">进入室内</div>-->
+            <!--<div class="selectAdd">+</div>
+            <div class="selectPop">-</div>-->
         </div>
 
     <div style="position: absolute;top: 130px;left: 0px;z-index: 101;" class="testBut">
@@ -199,6 +203,16 @@
     </ul>
 
     <script>
+        //nearGap()
+        function nearGap() {
+             console.log("3D推近视角");
+        }
+
+        //farGap
+         function farGap() {
+             console.log("3D拉远视角");
+        }
+
         // hide-3d 调 web ；show web通知3d
         function webgl_call_web_showVR() {
             console.log('全景图开启,隐藏所有');
@@ -408,12 +422,16 @@
             if (a == "up") {
                 $('.changeD').addClass("changeDUp");
                 $('.reset').addClass("resetUp");
+                $('.nearGap').addClass("changeDUp");
+                $('.farGap').addClass("resetUp");
                 $('.floor_box').addClass("floor_box_up");
 
             };
             if (a == "down") {
                 $('.changeD').removeClass("changeDUp");
                 $('.reset').removeClass("resetUp");
+                $('.nearGap').removeClass("changeDUp");
+                $('.farGap').removeClass("resetUp");
                 $('.floor_box').removeClass("floor_box_up");
             }
         }
@@ -486,5 +504,89 @@
 
 
     </script>
+    <style  type="text/css">
+        .loadEffect {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    margin: 0 auto;
+    /*margin-top: 100px;*/
+    margin-top: 38rem;
+}
+
+.loadEffect span {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    /*background: lightgreen;*/
+    background: #62b0f5;
+    position: absolute;
+    -webkit-animation: load 1.04s ease infinite;
+}
+
+@-webkit-keyframes load {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.2;
+    }
+}
+
+.loadEffect span:nth-child(1) {
+    left: 0;
+    top: 50%;
+    margin-top: -8px;
+    -webkit-animation-delay: 0.13s;
+}
+
+.loadEffect span:nth-child(2) {
+    left: 14px;
+    top: 14px;
+    -webkit-animation-delay: 0.26s;
+}
+
+.loadEffect span:nth-child(3) {
+    left: 50%;
+    top: 0;
+    margin-left: -8px;
+    -webkit-animation-delay: 0.39s;
+}
+
+.loadEffect span:nth-child(4) {
+    top: 14px;
+    right: 14px;
+    -webkit-animation-delay: 0.52s;
+}
+
+.loadEffect span:nth-child(5) {
+    right: 0;
+    top: 50%;
+    margin-top: -8px;
+    -webkit-animation-delay: 0.65s;
+}
+
+.loadEffect span:nth-child(6) {
+    right: 14px;
+    bottom: 14px;
+    -webkit-animation-delay: 0.78s;
+}
+
+.loadEffect span:nth-child(7) {
+    bottom: 0;
+    left: 50%;
+    margin-left: -8px;
+    -webkit-animation-delay: 0.91s;
+}
+
+.loadEffect span:nth-child(8) {
+    bottom: 14px;
+    left: 14px;
+    -webkit-animation-delay: 1.04s;
+}
+
+    </style>
 </body>
 </html>

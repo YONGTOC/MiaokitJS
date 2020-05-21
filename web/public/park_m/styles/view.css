@@ -2883,20 +2883,50 @@ i {
 }
 
 /*3Dactions*/
+.nearGap {
+    position: fixed;
+    width: 6rem;
+    height: 6rem;
+    z-index: 99;
+    bottom: 40rem;
+    right: 2.4rem;
+    background: rgba(247,247,247,1);
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+    border-radius: 50%;
+    text-align: center;
+    font-size: 6rem;
+    line-height: 4.5rem;
+    color: rgb(108, 108, 108);
+}
+.farGap {
+    position: fixed;
+    width: 6rem;
+    height: 6rem;
+    z-index: 99;
+    bottom: 32rem;
+    right: 2.4rem;
+    background: rgba(247,247,247,1);
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+    border-radius: 50%;
+    text-align: center;
+    font-size: 7rem;
+    line-height: 4.5rem;
+    color: rgb(108, 108, 108);
+}
 .changeD {
     position: fixed;
     width: 6rem;
     height: 6rem;
     z-index: 99;
-    bottom: 42rem;
-    right: 2.4rem;
+    bottom: 40rem;
+    left: 2.4rem;
     background: rgba(247,247,247,1);
     box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
     border-radius: 50%;
     text-align: center;
     font-size: 2.3rem;
     line-height: 6rem;
-    color: rgb(108, 108, 108);
+    color: rgb(108, 108, 108)
 }
 
 .changeDUp {
@@ -2909,7 +2939,7 @@ i {
     height: 6rem;
     z-index: 99;
     bottom: 32rem;
-    right: 2.4rem;
+    left: 2.4rem;
     background: rgba(247,247,247,1);
     box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
     border-radius: 50%;
@@ -2927,7 +2957,7 @@ i {
     width: 6rem;
     position: absolute;
     z-index: 99;
-    bottom: 32rem;
+    bottom: 49rem;
     left: 2.4rem;
     color: rgb(108, 108, 108);
     text-align: center;
@@ -3009,7 +3039,7 @@ i {
 }
 
 .floor_box_up {
-    bottom: 49rem;
+    bottom: 66rem;
 }
 
 /*loginÆóÒµÑ¡Ôñ¿ò*/

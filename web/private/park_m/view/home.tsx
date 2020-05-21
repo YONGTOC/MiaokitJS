@@ -312,9 +312,9 @@ class TopBtn extends React.Component {
     return (
       <div className={this.state.topViewBack}>
         <div className={this.state.topView}>
-          <div className={this.state.topIcon1} onClick={this.switchMark.bind(this, "交通")} style={{ "border-top": "0rem solid #646464" }}>
-            <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe816;</i>
-            <p>交通</p>
+          <div className={this.state.topIcon4} onClick={this.switchMark.bind(this, "全景")}>
+            <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe818;</i>
+            <p>全景</p>
           </div>
           <div className={this.state.topIcon2} onClick={this.switchMark.bind(this, "商圈")}>
             <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe81a;</i>
@@ -328,13 +328,14 @@ class TopBtn extends React.Component {
             <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe817;</i>
             <p>公交车</p>
           </div>
-          <div className={this.state.topIcon4} onClick={this.switchMark.bind(this, "全景")}>
-            <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe818;</i>
-            <p>全景</p>
-          </div>
+       
           <div className={this.state.topIcon5} onClick={this.switchMark.bind(this, "停车场")}>
             <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe81b;</i>
             <p>停车场</p>
+          </div>
+          <div className={this.state.topIcon1} onClick={this.switchMark.bind(this, "交通")} style={{ "border-top": "0rem solid #646464" }}>
+            <i className="iconfont" style={{ "fontSize": "5rem" }}>&#xe816;</i>
+            <p>交通</p>
           </div>
           <div className={this.state.topClose} onClick={this.topClose.bind(this, 10)}>
             <i className="iconfont" style={{ "fontSize": "3rem" }}>&#xe81c;</i>
