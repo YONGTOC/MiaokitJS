@@ -226,7 +226,7 @@ class TopBtn extends React.Component {
             topIcon1: "iconBoxIn",
           })
         }
-           this.callMark(1,a)
+           this.callMark(4,a)
        // this.globalAction.web_call_webgl_switchMark(a, 1);
       }
     } else if (a == "商圈") {
@@ -278,7 +278,7 @@ class TopBtn extends React.Component {
           topIcon4: "iconBox-bigIn",
           topIcon4info: 1,
         })
-         this.callMark(4,a)
+         this.callMark(1,a)
         //this.globalAction.web_call_webgl_switchMark(a, 1);
       } else {
         this.setState({
