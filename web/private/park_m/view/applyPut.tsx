@@ -5,12 +5,11 @@ import DataService from "dataService";
 import GlobalAction from "compat";
 import "css!./styles/antd-mobile.css";
 import "css!./styles/resetAntdMobile.css"
-import { func } from "prop-types";
 
 class ApplyPut extends React.Component {
   public constructor(props) {
     super(props);
-    ApplyPut.addapplyPut = this.addapplyPut.bind(this);
+   // ApplyPut.addapplyPut = this.addapplyPut.bind(this);
     this.delApply = this.delApply.bind(this);
   }
 
@@ -83,18 +82,18 @@ class ApplyPut extends React.Component {
   }
 
   //  添加摆点信息;
-  static addapplyPut(data) { };
-  public addapplyPut(data) {
-    let arr = this.state.applyList;
-    arr.push({
-      startTime: "开始日期", endTime: "结束日期", id: data.id, name: data.name,
-    });
-    this.setState({
-      applyList: arr
-    })
-    console.log(this.state)
+  //static addapplyPut(data) { };
+  //public addapplyPut(data) {
+  //  let arr = this.state.applyList;
+  //  arr.push({
+  //    startTime: "开始日期", endTime: "结束日期", id: data.id, name: data.name,
+  //  });
+  //  this.setState({
+  //    applyList: arr
+  //  })
+  //  console.log(this.state)
 
-  }
+  //}
 
   // 聚焦
   public foucus(event) {
@@ -190,33 +189,50 @@ class ApplyPut extends React.Component {
 
   // 组件获取开始时间
   public setStartDate(date) {
-    var dateStr = JSON.stringify(date);
-    var dateN = dateStr.slice(1, 11);
-    var index = this.state.timeIndex;
-    let applyList = this.state.applyList
-    console.log("start输入index1", dateN);
-    applyList[index].startTime = dateN
-    applyList[index].start_date = dateN
-    this.setState({
-      applyList: applyList,
-      applyPutStartTimeBox: "hide"
-    });
+        const d = new Date(date)
+    var now = new Date();
+    console.log(d, now);
+    if (now > d) {
+        Toast.info('开始时间，不能早于当前时间');
+    } else {
+        var dateStr = JSON.stringify(date);
+        var dateN = dateStr.slice(1, 11);
+        var index = this.state.timeIndex;
+        let applyList = this.state.applyList
+        console.log("start输入index1", dateN);
+        applyList[index].startTime = dateN
+      applyList[index].start_date = dateN
+      applyList[index].start_time = date
+     
+        this.setState({
+          applyList: applyList,
+          applyPutStartTimeBox: "hide"
+        });
+    }
     console.log("start输入index2", this.state.applyList);
   }
 
   // 组件获取结束时间
   public setEndDate(date) {
-    var dateStr = JSON.stringify(date);
-    var dateN = dateStr.slice(1, 11);
-    var index = this.state.timeIndex;
-    let applyList = this.state.applyList // 给对象赋值出来
-    console.log("end输入index1", dateN);
-    applyList[index].endTime = dateN // 在新对象里面修改，然后赋值给需要改变的对象
-    applyList[index].end_date = dateN // 在新对象里面修改，然后赋值给需要改变的对象
-    this.setState({
-      applyList: applyList,
-      applyPutEndTimeBox: "hide"
-    });
+           const d = new Date(date)
+    var now = new Date();
+    console.log(d, now);
+    if (now > d) {
+      Toast.info('结束时间，不能早于当前时间');
+    } else {
+      var dateStr = JSON.stringify(date);
+      var dateN = dateStr.slice(1, 11);
+      var index = this.state.timeIndex;
+      let applyList = this.state.applyList // 给对象赋值出来
+      console.log("end输入index1", dateN);
+      applyList[index].endTime = dateN // 在新对象里面修改，然后赋值给需要改变的对象
+      applyList[index].end_date = dateN // 在新对象里面修改，然后赋值给需要改变的对象
+      applyList[index].end_time = date
+      this.setState({
+        applyList: applyList,
+        applyPutEndTimeBox: "hide"
+      });
+    }
     console.log("end输入index2", this.state.applyList);
   }
 
@@ -278,6 +294,7 @@ class ApplyPut extends React.Component {
   //提交
   public sumbitApplyput() {
     let postData = 0;
+
     console.log("提交摆点申请", this.state);
     if (this.state.company == "请先关联企业" ) {
       Toast.info('请先前往关联企业', 2);
@@ -292,13 +309,19 @@ class ApplyPut extends React.Component {
        Toast.info('请描述具体内容', 2);
     }  else  {
       $.each(this.state.applyList, function (index, item) {
+        var dayChou_s = new Date(item.startTime).getTime();
+        var dayChou_e = new Date(item.endTime).getTime();
+
         if (item.startTime == "开始日期") {
           Toast.info('请填写开始日期', 2);
           postData = 0;
         } else if (item.endTime == "结束日期") {
           Toast.info('请填写结束日期', 2);
           postData = 0;
-        } else {
+        } else if (dayChou_s > dayChou_e) {
+          Toast.info('结束日期不能早于开始日期');
+          postData = 0;
+        }else {
           postData = 1;
         };
       })
@@ -431,6 +454,8 @@ class ApplyPut extends React.Component {
         </div>
       </div>
     )
+
+
   }
 
   public state = {
@@ -459,7 +484,35 @@ class ApplyPut extends React.Component {
     // 内容框状态
     applyPutul: "applyPutul-part applyPutul",
     // 摆点列表
-    applyList: [],
+    applyList: [
+      {
+        id: "1",
+        code: "menko_1",
+        name: "门口1",
+        startTime: "开始日期",
+        endTime: "结束日期",
+        address: "门口1",
+        start_date: '',
+        end_date: '',
+        longitude: '',
+        latitude: '',
+        start_time: 0,
+        end_time:0,
+       },  {
+        id: "2",
+        code: "menko_2",
+        name: "门口2",
+        startTime: "开始日期",
+        endTime: "结束日期",
+        address: "门口1",
+        start_date: '',
+        end_date: '',
+        longitude:'',
+        latitude: '',
+        start_time: '',
+        end_time:'',
+       },
+    ],
     address: "",
     // 摆点内容
     content: "请将具体内容描述出来。（200字内）",

@@ -4,7 +4,7 @@ import { Toast } from 'antd-mobile';
 class DataService {
 
   public componentDidMount() {
-    // console.log(sessionStorage.getItem("token"));
+    // console.log(sessionStorage.getItem("token"));  
 
     // this.setToken = this.setToken.bind(this);
   }
@@ -23,6 +23,7 @@ class DataService {
     //})
     pBack("callback")
   }
+
 
   // 0.文件上传
   public upload(pBack, file) {
@@ -1765,6 +1766,23 @@ class DataService {
       type: "get",
       success: function (data) {
         pBack(data)
+      }
+    })
+  }
+
+
+  // 101.(园区信息-3D显示-兴趣点列表) 获取园区兴趣点列表信息
+  public getParkPointList(pBack,type,name) {
+        $.ajax({
+      url: this.state.rooturl + '/api/getParkPointList?token=' + sessionStorage.getItem("token"),
+      dataType: "json",
+      data: {
+        park_id: sessionStorage.getItem("park_id"),
+        point_type:type,
+      },
+      type: "get",
+      success: function (data) {
+        pBack(data,name)
       }
     })
   }

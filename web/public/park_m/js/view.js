@@ -65,8 +65,9 @@ define("compat", ["require", "exports"], function (require, exports) {
                 MiaokitJS.App.m_pProject.EnterRoom(pName);
             }
         }
-        web_call_webgl_switchMark(pName, pInfo) {
-            console.log("web_call_webgl_switchMark", pName, pInfo);
+        web_call_webgl_switchMark(pName, pInfo, pData) {
+            MiaokitJS.App.m_pProject.ShowOutdoorPOI(pName, pInfo ? pData : null);
+            console.log("web_call_webgl_switchMark(切换标识)", pName, pInfo, pData);
         }
         web_call_webgl_mapReturnpark() {
             MiaokitJS.App.m_pProject.ExitViewer();
@@ -86,6 +87,10 @@ define("compat", ["require", "exports"], function (require, exports) {
         }
         web_call_webgl_cancelApplyPut(data) {
             console.log("web_call_webgl_cancelApplyPut", data);
+        }
+        web_call_webgl_parkRoomList(data) {
+            MiaokitJS.App.m_pProject.m_aRooms = data;
+            console.log("94# web_call_webgl_parkRoomList", data);
         }
     }
     exports.default = GlobalAction;
@@ -309,10 +314,11 @@ define("findLease", ["require", "exports", "react", "react-router-dom", "compat"
             move3dBut("down");
         }
         onErrorHeadimageurl(index) {
-            var items = this.state.companyData;
+            console.log('rrrrddrrr');
+            var items = this.state.roomData;
             items[index].headimageurl = "./park_m/image/noImg.png";
             this.setState({
-                companyData: items
+                roomData: items
             });
         }
         render() {
@@ -2114,6 +2120,20 @@ define("dataService", ["require", "exports", "antd-mobile"], function (require, 
                 type: "get",
                 success: function (data) {
                     pBack(data);
+                }
+            });
+        }
+        getParkPointList(pBack, type, name) {
+            $.ajax({
+                url: this.state.rooturl + '/api/getParkPointList?token=' + sessionStorage.getItem("token"),
+                dataType: "json",
+                data: {
+                    park_id: sessionStorage.getItem("park_id"),
+                    point_type: type,
+                },
+                type: "get",
+                success: function (data) {
+                    pBack(data, name);
                 }
             });
         }
@@ -4450,10 +4470,10 @@ define("findSell", ["require", "exports", "react", "react-router-dom", "compat",
             move3dBut("down");
         }
         onErrorHeadimageurl(index) {
-            var items = this.state.companyData;
+            var items = this.state.roomData;
             items[index].headimageurl = "./park_m/image/noImg.png";
             this.setState({
-                companyData: items
+                roomData: items
             });
         }
         render() {
@@ -5040,6 +5060,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
                 ]
             };
             this.globalAction = new compat_7.default();
+            this.dataService = new dataService_6.default();
         }
         moreIcon(a) {
             console.log('toggleIconbox', a);
@@ -5125,6 +5146,16 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
                 });
             }
         }
+        callMark(type, name) {
+            this.dataService.getParkPointList(this.markBack.bind(this), type, name);
+        }
+        markBack(data, name) {
+            console.log('mark', data.response, name);
+            this.globalAction.web_call_webgl_switchMark(name, 'true', data.response);
+        }
+        markClose(name) {
+            this.globalAction.web_call_webgl_switchMark(name, 'false', null);
+        }
         switchMark(a, bInfo) {
             console.log('switchMark', a);
             if (a == "交通") {
@@ -5139,7 +5170,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
                             topIcon1: "iconBox",
                         });
                     }
-                    this.globalAction.web_call_webgl_switchMark(a, 0);
+                    this.markClose(a);
                 }
                 else {
                     if (this.state.topView == "topView-big") {
@@ -5152,7 +5183,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
                             topIcon1: "iconBoxIn",
                         });
                     }
-                    this.globalAction.web_call_webgl_switchMark(a, 1);
+                    this.callMark(1, a);
                 }
             }
             else if (a == "商圈") {
@@ -5167,7 +5198,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
                             topIcon2: "iconBox",
                         });
                     }
-                    this.globalAction.web_call_webgl_switchMark(a, 0);
+                    this.markClose(a);
                 }
                 else {
                     if (this.state.topView == "topView-big") {
@@ -5180,7 +5211,7 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
                             topIcon2: "iconBoxIn",
                         });
                     }
-                    this.globalAction.web_call_webgl_switchMark(a, 1);
+                    this.callMark(2, a);
                 }
             }
             else if (a == "公交车") {
@@ -5189,14 +5220,14 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
                         topIcon3: "iconBox-bigIn",
                         topIcon3info: 1,
                     });
-                    this.globalAction.web_call_webgl_switchMark(a, 1);
+                    this.callMark(3, a);
                 }
                 else {
                     this.setState({
                         topIcon3: "iconBox-big",
                         topIcon3info: 0,
                     });
-                    this.globalAction.web_call_webgl_switchMark(a, 0);
+                    this.markClose(a);
                 }
             }
             else if (a == "全景") {
@@ -5205,14 +5236,14 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
                         topIcon4: "iconBox-bigIn",
                         topIcon4info: 1,
                     });
-                    this.globalAction.web_call_webgl_switchMark(a, 1);
+                    this.callMark(4, a);
                 }
                 else {
                     this.setState({
                         topIcon4: "iconBox-big",
                         topIcon4info: 0,
                     });
-                    this.globalAction.web_call_webgl_switchMark(a, 0);
+                    this.markClose(a);
                 }
             }
             else if (a == "停车场") {
@@ -5221,14 +5252,14 @@ define("home", ["require", "exports", "react", "react-router-dom", "homeBottom",
                         topIcon5: "iconBox-bigIn",
                         topIcon5info: 1,
                     });
-                    this.globalAction.web_call_webgl_switchMark(a, 1);
+                    this.callMark(5, a);
                 }
                 else {
                     this.setState({
                         topIcon5: "iconBox-big",
                         topIcon5info: 0,
                     });
-                    this.globalAction.web_call_webgl_switchMark(a, 0);
+                    this.markClose(a);
                 }
             }
         }
@@ -12193,7 +12224,6 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         }
         componentWillMount() {
             this.dataService.getUserInfo(this.callBackGetUserInfo.bind(this));
-            curtainHide();
             let data = sessionStorage.getItem("userInfos");
             let dataObj = JSON.parse(data);
             if (dataObj) {
@@ -12282,7 +12312,12 @@ define("index", ["require", "exports", "react", "react-dom", "react-router-dom",
         initPark(park_id) {
             console.log("initPark", park_id);
             sessionStorage.setItem("park_id", park_id);
+            this.dataService.getParkBuildingInfo(this.roomList.bind(this));
             this.globalAction.web_call_webgl_initPark(park_id);
+        }
+        roomList(data) {
+            console.log('roomList', data);
+            this.globalAction.web_call_webgl_parkRoomList(data.response);
         }
         setParks(data) {
             this.setState({

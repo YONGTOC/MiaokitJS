@@ -11,6 +11,7 @@ import BookSite from "bookSite";
 import Parking from "parking";
 import BottomBtn from "bottomBtn";
 import RepairsOnline from "repairsOnline";
+import Home from "home";
 
 import DataService from "dataService";
 import GlobalAction from "compat";
@@ -89,7 +90,7 @@ class Index extends React.Component {
   public globalAction: GlobalAction = new GlobalAction();
 
   public readonly state: Readonly<IState> = {
-    inputValue: "请输入园区名/区域名/商圈名", // 输入框默认值
+    inputValue: "请输入园区名/区域名/商圈名", // 输入框默认值 
     city: "", // 城市
     parkArr: [
       {   
@@ -215,7 +216,7 @@ class Index extends React.Component {
     //  });
     //}
 
-    curtainHide();
+    //curtainHide();
 
         let data = sessionStorage.getItem("userInfos");
     let dataObj = JSON.parse(data);
@@ -224,6 +225,9 @@ class Index extends React.Component {
       console.log("77777777777771", dataObj.name)
       this.dataService.getParks(this.setParks);
     }
+
+
+
 
   }
 
@@ -313,6 +317,8 @@ class Index extends React.Component {
     })
   }
 
+  
+
 
   // 聚焦
   foucus() {
@@ -337,8 +343,17 @@ class Index extends React.Component {
   public initPark(this,park_id) {
     console.log("initPark", park_id)
     sessionStorage.setItem("park_id", park_id);
+
+    //通过园区的id，获取园区大楼，及大楼下楼层，及楼层下房间列表  
+    this.dataService.getParkBuildingInfo(this.roomList.bind(this));
     this.globalAction.web_call_webgl_initPark(park_id);
   }
+
+  public roomList(data) {
+    console.log('roomList', data);
+    this.globalAction.web_call_webgl_parkRoomList(data.response);
+  }
+
 
   //加载园区信息列表
   public setParks(data) {
@@ -963,6 +978,7 @@ class Index extends React.Component {
 
     }
   }
+
 
 }
 

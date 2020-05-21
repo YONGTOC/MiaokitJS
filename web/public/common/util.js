@@ -499,7 +499,7 @@ class App {
         }
         if (MiaokitJS.m_pConfig.DIORS) {
             for (let pDior of MiaokitJS.m_pConfig.DIORS) {
-                pDior.m_pDior = new MiaokitJS.Dioramas3MX(pDior.m_pPath, !this.m_pGis ? null : {
+                pDior.m_pDior = new MiaokitJS.Dioramas3MX(pDior.m_pPath, pDior.m_pMark, !this.m_pGis ? null : {
                     m_pGis: this.m_pGis,
                     m_mLngLat: pDior.m_mLngLat,
                     m_mOffset: pDior.m_nOffset,
@@ -600,16 +600,10 @@ class App {
                             pThis.m_pCameraCtrl.Fly(MiaokitJS.SVECLASS.CTRL_MODE.PANORAMA, pSelect.m_pViewState);
                         }
                     }
-                    if (pThis["pObject2"]) {
-                        pThis["pObject2"].Destory();
-                        pThis["pObject2"] = null;
-                    }
-                    else if (pThis["pObject"]) {
-                        pThis["pObject"].Destory();
-                        pThis["pObject"] = null;
-                    }
+                    pThis.m_pProject.OnClick(2, e);
                 }
                 else {
+                    pThis.m_pProject.OnClick(1, e);
                 }
                 nClickTime = MiaokitJS.Time();
             }
@@ -1351,7 +1345,7 @@ vec4 vs()
     
     vec4 mPosition = vec4(a_Position.xyz, 1.0);
     mPosition = u_MatG * a_MatW * mPosition;
-    mPosition.y -= mBuilding.r * (mPosition.y - 1.0);
+    mPosition.y -= mBuilding.r * (mPosition.y - 1.0 - 167.0);
     
     // 高品质下，计算法线，计算大气散射
     #ifdef HIGH_QUALITY
@@ -1583,6 +1577,16 @@ vec4 vs()
     nZ = mPosition.z;
     mPosition.y = nY * nCos - nZ * nSin;
     mPosition.z = nY * nSin + nZ * nCos;
+
+    // 使指南针朝向正确
+    nCos = cos(-0.35 * 3.141592654);
+    nSin = sin(-0.35 * 3.141592654);
+    nX = mPosition.x;
+    nZ = mPosition.z;
+    mPosition.x = nX * nCos - nZ * nSin;
+    mPosition.z = nX * nSin + nZ * nCos;
+
+    // 设置中心点位置
     mPosition.xyz += u_Position.xyz;
     
     // 纹理映射坐标

@@ -3,7 +3,7 @@ declare var MiaokitJS: any;
 
 
 class GlobalAction {
-    //通知3d，要加载的园区模型  
+    //通知3d，要加载的园区模型    
     public web_call_webgl_initPark(pInfo) {
         MiaokitJS.App.m_pProject.EnterPark({
             m_pView: {
@@ -16,7 +16,7 @@ class GlobalAction {
             }
         });
         console.log("web_call_webgl_initP58484848ark", pInfo);
-    }
+  }
 
     //切换公司
     public web_call_webgl_switchCompany(pName) {
@@ -108,9 +108,10 @@ class GlobalAction {
         */
     }
 
-    //切换标识； 0--隐藏标识；1--显示标识
-    public web_call_webgl_switchMark(pName, pInfo) {
-        console.log("web_call_webgl_switchMark", pName, pInfo);
+    //切换标识； 0 false--隐藏标识；1 true--显示标识
+    public web_call_webgl_switchMark(pName, pInfo, pData) {
+        MiaokitJS.App.m_pProject.ShowOutdoorPOI(pName, pInfo ? pData : null);
+        console.log("web_call_webgl_switchMark(切换标识)", pName, pInfo, pData);
     }
 
     //通知3d，返回园区视角
@@ -142,7 +143,13 @@ class GlobalAction {
     //通知3d，取消对应摆点标识
     public web_call_webgl_cancelApplyPut(data) {
         console.log("web_call_webgl_cancelApplyPut", data)
-    }
+  }
+
+  //通知3d，通过园区的id，获取园区大楼，及大楼下楼层，及楼层下房间列表  
+    public web_call_webgl_parkRoomList(data) {
+        MiaokitJS.App.m_pProject.m_aRooms = data;
+     console.log("94# web_call_webgl_parkRoomList", data)
+  }
     //  over
 }
 

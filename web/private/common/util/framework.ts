@@ -57,7 +57,7 @@ class App {
 
         if (MiaokitJS.m_pConfig.DIORS) {
             for (let pDior of MiaokitJS.m_pConfig.DIORS) {
-                pDior.m_pDior = new MiaokitJS.Dioramas3MX(pDior.m_pPath, !this.m_pGis ? null : {
+                pDior.m_pDior = new MiaokitJS.Dioramas3MX(pDior.m_pPath, pDior.m_pMark, !this.m_pGis ? null : {
                     m_pGis: this.m_pGis,
                     m_mLngLat: pDior.m_mLngLat,
                     m_mOffset: pDior.m_nOffset,
@@ -189,19 +189,11 @@ class App {
                         }
                     }
 
-                    if (pThis["pObject2"]) {
-                        pThis["pObject2"].Destory();
-                        pThis["pObject2"] = null;
-                    }
-                    else if (pThis["pObject"]) {
-                        pThis["pObject"].Destory();
-                        pThis["pObject"] = null;
-                    }
-                    //console.log("双击:", null);
+                    pThis.m_pProject.OnClick(2, e);
                 }
                 /// 鼠标单击
                 else {
-                    //console.log("单击:", null);
+                    pThis.m_pProject.OnClick(1, e);
                 }
 
                 nClickTime = MiaokitJS.Time();
