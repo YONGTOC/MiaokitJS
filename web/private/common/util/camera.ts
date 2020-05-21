@@ -237,6 +237,10 @@ class CameraCtrl {
 
     /// 移动摄像机。
     public Move(nOffsetX, nOffsetY, nWidth, nHeight): void {
+        if (!this.m_nEnabled) {
+            return;
+        }
+
         if (CTRL_MODE.REMOTE === this.ctrlMode || CTRL_MODE.EAGLE === this.ctrlMode) {
             // 60度视角下，距地面距离为地球半径时视线刚好能切过地球
             let nDistance = this.distance;
@@ -291,6 +295,14 @@ class CameraCtrl {
 
     /// 旋转视野。
     public Rotate(nOffsetX, nOffsetY, nWidth, nHeight): void {
+        if (!this.m_nEnabled) {
+            return;
+        }
+
+        if (2 === this.m_nViewMode) {
+            return;
+        }
+
         if (CTRL_MODE.REMOTE !== this.ctrlMode) {
             let nPitch = this.pitch;
             let nYaw = this.yaw;
@@ -313,6 +325,10 @@ class CameraCtrl {
 
     /// 缩放视野。
     public Scale(nDelta, nWidth, nHeight): void {
+        if (!this.m_nEnabled) {
+            return;
+        }
+
         let nDistance = this.distance;
         nDistance += nDelta * nDistance * 0.05;
 
@@ -399,6 +415,8 @@ class CameraCtrl {
                 this.m_pTransform.Rotate2({ x: 1, y: 0, z: 0 }, 90, 0);
                 this.m_pTransform.position = this.target;
                 this.m_pTransform.Translate(MiaokitJS.Vector3.Scale(-this.distance, { x: 0, y: 0, z: 1 }), 1);
+
+                MiaokitJS.Miaokit.cameraTarget = this.target;
             }
             else {
                 this.m_pTransform.position = { x: 0, y: 0, z: 0 };
@@ -407,7 +425,9 @@ class CameraCtrl {
                 this.m_pTransform.Rotate2({ x: 0, y: 1, z: 0 }, this.yaw, 0);
                 this.m_pTransform.position = this.target;
                 this.m_pTransform.Translate(MiaokitJS.Vector3.Scale(-this.distance, { x: 0, y: 0, z: 1 }), 1);
-            }            
+
+                MiaokitJS.Miaokit.cameraTarget = this.target;
+            }
         }
         /// 漫游模式
         else {
@@ -507,7 +527,7 @@ class CameraCtrl {
 
     /// 获取当前偏航角参数。
     public get yaw(): number {
-        return this.m_nYaw;
+        return this.m_nYaw % 360.0;
     }
     /// 设置当前偏航角参数。仅EAGLE/PANORAMA/WANDER模式下设置生效。
     public set yaw(value) {

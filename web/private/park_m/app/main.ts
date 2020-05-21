@@ -293,6 +293,19 @@ class RoomViewer {
                 pThis.m_pDrawPOI = null;
             }
         }
+
+        if (0 < pThis.m_nStepCount) {
+            let nBias = (pThis.m_pCurView.m_nYaw - pThis.m_pDstView.m_nYaw) % 360.0;
+            if (0.0 > nBias) {
+                nBias += 360.0;
+            }
+
+            if (180.0 < nBias) {
+                nBias -= 360.0;
+            }
+
+            pThis.m_pCurView.m_nYaw = pThis.m_pDstView.m_nYaw + nBias;
+        }        
     }
 
 
@@ -637,6 +650,30 @@ class Main {
         pThis.m_aTile = MiaokitJS.m_pConfig.SVE;
         pThis.m_nLoading = pThis.m_aTile ? pThis.m_aTile.length : 0;
 
+        let DrawList = [];
+        let Overlap = function (A, B) {
+            if (A[0] > B[0] + B[2]) { return 0.0; }
+            if (A[0] + A[2] < B[0]) { return 0.0; }
+            if (A[1] - A[3] > B[1]) { return 0.0; }
+            if (A[1] < B[1] - B[3]) { return 0.0; }
+
+            let COL = Math.abs(Math.min(A[0] + A[2], B[0] + B[2]) - Math.max(A[0], B[0]));
+            let ROW = Math.abs(Math.min(A[1], B[1]) - Math.max(A[1] - A[3], B[1] - B[3]));
+
+            return COL * ROW;
+        };
+        let Drawable = function (pRect) {
+            for (let pRect_ of DrawList) {
+                if (1000 < Overlap(pRect, pRect_)) {
+                    return false;
+                }
+            }
+
+            DrawList.push(pRect);
+
+            return true;
+        };
+        
         for (let pIcon_ of pThis.m_aIcon) {
             let pIcon = pIcon_;
             let pImage = new Image();
@@ -661,6 +698,10 @@ class Main {
                         let y_ = y - 30;
                         let w = 48 + w_;
                         let hw = 0.5 * w;
+
+                        if (!Drawable([x - hw, y_ - 32, w, 32])) {
+                            return;
+                        }
 
                         canvas.beginPath();
                         canvas.moveTo(x, y);
@@ -688,6 +729,28 @@ class Main {
                         canvas.fillStyle = "#FFFFFF";
                         canvas.fillText(text, x - w_ * 0.5 + 10, y_ - 10);
                     };
+
+                    pIcon.m_pDrawList = function (canvas, width, height) {
+                        if (!pIcon.m_aList) {
+                            return;
+                        }
+
+                        for (let pItem of pIcon.m_aList) {
+                            if (pItem.m_aIndoor) {
+                                for (let pIndoor of pItem.m_aIndoor) {
+                                    let pPoint = pIndoor.screenPoint;
+                                    if (-1.0 > pPoint.z) {
+                                        continue;
+                                    }
+
+                                    pPoint.x = pPoint.x * width;
+                                    pPoint.y = pPoint.y * height;
+
+                                    pIcon.m_pDraw(canvas, pIndoor.name, pPoint);
+                                }
+                            }
+                        }
+                    }
                 }
                 else if ("全景" === pIcon.m_pName) {
                     pIcon.m_pDraw = function (canvas, text, point, click) {
@@ -704,6 +767,10 @@ class Main {
                         let y_ = y - 30;
                         let w = 48 + w_;
                         let hw = 0.5 * w;
+
+                        if (!Drawable([x - hw, y_ - 32, w, 32])) {
+                            return;
+                        }
 
                         canvas.beginPath();
                         canvas.moveTo(x, y);
@@ -751,6 +818,10 @@ class Main {
 
                         for (let pItem of pIcon.m_aList) {
                             let pPoint = MiaokitJS.Miaokit.WorldToScreenPoint(pItem.m_mPosition);
+                            if (-1.0 > pPoint.z) {
+                                continue;
+                            }
+
                             pPoint.x = pPoint.x * width;
                             pPoint.y = pPoint.y * height;
 
@@ -777,6 +848,10 @@ class Main {
                         let y_ = y - 30;
                         let w = 48 + w_;
                         let hw = 0.5 * w;
+
+                        if (!Drawable([x - hw, y_ - 32, w, 32])) {
+                            return;
+                        }
 
                         canvas.beginPath();
                         canvas.moveTo(x, y);
@@ -812,6 +887,10 @@ class Main {
 
                         for (let pItem of pIcon.m_aList) {
                             let pPoint = MiaokitJS.Miaokit.WorldToScreenPoint(pItem.m_mPosition);
+                            if (-1.0 > pPoint.z) {
+                                continue;
+                            }
+
                             pPoint.x = pPoint.x * width;
                             pPoint.y = pPoint.y * height;
 
@@ -834,6 +913,10 @@ class Main {
                         let y_ = y - 30;
                         let w = 48 + w_;
                         let hw = 0.5 * w;
+
+                        if (!Drawable([x - hw, y_ - 32, w, 32])) {
+                            return;
+                        }
 
                         canvas.beginPath();
                         canvas.moveTo(x, y);
@@ -869,6 +952,10 @@ class Main {
 
                         for (let pItem of pIcon.m_aList) {
                             let pPoint = MiaokitJS.Miaokit.WorldToScreenPoint(pItem.m_mPosition);
+                            if (-1.0 > pPoint.z) {
+                                continue;
+                            }
+
                             pPoint.x = pPoint.x * width;
                             pPoint.y = pPoint.y * height;
 
@@ -891,6 +978,10 @@ class Main {
                         let y_ = y - 30;
                         let w = 48 + w_;
                         let hw = 0.5 * w;
+
+                        if (!Drawable([x - hw, y_ - 32, w, 32])) {
+                            return;
+                        }
 
                         canvas.beginPath();
                         canvas.moveTo(x, y);
@@ -921,16 +1012,23 @@ class Main {
 
                     pIcon.m_pDrawList = function (canvas, width, height) {
                         if (!pIcon.m_aList) {
+                            DrawList = [];
                             return;
                         }
 
                         for (let pItem of pIcon.m_aList) {
                             let pPoint = MiaokitJS.Miaokit.WorldToScreenPoint(pItem.m_mPosition);
+                            if (-1.0 > pPoint.z) {
+                                continue;
+                            }
+
                             pPoint.x = pPoint.x * width;
                             pPoint.y = pPoint.y * height;
 
                             pIcon.m_pDraw(canvas, pItem.name, pPoint);
                         }
+
+                        DrawList = [];
                     }
                 }
             };
@@ -970,7 +1068,7 @@ class Main {
     /// 帧更新方法。
     public Update(): void {
         if ((this.iii++) % 180 === 0) {
-            console.log(this.m_pApp.m_pCameraCtrl);
+            //console.log(this.m_pApp.m_pCameraCtrl);
         }
 
         if (this.m_pPanoramas.panor) {
@@ -1084,17 +1182,8 @@ class Main {
             let pIcon = pThis.m_aIcon[i];
             if (pIcon.m_pDraw) {
                 if (0 === i) {
-                    for (let pTile of pThis.m_aTile) {
-                        if (pTile.m_aIndoor) {
-                            for (let pIndoor of pTile.m_aIndoor) {
-                                let pPoint = pIndoor.screenPoint;
-                                pPoint.x = pPoint.x * pCanvas.width;
-                                pPoint.y = pPoint.y * pCanvas.height;
-
-                                pIcon.m_pDraw(pCanvasCtx, pIndoor.name, pPoint);
-                            }
-                        }
-                    }
+                    pIcon.m_aList = pThis.m_aTile;
+                    pIcon.m_pDrawList(pCanvasCtx, pCanvas.width, pCanvas.height);
                 }
                 else if (1 === i) {
                     let pPanor = pIcon.m_pDrawList(pCanvasCtx, pCanvas.width, pCanvas.height, pThis.m_pClick);
@@ -1641,3 +1730,26 @@ class Main {
 }
 
 new Main();
+
+/*
+高亮选中房间格局；
+绑定后台录入的房间名称并显示；
+进入室内后显示楼层列表菜单并可以切换楼层；
+预处理实景模型，预处理后跳转室内可立即压平建筑；
+摄像机2D/3D切换按钮（待优化）；
+摄像机重置按钮；
+商圈、公交车、停车场POI、全景图显示隐藏按钮（待优化）；
+点击全景图浮标进入全景图；
+全景图叠加POI；
+
+已提交以下更新：
+POI背后可见性判断；
+POI动态遮挡隐藏；
+切换到2D视图状态优化；
+摄像机旋转累积量约束；
+优化摄像机跳转时的旋转；
+摄像机远近拉伸按钮实现；
+修复实景模型在2D模式下裁剪异常问题；
+不加载室内模型；
+首页展示全景图按钮，优化全景图关闭；
+*/
