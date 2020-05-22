@@ -112,6 +112,7 @@ class ApplyPut extends React.Component {
   // 申请内容输入
   public changeContent(event) {
     // console.log("content输入", event.target.value);
+    event.target.value = event.target.value.replace(/[, ]/g,'')
     this.setState({
       content: event.target.value,
     });

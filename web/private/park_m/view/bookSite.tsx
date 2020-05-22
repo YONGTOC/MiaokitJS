@@ -569,8 +569,24 @@ class BookRoom extends React.Component {
     }
   }
 
+  // 聚焦具体需求
+  focusBookContent() {
+    if (this.state.content === "请将具体需求描述出来。（200字内）") {
+      this.setState({ content: "" })
+    }
+  }
+
+  // 失焦具体需求
+  blurBookContent() {
+    if (this.state.content === "") {
+      this.setState({ content: "请将具体需求描述出来。（200字内）" })
+    }
+  }
+
+
   // 输入具体需求
   public changebookContent(event) {
+    event.target.value = event.target.value.replace(/[, ]/g,'')
     this.setState({
       content: event.target.value,
     });
@@ -578,6 +594,7 @@ class BookRoom extends React.Component {
 
   //输入主题
   public changebookTheme(event) {
+    event.target.value = event.target.value.replace(/[, ]/g,'')
     this.setState({
       theme: event.target.value,
     });
@@ -755,7 +772,7 @@ class BookRoom extends React.Component {
 
             <li>
               <p >
-                <span className="redStar" style={{ "float": "left", "margin-top": "0.8rem" }}>*</span>
+                <span className="redStar" style={{ "float": "left", "margin-top": "0.8rem", "margin-right":"0rem" }}>*</span>
                 <div style={{ "fonSize": "2.5rem" }} className={"mDate"}>
                   <DatePicker style={{ "fonSize": "2.5rem" }}
                     value={this.state.startTime}
@@ -768,7 +785,7 @@ class BookRoom extends React.Component {
 
             <li>
               <p>
-                <span className="redStar" style={{ "float": "left", "margin-top": "0.8rem" }}>*</span>
+                <span className="redStar" style={{ "float": "left", "margin-top": "0.8rem" , "margin-right":"0rem" }}>*</span>
                 <div style={{ "fonSize": "2.5rem" }} className={"mDate"}>
                   <DatePicker style={{ "fonSize": "2.5rem" }}
                     value={this.state.endTime}
@@ -786,11 +803,11 @@ class BookRoom extends React.Component {
             <li>
               <p><span className="redStar">*</span><span style={{ "font-size": "2.3rem" }}>具体需求：</span></p>
               <textarea className="bookContent" value={this.state.content} style={{ "margin-bottom": "0rem" }}
-                placeholder="请将具体需求描述出来。（200字内）"
-                onChange={this.changebookContent.bind(this)}></textarea>
+                onFocus={this.focusBookContent.bind(this)} onBlur={this.blurBookContent.bind(this)}
+                onChange={this.changebookContent.bind(this)} ></textarea>
             </li>
           </ul>
-
+          <p>已被预定时段</p>
           <table className="bookTable" style={{ "margin-bottom": "15rem" }}>
             <tr >
               <th>序号</th>
@@ -873,7 +890,7 @@ class BookRoom extends React.Component {
     //主题
     theme: "50字内",
     //具体需求
-    content: "",
+    content: "请将具体需求描述出来。（200字内）",
     times_list:[],
   }
 
