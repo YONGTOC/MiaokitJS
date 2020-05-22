@@ -72,7 +72,7 @@ class workOrderDetail extends React.Component<{ history: any }>{
     tagArray[0][4].content = data.response.pic_url
     this.setState({
       tagArray: tagArray, datas: data.response,
-      stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "转单" : "未通过"  
+      stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "已转单" : "未通过"  
     })
     console.log("aaaaaaaaaa", this.state.datas.examine_transfer)
   }
@@ -92,7 +92,7 @@ class workOrderDetail extends React.Component<{ history: any }>{
     tagArray[1][9].content = data.response.content
     this.setState({
       tagArray: tagArray, datas: data.response,
-      stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "转单" : "未通过"
+      stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "已转单" : "未通过"
     })
   }
 
@@ -108,7 +108,7 @@ class workOrderDetail extends React.Component<{ history: any }>{
     tagArray[2][6].content = data.response.positions.end_date
     this.setState({
       tagArray: tagArray, datas: data.response,
-      stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "转单" : "未通过"
+      stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "已转单" : "未通过"
     })
   }
 
@@ -120,7 +120,7 @@ class workOrderDetail extends React.Component<{ history: any }>{
     tagArray[3][2].content = data.response.descript
     this.setState({
       tagArray: tagArray, datas: data.response,
-      stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "转单" : "未通过"
+      stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "已转单" : "未通过"
     })
   }
 
@@ -232,17 +232,13 @@ class workOrderDetail extends React.Component<{ history: any }>{
 
         {this.state.datas.examine_transfer ?
           <div>
-            <div style={{ margin: "30px 0 0 50px" }}>
-              <span style={{ color: "#949494", fontSize: "40px" }}>由</span>
-              <span style={{ color: "#333333", fontSize: "40px", marginLeft: "25px", fontWeight: "600" }}>{this.state.datas.examine_transfer[0].checker}</span>
-              <span style={{ color: "#949494", fontSize: "40px", marginLeft: "25px" }}>转单与</span>
-              <span style={{ color: "#333333", fontSize: "40px", marginLeft: "25px" }}>{this.state.datas.examine_transfer[1].checker_date}</span>
-            </div>
-            <div style={{ margin: "20px 0 0 50px" }}>
-              <span style={{ color: "#949494", fontSize: "40px" }}>转单给:</span>
-            </div>
-            <div style={{ margin: "20px 0 0 50px", color: "#333333", fontSize: "40px", wordBreak: "break-all", width: "90%" }}>
-              {this.state.datas.examine_transfer[1].checker}
+            <div style={{ margin: "30px 0 0 50px", fontSize: "38px" }}>
+              <span style={{ color: "#949494" }}>由</span>
+              <span style={{ color: "#333333", marginLeft: "25px", fontWeight: "600" }}>{this.state.datas.examine_transfer[0].checker}</span>
+              <span style={{ color: "#949494", marginLeft: "25px" }}>转单于</span>
+              <span style={{ color: "#333333", marginLeft: "25px" }}>
+                {this.state.datas.examine_transfer[1].checker} {this.state.datas.examine_transfer[1].checker_date}
+              </span>
             </div>
           </div> : null
         }
@@ -255,9 +251,8 @@ class workOrderDetail extends React.Component<{ history: any }>{
                 value={this.state.reply} onFocus={this.textareaFoucus.bind(this)} onBlur={this.textareaBlur.bind(this)} onChange={this.inputChange.bind(this)}></textarea>
             </div>
             <div style={{ height: "150px", width: "100%", position: "fixed", bottom: 0, fontSize: "45px" }}>
-              <div style={{ float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#F2F2F2", color: "#6C6C6C" }} onClick={e => this.submit(0)}>转单</div>
-              <div style={{ float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#FE4E4E", color: "#FFFFFF" }} onClick={e => this.submit(3)}>不通过</div>
-              <div style={{ float: "left", height: "100%", width: "33.4%", lineHeight: "150px", textAlign: "center", backgroundColor: "#0B8BF0", color: "#FFFFFF" }} onClick={e => this.submit(1)}>通过</div>
+              <div style={{ float: "left", height: "100%", width: "50%", lineHeight: "150px", textAlign: "center", backgroundColor: "#FE4E4E", color: "#FFFFFF" }} onClick={e => this.submit(3)}>不通过</div>
+              <div style={{ float: "left", height: "100%", width: "50%", lineHeight: "150px", textAlign: "center", backgroundColor: "#0B8BF0", color: "#FFFFFF" }} onClick={e => this.submit(1)}>通过</div>
             </div>
           </div> : null
          }

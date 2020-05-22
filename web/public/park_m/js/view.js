@@ -7111,7 +7111,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "an
             this.state = {
                 parkList: [
                     { name: "统计报表", imgUrl: "./park_m/image/statistics.png", url: "/statisticalStatement" }, { name: "房间管理", imgUrl: "./park_m/image/room.png", url: "/room" },
-                    { name: "客服电话", imgUrl: "./park_m/image/service.png", url: "/serviceTel" }, { name: "租用到期", imgUrl: "./park_m/image/rent_expire.png", url: "/roomRent" }
+                    { name: "租用到期", imgUrl: "./park_m/image/rent_expire.png", url: "/roomRent" }
                 ],
                 isSpread: true,
                 userInfo: { name: "", avatar: "", phone: "", enterprise: "", roles: { role_id: "", role_name: "" } },
@@ -7322,9 +7322,6 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "an
                             React.createElement("span", null, this.state.enterprise),
                             this.state.userInfo.roles.role_name !== "园区管理员" && this.state.userInfo.roles.role_name !== "企业管理员" ?
                                 React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" }, onClick: this.showCompanyList.bind(this) }, "\u4FEE\u6539") : null),
-                        React.createElement("div", { className: "personal-center-tag" },
-                            React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5BA2\u670D\u7535\u8BDD"),
-                            React.createElement("span", null, "0773-123456")),
                         React.createElement("div", { className: "personal-center-my" },
                             React.createElement(react_router_dom_4.Link, { to: this.state.userInfo.roles.role_name === "园区管理员" ? "/parkWorkOrder" : "/workOrder" },
                                 React.createElement("div", { className: "personal-center-my-left" },
@@ -9160,7 +9157,7 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
             tagArray[0][4].content = data.response.pic_url;
             this.setState({
                 tagArray: tagArray, datas: data.response,
-                stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "转单" : "未通过"
+                stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "已转单" : "未通过"
             });
             console.log("aaaaaaaaaa", this.state.datas.examine_transfer);
         }
@@ -9179,7 +9176,7 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
             tagArray[1][9].content = data.response.content;
             this.setState({
                 tagArray: tagArray, datas: data.response,
-                stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "转单" : "未通过"
+                stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "已转单" : "未通过"
             });
         }
         callBackGetAdvertisementPointInfo(data) {
@@ -9194,7 +9191,7 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
             tagArray[2][6].content = data.response.positions.end_date;
             this.setState({
                 tagArray: tagArray, datas: data.response,
-                stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "转单" : "未通过"
+                stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "已转单" : "未通过"
             });
         }
         callBackGetRepairInfo(data) {
@@ -9205,7 +9202,7 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
             tagArray[3][2].content = data.response.descript;
             this.setState({
                 tagArray: tagArray, datas: data.response,
-                stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "转单" : "未通过"
+                stateName: data.response.state === 0 ? "审核中" : data.response.state === 1 ? "已通过" : data.response.state === 2 ? "已转单" : "未通过"
             });
         }
         goBack() {
@@ -9292,14 +9289,14 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
                         React.createElement("div", { style: { margin: "20px 0 0 50px", color: "#333333", fontSize: "40px", wordBreak: "break-all", width: "90%" } }, this.state.datas.examine.reply)) : null,
                 this.state.datas.examine_transfer ?
                     React.createElement("div", null,
-                        React.createElement("div", { style: { margin: "30px 0 0 50px" } },
-                            React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u7531"),
-                            React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "25px", fontWeight: "600" } }, this.state.datas.examine_transfer[0].checker),
-                            React.createElement("span", { style: { color: "#949494", fontSize: "40px", marginLeft: "25px" } }, "\u8F6C\u5355\u4E0E"),
-                            React.createElement("span", { style: { color: "#333333", fontSize: "40px", marginLeft: "25px" } }, this.state.datas.examine_transfer[1].checker_date)),
-                        React.createElement("div", { style: { margin: "20px 0 0 50px" } },
-                            React.createElement("span", { style: { color: "#949494", fontSize: "40px" } }, "\u8F6C\u5355\u7ED9:")),
-                        React.createElement("div", { style: { margin: "20px 0 0 50px", color: "#333333", fontSize: "40px", wordBreak: "break-all", width: "90%" } }, this.state.datas.examine_transfer[1].checker)) : null,
+                        React.createElement("div", { style: { margin: "30px 0 0 50px", fontSize: "38px" } },
+                            React.createElement("span", { style: { color: "#949494" } }, "\u7531"),
+                            React.createElement("span", { style: { color: "#333333", marginLeft: "25px", fontWeight: "600" } }, this.state.datas.examine_transfer[0].checker),
+                            React.createElement("span", { style: { color: "#949494", marginLeft: "25px" } }, "\u8F6C\u5355\u4E8E"),
+                            React.createElement("span", { style: { color: "#333333", marginLeft: "25px" } },
+                                this.state.datas.examine_transfer[1].checker,
+                                " ",
+                                this.state.datas.examine_transfer[1].checker_date))) : null,
                 this.state.stateName === "审核中" && JSON.parse(sessionStorage.getItem("userInfos")).roles.role_name === "园区管理员" ?
                     React.createElement("div", null,
                         React.createElement("div", { style: { padding: "30px 0 0 50px" } },
@@ -9307,9 +9304,8 @@ define("workOrderDetail", ["require", "exports", "react", "dataService", "css!./
                             React.createElement("div", { style: { marginLeft: "30px", fontSize: "40px", color: "#333333" } }, "\u5BA1\u6838\u56DE\u590D\uFF1A"),
                             React.createElement("textarea", { style: { height: "200px", width: "90%", backgroundColor: "#F2F2F2", marginTop: "30px", fontSize: "40px", color: "#949494" }, value: this.state.reply, onFocus: this.textareaFoucus.bind(this), onBlur: this.textareaBlur.bind(this), onChange: this.inputChange.bind(this) })),
                         React.createElement("div", { style: { height: "150px", width: "100%", position: "fixed", bottom: 0, fontSize: "45px" } },
-                            React.createElement("div", { style: { float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#F2F2F2", color: "#6C6C6C" }, onClick: e => this.submit(0) }, "\u8F6C\u5355"),
-                            React.createElement("div", { style: { float: "left", height: "100%", width: "33.3%", lineHeight: "150px", textAlign: "center", backgroundColor: "#FE4E4E", color: "#FFFFFF" }, onClick: e => this.submit(3) }, "\u4E0D\u901A\u8FC7"),
-                            React.createElement("div", { style: { float: "left", height: "100%", width: "33.4%", lineHeight: "150px", textAlign: "center", backgroundColor: "#0B8BF0", color: "#FFFFFF" }, onClick: e => this.submit(1) }, "\u901A\u8FC7"))) : null));
+                            React.createElement("div", { style: { float: "left", height: "100%", width: "50%", lineHeight: "150px", textAlign: "center", backgroundColor: "#FE4E4E", color: "#FFFFFF" }, onClick: e => this.submit(3) }, "\u4E0D\u901A\u8FC7"),
+                            React.createElement("div", { style: { float: "left", height: "100%", width: "50%", lineHeight: "150px", textAlign: "center", backgroundColor: "#0B8BF0", color: "#FFFFFF" }, onClick: e => this.submit(1) }, "\u901A\u8FC7"))) : null));
         }
     }
     exports.default = workOrderDetail;
@@ -10227,7 +10223,7 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
         constructor() {
             super(...arguments);
             this.state = {
-                inputValue: "搜索人员",
+                inputValue: "搜索",
                 listArr: [],
                 tagIndex: 0,
                 tagArr: []
@@ -10322,13 +10318,13 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
             }
         }
         foucus() {
-            if (this.state.inputValue === "搜索人员") {
+            if (this.state.inputValue === "搜索") {
                 this.setState({ inputValue: "" });
             }
         }
         blur() {
             if (this.state.inputValue === "") {
-                this.setState({ inputValue: "搜索人员" });
+                this.setState({ inputValue: "搜索" });
             }
         }
         change(event) {
@@ -10343,7 +10339,6 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
             this.props.history.goBack();
         }
         goDetail(index) {
-            console.log("index", index);
             this.props.history.push({ pathname: "informationDetails", state: { index: index } });
         }
         render() {

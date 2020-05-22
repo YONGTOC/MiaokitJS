@@ -39,7 +39,7 @@ class PersonalCenter extends React.Component {
   public readonly state: Readonly<IState> = {
     parkList: [
       { name: "统计报表", imgUrl: "./park_m/image/statistics.png", url: "/statisticalStatement" }, { name: "房间管理", imgUrl: "./park_m/image/room.png", url: "/room" },
-      { name: "客服电话", imgUrl: "./park_m/image/service.png", url: "/serviceTel" }, { name: "租用到期", imgUrl: "./park_m/image/rent_expire.png", url: "/roomRent" }
+      { name: "租用到期", imgUrl: "./park_m/image/rent_expire.png", url: "/roomRent" }
     ],
     isSpread: true,
     userInfo: { name: "", avatar: "", phone: "", enterprise: "", roles: { role_id: "", role_name: "" } },
@@ -313,9 +313,6 @@ class PersonalCenter extends React.Component {
                   修改
                 </span> : null
               }
-            </div>
-            <div className="personal-center-tag">
-              <span style={{ margin: "0 50px 0 50px" }}>客服电话</span><span>0773-123456</span>
             </div>
             <div className="personal-center-my">
               <Link to={this.state.userInfo.roles.role_name === "园区管理员" ? "/parkWorkOrder" : "/workOrder"}>

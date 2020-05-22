@@ -16,7 +16,7 @@ interface IState {
 
 export default class InformationChilds extends React.Component {
   public readonly state: Readonly<IState> = {
-    inputValue: "搜索人员", // 输入框默认值
+    inputValue: "搜索", // 输入框默认值
     listArr: [],
     tagIndex: 0, // 选中的标签
     tagArr: []
@@ -110,7 +110,7 @@ export default class InformationChilds extends React.Component {
 
   // 聚焦
   foucus() {
-    if (this.state.inputValue === "搜索人员") {
+    if (this.state.inputValue === "搜索") {
       this.setState({ inputValue: "" })
     }
   }
@@ -118,7 +118,7 @@ export default class InformationChilds extends React.Component {
   // 失焦
   blur() {
     if (this.state.inputValue === "") {
-      this.setState({ inputValue: "搜索人员" })
+      this.setState({ inputValue: "搜索" })
     }
   }
 
@@ -141,7 +141,6 @@ export default class InformationChilds extends React.Component {
 
   // 详情
   goDetail(index) {
-    console.log("index", index)
     this.props.history.push({ pathname: "informationDetails", state: { index: index } })
   }
 
