@@ -132,6 +132,8 @@ class CameraCtrl {
                 let bComplete = true;
                 let bSpeed = nSpeed_ ? nSpeed_ : 0.1;
 
+                bSpeed *= MiaokitJS.App.m_nSensitivity;
+
                 if (undefined !== this.m_pParam.m_nLng) {
                     let nBias = this.m_pParam.m_nLng - pThis.m_nLng;
                     if (-0.1 > nBias || 0.1 < nBias) {
@@ -287,7 +289,7 @@ class CameraCtrl {
                 mTarget.z -= nOffsetX * Math.sin(rYaw);
                 mTarget.z += nOffsetY * Math.cos(rYaw);
                 mTarget.x += nOffsetY * Math.sin(rYaw);
-            }            
+            }
 
             this.target = mTarget;
         }
@@ -349,6 +351,8 @@ class CameraCtrl {
             return;
         }
 
+        let bSpeed = 0.1 * MiaokitJS.App.m_nSensitivity;
+
         /// 非漫游模式：控制类似
         if (CTRL_MODE.WANDER !== this.m_eCtrlMode) {
             // 遥感模式：俯角强制调整为90度，偏航角强制调整为0度
@@ -360,12 +364,12 @@ class CameraCtrl {
                 else {
                     let nBias = this.m_nPitch - 90.0;
                     if (-0.1 > nBias || 0.1 < nBias) {
-                        this.m_nPitch -= nBias * 0.1;
+                        this.m_nPitch -= nBias * bSpeed;
                     }
 
                     nBias = this.m_nYaw - 0.0;
                     if (-0.1 > nBias || 0.1 < nBias) {
-                        this.m_nYaw -= nBias * 0.1;
+                        this.m_nYaw -= nBias * bSpeed;
                     }
                 }
             }
@@ -377,12 +381,12 @@ class CameraCtrl {
                 else {
                     let nBias = this.m_nPitch - 85.0;
                     if (0.1 < nBias) {
-                        this.m_nPitch -= nBias * 0.1;
+                        this.m_nPitch -= nBias * bSpeed;
                     }
 
                     nBias = 5.0 - this.m_nPitch;
                     if (0.1 < nBias) {
-                        this.m_nPitch += nBias * 0.1;
+                        this.m_nPitch += nBias * bSpeed;
                     }
                 }
             }
@@ -393,17 +397,17 @@ class CameraCtrl {
 
                 let nBias = mTarget.x - 0.0;
                 if (-0.1 > nBias || 0.1 < nBias) {
-                    mTarget.x += nBias * 0.1;
+                    mTarget.x += nBias * bSpeed;
                 }
 
                 nBias = mTarget.y - 0.0;
                 if (-0.1 > nBias || 0.1 < nBias) {
-                    mTarget.y += nBias * 0.1;
+                    mTarget.y += nBias * bSpeed;
                 }
 
                 nBias = mTarget.z - 0.0;
                 if (-0.1 > nBias || 0.1 < nBias) {
-                    mTarget.z += nBias * 0.1;
+                    mTarget.z += nBias * bSpeed;
                 }
 
                 this.target = mTarget;
@@ -452,7 +456,7 @@ class CameraCtrl {
     }
     public set viewMode(mode: number) {
         if (this.m_nViewMode !== mode) {
-            this.m_nViewMode = mode;            
+            this.m_nViewMode = mode;
             MiaokitJS.Miaokit.cameraMode = mode;
         }
     }
