@@ -74,13 +74,13 @@ class Message extends React.Component<{ history: any }>{
             this.state.workOrderArray.map((item, index) => {
               return  <div key={index} className="work-order-list-child">
                 <div style={{ overflow: "hidden", margin: "30px 0 0 40px" }}>
-                  <div style={{ float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" }}>{item.name}</div>
+                  <div style={{ float: "left", fontSize: "40px", color: "#333333", fontWeight: "600" }}>您参加的活动即将开始</div>
                 </div>
-                <div style={{ fontSize: "38px", color: "#DB0A0A", margin: "30px 0 0 40px" }}>
-                  房间位置：{item.position}
+                <div style={{ fontSize: "38px", margin: "30px 0 0 40px" }}>
+                  活动名称：{item.name}
                 </div>
-                <div style={{ fontSize: "38px", color: "#DB0A0A", margin: "10px 0 0 40px" }}>
-                  到期时间：{item.time}
+                <div style={{ fontSize: "38px", margin: "10px 0 0 40px" }}>
+                  活动时间：{item.time}
                 </div>
               </div>
             })

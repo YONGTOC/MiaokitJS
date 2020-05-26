@@ -16,7 +16,7 @@ interface IState {
 
 export default class InformationChilds extends React.Component {
   public readonly state: Readonly<IState> = {
-    inputValue: "搜索人员", // 输入框默认值
+    inputValue: "搜索", // 输入框默认值
     listArr: [],
     tagIndex: 0, // 选中的标签
     tagArr: []
@@ -64,7 +64,7 @@ export default class InformationChilds extends React.Component {
   }
 
   callBackTag(data) {
-    this.setState({ tagArr: JSON.parse(data).response }, () => {
+    this.setState({ tagArr: [...[{id: 0, name: "全部"}], ...JSON.parse(data).response] }, () => {
       this.getTagContent()
     })
   }
@@ -110,7 +110,7 @@ export default class InformationChilds extends React.Component {
 
   // 聚焦
   foucus() {
-    if (this.state.inputValue === "搜索人员") {
+    if (this.state.inputValue === "搜索") {
       this.setState({ inputValue: "" })
     }
   }
@@ -118,7 +118,7 @@ export default class InformationChilds extends React.Component {
   // 失焦
   blur() {
     if (this.state.inputValue === "") {
-      this.setState({ inputValue: "搜索人员" })
+      this.setState({ inputValue: "搜索" })
     }
   }
 
@@ -141,7 +141,6 @@ export default class InformationChilds extends React.Component {
 
   // 详情
   goDetail(index) {
-    console.log("index", index)
     this.props.history.push({ pathname: "informationDetails", state: { index: index } })
   }
 
@@ -187,22 +186,25 @@ export default class InformationChilds extends React.Component {
                 </div> :
                 <div key={index} className="information-child-List-child" onClick={e => this.goDetail(item.id)} >
                   <div style={{ overflow: "hidden" }}>
-                    <div style={{ width: "250px", height: "260px", float: "left", margin: "30px 0 0 50px", borderRadius: "10px" }}>
+                    <div style={{ width: "250px", height: "250px", float: "left", margin: "30px 0 0 50px", borderRadius: "10px" }}>
                       {new Date(item.contenta).getTime() < new Date().getTime() ?
                         <div style={{ position: "relative", top: "208px", fontSize: "38px", color: "#ffffff", height: "5px", textAlign: "center", zIndex: 2 }}>已结束</div> : null
                       }
                       {new Date(item.contenta).getTime() < new Date().getTime() ?
                         <div style={{ position: "relative", top: "200px", height: "65px", backgroundColor: "black", opacity: 0.4, zIndex: 1 }}></div> : null
                       }
-                      <img src={item.headimgurl} style={{ width: "100%", height: "100%" }} />
+                      <img src={item.headimgurl} style={{ width: "100%", height: "100%", borderRadius: "10px" }} />
                     </div>
                     <div style={{ float: "left", fontSize: "45px", margin: "25px 0 0 50px", fontWeight: "600", color: "#333333",width: "60%" }}>
                       <div>{item.title}</div>
-                      <div style={{ color: "#949494", fontSize: "40px", fontWeight: "400", marginTop: "85px", overflow: "hidden" }}>
+                      <div style={{ color: "#949494", fontSize: "34px", fontWeight: "400", marginTop: "85px", overflow: "hidden" }}>
                         <div style={{float: "left", width: "35%"}}> {item.taga}：</div>
                         <div className="c-p" style={{ float: "left", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden", width: "65%", height: "50px" }} dangerouslySetInnerHTML={{ __html: item.contenta }}></div>
                       </div>
-                      <div style={{ color: "#949494", fontSize: "40px", fontWeight: "400", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" }}>{item.tagb}：{item.contentb}</div>
+                      <div style={{ color: "#949494", fontSize: "34px", fontWeight: "400", overflow: "hidden" }}>
+                        <div style={{ width: "35%", float: "left" }}>{item.tagb}：</div>
+                        <div style={{ width: "65%", float: "left", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1" }}>{item.contentb}</div>
+                      </div>
                     </div>
                   </div>
                   <div style={{ color: "#949494", fontSize: "34px", margin: "30px 0 0 50px", overflow: "hidden" }}>

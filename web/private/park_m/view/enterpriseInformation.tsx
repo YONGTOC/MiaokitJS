@@ -472,6 +472,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
 
   // 输入企业位置
   changeEnterprisePosition(event) {
+    event.target.value = event.target.value.replace(/[, ]/g,'')
     this.setState({
       inputEnterprisePositionValue: event.target.value,
       address : event.target.value,
@@ -494,6 +495,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
 
   // 输入联系人
   changeContacts(event) {
+    event.target.value = event.target.value.replace(/[, ]/g,'')
     this.setState({ contactsValue: event.target.value })
   }
 
@@ -551,6 +553,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
 
   // 输入企业描述
   changeDescription(event) {
+    event.target.value = event.target.value.replace(/[, ]/g,'')
     this.setState({ descriptionValue: event.target.value })
   }
 
@@ -887,7 +890,7 @@ class EnterpriseInformation extends React.Component<{ history: any }>{
               <div className="enterprise-information-star"></div>
               <div style={{ color: "#949494", fontSize: "40px", lineHeight: "120px", float: "left", width: "25%" }}>联系电话</div>
               <input className="enterprise-information-name-input" value={this.state.phoneValue} type="text"
-                onFocus={this.focusPhone.bind(this)} onBlur={this.blurPhone.bind(this)} onChange={this.changePhone.bind(this)} />
+                onFocus={this.focusPhone.bind(this)} onBlur={this.blurPhone.bind(this)} onChange={this.changePhone.bind(this)}  />
             </div>
             <div className="enterprise-information-modify-tag" onClick={this.showCompanyTypeBox.bind(this)} >
               <div className="enterprise-information-star"></div>

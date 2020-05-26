@@ -74,7 +74,13 @@ export default class Room extends React.Component<{ history: any }>{
   // 展开
   spread(index) {
     let buildingArr = this.state.buildingArr
-    buildingArr[this.state.buildingIndex].child[index].isSpread = !buildingArr[this.state.buildingIndex].child[index].isSpread
+    buildingArr[this.state.buildingIndex].child.forEach((item, ind) => {
+      if (ind === index) {
+        item.isSpread = !item.isSpread
+      } else {
+        item.isSpread = false
+      }
+    })
     this.setState({ buildingArr: buildingArr, floorIndex: this.state.floorIndex === index ? "" : index })
   }
 

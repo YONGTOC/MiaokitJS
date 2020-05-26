@@ -63,7 +63,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
     this.setState({
       applicant:dataObj.name,
       phone:dataObj.phone,
-      company: sessionStorage.getItem("enterprise"),
+      company: sessionStorage.getItem("enterprise") == "undefined" ? "暂无绑定企业" : sessionStorage.getItem("enterprise"),
       company_id: sessionStorage.getItem("enterpriseId"),
       park_id: dataObj.park_id,
       role_name:role_name,

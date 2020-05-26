@@ -397,7 +397,7 @@ class LeaseInfo extends React.Component {
 
     LeaseInfos.setLeaseInfos(data);
     Picshow.setPicshow(data);
-    Videoshow.setVideoshow(data);
+    Picshow.setVideoshow(data);
   }
 
   public componentDidMount() {
@@ -665,7 +665,7 @@ class Picshow extends React.Component {
     super(props);
 
     Picshow.setPicshow = this.setPicshow.bind(this);
-
+    Picshow.setVideoshow = this.setVideoshow.bind(this);
   }
 
   public componentDidMount() {
@@ -717,41 +717,115 @@ class Picshow extends React.Component {
     });
   }
 
-  public render() {
+     public seeVideoState() {
+    if (this.state.roomVideo.length == 0) {
+      this.setState({
+        vidurlNull: "show",
+      })
+      console.log(this.state)
+    } else {
+       this.setState({
+        vidurlNull: "hide",
+      })
+    }
+    //else if (!this.state.roomVideo[0].url) {
+    //  this.setState({
+    //    urlNull: "show",
+    //  })
+    //} else {
+    //  this.setState({
+    //    urlNull: "hide",
+    //  })
+    //}
+  }
 
+  
+  // 显示获取的企业视频
+  static setVideoshow(data) { }
+  public setVideoshow(data) {
+    //console.log("4545454", data)
+    //      this.setState({
+    //    roomVideo: data.response.video,
+    //    urlNull: "hide",
+    //  })
+    console.log("setVideoshow", data)
+    if (data.response.video.length == 0) {
+      console.log(898989898)
+      this.setState({
+        roomVideo: [],
+        vidurlNull: "show",
+      })
+      console.log(this.state)
+    } else if (!data.response.video[0].url) {
+      this.setState({
+        roomVideo: [],
+        vidurlNull: "show",
+      })
+    } else {
+      this.setState({
+        roomVideo: data.response.video,
+        vidurlNull: "hide",
+      })
+    }
+    console.log("66666666666666", this.state)
+
+       this.seeVideoState();
+  }
+
+  public bigImg(i) {
+    console.log('bigimg',i)
+  }
+
+  public render() {
+            //<WingBlank>
+            //  <Carousel className="space-carousel"
+            //    frameOverflow="visible"
+            //    cellSpacing={10}
+            //    slideWidth={0.8}
+            //     autoplay
+            //    infinite
+            //    afterChange={index => this.setState({ slideIndex: index })}
+            //  >
+            //    {this.state.data.map((val, index) => (
+            //      <img
+            //        src={val}
+            //        alt=""
+            //        style={{ width: '100%', verticalAlign: 'top' }}
+            //        onLoad={() => {
+            //          // fire window resize event to change height
+            //          window.dispatchEvent(new Event('resize'));
+            //          this.setState({ imgHeight: 'auto' });
+            //        }}
+            //      />
+            //    ))}
+            //  </Carousel>
+            //</WingBlank>
     return (
       <div className={"picshow"}>
         {this.state.picBtnIndex == 0 ?
           <ul>
-            <p className={this.state.urlNull} style={{ "margin": "1rem 0", "text-align": "center", "font-size": "3rem", "color": "#797979" }}>暂无图片···</p>
-            <WingBlank>
-              <Carousel className="space-carousel"
-                frameOverflow="visible"
-                cellSpacing={10}
-                slideWidth={0.8}
-                autoplay
-                infinite
-                afterChange={index => this.setState({ slideIndex: index })}
-              >
-                {this.state.data.map((val, index) => (
-                  <img
-                    src={val}
-                    alt=""
-                    style={{ width: '100%', verticalAlign: 'top' }}
-                    onLoad={() => {
-                      // fire window resize event to change height
-                      window.dispatchEvent(new Event('resize'));
-                      this.setState({ imgHeight: 'auto' });
-                    }}
-                  />
-                ))}
-              </Carousel>
-            </WingBlank>
+            <p className={this.state.picurlNull} style={{ "margin": "1rem 0", "text-align": "center", "font-size": "3rem", "color": "#797979" }}>暂无图片···</p>
+             {this.state.data.map((i, index) => {
+              return (
+                <li onClick={this.bigImg.bind(this,i)}>
+                    <img src={i} />
+                  </li>
+                )
+              })}
           </ul>
           :
-          <div>
-            < Videoshow />
-          </div>
+          <ul>
+          <p className={this.state.vidurlNull} style={{ "margin": "1rem 0", "text-align": "center", "font-size": "3rem", "color": "#797979" }}>暂无视频···</p>
+          {this.state.roomVideo.map((i, index) => {
+            return (
+              <li style={{ "width": "56rem", " height": "36rem" }}>
+                <video src={i.url} style={{ "width": "100%", "height": "100%" }} controls >
+                  当前浏览器不支持video播放
+                  </video>
+              </li>
+            )
+          })}
+        </ul>
         }
 
         <div className="picBtn">
@@ -760,7 +834,14 @@ class Picshow extends React.Component {
           <div className={this.state.picBtnIndex == 1 ? "picBtnS-active" : "picBtnS"}
             onClick={this.picBtn.bind(this, 1)}>视频</div>
         </div>
+
+        <div className="find_bigImg">
+          <img src={this.state.bigimg} />
+        </div>
+
       </div>
+
+     
     )
   }
 
@@ -771,6 +852,12 @@ class Picshow extends React.Component {
     imgHeight: 176,
     slideIndex: 0,
     picBtnIndex: 0,
+    picurlNull: "hide",
+    vidurlNull: "hide",
+    roomVideo: [
+      //{ url: "https://www.yongtoc.com/themes/ytyc.mp4" },
+    ],
+    bigimg:'',
   }
 }
 
