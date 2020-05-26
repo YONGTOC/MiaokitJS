@@ -273,14 +273,22 @@ class PersonalCenter extends React.Component {
             <div className="personal-center-tx">
               <img src={this.state.userInfo.avatar == null ? "./park_m/image/noImg.png" : this.state.userInfo.avatar}  onError={this.onErrorHeadimageurl.bind(this)} className="personal-center-tx-img"  />
             </div>
-            <div style={{ float: "left", color: "#FFFFFF", fontSize: "42px", margin: "45px 0 0 36px" }}>
+            <div style={{ float: "left", color: "#FFFFFF", fontSize: "42px", margin: this.state.pathname === "/personalCenter" ? "45px 0 0 36px" : "10px 0 0 36px" }}>
               <div>{this.state.userInfo.name}</div>
+              {this.state.pathname === "/personalCenter" ? null :
+                <div style={{
+                  color: "#83d5ff", fontSize: "27px", backgroundColor: "#2e9cf3", width: "160px",
+                  height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
+                }}>{this.state.userInfo.roles.role_name}</div>
+              }
             </div>
-            <Link to={{pathname: "/modificationAuthentication", state: {name: this.state.userInfo.name}}}>
-              <div className="personal-center-right">
-                <img src="./park_m/image/w-right.png" />
-              </div>
-            </Link>
+            {this.state.pathname === "/personalCenter" ? null :
+              <Link to={{ pathname: "/modificationAuthentication", state: { name: this.state.userInfo.name } }}>
+                <div className="personal-center-right">
+                  <img src="./park_m/image/w-right.png" />
+                </div>
+              </Link>
+            }
           </div>
         </div>
         {this.state.pathname === "/personalCenter" ?
@@ -300,11 +308,9 @@ class PersonalCenter extends React.Component {
           <div>
             <div className="personal-center-tag">
               <span style={{ margin: "0 50px 0 50px" }}>手机号码</span><span>{this.state.userInfo.phone}</span>
-              {this.state.enterprise && this.state.enterprise !== "请先关联企业"?
                 <span style={{ float: "right", marginRight: "50px", color: "#0B8BF0" }} onClick={this.phoneChange.bind(this)}>
                   修改
-                </span> : null
-              }
+                </span>
             </div>
             <div className="personal-center-tag">
               <span style={{ margin: "0 50px 0 50px" }}>关联企业</span><span>{this.state.enterprise}</span>

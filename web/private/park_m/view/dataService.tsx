@@ -1146,7 +1146,7 @@ class DataService {
         id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
         username: username,
         phone: phone,
-        company_id: company_id,
+        company_id: company_id === "请先关联企业" ? "" : company_id,
         token: sessionStorage.getItem("token")
       },
       type: "get",

@@ -47,7 +47,6 @@ export default class informationDetail extends React.Component {
   public dataService: DataService = new DataService()
 
   componentDidMount() {
-    console.log("this.props.history.location", this.props.history.location)
     if (parseInt(sessionStorage.getItem("informationId")) < 2) {
       this.dataService.getInformation(this.callBack.bind(this), this.props.history.location.state.index)
     } else if (parseInt(sessionStorage.getItem("informationId")) === 2) {
@@ -72,12 +71,14 @@ export default class informationDetail extends React.Component {
     localStorage.setItem("park_id", park_id);
   }
 
-  submit() {
-    let obj = {
-      user_id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
-      activity_id: this.state.data.id
+  submit(flag) {
+    if (flag) {
+      let obj = {
+        user_id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+        activity_id: this.state.data.id
+      }
+      this.dataService.postActivitySign(this.callBackPostActivitySign.bind(this), obj)
     }
-    this.dataService.postActivitySign(this.callBackPostActivitySign.bind(this), obj)
   }
 
   callBackPostActivitySign(data) {
@@ -194,7 +195,7 @@ export default class informationDetail extends React.Component {
             <div style={{
                 backgroundColor: new Date(this.state.data.sign_end_time).getTime() > new Date().getTime() ? "#0B8BF0" : "rgb(190, 193, 195)", width: "100%", height: "150px", fontSize: "50px", color: "#ffffff", lineHeight: "150px",
               textAlign: "center", position: "fixed", bottom: "0px"
-            }} onClick={this.submit.bind(this)}>
+              }} onClick={e=> this.submit(new Date(this.state.data.sign_end_time).getTime() > new Date().getTime())}>
                 {new Date(this.state.data.sign_end_time).getTime() > new Date().getTime() ? "我要报名" : "已结束"}
             </div>
           </div> :

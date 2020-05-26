@@ -1577,7 +1577,7 @@ define("dataService", ["require", "exports", "antd-mobile"], function (require, 
                     id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
                     username: username,
                     phone: phone,
-                    company_id: company_id,
+                    company_id: company_id === "请先关联企业" ? "" : company_id,
                     token: sessionStorage.getItem("token")
                 },
                 type: "get",
@@ -7294,11 +7294,17 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "an
                     React.createElement("div", { className: "personal-center-info" },
                         React.createElement("div", { className: "personal-center-tx" },
                             React.createElement("img", { src: this.state.userInfo.avatar == null ? "./park_m/image/noImg.png" : this.state.userInfo.avatar, onError: this.onErrorHeadimageurl.bind(this), className: "personal-center-tx-img" })),
-                        React.createElement("div", { style: { float: "left", color: "#FFFFFF", fontSize: "42px", margin: "45px 0 0 36px" } },
-                            React.createElement("div", null, this.state.userInfo.name)),
-                        React.createElement(react_router_dom_4.Link, { to: { pathname: "/modificationAuthentication", state: { name: this.state.userInfo.name } } },
-                            React.createElement("div", { className: "personal-center-right" },
-                                React.createElement("img", { src: "./park_m/image/w-right.png" }))))),
+                        React.createElement("div", { style: { float: "left", color: "#FFFFFF", fontSize: "42px", margin: this.state.pathname === "/personalCenter" ? "45px 0 0 36px" : "10px 0 0 36px" } },
+                            React.createElement("div", null, this.state.userInfo.name),
+                            this.state.pathname === "/personalCenter" ? null :
+                                React.createElement("div", { style: {
+                                        color: "#83d5ff", fontSize: "27px", backgroundColor: "#2e9cf3", width: "160px",
+                                        height: "50px", textAlign: "center", lineHeight: "50px", borderRadius: "30px", marginTop: "20px"
+                                    } }, this.state.userInfo.roles.role_name)),
+                        this.state.pathname === "/personalCenter" ? null :
+                            React.createElement(react_router_dom_4.Link, { to: { pathname: "/modificationAuthentication", state: { name: this.state.userInfo.name } } },
+                                React.createElement("div", { className: "personal-center-right" },
+                                    React.createElement("img", { src: "./park_m/image/w-right.png" }))))),
                 this.state.pathname === "/personalCenter" ?
                     React.createElement("div", null,
                         React.createElement("div", { className: "personal-center-tag", style: { margin: "0 50px 0 50px", fontWeight: "600" } },
@@ -7315,8 +7321,7 @@ define("personalCenter", ["require", "exports", "react", "react-router-dom", "an
                         React.createElement("div", { className: "personal-center-tag" },
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u624B\u673A\u53F7\u7801"),
                             React.createElement("span", null, this.state.userInfo.phone),
-                            this.state.enterprise && this.state.enterprise !== "请先关联企业" ?
-                                React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" }, onClick: this.phoneChange.bind(this) }, "\u4FEE\u6539") : null),
+                            React.createElement("span", { style: { float: "right", marginRight: "50px", color: "#0B8BF0" }, onClick: this.phoneChange.bind(this) }, "\u4FEE\u6539")),
                         React.createElement("div", { className: "personal-center-tag" },
                             React.createElement("span", { style: { margin: "0 50px 0 50px" } }, "\u5173\u8054\u4F01\u4E1A"),
                             React.createElement("span", null, this.state.enterprise),
@@ -10371,24 +10376,25 @@ define("informationChilds", ["require", "exports", "react", "dataService", "css!
                                         " \u53D1\u5E03"))) :
                             React.createElement("div", { key: index, className: "information-child-List-child", onClick: e => this.goDetail(item.id) },
                                 React.createElement("div", { style: { overflow: "hidden" } },
-                                    React.createElement("div", { style: { width: "250px", height: "260px", float: "left", margin: "30px 0 0 50px", borderRadius: "10px" } },
+                                    React.createElement("div", { style: { width: "250px", height: "250px", float: "left", margin: "30px 0 0 50px", borderRadius: "10px" } },
                                         new Date(item.contenta).getTime() < new Date().getTime() ?
                                             React.createElement("div", { style: { position: "relative", top: "208px", fontSize: "38px", color: "#ffffff", height: "5px", textAlign: "center", zIndex: 2 } }, "\u5DF2\u7ED3\u675F") : null,
                                         new Date(item.contenta).getTime() < new Date().getTime() ?
                                             React.createElement("div", { style: { position: "relative", top: "200px", height: "65px", backgroundColor: "black", opacity: 0.4, zIndex: 1 } }) : null,
-                                        React.createElement("img", { src: item.headimgurl, style: { width: "100%", height: "100%" } })),
+                                        React.createElement("img", { src: item.headimgurl, style: { width: "100%", height: "100%", borderRadius: "10px" } })),
                                     React.createElement("div", { style: { float: "left", fontSize: "45px", margin: "25px 0 0 50px", fontWeight: "600", color: "#333333", width: "60%" } },
                                         React.createElement("div", null, item.title),
-                                        React.createElement("div", { style: { color: "#949494", fontSize: "40px", fontWeight: "400", marginTop: "85px", overflow: "hidden" } },
+                                        React.createElement("div", { style: { color: "#949494", fontSize: "34px", fontWeight: "400", marginTop: "85px", overflow: "hidden" } },
                                             React.createElement("div", { style: { float: "left", width: "35%" } },
                                                 " ",
                                                 item.taga,
                                                 "\uFF1A"),
                                             React.createElement("div", { className: "c-p", style: { float: "left", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden", width: "65%", height: "50px" }, dangerouslySetInnerHTML: { __html: item.contenta } })),
-                                        React.createElement("div", { style: { color: "#949494", fontSize: "40px", fontWeight: "400", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1", overflow: "hidden" } },
-                                            item.tagb,
-                                            "\uFF1A",
-                                            item.contentb))),
+                                        React.createElement("div", { style: { color: "#949494", fontSize: "34px", fontWeight: "400", overflow: "hidden" } },
+                                            React.createElement("div", { style: { width: "35%", float: "left" } },
+                                                item.tagb,
+                                                "\uFF1A"),
+                                            React.createElement("div", { style: { width: "65%", float: "left", display: "-webkit-box", webkitBoxOrient: "vertical", webkitLineClamp: "1" } }, item.contentb)))),
                                 React.createElement("div", { style: { color: "#949494", fontSize: "34px", margin: "30px 0 0 50px", overflow: "hidden" } },
                                     React.createElement("div", { style: { float: "left" } },
                                         item.visitAmount,
@@ -10617,7 +10623,6 @@ define("informationDetails", ["require", "exports", "react", "dataService", "rea
             this.dataService = new dataService_29.default();
         }
         componentDidMount() {
-            console.log("this.props.history.location", this.props.history.location);
             if (parseInt(sessionStorage.getItem("informationId")) < 2) {
                 this.dataService.getInformation(this.callBack.bind(this), this.props.history.location.state.index);
             }
@@ -10638,12 +10643,14 @@ define("informationDetails", ["require", "exports", "react", "dataService", "rea
             this.globalAction.web_call_webgl_initPark(park_id);
             localStorage.setItem("park_id", park_id);
         }
-        submit() {
-            let obj = {
-                user_id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
-                activity_id: this.state.data.id
-            };
-            this.dataService.postActivitySign(this.callBackPostActivitySign.bind(this), obj);
+        submit(flag) {
+            if (flag) {
+                let obj = {
+                    user_id: JSON.parse(sessionStorage.getItem("userInfos")).userId,
+                    activity_id: this.state.data.id
+                };
+                this.dataService.postActivitySign(this.callBackPostActivitySign.bind(this), obj);
+            }
         }
         callBackPostActivitySign(data) {
             alert(JSON.parse(data).err_msg);
@@ -10731,7 +10738,7 @@ define("informationDetails", ["require", "exports", "react", "dataService", "rea
                     React.createElement("div", { style: {
                             backgroundColor: new Date(this.state.data.sign_end_time).getTime() > new Date().getTime() ? "#0B8BF0" : "rgb(190, 193, 195)", width: "100%", height: "150px", fontSize: "50px", color: "#ffffff", lineHeight: "150px",
                             textAlign: "center", position: "fixed", bottom: "0px"
-                        }, onClick: this.submit.bind(this) }, new Date(this.state.data.sign_end_time).getTime() > new Date().getTime() ? "我要报名" : "已结束")) :
+                        }, onClick: e => this.submit(new Date(this.state.data.sign_end_time).getTime() > new Date().getTime()) }, new Date(this.state.data.sign_end_time).getTime() > new Date().getTime() ? "我要报名" : "已结束")) :
                 React.createElement("div", { style: { fontSize: "33px", color: "#333333" } },
                     React.createElement("div", { style: { width: "100%", height: "600px" } },
                         React.createElement("img", { src: this.state.data.headimgurl, style: { width: "100%", height: "100%" } }),
@@ -10808,7 +10815,14 @@ define("room", ["require", "exports", "react", "react-router-dom", "dataService"
         }
         spread(index) {
             let buildingArr = this.state.buildingArr;
-            buildingArr[this.state.buildingIndex].child[index].isSpread = !buildingArr[this.state.buildingIndex].child[index].isSpread;
+            buildingArr[this.state.buildingIndex].child.forEach((item, ind) => {
+                if (ind === index) {
+                    item.isSpread = !item.isSpread;
+                }
+                else {
+                    item.isSpread = false;
+                }
+            });
             this.setState({ buildingArr: buildingArr, floorIndex: this.state.floorIndex === index ? "" : index });
         }
         render() {
