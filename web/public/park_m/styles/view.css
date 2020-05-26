@@ -2431,8 +2431,10 @@ i {
     overflow-y: scroll;
     height: 32rem;
 }
-.notesBox p{
-    font-size:2.5rem;
+.notesBox p {
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 4rem;
 }
 .bookSumbit {
     width: 100%;
@@ -2526,7 +2528,7 @@ i {
     background-color: #F2F2F2;
     height: 6rem;
     overflow-y: scroll;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 2rem;
     margin: 1rem 0;
     line-height: 5rem;
 }
@@ -2894,8 +2896,8 @@ i {
     box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
     border-radius: 50%;
     text-align: center;
-    font-size: 6rem;
-    line-height: 4.5rem;
+    font-size: 5rem;
+    line-height: 6rem;
     color: rgb(108, 108, 108);
 }
 .farGap {
@@ -2909,8 +2911,8 @@ i {
     box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
     border-radius: 50%;
     text-align: center;
-    font-size: 7rem;
-    line-height: 4.5rem;
+    font-size: 6rem;
+    line-height: 5.5rem;
     color: rgb(108, 108, 108);
 }
 .changeD {

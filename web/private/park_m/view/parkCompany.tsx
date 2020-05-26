@@ -304,7 +304,7 @@ class CompanyList extends React.Component {
           </p>
         </div>
         <ul className={this.state.companyul}>
-          <p className={this.state.companyNull} style={{ "text-align": "center" }} >没有符合搜索条件的结果···</p>
+          <p className={this.state.companyNull} style={{ "text-align": "center" , "font-size": "2.8rem"}} >没有符合搜索条件的结果···</p>
           {this.state.companyData.map((i, index) => {
             return (
               <li onClick={this.companyActive.bind(this, index, i.id , i.project_title, i.building_code, i.floor_code, i.room_code)} className={this.state.indexOf == index ? "companyli-active" : "companyli"} >

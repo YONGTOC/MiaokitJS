@@ -31,6 +31,7 @@ class Home extends React.Component {
   public componentDidMount() {
     //2  登录获取 token
     //this.dataService.login();
+
   }
 
 
@@ -66,10 +67,46 @@ class Home extends React.Component {
 
 
 // 顶部按钮区
-class TopBtn extends React.Component {
+class TopBtn extends React.Component { 
   public constructor(props) {
     super(props)
 
+    this.switchMark = this.switchMark.bind(this);
+    this.logIcon = this.logIcon.bind(this);
+   
+  }
+
+  public componentDidMount() {
+
+   
+    var iconStated = JSON.parse(sessionStorage.getItem("iconstate"))
+    console.log(JSON.parse(sessionStorage.getItem("iconstate")));
+
+    console.log(iconStated);
+
+    if (iconStated ) {
+      if ( iconStated.haveIcon == true) {
+        this.setState({
+        topView: iconStated.topView,
+        topIcon1: iconStated.topIcon1,
+        topIcon2: iconStated.topIcon2,
+        topIcon3: iconStated.topIcon3,
+        topIcon4: iconStated.topIcon4,
+        topIcon5: iconStated.topIcon5,
+        topIcon: iconStated.topIcon,
+        playIcon: iconStated.playIcon,
+        moreIcon: iconStated.moreIcon,
+        topClose: iconStated.topClose,
+        topViewBack: iconStated.topViewBack,
+        topIcon3info: iconStated.topIcon3info,
+        topIcon4info: iconStated.topIcon4info,
+        topIcon5info: iconStated.topIcon5info,
+        mapIcon: iconStated.mapIcon,
+      })
+      }
+  
+
+    }
   }
 
   public state = {
@@ -87,7 +124,7 @@ class TopBtn extends React.Component {
     topIcon3info: 0,
     topIcon4info: 0,
     topIcon5info: 0,
-
+    haveIcon: false,
     mapIcon: [
       { name: "交通" },
       { name: "商圈" },
@@ -97,6 +134,7 @@ class TopBtn extends React.Component {
       { name: "交通" },
     ]
   }
+
 
   //显示更多标识
   public moreIcon(a) {
@@ -140,7 +178,8 @@ class TopBtn extends React.Component {
       this.setState({
         topIcon5: "iconBox-bigIn",
       })
-    }
+    };
+
   }
 
   // 关闭更多icon
@@ -185,7 +224,9 @@ class TopBtn extends React.Component {
 
   // 点亮icon
   public callMark(type,name) {
-    this.dataService.getParkPointList(this.markBack.bind(this), type,name);
+    this.dataService.getParkPointList(this.markBack.bind(this), type, name);
+
+
   }
 
   // 通知3d 数据
@@ -208,107 +249,169 @@ class TopBtn extends React.Component {
         if (this.state.topView == "topView-big") {
           this.setState({
             topIcon1: "iconBox-big",
+           //  haveIcon: false
+          }, () => {
+            this.logIcon();
           })
         } else {
           this.setState({
             topIcon1: "iconBox",
-          })
+             // haveIcon: false
+          }, () => {
+            this.logIcon();
+            })
         }
           this.markClose(a)
-       // this.globalAction.web_call_webgl_switchMark(a, 0);
       } else {
         if (this.state.topView == "topView-big") {
           this.setState({
             topIcon1: "iconBox-bigIn",
-          })
+              }, () => {
+            this.logIcon();
+            })
         } else {
           this.setState({
             topIcon1: "iconBoxIn",
-          })
+            }, () => {
+            this.logIcon();
+            })
         }
            this.callMark(4,a)
-       // this.globalAction.web_call_webgl_switchMark(a, 1);
       }
+  
     } else if (a == "商圈") {
       // 判断当前是否为选中状态
       if (this.state.topIcon2 == "iconBoxIn" || this.state.topIcon2 == "iconBox-bigIn") {
         if (this.state.topView == "topView-big") {
           this.setState({
             topIcon2: "iconBox-big",
+           // haveIcon: false
+          }, () => {
+            this.logIcon();
           })
         } else {
           this.setState({
             topIcon2: "iconBox",
+          //  haveIcon: false
+          }, () => {
+            this.logIcon();
           })
         }
          this.markClose(a)
-       // this.globalAction.web_call_webgl_switchMark(a, 0);
       } else {
         if (this.state.topView == "topView-big") {
           this.setState({
             topIcon2: "iconBox-bigIn",
+           // haveIcon: true
+           }, () => {
+            this.logIcon();
           })
         } else {
           this.setState({
             topIcon2: "iconBoxIn",
+          //  haveIcon: true
+           }, () => {
+            this.logIcon();
           })
         }
           this.callMark(2,a)
-       // this.globalAction.web_call_webgl_switchMark(a, 1);
       }
+   
     } else if (a == "公交车") {
       if (this.state.topIcon3 == "iconBox-big") {
         this.setState({
           topIcon3: "iconBox-bigIn",
           topIcon3info: 1,
-        })
+          haveIcon: true,
+        }, () => {
+            this.logIcon();
+          })
            this.callMark(3,a)
-       // this.globalAction.web_call_webgl_switchMark(a, 1);
       } else {
         this.setState({
           topIcon3: "iconBox-big",
           topIcon3info: 0,
-        })
+         // haveIcon: false,
+        }, () => { 
+            this.logIcon();
+          })
            this.markClose(a)
-       // this.globalAction.web_call_webgl_switchMark(a, 0);
       }
     } else if (a == "交通") {
       if (this.state.topIcon4 == "iconBox-big") {
         this.setState({
           topIcon4: "iconBox-bigIn",
           topIcon4info: 1,
-        })
+         // haveIcon: true,
+        }, () => {
+            this.logIcon();
+          })
          this.callMark(1,a)
-        //this.globalAction.web_call_webgl_switchMark(a, 1);
       } else {
         this.setState({
           topIcon4: "iconBox-big",
           topIcon4info: 0,
-        })
+          // haveIcon: false,
+          }, () => {
+            this.logIcon();
+          })
            this.markClose(a)
-       // this.globalAction.web_call_webgl_switchMark(a, 0);
       }
     } else if (a == "停车场") {
       if (this.state.topIcon5 == "iconBox-big") {
         this.setState({
           topIcon5: "iconBox-bigIn",
           topIcon5info: 1,
-        })
+         // haveIcon: true
+        }, () => {
+            this.logIcon();
+          })
          this.callMark(5,a)
-      //  this.globalAction.web_call_webgl_switchMark(a, 1);
       } else {
         this.setState({
           topIcon5: "iconBox-big",
           topIcon5info: 0,
-        })
+          //haveIcon: false
+          }, () => {
+            this.logIcon();
+          })
            this.markClose(a)
-       // this.globalAction.web_call_webgl_switchMark(a, 0);
       }
     }
 
+ 
+    //sessionStorage.setItem("iconstate", JSON.stringify(this.state));
+
+
   }
 
+  public logIcon() {
+    console.log(this.state)
+
+        if (this.state.topIcon1 == "iconBoxIn" || this.state.topIcon1 == "iconBox-bigIn" ||
+          this.state.topIcon2 == "iconBoxIn" || this.state.topIcon2 == "iconBox-bigIn" ||
+          this.state.topIcon3 == "iconBox-bigIn" ||
+          this.state.topIcon4 == "iconBox-bigIn" ||
+          this.state.topIcon5 == "iconBox-bigIn" 
+        ) {
+          this.setState({
+            haveIcon: true
+           }, () => {
+                 sessionStorage.setItem("iconstate", JSON.stringify(this.state));
+             })
+        } else  {
+           this.setState({
+            haveIcon: false
+           }, () => {
+                 sessionStorage.setItem("iconstate", JSON.stringify(this.state));
+             })
+    }
+
+ 
+}
+
   public render() {
+       
     return (
       <div className={this.state.topViewBack}>
         <div className={this.state.topView}>
@@ -353,7 +456,10 @@ class TopBtn extends React.Component {
       </div>
 
     )
+      
   }
+
+  
 }
 
 // 折叠按钮区
@@ -391,6 +497,7 @@ class FoldBtn extends React.Component {
   }
 
   public render() {
+    //  onClick={this.toggleFold.bind(this)}   &#xe849;
     // 2期功能
       //<RouterDOM.Link to="/photograph" >
       //      <div className={this.state.foleIcon} >
@@ -406,7 +513,7 @@ class FoldBtn extends React.Component {
     //</RouterDOM.Link>
     return (
       <div className={this.state.foldView}>
-        <div className={"foleBtn"} onClick={this.toggleFold.bind(this)}>
+        <div className={"foleBtn"}>
           <i className={this.state.iconfont} style={{ "fontSize": "4.5rem", "color":"#C0C0C0"}}>&#xe849;</i>
         </div>
 
@@ -437,24 +544,7 @@ class FoldBtn extends React.Component {
               <p>园区企业</p>
             </div>
           </RouterDOM.Link>
-          <RouterDOM.Link to="/applyPut" >
-            <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "6rem", "color": "#208FE6", "height": "6rem" }}>&#xe81f;</i>
-              <p>摆点申请</p>
-            </div>
-          </RouterDOM.Link>
-          <RouterDOM.Link to="/bookSite" >
-            <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "6rem", "color": "#26AC8F", "height": "6rem" }}>&#xe820;</i>
-              <p>场地预定</p>
-            </div>
-          </RouterDOM.Link>
-          <RouterDOM.Link to="/repairsOnline" >
-            <div className={this.state.foleIcon} >
-              <i className="iconfont" style={{ "fontSize": "6rem", "color": "#208FE6", "height": "6rem" }}>&#xe822;</i>
-              <p>在线报修</p>
-            </div>
-          </RouterDOM.Link>
+  
          
         </div>  
       </div>
@@ -473,7 +563,25 @@ class FoldBtn extends React.Component {
  //             <p>停车业务</p>
  //           </div>
  //         </RouterDOM.Link>
-  
+
+          //  <RouterDOM.Link to="/applyPut" >
+          //  <div className={this.state.foleIcon} >
+          //    <i className="iconfont" style={{ "fontSize": "6rem", "color": "#208FE6", "height": "6rem" }}>&#xe81f;</i>
+          //    <p>摆点申请</p>
+          //  </div>
+          //</RouterDOM.Link>
+          //<RouterDOM.Link to="/bookSite" >
+          //  <div className={this.state.foleIcon} >
+          //    <i className="iconfont" style={{ "fontSize": "6rem", "color": "#26AC8F", "height": "6rem" }}>&#xe820;</i>
+          //    <p>场地预定</p>
+          //  </div>
+          //</RouterDOM.Link>
+          //<RouterDOM.Link to="/repairsOnline" >
+          //  <div className={this.state.foleIcon} >
+          //    <i className="iconfont" style={{ "fontSize": "6rem", "color": "#208FE6", "height": "6rem" }}>&#xe822;</i>
+          //    <p>在线报修</p>
+          //  </div>
+          //</RouterDOM.Link>
       }
     
   public state = {
