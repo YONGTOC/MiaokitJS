@@ -412,12 +412,15 @@ class LeaseInfo extends React.Component {
       this.setState({
         leaseInfocss: "leaseInfo-part",
       })
+      //隐藏子组件
       LeaseInfos.botTelHide();
+      Picshow.picCssHide(); 
     } else {
       this.setState({
         leaseInfocss: "leaseInfo",
       })
       LeaseInfos.botTelShow();
+      Picshow.picCssShow(); 
     }
     if (this.state.iconfont == "iconfont iconfont-unturn") {
       this.setState({
@@ -666,6 +669,9 @@ class Picshow extends React.Component {
 
     Picshow.setPicshow = this.setPicshow.bind(this);
     Picshow.setVideoshow = this.setVideoshow.bind(this);
+    Picshow.picCssHide = this.picCssHide.bind(this);
+    Picshow.picCssShow = this.picCssShow.bind(this);
+
   }
 
   public componentDidMount() {
@@ -787,6 +793,20 @@ class Picshow extends React.Component {
 
   }
 
+  static picCssHide() { };
+  public picCssHide() {
+    this.setState({
+      picCss:'hide'
+    })
+  }
+
+  static picCssShow() { };
+  public picCssShow() {
+    this.setState({
+      picCss:'picshow'
+    })
+  }
+
   public render() {
             //<WingBlank>
             //  <Carousel className="space-carousel"
@@ -812,7 +832,7 @@ class Picshow extends React.Component {
             //  </Carousel>
             //</WingBlank>
     return (
-      <div className={"picshow"}>
+      <div className={this.state.picCss}>
         {this.state.picBtnIndex == 0 ?
           <ul>
             <p className={this.state.picurlNull} style={{ "margin": "1rem 0", "text-align": "center", "font-size": "3rem", "color": "#797979" }}>暂无图片···</p>
@@ -872,7 +892,8 @@ class Picshow extends React.Component {
       //{ url: "https://www.yongtoc.com/themes/ytyc.mp4" }, 
     ],
     bigimg: '',
-    bigImgBox:"hide",
+    bigImgBox: "hide",
+    picCss:'picshow',
   }
 }
 
