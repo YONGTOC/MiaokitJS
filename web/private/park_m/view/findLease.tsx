@@ -773,7 +773,18 @@ class Picshow extends React.Component {
   }
 
   public bigImg(i) {
-    console.log('bigimg',i)
+    console.log('bigimg', i);
+    this.setState({
+      bigImgBox:"bigImgBox",
+      bigimg:i
+    })
+  }
+
+  public closeBigImg() {
+    this.setState({
+          bigImgBox: "hide",
+    })
+
   }
 
   public render() {
@@ -834,8 +845,11 @@ class Picshow extends React.Component {
           <div className={this.state.picBtnIndex == 1 ? "picBtnS-active" : "picBtnS"}
             onClick={this.picBtn.bind(this, 1)}>视频</div>
         </div>
-
-        <div className="find_bigImg">
+         
+        <div className={this.state.bigImgBox}>
+          <div className="close_bigImg" onClick={this.closeBigImg.bind(this)}>
+             <i className="iconfont close_bigImg_Icon"> &#xe81c;</i>
+          </div>
           <img src={this.state.bigimg} />
         </div>
 
@@ -855,9 +869,10 @@ class Picshow extends React.Component {
     picurlNull: "hide",
     vidurlNull: "hide",
     roomVideo: [
-      //{ url: "https://www.yongtoc.com/themes/ytyc.mp4" },
+      //{ url: "https://www.yongtoc.com/themes/ytyc.mp4" }, 
     ],
-    bigimg:'',
+    bigimg: '',
+    bigImgBox:"hide",
   }
 }
 
