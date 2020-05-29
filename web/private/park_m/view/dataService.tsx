@@ -1672,7 +1672,8 @@ class DataService {
         contact: obj.contact,
         phone: obj.phone,
         require: obj.require,
-        sell_price: obj.sellPrice
+        sell_price: obj.sellPrice,
+        floor_id: obj.floorId
       }),
       type: "post",
       success: function (data) {

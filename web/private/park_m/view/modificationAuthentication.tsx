@@ -66,13 +66,14 @@ class ModificationAuthentication extends React.Component<{ history: any }> {
     //userInfos.name = data.response
     //sessionStorage.setItem("userInfos", JSON.stringify(userInfos))
     //this.props.history.goBack()
-    alert(data.err_msg)
     let userInfos = JSON.parse(sessionStorage.getItem("userInfos"))
     userInfos.name = data.response.username
     sessionStorage.setItem("userInfos", JSON.stringify(userInfos));
     this.setState({
       userName: data.response.username,
     })
+    alert(data.err_msg)
+    this.props.history.goBack()
 
   }
 

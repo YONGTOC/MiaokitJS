@@ -63,6 +63,7 @@ export default class Room extends React.Component<{ history: any }>{
 
   // 去楼层
   goFloor(index) {
+    sessionStorage.setItem("floorId", index)
     this.setState({ buildingIndex: index })
   }
 
@@ -128,11 +129,11 @@ export default class Room extends React.Component<{ history: any }>{
                     </div>
                   </div>
                   {this.state.floorIndex === index ?
-                    <div style={{ width: "90%", margin: "10px auto", minHeight: "200px", overflow: "hidden" }}>
+                    <div style={{ width: "90%", margin: "10px auto", overflow: "hidden" }}>
                       {this.state.buildingArr[this.state.buildingIndex].child[this.state.floorIndex].child.map((it, ind) => {
                         return (
                           <Link to={{ pathname: "/roomDetail", state: { name: it.name, id: it.id } }}>
-                            <div key={ind} className={it.State === 1 ? "room-single-add" : "room-single"}>
+                            <div key={ind} className={it.state === 1 || it.sell_state === 0 ? "room-single-add" : "room-single"}>
                               {it.name}
                             </div>
                           </Link>

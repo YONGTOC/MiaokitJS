@@ -8,7 +8,7 @@ interface IProps {
 }
 
 interface IState {
-  data: { id: number, name: string, start_time: string, end_time: string, position: string, sign_end_time: string, contact: string, contact_tel: string, content: any, fee: string, headimgurl: string, visit_amount: string, time: string, fees: string, mobile: string, title: string },
+  data: { id: number, name: string, is_sign_up: number, start_time: string, end_time: string, position: string, sign_end_time: string, contact: string, contact_tel: string, content: any, fee: string, headimgurl: string, visit_amount: string, time: string, fees: string, mobile: string, title: string },
   parkArr: Array<any>,
   tagArr: Array<any>,
 
@@ -16,7 +16,7 @@ interface IState {
 
 export default class informationDetail extends React.Component {
   public readonly state: Readonly<IState> = {
-    data: { id: 0, name: "", start_time: "", end_time: "", position: "", sign_end_time: "", contact: "", contact_tel: "", content: [], fee: "", headimgurl: "", visit_amount: "", time: "", fees: "", mobile: "", title: "" },
+    data: { id: 0, name: "", is_sign_up: 0, start_time: "", end_time: "", position: "", sign_end_time: "", contact: "", contact_tel: "", content: [], fee: "", headimgurl: "", visit_amount: "", time: "", fees: "", mobile: "", title: "" },
     parkArr: [
       {
         "id": "1009",
@@ -82,6 +82,7 @@ export default class informationDetail extends React.Component {
   }
 
   callBackPostActivitySign(data) {
+    this.setState({ is_sign_up: 1 })
     alert(JSON.parse(data).err_msg)
   }
 
@@ -106,41 +107,50 @@ export default class informationDetail extends React.Component {
               <p style={{ fontSize: "40px" }}>各相关单位：</p>
               <span className="c-p" dangerouslySetInnerHTML={{ __html: this.state.data.content }}></span>
             </div>
-            <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" }}>
-              <div style={{ height: "50px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "36px 30px 0 50px" }}></div>
-              <div style={{ color: "#333333", fontSize: "40px", fontWeight: "600", lineHeight: "120px" }}>服务信息</div>
-            </div>
 
-            <div className="index-park">
-              {this.state.parkArr.map((item, index) => {
-                return (
-                  <Link to="/home">
-                    <div className="index-child-park" key={index} onClick={this.initPark.bind(this, 1001)}>
-                      <div className="index-child-park-left"><img src={"./park_m/image/a.jpg"} className="park-img" /></div>
-                      <div className="index-child-park-right">
-                        <div className="index-park-name">{item.name}</div>
-                        <div className="index-tag">
-                          {this.state.tagArr.map((item, index) => {
-                            return (
-                              index < 3 ?
-                                <div key={index} className="index-tag-child">{item}</div>
-                                : null
-                            )
-                          })
-                          }
-                          {this.state.tagArr.length > 3 ? <div className="index-tag-child-add">...</div> : null}
+            
+
+            {parseInt(sessionStorage.getItem("informationId")) > 1 ?
+              <div>
+
+                <div style={{ width: "100%", height: "120px", borderBottom: "2px solid #F2F2F2" }}>
+                  <div style={{ height: "50px", width: "12px", backgroundColor: "#0B8BF0", float: "left", margin: "36px 30px 0 50px" }}></div>
+                  <div style={{ color: "#333333", fontSize: "40px", fontWeight: "600", lineHeight: "120px" }}>服务信息</div>
+                </div>
+
+                <div className="index-park">
+                  {this.state.parkArr.map((item, index) => {
+                    return (
+                      <Link to="/home">
+                        <div className="index-child-park" key={index} onClick={this.initPark.bind(this, 1001)}>
+                          <div className="index-child-park-left"><img src={"./park_m/image/a.jpg"} className="park-img" /></div>
+                          <div className="index-child-park-right">
+                            <div className="index-park-name">{item.name}</div>
+                            <div className="index-tag">
+                              {this.state.tagArr.map((item, index) => {
+                                return (
+                                  index < 3 ?
+                                    <div key={index} className="index-tag-child">{item}</div>
+                                    : null
+                                )
+                              })
+                              }
+                              {this.state.tagArr.length > 3 ? <div className="index-tag-child-add">...</div> : null}
+                            </div>
+                            <div style={{ color: "#949494", fontSize: "36px", margin: "20px 0 0 25px" }}>{item.address}</div>
+                          </div>
+                          <div className="index-child-park-end">
+                            <div className="index-distance">{(item.distance * 0.001).toFixed(1)}km</div>
+                          </div>
                         </div>
-                        <div style={{ color: "#949494", fontSize: "36px", margin: "20px 0 0 25px" }}>{item.address}</div>
-                      </div>
-                      <div className="index-child-park-end">
-                        <div className="index-distance">{(item.distance * 0.001).toFixed(1)}km</div>
-                      </div>
-                    </div>
-                  </Link>
-                )
-              })
-              }
-            </div>
+                      </Link>
+                    )
+                  })
+                  }
+                </div>
+              </div> : null
+            }
+
 
           </div> : parseInt(sessionStorage.getItem("informationId")) === 2 ?
           <div style={{ fontSize: "33px", color: "#333333" }}>
@@ -193,10 +203,11 @@ export default class informationDetail extends React.Component {
               <span className="c-p" dangerouslySetInnerHTML={{ __html: this.state.data.content}}></span>
             </div>
             <div style={{
-                backgroundColor: new Date(this.state.data.sign_end_time).getTime() > new Date().getTime() ? "#0B8BF0" : "rgb(190, 193, 195)", width: "100%", height: "150px", fontSize: "50px", color: "#ffffff", lineHeight: "150px",
+                backgroundColor: this.state.data.is_sign_up === 0 && new Date(this.state.data.sign_end_time).getTime() > new Date().getTime() ? "#0B8BF0" : "rgb(190, 193, 195)", width: "100%", height: "150px", fontSize: "50px", color: "#ffffff", lineHeight: "150px",
               textAlign: "center", position: "fixed", bottom: "0px"
               }} onClick={e=> this.submit(new Date(this.state.data.sign_end_time).getTime() > new Date().getTime())}>
-                {new Date(this.state.data.sign_end_time).getTime() > new Date().getTime() ? "我要报名" : "已结束"}
+                {this.state.data.is_sign_up === 1 ? "已报名" : new Date(this.state.data.sign_end_time).getTime() > new Date().getTime() ? "我要报名" :
+                 new Date(this.state.data.start_time).getTime() > new Date().getTime() ? "报名已截止" : "已结束"}
             </div>
           </div> :
           <div style={{ fontSize: "33px", color: "#333333" }}>

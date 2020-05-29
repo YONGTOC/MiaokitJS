@@ -46,7 +46,7 @@ export default class RoomBase extends React.Component<{ history: any }>{
     inspectionTime: JSON.parse(sessionStorage.getItem("roomInfo"))[0].inspection_time, // 看房时间
     require: JSON.parse(sessionStorage.getItem("roomInfo"))[0].require, // 租房要求
     pic: JSON.parse(sessionStorage.getItem("roomInfo"))[0].pic ? JSON.parse(sessionStorage.getItem("roomInfo"))[0].pic : [], // 图库
-    video: JSON.parse(sessionStorage.getItem("roomInfo"))[0].video ? JSON.parse(sessionStorage.getItem("roomInfo"))[0].video : [], // 视频
+    video: JSON.parse(sessionStorage.getItem("roomInfo"))[0].video.length > 0 ? JSON.parse(sessionStorage.getItem("roomInfo"))[0].video : [{id: "", name: "", url: ""}], // 视频
     lift: JSON.parse(sessionStorage.getItem("roomInfo"))[0].lift, // 电梯
     headimageurl: JSON.parse(sessionStorage.getItem("roomInfo"))[0].headimageurl,
     isElevator: false,
@@ -140,7 +140,7 @@ export default class RoomBase extends React.Component<{ history: any }>{
     let obj = {
       square: this.state.square,
       lift: this.state.lift,
-      title: this.state.title,
+      title: this.state.title === "15个字是传达买点的最佳长度" ? "" : this.state.title,
       price: this.state.price,
       freeRent: this.state.freeRent,
       decorateName: this.state.decorateName,
@@ -156,7 +156,6 @@ export default class RoomBase extends React.Component<{ history: any }>{
       sellPrice: this.state.sellPrice,
       require: this.state.require
     }
-    console.log(obj)
     for (var key in obj) {
       if (obj[key] === "" && (key !== "video" && key !== "require" && key !== "inspectionTime" && key !== "enableRentTime" && key !== "contact" && key !== "phone")) {
         return alert("请把资料填完整！")
@@ -176,7 +175,6 @@ export default class RoomBase extends React.Component<{ history: any }>{
   }
 
   closeElevator(index) {
-    console.log(this.state.decoration)
     this.setState({ isElevator: false, decorateName: this.state.decoration[index].name, decorateId: this.state.decoration[index].id })
   }
 
@@ -204,10 +202,12 @@ export default class RoomBase extends React.Component<{ history: any }>{
   }
 
   // 清除视频
-  closeVideo(index) {
-    let video = this.state.video
-    video.splice(index, 1)
-    this.setState({ video: video })
+  closeVideo() {
+    this.setState({ video: [{ id: "", name: "", url: "" }] }, () => {
+      $('#b-img').click(() => {
+        $('#b-input').click()
+      })
+    })
   }
 
   // 清空缩略图
@@ -261,8 +261,8 @@ export default class RoomBase extends React.Component<{ history: any }>{
 
   callBackUploadVideo(data) {
     if (data.return_code == 100) {
-      let video = this.state.video
-      video.push({ url: data.response, name: "" })
+      let video = [{id: "", name: "", url: ""}]
+      video[0].url = data.response
       this.setState({ video: video })
     } else {
       alert("上传失败")
@@ -291,7 +291,7 @@ export default class RoomBase extends React.Component<{ history: any }>{
         <div style={{ fontSize: "40px", color: "#333333", fontWeight: "600", height: "50px", lineHeight: "50px", overflow: "hidden", margin: "30px 0 0 50px" }}>
           <div style={{ width: "10px", height: "100%", backgroundColor: "#0B8BF0", float: "left", marginRight: "30px" }} ></div>
           <div style={{ float: "left", fontSize: "40px" }}>基本信息</div>
-          <Link to="/roomBaseUpdate"><div style={{ color: "#0B8BF0", float: "right", marginRight: "50px" }}>修改</div></Link>
+          <Link to={{ pathname: "/roomBaseUpdate", state: { state: this.state } }}><div style={{ color: "#0B8BF0", float: "right", marginRight: "50px" }}>修改</div></Link>
         </div>
 
         <div style={{ fontSize: "40px", margin: "50px 0 50px 85px" }}>
@@ -425,20 +425,22 @@ export default class RoomBase extends React.Component<{ history: any }>{
         </div>
         <div className="service-tel" style={{ fontSize: "40px", color: "#333333", borderBottom: "2px solid #F2F2F2", height: 360 + Math.floor(this.state.video.length / 3) * 250, marginLeft: "30px" }}>
           <div style={{ color: "#949494", height: "80px", width: "20%" }}>房间视频</div>
-          {this.state.video.map((item, index) => {
-            return (
-              <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", margin: "30px 30px 0 0", float: "left" }} key={index}>
-                <img src="./park_m/image/close.png" style={{ position: "absolute", left: (index % 3 + 1) * 250 }} onClick={e => this.closeVideo(index)} />
-                <img src={item.url} style={{ height: "100%", width: "100%" }} />
+
+          {this.state.video[0].url ?
+            <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", margin: "30px 30px 0 0", float: "left" }}>
+              <img src="./park_m/image/close.png" style={{ position: "absolute", left: "250px", zIndex: 100 }} onClick={e => this.closeVideo()} />
+              <video src={this.state.video[0].url} controls="controls" style={{width: "100%", height: "100%"}} />
+            </div> :
+            <div>
+              <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left" }} id="b-img">
+                <img src="./park_m/image/addPicture.png" style={{ height: "60px", width: "60px" }} />
+                <div style={{ color: "#949494", marginTop: "-30px" }}>添加</div>
               </div>
-            )
-          })
+            </div>
           }
+
           <input type="file" onChange={this.updateVideo.bind(this)} id="b-input" style={{ display: "none" }} accept="video/*" />
-          <div style={{ width: "220px", height: "220px", backgroundColor: "#F2F2F2", textAlign: "center", overflow: "hidden", marginTop: "30px", float: "left" }} id="b-img">
-            <img src="./park_m/image/addPicture.png" style={{ height: "60px", width: "60px" }} />
-            <div style={{ color: "#949494", marginTop: "-30px" }}>添加</div>
-          </div>
+     
         </div>
         <div style={{ fontSize: "40px", color: "#333333", fontWeight: "600", height: "50px", lineHeight: "50px", overflow: "hidden", margin: "30px 0 0 50px" }}>
           <div style={{ width: "10px", height: "100%", backgroundColor: "#0B8BF0", float: "left", marginRight: "30px" }} ></div>

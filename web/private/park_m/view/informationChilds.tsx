@@ -64,9 +64,15 @@ export default class InformationChilds extends React.Component {
   }
 
   callBackTag(data) {
-    this.setState({ tagArr: [...[{id: 0, name: "全部"}], ...JSON.parse(data).response] }, () => {
-      this.getTagContent()
-    })
+    if (parseInt(sessionStorage.getItem("informationId")) > 1) {
+      this.setState({ tagArr: [...[{ id: 0, name: "全部" }], ...JSON.parse(data).response] }, () => {
+        this.getTagContent()
+      })
+    } else {
+      this.setState({ tagArr: JSON.parse(data).response }, () => {
+        this.getTagContent()
+      })
+    }
   }
 
   callBackTagContent(data) {
@@ -187,13 +193,13 @@ export default class InformationChilds extends React.Component {
                 <div key={index} className="information-child-List-child" onClick={e => this.goDetail(item.id)} >
                   <div style={{ overflow: "hidden" }}>
                     <div style={{ width: "250px", height: "250px", float: "left", margin: "30px 0 0 50px", borderRadius: "10px" }}>
-                      {new Date(item.contenta).getTime() < new Date().getTime() ?
-                        <div style={{ position: "relative", top: "208px", fontSize: "38px", color: "#ffffff", height: "5px", textAlign: "center", zIndex: 2 }}>已结束</div> : null
-                      }
-                      {new Date(item.contenta).getTime() < new Date().getTime() ?
-                        <div style={{ position: "relative", top: "200px", height: "65px", backgroundColor: "black", opacity: 0.4, zIndex: 1 }}></div> : null
-                      }
                       <img src={item.headimgurl} style={{ width: "100%", height: "100%", borderRadius: "10px" }} />
+                      {new Date(item.contenta).getTime() < new Date().getTime() ?
+                        <div style={{ position: "relative", bottom: "62px", fontSize: "38px", color: "#ffffff", height: "5px", textAlign: "center", zIndex: 2 }}>已结束</div> : null
+                      }
+                      {new Date(item.contenta).getTime() < new Date().getTime() ?
+                        <div style={{ position: "relative", bottom: "72px", height: "72px", backgroundColor: "black", opacity: 0.4, zIndex: 1 }}></div> : null
+                      }
                     </div>
                     <div style={{ float: "left", fontSize: "45px", margin: "25px 0 0 50px", fontWeight: "600", color: "#333333",width: "60%" }}>
                       <div>{item.title}</div>

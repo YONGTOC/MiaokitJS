@@ -70,6 +70,7 @@ interface IState {
   typeIndex: number,
   isCompanyArr: boolean,
   isLoginBox: boolean,
+  roomArr: Array<any>
 }
 
 class Index extends React.Component {
@@ -112,39 +113,32 @@ class Index extends React.Component {
         ]
       }
     ],
+    roomArr: [{ name: "精装修 户型方正 使用率高", price: "1.5" }], // 房源推荐列表
     tagArr: ["七星区", "东二环路", "1号线"], // 标签
     longitude: "",
     latitude: "",
     longitudeLocal: "",
     latitudeLocal: "",
-    type: true,
+    type: true, // 园区 房源 切换
     area: [
-      { name: "全桂林", children: [{ name: "全部" }, { name: "A" }, { name: "B" }, { name: "C" }, { name: "D" }, { name: "D" }, { name: "D" }, { name: "D" }, { name: "D" }, { name: "D" }, { name: "G" }, { name: "K" }] },
-      { name: "秀峰区", children: [{ name: "全部" }, { name: "E" }, { name: "B" }, { name: "C" }, { name: "D" }] }, { name: "叠彩区", children: [{ name: "全部" }, { name: "F" }, { name: "B" }, { name: "C" }, { name: "D" }] }, { name: "象山区", children: [] },
-      { name: "七星区", children: [] }, { name: "雁山区", children: [] }, { name: "临桂区", children: [] }, { name: "兴安县", children: [] },
-      { name: "永福县", children: [] }, { name: "龙胜县", children: [] }, { name: "叠彩区A", children: [] }, { name: "象山区A", children: [] },
-      { name: "七星区A", children: [] },
+      { name: "秀峰区", children: [{ name: "全部" }, { name: "万象城" }, { name: "嘉多国际" }, { name: "十字街" }] },
+      { name: "七星区", children: [{ name: "全部" }, { name: "创意产业园" }, { name: "大学科技园" }, { name: "甲天下广场" }, { name: "三里店" }] },
+      { name: "叠彩区", children: [{ name: "全部" }, { name: "万达广场" }, { name: "东晖星城" }, { name: "桂林国奥城" }, { name: "恒大广场" }] },
+      { name: "象山区", children: [{ name: "全部" }, { name: "万福广场" }, { name: "桂林站" }, { name: "新梦百货" }, { name: "青禾美邦" }] },
+      { name: "临桂区", children: [{ name: "全部" }, { name: "文化广场" }, { name: "吾悦广场" }, { name: "一院两馆" }, { name: "花生糖" }] },
     ],
     subway: [
-      { name: "全地铁", children: [{ name: "全部" }, { name: "A地铁" }, { name: "B" }, { name: "C" }, { name: "D" }, { name: "D" }, { name: "D" }, { name: "D" }, { name: "D" }, { name: "D" }, { name: "G" }, { name: "K" }] },
-      { name: "秀峰区", children: [{ name: "全部" }, { name: "E" }, { name: "B" }, { name: "C" }, { name: "D" }] }, { name: "叠彩区", children: [{ name: "全部" }, { name: "F" }, { name: "B" }, { name: "C" }, { name: "D" }] }, { name: "象山区", children: [] },
-      { name: "七星区", children: [] }, { name: "雁山区", children: [] }, { name: "临桂区", children: [] }, { name: "兴安县", children: [] },
-      { name: "永福县", children: [] }, { name: "龙胜县", children: [] }, { name: "叠彩区A", children: [] }, { name: "象山区A", children: [] },
-      { name: "七星区A", children: [] },
+      { name: "全部", children: [{ name: "全部" }] },
     ],
     _area: [
-      { name: "全桂林", children: [{ name: "全部" }, { name: "A" }, { name: "B" }, { name: "C" }, { name: "D" }, { name: "D" }, { name: "D" }, { name: "D" }, { name: "D" }, { name: "D" }, { name: "G" }, { name: "K" }] },
-      { name: "秀峰区", children: [{ name: "全部" }, { name: "E" }, { name: "B" }, { name: "C" }, { name: "D" }] }, { name: "叠彩区", children: [{ name: "全部" }, { name: "F" }, { name: "B" }, { name: "C" }, { name: "D" }] }, { name: "象山区", children: [] },
-      { name: "七星区", children: [] }, { name: "雁山区", children: [] }, { name: "临桂区", children: [] }, { name: "兴安县", children: [] },
-      { name: "永福县", children: [] }, { name: "龙胜县", children: [] }, { name: "叠彩区A", children: [] }, { name: "象山区A", children: [] },
-      { name: "七星区A", children: [] },
+      { name: "秀峰区", children: [{ name: "全部" }, { name: "万象城" }, { name: "嘉多国际" }, { name: "十字街" }] },
+      { name: "七星区", children: [{ name: "全部" }, { name: "创意产业园" }, { name: "大学科技园" }, { name: "甲天下广场" }, { name: "三里店" }] },
+      { name: "叠彩区", children: [{ name: "全部" }, { name: "万达广场" }, { name: "东晖星城" }, { name: "桂林国奥城" }, { name: "恒大广场" }] },
+      { name: "象山区", children: [{ name: "全部" }, { name: "万福广场" }, { name: "桂林站" }, { name: "新梦百货" }, { name: "青禾美邦" }] },
+      { name: "临桂区", children: [{ name: "全部" }, { name: "文化广场" }, { name: "吾悦广场" }, { name: "一院两馆" }, { name: "花生糖" }] },
     ],
     _subway: [
-      { name: "全地铁", children: [{ name: "全部" }, { name: "A地铁" }, { name: "B" }, { name: "C" }, { name: "D" }, { name: "D" }, { name: "D" }, { name: "D" }, { name: "D" }, { name: "D" }, { name: "G" }, { name: "K" }] },
-      { name: "秀峰区", children: [{ name: "全部" }, { name: "E" }, { name: "B" }, { name: "C" }, { name: "D" }] }, { name: "叠彩区", children: [{ name: "全部" }, { name: "F" }, { name: "B" }, { name: "C" }, { name: "D" }] }, { name: "象山区", children: [] },
-      { name: "七星区", children: [] }, { name: "雁山区", children: [] }, { name: "临桂区", children: [] }, { name: "兴安县", children: [] },
-      { name: "永福县", children: [] }, { name: "龙胜县", children: [] }, { name: "叠彩区A", children: [] }, { name: "象山区A", children: [] },
-      { name: "七星区A", children: [] },
+      { name: "全部", children: [{ name: "全部" }] },
     ],
     areas: [{ name: "不限" }, { name: "0-100m" }, { name: "100-200m" }, { name: "200-300m" }, { name: "300-500m" }, { name: "500-1000m" }, { name: ">1000m" }],
     totalPrice: [{ name: "不限" }, { name: "0-0.5万元/月" }, { name: "1.5-3万元/月" }, { name: "3-5万元/月" }, { name: "5-10万元/月" }, { name: "10万元/月以上" }],
@@ -172,7 +166,7 @@ class Index extends React.Component {
     totalPriceIndex: 0, // 房源总价下标
     unitPriceIndex: 0, // 房源单价下标
     isMore: false, // 房源更多弹出
-    decorationArr: ["不限", "毛坯", "简装", "中等", "精装", "豪华"],
+    decorationArr: [{ id: 0, name: "不限" }, { id: 1, name: "毛坯" }, { id: 2, name: "简装" }, { id: 3, name: "精装" }, { id: 4, name: "豪华" }],
     typeArr: ["不限", "共享办公", "独立办公"],
     decorationIndex: 0,
     typeIndex: 0,
@@ -227,9 +221,16 @@ class Index extends React.Component {
     }
 
 
+    //this.dataService.getRoomDecorateType(this.callBackGetRoomDecorateType.bind(this))
+
 
 
   }
+
+  callBackGetRoomDecorateType(data) {
+    this.setState({ decorationArr: [...[{id: 0, name: "不限"}], ...data.response]})
+  }
+
 
 
   callBackGetUserInfo(data) {
@@ -424,10 +425,6 @@ class Index extends React.Component {
   changePosition() {
     this.setState({
       isPosition: !this.state.isPosition,
-      position: this.state.isArea ? this.state.area[this.state.areaIndex].name + (
-      this.state.area[this.state.areaIndex].children.length > 0 ? this.state.area[this.state.areaIndex].children[this.state.areaChildrenIndex].name : null ):
-      this.state.subway[this.state.subwayIndex].name + ( 
-      this.state.subway[this.state.subwayIndex].children.length > 0 ? this.state.subway[this.state.subwayIndex].children[this.state.subwayChildrenIndex].name : null),
       isMask: !this.state.isMask
     })
   }
@@ -435,14 +432,33 @@ class Index extends React.Component {
   changePositions() {
     this.setState({
       _isPosition: !this.state._isPosition, isAreas: false, isPrice: false, isMore: false,
-      _position: this.state._isArea ? this.state._area[this.state._areaIndex].name + (
-      this.state._area[this.state._areaIndex].children.length > 0 ? this.state._area[this.state._areaIndex].children[this.state._areaChildrenIndex].name : null ) :
-      this.state._subway[this.state._subwayIndex].name + (
-      this.state._subway[this.state._subwayIndex].children.length > 0 ? this.state._subway[this.state._subwayIndex].children[this.state._subwayChildrenIndex].name : null ),
       isMask: !this.state._isPosition
     })
   }
 
+  
+
+  changeArea(index) {
+    this.setState({ areaIndex: index })
+  }
+
+  // 园区区域子集选择
+  changeAreaChildren(index) {
+    this.setState({ areaChildrenIndex: index, isPosition: false, isMask: false }, () => {
+      this.setState({
+        position: this.state.isArea ? this.state.area[this.state.areaIndex].name + (
+        this.state.area[this.state.areaIndex].children.length > 0 ? this.state.area[this.state.areaIndex].children[this.state.areaChildrenIndex].name : null) :
+        this.state.subway[this.state.subwayIndex].name + (
+        this.state.subway[this.state.subwayIndex].children.length > 0 ? this.state.subway[this.state.subwayIndex].children[this.state.subwayChildrenIndex].name : null)
+      })
+    })
+  }
+
+  _changeArea(index) {
+    this.setState({ _areaIndex: index })
+  }
+
+  //房源面积弹出
   clickAreas() {
     this.setState({
       isAreas: !this.state.isAreas, _isPosition: false, isPrice: false, isMore: false,
@@ -450,24 +466,25 @@ class Index extends React.Component {
     })
   }
 
-  changeArea(index) {
-    this.setState({ areaIndex: index })
-  }
-
-  changeAreaChildren(index) {
-    this.setState({ areaChildrenIndex: index })
-  }
-
-  _changeArea(index) {
-    this.setState({ _areaIndex: index })
-  }
-
+  // 房源面积选择
   changeAreas(index) {
-    this.setState({ areasIndex: index })
+    this.setState({ areasIndex: index, isAreas: false, isMask: false }, () => {
+      this.setState({
+        areasName: this.state.areas[this.state.areasIndex].name
+      })
+    })
   }
 
+  // 房源区域子集推荐
   _changeAreaChildren(index) {
-    this.setState({ _areaChildrenIndex: index })
+    this.setState({ _areaChildrenIndex: index, _isPosition: false, isMask: false }, () => {
+      this.setState({
+        _position: this.state._isArea ? this.state._area[this.state._areaIndex].name + (
+        this.state._area[this.state._areaIndex].children.length > 0 ? this.state._area[this.state._areaIndex].children[this.state._areaChildrenIndex].name : null) :
+        this.state._subway[this.state._subwayIndex].name + (
+        this.state._subway[this.state._subwayIndex].children.length > 0 ? this.state._subway[this.state._subwayIndex].children[this.state._subwayChildrenIndex].name : null)
+      })
+    })
   }
 
   _changeSubwayChildren(index) {
@@ -475,34 +492,67 @@ class Index extends React.Component {
   }
 
   changeSubway(index) {
-    this.setState({ _subwayIndex: index })
+    this.setState({ subwayIndex: index })
   }
 
+  // 园区地铁子集选择
   changeSubwayChildren(index) {
-    this.setState({ subwayChildrenIndex: index })
+    this.setState({ subwayChildrenIndex: index, isPosition: false, isMask: false }, () => {
+      this.setState({
+        position: this.state.isArea ? this.state.area[this.state.areaIndex].name + (
+        this.state.area[this.state.areaIndex].children.length > 0 ? this.state.area[this.state.areaIndex].children[this.state.areaChildrenIndex].name : null ):
+        this.state.subway[this.state.subwayIndex].name + ( 
+        this.state.subway[this.state.subwayIndex].children.length > 0 ? this.state.subway[this.state.subwayIndex].children[this.state.subwayChildrenIndex].name : null)
+      })
+    })
   }
 
+
+  // 园区位置区域
   ckArea() {
     this.setState({ isArea: true })
   }
 
+  // 园区位置地铁
   ckSubway() {
     this.setState({ isArea: false })
   }
 
+  // 房源位置区域
+  ckAreas() {
+    this.setState({ _isArea: true })
+  }
+
+  // 房源位置地铁
+  ckSubways() {
+    this.setState({ _isArea: false })
+  }
+
+
+  // 房源价格弹出
   clickPrice() {
+    console.log(111)
     this.setState({
       isPrice: !this.state.isPrice, _isPosition: false, isAreas: false, isMore: false, isMask: !this.state.isPrice,
       priceName: this.state.isTotalPrice ? this.state.totalPrice[this.state.totalPriceIndex].name : this.state.unitPrice[this.state.unitPriceIndex].name,
     })
   }
 
+  // 选择单价
   changeTotalPrice(index) {
-    this.setState({ totalPriceIndex: index })
+    this.setState({ totalPriceIndex: index, isPrice: false, isMask: false }, () => {
+      this.setState({
+        priceName: this.state.isTotalPrice ? this.state.totalPrice[this.state.totalPriceIndex].name : this.state.unitPrice[this.state.unitPriceIndex].name
+      })
+    })
   }
 
   changeUnitPrice(index) {
-    this.setState({ unitPriceIndex: index })
+    this.setState({ unitPriceIndex: index, isPrice: false, isMask: false }, () => {
+      this.setState({
+        priceName: this.state.isTotalPrice ? this.state.totalPrice[this.state.totalPriceIndex].name : this.state.unitPrice[this.state.unitPriceIndex].name
+      })
+    })
   }
 
   ckTotalPrice() {
@@ -523,13 +573,20 @@ class Index extends React.Component {
 
   clickMore() {
     this.setState({
-      isMore: !this.state.isMore, _isPosition: false, isAreas: false, isPrice: false, isMask: !this.state.isMore,
-      moreName: this.state.typeArr[this.state.typeIndex],
+      isMore: !this.state.isMore, _isPosition: false, isAreas: false, isPrice: false, isMask: !this.state.isMore
     })
   }
 
   clickMask() {
     this.setState({ isPosition: false, _isPosition: false, isAreas: false, isPrice: false, isMore: false, isMask: false })
+  }
+
+  reset() {
+    this.setState({ isMore: false, isMask: false, moreName: this.state.decorationArr[0].name, decorationIndex: 0 })
+  }
+
+  enter() {
+    this.setState({ isMore: false, isMask: false, moreName: this.state.decorationArr[this.state.decorationIndex].name })
   }
 
   render() {
@@ -679,13 +736,13 @@ class Index extends React.Component {
         {this.state._isPosition ?
           <div className="index-position">
             <div style={{ overflow: "hidden" }}>
-              <div onClick={this.ckArea.bind(this)}
-                style={{ float: "left", backgroundColor: this.state.isArea ? "#0B8BF0" : "#F2F2F2", width: "240px", borderRadius: "5px", height: "70px", lineHeight: "70px", textAlign: "center", color: this.state.isArea ? "#ffffff" : "#6C6C6C" }}
+              <div onClick={this.ckAreas.bind(this)}
+                style={{ float: "left", backgroundColor: this.state._isArea ? "#0B8BF0" : "#F2F2F2", width: "240px", borderRadius: "5px", height: "70px", lineHeight: "70px", textAlign: "center", color: this.state._isArea ? "#ffffff" : "#6C6C6C" }}
               >
                 区域
               </div>
-              <div onClick={this.ckSubway.bind(this)}
-                style={{ float: "left", backgroundColor: this.state.isArea ? "#F2F2F2" : "#0B8BF0", width: "240px", borderRadius: "5px", height: "70px", lineHeight: "70px", textAlign: "center", marginLeft: "50px", color: this.state.isArea ? "#6C6C6C" : "#ffffff" }}
+              <div onClick={this.ckSubways.bind(this)}
+                style={{ float: "left", backgroundColor: this.state._isArea ? "#F2F2F2" : "#0B8BF0", width: "240px", borderRadius: "5px", height: "70px", lineHeight: "70px", textAlign: "center", marginLeft: "50px", color: this.state._isArea ? "#6C6C6C" : "#ffffff" }}
               >
                 地铁站
               </div>
@@ -844,34 +901,38 @@ class Index extends React.Component {
                       }}
                       onClick={e=>this.changeDecorationIndex(index)}
                     >
-                      {item}
+                      {item.name}
                     </div>  
                   )
                 })
               }
             </div>
 
-            <div style={{ color: "#333333", fontSize: "46px", fontWeight: "500", marginBottom: "40px", marginTop: "30px" }}>类型</div>
-            <div style={{ overflow: "hidden" }}>
-              {
-                this.state.typeArr.map((item, index) => {
-                  return (
-                    <div key={index}
-                      style={{
-                        float: "left", backgroundColor: this.state.typeIndex === index ? "#0B8BF0" : "#F2F2F2", color: this.state.typeIndex === index ? "#FFFFFF" : "#6C6C6C", width: "200px", height: "70px", textAlign: "center", lineHeight: "70px",
-                        fontSize: "40px", borderRadius: "5px", margin: "0 30px 30px 0"
-                      }}
-                      onClick={e=>this.changeTypeIndex(index)}
-                    >
-                      {item}
-                    </div>
-                  )
-                })
+            {false ?
+              <div>
+                <div style={{ color: "#333333", fontSize: "46px", fontWeight: "500", marginBottom: "40px", marginTop: "30px" }}>类型</div>
+                <div style={{ overflow: "hidden" }}>
+                  {
+                    this.state.typeArr.map((item, index) => {
+                      return (
+                        <div key={index}
+                          style={{
+                            float: "left", backgroundColor: this.state.typeIndex === index ? "#0B8BF0" : "#F2F2F2", color: this.state.typeIndex === index ? "#FFFFFF" : "#6C6C6C", width: "200px", height: "70px", textAlign: "center", lineHeight: "70px",
+                            fontSize: "40px", borderRadius: "5px", margin: "0 30px 30px 0"
+                          }}
+                          onClick={e => this.changeTypeIndex(index)}
+                        >
+                          {item}
+                        </div>
+                      )
+                    })
+                  }
+                </div> 
+              </div> : null
               }
-            </div>
             <div style={{ overflow: "hidden", position: "absolute", bottom: "100px", width: "90%" }}>
-              <div style={{ float: "left", width: "400px", height: "110px", color: "#707589", backgroundColor: "#F2F2F2", borderRadius: "5px", textAlign: "center", lineHeight: "110px", marginLeft: "20px"  }}>重置</div>
-              <div style={{ float: "right", width: "400px", height: "110px", color: "#ffffff", backgroundColor: "#0B8BF0", borderRadius: "5px", textAlign: "center", lineHeight: "120px", marginRight: "20px"  }}>确定</div>
+              <div style={{ float: "left", width: "400px", height: "110px", color: "#707589", backgroundColor: "#F2F2F2", borderRadius: "5px", textAlign: "center", lineHeight: "110px", marginLeft: "20px" }} onClick={this.reset.bind(this)}>重置</div>
+              <div style={{ float: "right", width: "400px", height: "110px", color: "#ffffff", backgroundColor: "#0B8BF0", borderRadius: "5px", textAlign: "center", lineHeight: "120px", marginRight: "20px" }} onClick={this.enter.bind(this)}>确定</div>
             </div>
           </div> : null
         }
@@ -880,34 +941,76 @@ class Index extends React.Component {
           <div className="mask" onClick={this.clickMask.bind(this)}></div> : null
         }
         <div className="index-park">
-          {this.state.parkArr.map((item, index) => {
-            return (
-              <Link to="/home">
-                <div className="index-child-park" key={index} onClick={this.initPark.bind(this, item.id)}>
-                  <div className="index-child-park-left"><img src={this.state.type ? "./park_m/image/a.jpg" : "./park_m/image/b.jpg"} className="park-img" /></div>
-                  <div className="index-child-park-right">
-                    <div className="index-park-name">{item.name}</div>
-                    <div className="index-tag">
-                      {this.state.tagArr.map((item, index) => {
-                        return (
-                          index < 3 ?
-                            <div key={index} className="index-tag-child">{item}</div>
-                            : null
-                        )
-                      })
-                      }
-                      {this.state.tagArr.length > 3 ? <div className="index-tag-child-add">...</div> : null}
+
+          {this.state.type ?
+            <div>
+            {
+              this.state.parkArr.map((item, index) => {
+                return (
+                  <Link to="/home">
+                    <div className="index-child-park" key={index} onClick={this.initPark.bind(this, item.id)}>
+                      <div className="index-child-park-left"><img src={this.state.type ? "./park_m/image/a.jpg" : "./park_m/image/b.jpg"} className="park-img" /></div>
+                      <div className="index-child-park-right">
+                        <div className="index-park-name">{item.name}</div>
+                        <div className="index-tag">
+                          {this.state.tagArr.map((item, index) => {
+                            return (
+                              index < 3 ?
+                                <div key={index} className="index-tag-child">{item}</div>
+                                : null
+                            )
+                          })
+                          }
+                          {this.state.tagArr.length > 3 ? <div className="index-tag-child-add">...</div> : null}
+                        </div>
+                        <div style={{ color: "#949494", fontSize: "36px", margin: "20px 0 0 25px" }}>{item.address}</div>
+                      </div>
+                      <div className="index-child-park-end">
+                        <div className="index-distance">{true ? 100 : (item.distance * 0.001).toFixed(1)}km</div>
+                      </div>
                     </div>
-                    <div style={{ color: "#949494", fontSize: "36px", margin: "20px 0 0 25px" }}>{item.address}</div>
-                  </div>
-                  <div className="index-child-park-end">
-                    <div className="index-distance">{(item.distance * 0.001).toFixed(1)}km</div>
-                  </div>
-                </div>
-              </Link>
-            )
-          })
+                  </Link>
+                )
+              })
+              }
+            </div>
+            : 
+            <div>
+              {
+                this.state.roomArr.map((item, index) => {
+                  return (
+                    <Link to="/home">
+                      <div className="index-child-park" key={index} onClick={this.initPark.bind(this, item.id)}>
+                        <div className="index-child-park-left"><img src={"./park_m/image/b.jpg"} className="park-img" /></div>
+                        <div className="index-child-park-right">
+                          <div className="index-park-name">{item.name}</div>
+                          <div className="index-tag">
+                            {this.state.tagArr.map((item, index) => {
+                              return (
+                                index < 3 ?
+                                  <div key={index} className="index-tag-child">{item}</div>
+                                  : null
+                              )
+                            })
+                            }
+                            {this.state.tagArr.length > 3 ? <div className="index-tag-child-add">...</div> : null}
+                          </div>
+                          <div style={{ color: "#949494", fontSize: "36px", margin: "0 0 0 25px" }}>
+                            <span style={{ fontSize: "60px", color: "red", fontWeight: "600", marginRight: "10px" }}>{item.price}</span>
+                            <span>万元/月(1.5元/m²·天)</span>
+                          </div>
+                        </div>
+                     
+                      </div>
+                    </Link>
+                  )
+                })
+              }
+            </div>
+
           }
+
+
           {this.state.parkArr.length > 0 ? 
             <div style={{ width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginLeft: "-25px" }}>到底啦~</div> :
             <div style={{ width: "100%", height: "60px", textAlign: "center", fontSize: "40px", lineHeight: "60px", marginLeft: "-25px" }}>暂无匹配数据</div>
