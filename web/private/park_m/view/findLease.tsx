@@ -284,7 +284,7 @@ class LeaseList extends React.Component {
           </p>
         </div>
         <ul className={this.state.leaseul}>
-          <p className={this.state.roomNull}>没有符合搜索条件的结果···</p>
+          <p className={this.state.roomNull} style={{"text-align": "center", "font-size": "2.5rem" }} >没有符合搜索条件的结果···</p>
           {this.state.roomData.map((i, index) => {
             return (
               <li onClick={this.leaseActive.bind(this, index, i.id, i.project_title, i.building_code, i.floor_code, i.room_code)}

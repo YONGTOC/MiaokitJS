@@ -103,4 +103,5 @@
 	line-height: 136px;
 	position: fixed;
 	bottom: 0px;
+    z-index:2;
 }

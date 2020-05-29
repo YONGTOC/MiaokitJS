@@ -298,13 +298,15 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
        Toast.info('请填写姓名', 2);
     } else if (this.state.phone == "") {
       Toast.info('请填写联系电话', 2);
-    } else if (this.state.company == "") {
-      Toast.info('请填写企业名称', 2);
+    } else if (this.state.company == "" || this.state.company == "请先关联企业") {
+      Toast.info('请选择企业', 2);
     } else if (this.state.role_id == "") {
       Toast.info('请选择角色类型', 2);
-    } else if (this.state.pic == "") {
-      Toast.info('请上传认证材料照片', 2);
-    } else {
+    }
+    //else if (this.state.pic == "") {
+    //  Toast.info('请上传认证材料照片', 2);
+    //}
+    else {
       this.dataService.userAuthentication(this.sumbitSucceed, obj);
     }
     
@@ -312,7 +314,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
   }
 
   sumbitSucceed(data) {
-    Toast.info('data', 2);
+    Toast.info(data);
     window.history.back();
   }
 
@@ -333,12 +335,12 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
             <p>
               <span className="redStar">*</span>  申请人
                  <input type="text" value={this.state.applicant} placeholder="请输入您的姓名" style={{ "border": "none", "margin-left": "8rem" }}
-                onChange={this.applicantChange.bind(this)} />
+                onChange={this.applicantChange.bind(this)}  readOnly/>
             </p>
             <p>
               <span className="redStar">*</span>  联系号码
                  <input type="number" value={this.state.phone} placeholder="请输入您的联系号码" style={{ "border": "none", "margin-left": "5rem" }}
-                onChange={this.phoneChange.bind(this)} />
+                onChange={this.phoneChange.bind(this)}  readOnly/>
             </p>
             <p >
               <span className="redStar">*</span>  企业名称
@@ -370,7 +372,7 @@ class IdentityAuthentication extends React.Component<{ history: any }> {
               <p>认证企业管理员请上传租房合同或营业执照</p>
               <p>认证园区管理员请上传工牌</p>
             </div>
-            <p>或者电话联系管理员进行授权(<span style={{"color":"#333"}}>0773-1234567</span>)</p>
+            <p style={{"display":"none"}}>或者电话联系管理员进行授权(<span style={{ "color": "#333" }}>0773-1234567</span>)</p>
           </div>
         </form>
 

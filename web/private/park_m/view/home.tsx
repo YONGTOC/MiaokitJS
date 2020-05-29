@@ -453,7 +453,7 @@ class TopBtn extends React.Component {
         </div>
 
         <RouterDOM.Link to="/narrate" >
-          <div className="playIconbox" style={{ "color": "#707070" }} >
+          <div className="playIconbox hide" style={{ "color": "#707070" }} >
             <div className={this.state.playIcon} style={{ "border-top": "0rem solid #646464" }}>
               <i className="iconfont" style={{ "fontSize": "5rem" }} >&#xe81d;</i>
               <p>讲解</p>
@@ -521,8 +521,8 @@ class FoldBtn extends React.Component {
     //</RouterDOM.Link>
     return (
       <div className={this.state.foldView}>
-        <div className={"foleBtn"}>
-          <i className={this.state.iconfont} style={{ "fontSize": "4.5rem", "color": "#C0C0C0" }}>&#xe849;</i>
+        <div className={"foleBtn"} style={{ "height": "4rem" }}>
+          <i className={this.state.iconfont} style={{ "fontSize": "4.5rem", "color": "#C0C0C0" ,"display":"none" }}>&#xe849;</i>
         </div>
 
         <div className={"foleIconbox"}>

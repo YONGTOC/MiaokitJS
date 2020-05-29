@@ -601,7 +601,8 @@ i {
 }
 /**companyul*/
 .companyul {
-    height: 30rem;
+    /*height: 30rem;*/   
+    height: 38rem;
     overflow: scroll;
     clear: both;
 }
@@ -1127,7 +1128,8 @@ i {
 }
 /**companyul*/
 .leaseul {
-    height: 30rem;
+    /*height: 30rem;*/
+    height: 38rem;
     overflow: scroll;
     clear: both;
     margin-bottom: 11rem;
@@ -2846,11 +2848,12 @@ i {
 
 .companyTypeEnter {
     position: fixed;
-    bottom: 9rem;
+    bottom: 8rem;
     width: 100%;
     background: #fff;
     font-size: 3rem;
     height: 56rem;
+    z-index: 1;
 }
 
 .logoChange {
@@ -2932,7 +2935,7 @@ i {
 }
 
 .changeDUp {
-    bottom: 58rem;
+    bottom: 68rem;
 }
 
 .reset {
@@ -2952,7 +2955,7 @@ i {
 }
 
 .resetUp {
-    bottom: 49rem;
+    bottom: 59rem;
 }
 
 .floor_box {
@@ -3041,7 +3044,7 @@ i {
 }
 
 .floor_box_up {
-    bottom: 66rem;
+    bottom: 76rem;
 }
 
 /*loginÆóÒµÑ¡Ôñ¿ò*/
