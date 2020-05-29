@@ -1095,7 +1095,8 @@ class IsCompanys extends React.Component {
   }
 
   public componentDidMount() {
-    console.log(444, this.state)
+    console.log(444, this.state);
+    sessionStorage.removeItem('iconstate');
   }
 
 

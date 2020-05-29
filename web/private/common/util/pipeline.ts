@@ -221,20 +221,21 @@ MiaokitJS.ShaderLab.Pipeline = {
         }
         // 低品质
         else {
-            let aTarget = pPipeline.RenderTarget;
-            aTarget[1].Width = 640;
-            aTarget[1].Height = 1024;
-            aTarget[2].Width = 640;
-            aTarget[2].Height = 1024;
-            aTarget[3].Width = 640;
-            aTarget[3].Height = 1024;
-            aTarget[9].Width = 640;
-            aTarget[9].Height = 1024;
+            //let aTarget = pPipeline.RenderTarget;
+            //aTarget[1].Width = 640;
+            //aTarget[1].Height = 1024;
+            //aTarget[2].Width = 640;
+            //aTarget[2].Height = 1024;
+            //aTarget[3].Width = 640;
+            //aTarget[3].Height = 1024;
+            //aTarget[9].Width = 640;
+            //aTarget[9].Height = 1024;
 
             let aPass = pPipeline.PassList;
             aPass[3].RenderTarget = undefined;
-            aPass[1].ClearTarget.Color = { r: 0.198, g: 0.323, b: 0.45, a: 0.0 };
+            //aPass[1].ClearTarget.Color = { r: 0.198, g: 0.323, b: 0.45, a: 0.0 };
             pPipeline.LowQuality = [
+                aPass[0],
                 aPass[1],
                 aPass[2],
                 aPass[3]
@@ -676,6 +677,7 @@ MiaokitJS.Shader["Panoramas"] = {
 // X:瓦片缩放、Y:子投影面索引、Z:绕Y轴逆时针旋转弧度、W:绕X轴逆时针旋转弧度
 uniform vec4 u_LngLat;
 uniform vec4 u_Position;
+uniform vec4 u_Desc;
 varying vec4 v_UV;
 
 vec4 vs()
@@ -695,7 +697,7 @@ vec4 vs()
     mPosition.y -= a_Position.y * mPosition.w;
 
     // 单位化投影射线
-    mPosition.xyz = normalize(mPosition.xyz) * 50.0;
+    mPosition.xyz = normalize(mPosition.xyz) * u_Desc.x;
     mPosition.w = 1.0;
 
     // 绕Y轴旋转
@@ -715,8 +717,8 @@ vec4 vs()
     mPosition.z = nY * nSin + nZ * nCos;
 
     // 使指南针朝向正确
-    nCos = cos(-0.35 * 3.141592654);
-    nSin = sin(-0.35 * 3.141592654);
+    nCos = cos(u_Desc.y);
+    nSin = sin(u_Desc.y);
     nX = mPosition.x;
     nZ = mPosition.z;
     mPosition.x = nX * nCos - nZ * nSin;

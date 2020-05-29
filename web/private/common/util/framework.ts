@@ -107,7 +107,9 @@ class App {
             let nTime = MiaokitJS.Time();
 
             if (this.m_nTime) {
-                this.m_aAnalyze = MiaokitJS.Miaokit.Analyze((60 / ((nTime - this.m_nTime) / 1000)).toFixed(0));
+                this.m_nFPS = 60 / ((nTime - this.m_nTime) / 1000);
+                this.m_nSensitivity = 60 / this.m_nFPS;
+                this.m_aAnalyze = MiaokitJS.Miaokit.Analyze(this.m_nFPS.toFixed(0));
                 this.m_nTime = nTime;
             }
             else {
@@ -161,14 +163,14 @@ class App {
         pCavans.addEventListener("DOMMouseScroll", function (e: WheelEvent) {
             pThis.m_pCameraCtrl.Scale(e.detail / Math.abs(e.detail), pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
         }, true);
-        pCavans.addEventListener("mousedown", function (e: MouseEvent) {
+        /*pCavans.addEventListener("mousedown",*/ pCavans.onmousedown = function (e: MouseEvent) {
             nDrag = e.button;
             if (2 === nDrag) {
                 nDrag = 1;
             }
             nPressTime = MiaokitJS.Time();
-        }, false);
-        pCavans.addEventListener("mouseup", function (e: MouseEvent) {
+        }/*, false)*/;
+        /*pCavans.addEventListener("mouseup",*/ pCavans.onmouseup = function (e: MouseEvent) {
             nDrag = -1;
             if (250 > MiaokitJS.Time() - nPressTime) {
                 /// 鼠标双击
@@ -198,11 +200,11 @@ class App {
 
                 nClickTime = MiaokitJS.Time();
             }
-        }, false);
-        pCavans.addEventListener("mouseout", function (e: MouseEvent) {
+        }/*, false)*/;
+        /*pCavans.addEventListener("mouseout",*/ pCavans.onmouseout = function (e: MouseEvent) {
             nDrag = -1;
-        }, false);
-        pCavans.addEventListener("mousemove", function (e: MouseEvent) {
+        }/*, false)*/;
+        /*pCavans.addEventListener("mousemove",*/ pCavans.onmousemove = function (e: MouseEvent) {
             MiaokitJS.ShaderLab.Pipeline.Picker = {
                 Feedback: (pObject, nSubmesh) => {
                     if (pObject) {
@@ -232,7 +234,7 @@ class App {
             else if (1 === nDrag) {
                 pThis.m_pCameraCtrl.Rotate(e.movementX, e.movementY, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
             }
-        }, false);
+        }/*, false)*/;
 
 
         let pStartEvent: TouchEvent = null;
@@ -242,15 +244,15 @@ class App {
             return Math.sqrt((mVec.x * mVec.x) + (mVec.y * mVec.y));
         }
 
-        pCavans.addEventListener("touchstart", function (e: TouchEvent) {
+        /*pCavans.addEventListener("touchstart", */pCavans.ontouchstart = function (e: TouchEvent) {
             if (1 == e.touches.length) {
                 nDrag = 2;
                 pStartEvent = e;
             }
             else if (2 == e.touches.length) {
             }
-        }, false);
-        pCavans.addEventListener("touchmove", function (e: TouchEvent) {
+        }/*, false)*/;
+        /*pCavans.addEventListener("touchmove", */pCavans.ontouchmove = function (e: TouchEvent) {
             e.preventDefault();
             if (e.touches == null)
                 return;
@@ -288,8 +290,8 @@ class App {
             else {
                 pStartEvent = e;
             }
-        }, false);
-        pCavans.addEventListener("touchend", function (e: TouchEvent) { nDrag = -1; pStartEvent = null; }, false);
+        }/*, false)*/;
+        /*pCavans.addEventListener("touchend", */pCavans.ontouchend = function (e: TouchEvent) { nDrag = -1; pStartEvent = null; }/*, false)*/;
     }
 
 
@@ -308,6 +310,10 @@ class App {
     private m_nTime: number = 0;
     /// 分析数据。
     private m_aAnalyze: any = null;
+    /// 最新帧率。
+    private m_nFPS: number = 60;
+    /// 最新灵敏度。
+    private m_nSensitivity: number = 1.0;
 
     /// 摄像机对象。
     private m_pCamera: any = null;

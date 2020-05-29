@@ -283,7 +283,7 @@ class LeaseList extends React.Component {
           </p>
         </div>
         <ul className={this.state.leaseul}>
-          <p className={this.state.roomNull}>没有符合搜索条件的结果···</p>
+          <p className={this.state.roomNull}  style={{"text-align": "center", "font-size": "2.5rem" }} >没有符合搜索条件的结果···</p>
           {this.state.roomData.map((i, index) => {
             return (
               <li onClick={this.leaseActive.bind(this, index, i.id, i.project_title, i.building_code, i.floor_code, i.room_code)}
@@ -413,12 +413,14 @@ class LeaseInfo extends React.Component {
       this.setState({
         leaseInfocss: "leaseInfo-part",
       })
-    LeaseInfos.botTelHide();
+      LeaseInfos.botTelHide();
+         Picshow.picCssHide(); 
     } else {
       this.setState({
         leaseInfocss: "leaseInfo",
       })
-     LeaseInfos.botTelShow();
+      LeaseInfos.botTelShow();
+         Picshow.picCssShow(); 
     }
     if (this.state.iconfont == "iconfont iconfont-unturn") {
       this.setState({
@@ -661,6 +663,8 @@ class Picshow extends React.Component {
     //Videoshow.setVideoshow = this.setVideoshow.bind(this);
     Picshow.setVideoshow = this.setVideoshow.bind(this);
     this.seeVideoState = this.seeVideoState.bind(this);
+        Picshow.picCssHide = this.picCssHide.bind(this);
+    Picshow.picCssShow = this.picCssShow.bind(this);
   }
 
   public componentDidMount() {
@@ -767,6 +771,35 @@ class Picshow extends React.Component {
        this.seeVideoState();
   }
 
+    public bigImg(i) {
+    console.log('bigimg', i);
+    this.setState({
+      bigImgBox:"bigImgBox",
+      bigimg:i
+    })
+  }
+
+  public closeBigImg() {
+    this.setState({
+          bigImgBox: "hide",
+    })
+
+  }
+
+  static picCssHide() { };
+  public picCssHide() {
+    this.setState({
+      picCss:'hide'
+    })
+  }
+
+  static picCssShow() { };
+  public picCssShow() {
+    this.setState({
+      picCss:'picshow'
+    })
+  }
+
   public render() {
          //<WingBlank>
          //     <Carousel className="space-carousel"
@@ -792,13 +825,13 @@ class Picshow extends React.Component {
          //     </Carousel>
          //   </WingBlank>
     return (
-      <div className={"picshow"}>
+      <div className={this.state.picCss}>
         {this.state.picBtnIndex == 0 ?
           <ul>
             <p className={this.state.picurlNull} style={{ "margin": "1rem 0", "text-align": "center", "font-size": "3rem", "color": "#797979" }}>暂无图片···</p>
              {this.state.data.map((i, index) => {
                 return (
-                  <li >
+                  <li onClick={this.bigImg.bind(this,i)}>
                     <img src={i} />
                   </li>
                 )
@@ -824,6 +857,13 @@ class Picshow extends React.Component {
           <div className={this.state.picBtnIndex == 1 ? "picBtnS-active" : "picBtnS"}
             onClick={this.picBtn.bind(this, 1)}>视频</div>
         </div>
+
+         <div className={this.state.bigImgBox}>
+          <div className="close_bigImg" onClick={this.closeBigImg.bind(this)}>
+             <i className="iconfont close_bigImg_Icon"> &#xe81c;</i>
+          </div>
+          <img src={this.state.bigimg} />
+        </div>
       </div>
     )
   }
@@ -840,6 +880,9 @@ class Picshow extends React.Component {
     roomVideo: [
       //{ url: "https://www.yongtoc.com/themes/ytyc.mp4" },
     ],
+    bigimg: '',
+    bigImgBox: "hide",
+    picCss:'picshow',
   }
 }
 

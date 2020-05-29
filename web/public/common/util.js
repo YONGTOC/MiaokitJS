@@ -107,6 +107,7 @@ class CameraCtrl {
             Update: function () {
                 let bComplete = true;
                 let bSpeed = nSpeed_ ? nSpeed_ : 0.1;
+                bSpeed *= MiaokitJS.App.m_nSensitivity;
                 if (undefined !== this.m_pParam.m_nLng) {
                     let nBias = this.m_pParam.m_nLng - pThis.m_nLng;
                     if (-0.1 > nBias || 0.1 < nBias) {
@@ -285,6 +286,7 @@ class CameraCtrl {
             }
             return;
         }
+        let bSpeed = 0.1 * MiaokitJS.App.m_nSensitivity;
         if (CTRL_MODE.WANDER !== this.m_eCtrlMode) {
             if (CTRL_MODE.REMOTE === this.m_eCtrlMode) {
                 if (20000.0 > this.height) {
@@ -294,11 +296,11 @@ class CameraCtrl {
                 else {
                     let nBias = this.m_nPitch - 90.0;
                     if (-0.1 > nBias || 0.1 < nBias) {
-                        this.m_nPitch -= nBias * 0.1;
+                        this.m_nPitch -= nBias * bSpeed;
                     }
                     nBias = this.m_nYaw - 0.0;
                     if (-0.1 > nBias || 0.1 < nBias) {
-                        this.m_nYaw -= nBias * 0.1;
+                        this.m_nYaw -= nBias * bSpeed;
                     }
                 }
             }
@@ -310,11 +312,11 @@ class CameraCtrl {
                 else {
                     let nBias = this.m_nPitch - 85.0;
                     if (0.1 < nBias) {
-                        this.m_nPitch -= nBias * 0.1;
+                        this.m_nPitch -= nBias * bSpeed;
                     }
                     nBias = 5.0 - this.m_nPitch;
                     if (0.1 < nBias) {
-                        this.m_nPitch += nBias * 0.1;
+                        this.m_nPitch += nBias * bSpeed;
                     }
                 }
             }
@@ -322,15 +324,15 @@ class CameraCtrl {
                 let mTarget = this.target;
                 let nBias = mTarget.x - 0.0;
                 if (-0.1 > nBias || 0.1 < nBias) {
-                    mTarget.x += nBias * 0.1;
+                    mTarget.x += nBias * bSpeed;
                 }
                 nBias = mTarget.y - 0.0;
                 if (-0.1 > nBias || 0.1 < nBias) {
-                    mTarget.y += nBias * 0.1;
+                    mTarget.y += nBias * bSpeed;
                 }
                 nBias = mTarget.z - 0.0;
                 if (-0.1 > nBias || 0.1 < nBias) {
-                    mTarget.z += nBias * 0.1;
+                    mTarget.z += nBias * bSpeed;
                 }
                 this.target = mTarget;
             }
@@ -468,6 +470,8 @@ class App {
         this.m_nTick = null;
         this.m_nTime = 0;
         this.m_aAnalyze = null;
+        this.m_nFPS = 60;
+        this.m_nSensitivity = 1.0;
         this.m_pCamera = null;
         this.m_pCameraCtrl = null;
         this.m_pPicker = null;
@@ -549,7 +553,9 @@ class App {
         if (1 === this.m_nTick % 60) {
             let nTime = MiaokitJS.Time();
             if (this.m_nTime) {
-                this.m_aAnalyze = MiaokitJS.Miaokit.Analyze((60 / ((nTime - this.m_nTime) / 1000)).toFixed(0));
+                this.m_nFPS = 60 / ((nTime - this.m_nTime) / 1000);
+                this.m_nSensitivity = 60 / this.m_nFPS;
+                this.m_aAnalyze = MiaokitJS.Miaokit.Analyze(this.m_nFPS.toFixed(0));
                 this.m_nTime = nTime;
             }
             else {
@@ -590,14 +596,14 @@ class App {
         pCavans.addEventListener("DOMMouseScroll", function (e) {
             pThis.m_pCameraCtrl.Scale(e.detail / Math.abs(e.detail), pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
         }, true);
-        pCavans.addEventListener("mousedown", function (e) {
+        pCavans.onmousedown = function (e) {
             nDrag = e.button;
             if (2 === nDrag) {
                 nDrag = 1;
             }
             nPressTime = MiaokitJS.Time();
-        }, false);
-        pCavans.addEventListener("mouseup", function (e) {
+        };
+        pCavans.onmouseup = function (e) {
             nDrag = -1;
             if (250 > MiaokitJS.Time() - nPressTime) {
                 if (500 > MiaokitJS.Time() - nClickTime) {
@@ -621,11 +627,11 @@ class App {
                 }
                 nClickTime = MiaokitJS.Time();
             }
-        }, false);
-        pCavans.addEventListener("mouseout", function (e) {
+        };
+        pCavans.onmouseout = function (e) {
             nDrag = -1;
-        }, false);
-        pCavans.addEventListener("mousemove", function (e) {
+        };
+        pCavans.onmousemove = function (e) {
             MiaokitJS.ShaderLab.Pipeline.Picker = {
                 Feedback: (pObject, nSubmesh) => {
                     if (pObject) {
@@ -651,21 +657,21 @@ class App {
             else if (1 === nDrag) {
                 pThis.m_pCameraCtrl.Rotate(e.movementX, e.movementY, pThis.m_pCanvas2D.clientWidth, pThis.m_pCanvas2D.clientHeight);
             }
-        }, false);
+        };
         let pStartEvent = null;
         let Distance = function (p0, p1) {
             let mVec = { x: p0.x - p1.x, y: p0.y - p1.y };
             return Math.sqrt((mVec.x * mVec.x) + (mVec.y * mVec.y));
         };
-        pCavans.addEventListener("touchstart", function (e) {
+        pCavans.ontouchstart = function (e) {
             if (1 == e.touches.length) {
                 nDrag = 2;
                 pStartEvent = e;
             }
             else if (2 == e.touches.length) {
             }
-        }, false);
-        pCavans.addEventListener("touchmove", function (e) {
+        };
+        pCavans.ontouchmove = function (e) {
             e.preventDefault();
             if (e.touches == null)
                 return;
@@ -696,8 +702,8 @@ class App {
             else {
                 pStartEvent = e;
             }
-        }, false);
-        pCavans.addEventListener("touchend", function (e) { nDrag = -1; pStartEvent = null; }, false);
+        };
+        pCavans.ontouchend = function (e) { nDrag = -1; pStartEvent = null; };
     }
 }
 MiaokitJS.UTIL = MiaokitJS.UTIL || {};
@@ -1114,19 +1120,10 @@ MiaokitJS.ShaderLab.Pipeline = {
             pPipeline.Pass = pPipeline.MediumQuality;
         }
         else {
-            let aTarget = pPipeline.RenderTarget;
-            aTarget[1].Width = 640;
-            aTarget[1].Height = 1024;
-            aTarget[2].Width = 640;
-            aTarget[2].Height = 1024;
-            aTarget[3].Width = 640;
-            aTarget[3].Height = 1024;
-            aTarget[9].Width = 640;
-            aTarget[9].Height = 1024;
             let aPass = pPipeline.PassList;
             aPass[3].RenderTarget = undefined;
-            aPass[1].ClearTarget.Color = { r: 0.198, g: 0.323, b: 0.45, a: 0.0 };
             pPipeline.LowQuality = [
+                aPass[0],
                 aPass[1],
                 aPass[2],
                 aPass[3]
@@ -1554,6 +1551,7 @@ MiaokitJS.Shader["Panoramas"] = {
 // X:瓦片缩放、Y:子投影面索引、Z:绕Y轴逆时针旋转弧度、W:绕X轴逆时针旋转弧度
 uniform vec4 u_LngLat;
 uniform vec4 u_Position;
+uniform vec4 u_Desc;
 varying vec4 v_UV;
 
 vec4 vs()
@@ -1573,7 +1571,7 @@ vec4 vs()
     mPosition.y -= a_Position.y * mPosition.w;
 
     // 单位化投影射线
-    mPosition.xyz = normalize(mPosition.xyz) * 50.0;
+    mPosition.xyz = normalize(mPosition.xyz) * u_Desc.x;
     mPosition.w = 1.0;
 
     // 绕Y轴旋转
@@ -1593,8 +1591,8 @@ vec4 vs()
     mPosition.z = nY * nSin + nZ * nCos;
 
     // 使指南针朝向正确
-    nCos = cos(-0.35 * 3.141592654);
-    nSin = sin(-0.35 * 3.141592654);
+    nCos = cos(u_Desc.y);
+    nSin = sin(u_Desc.y);
     nX = mPosition.x;
     nZ = mPosition.z;
     mPosition.x = nX * nCos - nZ * nSin;

@@ -18,6 +18,7 @@ class ParkInfo extends React.Component {
     this.dataService.getParkShowInfo(this.setParkInfo, park_id);
     //this.setParkInfo("data");
 
+        move3dBut("up");
   }
 
   static setParkInfo(data) { }
@@ -33,6 +34,7 @@ class ParkInfo extends React.Component {
   public mapReturnpark() {
     //通知3d，返回园区视角
     this.globalAction.web_call_webgl_mapReturnpark();
+    move3dBut("down")
   }
 
   public toggleFold() {
