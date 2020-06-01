@@ -2,6 +2,7 @@
 import * as ReactDOM from "react-dom";
 
 import Router from 'router';
+import "css!./style/view.css";
 
 declare var viewDraw: any;
 
