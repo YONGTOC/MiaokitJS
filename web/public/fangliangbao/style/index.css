@@ -1,0 +1,251 @@
+.index {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+  background-color: #ffffff;
+  overflow-y: auto;
+}
+
+.index::-webkit-scrollbar {
+  display: none;
+}
+
+.index-title {
+  overflow: hidden;
+  width: 1210px;
+  position: absolute;
+  top: 0;
+}
+
+.index-t1 {
+  float: left;
+  width: 200px;
+}
+
+.logo {
+  width: 90px;
+  height: 32px;
+  font-size: 30px;
+  font-family: HuXiaoBo-NanShen;
+  font-weight: 400;
+  line-height: 45px;
+  color: rgba(255,255,255,1);
+  opacity: 1;
+}
+
+.index-label {
+  color: #ffffff;
+  top: 0px;
+  width: 660px;
+  float: right;
+}
+
+.index-label div {
+  float: left;
+  margin: 35px 0 0 20px;
+  font-size: 16px;
+}
+
+.warp {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.index-search {
+  width: 1200px;
+  height: 280px;
+  background: rgba(255,255,255,1);
+  box-shadow: 0px 3px 8px rgba(0,0,0,0.15);
+  border-radius: 4px;
+  border: 2px #f2f2f2 solid;
+  position: relative;
+  margin-top: -50px;
+  z-index: 2;
+  padding: 35px 38px;
+}
+
+.searchCon {
+  display: inline-block;
+  width: 760px;
+  float: left;
+}
+
+.index-input {
+  width: 568px;
+  height: 36px;
+  background: rgba(255,255,255,1);
+  border: 1px solid rgba(230,230,230,1);
+  border-radius: 4px 0 0 4px;
+  font-size: 12px;
+  font-family: Microsoft YaHei;
+  font-weight: 400;
+  line-height: 36px;
+  color: rgba(152,159,168,1);
+  padding-left: 45px;
+}
+
+.index-search-name {
+  width: 90px;
+  height: 36px;
+  background: rgba(23,161,230,1);
+  border-radius: 0px 4px 4px 0px;
+  color: #fff;
+  line-height: 36px;
+  text-align: center;
+  font-size: 16px;
+  float: left;
+}
+
+.seltion-cont {
+  padding-top: 20px;
+  font-size: 14px;
+}
+
+.index-tag-name {
+  font-weight: bold;
+  float: left;
+  height: 34px;
+  line-height: 34px;
+}
+
+.index-tag {
+  float: left;
+  margin-left: 18px;
+  height: 34px;
+  line-height: 34px;
+}
+
+.cont-div {
+  overflow: hidden;
+}
+
+.searchCont {
+  display: inline-block;
+  width: 320px;
+  float: right;
+}
+
+.index-iphone {
+  width: 320px;
+  height: 36px;
+  background: rgba(255,255,255,1);
+  border: 1px solid rgba(230,230,230,1);
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 32px;
+  color: rgba(152,159,168,1);
+  padding-left: 35px;
+}
+
+.index-require {
+  width: 320px;
+  height: 114px;
+  background: rgba(255,255,255,1);
+  border: 1px solid rgba(230,230,230,1);
+  border-radius: 4px;
+}
+
+.you-require {
+  font-size: 14px;
+  font-weight: bold;
+  color: rgba(51,51,51,1);
+  margin: 5px 0 0 15px;
+}
+
+.you-talk {
+  font-size: 12px;
+  font-weight: 400;
+  color: #989FA8;
+  margin: 5px 0 0 15px;
+}
+
+.find-room {
+  width: 180px;
+  height: 36px;
+  background: rgba(23,161,230,1);
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 36px;
+  color: rgba(255,255,255,1);
+  text-align: center;
+  margin: auto;
+  margin-top: 15px;
+}
+
+.index-park-title {
+  padding-top: 38px;
+  overflow: hidden;
+}
+
+.index-park-a {
+  font-size: 22px;
+  font-family: Microsoft YaHei;
+  font-weight: bold;
+  color: rgba(51,51,51,1);
+}
+
+.index-park-b {
+  margin: 10px 0 0 10px;
+  font-size: 14px;
+  color: #989FA8;
+}
+
+.index-park-c {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: rgba(23,161,230,1);
+}
+
+.index-park-title div {
+  float: left;
+}
+
+.index-park-child {
+  float: left;
+}
+
+.index-img-a {
+  width: 285px;
+  height: 214px;
+  border-radius: 5px;
+}
+
+.index-address {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(140,143,167,1);
+  float: left;
+}
+
+.index-price {
+  color: #333333;
+  font-size: 14px;
+  float: right;
+  margin: -15px 20px 0 0;
+}
+
+.index-c-a {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.index-more {
+  width: 240px;
+  height: 40px;
+  background: rgba(255,255,255,1);
+  border: 1px solid rgba(221,221,221,1);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 40px;
+  color: rgba(152,159,168,1);
+  text-align: center;
+  margin: auto;
+  margin-top: 30px;
+}
