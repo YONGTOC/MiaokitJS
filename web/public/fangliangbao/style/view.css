@@ -1,0 +1,201 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+.hide {
+    display: none;
+}
+li {
+    list-style-type: none;
+}
+/*hometop*/
+.homeTop {
+    background: rgb(51, 51, 51);
+    height: 40px;
+    top: 0rem;
+    position: absolute;
+    width: 100%;
+    font-size: 14px;
+    color: rgba(185,185,185,1);
+}
+.homeTopBox {
+    margin: auto;
+    width: 1200px;
+    height: 100%;
+    line-height: 40px;
+}
+.htLeft {
+    float: left;
+}
+.htLeft ul {}
+.htLeft ul li {
+    float: left;
+    text-align: center;
+    margin: 0px 10px;
+}
+.htRight{
+    float:right;
+}
+.htRight ul {}
+.htRight ul li {
+    float: left;
+    margin: 0 10px;
+}
+.homtop_active {
+    color: rgba(255,255,255,1);
+}
+
+/*allBottom*/
+.homeBottom {
+    height: 320px;
+    bottom: 0rem;
+    position: absolute;
+    width: 100%;
+    background: rgb(51, 51, 51);
+    font-size: 14px;
+    color: rgba(185,185,185,1);
+}
+.homeBottomBox {
+    margin: auto;
+    width: 1200px;
+    line-height: 40px;
+}
+.homeBottomBox_one {
+    text-align: center;
+    margin-top: 47px;
+}
+.hbLeft {
+    width: 150px;
+    display: inline-block;
+    text-align:left;
+}
+.hbLeft ul{
+
+}
+.hbLeft ul li{
+
+}
+.hbMiddle {
+    width: 150px;
+    display: inline-block;
+}
+.hbMiddle ul {
+}
+.hbMiddle ul li {
+}
+.hbRight {
+    width: 440px;
+    display: inline-block;
+    text-align: right;
+    position: relative;
+    top: -63px;
+}
+.hbRight ul {
+}
+.hbRight ul li {
+}
+.homeBottomBox_two {
+    text-align:center;
+}
+.homeBottomBox_two p {
+    margin:0;
+}
+/*parkInfo*/
+.parkInfo {
+    background: rgb(255, 255, 255);
+    top: 40px;
+    position: absolute;
+    width: 100%;
+}
+.parkInfoBox_one {
+    margin: auto;
+    width: 1200px;
+    border: 1px solid green;
+}
+.parkInfoBox_title {
+    width: 1200px;
+    margin: auto;
+}
+.ParkInfoOne_title img {
+    display: inline-block;
+}
+.ParkInfoOne_title ul {
+    display: inline-block;
+    position: relative;
+    top: 30px;
+}
+.ParkInfoOne_title ul li {
+    float: left;
+    font-size: 16px;
+    line-height: 24px;
+    color: rgba(51,51,51,1);
+    letter-spacing: 1.5px;
+    margin: 0 15px;
+}
+.ParkInfoOne_html {
+    color: rgba(152,159,168,1);
+    margin: 10px 0;
+}
+.ParkInfoOne_html p{
+
+}
+.ParkInfoOne_html span{
+
+}
+.ParkInfoOne_info{
+
+}
+.ParkInfoOne_info p{
+
+}
+.ParkInfoOne_info ul{
+
+}
+.ParkInfoOne_info ul li{
+
+}
+.ParkInfoOne_info i{
+
+}
+.ParkInfoOne_info ul li {
+}
+.ParkInfoOne_info p {
+    font-size: 28px;
+    font-weight: bold;
+    color: rgba(51,51,51,1);
+    display: inline-block;
+}
+.ParkInfoOne_info ul {
+    float: right;
+}
+.ParkInfoOne_info ul li {
+    display: inline;
+    background: rgba(255,255,255,1);
+    border: 1px solid rgba(204,204,204,1);
+    border-radius: 2px;
+    padding: 8px 12px;
+    margin: 0 5px;
+}
+.ParkInfoOne_info i {
+    margin-right: 5px;
+    color: rgb(185, 185, 185);
+}
+.parkInfoBox_list {
+    width: 260px;
+    /*margin: auto calc(20%);*/
+    background: rgb(51, 51, 51);
+    height: 1px;
+    position: relative;
+    font-size: 14px;
+    color: rgba(185,185,185,1);
+}
+.ParkInfoTwo {
+    border: 1px solid red;
+    width: 260px;
+    height: 643px;
+    background: rgba(255,255,255,1);
+    opacity: 1;
+    border-radius: 4px;
+    position: relative;
+    left: 0px;
+}
