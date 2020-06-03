@@ -15,7 +15,7 @@ class ParkInfo extends React.Component {
 
   public render() {
     return (
-      <div>
+      <div className="infoPage">
         <HomeTop />
         <div className="parkInfo">
           <div className="parkInfoBox_title">
@@ -226,9 +226,9 @@ class LeaseList extends React.Component {
               <div className={this.state.leaseRoomsState == 0 ? "leaseRooms_on" : "leaseRooms"} >
                 <img src="./fangliangbao/image/demo.png" />
                 <div className="leaseRoomsRight">
-                  <p className="leaseName">出租高新区信息产业园福建师范</p>
+                  <p className="leaseName"><span>187</span>m²</p>
                   <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                  <p className="leaseArea">187m²</p>
+                  <p className="leaseArea">简装</p>
                 </div>
               </div>
             </li>
@@ -236,9 +236,9 @@ class LeaseList extends React.Component {
               <div className={this.state.leaseRoomsState == 1 ? "leaseRooms_on" : "leaseRooms"} >
                 <img src="./fangliangbao/image/demo.png" />
                 <div className="leaseRoomsRight">
-                  <p className="leaseName">出租高新区信息产业园福建师范</p>
+                  <p className="leaseName"><span>187</span>m²</p>
                   <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                  <p className="leaseArea">187m²</p>
+                  <p className="leaseArea">简装</p>
                 </div>
               </div>
             </li>
@@ -246,9 +246,9 @@ class LeaseList extends React.Component {
               <div className={this.state.leaseRoomsState == 2 ? "leaseRooms_on" : "leaseRooms"} >
                 <img src="./fangliangbao/image/demo.png" />
                 <div className="leaseRoomsRight">
-                  <p className="leaseName">出租高新区信息产业园福建师范</p>
+                  <p className="leaseName"><span>187</span>m²</p>
                   <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                  <p className="leaseArea">187m²</p>
+                  <p className="leaseArea">简装</p>
                 </div>
               </div>
             </li>
@@ -325,9 +325,9 @@ class SellList extends React.Component {
               <div className={this.state.sellRoomsState == 0 ? "leaseRooms_on" : "leaseRooms"} >
                 <img src="./fangliangbao/image/demo.png" />
                 <div className="leaseRoomsRight">
-                  <p className="leaseName">出租高新区信息产业园福建师范</p>
+                  <p className="leaseName"><span>187</span>m²</p>
                   <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                  <p className="leaseArea">187m²</p>
+                  <p className="leaseArea">简装</p>
                 </div>
               </div>
             </li>
@@ -335,9 +335,9 @@ class SellList extends React.Component {
               <div className={this.state.sellRoomsState == 1 ? "leaseRooms_on" : "leaseRooms"} >
                 <img src="./fangliangbao/image/demo.png" />
                 <div className="leaseRoomsRight">
-                  <p className="leaseName">出租高新区信息产业园福建师范</p>
+                  <p className="leaseName"><span>187</span>m²</p>
                   <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                  <p className="leaseArea">187m²</p>
+                  <p className="leaseArea">简装</p>
                 </div>
               </div>
             </li>
@@ -345,9 +345,9 @@ class SellList extends React.Component {
               <div className={this.state.sellRoomsState == 2 ? "leaseRooms_on" : "leaseRooms"} >
                 <img src="./fangliangbao/image/demo.png" />
                 <div className="leaseRoomsRight">
-                  <p className="leaseName">出租高新区信息产业园福建师范</p>
+                  <p className="leaseName"><span>187</span>m²</p>
                   <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                  <p className="leaseArea">187m²</p>
+                  <p className="leaseArea">简装</p>
                 </div>
               </div>
             </li>
@@ -413,7 +413,7 @@ class CompanyList extends React.Component {
         </div>
         <div className="leaseRoomList">
           <ul>
-            <li onClick={this.onCompany.bind(this, 0)}>
+            <li>
               <div className={this.state.companyState == 0 ? "leaseRooms_on" : "leaseRooms"} >
                 <img src="./fangliangbao/image/demo.png" />
                 <div className="leaseRoomsRight">
@@ -427,7 +427,7 @@ class CompanyList extends React.Component {
                 </div>
               </div>
             </li>
-            <li onClick={this.onCompany.bind(this, 1)}>
+            <li>
               <div className={this.state.companyState == 1 ? "leaseRooms_on" : "leaseRooms"} >
                 <img src="./fangliangbao/image/demo.png" />
                 <div className="leaseRoomsRight">
@@ -441,7 +441,7 @@ class CompanyList extends React.Component {
                 </div>
               </div>
             </li>
-            <li onClick={this.onCompany.bind(this, 2)}>
+            <li>
               <div className={this.state.companyState == 2 ? "leaseRooms_on" : "leaseRooms"} >
                 <img src="./fangliangbao/image/demo.png" />
                 <div className="leaseRoomsRight">
@@ -650,9 +650,9 @@ class RoomInfoThreeLeft extends React.Component {
     super(props);
 
   }
-
+  //count1  left:"";
   public componentDidMount() {
-
+    
   }
 
   public roomInfoOn(index) {
@@ -661,19 +661,117 @@ class RoomInfoThreeLeft extends React.Component {
       this.setState({
         RoomInfoThreeLeft: "RoomInfoThreeLeft_all",
         RoomInfoIndex: index,
+        imgUrl: this.state.imgUrlList[0].url,
+        imgIndex: 0,
+        imgNum: 1,
       });
     } else if (index == 2 ) {
       this.setState({
         RoomInfoThreeLeft: "RoomInfoThreeLeft_all",
         RoomInfoIndex: index,
+        vidUrl: this.state.vidUrlList[0].url,
+        vidgIndex: 0,
+        vidNum: 1,
       });
     }else {
-         console.log('roomInfoOn0000',index)
       this.setState({
       RoomInfoThreeLeft: "RoomInfoThreeLeft_part",
       RoomInfoIndex: index,
       });
     }
+     //over
+  }
+
+  public upImg() {
+    if (this.state.imgIndex > 0) {
+
+      let imgIndexN = this.state.imgIndex;
+      imgIndexN = imgIndexN - 1;
+      let imgNumN = this.state.imgIndex+1;
+      imgNumN = imgNumN - 1;
+
+    this.setState({
+      imgIndex: imgIndexN,
+      imgUrl: this.state.imgUrlList[this.state.imgIndex - 1].url,
+      imgNum:imgNumN
+    }, () => {
+      console.log(this.state)
+      })
+    }
+ 
+  }
+
+  public nextImg() {
+    if (this.state.imgNum !== this.state.imgMax) {
+
+    let imgIndexN = this.state.imgIndex;
+    imgIndexN = imgIndexN + 1;
+
+    let imgNumN = this.state.imgIndex + 1;
+    imgNumN = imgNumN + 1;
+
+    this.setState({
+      imgIndex: imgIndexN,
+      imgUrl: this.state.imgUrlList[this.state.imgIndex + 1].url,
+      imgNum: imgNumN
+    }, () => {
+      console.log(this.state)
+    })
+
+  }
+  }
+  
+  public upVid() {
+    if (this.state.vidIndex > 0) {
+
+      let vidIndexN = this.state.vidIndex;
+      vidIndexN = vidIndexN - 1;
+      let vidNumN = this.state.vidIndex+1;
+      vidNumN = vidNumN - 1;
+
+    this.setState({
+      vidIndex: vidIndexN,
+      vidUrl: this.state.vidUrlList[this.state.vidIndex - 1].url,
+      vidNum:vidNumN
+    }, () => {
+      console.log(this.state)
+      })
+    }
+ 
+  }
+
+  public nextVid() {
+    if (this.state.vidNum !== this.state.vidMax) {
+
+    let vidIndexN = this.state.vidIndex;
+    vidIndexN = vidIndexN + 1;
+
+    let vidNumN = this.state.vidIndex + 1;
+    vidNumN = vidNumN + 1;
+
+    this.setState({
+      vidIndex: vidIndexN,
+      vidUrl: this.state.vidUrlList[this.state.vidIndex + 1].url,
+      vidNum: vidNumN
+    }, () => {
+      console.log(this.state)
+    })
+
+  }
+  }
+
+  public fullView() {
+    this.setState({
+      fullViewState: true
+    });
+     $(document.body).attr('style','height: 100%; margin: 0; padding: 0; overflow: hidden;')
+  }
+
+  public closeFull() {
+        this.setState({
+      fullViewState: false
+    });
+     $(document.body).attr('style','height: 100%; margin: 0; padding: 0; overflow: visible;')
   }
 
   public render() {
@@ -682,6 +780,7 @@ class RoomInfoThreeLeft extends React.Component {
     //     <li className={this.state.ParkInfoIndex == 0 ? "ParkInfoIndex_in" : null}
     return (
       <div className={this.state.RoomInfoThreeLeft} >
+        <p className="roomInfo_tit">出租！高新区信息产业园豪华装修单元</p>
         <div className="ParkInfoThree_left_title">
           <ul>
             <li className={this.state.RoomInfoIndex == 0 ? "ParkInfoIndex_in" : null}
@@ -726,53 +825,62 @@ class RoomInfoThreeLeft extends React.Component {
         }
         {this.state.RoomInfoIndex == 1 ?
           <div className="infoImg">
-            <div className="infoImg_left">
-              <i className="iconfont " >&#xe83c;</i>
-            </div>
-            <div className="infoImg_ul">
-              <ul>
-                <li> <img src="./fangliangbao/image/build.png" /></li>
-                <li> <img src="./fangliangbao/image/build.png" /></li>
-                <li> <img src="./fangliangbao/image/build.png" /></li>
-              </ul>
-            </div>
-            <p className="infoImg_num">
-              <span>2</span> / <span>8</span>
+            <span className="stylesgoleft" onClick={this.upImg.bind(this)}>-</span>
+            <img src={this.state.imgUrl} onClick={this.fullView.bind(this)} />
+            <span className="stylesgoright" onClick={this.nextImg.bind(this)}>+</span>
+             <p className="infoImg_num">
+              <span>{this.state.imgNum}</span> / <span>{this.state.imgMax}</span>
             </p>
-            <div className="infoImg_right">
-              <i className="iconfont " >&#xe83c;</i>
-            </div>
           </div>
           : null
         }
         {this.state.RoomInfoIndex == 2 ?
           <div className="infoImg">
-            <div className="infoImg_left">
-              <i className="iconfont " >&#xe83c;</i>
-            </div>
-            <div className="infoImg_ul">
-              <ul>
-                <li> <img src="./fangliangbao/image/build.png" /></li>
-                <li> <img src="./fangliangbao/image/build.png" /></li>
-                <li> <img src="./fangliangbao/image/build.png" /></li>
-              </ul>
-            </div>
-            <p className="infoImg_num">
-              <span>2</span> / <span>8</span>
+            <span className="stylesgoleft" onClick={this.upVid.bind(this)}>-</span>
+                <img src={this.state.vidUrl} />
+            <span className="stylesgoright" onClick={this.nextVid.bind(this)}>+</span>
+             <p className="infoImg_num">
+              <span>{this.state.vidNum}</span> / <span>{this.state.vidMax}</span>
             </p>
-            <div className="infoImg_right">
-              <i className="iconfont " >&#xe83c;</i>
-            </div>
           </div>
           : null
         }
+
+        {this.state.fullViewState == true ?
+          <div className="fullView">
+            <div onClick={this.closeFull.bind(this)}>X</div>
+        </div>
+          :
+        null
+        }
+  
+
       </div>
     )
   }
 
   public state = {
     RoomInfoIndex: 0,
-    RoomInfoThreeLeft:"RoomInfoThreeLeft_part"
+    RoomInfoThreeLeft: "RoomInfoThreeLeft_part",
+    fullViewState:false,
+    imgIndex: 0,
+    imgMax: 3,
+    imgNum: 1,
+    imgUrl: "",
+    imgUrlList: [
+      {url:"./fangliangbao/image/build.png"},
+      { url: "./fangliangbao/image/build1.png" },
+       {url:"./fangliangbao/image/demo.png"},
+    ],
+    vidIndex: 0,
+    vidMax: 3,
+    vidNum: 1,
+    vidUrl: "",
+    vidUrlList: [
+      {url:"./fangliangbao/image/build.png"},
+      { url: "./fangliangbao/image/build1.png" },
+       {url:"./fangliangbao/image/demo.png"},
+    ]
   }
 }
 

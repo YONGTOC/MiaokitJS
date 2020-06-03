@@ -2,19 +2,35 @@
     margin: 0;
     padding: 0;
 }
+
 .hide {
     display: none;
 }
+
 li {
     list-style-type: none;
 }
-.index::-webkit-scrollbar {
-    display: none;
-    /*隐藏滚动条，当IE下溢出，仍然可以滚动*/
+/*.leaseRoomList::-webkit-scrollbar {
     -ms-overflow-style: none;
-    /*火狐下隐藏滚动条*/
     overflow: -moz-scrollbars-none;
+}*/
+
+/*html {
+    scrollbar-width: none;
 }
+
+html::-webkit-scrollbar {
+    display: none;
+}*/
+
+.leaseRoomList {
+    scrollbar-width: none;
+}
+
+.leaseRoomList::-webkit-scrollbar {
+    display: none;
+}
+
 /*hometop*/
 .homeTop {
     background: rgb(51, 51, 51);
@@ -25,29 +41,39 @@ li {
     font-size: 14px;
     color: rgba(185,185,185,1);
 }
+
 .homeTopBox {
     margin: auto;
     width: 1200px;
     height: 100%;
     line-height: 40px;
 }
+
 .htLeft {
     float: left;
 }
-.htLeft ul {}
+
+.htLeft ul {
+}
+
 .htLeft ul li {
     float: left;
     text-align: center;
     margin: 0px 10px;
 }
-.htRight{
-    float:right;
+
+.htRight {
+    float: right;
 }
-.htRight ul {}
+
+.htRight ul {
+}
+
 .htRight ul li {
     float: left;
     margin: 0 10px;
 }
+
 .homtop_active {
     color: rgba(255,255,255,1);
 }
@@ -62,34 +88,41 @@ li {
     font-size: 14px;
     color: rgba(185,185,185,1);
 }
+
 .homeBottomBox {
     margin: auto;
     width: 1200px;
     line-height: 40px;
 }
+
 .homeBottomBox_one {
     text-align: center;
     padding-top: 47px;
 }
+
 .hbLeft {
     width: 210px;
     display: inline-block;
     text-align: left;
 }
-.hbLeft ul{
 
+.hbLeft ul {
 }
-.hbLeft ul li{
 
+.hbLeft ul li {
 }
+
 .hbMiddle {
     width: 150px;
     display: inline-block;
 }
+
 .hbMiddle ul {
 }
+
 .hbMiddle ul li {
 }
+
 .hbRight {
     width: 370px;
     display: inline-block;
@@ -97,18 +130,22 @@ li {
     position: relative;
     top: -63px;
 }
+
 .hbRight ul {
 }
+
 .hbRight ul li {
 }
+
 .homeBottomBox_two {
-    text-align:center;
+    text-align: center;
 }
+
 .homeBottomBox_two p {
-    margin:0;
+    margin: 0;
 }
 /*parkInfo*/
- 
+
 .parkInfo {
     background: rgb(255, 255, 255);
     /*top: 40px;*/
@@ -116,29 +153,35 @@ li {
     width: 100%;
     top: 215px;
 }
+
 .parkInfo_bottom {
     position: relative;
     top: 220px;
 }
+
 .parkInfoBox_one {
     margin: auto;
     width: 1200px;
     border: 1px solid green;
 }
+
 .parkInfoBox_title {
     width: 1200px;
     margin: auto;
     position: relative;
     top: -845px
 }
+
 .ParkInfoOne_title img {
     display: inline-block;
 }
+
 .ParkInfoOne_title ul {
     display: inline-block;
     position: relative;
     top: 30px;
 }
+
 .ParkInfoOne_title ul li {
     font-size: 16px;
     color: rgba(51,51,51,1);
@@ -150,38 +193,42 @@ li {
     color: rgba(152,159,168,1);
     margin: 10px 0;
 }
-.ParkInfoOne_html p{
 
+.ParkInfoOne_html p {
 }
-.ParkInfoOne_html span{
 
+.ParkInfoOne_html span {
 }
-.ParkInfoOne_info{
 
+.ParkInfoOne_info {
 }
-.ParkInfoOne_info p{
 
+.ParkInfoOne_info p {
 }
-.ParkInfoOne_info ul{
 
+.ParkInfoOne_info ul {
 }
-.ParkInfoOne_info ul li{
 
-}
-.ParkInfoOne_info i{
-
-}
 .ParkInfoOne_info ul li {
 }
+
+.ParkInfoOne_info i {
+}
+
+.ParkInfoOne_info ul li {
+}
+
 .ParkInfoOne_info p {
     font-size: 28px;
     font-weight: bold;
     color: rgba(51,51,51,1);
     display: inline-block;
 }
+
 .ParkInfoOne_info ul {
     float: right;
 }
+
 .ParkInfoOne_info ul li {
     display: inline;
     background: rgba(255,255,255,1);
@@ -190,10 +237,12 @@ li {
     padding: 8px 12px;
     margin: 0 5px;
 }
+
 .ParkInfoOne_info i {
     margin-right: 5px;
     color: rgb(185, 185, 185);
 }
+
 .parkInfoBox_list {
     width: 260px;
     background: rgb(51, 51, 51);
@@ -202,7 +251,9 @@ li {
     color: rgba(185,185,185,1);
     position: relative;
     top: -830px;
+    z-index: 1;
 }
+
 .ParkInfoTwoAll {
     border: 0px solid red;
     width: 260px;
@@ -213,6 +264,7 @@ li {
     position: relative;
     left: 0px;
 }
+
 .ParkInfoTwoOver {
     width: 260px;
     background: rgba(255,255,255,1);
@@ -221,6 +273,7 @@ li {
     position: relative;
     left: 0px;
 }
+
 @media screen and (min-width: 1201px) {
     .parkInfoBox_list {
         margin: auto calc(4%);
@@ -250,16 +303,19 @@ li {
         margin: auto calc(15%);
     }
 }
+
 @media screen and (min-width: 1701px) {
     .parkInfoBox_list {
         margin: auto calc(15%);
     }
 }
+
 @media screen and (min-width: 1801px) {
     .parkInfoBox_list {
         margin: auto calc(20%);
     }
 }
+
 .ParkInfoTwoTitle {
     text-align: center;
     height: 42px;
@@ -268,31 +324,37 @@ li {
     font-size: 14px;
     color: rgba(51,51,51,1);
 }
+
 .ParkInfoTwoTitle ul {
 }
+
 .ParkInfoTwoTitle ul li {
     display: inline-block;
     margin: 0 10px;
 }
+
 .ParkInfoTwoTitleActive {
     color: rgba(23,161,230,1);
     border-bottom: 2px solid rgb(23, 161, 230);
     font-weight: bold;
 }
+
 .ParkInfoTwoListBox {
 }
-.ParkInfoTwoListBox ul{
 
+.ParkInfoTwoListBox ul {
 }
-.ParkInfoTwoListBox ul  li{
 
+.ParkInfoTwoListBox ul li {
 }
-.ParkInfoTwoListContect{
 
+.ParkInfoTwoListContect {
 }
+
 .ParkInfoTwoList {
     /*height: 570px;*/
 }
+
 .ParkInfoTwoListTrun {
     border-top: 1px solid rgb(242, 242, 242);
     height: 30px;
@@ -302,6 +364,7 @@ li {
     width: 100%;
     line-height: 28px;
 }
+
 .ParkInfoTwoListTrunUp {
     border-top: 1px solid rgb(242, 242, 242);
     height: 30px;
@@ -313,32 +376,37 @@ li {
     border-radius: 0 0 4px 4px;
     line-height: 28px;
 }
+
 .leaseListBox {
 }
-.leaseRoom{
 
+.leaseRoom {
 }
+
 .leasetype {
     padding: 10px 9px 0px 9px;
     color: rgba(51,51,51,1);
 }
-.leasetype ul{
-    margin:0;
+
+.leasetype ul {
+    margin: 0;
 }
+
 .leasetype ul li {
     display: inline-block;
 }
+
 .leasetype_li {
     width: 72px;
     height: 42px;
     background: rgba(242,242,242,1);
     border-radius: 2px;
     margin: 4px 4px;
-
     text-align: center;
     font-size: 11px;
     cursor: pointer;
 }
+
 .leasetype_li_on {
     width: 72px;
     height: 42px;
@@ -348,31 +416,36 @@ li {
     text-align: center;
     font-size: 11px;
     cursor: pointer;
-    color:#fff;
+    color: #fff;
 }
+
 .leasetype_li p {
     margin: 0;
 }
+
 .leasetype_li_on p {
     margin: 0;
 }
+
 .leaseRoomList {
     height: 454px;
     overflow-y: scroll;
     margin: 5px 0 0 6px;
 }
+
 .leaseRoomList ul {
-
 }
-.leaseRoomList ul li{
 
+.leaseRoomList ul li {
 }
+
 .leaseRoomList ul li img {
     float: left;
     width: 88px;
     height: 66px;
-    border-radius:2px;
+    border-radius: 2px;
 }
+
 .leaseRooms {
     padding: 8px 0 0 5px;
     color: rgba(152,159,168,1);
@@ -380,6 +453,7 @@ li {
     height: 82px;
     border-radius: 2px;
 }
+
 .leaseRooms_on {
     background: rgba(23,161,230,1);
     color: #fff;
@@ -388,37 +462,44 @@ li {
     height: 82px;
     border-radius: 2px;
 }
-.leaseRooms_on p{
+
+.leaseRooms_on p {
     color: #fff;
 }
+
 .leaseRooms_on span {
     color: #fff;
 }
-.leaseRooms img {
 
+.leaseRooms img {
 }
+
 .leaseRoomsRight {
     display: inline-block;
     width: 133px;
     height: 66px;
     margin-left: 8px;
 }
+
 .leaseRoomsRight p {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     margin: 0;
 }
+
 .leaseName {
-    font-size: 12px;
+    font-size: 16px;
     font-weight: bold;
     color: rgba(51,51,51,1);
 }
+
 .leasePrice {
     font-size: 16px;
     font-weight: bold;
     color: rgba(220,26,63,1);
 }
+
 .leaseArea {
     font-size: 12px;
     color: rgba(51,51,51,1);
@@ -427,14 +508,14 @@ li {
 /*sell*/
 .sellListBox {
 }
-.sellRoom{
 
+.sellRoom {
 }
-.companyListBox{
 
+.companyListBox {
 }
-.companys{
 
+.companys {
 }
 /*compnay*/
 .companytype_li {
@@ -449,6 +530,7 @@ li {
     border-radius: 2px;
     line-height: 24px;
 }
+
 .companytype_li_on {
     margin: 4px 4px;
     text-align: center;
@@ -468,12 +550,14 @@ li {
     margin-top: auto;
     margin-top: -163px;
 }
+
 .ParkInfoThree_leftBox {
     width: 860px;
     display: inline-block;
     height: 400px;
     margin-right: 54px;
 }
+
 .ParkInfoThree_rightBox {
     background: #fff;
     width: 285px;
@@ -484,6 +568,7 @@ li {
     position: absolute;
     top: 1px;
 }
+
 .ParkInfoThree_rightBox_up {
     background: #ccc;
     width: 285px;
@@ -491,8 +576,8 @@ li {
     /*position: relative;
     top: -652px;*/
     float: right;
-    position:absolute;
-    top:1px;
+    position: absolute;
+    top: 1px;
 }
 /*.ParkInfoThree_rightBox_up2 {
     background: #ccc;
@@ -513,6 +598,7 @@ li {
 .ParkInfoThree_right {
     padding: 12px 0 0 0;
 }
+
 .pitr_title {
     font-size: 16px;
     font-weight: bold;
@@ -520,9 +606,10 @@ li {
     color: rgba(51,51,51,1);
     margin-bottom: 10px;
 }
+
 .ParkInfoThree_right p {
- 
 }
+
 .ParkInfoThree_right_one {
 }
 
@@ -535,6 +622,7 @@ li {
     border-radius: 4px;
     margin-right: 10px;
 }
+
 .ParkInfoThree_right_one {
     /*display: inline-block;
 
@@ -548,17 +636,20 @@ color:rgba(220,26,63,1);
 
     */
 }
+
 .pitro_rb {
     /*background: #e6e6e6;*/
     display: inline-block;
     width: 215px;
 }
+
 .pitro_name {
     font-size: 14px;
     font-weight: bold;
     line-height: 19px;
     color: rgba(51,51,51,1);
 }
+
 .pitro_text1 {
     color: rgba(152,159,168,1);
     margin-bottom: 5px;
@@ -567,19 +658,23 @@ color:rgba(220,26,63,1);
     overflow: hidden;
     height: 39px;
 }
+
 .pitro_text2 {
     font-size: 12px !important;
     font-weight: 400 !important;
     color: rgba(220,26,63,1) !important;
 }
-.ParkInfoThree_right_two{
 
+.ParkInfoThree_right_two {
 }
+
 .ParkInfoThree_right_two input {
-    border:none;
+    border: none;
 }
+
 .pitrt_tit {
 }
+
 .pitrt_inp {
     width: 285px;
     height: 36px;
@@ -591,6 +686,7 @@ color:rgba(220,26,63,1);
     padding: 6px;
     font-size: 12px;
 }
+
 .ParkInfoThree_right_three {
     width: 285px;
     height: 114px;
@@ -600,13 +696,15 @@ color:rgba(220,26,63,1);
     border-radius: 4px;
     padding: 8px;
 }
+
 .pitrth_text1 {
     font-size: 16px;
     font-weight: bold;
-    line-height: 21px; 
+    line-height: 21px;
     color: rgba(51,51,51,1);
     margin-bottom: 10px;
 }
+
 .ParkInfoThree_right_three textarea {
     width: 253px;
     height: 69px;
@@ -617,8 +715,10 @@ color:rgba(220,26,63,1);
     opacity: 1;
     border: none;
 }
+
 .ParkInfoThree_right_three input {
 }
+
 .pitr_btn {
     width: 140px;
     height: 36px;
@@ -627,13 +727,26 @@ color:rgba(220,26,63,1);
     border-radius: 4px;
     border: none;
     color: #fff;
-    margin: 12px 25% ;
-    cursor:pointer;
+    margin: 12px 25%;
+    cursor: pointer;
 }
 /*left*/
 .ParkInfoThree_left {
     padding: 24px 0 32px 0;
 }
+
+.roomInfo_tit {
+    width: 840px;
+    height: 38px;
+    font-size: 28px;
+    font-weight: bold;
+    color: rgba(51,51,51,1);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 45px;
+}
+
 .ParkInfoThree_left_title {
     text-align: left;
     height: 40px;
@@ -642,9 +755,10 @@ color:rgba(220,26,63,1);
     font-size: 14px;
     color: rgba(51,51,51,1);
 }
-.ParkInfoThree_left_title ul{
 
+.ParkInfoThree_left_title ul {
 }
+
 .ParkInfoThree_left_title ul li {
     display: inline-block;
     margin: 0 38px 0 0;
@@ -654,6 +768,7 @@ color:rgba(220,26,63,1);
     height: 40px;
     border-radius: 4px 4px 0px 0px;
 }
+
 .ParkInfoIndex_in {
     width: 86px;
     height: 40px;
@@ -662,23 +777,27 @@ color:rgba(220,26,63,1);
     color: #fff;
     font-weight: bold;
 }
+
 .RoomInfoThreeLeft_all {
     border: 1px solid red;
-    height: 550px;
+    height: 570px;
 }
+
 .RoomInfoThreeLeft_part {
     /*border: 1px solid red;*/
-    height: 385px;
+    height: 412px;
 }
-.ParkInfoThree_left_text{
 
+.ParkInfoThree_left_text {
 }
-.ParkInfoThree_left_text div{
 
+.ParkInfoThree_left_text div {
 }
+
 .ParkInfo_text {
     padding: 24px 0;
 }
+
 .ParkInfo_text p {
     margin: 0;
     text-indent: 30px;
@@ -687,79 +806,166 @@ color:rgba(220,26,63,1);
     line-height: 26px;
     color: rgba(51,51,51,1);
 }
-.infoImg{
 
+.infoImg {
 }
-.infoImg_left{
 
+.infoImg_left {
 }
-.infoImg_ul{
 
+.infoImg_ul {
 }
+
 .infoImg_ul ul {
-    width: 860px;
+    /*width: 860px;
     height: 484px;
-    overflow: hidden;
+    overflow: hidden;*/
 }
-.infoImg_ul ul li {
 
+.infoImg_ul ul li {
 }
-.infoImg_ul ul li img{
-    width:50%;
-    height:100%;
+
+.infoImg_ul ul li img {
+    /*width:50%;
+    height:100%;*/
 }
+
 .infoImg_num {
 }
-.infoImg_right{
 
+.infoImg_right {
 }
 /*roomInfo*/
 .roomInfoBox {
 }
+
 .roomInfoBox_one {
 }
+
 .roomInfoBox_one ul {
 }
+
 .roomInfoBox_one ul li {
 }
-.roomInfoBox_one ul li span{
+
+.roomInfoBox_one ul li span {
 }
+
 .roomInfoBox_two {
 }
-.roomInfoBox_two ul{
-}
-.roomInfoBox_two ul li{
-}
-.roomInfoBox_two ul li span{
-}
-.roomInfoBox_one{
 
+.roomInfoBox_two ul {
 }
+
+.roomInfoBox_two ul li {
+}
+
+.roomInfoBox_two ul li span {
+}
+
+.roomInfoBox_one {
+}
+
 .roomInfoBox_one ul {
+}
 
-}
 .roomInfoBox_one li {
-    display:inline-block;
-    margin-right:24px;
+    display: inline-block;
+    margin-right: 24px;
 }
-.roomInfoBox_one li p{
-    margin:0;
+
+.roomInfoBox_one li p {
+    margin: 0;
 }
+
 .ribo_bold {
     font-size: 24px;
     font-weight: bold;
     color: rgba(51,51,51,1);
 }
-.roomInfoBox_two{
 
+.roomInfoBox_two {
 }
+
 .roomInfoBox_two li {
     color: rgba(152,159,168,1);
-    margin:16px 0;
+    margin: 16px 0;
 }
+
 .roomInfoBox_two li span {
     color: rgba(51,51,51,1);
-    margin-left:32px;
-    
+    margin-left: 32px;
 }
 /*img*/
+.infoImg {
+    width: 858px;
+    height: 443px;
+    margin-top: 20px;
+}
+
+.stylesgoleft {
+    float: left;
+    width: 40px;
+    height: 80px;
+    background: rgba(0,0,0,.5);
+    position: relative;
+    top: 188px;
+    cursor: pointer;
+    color: #fff;
+    text-align: center;
+    line-height: 73px;
+    z-index: 1;
+    opacity: 0;
+}
+
+.stylesgoright {
+    float: right;
+    width: 40px;
+    height: 80px;
+    background: rgba(0,0,0,.5);
+    position: relative;
+    top: -335px;
+    cursor: pointer;
+    color: #fff;
+    text-align: center;
+    line-height: 73px;
+    z-index: 1;
+    opacity:0;
+}
+
+.infoImg img {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: -82px;
+    border-radius: 4px;
+    cursor:pointer;
+}
+.infoImg:hover .stylesgoleft {
+    opacity: 1;
+}
+.infoImg:hover .stylesgoright {
+    opacity: 1;
+}
+.infoImg_num {
+    width: 60px;
+    height: 26px;
+    background: rgba(0,0,0,1);
+    opacity: 0.5;
+    border-radius: 15px;
+    color: #fff;
+    text-align: center;
+    line-height: 26px;
+    position: relative;
+    top: -135px;
+    margin: auto;
+}
+.fullView {
+    width: 200%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    z-index: 1;
+    position: fixed;
+    top: 0px;
+    left: -200px;
+}
