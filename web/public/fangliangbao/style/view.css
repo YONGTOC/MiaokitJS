@@ -49,7 +49,7 @@ li {
 .homeBottom {
     height: 320px;
     bottom: 0rem;
-    position: absolute;
+    /*position: absolute;*/
     width: 100%;
     background: rgb(51, 51, 51);
     font-size: 14px;
@@ -62,12 +62,12 @@ li {
 }
 .homeBottomBox_one {
     text-align: center;
-    margin-top: 47px;
+    padding-top: 47px;
 }
 .hbLeft {
-    width: 150px;
+    width: 210px;
     display: inline-block;
-    text-align:left;
+    text-align: left;
 }
 .hbLeft ul{
 
@@ -84,7 +84,7 @@ li {
 .hbMiddle ul li {
 }
 .hbRight {
-    width: 440px;
+    width: 370px;
     display: inline-block;
     text-align: right;
     position: relative;
@@ -103,8 +103,8 @@ li {
 /*parkInfo*/
 .parkInfo {
     background: rgb(255, 255, 255);
-    top: 40px;
-    position: absolute;
+    /*top: 40px;*/
+    position: relative;
     width: 100%;
 }
 .parkInfoBox_one {
@@ -115,6 +115,8 @@ li {
 .parkInfoBox_title {
     width: 1200px;
     margin: auto;
+    position: relative;
+    top: -845px
 }
 .ParkInfoOne_title img {
     display: inline-block;
@@ -125,13 +127,12 @@ li {
     top: 30px;
 }
 .ParkInfoOne_title ul li {
-    float: left;
     font-size: 16px;
-    line-height: 24px;
     color: rgba(51,51,51,1);
-    letter-spacing: 1.5px;
-    margin: 0 15px;
+    float: left;
+    margin: 0 12px;
 }
+
 .ParkInfoOne_html {
     color: rgba(152,159,168,1);
     margin: 10px 0;
@@ -182,15 +183,15 @@ li {
 }
 .parkInfoBox_list {
     width: 260px;
-    /*margin: auto calc(20%);*/
     background: rgb(51, 51, 51);
     height: 1px;
-    position: relative;
     font-size: 14px;
     color: rgba(185,185,185,1);
+    position: relative;
+    top: -830px;
 }
-.ParkInfoTwo {
-    border: 1px solid red;
+.ParkInfoTwoAll {
+    border: 0px solid red;
     width: 260px;
     height: 643px;
     background: rgba(255,255,255,1);
@@ -198,4 +199,523 @@ li {
     border-radius: 4px;
     position: relative;
     left: 0px;
+}
+.ParkInfoTwoOver {
+    width: 260px;
+    background: rgba(255,255,255,1);
+    opacity: 1;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    left: 0px;
+}
+@media screen and (min-width: 1201px) {
+    .parkInfoBox_list {
+        margin: auto calc(4%);
+    }
+}
+
+@media screen and (min-width: 1301px) {
+    .parkInfoBox_list {
+        margin: auto calc(5%);
+    }
+}
+
+@media screen and (min-width: 1401px) {
+    .parkInfoBox_list {
+        margin: auto calc(10%);
+    }
+}
+
+@media screen and (min-width: 1501px) {
+    .parkInfoBox_list {
+        margin: auto calc(13%);
+    }
+}
+
+@media screen and (min-width: 1601px) {
+    .parkInfoBox_list {
+        margin: auto calc(15%);
+    }
+}
+@media screen and (min-width: 1701px) {
+    .parkInfoBox_list {
+        margin: auto calc(15%);
+    }
+}
+@media screen and (min-width: 1801px) {
+    .parkInfoBox_list {
+        margin: auto calc(20%);
+    }
+}
+.ParkInfoTwoTitle {
+    text-align: center;
+    height: 42px;
+    border-bottom: 1px solid #ccc;
+    line-height: 40px;
+    font-size: 14px;
+    color: rgba(51,51,51,1);
+}
+.ParkInfoTwoTitle ul {
+}
+.ParkInfoTwoTitle ul li {
+    display: inline-block;
+    margin: 0 10px;
+}
+.ParkInfoTwoTitleActive {
+    color: rgba(23,161,230,1);
+    border-bottom: 2px solid rgb(23, 161, 230);
+    font-weight: bold;
+}
+.ParkInfoTwoListBox {
+}
+.ParkInfoTwoListBox ul{
+
+}
+.ParkInfoTwoListBox ul  li{
+
+}
+.ParkInfoTwoListContect{
+
+}
+.ParkInfoTwoList {
+    /*height: 570px;*/
+}
+.ParkInfoTwoListTrun {
+    border-top: 1px solid rgb(242, 242, 242);
+    height: 30px;
+    text-align: center;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    line-height: 28px;
+}
+.ParkInfoTwoListTrunUp {
+    border-top: 1px solid rgb(242, 242, 242);
+    height: 30px;
+    text-align: center;
+    position: absolute;
+    bottom: -31px;
+    width: 100%;
+    background: #fff;
+    border-radius: 0 0 4px 4px;
+    line-height: 28px;
+}
+.leaseListBox {
+}
+.leaseRoom{
+
+}
+.leasetype {
+    padding: 10px 9px 0px 9px;
+    color: rgba(51,51,51,1);
+}
+.leasetype ul{
+    margin:0;
+}
+.leasetype ul li {
+    display: inline-block;
+}
+.leasetype_li {
+    width: 72px;
+    height: 42px;
+    background: rgba(242,242,242,1);
+    border-radius: 2px;
+    margin: 4px 4px;
+
+    text-align: center;
+    font-size: 11px;
+    cursor: pointer;
+}
+.leasetype_li_on {
+    width: 72px;
+    height: 42px;
+    background: rgba(23,161,230,1);
+    border-radius: 2px;
+    margin: 4px 4px;
+    text-align: center;
+    font-size: 11px;
+    cursor: pointer;
+    color:#fff;
+}
+.leasetype_li p {
+    margin: 0;
+}
+.leasetype_li_on p {
+    margin: 0;
+}
+.leaseRoomList {
+    height: 454px;
+    overflow-y: scroll;
+    margin: 5px 0 0 6px;
+}
+.leaseRoomList ul {
+
+}
+.leaseRoomList ul li{
+
+}
+.leaseRoomList ul li img {
+    float: left;
+    width: 88px;
+    height: 66px;
+    border-radius:2px;
+}
+.leaseRooms {
+    padding: 8px 0 0 5px;
+    color: rgba(152,159,168,1);
+    width: 234px;
+    height: 82px;
+    border-radius: 2px;
+}
+.leaseRooms_on {
+    background: rgba(23,161,230,1);
+    color: #fff;
+    padding: 8px 0 0 5px;
+    width: 234px;
+    height: 82px;
+    border-radius: 2px;
+}
+.leaseRooms_on p{
+    color: #fff;
+}
+.leaseRooms_on span {
+    color: #fff;
+}
+.leaseRooms img {
+
+}
+.leaseRoomsRight {
+    display: inline-block;
+    width: 133px;
+    height: 66px;
+    margin-left: 8px;
+}
+.leaseRoomsRight p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0;
+}
+.leaseName {
+    font-size: 12px;
+    font-weight: bold;
+    color: rgba(51,51,51,1);
+}
+.leasePrice {
+    font-size: 16px;
+    font-weight: bold;
+    color: rgba(220,26,63,1);
+}
+.leaseArea {
+    font-size: 12px;
+    color: rgba(51,51,51,1);
+}
+
+/*sell*/
+.sellListBox {
+}
+.sellRoom{
+
+}
+.companyListBox{
+
+}
+.companys{
+
+}
+/*compnay*/
+.companytype_li {
+    background: rgba(242,242,242,1);
+    opacity: 1;
+    margin: 4px 4px;
+    text-align: center;
+    font-size: 11px;
+    cursor: pointer;
+    width: 72px;
+    height: 24px;
+    border-radius: 2px;
+    line-height: 24px;
+}
+.companytype_li_on {
+    margin: 4px 4px;
+    text-align: center;
+    font-size: 11px;
+    cursor: pointer;
+    color: #fff;
+    width: 72px;
+    height: 24px;
+    background: rgba(23,161,230,1);
+    border-radius: 2px;
+    line-height: 24px;
+}
+/*three*/
+.parkInfoBox_text {
+    width: 1200px;
+    margin: auto;
+    margin-top: auto;
+    margin-top: -163px;
+}
+.ParkInfoThree_leftBox {
+    width: 860px;
+    display: inline-block;
+    height: 400px;
+    margin-right: 54px;
+}
+.ParkInfoThree_rightBox {
+    background: #fff;
+    width: 285px;
+    display: inline-block;
+    /*position: relative;
+    top: -652px;*/
+    float: right;
+    position: absolute;
+    top: 1px;
+}
+.ParkInfoThree_rightBox_up {
+    background: #ccc;
+    width: 285px;
+    display: inline-block;
+    /*position: relative;
+    top: -652px;*/
+    float: right;
+    position:absolute;
+    top:1px;
+}
+/*.ParkInfoThree_rightBox_up2 {
+    background: #ccc;
+    width: 285px;
+    display: inline-block;
+    position: relative;
+    top: -652px;
+    float: right;
+}
+.ParkInfoThree_rightBox_up3 {
+    background: #ccc;
+    width: 285px;
+    display: inline-block;
+    position: relative;
+    top: -817px;
+    float: right;
+}*/
+.ParkInfoThree_right {
+    padding: 12px 0 0 0;
+}
+.pitr_title {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 21px;
+    color: rgba(51,51,51,1);
+    margin-bottom: 10px;
+}
+.ParkInfoThree_right p {
+ 
+}
+.ParkInfoThree_right_one {
+}
+
+.ParkInfoThree_right_one img {
+    width: 60px;
+    height: 60px;
+    display: inline-block;
+    position: relative;
+    top: -48px;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+.ParkInfoThree_right_one {
+    /*display: inline-block;
+
+
+font-size:16px;
+font-family:Microsoft YaHei;
+font-weight:bold;
+line-height:21px;
+color:rgba(220,26,63,1);
+
+
+    */
+}
+.pitro_rb {
+    /*background: #e6e6e6;*/
+    display: inline-block;
+    width: 215px;
+}
+.pitro_name {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 19px;
+    color: rgba(51,51,51,1);
+}
+.pitro_text1 {
+    color: rgba(152,159,168,1);
+    margin-bottom: 5px;
+    font-size: 12px;
+    margin-top: -7px;
+    overflow: hidden;
+    height: 39px;
+}
+.pitro_text2 {
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    color: rgba(220,26,63,1) !important;
+}
+.ParkInfoThree_right_two{
+
+}
+.ParkInfoThree_right_two input {
+    border:none;
+}
+.pitrt_tit {
+}
+.pitrt_inp {
+    width: 285px;
+    height: 36px;
+    background: rgba(255,255,255,1);
+    border: 1px solid rgb(230, 230, 230);
+    opacity: 1;
+    border-radius: 4px;
+    color: rgba(152,159,168,1);
+    padding: 6px;
+    font-size: 12px;
+}
+.ParkInfoThree_right_three {
+    width: 285px;
+    height: 114px;
+    background: rgba(255,255,255,1);
+    border: 1px solid rgba(230,230,230,1);
+    opacity: 1;
+    border-radius: 4px;
+    padding: 8px;
+}
+.pitrth_text1 {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 21px;
+    color: rgba(51,51,51,1);
+    margin-bottom: 10px;
+}
+.ParkInfoThree_right_three textarea {
+    width: 253px;
+    height: 69px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+    color: rgba(152,159,168,1);
+    opacity: 1;
+    border: none;
+}
+.ParkInfoThree_right_three input {
+}
+.pitr_btn {
+    width: 140px;
+    height: 36px;
+    background: rgba(23,161,230,1);
+    opacity: 1;
+    border-radius: 4px;
+    border: none;
+    color: #fff;
+    margin: 12px 25% ;
+    cursor:pointer;
+}
+/*left*/
+.ParkInfoThree_left {
+    padding: 24px 0 32px 0;
+}
+.ParkInfoThree_left_title {
+    text-align: left;
+    height: 40px;
+    border-bottom: 1px solid rgba(23,161,230,1);
+    line-height: 40px;
+    font-size: 14px;
+    color: rgba(51,51,51,1);
+}
+.ParkInfoThree_left_title ul{
+
+}
+.ParkInfoThree_left_title ul li {
+    display: inline-block;
+    margin: 0 38px 0 0;
+    text-align: center;
+    display: inline-block;
+    width: 86px;
+    height: 40px;
+    border-radius: 4px 4px 0px 0px;
+}
+.ParkInfoIndex_in {
+    width: 86px;
+    height: 40px;
+    background: rgba(23,161,230,1);
+    border-radius: 4px 4px 0px 0px;
+    color: #fff;
+    font-weight: bold;
+}
+.RoomInfoThreeLeft_all {
+    border: 1px solid red;
+    height: 550px;
+}
+.RoomInfoThreeLeft_part {
+    border: 1px solid red;
+    height: 385px;
+}
+.ParkInfoThree_left_text{
+
+}
+.ParkInfoThree_left_text div{
+
+}
+.ParkInfo_text {
+    padding: 24px 0;
+}
+.ParkInfo_text p {
+    margin: 0;
+    text-indent: 30px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 26px;
+    color: rgba(51,51,51,1);
+}
+.infoImg{
+
+}
+.infoImg_left{
+
+}
+.infoImg_ul{
+
+}
+.infoImg_ul ul {
+    width: 860px;
+    height: 484px;
+    overflow: hidden;
+}
+.infoImg_ul ul li {
+
+}
+.infoImg_ul ul li img{
+    width:100%;
+    height:100%;
+}
+.infoImg_num {
+}
+.infoImg_right{
+
+}
+/*roomInfo*/
+.roomInfoBox {
+}
+.roomInfoBox_one {
+}
+.roomInfoBox_one ul {
+}
+.roomInfoBox_one ul li {
+}
+.roomInfoBox_one ul li span{
+}
+.roomInfoBox_two {
+}
+.roomInfoBox_two ul{
+}
+.roomInfoBox_two ul li{
+}
+.roomInfoBox_two ul li span{
 }
