@@ -15,7 +15,7 @@ class Router extends React.Component {
         <Switch>
           <Route exact path="/" component={Index} />
 
-            <Route exact path="/pi" component={ParkInfo} />
+          <Route exact path="/pi" component={ParkInfo} />
         </Switch>
       </HashRouter>
       )

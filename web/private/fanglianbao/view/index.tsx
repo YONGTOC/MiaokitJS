@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom";
 import "css!./style/index.css";
 
 import Router from 'router';
+import AllBottom from "allBottom"
 import "css!./style/view.css";
 
 declare var viewDraw: any;
@@ -43,6 +44,7 @@ class Index extends React.Component {
 
 
   public componentDidMount() {
+    this.setState({ clientWidth: (document.body.clientWidth - 1210) / 2 })
     window.onresize = () => {
       this.setState({ clientWidth: (document.body.clientWidth - 1210) / 2 })
     }
@@ -213,7 +215,9 @@ class Index extends React.Component {
           </div>
 
           <div className="index-more">查看更多广州房源</div>
-
+        </div>
+        <div style={{ position: "relative" }}>
+          <AllBottom />
         </div>
       </div>
     )

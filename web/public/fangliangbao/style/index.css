@@ -52,6 +52,7 @@
 .warp {
   width: 1200px;
   margin: 0 auto;
+  margin-bottom: 360px;
 }
 
 .index-search {
