@@ -8,6 +8,13 @@
 li {
     list-style-type: none;
 }
+.index::-webkit-scrollbar {
+    display: none;
+    /*隐藏滚动条，当IE下溢出，仍然可以滚动*/
+    -ms-overflow-style: none;
+    /*火狐下隐藏滚动条*/
+    overflow: -moz-scrollbars-none;
+}
 /*hometop*/
 .homeTop {
     background: rgb(51, 51, 51);
@@ -101,11 +108,17 @@ li {
     margin:0;
 }
 /*parkInfo*/
+ 
 .parkInfo {
     background: rgb(255, 255, 255);
     /*top: 40px;*/
     position: relative;
     width: 100%;
+    top: 215px;
+}
+.parkInfo_bottom {
+    position: relative;
+    top: 220px;
 }
 .parkInfoBox_one {
     margin: auto;
@@ -654,7 +667,7 @@ color:rgba(220,26,63,1);
     height: 550px;
 }
 .RoomInfoThreeLeft_part {
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     height: 385px;
 }
 .ParkInfoThree_left_text{
@@ -692,7 +705,7 @@ color:rgba(220,26,63,1);
 
 }
 .infoImg_ul ul li img{
-    width:100%;
+    width:50%;
     height:100%;
 }
 .infoImg_num {
@@ -719,3 +732,34 @@ color:rgba(220,26,63,1);
 }
 .roomInfoBox_two ul li span{
 }
+.roomInfoBox_one{
+
+}
+.roomInfoBox_one ul {
+
+}
+.roomInfoBox_one li {
+    display:inline-block;
+    margin-right:24px;
+}
+.roomInfoBox_one li p{
+    margin:0;
+}
+.ribo_bold {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgba(51,51,51,1);
+}
+.roomInfoBox_two{
+
+}
+.roomInfoBox_two li {
+    color: rgba(152,159,168,1);
+    margin:16px 0;
+}
+.roomInfoBox_two li span {
+    color: rgba(51,51,51,1);
+    margin-left:32px;
+    
+}
+/*img*/

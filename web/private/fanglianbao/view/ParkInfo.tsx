@@ -1,6 +1,5 @@
 ﻿import * as React from "react";
 import * as ReactDOM from "react-dom";
-
 import Router from 'router';
 
 import HomeTop from "HomeTop";
@@ -30,7 +29,9 @@ class ParkInfo extends React.Component {
             <ParkInfoThree />
           </div>
         </div>
+        <div className="parkInfo_bottom"> 
         <AllBottom />
+        </div>
       </div>
     )
   }
@@ -676,7 +677,7 @@ class RoomInfoThreeLeft extends React.Component {
   }
 
   public render() {
-    //<div  className="ParkInfoThree_left_title">
+    //<div  className="ParkInfoThree_left_title"> 
     //   <ul>
     //     <li className={this.state.ParkInfoIndex == 0 ? "ParkInfoIndex_in" : null}
     return (
@@ -697,26 +698,26 @@ class RoomInfoThreeLeft extends React.Component {
         {this.state.RoomInfoIndex == 0 ?
           <div className="roomInfoBox">
             <ul className="roomInfoBox_one">
-              <li><span>98</span> 元/m²⋅月</li>
+              <li><span style={{"font-size":"46px","font-weight":"bold","color":"rgba(220,26,63,1)"}}>98</span> 元/m²⋅月</li>
               <li>总价：<span>19,600‬</span> 元/m²⋅月</li>
-              <li>
+              <li style={{"margin": "0px 24px"}}>
                 <p>建筑面积</p>
-                <p><span>200</span>m²</p>
+                <p className="ribo_bold"><span>200</span>m²</p>
               </li>
-              <li>
+              <li style={{"margin": "0px 24px"}}>
                 <p>可容纳工位</p>
-                <p><span>29~58</span>个工位</p>
+                <p className="ribo_bold"><span>29~58</span>个工位</p>
               </li>
-              <li>
-                <p>装修程度</p>
-                <p>中等装修</p>
+                <li style={{ "margin": "0px 24px" }}>
+                  <p>装修程度</p>
+                <p className="ribo_bold">中等装修</p>
               </li>
             </ul>
             <ul className="roomInfoBox_two">
               <li>免租时间 <span>面议</span></li>
               <li>总共楼层 <span>12层</span></li>
               <li>所在楼层 <span>6层</span></li>
-              <li>电梯 <span>有电梯</span></li>
+              <li>电<span style={{"margin-left":"28px","color":"rgba(152,159,168,1)"}}>梯</span><span>有电梯</span></li>
               <li>看房时间 <span>联系顾问，随时可看</span></li>
               <li>更新时间 <span>14小时前</span></li>
             </ul>
@@ -730,15 +731,15 @@ class RoomInfoThreeLeft extends React.Component {
             </div>
             <div className="infoImg_ul">
               <ul>
-                <li> <img src="./fangliangbao/image/demo.png" /></li>
-                <li> <img src="./fangliangbao/image/demo.png" /></li>
-                <li> <img src="./fangliangbao/image/demo.png" /></li>
+                <li> <img src="./fangliangbao/image/build.png" /></li>
+                <li> <img src="./fangliangbao/image/build.png" /></li>
+                <li> <img src="./fangliangbao/image/build.png" /></li>
               </ul>
             </div>
             <p className="infoImg_num">
               <span>2</span> / <span>8</span>
             </p>
-            <div className="infoImg_rightt">
+            <div className="infoImg_right">
               <i className="iconfont " >&#xe83c;</i>
             </div>
           </div>
@@ -751,15 +752,15 @@ class RoomInfoThreeLeft extends React.Component {
             </div>
             <div className="infoImg_ul">
               <ul>
-                <li> <img src="./fangliangbao/image/demo.png" /></li>
-                <li> <img src="./fangliangbao/image/demo.png" /></li>
-                <li> <img src="./fangliangbao/image/demo.png" /></li>
+                <li> <img src="./fangliangbao/image/build.png" /></li>
+                <li> <img src="./fangliangbao/image/build.png" /></li>
+                <li> <img src="./fangliangbao/image/build.png" /></li>
               </ul>
             </div>
             <p className="infoImg_num">
               <span>2</span> / <span>8</span>
             </p>
-            <div className="infoImg_rightt">
+            <div className="infoImg_right">
               <i className="iconfont " >&#xe83c;</i>
             </div>
           </div>
@@ -791,6 +792,11 @@ class CompanyInfoThreeLeft extends React.Component {
       RoomInfoIndex: index,
     })
   }
+
+  public onChange(a, b, c) {
+  console.log(a, b, c);
+}
+
 
   public render() {
     //<div  className="ParkInfoThree_left_title">
