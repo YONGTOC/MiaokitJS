@@ -590,7 +590,7 @@ color:rgba(220,26,63,1);
 .pitrth_text1 {
     font-size: 16px;
     font-weight: bold;
-    line-height: 21px;
+    line-height: 21px; 
     color: rgba(51,51,51,1);
     margin-bottom: 10px;
 }

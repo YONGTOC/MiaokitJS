@@ -15,7 +15,10 @@ import Home from "home";
 
 import DataService from "dataService";
 import GlobalAction from "compat";
+import { func } from "prop-types";
 
+
+declare var viewDraw: any;
 
 interface IProps {
   history: any
@@ -1243,8 +1246,12 @@ class LoginTest extends React.Component {
 
 export default Index;
 
-ReactDOM.render(
+viewDraw = function () {
+  ReactDOM.render(
   <Router />
   , document.getElementById('viewContainer'));
+}
+
+
 
 

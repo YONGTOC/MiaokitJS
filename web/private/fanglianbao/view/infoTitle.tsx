@@ -7,7 +7,7 @@ class InfoTitle extends React.Component {
   constructor(props) {
     super(props);
 
-
+     
   }
 
   public componentDidMount() {

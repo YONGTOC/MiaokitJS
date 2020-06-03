@@ -904,7 +904,7 @@ class ParkInfoThreeRight extends React.Component {
   }  
 
   public getNeed() {
-    console.log(this.state)
+    console.log(this.state) 
   }
 
   public render() {
