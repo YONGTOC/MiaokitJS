@@ -29,7 +29,7 @@ class HomeTop extends React.Component {
         <div className="homeTopBox">
           <div className="htLeft">
             <ul>
-              <li style={{ "margin-right": "40px" }}>
+              <li style={{ "margin": "0 40px 0 0" }}>
                 <i className="iconfont " style={{ "margin-right": "5px", "font-size": "14px" }}>&#xe83c;</i>
                 <span>广州</span></li>
               <li  className={this.state.htIndex == 1 ?  "homtop_active" : null}>首页</li>
