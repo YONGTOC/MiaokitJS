@@ -1,5 +1,6 @@
 ﻿import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { Link } from 'react-router-dom';
 
 import Router from 'router';
 
@@ -20,10 +21,14 @@ class InfoTitle extends React.Component {
         <div className="ParkInfoOne_title">
           <img src="./fangliangbao/image/blueLogo.png" />
           <ul>
-            <li style={{ "color": " rgb(23, 161, 230)", "font-weight": "bold" }}>
-              品牌园区</li>
-            <li>出租房源</li>
-            <li>房源园区</li>
+            {[{ name: "品牌园区", url: "/parkList" }, { name: "出租房源", url: "/roomList" }, { name: "房源园区", url: "" }].map((item, index) => {
+              return (
+                <Link to={item.url} key={index}>
+                  <li style={{ "color": index === this.props.index ? "rgb(23, 161, 230)" : "", "font-weight": index === this.props.index ? "bold" : "" }}>{item.name}</li>
+                </Link>
+              )
+            })
+            }
           </ul>
         </div>
       </div>
