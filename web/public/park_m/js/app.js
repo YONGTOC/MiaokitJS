@@ -476,13 +476,13 @@ class Main {
         this.m_pIndoor = null;
         this.m_pRoomViewer = null;
         this.m_aIcon = [
-            { m_pName: "Ê•ºÂÆá", m_pPath: "./data/building.png", m_pImage: null, m_pDraw: null, m_aList: null, m_pDrawList: null },
-            { m_pName: "ÂÖ®ÊôØ", m_pPath: "./data/panor.png", m_pImage: null, m_pDraw: null, m_aList: null, m_pDrawList: null },
-            { m_pName: "ÂïÜÂúà", m_pPath: "./data/business.png", m_pImage: null, m_pDraw: null, m_aList: null, m_pDrawList: null },
-            { m_pName: "ÂÖ¨‰∫§ËΩ¶", m_pPath: "./data/bus.png", m_pImage: null, m_pDraw: null, m_aList: null, m_pDrawList: null },
-            { m_pName: "ÂÅúËΩ¶Âú∫", m_pPath: "./data/park.png", m_pImage: null, m_pDraw: null, m_aList: null, m_pDrawList: null },
-            { m_pName: "ÂÖ¨Âè∏", m_pPath: "./data/building.png", m_pImage: null, m_pDraw: null, m_aList: null, m_pDrawList: null },
-            { m_pName: "ÊàøÈó¥", m_pPath: "./data/building.png", m_pImage: null, m_pDraw: null, m_aList: null, m_pDrawList: null },
+            { m_pName: "¬•”Ó", m_pPath: "./data/building.png", m_pImage: null, m_pDraw: null, m_aList: null, m_pDrawList: null },
+            { m_pName: "»´æ∞", m_pPath: "./data/panor.png", m_pImage: null, m_pDraw: null, m_aList: null, m_pDrawList: null },
+            { m_pName: "…Ã»¶", m_pPath: "./data/business.png", m_pImage: null, m_pDraw: null, m_aList: null, m_pDrawList: null },
+            { m_pName: "π´Ωª≥µ", m_pPath: "./data/bus.png", m_pImage: null, m_pDraw: null, m_aList: null, m_pDrawList: null },
+            { m_pName: "Õ£≥µ≥°", m_pPath: "./data/park.png", m_pImage: null, m_pDraw: null, m_aList: null, m_pDrawList: null },
+            { m_pName: "π´Àæ", m_pPath: "./data/building.png", m_pImage: null, m_pDraw: null, m_aList: null, m_pDrawList: null },
+            { m_pName: "∑øº‰", m_pPath: "./data/building.png", m_pImage: null, m_pDraw: null, m_aList: null, m_pDrawList: null },
         ];
         let pThis = this;
         pThis.m_pApp = MiaokitJS.App;
@@ -528,7 +528,7 @@ class Main {
             pImage.crossOrigin = "anonymous";
             pImage.onload = function (e) {
                 pIcon.m_pImage = pImage;
-                if ("Ê•ºÂÆá" === pIcon.m_pName) {
+                if ("¬•”Ó" === pIcon.m_pName) {
                     pIcon.m_pDraw = function (canvas, text, point) {
                         canvas.font = "18px Microsoft YaHei";
                         canvas.lineWidth = 2;
@@ -587,7 +587,7 @@ class Main {
                         }
                     };
                 }
-                else if ("ÂÖ®ÊôØ" === pIcon.m_pName) {
+                else if ("»´æ∞" === pIcon.m_pName) {
                     pIcon.m_pDraw = function (canvas, text, point, click) {
                         canvas.font = "18px Microsoft YaHei";
                         canvas.lineWidth = 2;
@@ -653,7 +653,7 @@ class Main {
                         return pClick;
                     };
                 }
-                else if ("ÂïÜÂúà" === pIcon.m_pName) {
+                else if ("…Ã»¶" === pIcon.m_pName) {
                     pIcon.m_pDraw = function (canvas, text, point) {
                         canvas.font = "18px Microsoft YaHei";
                         canvas.lineWidth = 2;
@@ -707,7 +707,7 @@ class Main {
                         }
                     };
                 }
-                else if ("ÂÖ¨‰∫§ËΩ¶" === pIcon.m_pName) {
+                else if ("π´Ωª≥µ" === pIcon.m_pName) {
                     pIcon.m_pDraw = function (canvas, text, point) {
                         canvas.font = "18px Microsoft YaHei";
                         canvas.lineWidth = 2;
@@ -761,7 +761,7 @@ class Main {
                         }
                     };
                 }
-                else if ("ÂÅúËΩ¶Âú∫" === pIcon.m_pName) {
+                else if ("Õ£≥µ≥°" === pIcon.m_pName) {
                     pIcon.m_pDraw = function (canvas, text, point) {
                         canvas.font = "18px Microsoft YaHei";
                         canvas.lineWidth = 2;
@@ -815,7 +815,7 @@ class Main {
                         }
                     };
                 }
-                else if ("ÂÖ¨Âè∏" === pIcon.m_pName) {
+                else if ("π´Àæ" === pIcon.m_pName) {
                     pIcon.m_pDraw = function (canvas, text, point) {
                         canvas.font = "18px Microsoft YaHei";
                         canvas.lineWidth = 2;
@@ -867,7 +867,7 @@ class Main {
                         }
                     };
                 }
-                else if ("ÊàøÈó¥" === pIcon.m_pName) {
+                else if ("∑øº‰" === pIcon.m_pName) {
                     pIcon.m_pDraw = function (canvas, text, point, click, url) {
                         canvas.font = "18px Microsoft YaHei";
                         canvas.lineWidth = 2;
@@ -938,7 +938,7 @@ class Main {
         let pThis = this;
         if (!pThis.m_pCity) {
             pThis.m_pCity = {
-                m_pName: "Ê°ÇÊûó",
+                m_pName: "π¡÷",
                 m_nLng: 110.344301,
                 m_nLat: 25.272208
             };

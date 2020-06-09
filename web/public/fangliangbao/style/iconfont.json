@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "12673654",
+      "name": "关闭",
+      "font_class": "guanbi",
+      "unicode": "e803",
+      "unicode_decimal": 59395
+    },
+    {
+      "icon_id": "15111625",
+      "name": "清除",
+      "font_class": "qingchu",
+      "unicode": "e83e",
+      "unicode_decimal": 59454
+    },
+    {
+      "icon_id": "15111626",
+      "name": "分类",
+      "font_class": "fenlei",
+      "unicode": "e83f",
+      "unicode_decimal": 59455
+    },
+    {
       "icon_id": "15034709",
       "name": "箭头",
       "font_class": "jiantou",

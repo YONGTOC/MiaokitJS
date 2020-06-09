@@ -6,22 +6,28 @@
 .hide {
     display: none;
 }
-
+i {
+    display: inline-block;
+}
 li {
     list-style-type: none;
 }
-/*.leaseRoomList::-webkit-scrollbar {
+.leaseRoomList::-webkit-scrollbar {
     -ms-overflow-style: none;
     overflow: -moz-scrollbars-none;
-}*/
-
-/*html {
+}
+textarea {
+    resize: none;
+    overflow: hidden;
+    border: none;
+} 
+html {
     scrollbar-width: none;
 }
 
 html::-webkit-scrollbar {
     display: none;
-}*/
+}
 
 .leaseRoomList {
     scrollbar-width: none;
@@ -30,7 +36,9 @@ html::-webkit-scrollbar {
 .leaseRoomList::-webkit-scrollbar {
     display: none;
 }
-
+.listOver{
+    text-align:center;
+}
 /*hometop*/
 .homeTop {
     background: rgb(51, 51, 51);
@@ -53,25 +61,21 @@ html::-webkit-scrollbar {
     float: left;
 }
 
-.htLeft ul {
-}
-
 .htLeft ul li {
     float: left;
     text-align: center;
     margin: 0px 10px;
+    cursor:pointer;
 }
 
 .htRight {
     float: right;
 }
 
-.htRight ul {
-}
-
 .htRight ul li {
     float: left;
-    margin: 0 10px;
+    margin: 0 10px 0 30px;
+    cursor:pointer;
 }
 
 .homtop_active {
@@ -106,21 +110,9 @@ html::-webkit-scrollbar {
     text-align: left;
 }
 
-.hbLeft ul {
-}
-
-.hbLeft ul li {
-}
-
 .hbMiddle {
     width: 150px;
     display: inline-block;
-}
-
-.hbMiddle ul {
-}
-
-.hbMiddle ul li {
 }
 
 .hbRight {
@@ -130,13 +122,6 @@ html::-webkit-scrollbar {
     position: relative;
     top: -63px;
 }
-
-.hbRight ul {
-}
-
-.hbRight ul li {
-}
-
 .homeBottomBox_two {
     text-align: center;
 }
@@ -156,7 +141,7 @@ html::-webkit-scrollbar {
 
 .parkInfo_bottom {
     position: relative;
-    top: 220px;
+    top: 260px;
 }
 
 .parkInfoBox_one {
@@ -187,37 +172,17 @@ html::-webkit-scrollbar {
     color: rgba(51,51,51,1);
     float: left;
     margin: 0 12px;
+    cursor:pointer;
 }
 
 .ParkInfoOne_html {
     color: rgba(152,159,168,1);
     margin: 10px 0;
+    cursor:pointer;
 }
-
-.ParkInfoOne_html p {
-}
-
 .ParkInfoOne_html span {
+    margin:0 5px;
 }
-
-.ParkInfoOne_info {
-}
-
-.ParkInfoOne_info p {
-}
-
-.ParkInfoOne_info ul {
-}
-
-.ParkInfoOne_info ul li {
-}
-
-.ParkInfoOne_info i {
-}
-
-.ParkInfoOne_info ul li {
-}
-
 .ParkInfoOne_info p {
     font-size: 28px;
     font-weight: bold;
@@ -227,20 +192,36 @@ html::-webkit-scrollbar {
 
 .ParkInfoOne_info ul {
     float: right;
+    margin-top: 15px;
 }
 
-.ParkInfoOne_info ul li {
+.ParkInfoOne_info ul li:nth-child(1) {
+    margin: 0 10px 0 0;
+}
+.ParkInfoOne_info_li {
     display: inline;
     background: rgba(255,255,255,1);
     border: 1px solid rgba(204,204,204,1);
     border-radius: 2px;
     padding: 8px 12px;
-    margin: 0 5px;
+    cursor: pointer;
 }
-
-.ParkInfoOne_info i {
+ 
+.ParkInfoOne_info_li_On {
+    display: inline;
+    background: rgba(255,255,255,1);
+    border: 1px solid rgba(23,161,230,1);
+    border-radius: 2px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+.ParkInfoOne_info_li i {
     margin-right: 5px;
     color: rgb(185, 185, 185);
+}
+.ParkInfoOne_info_li_On i {
+    margin-right: 5px;
+    color: rgba(23,161,230,1);
 }
 
 .parkInfoBox_list {
@@ -325,34 +306,16 @@ html::-webkit-scrollbar {
     color: rgba(51,51,51,1);
 }
 
-.ParkInfoTwoTitle ul {
-}
-
 .ParkInfoTwoTitle ul li {
     display: inline-block;
     margin: 0 10px;
+    cursor:pointer;
 }
 
 .ParkInfoTwoTitleActive {
     color: rgba(23,161,230,1);
     border-bottom: 2px solid rgb(23, 161, 230);
     font-weight: bold;
-}
-
-.ParkInfoTwoListBox {
-}
-
-.ParkInfoTwoListBox ul {
-}
-
-.ParkInfoTwoListBox ul li {
-}
-
-.ParkInfoTwoListContect {
-}
-
-.ParkInfoTwoList {
-    /*height: 570px;*/
 }
 
 .ParkInfoTwoListTrun {
@@ -363,8 +326,16 @@ html::-webkit-scrollbar {
     bottom: 0px;
     width: 100%;
     line-height: 28px;
+    background:#fff;
+    border-radius:0 0 4px 4px;
 }
-
+.ParkInfoTwoListTrun i {
+    margin-right: 5px;
+    font-size: 9px;
+    position: relative;
+    top: -2px;
+     transition: 1s;
+}
 .ParkInfoTwoListTrunUp {
     border-top: 1px solid rgb(242, 242, 242);
     height: 30px;
@@ -376,13 +347,14 @@ html::-webkit-scrollbar {
     border-radius: 0 0 4px 4px;
     line-height: 28px;
 }
-
-.leaseListBox {
+.ParkInfoTwoListTrunUp i {
+    margin-right: 5px;
+    font-size: 9px;
+    position: relative;
+    top: -2px;
+    transform: rotate(180deg);
+    transition: 1s;
 }
-
-.leaseRoom {
-}
-
 .leasetype {
     padding: 10px 9px 0px 9px;
     color: rgba(51,51,51,1);
@@ -405,6 +377,7 @@ html::-webkit-scrollbar {
     text-align: center;
     font-size: 11px;
     cursor: pointer;
+    color: rgb(112, 117, 137);
 }
 
 .leasetype_li_on {
@@ -421,24 +394,22 @@ html::-webkit-scrollbar {
 
 .leasetype_li p {
     margin: 0;
+    line-height:15px;
 }
 
 .leasetype_li_on p {
     margin: 0;
+    line-height:15px;
 }
 
 .leaseRoomList {
-    height: 454px;
+    height: 450px;
     overflow-y: scroll;
     margin: 5px 0 0 6px;
 }
-
-.leaseRoomList ul {
+.leaseRoomList ul li{
+    cursor:pointer;
 }
-
-.leaseRoomList ul li {
-}
-
 .leaseRoomList ul li img {
     float: left;
     width: 88px;
@@ -458,7 +429,7 @@ html::-webkit-scrollbar {
     background: rgba(23,161,230,1);
     color: #fff;
     padding: 8px 0 0 5px;
-    width: 234px;
+    width: 249px;
     height: 82px;
     border-radius: 2px;
 }
@@ -471,14 +442,13 @@ html::-webkit-scrollbar {
     color: #fff;
 }
 
-.leaseRooms img {
-}
-
 .leaseRoomsRight {
     display: inline-block;
     width: 133px;
     height: 66px;
     margin-left: 8px;
+    position: relative;
+    top: -4px;
 }
 
 .leaseRoomsRight p {
@@ -486,6 +456,7 @@ html::-webkit-scrollbar {
     overflow: hidden;
     white-space: nowrap;
     margin: 0;
+    line-height: 25px;
 }
 
 .leaseName {
@@ -504,19 +475,12 @@ html::-webkit-scrollbar {
     font-size: 12px;
     color: rgba(51,51,51,1);
 }
-
+.leaseArea i {
+    font-size: 12px;
+    color : rgba(207, 209, 210, 1);
+    margin-right:5px;
+}
 /*sell*/
-.sellListBox {
-}
-
-.sellRoom {
-}
-
-.companyListBox {
-}
-
-.companys {
-}
 /*compnay*/
 .companytype_li {
     background: rgba(242,242,242,1);
@@ -529,6 +493,11 @@ html::-webkit-scrollbar {
     height: 24px;
     border-radius: 2px;
     line-height: 24px;
+    color: rgb(112, 117, 137);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0 9px;
 }
 
 .companytype_li_on {
@@ -542,6 +511,10 @@ html::-webkit-scrollbar {
     background: rgba(23,161,230,1);
     border-radius: 2px;
     line-height: 24px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0 9px;
 }
 /*three*/
 .parkInfoBox_text {
@@ -552,21 +525,30 @@ html::-webkit-scrollbar {
 }
 
 .ParkInfoThree_leftBox {
+    /*width: 860px;
+    display: inline-block;
+    height: 420px;
+    margin-right: 54px;*/
     width: 860px;
     display: inline-block;
-    height: 400px;
-    margin-right: 54px;
+    height: 420px;
+    margin-right: 20px;
 }
 
 .ParkInfoThree_rightBox {
-    background: #fff;
+    /*background: #fff;
     width: 285px;
     display: inline-block;
-    /*position: relative;
-    top: -652px;*/
+    float: right;
+    position: absolute;
+    top: 1px;*/
+    background: #fff;
+    width: 320px;
+    display: inline-block;
     float: right;
     position: absolute;
     top: 1px;
+    padding-left: 20px;
 }
 
 .ParkInfoThree_rightBox_up {
@@ -579,24 +561,9 @@ html::-webkit-scrollbar {
     position: absolute;
     top: 1px;
 }
-/*.ParkInfoThree_rightBox_up2 {
-    background: #ccc;
-    width: 285px;
-    display: inline-block;
-    position: relative;
-    top: -652px;
-    float: right;
-}
-.ParkInfoThree_rightBox_up3 {
-    background: #ccc;
-    width: 285px;
-    display: inline-block;
-    position: relative;
-    top: -817px;
-    float: right;
-}*/
+
 .ParkInfoThree_right {
-    padding: 12px 0 0 0;
+    padding: 33px 0 0 0;
 }
 
 .pitr_title {
@@ -607,34 +574,18 @@ html::-webkit-scrollbar {
     margin-bottom: 10px;
 }
 
-.ParkInfoThree_right p {
-}
-
-.ParkInfoThree_right_one {
-}
-
 .ParkInfoThree_right_one img {
     width: 60px;
     height: 60px;
     display: inline-block;
     position: relative;
-    top: -48px;
+    top: -52px;
     border-radius: 4px;
     margin-right: 10px;
 }
 
 .ParkInfoThree_right_one {
-    /*display: inline-block;
 
-
-font-size:16px;
-font-family:Microsoft YaHei;
-font-weight:bold;
-line-height:21px;
-color:rgba(220,26,63,1);
-
-
-    */
 }
 
 .pitro_rb {
@@ -665,14 +616,8 @@ color:rgba(220,26,63,1);
     color: rgba(220,26,63,1) !important;
 }
 
-.ParkInfoThree_right_two {
-}
-
 .ParkInfoThree_right_two input {
     border: none;
-}
-
-.pitrt_tit {
 }
 
 .pitrt_inp {
@@ -683,7 +628,7 @@ color:rgba(220,26,63,1);
     opacity: 1;
     border-radius: 4px;
     color: rgba(152,159,168,1);
-    padding: 6px;
+    padding: 6px 10px;
     font-size: 12px;
 }
 
@@ -694,7 +639,7 @@ color:rgba(220,26,63,1);
     border: 1px solid rgba(230,230,230,1);
     opacity: 1;
     border-radius: 4px;
-    padding: 8px;
+    padding: 6px 10px;
 }
 
 .pitrth_text1 {
@@ -716,9 +661,6 @@ color:rgba(220,26,63,1);
     border: none;
 }
 
-.ParkInfoThree_right_three input {
-}
-
 .pitr_btn {
     width: 140px;
     height: 36px;
@@ -732,9 +674,11 @@ color:rgba(220,26,63,1);
 }
 /*left*/
 .ParkInfoThree_left {
-    padding: 24px 0 32px 0;
+    padding: 30px 0 32px 0;
 }
-
+.ParkInfoThree_left_text{
+    margin-bottom:50px;
+}
 .roomInfo_tit {
     width: 840px;
     height: 38px;
@@ -754,9 +698,6 @@ color:rgba(220,26,63,1);
     line-height: 40px;
     font-size: 14px;
     color: rgba(51,51,51,1);
-}
-
-.ParkInfoThree_left_title ul {
 }
 
 .ParkInfoThree_left_title ul li {
@@ -779,7 +720,6 @@ color:rgba(220,26,63,1);
 }
 
 .RoomInfoThreeLeft_all {
-    border: 1px solid red;
     height: 570px;
 }
 
@@ -788,17 +728,14 @@ color:rgba(220,26,63,1);
     height: 412px;
 }
 
-.ParkInfoThree_left_text {
-}
-
-.ParkInfoThree_left_text div {
-}
-
 .ParkInfo_text {
     padding: 24px 0;
 }
 
 .ParkInfo_text p {
+
+}
+.parkIntroduced, .advantage, .parkElegant, .discounts {
     margin: 0;
     text-indent: 30px;
     font-size: 14px;
@@ -806,69 +743,9 @@ color:rgba(220,26,63,1);
     line-height: 26px;
     color: rgba(51,51,51,1);
 }
-
-.infoImg {
+.roomInfoBox_one{
+    margin-top:10px;
 }
-
-.infoImg_left {
-}
-
-.infoImg_ul {
-}
-
-.infoImg_ul ul {
-    /*width: 860px;
-    height: 484px;
-    overflow: hidden;*/
-}
-
-.infoImg_ul ul li {
-}
-
-.infoImg_ul ul li img {
-    /*width:50%;
-    height:100%;*/
-}
-
-.infoImg_num {
-}
-
-.infoImg_right {
-}
-/*roomInfo*/
-.roomInfoBox {
-}
-
-.roomInfoBox_one {
-}
-
-.roomInfoBox_one ul {
-}
-
-.roomInfoBox_one ul li {
-}
-
-.roomInfoBox_one ul li span {
-}
-
-.roomInfoBox_two {
-}
-
-.roomInfoBox_two ul {
-}
-
-.roomInfoBox_two ul li {
-}
-
-.roomInfoBox_two ul li span {
-}
-
-.roomInfoBox_one {
-}
-
-.roomInfoBox_one ul {
-}
-
 .roomInfoBox_one li {
     display: inline-block;
     margin-right: 24px;
@@ -876,15 +753,15 @@ color:rgba(220,26,63,1);
 
 .roomInfoBox_one li p {
     margin: 0;
+    line-height:23px;
 }
-
+.roomInfoBox_one li p:nth-child(1) {
+    color: rgba(152,159,168,1);
+}
 .ribo_bold {
     font-size: 24px;
     font-weight: bold;
     color: rgba(51,51,51,1);
-}
-
-.roomInfoBox_two {
 }
 
 .roomInfoBox_two li {
@@ -895,6 +772,13 @@ color:rgba(220,26,63,1);
 .roomInfoBox_two li span {
     color: rgba(51,51,51,1);
     margin-left: 32px;
+}
+.lookTime {
+    width: 769px;
+    float: right;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 /*img*/
 .infoImg {
@@ -917,7 +801,10 @@ color:rgba(220,26,63,1);
     z-index: 1;
     opacity: 0;
 }
-
+.stylesgoleft i {
+    transform: rotate(89.6rad);
+    margin-top: 5px;
+}
 .stylesgoright {
     float: right;
     width: 40px;
@@ -930,9 +817,12 @@ color:rgba(220,26,63,1);
     text-align: center;
     line-height: 73px;
     z-index: 1;
-    opacity:0;
+    opacity: 0;
 }
-
+.stylesgoright i {
+    transform: rotate(-89.6rad);
+    margin-top:5px;
+}
 .infoImg img {
     width: 100%;
     height: 100%;
@@ -960,12 +850,417 @@ color:rgba(220,26,63,1);
     top: -135px;
     margin: auto;
 }
+.infoImg_num span {
+    text-align: center;
+    /*margin-left: -25px;*/
+}
 .fullView {
-    width: 200%;
+    width: 100%;
     height: 100%;
     background: rgba(0,0,0,.5);
-    z-index: 1;
+    z-index: 2;
     position: fixed;
     top: 0px;
-    left: -200px;
+    left: 0px;
+}
+.parkImg:hover .parkImg stylesgoleft {
+    opacity: 1;
+
+}
+.parkImg:hover .parkImg stylesgoright {
+    opacity: 1;
+}
+/*.parkImg stylesgoleft{
+    opacity:1;
+}
+.parkImg stylesgoright {
+    opacity: 1;
+}*/
+.parkImg img {
+    left: -30px;
+}
+.parkImg_num {
+    width: 60px;
+    height: 26px;
+    background: rgba(0,0,0,1);
+    opacity: 0.5;
+    border-radius: 15px;
+    color: #fff;
+    text-align: center;
+    line-height: 26px;
+    position: relative;
+    top: -135px;
+    margin: auto;
+}
+.parkImg_num span {
+    text-align: center;
+    margin-left: -25px;
+}
+.pleft i {
+    font-size: 18px;
+    position: relative;
+    left: -33px;
+    transform: rotate(89.6rad);
+    top: -11px;
+}
+.pright i {
+    font-size: 18px;
+    position: relative;
+    left: -30px;
+    transform: rotate(86.4rad);
+    top: 18px;
+}
+.infoImg video {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: -82px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.infoImgFull {
+    width: 900px;
+    height: 675px;
+    margin: auto;
+}
+.infoImgFull img {
+    width: 100%;
+    height:100%;
+}
+.closeFull {
+    color: #fff;
+    position: absolute;
+    right: 15%;
+    top: 30px;
+}
+.botImgUl {
+    /*width: 1200px;
+    height: 138px;
+    background: #ccc;
+    margin: 126px auto;*/
+    width: 50%;
+    height: 138px;
+    background: rgba(0,0,0,.8);
+    margin: 126px auto;
+    position: absolute;
+    left: 25%;
+}
+.botImgUl ul {
+    text-align: center;
+}
+.botImgUl ul li {
+
+}
+.botImgUl ul li img {
+    width: 100%;
+    height: 100%;
+    cursor:pointer;
+}
+.stylesgoleft_full {
+    opacity: 1;
+    top: 373px;
+}
+.stylesgoleft_full i {
+    font-size: 18px;
+    transform: rotate(89.6rad);
+    margin-top: 6px;
+}
+.stylesgoright_full {
+    opacity: 1;
+    top: -373px;
+}
+.stylesgoright_full i {
+    font-size: 18px;
+    transform: rotate(-89.6rad);
+    margin-top: 6px;
+}
+.imgFull_p {
+    width: 60px;
+    height: 26px;
+    background: rgba(0,0,0,1);
+    opacity: 0.5;
+    border-radius: 15px;
+    color: #fff;
+    text-align: center;
+    line-height: 26px;
+    position: relative;
+    top: -47px;
+    margin: auto;
+}
+.botImg_li {
+    display: inline-block;
+    width: 100px;
+    height: 67px;
+    margin: 0 12px;
+    opacity: 0.6;
+}
+.botImg_li_on {
+    display: inline-block;
+    width: 100px;
+    height: 67px;
+    margin: 37px 12px;
+    opacity: 1;
+}
+.nearParkListBox {
+    width: 100%;
+    position: relative;
+    top: 16px;
+    height: 350px;
+    margin-top: 30px;
+}
+.nearParkList {
+    width: 1200px;
+    margin: auto;
+    overflow: hidden;
+}
+.nearParkList_title {
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 29px;
+    color: rgba(51,51,51,1);
+}
+.nearParkList ul {
+    width: 100%;
+    white-space: nowrap;
+    position: relative;
+    left: -40px;
+    transition: 0.5s;
+}
+.nearParkList ul li {
+    width: 285px;
+    height: 284px;
+    display:inline-block;
+    margin-right:20px;
+}
+.nearParkList ul li:last-child{
+    margin:0;
+}
+.nearParkList ul li img {
+    width: 100%;
+    height: 214px;
+    margin-bottom: 12px;
+    border-radius:4px;
+}
+.nearParkList ul li p:nth-child(2) {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 21px;
+    color: rgba(51,51,51,1);
+}
+.nearParkList ul li p:nth-child(3) {
+    color: red;
+    line-height: 5px;
+}
+.nearParkList ul li span:nth-child(1) {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(140,143,167,1);
+}
+.nearParkList ul li span:nth-child(2) {
+    color: green;
+    float: right;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(51,51,51,1);
+    line-height: 0px;
+}
+.nearParkList ul li span:nth-child(3) {
+    color: orange;
+}
+.nearToLeft {
+    float: left;
+    width: 40px;
+    height: 214px;
+    background: rgba(0,0,0,.5);
+    cursor: pointer;
+    color: #fff;
+    position: relative;
+    top: 0px;
+    z-index: 1;
+    opacity:1;
+}
+.nearToLeftHide {
+    float: left;
+    width: 40px;
+    height: 214px;
+    background: rgba(0,0,0,.5);
+    cursor: pointer;
+    color: #fff;
+    position: relative;
+    top: 0px;
+    z-index: 1;
+    opacity:0;
+}
+.nearToLeft i {
+    transform: rotate(190.1rad);
+    position: relative;
+    top: 94px;
+    left: 11px;
+}
+.nearToRight {
+    float: right;
+    width: 40px;
+    height: 214px;
+    background: rgba(0,0,0,.5);
+    position: relative;
+    top: -298px;
+    cursor: pointer;
+    color: #fff;
+    text-align: center;
+    line-height: 73px;
+    opacity:1;
+}
+.nearToRightHide {
+    float: right;
+    width: 40px;
+    height: 214px;
+    background: rgba(0,0,0,.5);
+    position: relative;
+    top: -298px;
+    cursor: pointer;
+    color: #fff;
+    text-align: center;
+    line-height: 73px;
+    opacity:0;
+}
+.nearToRight i {
+    transform: rotate(86.4rad);
+    position: relative;
+    top: 70px;
+    left: 2px;
+}
+.successBox {
+    margin: auto;
+    background: #fff;
+    width: 420px;
+    height: 350px;
+    border-radius: 8px;
+    transition:;
+    transform: translateY(-50%);
+    position: relative;
+    top: 50%;
+    padding:40px 50px;
+}
+.successBox img {
+    width: 80px;
+    height: 80px;
+    margin: 0 0 20px 117px;
+}
+.successBox p:nth-child(2) {
+    width: 96px;
+    height: 31px;
+    font-size: 24px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    line-height: 31px;
+    color: rgba(0,0,0,1);
+    opacity: 1;
+    margin: auto;
+    margin-bottom:21px;
+}
+.successBox p:nth-child(3) {
+    width: 308px;
+    height: 38px;
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    line-height: 19px;
+    color: rgba(51,51,51,1);
+    opacity: 1;
+    margin: auto;
+}
+.successBox p:nth-child(4) {
+    width: 320px;
+    height: 48px;
+    background: rgba(23,161,230,1);
+    border-radius: 4px;
+    text-align: center;
+    font-size: 18px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    line-height: 48px;
+    color: rgba(255,255,255,1);
+    opacity: 1;
+    margin: auto;
+    margin-top: 21px;
+}
+.loginBox {
+    margin: auto;
+    background: #fff;
+    width: 420px;
+    height: 350px;
+    border-radius: 8px;
+    transition:;
+    transform: translateY(-50%);
+    position: relative;
+    top: 50%;
+    padding: 40px 50px;
+}
+.loginBox i {
+    position: relative;
+    top: -26px;
+    float: right;
+    left: 32px;
+}
+.loginBox p{
+
+}
+.phoneLogin {
+}
+.phoneLogin p {
+    width: 320px;
+    height: 48px;
+    background: rgba(242,242,242,1);
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 48px;
+    padding-left: 20px;
+    color: rgba(152,159,168,1);
+    margin-bottom:30px;
+}
+.phoneLogin p:nth-child(2) span {
+    float: right;
+    padding: 0px 10px;
+    color: rgba(23,161,230,1);
+}
+.phoneLogin p:nth-child(3) {
+    width: 320px;
+    height: 48px;
+    background: rgba(23,161,230,1);
+    border-radius: 4px;
+    font-size: 18px;
+    line-height: 48px;
+    color: rgba(255,255,255,1);
+    text-align: center;
+    padding: 0;
+}
+.phoneLogin input {
+    border: none;
+    background: none;
+}
+.codeLogin {
+    text-align: center;
+    margin-top: -10px;
+}
+.codeLogin img{
+    width:207px;
+    height:207px;
+}
+.codeLogin p {
+    font-size: 14px;
+    color: rgba(51,51,51,1);
+    margin-top: 5px;
+}
+.activeLogin {
+    font-weight: bold;
+    color: rgba(23,161,230,1);
+}
+.loginBoxTit {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26px;
+    color: rgba(0,0,0,1);
+    margin-bottom:30px;
+    padding-left:15px;
 }

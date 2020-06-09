@@ -36,11 +36,11 @@ class AllBottom extends React.Component {
             <div className="hbRight">
               <ul>
                 <li>客服服务：（工作日 早8:30-晚18:00）</li>
-                <li style={{"font-size":"30px","position": "relative","left":"-51px"}}>400-808-3066</li>
+                <li style={{"font-size":"30px","position": "relative","left":"-36px","font-family": "Microsoft YaHei" }}>400-808-3066</li>
               </ul>
             </div>
-          </div>
-       <hr />
+          </div> 
+          <hr style={{"opacity":"0.5"}} />
           <div className="homeBottomBox_two">
             <p>Copyright © 2019 - 2020 yongtoc.com. All Rights Reserved. 浙江永拓信息科技有限公司 版权所有 浙ICP备15025359号</p>
             <p><img src="./fangliangbao/image/police_haozu.png" style={{"margin-right": "10px"}} />浙公网安备 33010502005316号</p>
