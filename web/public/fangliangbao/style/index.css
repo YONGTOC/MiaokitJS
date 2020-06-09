@@ -7,24 +7,21 @@
   z-index: 100;
   background-color: #ffffff;
   overflow-y: auto;
+  scrollbar-width: none;
 }
-
 .index::-webkit-scrollbar {
   display: none;
 }
-
 .index-title {
   overflow: hidden;
   width: 1210px;
   position: absolute;
   top: 0;
 }
-
 .index-t1 {
   float: left;
   width: 200px;
 }
-
 .logo {
   width: 90px;
   height: 32px;
@@ -35,26 +32,22 @@
   color: rgba(255,255,255,1);
   opacity: 1;
 }
-
 .index-label {
   color: #ffffff;
   top: 0px;
   width: 660px;
   float: right;
 }
-
 .index-label div {
   float: left;
   margin: 35px 0 0 20px;
   font-size: 16px;
 }
-
 .warp {
   width: 1200px;
   margin: 0 auto;
-  margin-bottom: 360px;
+  margin-bottom: 50px;
 }
-
 .index-search {
   width: 1200px;
   height: 280px;
@@ -67,13 +60,11 @@
   z-index: 2;
   padding: 35px 38px;
 }
-
 .searchCon {
   display: inline-block;
   width: 760px;
   float: left;
 }
-
 .index-input {
   width: 568px;
   height: 36px;
@@ -87,7 +78,6 @@
   color: rgba(152,159,168,1);
   padding-left: 45px;
 }
-
 .index-search-name {
   width: 90px;
   height: 36px;
@@ -98,37 +88,33 @@
   text-align: center;
   font-size: 16px;
   float: left;
+  cursor: pointer;
 }
-
 .seltion-cont {
   padding-top: 20px;
   font-size: 14px;
 }
-
 .index-tag-name {
   font-weight: bold;
   float: left;
   height: 34px;
   line-height: 34px;
 }
-
 .index-tag {
   float: left;
   margin-left: 18px;
   height: 34px;
   line-height: 34px;
+  cursor: pointer;
 }
-
 .cont-div {
   overflow: hidden;
 }
-
 .searchCont {
   display: inline-block;
   width: 320px;
   float: right;
 }
-
 .index-iphone {
   width: 320px;
   height: 36px;
@@ -141,7 +127,6 @@
   color: rgba(152,159,168,1);
   padding-left: 35px;
 }
-
 .index-require {
   width: 320px;
   height: 114px;
@@ -149,21 +134,18 @@
   border: 1px solid rgba(230,230,230,1);
   border-radius: 4px;
 }
-
 .you-require {
   font-size: 14px;
   font-weight: bold;
   color: rgba(51,51,51,1);
   margin: 5px 0 0 15px;
 }
-
 .you-talk {
   font-size: 12px;
   font-weight: 400;
   color: #989FA8;
   margin: 5px 0 0 15px;
 }
-
 .find-room {
   width: 180px;
   height: 36px;
@@ -176,66 +158,69 @@
   text-align: center;
   margin: auto;
   margin-top: 15px;
+  cursor: pointer;
 }
-
 .index-park-title {
   padding-top: 38px;
   overflow: hidden;
 }
-
 .index-park-a {
   font-size: 22px;
   font-family: Microsoft YaHei;
   font-weight: bold;
   color: rgba(51,51,51,1);
 }
-
 .index-park-b {
   margin: 10px 0 0 10px;
   font-size: 14px;
   color: #989FA8;
 }
-
 .index-park-c {
   margin-top: 10px;
   font-size: 14px;
   font-weight: bold;
   color: rgba(23,161,230,1);
+  cursor: pointer;
 }
-
 .index-park-title div {
   float: left;
 }
-
 .index-park-child {
   float: left;
+  cursor: pointer;
 }
-
 .index-img-a {
   width: 285px;
   height: 214px;
   border-radius: 5px;
+  overflow: hidden;
 }
-
 .index-address {
   font-size: 12px;
   font-weight: 400;
   color: rgba(140,143,167,1);
   float: left;
 }
-
 .index-price {
   color: #333333;
   font-size: 14px;
   float: right;
-  margin: -15px 20px 0 0;
 }
-
 .index-c-a {
   font-size: 20px;
   font-weight: 600;
 }
-
+.index-collect {
+  width: 59px;
+  height: 24px;
+  background: rgba(255,255,255,1);
+  border: 1px solid rgba(204,204,204,1);
+  border-radius: 2px;
+  float: right;
+  margin-top: 2px;
+  line-height: 22px;
+  text-align: center;
+}
 .index-more {
   width: 240px;
   height: 40px;
@@ -249,4 +234,110 @@
   text-align: center;
   margin: auto;
   margin-top: 30px;
+  cursor: pointer;
+}
+.park-list-br {
+  width: 760px;
+  height: 1px;
+  background: rgba(230,230,230,1);
+  margin: -13px 0 0 56px;
+}
+.triangle {
+  width: 7px;
+  height: 14px;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 14px solid #E6E6E6;
+  margin-left: 56px;
+}
+.in_triangle {
+  width: 6px;
+  height: 12px;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 12px solid #fff;
+  margin-left: 56px;
+  position: relative;
+  top: -12px;
+  left: 1px;
+}
+.park-list-price {
+  float: left; 
+  width: 44px;
+  height: 22px;
+  border-radius: 2px;
+  line-height: 20px;
+  text-align: center;
+}
+.park-list-price-q {
+  width: 108px;
+  height: 22px;
+  background: rgba(255,255,255,1);
+  border: 1px solid rgba(204,204,204,1);
+  border-radius: 2px;
+  float: left;
+  margin-left: 36px;
+}
+.park-list-x {
+  min-width: 60px;
+  height: 28px;
+  background: rgba(255,255,255,1);
+  border: 1px solid rgba(230,230,230,1);
+  float: left;
+  margin-left: 24px;
+  text-align: center;
+  padding: 0 10px 0 10px;
+  cursor: pointer;
+}
+.park-list-all-t {
+  width: 86px;
+  height: 40px;
+  background: rgba(23,161,230,1);
+  border-radius: 4px 4px 0px 0px;
+  float: left;
+  font-size: 14px;
+  color: #fff;
+  line-height: 40px;
+  text-align: center;
+}
+.paging {
+  font-size: 14px;
+  overflow: hidden;
+  text-align: center;
+  line-height: 40px;
+  margin: auto;
+  margin-bottom: 60px;
+  width: 546px;
+}
+.paging-child {
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,1);
+  border: 1px solid rgba(230,230,230,1);
+  float: left;
+  cursor: pointer;
+}
+.ParkInfoOne li {
+  cursor: pointer;
+}
+.room-list-hot-room {
+  font-size: 16px;
+  font-family: Microsoft YaHei;
+  font-weight: bold;
+  color: rgba(51,51,51,1);
+  float: left;
+  margin-left: 60px;
+}
+.wx-title {
+  font-size: 16px;
+  font-family: Microsoft YaHei;
+  font-weight: bold;
+  color: rgba(51,51,51,1);
+  margin: 30px 0 8px 10px;
+}
+.index-img-t1 {
+  transition: all 0.5s;
+}
+.index-img-t1:hover {
+  transform: scale(1.1);
 }

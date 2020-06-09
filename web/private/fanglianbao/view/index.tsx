@@ -1,10 +1,11 @@
 ﻿import * as React from "react";
 import * as ReactDOM from "react-dom";
 import "css!./style/index.css";
-
 import Router from 'router';
 import AllBottom from "allBottom"
 import "css!./style/view.css";
+import { Link } from 'react-router-dom';
+
 
 declare var viewDraw: any;
 
@@ -144,18 +145,21 @@ class Index extends React.Component {
           <div className="index-park-title">
             <div className="index-park-a">品牌园区</div>
             <div className="index-park-b">已有 <span style={{ color: "#17A1E6" }}>12</span> 家园区上线</div>
-            <div className="index-park-c" style={{ float: "right" }}>更多广州园区</div>
+            <Link to="/parkList"><div className="index-park-c" style={{ float: "right" }}>更多广州园区</div></Link>
           </div>
 
           <div style={{ overflow: "hidden" }}>
             {this.state.parkArray.map((item, index) => {
               return (
                 <div key={index} className="index-park-child">
-                  <div className="index-img-a" style={{ margin: (index + 1) % 4 === 0 ? "10px 0 0 0" : "10px 20px 0 0", background: "url(./fangliangbao/image/build.png)" }}></div>
+                  <div className="index-img-a"
+                    style={{ marginRight: (index + 1) % 4 === 0 ? "0px" : "20px", marginTop: index > 3 ? "28px" : "10px" }}>
+                    <img src="./fangliangbao/image/build.png" height="100%" width="100%" className="index-img-t1" />
+                  </div>
                   <div style={{ fontSize: "16px", fontWeight: "bold", marginTop: "10px" }}>{item.name}</div>
                   <div style={{ overflow: "hidden", paddingTop: "10px" }}>
                     <img src="./fangliangbao/image/position.png" width="12px" height="12px" style={{ float: "left", margin: "4px 5px 0 0" }} /> <div className="index-address">{item.address}</div>
-                    <div className="index-price"><span style={{ color: "#DC1A3F", fontSize: "24px", marginRight: "5px" }}>{item.price}</span>元/m²·天</div>
+                    <div className="index-price" style={{ margin: (index + 1) % 4 === 0 ? "-15px 0 0 0" : "-15px 20px 0 0" }}><span style={{ color: "#DC1A3F", fontSize: "24px", marginRight: "5px" }}>{item.price}</span>元/m²·天</div>
                   </div>
                 </div>
                 )
@@ -170,10 +174,12 @@ class Index extends React.Component {
           </div>
 
           <div>
-            {[1, 2, 3, 4, 5, 6, 7].map((item, index) => {
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => {
               return (
-                <div key={index} style={{ marginTop: index === 0 ? "18px" : "30px", overflow: "hidden" }}>
-                  <div style={{ background: "url(./fangliangbao/image/build1.png)", width: "240px", height: "180px", borderRadius: "5px", float: "left" }} ></div>
+                <div key={index} style={{ marginTop: index === 0 ? "18px" : "30px", overflow: "hidden", cursor: "pointer", width: "895px" }}>
+                  <div style={{ width: "240px", height: "180px", borderRadius: "5px", float: "left", overflow: "hidden" }}>
+                    <img src="./fangliangbao/image/build1.png" width="100%" height="100%" className="index-img-t1" />
+                  </div>
                   <div style={{float: "left", marginLeft: "30px", width: "500px"}}>
                     <div className="index-c-a">出租！高新区信息产业园豪华装修单元</div>
                     <div style={{ marginTop: "22px", fontSize: "14px", overflow: "hidden" }}>
@@ -201,12 +207,12 @@ class Index extends React.Component {
                       </div>
                     </div>
                   </div>
-                  <div style={{ float: "left", color: "#989FA8", fontSize: "14px", padding: "70px 0 0 90px" }}>
-                    <div>
-                      <span style={{ color: "rgba(220, 26, 63, 1)", fontSize: "26px", fontWeight: 600 }}>1.8</span>
+                  <div style={{ float: "right", color: "#989FA8", fontSize: "14px", paddingTop: "70px", overflow: "hidden" }}>
+                    <div style={{float: "right"}}>
+                      <span style={{ color: "rgba(220, 26, 63, 1)", fontSize: "26px", fontWeight: 600, marginRight: "5px" }}>1.8</span>
                       <span>万元/月</span>
                     </div>
-                    <div>单价：120元/m²⋅月</div>
+                    <div style={{clear: "both"}}>单价：120元/m²⋅月</div>
                   </div>
                 </div>
                 )
