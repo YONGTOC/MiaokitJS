@@ -39,7 +39,12 @@ class Index extends React.Component {
       { name: "桂林信息产业园", address: "七星-朝阳路D-12号", price: "6.5" }, { name: "桂林信息产业园", address: "七星-朝阳路D-12号", price: "6.5" }, { name: "桂林信息产业园", address: "七星-朝阳路D-12号", price: "6.5" },
       { name: "桂林信息产业园", address: "七星-朝阳路D-12号", price: "6.5" }, { name: "桂林信息产业园", address: "七星-朝阳路D-12号", price: "6.5" }, { name: "桂林信息产业园", address: "七星-朝阳路D-12号", price: "6.5" },
       { name: "桂林信息产业园", address: "七星-朝阳路D-12号", price: "6.5" }, { name: "桂林信息产业园", address: "七星-朝阳路D-12号", price: "6.5" }
-    ]
+    ],
+    backgroundArr: ["./fangliangbao/image/index_bg.png", "./fangliangbao/image/banner1.jpg", "./fangliangbao/image/banner2.jpg"], // 背景图
+    backgroundIndex: 0,
+    timer: 0, // 定时器
+    timer1: 0, // 定时器
+    opacity: 1,
   }
 
 
@@ -49,14 +54,31 @@ class Index extends React.Component {
     window.onresize = () => {
       this.setState({ clientWidth: (document.body.clientWidth - 1210) / 2 })
     }
+
+    this.setTimer()
+   
+  }
+
+  setTimer() {
+    clearTimeout(this.state.timer)
+    clearTimeout(this.state.timer1)
+    let timer = setTimeout(() => {
+      this.setState({ backgroundIndex: this.state.backgroundIndex + 1 === this.state.backgroundArr.length ? 0 : this.state.backgroundIndex + 1, opacity: 1 })
+      clearTimeout(this.state.timer)
+      this.setTimer()
+    }, 5000)
+    let timer1 = setTimeout(() => {
+      this.setState({ opacity: 0.2 })
+      clearTimeout(this.state.timer1)
+    }, 4700)
+    this.setState({ timer: timer, timer1: timer1 })
   }
 
 
   public render() {
     return (
       <div className="index">
-        <div style={{ width: "100%", height: "440px", background: "url(./fangliangbao/image/index_bg.png) no-repeat center top" }} >
-
+        <div style={{ width: "100%", height: "440px", background: "url(" + this.state.backgroundArr[this.state.backgroundIndex] + ") no-repeat center top", opacity: this.state.opacity }} className="index-bg">
           <div className="index-title" style={{ left: this.state.clientWidth }}>
             <div className="index-t1">
               <img src="./fangliangbao/image/logo.png" style={{ margin: "20px 0 0 0", float: "left"  }} />
@@ -78,6 +100,23 @@ class Index extends React.Component {
             </div>
           </div>
 
+          <div style={{ width: "100%", height: "14px", position: "absolute", top: "360px" }}>
+            <div style={{ overflow: "hidden", width: this.state.backgroundArr.length * 14 + this.state.backgroundArr.length * 16, margin: "auto" }}>
+              {this.state.backgroundArr.map((item, index) => {
+                return (
+                  <div key={index} className="dot" style={{ backgroundColor: this.state.backgroundIndex === index ? "#ffffff" : "rgba(255,255,255,.5)" }}
+                    onClick={() => {
+                      this.setState({ backgroundIndex: index }, () => {
+                        this.setTimer()
+                      })
+                    }}>
+                    <div className="in-dot"></div>
+                  </div>
+                ) 
+              })
+              }
+            </div>
+          </div>
         </div>
 
         <div className="warp">

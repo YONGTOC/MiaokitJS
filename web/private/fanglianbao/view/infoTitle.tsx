@@ -19,7 +19,7 @@ class InfoTitle extends React.Component {
     return (
       <div className="ParkInfoOne">
         <div className="ParkInfoOne_title">
-          <img src="./fangliangbao/image/blueLogo.png" />
+          <Link to="/"><img src="./fangliangbao/image/blueLogo.png" /></Link>
           <ul>
             {[{ name: "品牌园区", url: "/parkList" }, { name: "出租房源", url: "/roomList" }, { name: "房源园区", url: "" }].map((item, index) => {
               return (
