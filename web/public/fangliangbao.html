@@ -4,7 +4,7 @@
     <meta name="referrer" content="no-referrer" charset="utf-8" />
     <meta name="format-detection" content="telephone=yes" />
     <title>房良宝web  2020.6</title>
-     
+
     <script src="./common/requirejs/require.js"></script>
     <script src="./common/jquery.js"></script>
     <script src="./common/iconfont.js"></script>
@@ -42,15 +42,15 @@
 
         if (require) {
             console.log(33333);
-           require(['index'], function (view) {
+            require(['index'], function (view) {
 
-            console.log(111111)
-             viewDraw();
-             MiaokitJS.App.UI = view.default.g_pIns;
-                
+                console.log(111111)
+                viewDraw();
+                MiaokitJS.App.UI = view.default.g_pIns;
+
                 //这里开始调用 组件方法；
-            curtainHide();
-   
+                curtainHide();
+
             });
         }
 
@@ -74,7 +74,7 @@
     </script>
 
     <script src="./common/util.js"></script>
-    <script src="./wisdomPark/js/app.js"></script>  
+    <script src="./wisdomPark/js/app.js"></script>
 
     <style>
 
@@ -99,7 +99,7 @@
 
 </head>
 <body style="height: 100%; margin: 0; padding: 0; overflow:visible;">
- 
+
     <!-- html,body { height: 100%;margin: 0; padding: 0;} div height: 100% 才会起效，因为继承父级高度-->
     <!-- 微信端不能为任意尺寸，否则会崩溃 -->
     <!--<div id="unityContainer" style="width: 100%; height: 100%; background:#808080; margin: auto"></div>-->
@@ -109,99 +109,129 @@
 
     <div id="viewContainer"></div>
 
-    <style  type="text/css">
+    <style type="text/css">
         .loadEffect {
-    width: 100px;
-    height: 100px;
-    position: relative;
-    margin: 0 auto;
-    /*margin-top: 100px;*/
-    margin-top: 38rem;
-}
+            width: 100px;
+            height: 100px;
+            position: relative;
+            margin: 0 auto;
+            /*margin-top: 100px;*/
+            margin-top: 38rem;
+        }
 
-.loadEffect span {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    /*background: lightgreen;*/
-    background: #62b0f5;
-    position: absolute;
-    -webkit-animation: load 1.04s ease infinite;
-}
+        .loadEffect span {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            /*background: lightgreen;*/
+            background: #62b0f5;
+            position: absolute;
+            -webkit-animation: load 1.04s ease infinite;
+        }
 
-@-webkit-keyframes load {
-    0% {
-        opacity: 1;
-    }
+        @-webkit-keyframes load {
+            0% {
+                opacity: 1;
+            }
 
-    100% {
-        opacity: 0.2;
-    }
-}
+            100% {
+                opacity: 0.2;
+            }
+        }
 
-.loadEffect span:nth-child(1) {
-    left: 0;
-    top: 50%;
-    margin-top: -8px;
-    -webkit-animation-delay: 0.13s;
-}
+        .loadEffect span:nth-child(1) {
+            left: 0;
+            top: 50%;
+            margin-top: -8px;
+            -webkit-animation-delay: 0.13s;
+        }
 
-.loadEffect span:nth-child(2) {
-    left: 14px;
-    top: 14px;
-    -webkit-animation-delay: 0.26s;
-}
+        .loadEffect span:nth-child(2) {
+            left: 14px;
+            top: 14px;
+            -webkit-animation-delay: 0.26s;
+        }
 
-.loadEffect span:nth-child(3) {
-    left: 50%;
-    top: 0;
-    margin-left: -8px;
-    -webkit-animation-delay: 0.39s;
-}
+        .loadEffect span:nth-child(3) {
+            left: 50%;
+            top: 0;
+            margin-left: -8px;
+            -webkit-animation-delay: 0.39s;
+        }
 
-.loadEffect span:nth-child(4) {
-    top: 14px;
-    right: 14px;
-    -webkit-animation-delay: 0.52s;
-}
+        .loadEffect span:nth-child(4) {
+            top: 14px;
+            right: 14px;
+            -webkit-animation-delay: 0.52s;
+        }
 
-.loadEffect span:nth-child(5) {
-    right: 0;
-    top: 50%;
-    margin-top: -8px;
-    -webkit-animation-delay: 0.65s;
-}
+        .loadEffect span:nth-child(5) {
+            right: 0;
+            top: 50%;
+            margin-top: -8px;
+            -webkit-animation-delay: 0.65s;
+        }
 
-.loadEffect span:nth-child(6) {
-    right: 14px;
-    bottom: 14px;
-    -webkit-animation-delay: 0.78s;
-}
+        .loadEffect span:nth-child(6) {
+            right: 14px;
+            bottom: 14px;
+            -webkit-animation-delay: 0.78s;
+        }
 
-.loadEffect span:nth-child(7) {
-    bottom: 0;
-    left: 50%;
-    margin-left: -8px;
-    -webkit-animation-delay: 0.91s;
-}
+        .loadEffect span:nth-child(7) {
+            bottom: 0;
+            left: 50%;
+            margin-left: -8px;
+            -webkit-animation-delay: 0.91s;
+        }
 
-.loadEffect span:nth-child(8) {
-    bottom: 14px;
-    left: 14px;
-    -webkit-animation-delay: 1.04s;
-}
-
+        .loadEffect span:nth-child(8) {
+            bottom: 14px;
+            left: 14px;
+            -webkit-animation-delay: 1.04s;
+        }
     </style>
     <script>
 
-             //react加载完成，隐藏幕布
+        //react加载完成，隐藏幕布
         function curtainHide() {
             // console.log("curtainHide,curtainHide");
             $('.curtain').addClass("hide");
         }
 
- 
+
+    </script>
+    <script>
+        $(document).scroll(function () {
+            var scroH = $(document).scrollTop();  //滚动高度
+            var viewH = $(window).height();  //可见高度
+            var contentH = $(document).height();  //内容高度
+            // console.log(scroH);
+            var ParkInfoThree_rightBox = $(".ParkInfoThree_rightBox");
+            if (scroH > 900) {  //距离顶部大于100px时
+                if (ParkInfoThree_rightBox) {
+                    ParkInfoThree_rightBox.css({ "position": "fixed", "z-index": "1" });
+                }
+
+            } else {
+                if (ParkInfoThree_rightBox) {
+                    ParkInfoThree_rightBox.css({ "position": "absolute" });
+                }
+
+            }
+            //        if (scroH > 100) {  //距离顶部大于100px时
+
+            //}
+            //if (contentH - (scroH + viewH) <= 100){  //距离底部高度小于100px
+
+            //}
+            //if (contentH = (scroH + viewH)){  //滚动条滑到底部啦
+
+            //}
+
+        });
+
     </script>
 </body>
 </html>

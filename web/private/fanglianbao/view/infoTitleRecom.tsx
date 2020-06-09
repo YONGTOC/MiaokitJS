@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 
 import Router from 'router';
 
-class InfoTitle extends React.Component<{index:any}>{
+class InfoTitleBao extends React.Component<{index:any}>{
   constructor(props) {
     super(props);
 
@@ -21,9 +21,8 @@ class InfoTitle extends React.Component<{index:any}>{
           <img src="./fangliangbao/image/blueLogo.png" />
           <ul>
             <li style={{ "color": " rgb(23, 161, 230)", "font-weight": "bold" }}>
-              品牌园区</li>
-            <li>出租房源</li>
-            <li>出售房源</li>
+              宝哥推荐</li>
+            <li>热点资讯</li>
           </ul>
         </div>
       </div>
@@ -35,4 +34,4 @@ class InfoTitle extends React.Component<{index:any}>{
   }
 }
 
-export default InfoTitle;
+export default InfoTitleBao;
