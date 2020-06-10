@@ -68,9 +68,9 @@ class Index extends React.Component {
       this.setTimer()
     }, 5000)
     let timer1 = setTimeout(() => {
-      this.setState({ opacity: 0.2 })
+      this.setState({ opacity: 0.5 })
       clearTimeout(this.state.timer1)
-    }, 4700)
+    }, 4500)
     this.setState({ timer: timer, timer1: timer1 })
   }
 

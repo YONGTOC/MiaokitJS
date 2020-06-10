@@ -214,10 +214,9 @@
   width: 59px;
   height: 24px;
   background: rgba(255,255,255,1);
-  border: 1px solid rgba(204,204,204,1);
   border-radius: 2px;
   float: right;
-  margin-top: 2px;
+  margin-top: 5px;
   line-height: 22px;
   text-align: center;
 }
@@ -367,7 +366,7 @@ input[type="number"] {
 }
 .index-bg {
   transition-property: opacity;
-  transition-duration: 0.3s;
-  transition-timing-function: linear;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-in;
 }
 

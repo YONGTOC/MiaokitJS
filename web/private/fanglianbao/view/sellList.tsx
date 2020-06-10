@@ -5,7 +5,7 @@ import HomeTop from "homeTop"
 import AllBottom from "allBottom"
 import { Switch } from "react-router";
 
-class RoomList extends React.Component {
+class SellList extends React.Component {
   constructor(props) {
     super(props);
     this.cRef = ref => { this.refDom = ref };
@@ -154,23 +154,23 @@ class RoomList extends React.Component {
                 <div style={{ marginTop: "27px", overflow: "hidden", clear: "both" }}>
                   <div style={{ float: "left", color: "#989FA8" }}>面积：</div>
                   <div style={{ marginLeft: "56px" }}>
-                  {this.state.areaArray.map((item, index) => {
-                    return (
-                      <div key={index} style={{ float: "left", height: "16px", marginRight: "24px", cursor: "pointer", color: this.state.areaIndex === index ? "#17A1E6" : "" }}
-                        onClick={() => {
-                          let selectedArr = this.state.selectedArr
-                          if (index !== 0) {
-                            selectedArr[1] = item
-                          } else {
-                            selectedArr[1] = {}
-                          }
-                          this.setState({ areaIndex: index, selectedArr: selectedArr, minArea: "", maxArea: "" })
-                        }}>
-                        {item.name}
-                      </div>  
-                    )
-                  })
-                  }
+                    {this.state.areaArray.map((item, index) => {
+                      return (
+                        <div key={index} style={{ float: "left", height: "16px", marginRight: "24px", cursor: "pointer", color: this.state.areaIndex === index ? "#17A1E6" : "" }}
+                          onClick={() => {
+                            let selectedArr = this.state.selectedArr
+                            if (index !== 0) {
+                              selectedArr[1] = item
+                            } else {
+                              selectedArr[1] = {}
+                            }
+                            this.setState({ areaIndex: index, selectedArr: selectedArr, minArea: "", maxArea: "" })
+                          }}>
+                          {item.name}
+                        </div>
+                      )
+                    })
+                    }
                   </div>
                   <div className="park-list-price-q">
                     <input style={{ width: "46px", float: "left", border: "none", outline: "none", padding: "0 10px 0 10px", lineHeight: "20px" }} value={this.state.minArea}
@@ -181,7 +181,7 @@ class RoomList extends React.Component {
                           this.setState({ minArea: event.target.value.substring(0, 4) }, () => {
                             if (this.state.minArea.length === 4 && this.state.maxArea.length === 4) {
                               let selectedArr = this.state.selectedArr
-                              selectedArr[1] = { id: "", name: this.state.minArea + "-" + this.state.maxArea + "m²"}
+                              selectedArr[1] = { id: "", name: this.state.minArea + "-" + this.state.maxArea + "m²" }
                               this.setState({ selectedArr: selectedArr, areaIndex: -1 })
                             }
                           })
@@ -209,7 +209,7 @@ class RoomList extends React.Component {
 
                 <div style={{ clear: "both" }}></div>
                 <div style={{ marginTop: "27px", overflow: "hidden" }}>
-                  <div style={{ float: "left", color: "#989FA8" }}>价格：</div>
+                  <div style={{ float: "left", color: "#989FA8" }}>售价：</div>
                   <div className="park-list-price" onClick={() => {
                     let selectedArr = this.state.selectedArr
                     selectedArr[2] = {}
@@ -358,7 +358,7 @@ class RoomList extends React.Component {
                         case 3:
                           this.setState({ selectedArr: selectedArr, decorationIndex: 0 });
                           break;
-                      } 
+                      }
                     }
                     }
                   />
@@ -388,8 +388,8 @@ class RoomList extends React.Component {
             <div className="room-list-hot-room">热门园区推荐</div>
           </div>
 
-          <div style={{overflow: "hidden"}}>
-            <div style={{width: "895px", float: "left"}}>
+          <div style={{ overflow: "hidden" }}>
+            <div style={{ width: "895px", float: "left" }}>
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => {
                 return (
                   <div key={index} style={{ marginTop: index === 0 ? "18px" : "30px", overflow: "hidden", cursor: "pointer", width: "895px" }}>
@@ -428,18 +428,18 @@ class RoomList extends React.Component {
                       <span style={{ color: index === 1 ? "#17A1E6" : "#B9B9B9", fontSize: "12px" }} >收藏</span>
                     </div>
                     <div style={{ float: "left", color: "#989FA8", fontSize: "14px", paddingTop: "47px", overflow: "hidden" }}>
-                      <div style={{float: "right"}}>
+                      <div style={{ float: "right" }}>
                         <span style={{ color: "rgba(220, 26, 63, 1)", fontSize: "26px", fontWeight: 600, marginRight: "5px" }}>1.8</span>
                         <span>万元/月</span>
                       </div>
-                      <div style={{clear: "both"}}>单价：120元/m²⋅月</div>
+                      <div style={{ clear: "both" }}>单价：120元/m²⋅月</div>
                     </div>
                   </div>
                 )
               })
               }
 
-              <div className="paging" style={{marginTop: "80px"}}>
+              <div className="paging" style={{ marginTop: "80px" }}>
                 {["<", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, ">"].map((item, index) => {
                   return (
                     <div key={index} className="paging-child" style={{ marginRight: index !== 11 ? "6px" : 0 }}>
@@ -469,13 +469,13 @@ class RoomList extends React.Component {
                       <div style={{ color: "#989FA8", fontSize: "12px", marginTop: "2px" }}>{item.address}</div>
                     </div>
                   </div>
-                  )
-                })
+                )
+              })
               }
 
               <div className="wx-title">房良宝小程序端</div>
               <img src="./fangliangbao/image/wx.png" />
-              <div style={{fontSize: "12px", marginLeft: "10px"}}>打开微信扫一扫随时手机体验</div>
+              <div style={{ fontSize: "12px", marginLeft: "10px" }}>打开微信扫一扫随时手机体验</div>
             </div>
           </div>
 
@@ -487,7 +487,7 @@ class RoomList extends React.Component {
     )
   }
 
-  
+
 }
 
-export default RoomList;
+export default SellList;
