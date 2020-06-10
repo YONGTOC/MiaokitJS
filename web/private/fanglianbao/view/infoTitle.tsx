@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import Router from 'router';
 
-class InfoTitle extends React.Component {
+class InfoTitle extends React.Component<{index:any}> {
   constructor(props) {
     super(props);
 
