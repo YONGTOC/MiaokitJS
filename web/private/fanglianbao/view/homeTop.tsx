@@ -1,6 +1,7 @@
 ﻿import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Router from 'router';
+import { Link } from 'react-router-dom';
 
 import "css!./style/iconfont.css";
 import Login from "login";
@@ -47,8 +48,10 @@ class HomeTop extends React.Component {
               <li style={{ "margin": "0 40px 0 0" }} >
                 <i className="iconfont " style={{ "margin-right": "5px", "font-size": "14px" }}>&#xe83c;</i>
                 <span>广州</span></li>
-              <li className={this.state.htIndex == 1 ? "homtop_active" : null}
-              onClick={this.changHomeTop.bind(this, 1)}>首页</li>
+              <Link to="/" style={{ color: "rgba(185,185,185,1)" }}>
+                <li className={this.state.htIndex == 1 ? "homtop_active" : null}
+                onClick={this.changHomeTop.bind(this, 1)}>首页</li>
+              </Link>
               <li className={this.state.htIndex == 2 ? "homtop_active" : null}
               onClick={this.changHomeTop.bind(this, 2)}>园区</li>
               <li className={this.state.htIndex == 3 ? "homtop_active" : null}

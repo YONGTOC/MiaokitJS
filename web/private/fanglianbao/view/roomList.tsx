@@ -423,10 +423,14 @@ class RoomList extends React.Component {
                         </div>
                       </div>
                     </div>
+
                     <div className="index-collect" style={{ border: index === 1 ? "1px solid #17A1E6" : "1px solid rgba(204,204,204,1)" }}>
-                      <img src={index === 1 ? "./fangliangbao/image/collected.png" : "./fangliangbao/image/collect.png"} width="11px" height="11px" style={{ margin: "0 3px 2px 0" }} />
-                      <span style={{ color: index === 1 ? "#17A1E6" : "#B9B9B9", fontSize: "12px" }} >收藏</span>
+                      <div style={{ float: "left", height: "11px", width: "11px", overflow: "hidden", margin: "5.5px 5px 0 8px" }}>
+                        <img src={index === 1 ? "./fangliangbao/image/collected.png" : "./fangliangbao/image/collect.png"} width="100%" height="100%" style={{ display: "block" }} />
+                      </div>
+                      <div style={{ color: "#B9B9B9", fontSize: "12px", float: "left" }} >收藏</div>
                     </div>
+
                     <div style={{ float: "left", color: "#989FA8", fontSize: "14px", paddingTop: "47px", overflow: "hidden" }}>
                       <div style={{float: "right"}}>
                         <span style={{ color: "rgba(220, 26, 63, 1)", fontSize: "26px", fontWeight: 600, marginRight: "5px" }}>1.8</span>

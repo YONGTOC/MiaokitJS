@@ -4,6 +4,8 @@ import Index from "index";
 import ParkList from "parkList";
 import RoomList from "roomList";
 import SellList from "sellList";
+import PersonalCenter from "personalCenter";
+import Contact from "contact";
 
 class Router extends React.Component {
       constructor(props) {
@@ -19,6 +21,8 @@ class Router extends React.Component {
           <Route exact path="/parkList" component={ParkList} />
           <Route exact path="/roomList" component={RoomList} />
           <Route exact path="/sellList" component={SellList} />
+          <Route exact path="/personalCenter" component={PersonalCenter} />
+          <Route exact path="/contact" component={Contact} />
         </Switch>
       </HashRouter>
       )

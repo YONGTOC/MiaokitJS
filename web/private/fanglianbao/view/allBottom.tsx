@@ -1,5 +1,6 @@
 ﻿import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { Link } from 'react-router-dom';
 
 import Router from 'router';
 
@@ -21,10 +22,12 @@ class AllBottom extends React.Component {
           <div className="homeBottomBox_one">
             <div className="hbLeft">
               <ul>
-                <li><img src="./fangliangbao/image/whiteLogo.png"/> </li>
-                <li>联系我们</li>
-                <li>网站地图</li>
-                <li>友情链接</li>
+                <li><img src="./fangliangbao/image/whiteLogo.png" /> </li>
+                <Link to="/contact">
+                  <li style={{ cursor: "pointer" }}>联系我们</li>
+                  <li style={{ cursor: "pointer" }}>网站地图</li>
+                  <li style={{ cursor: "pointer" }}>友情链接</li>
+                </Link>
               </ul>
             </div>
             <div className="hbMiddle">
