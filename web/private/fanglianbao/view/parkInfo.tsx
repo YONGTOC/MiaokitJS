@@ -8,7 +8,7 @@ import AllBottom from "AllBottom";
 import InfoTitle from "InfoTitle";
 import { exact } from "prop-types";
 import SendSuccess from "SendSuccess";
-
+import AlertBox from "AlertBox";
 
 
 class ParkInfo extends React.Component {
@@ -16,14 +16,14 @@ class ParkInfo extends React.Component {
     super(props);
 
     this.handleScroll = this.handleScroll.bind(this);
-    ParkInfo.closeSendNeed = this.closeSendNeed.bind(this);
+    ParkInfo.closeDefeat = this.closeDefeat.bind(this);
+    ParkInfo.successClose = this.successClose.bind(this);
   }
 
   public componentDidMount() {
 
     HomeTop.changHomeTop(2);
     window.addEventListener('scroll', this.handleScroll);
-
   }
 
   _handleScroll(scrollTop) {
@@ -35,9 +35,14 @@ class ParkInfo extends React.Component {
     this._handleScroll(scrollTop);
   }
 
-  static closeSendNeed() { };
-  public closeSendNeed() {
-    ParkInfoThreeRight.closeSendNeed()
+  static closeDefeat() { };
+  public closeDefeat() {
+    ParkInfoThreeRight.closeDefeat()
+  }
+
+  static successClose() { };
+  public successClose() {
+    ParkInfoThreeRight.successClose()
   }
 
   public render() {
@@ -78,7 +83,6 @@ class ParkInfoOne extends React.Component {
   constructor(props) {
     super(props);
 
-
   }
 
   public componentDidMount() {
@@ -91,21 +95,14 @@ class ParkInfoOne extends React.Component {
   public render() {
     return (
       <div className="ParkInfoOne">
-        <div className="ParkInfoOne_title">
-          <img src="./fangliangbao/image/blueLogo.png" />
-          <ul>
-            <li style={{ "color": " rgb(23, 161, 230)", "font-weight": "bold" }}>品牌园区</li>
-            <li>出租房源</li>
-            <li>房源园区</li>
-          </ul>
-        </div>
+
         <div className="ParkInfoOne_html">
           <p>
             <span>广州 品牌园区</span>
             <i className="jiange"> > </i>
-              <span>越秀</span>
-           <i className="jiange"> > </i>
-              <span>北京路</span>
+            <span>越秀</span>
+            <i className="jiange"> > </i>
+            <span>北京路</span>
           </p>
         </div>
         <div className="ParkInfoOne_info">
@@ -121,8 +118,6 @@ class ParkInfoOne extends React.Component {
           </ul>
         </div>
       </div>
-
-
     )
   }
 
@@ -137,7 +132,6 @@ class ParkInfoTwo extends React.Component {
   constructor(props) {
     super(props);
 
-
   }
 
   public componentDidMount() {
@@ -145,7 +139,6 @@ class ParkInfoTwo extends React.Component {
   }
 
   public changeTitle(this, index) {
-
     if (index == 2) {
       this.setState({
         index: index
@@ -158,6 +151,7 @@ class ParkInfoTwo extends React.Component {
       })
     }
   }
+
   public overTitle() {
     if (this.state.ParkInfoTwoState == "ParkInfoTwoAll") {
       this.setState({
@@ -333,7 +327,8 @@ class SellList extends React.Component {
   public componentDidMount() {
 
   }
-    public onSellRoom(index) {
+
+  public onSellRoom(index) {
     ParkInfoThree.showRoomInfo();
     this.setState({
       sellRoomsState: index
@@ -421,7 +416,6 @@ class SellList extends React.Component {
     sellRoomsState: -1,
   }
 
-
 }
 
 
@@ -435,7 +429,6 @@ class CompanyList extends React.Component {
   public componentDidMount() {
 
   }
-
 
   public onCompany(index) {
     ParkInfoThree.showCompanyInfo();
@@ -523,7 +516,6 @@ class CompanyList extends React.Component {
     )
   }
 
-
   public state = {
     typeIndex: 0,
     companyState: -1,
@@ -539,62 +531,33 @@ class ParkInfoThree extends React.Component {
     ParkInfoThree.showRoomInfo = this.showRoomInfo.bind(this);
     ParkInfoThree.showCompanyInfo = this.showCompanyInfo.bind(this);
     ParkInfoThree.hideRoomInfo = this.hideRoomInfo.bind(this);
-    //ParkInfoThree.rightBox_up = this.rightBox_up.bind(this);
-    //ParkInfoThree.rightBox_up2 = this.rightBox_up2.bind(this);
-    //ParkInfoThree.rightBox_up3 = this.rightBox_up3.bind(this);
-
   }
 
   public componentDidMount() {
 
   }
-  //RoomInfoState
 
+  //RoomInfoState
   static showRoomInfo() { };
   public showRoomInfo() {
     this.setState({
       RoomInfoState: "RoomInfoShow",
-     // rightBox: "ParkInfoThree_rightBox_up"
     })
   }
 
   static showCompanyInfo() { };
-  public showCompanyInfo() {  
+  public showCompanyInfo() {
     this.setState({
       RoomInfoState: "CompanyInfoShow",
-    //  rightBox: "ParkInfoThree_rightBox_up" 
     })
   }
 
-    static hideRoomInfo() { };
+  static hideRoomInfo() { };
   public hideRoomInfo() {
     this.setState({
       RoomInfoState: "hide",
-      // rightBox: "ParkInfoThree_rightBox_up"
     })
   }
-
-
-  //  static rightBox_up() { };
-  //public rightBox_up() {
-  //  this.setState({
-  //    rightBox: "ParkInfoThree_rightBox_up"
-  //  })
-  //}
-
-//  static rightBox_up2() { };
-//  public rightBox_up2() {
-//    this.setState({
-//      rightBox: "ParkInfoThree_rightBox_up2"
-//    })
-//  }
-
-//  static rightBox_up3() { };
-//  public rightBox_up3(){
-//     this.setState({
-//      rightBox: "ParkInfoThree_rightBox_up3"
-//    })
-//}
 
   public render() {
     return (
@@ -623,88 +586,8 @@ class ParkInfoThree extends React.Component {
 
   public state = {
     RoomInfoState: "hide",
-   // rightBox: "ParkInfoThree_rightBox"
   }
 }
-
-
-//class ParkInfoThree extends React.Component {
-
-//  constructor(props) {
-//    super(props);
-
-
-
-
-//    ParkInfoThree.hideRoomInfo = this.hideRoomInfo.bind(this);
-//    ParkInfoThree.showRoomInfo = this.showRoomInfo.bind(this);
-//    ParkInfoThree.showCompanyInfo = this.showCompanyInfo.bind(this);
-//  }
-
-//  public componentDidMount() {
- 
-
-//  }
-//  //RoomInfoState
-
-//  static showRoomInfo() { };
-//  public showRoomInfo() {
-//    this.setState({
-//      RoomInfoState: "RoomInfoShow",
-//      // rightBox: "ParkInfoThree_rightBox_up"
-//    })
-//  }
-
-//  static hideRoomInfo() { };
-//  public hideRoomInfo() {
-//    this.setState({
-//      RoomInfoState: "hide",
-//      // rightBox: "ParkInfoThree_rightBox_up"
-//    })
-//  }
-
-
-
-//  static showCompanyInfo() { };
-//  public showCompanyInfo() {
-//    this.setState({
-//      RoomInfoState: "CompanyInfoShow",
-//      //  rightBox: "ParkInfoThree_rightBox_up"
-//    })
-//  }
-//  }
-
-
-//  public render() {
-//    return (
-//      <div className="ParkInfoThree">
-
-//        <div className="ParkInfoThree_leftBox">
-//          {this.state.RoomInfoState == "RoomInfoShow" ?
-//            < RoomInfoThreeLeft />
-//            :
-//            null
-//          }
-//          {this.state.RoomInfoState == "CompanyInfoShow" ?
-//            < CompanyInfoThreeLeft />
-//            :
-//            null
-//          }
-//          < ParkInfoThreeLeft />
-
-//        </div>
-//        <div className="ParkInfoThree_rightBox">
-//          < ParkInfoThreeRight />
-//        </div>
-//      </div>
-//    )
-//  }
-
-//  public state = {
-//    RoomInfoState: "hide",
-//    // rightBox: "ParkInfoThree_rightBox"
-//  }
-//}
 
 class ParkInfoThreeLeft extends React.Component {
 
@@ -719,9 +602,6 @@ class ParkInfoThreeLeft extends React.Component {
     })
   }
   public ParkInfoOn(index) {
-    //this.setState({
-    //  ParkInfoIndex: index
-    //})
     if (index == 4) {
       this.setState({
         ParkInfoThreeLeft: "RoomInfoThreeLeft_all",
@@ -754,7 +634,7 @@ class ParkInfoThreeLeft extends React.Component {
         console.log(this.state)
       })
     }
-
+    //over
   }
 
   public nextImg() {
@@ -773,8 +653,8 @@ class ParkInfoThreeLeft extends React.Component {
       }, () => {
         console.log(this.state)
       })
-
     }
+    //over
   }
 
   public fullView() {
@@ -817,13 +697,10 @@ class ParkInfoThreeLeft extends React.Component {
               园区介绍</li>
             <li className={this.state.ParkInfoIndex == 1 ? "ParkInfoIndex_in" : null}
               onClick={this.ParkInfoOn.bind(this, 1)} >
-              区位优势</li>
+              实拍照片</li>
             <li className={this.state.ParkInfoIndex == 2 ? "ParkInfoIndex_in" : null}
               onClick={this.ParkInfoOn.bind(this, 2)} >
               优惠政策</li>
-            <li className={this.state.ParkInfoIndex == 3 ? "ParkInfoIndex_in" : null}
-              onClick={this.ParkInfoOn.bind(this, 3)} >
-              园区风采</li>
           </ul>
         </div>
         <div className="ParkInfoThree_left_text">
@@ -836,9 +713,17 @@ class ParkInfoThreeLeft extends React.Component {
             : null
           }
           {this.state.ParkInfoIndex == 1 ?
-            <div className="ParkInfo_text advantage" id="advantage">
-              <p>地处广州、顺德、中山、东莞、珠海、深圳等地之枢纽，占踞番禺的核心位置。前身是永隆制衣厂，2010年经改造，成为了青瓦白墙，诗情画意的创意园区。 产业园取名花城，集合了绿色花城、历史花</p>
-              <p>地处广州、顺德、中山、东莞、珠海、深圳等地之枢纽，占踞番禺的核心位置。前身是永隆制衣厂，2010年经改造，成为了青瓦白墙，诗情画意的创意园区。 产业园取名花城，集合了绿色花城、历史花</p>
+            <div className="infoImg">
+              <span className="stylesgoleft" onClick={this.upImg.bind(this)}>
+                <i className="iconfont " >&#xe835;</i>
+              </span>
+              <img src={this.state.imgUrl} onClick={this.fullView.bind(this)} />
+              <span className="stylesgoright" onClick={this.nextImg.bind(this)}>
+                <i className="iconfont " >&#xe835;</i>
+              </span>
+              <p className="infoImg_num">
+                <span>{this.state.imgNum}</span> / <span>{this.state.imgMax}</span>
+              </p>
             </div>
             : null
           }
@@ -927,9 +812,15 @@ class RoomInfoThreeLeft extends React.Component {
     super(props);
 
   }
-  //count1  left:"";
   public componentDidMount() {
-
+    let ps2H = $('.ps2').height();
+    console.log(ps2H);
+    if (ps2H > 21) {
+      let pst = ps2H - 21;
+      let partH = ps2H + 412;
+      $('.ps').attr("style","top:-"+ pst + "px");
+      $('.RoomInfoThreeLeft_part').attr("style","height:"+ partH + "px");
+    }
   }
 
   public roomInfoOn(index) {
@@ -961,7 +852,6 @@ class RoomInfoThreeLeft extends React.Component {
 
   public upImg() {
     if (this.state.imgIndex > 0) {
-
       let imgIndexN = this.state.imgIndex;
       imgIndexN = imgIndexN - 1;
       let imgNumN = this.state.imgIndex + 1;
@@ -975,15 +865,13 @@ class RoomInfoThreeLeft extends React.Component {
         console.log(this.state)
       })
     }
-
+    //over
   }
 
   public nextImg() {
     if (this.state.imgNum !== this.state.imgMax) {
-
       let imgIndexN = this.state.imgIndex;
       imgIndexN = imgIndexN + 1;
-
       let imgNumN = this.state.imgIndex + 1;
       imgNumN = imgNumN + 1;
 
@@ -994,13 +882,12 @@ class RoomInfoThreeLeft extends React.Component {
       }, () => {
         console.log(this.state)
       })
-
     }
+    //over
   }
 
   public upVid() {
     if (this.state.vidIndex > 0) {
-
       let vidIndexN = this.state.vidIndex;
       vidIndexN = vidIndexN - 1;
       let vidNumN = this.state.vidIndex + 1;
@@ -1014,15 +901,13 @@ class RoomInfoThreeLeft extends React.Component {
         console.log(this.state)
       })
     }
-
+    //over
   }
 
   public nextVid() {
     if (this.state.vidNum !== this.state.vidMax) {
-
       let vidIndexN = this.state.vidIndex;
       vidIndexN = vidIndexN + 1;
-
       let vidNumN = this.state.vidIndex + 1;
       vidNumN = vidNumN + 1;
 
@@ -1033,8 +918,8 @@ class RoomInfoThreeLeft extends React.Component {
       }, () => {
         console.log(this.state)
       })
-
     }
+    //over
   }
 
   public fullView() {
@@ -1068,9 +953,7 @@ class RoomInfoThreeLeft extends React.Component {
   }
 
   public render() {
-    //<div  className="ParkInfoThree_left_title"> 
-    //   <ul>
-    //     <li className={this.state.ParkInfoIndex == 0 ? "ParkInfoIndex_in" : null}
+
     return (
       <div className={this.state.RoomInfoThreeLeft} >
         <p className="roomInfo_tit">出租！高新区信息产业园豪华装修单元</p>
@@ -1110,10 +993,14 @@ class RoomInfoThreeLeft extends React.Component {
               <li>总共楼层 <span>12层</span></li>
               <li>所在楼层 <span>6层</span></li>
               <li>电<span style={{ "margin-left": "28px", "color": "rgba(152,159,168,1)" }}>梯</span><span>有电梯</span></li>
-              <li>看房时间 <span className="lookTime">联系顾问，随时可看</span></li>
+                   <p className="po"> <span className="ps">看房时间 </span> <p className="ps2">
+                联系顾问，随时可看
+                </p></p>
+
               <li>更新时间 <span>14小时前</span></li>
-            </ul>
-          </div>
+
+            </ul> 
+          </div> 
           : null
         }
         {this.state.RoomInfoIndex == 1 ?
@@ -1133,18 +1020,16 @@ class RoomInfoThreeLeft extends React.Component {
         }
         {this.state.RoomInfoIndex == 2 ?
           <div className="infoImg">
-            <span className="stylesgoleft" onClick={this.upVid.bind(this)}>
+            <span className="stylesgoleft " onClick={this.upVid.bind(this)} style={{ "opacity": "0" }}>
               <i className="iconfont " >&#xe835;</i>
             </span>
             <video src={this.state.vidUrl} controls >
               当前浏览器不支持video播放
             </video>
-            <span className="stylesgoright" onClick={this.nextVid.bind(this)}>
+            <span className="stylesgoright " onClick={this.nextVid.bind(this)} style={{ "opacity": "0" }}>
               <i className="iconfont " >&#xe835;</i>
             </span>
-            <p className="infoImg_num">
-              <span>{this.state.vidNum}</span> / <span>{this.state.vidMax}</span>
-            </p>
+
           </div>
           : null
         }
@@ -1206,9 +1091,7 @@ class RoomInfoThreeLeft extends React.Component {
     vidNum: 1,
     vidUrl: "",
     vidUrlList: [
-      { url: "https://v-cdn.zjol.com.cn/280443.mp4" },
-      { url: "https://v-cdn.zjol.com.cn/276982.mp4" },
-      { url: "https://v-cdn.zjol.com.cn/276984.mp4" },
+      { url: "https://v-cdn.zjol.com.cn/280443.mp4" }
     ]
   }
 }
@@ -1236,9 +1119,6 @@ class CompanyInfoThreeLeft extends React.Component {
 
 
   public render() {
-    //<div  className="ParkInfoThree_left_title">
-    //   <ul>
-    //     <li className={this.state.ParkInfoIndex == 0 ? "ParkInfoIndex_in" : null}
     return (
       <div className="RoomInfoThreeLeft" >
         <div className="ParkInfoThree_left_title">
@@ -1339,7 +1219,8 @@ class ParkInfoThreeRight extends React.Component {
   constructor(props) {
     super(props);
 
-    ParkInfoThreeRight.closeSendNeed = this.closeSendNeed.bind(this);
+    ParkInfoThreeRight.closeDefeat = this.closeDefeat.bind(this);
+    ParkInfoThreeRight.successClose = this.successClose.bind(this);
   }
 
   public componentDidMount() {
@@ -1347,20 +1228,124 @@ class ParkInfoThreeRight extends React.Component {
   }
 
   public sendNeed() {
-    console.log(this.state);
+    console.log("sendNeedSuccess", this.state.phone);
     // 添加判断条件
+    var reg01 = /^1[3456789]\d{9}$/;
+    if (reg01.test(this.state.phone)) {
+            console.log("手机号或座机号填写正确")
+            //^[0-9]*$ //判断需求内容
+            var reg03 = /^[0-9]*$/;
+            if (reg03.test(this.state.needText)) {
+              //console.log(7777); //全数字
+              this.setState({
+                sendDefeatState: true,
+              }, () => {
+                AlertBox.showAlert("请正确输入您的需求");
+              });
+              return;
+            } else if (this.state.needText == "输入您的需求，如：在广州白云区寻找200m2左右的办公室，租金在80元/m2·天，临近地铁站。") {
+              //  console.log(74444444444);
+              this.setState({
+                sendDefeatState: true,
+              }, () => {
+                AlertBox.showAlert("请输入您的需求");
+              });
+              return;
+            } else {
+              // console.log(78888888);
+            }
+    } else if (this.state.phone == "输入您的手机号码") {
+      this.setState({
+        sendDefeatState: true,
+      }, () => {
+        AlertBox.showAlert("请输入您的手机号码");
+      });
+      return;
+    } else {
+      this.setState({
+        sendDefeatState: true,
+      }, () => {
+        AlertBox.showAlert("请正确输入您的手机号码");
+      });
+      return;
+    }
+
     this.setState({
-      sendSuccessState:true,
+      sendSuccessState: true,
     })
-     $(document.body).attr('style', 'height: 100%; margin: 0; padding: 0; overflow: hidden;');
+    $(document.body).attr('style', 'height: 100%; margin: 0; padding: 0; overflow: hidden;');
+
+
+    //验证over
   }
 
-  static closeSendNeed() { };
-  public closeSendNeed(){
-  this.setState({
-    sendSuccessState: false,
+  //手机验证
+  public phonefoucus(event) {
+    if (this.state.phone == "输入您的手机号码") {
+      this.setState({
+        phone: ""
+      })
+    }
+  }
+
+  public phoneblur(event) {
+    if (this.state.phone == "") {
+      this.setState({
+        phone: "输入您的手机号码"
+      })
+    }
+  }
+
+  public phoneChange(event) {
+    let phone = event.target.value.replace(/[, ]/g, '');
+    this.setState({
+      phone: phone
     })
-}
+  }
+
+  // text验证
+  public needTextfoucus(event) {
+    if (this.state.needText == "输入您的需求，如：在广州白云区寻找200m2左右的办公室，租金在80元/m2·天，临近地铁站。") {
+      this.setState({
+        needText: ""
+      })
+    }
+  }
+
+  public needTextblur(event) {
+    if (this.state.needText == "") {
+      this.setState({
+        needText: "输入您的需求，如：在广州白云区寻找200m2左右的办公室，租金在80元/m2·天，临近地铁站。"
+      })
+    }
+  }
+
+  public needTextChange(event) {
+    let needText = event.target.value.replace(/[, ]/g, '');
+    this.setState({
+      needText: needText
+    })
+  }
+
+  static closeDefeat() { };
+  public closeDefeat() {
+    this.setState({
+      sendSuccessState: false,
+      sendDefeatState: false,
+    })
+  }
+
+  // 关闭提交成功
+  static successClose() { };
+  public successClose() {
+    this.setState({
+      sendSuccessState: false,
+      sendDefeatState: false,
+      needText: "输入您的需求，如：在广州白云区寻找200m2左右的办公室，租金在80元/m2·天，临近地铁站。",
+      phone: "输入您的手机号码",
+    })
+  }
+
 
   public render() {
     return (
@@ -1378,28 +1363,38 @@ class ParkInfoThreeRight extends React.Component {
           <p className="pitr_title">宝哥帮找房</p>
           <p className="pitrt_inp">
             <i className="iconfont " style={{ "margin-right": "5px", "font-size": "14px" }}>&#xe83d;</i>
-            <input type="text" value={this.state.phone} />
+            <input type="number" value={this.state.phone}
+              onFocus={this.phonefoucus.bind(this)} onBlur={this.phoneblur.bind(this)}
+              onChange={this.phoneChange.bind(this)}
+            />
           </p>
         </div>
         <div className="ParkInfoThree_right_three" >
           <p className="pitrth_text1">您的需求：</p>
-          <textarea value={this.state.needText} ></textarea>
-          <input type="button" />
+          <textarea value={this.state.needText}
+            onFocus={this.needTextfoucus.bind(this)} onBlur={this.needTextblur.bind(this)}
+            onChange={this.needTextChange.bind(this)}
+          ></textarea>
         </div>
         <input type="button" value="立即委托" className="pitr_btn" onClick={this.sendNeed.bind(this)} />
-      
+
         {this.state.sendSuccessState == true ?
           < SendSuccess />
-          :null
-}
+          : null
+        }
+        {this.state.sendDefeatState == true ?
+          < AlertBox />
+          : null
+        }
       </div>
     )
   }
 
   public state = {
-    needText: "如：在广州白云区寻找200m2左右的办公室，租金在80元/m2·天，临近地铁站。",
+    needText: "输入您的需求，如：在广州白云区寻找200m2左右的办公室，租金在80元/m2·天，临近地铁站。",
     phone: "输入您的手机号码",
     sendSuccessState: false,
+    sendDefeatState: false,
   }
 }
 
@@ -1419,10 +1414,9 @@ class NearParkList extends React.Component {
     console.log(this.state)
   }
 
-  //.nearParkList ul
   public nearToLeft() {
     let index = this.state.index;
-    console.log("nearToLeft",index); 
+    console.log("nearToLeft", index);
     if (index !== 0) {
       this.setState({
         index: this.state.index - 1,
@@ -1440,7 +1434,7 @@ class NearParkList extends React.Component {
         }
       })
     }
-
+    //over
   }
 
   public nearToRight() {
@@ -1464,14 +1458,13 @@ class NearParkList extends React.Component {
         })
       }
     }
-
+    //over
   }
 
   public render() {
     return (
       <div className="nearParkList">
         <p className="nearParkList_title">周边办公楼盘</p>
-
         <span className={this.state.nearToLeftState} onClick={this.nearToLeft.bind(this)}>
           <i className="iconfont " >&#xe835;</i>
         </span>
