@@ -21,6 +21,7 @@
 .index-t1 {
   float: left;
   width: 200px;
+  cursor: pointer;
 }
 .logo {
   width: 90px;
@@ -37,11 +38,13 @@
   top: 0px;
   width: 660px;
   float: right;
+  cursor: pointer;
 }
 .index-label div {
   float: left;
   margin: 35px 0 0 20px;
   font-size: 16px;
+  color: #ffffff;
 }
 .warp {
   width: 1200px;

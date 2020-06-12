@@ -87,16 +87,18 @@ class Index extends React.Component {
             </div>
 
             <div className="index-label" >
-              <div>品牌园区</div>
-              <div>出租房源</div>
-              <div>出售房源</div>
-              <div>宝哥推荐</div>
-              <div>热点资讯</div>
-              <div>
-                <img src="./fangliangbao/image/phone.png" width="14px" height="14px" style={{ margin: "0 5px 3px 0" }} />
-                <span>400-808-3066</span>
-              </div>
-              <div>登录/注册</div>
+              <Link to="/parkList"><div>品牌园区</div></Link>
+              <Link to="/roomList"><div>出租房源</div></Link>
+              <Link to="/sellList"><div>出售房源</div></Link>
+              <Link to="/baoList"><div>宝哥推荐</div></Link>
+              <Link to="/hotList"><div>热点资讯</div></Link>
+              <Link to="/contact">
+                <div>
+                  <img src="./fangliangbao/image/phone.png" width="14px" height="14px" style={{ margin: "0 5px 3px 0" }} />
+                  <span>400-808-3066</span>
+                </div>
+              </Link>
+              <Link to="/personalCenter"><div>登录/注册</div></Link>
             </div>
           </div>
 

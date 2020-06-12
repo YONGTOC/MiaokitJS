@@ -21,7 +21,7 @@ class InfoTitle extends React.Component<{index:any}> {
         <div className="ParkInfoOne_title">
           <Link to="/"><img src="./fangliangbao/image/blueLogo.png" /></Link>
           <ul>
-            {[{ name: "品牌园区", url: "/parkList" }, { name: "出租房源", url: "/roomList" }, { name: "出售房源", url: "" }].map((item, index) => {
+            {[{ name: "品牌园区", url: "/parkList" }, { name: "出租房源", url: "/roomList" }, { name: "出售房源", url: "sellList" }].map((item, index) => {
               return (
                 <Link to={item.url} key={index}>
                   <li style={{ "color": index === this.props.index ? "rgb(23, 161, 230)" : "", "font-weight": index === this.props.index ? "bold" : "" }}>{item.name}</li>

@@ -24,9 +24,9 @@ class AllBottom extends React.Component {
               <ul>
                 <li><img src="./fangliangbao/image/whiteLogo.png" /> </li>
                 <Link to="/contact">
-                  <li style={{ cursor: "pointer" }}>联系我们</li>
-                  <li style={{ cursor: "pointer" }}>网站地图</li>
-                  <li style={{ cursor: "pointer" }}>友情链接</li>
+                  <li style={{ cursor: "pointer", color: "#CCCCCC" }}>联系我们</li>
+                  <li style={{ cursor: "pointer", color: "#CCCCCC" }}>网站地图</li>
+                  <li style={{ cursor: "pointer", color: "#CCCCCC" }}>友情链接</li>
                 </Link>
               </ul>
             </div>
