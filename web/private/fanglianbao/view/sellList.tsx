@@ -126,29 +126,34 @@ class SellList extends React.Component {
                   })
                   }
                 </div>
-                <div className="triangle" style={{ marginLeft: 56 + this.state.move }}></div>
-                <div className="in_triangle" style={{ marginLeft: 56 + this.state.move }}></div>
-                <div className="park-list-br"></div>
-                <div style={{ margin: "10px 0 0 56px" }}>
-                  {this.state.districtChildArray.map((item, index) => {
-                    return (
-                      <div key={index} style={{ float: "left", height: "16px", marginRight: "24px", cursor: "pointer", color: index === this.state.districtChildIndex || index === this.state.focusDistrictChildIndex ? "#17A1E6" : "" }}
-                        onClick={() => {
-                          let selectedArr = this.state.selectedArr
-                          if (index !== 0) {
-                            selectedArr[0] = item
-                          } else {
-                            selectedArr[0] = {}
-                          }
-                          this.setState({ districtChildIndex: index, selectedArr: selectedArr })
-                        }}
-                        onMouseMove={() => this.setState({ focusDistrictChildIndex: index })} onMouseLeave={() => this.setState({ focusDistrictChildIndex: -1 })} >
-                        {item.name}
-                      </div>
-                    )
-                  })
+
+                {this.state.districtIndex !== 0 ?
+                  <div>
+                    <div className="triangle" style={{ marginLeft: 56 + this.state.move }}></div>
+                    <div className="in_triangle" style={{ marginLeft: 56 + this.state.move }}></div>
+                    <div className="park-list-br"></div>
+                    <div style={{ margin: "10px 0 0 56px" }}>
+                      {this.state.districtChildArray.map((item, index) => {
+                        return (
+                          <div key={index} style={{ float: "left", height: "16px", marginRight: "24px", cursor: "pointer", color: index === this.state.districtChildIndex || index === this.state.focusDistrictChildIndex ? "#17A1E6" : "" }}
+                            onClick={() => {
+                              let selectedArr = this.state.selectedArr
+                              if (index !== 0) {
+                                selectedArr[0] = item
+                              } else {
+                                selectedArr[0] = {}
+                              }
+                              this.setState({ districtChildIndex: index, selectedArr: selectedArr })
+                            }}
+                            onMouseMove={() => this.setState({ focusDistrictChildIndex: index })} onMouseLeave={() => this.setState({ focusDistrictChildIndex: -1 })} >
+                            {item.name}
+                          </div>
+                        )
+                      })
+                      }
+                    </div>
+                  </div> : null
                   }
-                </div>
 
                 <div style={{ clear: "both" }}></div>
                 <div style={{ marginTop: "27px", overflow: "hidden", clear: "both" }}>
