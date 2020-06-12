@@ -6,21 +6,26 @@
 .hide {
     display: none;
 }
+
 i {
     display: inline-block;
 }
+
 li {
     list-style-type: none;
 }
+
 .leaseRoomList::-webkit-scrollbar {
     -ms-overflow-style: none;
     overflow: -moz-scrollbars-none;
 }
+
 textarea {
     resize: none;
     overflow: hidden;
     border: none;
-} 
+}
+
 html {
     scrollbar-width: none;
 }
@@ -36,8 +41,9 @@ html::-webkit-scrollbar {
 .leaseRoomList::-webkit-scrollbar {
     display: none;
 }
-.listOver{
-    text-align:center;
+
+.listOver {
+    text-align: center;
 }
 /*hometop*/
 .homeTop {
@@ -65,7 +71,8 @@ html::-webkit-scrollbar {
     float: left;
     text-align: center;
     margin: 0px 10px;
-    cursor:pointer;
+    cursor: pointer;
+    color: rgba(185,185,185,1);
 }
 
 .htRight {
@@ -75,11 +82,11 @@ html::-webkit-scrollbar {
 .htRight ul li {
     float: left;
     margin: 0 10px 0 30px;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .homtop_active {
-    color: rgba(255,255,255,1);
+    color: rgba(255,255,255,1) !important;
 }
 
 /*allBottom*/
@@ -122,6 +129,7 @@ html::-webkit-scrollbar {
     position: relative;
     top: -63px;
 }
+
 .homeBottomBox_two {
     text-align: center;
 }
@@ -172,17 +180,24 @@ html::-webkit-scrollbar {
     color: rgba(51,51,51,1);
     float: left;
     margin: 0 12px;
-    cursor:pointer;
+    cursor: pointer;
+}
+
+.recomTitle_active {
+    color: rgb(23, 161, 230) !important;
+    font-weight: bold;
 }
 
 .ParkInfoOne_html {
     color: rgba(152,159,168,1);
     margin: 10px 0;
-    cursor:pointer;
+    cursor: pointer;
 }
+
 .ParkInfoOne_html span {
-    margin:0 5px;
+    margin: 0 5px;
 }
+
 .ParkInfoOne_info p {
     font-size: 28px;
     font-weight: bold;
@@ -198,6 +213,7 @@ html::-webkit-scrollbar {
 .ParkInfoOne_info ul li:nth-child(1) {
     margin: 0 10px 0 0;
 }
+
 .ParkInfoOne_info_li {
     display: inline;
     background: rgba(255,255,255,1);
@@ -206,7 +222,7 @@ html::-webkit-scrollbar {
     padding: 8px 12px;
     cursor: pointer;
 }
- 
+
 .ParkInfoOne_info_li_On {
     display: inline;
     background: rgba(255,255,255,1);
@@ -215,10 +231,12 @@ html::-webkit-scrollbar {
     padding: 8px 12px;
     cursor: pointer;
 }
+
 .ParkInfoOne_info_li i {
     margin-right: 5px;
     color: rgb(185, 185, 185);
 }
+
 .ParkInfoOne_info_li_On i {
     margin-right: 5px;
     color: rgba(23,161,230,1);
@@ -309,7 +327,7 @@ html::-webkit-scrollbar {
 .ParkInfoTwoTitle ul li {
     display: inline-block;
     margin: 0 10px;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .ParkInfoTwoTitleActive {
@@ -326,16 +344,18 @@ html::-webkit-scrollbar {
     bottom: 0px;
     width: 100%;
     line-height: 28px;
-    background:#fff;
-    border-radius:0 0 4px 4px;
+    background: #fff;
+    border-radius: 0 0 4px 4px;
 }
+
 .ParkInfoTwoListTrun i {
     margin-right: 5px;
     font-size: 9px;
     position: relative;
     top: -2px;
-     transition: 1s;
+    transition: 1s;
 }
+
 .ParkInfoTwoListTrunUp {
     border-top: 1px solid rgb(242, 242, 242);
     height: 30px;
@@ -347,6 +367,7 @@ html::-webkit-scrollbar {
     border-radius: 0 0 4px 4px;
     line-height: 28px;
 }
+
 .ParkInfoTwoListTrunUp i {
     margin-right: 5px;
     font-size: 9px;
@@ -355,6 +376,7 @@ html::-webkit-scrollbar {
     transform: rotate(180deg);
     transition: 1s;
 }
+
 .leasetype {
     padding: 10px 9px 0px 9px;
     color: rgba(51,51,51,1);
@@ -394,12 +416,12 @@ html::-webkit-scrollbar {
 
 .leasetype_li p {
     margin: 0;
-    line-height:15px;
+    line-height: 15px;
 }
 
 .leasetype_li_on p {
     margin: 0;
-    line-height:15px;
+    line-height: 15px;
 }
 
 .leaseRoomList {
@@ -407,9 +429,19 @@ html::-webkit-scrollbar {
     overflow-y: scroll;
     margin: 5px 0 0 6px;
 }
-.leaseRoomList ul li{
-    cursor:pointer;
+
+.leaseRoomList2 {
+    margin: 0;
 }
+
+.leaseRoomList ul li {
+    cursor: pointer;
+}
+
+.leaseRoomList2 ul li {
+    margin-bottom: 20px;
+}
+
 .leaseRoomList ul li img {
     float: left;
     width: 88px;
@@ -423,6 +455,10 @@ html::-webkit-scrollbar {
     width: 234px;
     height: 82px;
     border-radius: 2px;
+}
+
+.leaseRooms2 {
+    padding: 0;
 }
 
 .leaseRooms_on {
@@ -465,6 +501,12 @@ html::-webkit-scrollbar {
     color: rgba(51,51,51,1);
 }
 
+.leaseName2 {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(51,51,51,1);
+}
+
 .leasePrice {
     font-size: 16px;
     font-weight: bold;
@@ -475,10 +517,11 @@ html::-webkit-scrollbar {
     font-size: 12px;
     color: rgba(51,51,51,1);
 }
+
 .leaseArea i {
     font-size: 12px;
-    color : rgba(207, 209, 210, 1);
-    margin-right:5px;
+    color: rgba(207, 209, 210, 1);
+    margin-right: 5px;
 }
 /*sell*/
 /*compnay*/
@@ -585,7 +628,6 @@ html::-webkit-scrollbar {
 }
 
 .ParkInfoThree_right_one {
-
 }
 
 .pitro_rb {
@@ -676,9 +718,11 @@ html::-webkit-scrollbar {
 .ParkInfoThree_left {
     padding: 30px 0 32px 0;
 }
-.ParkInfoThree_left_text{
-    margin-bottom:50px;
+
+.ParkInfoThree_left_text {
+    margin-bottom: 50px;
 }
+
 .roomInfo_tit {
     width: 840px;
     height: 38px;
@@ -733,8 +777,8 @@ html::-webkit-scrollbar {
 }
 
 .ParkInfo_text p {
-
 }
+
 .parkIntroduced, .advantage, .parkElegant, .discounts {
     margin: 0;
     text-indent: 30px;
@@ -743,9 +787,11 @@ html::-webkit-scrollbar {
     line-height: 26px;
     color: rgba(51,51,51,1);
 }
-.roomInfoBox_one{
-    margin-top:10px;
+
+.roomInfoBox_one {
+    margin-top: 10px;
 }
+
 .roomInfoBox_one li {
     display: inline-block;
     margin-right: 24px;
@@ -753,11 +799,13 @@ html::-webkit-scrollbar {
 
 .roomInfoBox_one li p {
     margin: 0;
-    line-height:23px;
+    line-height: 23px;
 }
+
 .roomInfoBox_one li p:nth-child(1) {
     color: rgba(152,159,168,1);
 }
+
 .ribo_bold {
     font-size: 24px;
     font-weight: bold;
@@ -767,18 +815,36 @@ html::-webkit-scrollbar {
 .roomInfoBox_two li {
     color: rgba(152,159,168,1);
     margin: 16px 0;
+    display: block;
 }
 
 .roomInfoBox_two li span {
     color: rgba(51,51,51,1);
     margin-left: 32px;
 }
+
 .lookTime {
     width: 769px;
     float: right;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+.po {
+    width: 100%;
+    margin: 0;
+}
+.ps {
+    position: relative;
+    color: rgba(152,159,168,1);
+}
+.ps2 {
+    width: 786px;
+    display: inline-block;
+    position: relative;
+    margin: 0;
+    left: 29px;
+    color: rgba(51,51,51,1);
 }
 /*img*/
 .infoImg {
@@ -801,10 +867,12 @@ html::-webkit-scrollbar {
     z-index: 1;
     opacity: 0;
 }
+
 .stylesgoleft i {
     transform: rotate(89.6rad);
     margin-top: 5px;
 }
+
 .stylesgoright {
     float: right;
     width: 40px;
@@ -819,24 +887,29 @@ html::-webkit-scrollbar {
     z-index: 1;
     opacity: 0;
 }
+
 .stylesgoright i {
     transform: rotate(-89.6rad);
-    margin-top:5px;
+    margin-top: 5px;
 }
+
 .infoImg img {
     width: 100%;
     height: 100%;
     position: relative;
     top: -82px;
     border-radius: 4px;
-    cursor:pointer;
+    cursor: pointer;
 }
+
 .infoImg:hover .stylesgoleft {
     opacity: 1;
 }
+
 .infoImg:hover .stylesgoright {
     opacity: 1;
 }
+
 .infoImg_num {
     width: 60px;
     height: 26px;
@@ -850,10 +923,12 @@ html::-webkit-scrollbar {
     top: -135px;
     margin: auto;
 }
+
 .infoImg_num span {
     text-align: center;
     /*margin-left: -25px;*/
 }
+
 .fullView {
     width: 100%;
     height: 100%;
@@ -863,10 +938,11 @@ html::-webkit-scrollbar {
     top: 0px;
     left: 0px;
 }
+
 .parkImg:hover .parkImg stylesgoleft {
     opacity: 1;
-
 }
+
 .parkImg:hover .parkImg stylesgoright {
     opacity: 1;
 }
@@ -879,6 +955,7 @@ html::-webkit-scrollbar {
 .parkImg img {
     left: -30px;
 }
+
 .parkImg_num {
     width: 60px;
     height: 26px;
@@ -892,10 +969,12 @@ html::-webkit-scrollbar {
     top: -135px;
     margin: auto;
 }
+
 .parkImg_num span {
     text-align: center;
     margin-left: -25px;
 }
+
 .pleft i {
     font-size: 18px;
     position: relative;
@@ -903,6 +982,7 @@ html::-webkit-scrollbar {
     transform: rotate(89.6rad);
     top: -11px;
 }
+
 .pright i {
     font-size: 18px;
     position: relative;
@@ -910,6 +990,7 @@ html::-webkit-scrollbar {
     transform: rotate(86.4rad);
     top: 18px;
 }
+
 .infoImg video {
     width: 100%;
     height: 100%;
@@ -918,21 +999,25 @@ html::-webkit-scrollbar {
     border-radius: 4px;
     cursor: pointer;
 }
+
 .infoImgFull {
     width: 900px;
     height: 675px;
     margin: auto;
 }
+
 .infoImgFull img {
     width: 100%;
-    height:100%;
+    height: 100%;
 }
+
 .closeFull {
     color: #fff;
     position: absolute;
     right: 15%;
     top: 30px;
 }
+
 .botImgUl {
     /*width: 1200px;
     height: 138px;
@@ -945,35 +1030,42 @@ html::-webkit-scrollbar {
     position: absolute;
     left: 25%;
 }
+
 .botImgUl ul {
     text-align: center;
 }
-.botImgUl ul li {
 
+.botImgUl ul li {
 }
+
 .botImgUl ul li img {
     width: 100%;
     height: 100%;
-    cursor:pointer;
+    cursor: pointer;
 }
+
 .stylesgoleft_full {
     opacity: 1;
     top: 373px;
 }
+
 .stylesgoleft_full i {
     font-size: 18px;
     transform: rotate(89.6rad);
     margin-top: 6px;
 }
+
 .stylesgoright_full {
     opacity: 1;
     top: -373px;
 }
+
 .stylesgoright_full i {
     font-size: 18px;
     transform: rotate(-89.6rad);
     margin-top: 6px;
 }
+
 .imgFull_p {
     width: 60px;
     height: 26px;
@@ -987,6 +1079,7 @@ html::-webkit-scrollbar {
     top: -47px;
     margin: auto;
 }
+
 .botImg_li {
     display: inline-block;
     width: 100px;
@@ -994,6 +1087,7 @@ html::-webkit-scrollbar {
     margin: 0 12px;
     opacity: 0.6;
 }
+
 .botImg_li_on {
     display: inline-block;
     width: 100px;
@@ -1001,6 +1095,7 @@ html::-webkit-scrollbar {
     margin: 37px 12px;
     opacity: 1;
 }
+
 .nearParkListBox {
     width: 100%;
     position: relative;
@@ -1008,17 +1103,20 @@ html::-webkit-scrollbar {
     height: 350px;
     margin-top: 30px;
 }
+
 .nearParkList {
     width: 1200px;
     margin: auto;
     overflow: hidden;
 }
+
 .nearParkList_title {
     font-size: 22px;
     font-weight: bold;
     line-height: 29px;
     color: rgba(51,51,51,1);
 }
+
 .nearParkList ul {
     width: 100%;
     white-space: nowrap;
@@ -1026,36 +1124,46 @@ html::-webkit-scrollbar {
     left: -40px;
     transition: 0.5s;
 }
+
 .nearParkList ul li {
     width: 285px;
     height: 284px;
-    display:inline-block;
-    margin-right:20px;
+    display: inline-block;
+    margin-right: 20px;
 }
-.nearParkList ul li:last-child{
-    margin:0;
+
+.nearParkList ul li:last-child {
+    margin: 0;
 }
+
 .nearParkList ul li img {
     width: 100%;
     height: 214px;
     margin-bottom: 12px;
-    border-radius:4px;
+    border-radius: 4px;
 }
+
 .nearParkList ul li p:nth-child(2) {
     font-size: 16px;
     font-weight: bold;
     line-height: 21px;
     color: rgba(51,51,51,1);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
+
 .nearParkList ul li p:nth-child(3) {
     color: red;
     line-height: 5px;
 }
+
 .nearParkList ul li span:nth-child(1) {
     font-size: 12px;
     font-weight: 400;
     color: rgba(140,143,167,1);
 }
+
 .nearParkList ul li span:nth-child(2) {
     color: green;
     float: right;
@@ -1064,9 +1172,11 @@ html::-webkit-scrollbar {
     color: rgba(51,51,51,1);
     line-height: 0px;
 }
+
 .nearParkList ul li span:nth-child(3) {
     color: orange;
 }
+
 .nearToLeft {
     float: left;
     width: 40px;
@@ -1077,8 +1187,9 @@ html::-webkit-scrollbar {
     position: relative;
     top: 0px;
     z-index: 1;
-    opacity:1;
+    opacity: 1;
 }
+
 .nearToLeftHide {
     float: left;
     width: 40px;
@@ -1089,14 +1200,16 @@ html::-webkit-scrollbar {
     position: relative;
     top: 0px;
     z-index: 1;
-    opacity:0;
+    opacity: 0;
 }
+
 .nearToLeft i {
     transform: rotate(190.1rad);
     position: relative;
     top: 94px;
     left: 11px;
 }
+
 .nearToRight {
     float: right;
     width: 40px;
@@ -1108,8 +1221,9 @@ html::-webkit-scrollbar {
     color: #fff;
     text-align: center;
     line-height: 73px;
-    opacity:1;
+    opacity: 1;
 }
+
 .nearToRightHide {
     float: right;
     width: 40px;
@@ -1121,14 +1235,16 @@ html::-webkit-scrollbar {
     color: #fff;
     text-align: center;
     line-height: 73px;
-    opacity:0;
+    opacity: 0;
 }
+
 .nearToRight i {
     transform: rotate(86.4rad);
     position: relative;
     top: 70px;
     left: 2px;
 }
+
 .successBox {
     margin: auto;
     background: #fff;
@@ -1139,13 +1255,15 @@ html::-webkit-scrollbar {
     transform: translateY(-50%);
     position: relative;
     top: 50%;
-    padding:40px 50px;
+    padding: 40px 50px;
 }
+
 .successBox img {
     width: 80px;
     height: 80px;
     margin: 0 0 20px 117px;
 }
+
 .successBox p:nth-child(2) {
     width: 96px;
     height: 31px;
@@ -1156,8 +1274,9 @@ html::-webkit-scrollbar {
     color: rgba(0,0,0,1);
     opacity: 1;
     margin: auto;
-    margin-bottom:21px;
+    margin-bottom: 21px;
 }
+
 .successBox p:nth-child(3) {
     width: 308px;
     height: 38px;
@@ -1169,6 +1288,7 @@ html::-webkit-scrollbar {
     opacity: 1;
     margin: auto;
 }
+
 .successBox p:nth-child(4) {
     width: 320px;
     height: 48px;
@@ -1184,6 +1304,7 @@ html::-webkit-scrollbar {
     margin: auto;
     margin-top: 21px;
 }
+
 .loginBox {
     margin: auto;
     background: #fff;
@@ -1196,16 +1317,13 @@ html::-webkit-scrollbar {
     top: 50%;
     padding: 40px 50px;
 }
+
 .loginBox i {
     position: relative;
     top: -26px;
     float: right;
     left: 32px;
-}
-.loginBox p{
-
-}
-.phoneLogin {
+    cursor:pointer;
 }
 .phoneLogin p {
     width: 320px;
@@ -1216,14 +1334,40 @@ html::-webkit-scrollbar {
     line-height: 48px;
     padding-left: 20px;
     color: rgba(152,159,168,1);
-    margin-bottom:30px;
+    margin: 0;
 }
+.pf {
+    border: 1px solid rgba(23,161,230,1);
+}
+.phoneLogin span {
+    font-size: 12px;
+    color: rgba(220,26,63,1);
+    line-height: 2.5;
+    padding-left: 20px;
+}
+
+.phoneLogin p:nth-child(1) span {
+    float: right;
+    padding: 0px 10px;
+    color: red;
+}
+
 .phoneLogin p:nth-child(2) span {
     float: right;
     padding: 0px 10px;
-    color: rgba(23,161,230,1);
+    color: red;
 }
-.phoneLogin p:nth-child(3) {
+
+.phoneLogin p:nth-child(3) span {
+    float: right;
+    padding: 0px 10px;
+    color: rgba(23,161,230,1);
+    line-height: 3.5;
+    font-size: 14px;
+    cursor:pointer;
+}
+
+.phoneLogin p:nth-child(4) {
     width: 320px;
     height: 48px;
     background: rgba(23,161,230,1);
@@ -1234,33 +1378,283 @@ html::-webkit-scrollbar {
     text-align: center;
     padding: 0;
 }
+
+.phoneLogin p:nth-child(5) {
+    float: right;
+    padding: 0px 10px;
+    color: #fff;
+    width: 320px;
+    height: 48px;
+    background: rgba(23,161,230,1);
+    border-radius: 4px;
+    font-size: 18px;
+    line-height: 48px;
+    text-align: center;
+    padding: 0;
+    cursor:pointer;
+}
+
 .phoneLogin input {
     border: none;
     background: none;
+    width:205px;
 }
+
 .codeLogin {
     text-align: center;
     margin-top: -10px;
 }
-.codeLogin img{
-    width:207px;
-    height:207px;
+
+.codeLogin img {
+    width: 207px;
+    height: 207px;
 }
+
 .codeLogin p {
     font-size: 14px;
     color: rgba(51,51,51,1);
     margin-top: 5px;
 }
+
 .activeLogin {
     font-weight: bold;
     color: rgba(23,161,230,1);
 }
+
 .loginBoxTit {
     text-align: center;
     font-size: 20px;
     font-weight: 400;
     line-height: 26px;
     color: rgba(0,0,0,1);
-    margin-bottom:30px;
-    padding-left:15px;
+    margin-bottom: 30px;
+    padding-left: 15px;
+    cursor: pointer;
+}
+
+.firstLogin {
+    margin: auto;
+    background: #fff;
+    width: 420px;
+    height: 350px;
+    border-radius: 8px;
+    transform: translateY(-50%);
+    position: relative;
+    top: 50%;
+    padding: 40px 50px;
+}
+
+.firstLogin h2 {
+    margin-top: -16px;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 26px;
+    color: rgba(23,161,230,1);
+    text-align: center;
+}
+.firstLogin h3 {
+    text-align: center;
+    font-size: 14px;
+    line-height: 19px;
+    color: rgba(0,0,0,1);
+    margin: 15px 0;
+}
+
+.firstLogin p {
+    width: 320px;
+    height: 48px;
+    background: rgba(242,242,242,1);
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 48px;
+    padding-left: 20px;
+    color: rgba(152,159,168,1);
+    margin: 0;
+}
+
+.firstLogin span {
+    font-size: 12px;
+    color: rgba(220,26,63,1);
+    line-height: 2.5;
+    padding-left: 20px;
+}
+.firstLogin p:nth-child(5) span {
+    float: right;
+    padding: 0px 10px;
+    color: rgba(23,161,230,1);
+    line-height: 3.5;
+    font-size: 14px;
+}
+
+.firstLogin p:nth-child(7) {
+    float: right;
+    color: #fff;
+    width: 320px;
+    height: 48px;
+    background: rgba(23,161,230,1);
+    border-radius: 4px;
+    font-size: 18px;
+    line-height: 48px;
+    text-align: center;
+    padding: 0;
+}
+
+.firstLogin input {
+    border: none;
+    background: none;
+    color: rgba(152,159,168,1);
+}
+/*login over*/
+.listLeft {
+}
+
+.listRight {
+    width: 230px;
+    display: inline-block;
+    height: 1000px;
+    position: absolute;
+    top: 120px;
+}
+
+.listBox {
+    width: 900px;
+    display: inline-block;
+    margin: 0 60px 40px 0;
+}
+
+.listBox_List ul {
+}
+
+.listBox_List ul li {
+    border-top: 1px solid rgb(230, 230, 230);
+}
+
+.listBox_List ul li:nth-child(1) {
+    border-top: 0px;
+}
+
+.listBox_Li {
+    padding: 30px 0;
+}
+
+.listBox_Li img {
+    width: 200px;
+    height: 150px;
+    border-radius: 4px;
+}
+
+.listBox_Li_r {
+    width: 665px;
+    float: right;
+}
+
+.listBox_Li_r p {
+    margin-bottom: 12px;
+}
+
+.listBox_Li_r p:nth-child(1) {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 21px;
+    color: rgba(51,51,51,1);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.listBox_Li_r p:nth-child(2) {
+    font-size: 12px;
+    line-height: 16px;
+    color: rgba(152,159,168,1);
+}
+
+.listBox_Li_r p:nth-child(3) {
+    width: 665px;
+    height: 65px;
+    font-size: 14px;
+    color: rgba(51,51,51,1);
+    background: #fff;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+.listBox_Li_r p:nth-child(4) {
+    text-align: right;
+    font-size: 14px;
+    color: rgba(152,159,168,1);
+}
+
+.listBox_page {
+    text-align: center;
+}
+
+.listRight_one_p {
+    font-size: 16px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    line-height: 21px;
+    color: rgba(51,51,51,1);
+    margin-bottom: 20px;
+}
+
+.listRight_three {
+}
+
+.listRight_three p:nth-child(1) {
+    font-size: 16px;
+    font-weight: bold;
+    color: rgba(51,51,51,1);
+    margin: 0 0 5px 0;
+}
+
+.listRight_three p:nth-child(2) {
+    font-size: 12px;
+    color: rgba(51,51,51,1);
+}
+
+.listRight_three img {
+    width: 150px;
+    height: 150px;
+}
+/*alert*/
+.alertBox {
+    margin: auto;
+    background: #fff;
+    width: 420px;
+    height: 350px;
+    border-radius: 8px;
+    transition:;
+    transform: translateY(-50%);
+    position: relative;
+    top: 50%;
+    padding: 40px 50px
+}
+
+.alertBox img {
+    margin: 0 0 20px 117px;
+}
+
+.alertBox p:nth-child(2) {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 31px;
+    color: rgb(100, 100, 100);
+    text-align: center;
+    margin-bottom: 60px;
+    margin-top: 20px;
+}
+
+.alertBox p:nth-child(3) {
+    color: green;
+    width: 320px;
+    height: 48px;
+    background: rgba(23,161,230,1);
+    opacity: 1;
+    border-radius: 4px;
+    color: #fff;
+    text-align: center;
+    font-size: 20px;
+    line-height: 46px;
 }

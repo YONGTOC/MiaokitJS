@@ -8,27 +8,20 @@ class SendSuccess extends React.Component {
   constructor(props) {
     super(props);
 
-
   }
 
   public componentDidMount() {
   }
 
-    public closeFull() {
-    //this.setState({
-    //  fullViewState: false
-    //});
-      $(document.body).attr('style', 'height: 100%; margin: 0; padding: 0; overflow: visible;');
-
-      ParkInfo.closeSendNeed();
-     // ParkInfoThreeRight.closeSendNeed();
+  public closeFull() {
+    $(document.body).attr('style', 'height: 100%; margin: 0; padding: 0; overflow: visible;');
+    ParkInfo.successClose();
   }
-
 
   public render() {
     return (
       <div className="fullView">
-         
+
         <div className="successBox">
           < img src="./fangliangbao/image/sendSuccess.png" />
           <p>提交成功</p>
@@ -43,5 +36,5 @@ class SendSuccess extends React.Component {
 
   }
 }
- 
+
 export default SendSuccess;
