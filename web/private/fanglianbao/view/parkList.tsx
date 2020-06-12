@@ -50,7 +50,8 @@ class ParkList extends React.Component {
 
   public componentDidMount() {
     const { clientWidth, clientHeight, children } = this.refDom;
-    this.setState({ move: children[0].clientWidth / 2 - 7 })
+    this.setState({ move: children[0].clientWidth / 2 - 7 });
+      HomeTop.changHomeTop(2);
   }
 
   clickDistrict(index) {

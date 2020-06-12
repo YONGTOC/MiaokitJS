@@ -22,10 +22,26 @@ class ParkInfo extends React.Component<{location}> {
 
   public componentDidMount() {
     console.log(this.props.location)
-    HomeTop.changHomeTop(2);
+  //  HomeTop.changHomeTop(2);
     window.addEventListener('scroll', this.handleScroll);
     if (this.props.location.roomId) {
         ParkInfoThree.showRoomInfo();
+    }
+    if (this.props.location.from == 'park') {
+        HomeTop.changHomeTop(2);
+      this.setState({
+        InfoTitleIndex:0
+      })
+    } else if (this.props.location.from == 'room') {
+         HomeTop.changHomeTop(3);
+       this.setState({
+        InfoTitleIndex:1
+      })
+    } else if (this.props.location.from == 'sell') {
+         HomeTop.changHomeTop(4);
+         this.setState({
+        InfoTitleIndex:2
+      })
     }
   }
 
@@ -55,7 +71,7 @@ class ParkInfo extends React.Component<{location}> {
         <div className="parkInfo">
           <div className="parkInfoBox_title">
 
-            < InfoTitle index={0} />
+            < InfoTitle index={this.state.InfoTitleIndex} />
 
             <ParkInfoOne />
           </div>
@@ -77,7 +93,7 @@ class ParkInfo extends React.Component<{location}> {
   }
 
   public state = {
-
+    InfoTitleIndex:-1
   }
 }
 
@@ -823,7 +839,7 @@ class RoomInfoThreeLeft extends React.Component {
   }
   public componentDidMount() {
     let ps2H = $('.ps2').height();
-    console.log(ps2H);
+  //  console.log(ps2H);
     if (ps2H > 21) {
       let pst = ps2H - 21;
       let partH = ps2H + 412;
@@ -833,7 +849,7 @@ class RoomInfoThreeLeft extends React.Component {
   }
 
   public roomInfoOn(index) {
-    console.log('roomInfoOn', index)
+  //  console.log('roomInfoOn', index)
     if (index == 1) {
       this.setState({
         RoomInfoThreeLeft: "RoomInfoThreeLeft_all",
@@ -871,7 +887,7 @@ class RoomInfoThreeLeft extends React.Component {
         imgUrl: this.state.imgUrlList[this.state.imgIndex - 1].url,
         imgNum: imgNumN
       }, () => {
-        console.log(this.state)
+    //    console.log(this.state)
       })
     }
     //over
@@ -889,7 +905,7 @@ class RoomInfoThreeLeft extends React.Component {
         imgUrl: this.state.imgUrlList[this.state.imgIndex + 1].url,
         imgNum: imgNumN
       }, () => {
-        console.log(this.state)
+     //   console.log(this.state)
       })
     }
     //over
@@ -907,7 +923,7 @@ class RoomInfoThreeLeft extends React.Component {
         vidUrl: this.state.vidUrlList[this.state.vidIndex - 1].url,
         vidNum: vidNumN
       }, () => {
-        console.log(this.state)
+    //    console.log(this.state)
       })
     }
     //over
@@ -925,7 +941,7 @@ class RoomInfoThreeLeft extends React.Component {
         vidUrl: this.state.vidUrlList[this.state.vidIndex + 1].url,
         vidNum: vidNumN
       }, () => {
-        console.log(this.state)
+    //    console.log(this.state)
       })
     }
     //over
@@ -1237,7 +1253,7 @@ class ParkInfoThreeRight extends React.Component {
   }
 
   public sendNeed() {
-    console.log("sendNeedSuccess", this.state.phone);
+   // console.log("sendNeedSuccess", this.state.phone);
     // 添加判断条件
     var reg01 = /^1[3456789]\d{9}$/;
     if (reg01.test(this.state.phone)) {
@@ -1372,7 +1388,7 @@ class ParkInfoThreeRight extends React.Component {
           <p className="pitr_title">宝哥帮找房</p>
           <p className="pitrt_inp">
             <i className="iconfont " style={{ "margin-right": "5px", "font-size": "14px" }}>&#xe83d;</i>
-            <input type="number" value={this.state.phone}
+            <input type="text" value={this.state.phone}
               onFocus={this.phonefoucus.bind(this)} onBlur={this.phoneblur.bind(this)}
               onChange={this.phoneChange.bind(this)}
             />
