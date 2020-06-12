@@ -279,7 +279,7 @@ class ParkList extends React.Component {
           <div style={{ overflow: "hidden", marginTop: "2px" }}>
             {this.state.parkArray.map((item, index) => {
               return (
-                <div key={index} className="index-park-child" onClick={() => { this.props.history.push({ pathname: "/parkInfo", parkId: 1 }) }}>
+                <div key={index} className="index-park-child" onClick={() => { this.props.history.push({ pathname: "/parkInfo", parkId: 1, from: "park" ) }}>
                   <div className="index-img-a" style={{ marginRight: (index + 1) % 4 === 0 ? "0px" : "20px", marginTop: "28px" }}>
                     <img src="./fangliangbao/image/build.png" className="index-img-t1" height="100%" width="100%" />
                   </div>
