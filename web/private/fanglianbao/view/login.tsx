@@ -140,7 +140,8 @@ class Login extends React.Component {
           clearInterval(A);
           this.setState({
             sendCodeState: false,
-            sendTime: 5
+            sendTime: 5,
+            codeText:"重发验证码",
           })
         }
       })
@@ -199,7 +200,7 @@ class Login extends React.Component {
           this.state.firstLogin == true ?
             <div className="firstLogin">
               <h2>微信登录成功</h2>
-              <h3>您的手机号还未绑定手机，请您绑定手机号</h3>
+              <h3>您的微信还未绑定手机，请您绑定手机号</h3>
               <p className={this.state.phonef == true ? "pf" : null}>
                 <input type="text" value={this.state.phone} style={{"width":"100%"}}
                   onFocus={this.phonefoucus.bind(this)} onBlur={this.phoneblur.bind(this)}
@@ -213,9 +214,9 @@ class Login extends React.Component {
                  onChange={this.codeChange.bind(this)}
                 />
                 {this.state.sendCodeState == false ?
-                  <span onClick={this.callCode.bind(this)}>发送验证码</span>
+                  <span onClick={this.callCode.bind(this)}>{this.state.codeText}</span>
                   :
-                  <span>{this.state.sendTime} 秒</span>
+                  <span>{this.state.sendTime} 秒后可重发</span>
                 }
               </p>
                <span>{this.state.codeWrong}</span>
@@ -245,9 +246,9 @@ class Login extends React.Component {
                         onChange={this.codeChange.bind(this)}
                       />
                       {this.state.sendCodeState == false ?
-                        <span onClick={this.callCode.bind(this)}>发送验证码</span>
+                        <span onClick={this.callCode.bind(this)}>{this.state.codeText}</span>
                         :
-                        <span>{this.state.sendTime} 秒</span>
+                        <span>{this.state.sendTime} 秒后可重发</span>
                       }
                     </p>
 
@@ -277,6 +278,7 @@ class Login extends React.Component {
     codeWrong: "",
     phonef: false,
     codef: false,
+    codeText:"发送验证码",
   }
 }
 

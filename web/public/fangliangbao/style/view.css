@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    outline: medium;
 }
 
 .hide {
@@ -121,7 +122,9 @@ html::-webkit-scrollbar {
     width: 150px;
     display: inline-block;
 }
-
+.hbMiddle ul {
+    margin-bottom: 0 !important;
+}
 .hbRight {
     width: 370px;
     display: inline-block;
@@ -425,7 +428,7 @@ html::-webkit-scrollbar {
 }
 
 .leaseRoomList {
-    height: 450px;
+    height: 420px;
     overflow-y: scroll;
     margin: 5px 0 0 6px;
 }
@@ -1397,7 +1400,7 @@ html::-webkit-scrollbar {
 .phoneLogin input {
     border: none;
     background: none;
-    width:205px;
+    width:195px;
 }
 
 .codeLogin {

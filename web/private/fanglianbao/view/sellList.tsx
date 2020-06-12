@@ -66,7 +66,7 @@ class SellList extends React.Component {
     const { clientWidth, clientHeight, children } = this.refDom;
     console.log(clientWidth, clientHeight, children[0].clientWidth, this.refDom);
     this.setState({ move: children[0].clientWidth / 2 - 7 })
-
+    HomeTop.changHomeTop(4);
   }
 
 

@@ -411,8 +411,8 @@ html::-webkit-scrollbar {
 
 .homeBottomBox_one {
     text-align: center;
-    padding-top: 47px;
-    margin-bottom: 16px;
+    padding-top: 34px;
+    margin-bottom: 10px;
 }
 
 .hbLeft {
@@ -420,10 +420,10 @@ html::-webkit-scrollbar {
     display: inline-block;
     text-align: left;
     position: relative;
-    top: -4px;
+    top: -3px;
 }
 .hbLeft ul li {
-    line-height: 28px;
+    line-height:39px;
 }
 .hbLeft ul li a {
     color: rgba(185,185,185,1);
@@ -431,6 +431,8 @@ html::-webkit-scrollbar {
 .hbMiddle {
     width: 150px;
     display: inline-block;
+    position: relative;
+    top: 0px;
 }
 
 .hbRight {
@@ -446,5 +448,5 @@ html::-webkit-scrollbar {
 }
 
 .homeBottomBox_two p {
-    /*margin: 20px 0;*/
+    margin: 3px 0 0 0;
 }
