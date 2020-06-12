@@ -82,7 +82,7 @@ class Index extends React.Component {
           <div className="index-title" style={{ left: this.state.clientWidth }}>
             <div className="index-t1">
               <img src="./fangliangbao/image/logo.png" style={{ margin: "20px 0 0 0", float: "left"  }} />
-              <div style={{ color: "#ffffff", fontSize: "14px", float: "left", margin: "35px 0 0 0" }}>桂林</div>
+              <div style={{ color: "#ffffff", fontSize: "14px", float: "left", padding: "35px 0 0 0" }}>桂林</div>
               <img src="./fangliangbao/image/down.png" style={{ margin: "39px 0 0 3px" }} width="16px" height="16px" />
             </div>
 
