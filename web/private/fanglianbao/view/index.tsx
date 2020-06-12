@@ -89,7 +89,7 @@ class Index extends React.Component {
             <div className="index-label" >
               <Link to="/parkList"><div>品牌园区</div></Link>
               <Link to="/roomList"><div>出租房源</div></Link>
-              <Link to="/sellList"><div>出售房源</div></Link>
+              <Link to="/sellList"><div>出售房源</div></Link> 
               <Link to="/baoList"><div>宝哥推荐</div></Link>
               <Link to="/hotList"><div>热点资讯</div></Link>
               <Link to="/contact">
@@ -111,7 +111,7 @@ class Index extends React.Component {
                       this.setState({ backgroundIndex: index }, () => {
                         this.setTimer()
                       })
-                    }}>
+                    }}> 
                     <div className="in-dot"></div>
                   </div>
                 ) 

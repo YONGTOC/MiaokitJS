@@ -15,7 +15,7 @@ class HotList extends React.Component {
   }
 
   public componentDidMount() {
-    HomeTop.changHomeTop(5);
+    HomeTop.changHomeTop(6);
     InfoTitleRecom.changRecomTitle(1);
   }
 

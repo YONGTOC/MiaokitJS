@@ -15,7 +15,7 @@ class BaoList extends React.Component {
   }
 
   public componentDidMount() {
-    HomeTop.changHomeTop(4);
+    HomeTop.changHomeTop(5);
    InfoTitleRecom.changRecomTitle(0);
   }
 

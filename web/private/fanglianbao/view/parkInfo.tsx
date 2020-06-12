@@ -11,7 +11,7 @@ import SendSuccess from "SendSuccess";
 import AlertBox from "AlertBox";
 
 
-class ParkInfo extends React.Component {
+class ParkInfo extends React.Component<{location}> {
   constructor(props) {
     super(props);
 
@@ -21,9 +21,12 @@ class ParkInfo extends React.Component {
   }
 
   public componentDidMount() {
-    console.log(this)
+    console.log(this.props.location)
     HomeTop.changHomeTop(2);
     window.addEventListener('scroll', this.handleScroll);
+    if (this.props.location.roomId) {
+        ParkInfoThree.showRoomInfo();
+    }
   }
 
   _handleScroll(scrollTop) {
@@ -225,7 +228,7 @@ class LeaseList extends React.Component {
   }
 
   public componentDidMount() {
-
+     
   }
 
   public onLeaseRoom(index) {
@@ -273,37 +276,22 @@ class LeaseList extends React.Component {
           </ul>
         </div>
         <div className="leaseRoomList">
-          <ul>
-            <li onClick={this.onLeaseRoom.bind(this, 0)}>
-              <div className={this.state.leaseRoomsState == 0 ? "leaseRooms_on" : "leaseRooms"} >
+         <ul>
+            {this.state.roomList.map((i, index) => {
+              return (
+                     <li onClick={this.onLeaseRoom.bind(this, index,i.id,i.code)}>
+              <div className={this.state.leaseRoomsState == index ? "leaseRooms_on" : "leaseRooms"} >
                 <img src="./fangliangbao/image/demo.png" />
-                <div className="leaseRoomsRight">
-                  <p className="leaseName"><span>187</span>m²</p>
-                  <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                  <p className="leaseArea">简装</p>
+                    <div className="leaseRoomsRight">
+                      <p className="leaseName"><span>{i.area}</span>m²</p>
+                      <p><span className="leasePrice">{i.price}</span> 元/m²⋅月</p>
+                      <p className="leaseArea">{i.level}</p>
                 </div>
               </div>
             </li>
-            <li onClick={this.onLeaseRoom.bind(this, 1)}>
-              <div className={this.state.leaseRoomsState == 1 ? "leaseRooms_on" : "leaseRooms"} >
-                <img src="./fangliangbao/image/demo.png" />
-                <div className="leaseRoomsRight">
-                  <p className="leaseName"><span>187</span>m²</p>
-                  <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                  <p className="leaseArea">简装</p>
-                </div>
-              </div>
-            </li>
-            <li onClick={this.onLeaseRoom.bind(this, 2)}>
-              <div className={this.state.leaseRoomsState == 2 ? "leaseRooms_on" : "leaseRooms"} >
-                <img src="./fangliangbao/image/demo.png" />
-                <div className="leaseRoomsRight">
-                  <p className="leaseName"><span>187</span>m²</p>
-                  <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                  <p className="leaseArea">简装</p>
-                </div>
-              </div>
-            </li>
+                )
+            })}
+    
           </ul>
           <p className="listOver">到底啦~</p>
         </div>
@@ -314,6 +302,27 @@ class LeaseList extends React.Component {
   public state = {
     typeIndex: 0,
     leaseRoomsState: -1,
+        roomList: [
+      {
+        area: 187,
+        price: 80.3,
+        level: "简装",
+        id: "id-1",
+        code: "code-1"
+      },    {
+        area: 187,
+        price: 80.3,
+        level: "简装",
+        id: "id-2",
+        code: "code-2"
+      },    {
+        area: 187,
+        price: 80.3,
+        level: "简装",
+        id: "id-3",
+        code: "code-4"
+      }
+    ]
   }
 }
 

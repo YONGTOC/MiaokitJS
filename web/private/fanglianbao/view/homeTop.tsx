@@ -56,17 +56,21 @@ class HomeTop extends React.Component {
                 <li className={this.state.htIndex == 2 ? "homtop_active" : null}
                   onClick={this.changHomeTop.bind(this, 2)}>园区</li>
               </Link>
-              <Link to="/roomList">
+              <Link to="/roomList">  
                 <li className={this.state.htIndex == 3 ? "homtop_active" : null}
                   onClick={this.changHomeTop.bind(this, 3)}>出租</li>
               </Link>
-              <Link to="/baoList">
+               <Link to="/sellList"> 
                 <li className={this.state.htIndex == 4 ? "homtop_active" : null}
-                  onClick={this.changHomeTop.bind(this, 4)}>宝哥推荐</li>
+                  onClick={this.changHomeTop.bind(this, 4)}>出售</li>
+              </Link>
+              <Link to="/baoList">
+                <li className={this.state.htIndex == 5 ? "homtop_active" : null}
+                  onClick={this.changHomeTop.bind(this, 5)}>宝哥推荐</li>
               </Link>
               <Link to="/hotList">
-                <li className={this.state.htIndex == 5 ? "homtop_active" : null}
-                  onClick={this.changHomeTop.bind(this, 5)}>热点资讯</li>
+                <li className={this.state.htIndex == 6 ? "homtop_active" : null}
+                  onClick={this.changHomeTop.bind(this, 6)}>热点资讯</li>
               </Link>
             </ul>
           </div>
