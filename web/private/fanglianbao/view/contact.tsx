@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Link } from 'react-router-dom';
 import HomeTop from 'homeTop';
@@ -11,9 +11,9 @@ class Contact extends React.Component<{ index: any }> {
 
   public state = {
     tagList: [
-      { name: "��ϵ����" },
-      { name: "��������" },
-      { name: "��վ��ͼ" }
+      { name: "联系我们" },
+      { name: "友情链接" },
+      { name: "网站地图" }
     ],
     tagIndex: 0,
   }
@@ -45,14 +45,14 @@ class Contact extends React.Component<{ index: any }> {
           {this.state.tagIndex === 0 ?
             <div className="user-info">
               <div style={{ overflow: "hidden", float: "left" }}>
-                <div style={{ marginBottom: "20px" }}>�ͷ��绰��400-808-3066</div>
-                <div style={{ marginBottom: "20px" }}>�������䣺service@3dflb.com</div>
-                <div style={{ marginBottom: "20px" }}>��˾��ַ���㶫ʡ�����з�خ���ϴ�����ҵ��������廪����ҵ¥2��¥109��</div>
+                <div style={{ marginBottom: "20px" }}>客服电话：400-808-3066</div>
+                <div style={{ marginBottom: "20px" }}>服务邮箱：service@3dflb.com</div>
+                <div style={{ marginBottom: "20px" }}>公司地址：广东省广州市番禺区南村镇兴业大道北侧清华坊商业楼2号楼109室</div>
               </div>
               <div style={{ float: "left", marginLeft: "115px" }}>
-                <div className="wx-title" style={{ margin: "0 0 8px 10px" }}>������С�����</div>
+                <div className="wx-title" style={{ margin: "0 0 8px 10px" }}>房良宝小程序端</div>
                 <img src="./fangliangbao/image/wx.png" />
-                <div style={{ fontSize: "12px", marginLeft: "10px" }}>��΢��ɨһɨ��ʱ�ֻ�����</div>
+                <div style={{ fontSize: "12px", marginLeft: "10px" }}>打开微信扫一扫随时手机体验</div>
               </div>
             </div> : null
           }
@@ -60,8 +60,8 @@ class Contact extends React.Component<{ index: any }> {
           {this.state.tagIndex === 1 ?
             <div className="user-info">
               <div style={{ overflow: "hidden", float: "left" }}>
-                <div style={{ marginBottom: "20px" }}>������������QQ��2106682312</div>
-                <div style={{ marginBottom: "20px", color: "#17A1E6" }}><span>���ؿƼ�</span><span style={{ marginLeft: "50px" }}>3DSVE CLOUD</span></div>
+                <div style={{ marginBottom: "20px" }}>申请友情链接QQ：2106682312</div>
+                <div style={{ marginBottom: "20px", color: "#17A1E6" }}><span>永拓科技</span><span style={{ marginLeft: "50px" }}>3DSVE CLOUD</span></div>
               </div>
             </div> : null
           }
@@ -69,35 +69,35 @@ class Contact extends React.Component<{ index: any }> {
           {this.state.tagIndex === 2 ?
             <div className="user-info">
               <div style={{ overflow: "hidden", float: "left" }}>
-                <div style={{ marginBottom: "20px" }}>�칫����</div>
-                <div style={{ marginBottom: "20px", color: "#17A1E6", fontSize: "14px" }}><span>����</span><span style={{ marginLeft: "32px" }}>����</span></div>
+                <div style={{ marginBottom: "20px" }}>办公城市</div>
+                <div style={{ marginBottom: "20px", color: "#17A1E6", fontSize: "14px" }}><span>广州</span><span style={{ marginLeft: "32px" }}>桂林</span></div>
                 <div style={{ overflow: "hidden", marginBottom: "20px" }}>
-                  <div style={{ marginBottom: "8px", color: "#333333", fontSize: "14px", fontWeight: 600 }}>����������԰��/д��¥</div>
-                  <div className="f1">���԰��/�칫¥</div>
-                  <div className="f1">����԰��/�칫¥</div>
-                  <div className="f1">��خ԰��/�칫¥</div>
-                  <div className="f1">��ɳ԰��/�칫¥</div>
-                  <div className="f1">�麣԰��/�칫¥</div>
+                  <div style={{ marginBottom: "8px", color: "#333333", fontSize: "14px", fontWeight: 600 }}>广州行政区园区/写字楼</div>
+                  <div className="f1">天河园区/办公楼</div>
+                  <div className="f1">白云园区/办公楼</div>
+                  <div className="f1">番禺园区/办公楼</div>
+                  <div className="f1">南沙园区/办公楼</div>
+                  <div className="f1">珠海园区/办公楼</div>
                 </div>
                 <div style={{ overflow: "hidden", marginBottom: "20px" }}>
-                  <div style={{ marginBottom: "8px", color: "#333333", fontSize: "14px", fontWeight: 600 }}>������Ȧ԰��/д��¥</div>
-                  <div className="f1">��ӱ�԰��/�칫¥</div>
-                  <div className="f1">��Ԫ԰��/�칫¥</div>
-                  <div className="f1">����԰��/�칫¥</div>
-                  <div className="f1">��ӹ�԰԰��/�칫¥</div>
-                  <div className="f1">��ɽ԰��/�칫¥</div>
+                  <div style={{ marginBottom: "8px", color: "#333333", fontSize: "14px", fontWeight: 600 }}>广州商圈园区/写字楼</div>
+                  <div className="f1">天河北园区/办公楼</div>
+                  <div className="f1">天元园区/办公楼</div>
+                  <div className="f1">新塘园区/办公楼</div>
+                  <div className="f1">天河公园园区/办公楼</div>
+                  <div className="f1">五山园区/办公楼</div>
                 </div>
                 <div style={{ overflow: "hidden", marginBottom: "20px" }}>
-                  <div style={{ marginBottom: "8px", color: "#333333", fontSize: "14px", fontWeight: 600 }}>���ݵ����߰칫԰��</div>
-                  <div className="f1">1�������߰칫԰��</div>
-                  <div className="f1">2�������߰칫԰��</div>
-                  <div className="f1">3�������߰칫԰��</div>
+                  <div style={{ marginBottom: "8px", color: "#333333", fontSize: "14px", fontWeight: 600 }}>广州地铁线办公园区</div>
+                  <div className="f1">1号线沿线办公园区</div>
+                  <div className="f1">2号线沿线办公园区</div>
+                  <div className="f1">3号线沿线办公园区</div>
                 </div>
                 <div style={{ overflow: "hidden", marginBottom: "20px" }}>
-                  <div style={{ marginBottom: "8px", color: "#333333", fontSize: "14px", fontWeight: 600 }}>���ݵ���վ�칫԰��</div>
-                  <div className="f1">���ݶ�վ�����칫԰��</div>
-                  <div className="f1">��ʿ��԰�����칫԰��</div>
-                  <div className="f1">��ʿ��԰�����칫԰��</div>
+                  <div style={{ marginBottom: "8px", color: "#333333", fontSize: "14px", fontWeight: 600 }}>广州地铁站办公园区</div>
+                  <div className="f1">广州东站附近办公园区</div>
+                  <div className="f1">烈士陵园附近办公园区</div>
+                  <div className="f1">烈士陵园附近办公园区</div>
                 </div>
               </div>
             </div> : null
