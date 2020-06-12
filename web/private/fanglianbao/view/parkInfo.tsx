@@ -21,7 +21,7 @@ class ParkInfo extends React.Component {
   }
 
   public componentDidMount() {
-
+    console.log(this)
     HomeTop.changHomeTop(2);
     window.addEventListener('scroll', this.handleScroll);
   }
