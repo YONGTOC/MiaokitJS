@@ -443,4 +443,55 @@ input[type="number"] {
   float: left; 
   width: 180px;
 }
-
+.current-position {
+  background-color: #fff;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  padding: 10px 5px 0;
+  width: 72px;
+  height: 33px;
+  box-shadow: 0 0 20px 0 rgba(0,0,0,0.1);
+  text-align: center;
+  overflow: hidden;
+}
+.other-position {
+  font-size: 12px;
+  width: 232px;
+  box-shadow: 0 10px 20px 0 rgba(0,0,0,0.1);
+  background-color: #fff;
+  text-align: left;
+  padding: 10px 16px;
+  border-radius: 4px;
+  border-top-left-radius: unset;
+}
+.tips {
+  color: #b6b6b6;
+  font-size: 12px;
+}
+.c-city {
+  overflow: hidden;
+}
+.c-city div{
+  float: left;
+}
+.showCascaders {
+  display: block;
+  z-index: 100;
+  cursor: pointer;
+  overflow: hidden;
+  height: 100px;
+  transition-property: height;
+  transition-duration: 0.6s;
+  transition-timing-function: ease-in;
+  transition-delay: 0s;
+}
+.hideCascaders {
+  z-index: 100;
+  cursor: pointer;
+  overflow: hidden;
+  height: 0px;
+  transition-property: height;
+  transition-duration: 0.6s;
+  transition-timing-function: ease;
+  transition-delay: 0s;
+}

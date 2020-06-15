@@ -3,8 +3,10 @@ import * as ReactDOM from "react-dom";
 import "css!./style/index.css";
 import Router from 'router';
 import AllBottom from "allBottom"
+import Cascaders from "cascaders"
 import "css!./style/view.css";
 import { Link } from 'react-router-dom';
+
 
 
 declare var viewDraw: any;
@@ -45,6 +47,9 @@ class Index extends React.Component {
     timer: 0, // 定时器
     timer1: 0, // 定时器
     opacity: 1,
+    isCascaders: false, // 位置选择器
+    cityArr: ["广州", "深圳", "长沙"],
+    currentCityIndex: 0,
   }
 
 
@@ -68,10 +73,14 @@ class Index extends React.Component {
       this.setTimer()
     }, 5000)
     let timer1 = setTimeout(() => {
-      this.setState({ opacity: 0.5 })
+      this.setState({ opacity: 0.3 })
       clearTimeout(this.state.timer1)
     }, 4500)
     this.setState({ timer: timer, timer1: timer1 })
+  }
+
+  cascadersFalse(currentCityIndex) {
+    this.setState({ isCascaders: false, currentCityIndex: currentCityIndex })
   }
 
 
@@ -79,11 +88,16 @@ class Index extends React.Component {
     return (
       <div className="index">
         <div style={{ width: "100%", height: "440px", background: "url(" + this.state.backgroundArr[this.state.backgroundIndex] + ") no-repeat center top", opacity: this.state.opacity }} className="index-bg">
+          <div style={{ position: "absolute", zIndex: 100, left: this.state.clientWidth + 100, top: "30px" }} >
+            <Cascaders isCascaders={this.state.isCascaders} cascadersFalse={this.cascadersFalse.bind(this)} />
+          </div>
           <div className="index-title" style={{ left: this.state.clientWidth }}>
             <div className="index-t1">
-              <img src="./fangliangbao/image/logo.png" style={{ margin: "20px 0 0 0", float: "left"  }} />
-              <div style={{ color: "#ffffff", fontSize: "14px", float: "left", padding: "35px 0 0 0" }}>桂林</div>
-              <img src="./fangliangbao/image/down.png" style={{ margin: "39px 0 0 3px" }} width="16px" height="16px" />
+              <img src="./fangliangbao/image/logo.png" style={{ margin: "20px 0 0 0", float: "left" }} />
+              <div onClick={() => this.setState({ isCascaders: true })}>
+                <div style={{ color: "#ffffff", fontSize: "14px", float: "left", padding: "35px 0 0 0" }}>{this.state.cityArr[this.state.currentCityIndex]}</div>
+                <img src="./fangliangbao/image/down.png" style={{ margin: "39px 0 0 3px" }} width="16px" height="16px" />
+              </div>
             </div>
 
             <div className="index-label" >
