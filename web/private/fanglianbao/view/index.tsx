@@ -284,6 +284,10 @@ class Index extends React.Component {
     )
   }
 
+    public floorListState(boolean,data) {
+    ParkInfo.floorListState(boolean,data);
+  }
+
 }
 
 export default Index;

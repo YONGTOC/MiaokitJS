@@ -396,7 +396,7 @@ class RoomList extends React.Component {
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => {
                 return (
                   <div key={index} style={{ marginTop: index === 0 ? "18px" : "30px", overflow: "hidden", cursor: "pointer", width: "895px" }}
-                    onClick={() => { this.props.history.push({ pathname: "/parkInfo", parkId: 1, roomId: 1, from: "room" }) }}>
+                    onClick={() => { this.props.history.push({ pathname: "/parkInfo", parkId: 1, roomId: 2, from: "room" }) }}>
                     <div style={{ width: "240px", height: "180px", borderRadius: "5px", float: "left", overflow: "hidden" }} >
                       <img src="./fangliangbao/image/build1.png" className="index-img-t1" width="100%" height="100%" />
                     </div>

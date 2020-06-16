@@ -265,6 +265,7 @@ html::-webkit-scrollbar {
     border-radius: 4px;
     position: relative;
     left: 0px;
+    top: -610px;
 }
 
 .ParkInfoTwoOver {
@@ -274,6 +275,7 @@ html::-webkit-scrollbar {
     border-radius: 4px 4px 0 0;
     position: relative;
     left: 0px;
+    top: -610px;
 }
 
 @media screen and (min-width: 1201px) {
@@ -727,7 +729,7 @@ html::-webkit-scrollbar {
 }
 
 .roomInfo_tit {
-    width: 840px;
+    width: 708px;
     height: 38px;
     font-size: 28px;
     font-weight: bold;
@@ -736,8 +738,31 @@ html::-webkit-scrollbar {
     overflow: hidden;
     white-space: nowrap;
     line-height: 45px;
+    display: inline-block;
 }
-
+.roomInfo_btn {
+    display: inline-block;
+    float: right;
+}
+.roomInfo_btn ul {
+}
+.roomInfo_btn ul li {
+    display: inline-block;
+    position: relative;
+    top: 9px;
+    color: rgb(51, 51, 51);
+}
+.roomInfo_btn ul li:nth-child(1){
+    margin-right:15px;
+}
+.roomInfo_btn ul li i {
+    color: rgba(152,159,168,1);
+    font-size: 12px;
+    padding-right: 5px;
+}
+.roomInfoOne_info_li_On i {
+    color: rgba(23,161,230,1) !important;
+}
 .ParkInfoThree_left_title {
     text-align: left;
     height: 40px;
@@ -774,7 +799,6 @@ html::-webkit-scrollbar {
     /*border: 1px solid red;*/
     height: 412px;
 }
-
 .ParkInfo_text {
     padding: 24px 0;
 }
@@ -1133,6 +1157,7 @@ html::-webkit-scrollbar {
     height: 284px;
     display: inline-block;
     margin-right: 20px;
+    cursor:pointer;
 }
 
 .nearParkList ul li:last-child {
@@ -1244,7 +1269,7 @@ html::-webkit-scrollbar {
 .nearToRight i {
     transform: rotate(86.4rad);
     position: relative;
-    top: 70px;
+    top: 77px;
     left: 2px;
 }
 
@@ -1660,4 +1685,342 @@ html::-webkit-scrollbar {
     text-align: center;
     font-size: 20px;
     line-height: 46px;
+}
+
+/*topView*/
+
+.topView {
+    /*position: fixed;
+    width: 7rem;
+    height: 28rem;
+    z-index: 100;
+    top: 3.2rem;
+    right: 2.4rem;
+    background: rgba(247,247,247,1);
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    overflow: hidden;*/
+    width: 52px;
+    height: 240px;
+    top: 0px;
+    background: rgba(247,247,247,1);
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    left: 1111px;
+}
+
+/*.topViewBack {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background: rgba(0,0,0,0.5);
+    top: 0;
+ 
+}*/
+
+.iconBox {
+    width: 40px;
+    height: 79px;
+    text-align: center;
+    margin: 0 6px;
+    cursor: pointer;
+    float: left;
+    border-top: 1px solid #646464;
+    line-height: 57px;
+    color: rgb(112, 117, 137);
+}
+
+.iconBox :nth-child(3) {
+    border-top: 0rem solid #646464;
+}
+
+.iconBoxIn {
+    width: 40px;
+    height: 79px;
+    border-top: 1px solid #646464;
+    text-align: center;
+    margin: 0 6px;
+    cursor: pointer;
+    float: left;
+    color: #0B8BF0;
+    line-height: 57px;
+}
+
+.iconBox p {
+    margin-top: -2rem;
+}
+
+.iconBoxIn p {
+    margin-top: -2rem;
+}
+
+.topView-big {
+    z-index: 100;
+    right: 0; 
+    text-align: center;
+    margin: 0 6px;
+    cursor: pointer;
+    float: left;
+    border-top: 1px solid #646464;
+    line-height: 57px;
+    color: rgb(112, 117, 137);
+    width: 214px;
+    height: 240px;
+    top: 0px;
+    background: rgba(247,247,247,1);
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    left: 942px;
+}
+
+.iconBox-big {
+    width: 51px;
+    height: 51px;
+    background: rgba(255,255,255,1);
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+    opacity: 1;
+    border-radius: 6px;
+    margin: 16px 0 35px 15px;
+    text-align: center;
+    float: left;
+    cursor: pointer;
+    line-height: 36px;
+    padding: 9px 0;
+}
+
+.iconBox-bigIn {
+    width: 51px;
+    height: 51px;
+    background: rgba(255,255,255,1);
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+    opacity: 1;
+    border-radius: 6px;
+    margin: 16px 0 35px 15px;
+    text-align: center;
+    float: left;
+    cursor: pointer;
+    line-height: 36px;
+    padding: 9px 0;
+    color: #0B8BF0;
+}
+
+.topClose {
+    width: 36px;
+    height: 36px;
+    position: absolute;
+    bottom: 15px;
+    right: 5px;
+    cursor: pointer;
+}
+
+/*3Dactions*/
+.modelBtn {
+    display: inline-block;
+    width: 43px;
+    height: 218px;
+    top: 200px;
+    /*background: rgb(83, 80, 80);*/
+    position: relative;
+    left: 1116px;
+    cursor:pointer;
+}
+.nearGap {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background: rgba(247,247,247,1);
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+    border-radius: 21px;
+    text-align: center;
+    font-size: 42px;
+    line-height: 32px;
+    color: rgb(108, 108, 108);
+    font-weight: 100;
+    margin: 10px 0;
+}
+
+.farGap {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background: rgba(247,247,247,1);
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+    border-radius: 21px;
+    text-align: center;
+    font-size: 42px;
+    line-height: 32px;
+    color: rgb(108, 108, 108);
+    font-weight: 100;
+    margin: 10px 0;
+}
+
+.changeD {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background: rgba(247,247,247,1);
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+    border-radius: 21px;
+    text-align: center;
+    font-size: 20px;
+    line-height: 37px;
+    color: rgb(108, 108, 108);
+    font-weight: 100;
+    margin: 10px 0;
+}
+.reset {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background: rgba(247,247,247,1);
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+    border-radius: 21px;
+    text-align: center;
+    font-size: 15px;
+    line-height: 40px;
+    color: rgb(108, 108, 108);
+    font-weight: 100;
+    margin: 10px 0;
+}
+.floor_box {
+    /*width: 6rem;
+    position: absolute;
+    z-index: 99;
+    bottom: 49rem;
+    left: 2.4rem;
+    color: rgb(108, 108, 108);
+    text-align: center;
+    overflow: hidden;
+    height: 25rem;
+    background: #fff;
+    border-radius: 4rem;*/
+    top: 30px;
+    position: relative;
+    left: 273px;
+    cursor: pointer;
+    height: 150px;
+    width: 40px;
+    color: rgb(108, 108, 108);
+    text-align: center;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 4rem;
+}
+.floor_box ul {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    top:-9px;
+}
+.floor_box_ul {
+    /*overflow-y: scroll;*/
+    /*border: 0.2rem solid;*/
+    /*height: 18rem;
+    overflow-y: hidden;
+    margin-top: -1rem;*/
+    /*margin: 0;
+    padding: 0;
+    position: relative;*/
+    /*border: 0.2rem solid;*/
+    position: relative;
+    left: 3px;
+    top: -10px;
+    height: 90px;
+    overflow-y: hidden;
+    /*background: #ccc;*/
+}
+
+.floor_box ul li {
+    /*width: 6rem;
+    height: 6rem;
+    font-size: 3rem;
+    line-height: 6rem;
+    text-align: center;
+    background: #fff;
+    color: #666666;*/
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    line-height: 6rem;
+    text-align: center;
+    background: #fff;
+    color: #666666;
+    margin-left: 2px;
+}
+.floorIn {
+    /*background: #E9F5FF !important;*/
+    color: #4187FF !important;
+}
+.current-active-floor {
+    color: #4187FF !important;
+    background: #E9F5FF !important;
+}
+
+.activeBoxLeft {
+    width: 2px;
+    height: 98px;
+    position: relative;
+    top: -105px;
+    background: #4187FF;
+    float: left;
+}
+
+.activeBoxRight {
+    /*width: 0.1rem;
+    height: 6rem;
+    position: relative;
+    top: -12rem;
+    background: #4187FF;
+    right: -5.8rem;
+    float: left;*/
+    right: -36px;
+    width: 2px;
+    height: 98px;
+    position: relative;
+    top: -105px;
+    background: #4187FF;
+    float: left;
+}
+
+.trangleLeft {
+    /*width: 0;
+    height: 0;
+    border-top: 1rem solid transparent;
+    border-left: 1rem solid #4187FF;
+    border-bottom: 1rem solid transparent;
+    position: relative;
+    top: 2rem;
+    left: -0.4rem;*/
+    width: 0;
+    height: 0;
+    border-top: 1rem solid transparent;
+    border-left: 1rem solid #4187FF;
+    border-bottom: 1rem solid transparent;
+    position: relative;
+    top: 30px;
+    left: -8.4px;
+}
+
+.trangleRight {
+    /*width: 0;
+    height: 0;
+    border-top: 1rem solid transparent;
+    border-right: 1rem solid #4187FF;
+    border-bottom: 1rem solid transparent;
+    position: relative;
+    right: 0.5rem;
+    top: 2rem;*/
+    width: 0;
+    height: 0;
+    border-top: 1rem solid transparent;
+    border-right: 1rem solid #4187FF;
+    border-bottom: 1rem solid transparent;
+    position: relative;
+    right: 5px;
+    top: 30px;
 }

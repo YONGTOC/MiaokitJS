@@ -6,6 +6,55 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "13300220",
+      "name": "省略",
+      "font_class": "shenglve",
+      "unicode": "e819",
+      "unicode_decimal": 59417
+    },
+    {
+      "icon_id": "13300217",
+      "name": "交通",
+      "font_class": "jiaotong",
+      "unicode": "e816",
+      "unicode_decimal": 59414
+    },
+    {
+      "icon_id": "13300218",
+      "name": "公交站",
+      "font_class": "gongjiaozhan",
+      "unicode": "e817",
+      "unicode_decimal": 59415
+    },
+    {
+      "icon_id": "13300219",
+      "name": "全景",
+      "font_class": "quanjing",
+      "unicode": "e818",
+      "unicode_decimal": 59416
+    },
+    {
+      "icon_id": "13300221",
+      "name": "商圈",
+      "font_class": "shangquan",
+      "unicode": "e81a",
+      "unicode_decimal": 59418
+    },
+    {
+      "icon_id": "13300222",
+      "name": "停车场",
+      "font_class": "tingchechang",
+      "unicode": "e81b",
+      "unicode_decimal": 59419
+    },
+    {
+      "icon_id": "13300268",
+      "name": "关闭",
+      "font_class": "lujing",
+      "unicode": "e81c",
+      "unicode_decimal": 59420
+    },
+    {
       "icon_id": "12673654",
       "name": "关闭",
       "font_class": "guanbi",
