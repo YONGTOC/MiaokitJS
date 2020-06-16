@@ -1,4 +1,4 @@
-import * as React from "react";
+锘縤mport * as React from "react";
 
 export default class Cascaders extends React.Component {
   constructor(props) {
@@ -8,7 +8,7 @@ export default class Cascaders extends React.Component {
   }
 
   public state = {
-    cityArr: ["广州", "深圳", "长沙"],
+    cityArr: ["骞垮窞", "娣卞湷", "闀挎矙"],
     currentIndex: 0,
     focusIndex: -1,
   }
@@ -37,7 +37,7 @@ export default class Cascaders extends React.Component {
             <span>{this.state.cityArr[this.state.currentIndex]}</span><img src="./fangliangbao/image/down_s.png" width="10px" height="10px" style={{ margin: "0 0px 2px 3px" }} />
           </div>
           <div className="other-position">
-            <div className="tips">其它城市</div>
+            <div className="tips">鍏跺畠鍩庡競</div>
             <div className="c-city">
               {
                 this.state.cityArr.map((item, index) => {
