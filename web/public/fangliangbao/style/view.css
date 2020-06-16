@@ -554,7 +554,7 @@ html::-webkit-scrollbar {
 }
 
 .companytype_li_on {
-    margin: 4px 4px;
+    margin: 0 4px 4px 4px;
     text-align: center;
     font-size: 11px;
     cursor: pointer;
