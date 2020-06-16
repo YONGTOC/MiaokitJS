@@ -66,6 +66,7 @@ class ParkInfo extends React.Component<{ location }> {
 
       case "":
         //  组件外部跳转
+           console.log(2222222222)
         let park_id = sessionStorage.getItem("park_id");
         let room_id = sessionStorage.getItem("room_id");
         if (room_id) {
@@ -95,7 +96,35 @@ class ParkInfo extends React.Component<{ location }> {
       //over
     }
 
+    if (!this.props.location.from) {
+      console.log(111111111)
+      let park_id = sessionStorage.getItem("park_id");
+        let room_id = sessionStorage.getItem("room_id");
+        if (room_id) {
+          HomeTop.changHomeTop(3);
+          ParkInfoOne.isParkState(0);
+          this.setState({
+            InfoTitleIndex: 1
+          }, () => {
+            LeaseList.fromRoomid(room_id);
+            console.log(this.state);
+            ParkInfoOne.isParkState(0);
+          })
+          LeaseList.fromRoomid(room_id);
+          ParkInfoThree.showRoomInfo(room_id);
+        }
+        if (park_id) {
+          HomeTop.changHomeTop(2);
+          ParkInfoOne.isParkState(1);
+          this.setState({
+            InfoTitleIndex: 0
+          }, () => {
+            HomeTop.changHomeTop(2);
+            ParkInfoOne.isParkState(1);
+          })
 
+        }
+    }
 
 
 
