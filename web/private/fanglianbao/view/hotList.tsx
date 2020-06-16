@@ -152,47 +152,21 @@ class HotRight extends React.Component {
           </Link>
           <div className="leaseRoomList leaseRoomList2">
             <ul>
-              <li>
-                <div className="leaseRooms leaseRooms2"
-                  onClick={this.toParkInfo.bind(this, "park", 102, "")}>
-                  <img src="./fangliangbao/image/demo.png" />
-                  <div className="leaseRoomsRight">
-                    <p className="leaseName2">桂林信息产业园区</p>
-                    <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                    <p className="leaseArea2">七星-朝阳路D-12号</p>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div className="leaseRooms leaseRooms2">
-                  <img src="./fangliangbao/image/demo.png" />
-                  <div className="leaseRoomsRight">
-                    <p className="leaseName2">桂林信息产业园区</p>
-                    <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                    <p className="leaseArea2">七星-朝阳路D-12号</p>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div className="leaseRooms leaseRooms2">
-                  <img src="./fangliangbao/image/demo.png" />
-                  <div className="leaseRoomsRight">
-                    <p className="leaseName2">桂林信息产业园区</p>
-                    <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                    <p className="leaseArea2">七星-朝阳路D-12号</p>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div className="leaseRooms leaseRooms2">
-                  <img src="./fangliangbao/image/demo.png" />
-                  <div className="leaseRoomsRight">
-                    <p className="leaseName2">桂林信息产业园区</p>
-                    <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                    <p className="leaseArea2">七星-朝阳路D-12号</p>
-                  </div>
-                </div>
-              </li>
+              {this.state.praklist.map((i, index) => {
+                return (
+                  <li>
+                    <div className="leaseRooms leaseRooms2"
+                      onClick={this.toParkInfo.bind(this, "park", i.id, "")}>
+                      <img src={i.headimgurl} />
+                      <div className="leaseRoomsRight">
+                        <p className="leaseName2">{i.name}</p>
+                        <p><span className="leasePrice">{i.price}</span> 元/m²⋅月</p>
+                        <p className="leaseArea2">{i.address}</p>
+                      </div>
+                    </div>
+                  </li>
+                )
+              })}
             </ul>
           </div>
         </div>
@@ -202,47 +176,21 @@ class HotRight extends React.Component {
           </Link>
           <div className="leaseRoomList leaseRoomList2">
             <ul>
-              <li>
-                <div className="leaseRooms leaseRooms2"
-                  onClick={this.toParkInfo.bind(this, "room", 102, 1021)}>
-                  <img src="./fangliangbao/image/demo.png" />
-                  <div className="leaseRoomsRight">
-                    <p className="leaseName2">出租高新区信息产业桂林信息产业园区</p>
-                    <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                    <p className="leaseArea">189m²</p>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div className="leaseRooms leaseRooms2" >
-                  <img src="./fangliangbao/image/demo.png" />
-                  <div className="leaseRoomsRight">
-                    <p className="leaseName2">出租高新区信息产业桂林信息产业园区</p>
-                    <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                    <p className="leaseArea">189m²</p>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div className="leaseRooms leaseRooms2">
-                  <img src="./fangliangbao/image/demo.png" />
-                  <div className="leaseRoomsRight">
-                    <p className="leaseName2">出租高新区信息产业桂林信息产业园区</p>
-                    <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                    <p className="leaseArea">189m²</p>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div className="leaseRooms leaseRooms2">
-                  <img src="./fangliangbao/image/demo.png" />
-                  <div className="leaseRoomsRight">
-                    <p className="leaseName">出租高新区信息产业桂林信息产业园区</p>
-                    <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                    <p className="leaseArea">189m²</p>
-                  </div>
-                </div>
-              </li>
+              {this.state.roomlist.map((i, index) => {
+                return (
+                  <li>
+                    <div className="leaseRooms leaseRooms2"
+                      onClick={this.toParkInfo.bind(this, "room", i.parkid, i.roomid)}>
+                      <img src={i.headimgurl} />
+                      <div className="leaseRoomsRight">
+                        <p className="leaseName2">{i.name}</p>
+                        <p><span className="leasePrice">{i.price}</span> 元/m²⋅月</p>
+                        <p className="leaseArea">{i.area}m²</p>
+                      </div>
+                    </div>
+                  </li>
+                )
+              })}
             </ul>
           </div>
         </div>
@@ -255,7 +203,18 @@ class HotRight extends React.Component {
     )
   }
   public state = {
-
+    praklist: [
+      { name: "桂林信息产业园区", id: 1, code: "code-1", price: 11.4, address: "七星-朝阳路D-1号", headimgurl: "./fangliangbao/image/demo.png" },
+      { name: "桂林信息产业园区", id: 2, code: "code-2", price: 12.4, address: "七星-朝阳路D-2号", headimgurl: "./fangliangbao/image/demo.png" },
+      { name: "桂林信息产业园区", id: 3, code: "code-3", price: 13.4, address: "七星-朝阳路D-3号", headimgurl: "./fangliangbao/image/demo.png" },
+      { name: "桂林信息产业园区", id: 4, code: "code-4", price: 14.4, address: "七星-朝阳路D-4号", headimgurl: "./fangliangbao/image/demo.png" },
+    ],
+    roomlist: [
+      { name: "桂林信息产业园区", parkid: 1, parkCode: "codeP-1", roomid: 1, roomCode: "codeR-1", price: 11.4, address: "七星-朝阳路D-1号", headimgurl: "./fangliangbao/image/demo.png", area: 101 },
+      { name: "桂林信息产业园区", parkid: 2, parkCode: "codeP-2", roomid: 2, roomCode: "codeR-2", price: 12.4, address: "七星-朝阳路D-2号", headimgurl: "./fangliangbao/image/demo.png", area: 102 },
+      { name: "桂林信息产业园区", parkid: 3, parkCode: "codeP-3", roomid: 3, roomCode: "codeR-3", price: 13.4, address: "七星-朝阳路D-3号", headimgurl: "./fangliangbao/image/demo.png", area: 103 },
+      { name: "桂林信息产业园区", parkid: 4, parkCode: "codeP-4", roomid: 4, roomCode: "codeR-4", price: 14.4, address: "七星-朝阳路D-4号", headimgurl: "./fangliangbao/image/demo.png", area: 104 },
+    ]
   }
 }
 

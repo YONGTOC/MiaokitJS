@@ -8,7 +8,6 @@ import IconBox from "IconBox";
 import ModelBtn from "modelBtn";
 import FloorList from "FloorList";
 
-
 import InfoTitle from "InfoTitle";
 import { exact } from "prop-types";
 import SendSuccess from "SendSuccess";
@@ -23,92 +22,102 @@ class ParkInfo extends React.Component<{ location }> {
     ParkInfo.closeDefeat = this.closeDefeat.bind(this);
     ParkInfo.successClose = this.successClose.bind(this);
     ParkInfo.floorListState = this.floorListState.bind(this);
+
   }
 
   public componentDidMount() {
     console.log(this.props.location)
-    //  HomeTop.changHomeTop(2);
     window.addEventListener('scroll', this.handleScroll);
+     if (this.props.location.roomId) {
+      ParkInfoThree.showRoomInfo(this.props.location.roomId);
+    }
 
-    //  console.log(this.props.location.roomId)
+    switch (this.props.location.from) {
+      case "park":
+        this.setState({
+          InfoTitleIndex: 0
+        })
+        HomeTop.changHomeTop(2);
+        ParkInfoOne.isParkState(1);
+        break;
 
-    if (this.props.location.from == 'park') {
-      HomeTop.changHomeTop(2);
-      ParkInfoOne.isParkState(1);
-      this.setState({
-        InfoTitleIndex: 0
-      })
-    } else if (this.props.location.from == 'room') {
-      HomeTop.changHomeTop(3);
-      ParkInfoOne.isParkState(0);
-      this.setState({
-        InfoTitleIndex: 1
-      })
-      ParkInfoThree.showRoomInfo();
-      ParkInfoTwo.changeTitle(0);
-
-      LeaseList.fromRoomid(this.props.location.roomId)
-    } else if (this.props.location.from == 'sell') {
-      HomeTop.changHomeTop(4);
-      ParkInfoOne.isParkState(0)
-      this.setState({
-        InfoTitleIndex: 2
-      })
-      ParkInfoThree.showRoomInfo();
-      ParkInfoTwo.changeTitle(1);
-      
-      SellList.fromRoomid(this.props.location.roomId)
-    } else if (!this.props.location.from) {
-      // 组件外部跳转
-      let park_id = sessionStorage.getItem("park_id");
-      let room_id = sessionStorage.getItem("room_id");
-      if (room_id) {
+      case "room":
         HomeTop.changHomeTop(3);
         ParkInfoOne.isParkState(0);
         this.setState({
           InfoTitleIndex: 1
         })
-        ParkInfoThree.showRoomInfo();
-      }
-      if (park_id) {
-        HomeTop.changHomeTop(2);
-        ParkInfoOne.isParkState(1);
+        ParkInfoThree.showRoomInfo(this.props.location.roomId);
+        ParkInfoTwo.changeTitle(0);
+        LeaseList.fromRoomid(this.props.location.roomId)
+        break;
+
+      case "sell":
+        HomeTop.changHomeTop(4);
+        ParkInfoOne.isParkState(0)
         this.setState({
-          InfoTitleIndex: 0
+          InfoTitleIndex: 2
+        }, () => {
+          SellList.fromRoomid(this.props.location.roomId)
         })
-      }
+        ParkInfoThree.showRoomInfo(this.props.location.roomId);
+        ParkInfoTwo.changeTitle(1);
+        break;
+
+      case "":
+        //  组件外部跳转
+        let park_id = sessionStorage.getItem("park_id");
+        let room_id = sessionStorage.getItem("room_id");
+        if (room_id) {
+          HomeTop.changHomeTop(3);
+          // ParkInfoOne.isParkState(0);
+          this.setState({
+            InfoTitleIndex: 1
+          }, () => {
+            LeaseList.fromRoomid(room_id);
+            console.log(this.state)
+          })
+          LeaseList.fromRoomid(room_id);
+          ParkInfoThree.showRoomInfo(room_id);
+        }
+        if (park_id) {
+          HomeTop.changHomeTop(2);
+          ParkInfoOne.isParkState(1);
+          this.setState({
+            InfoTitleIndex: 0
+          }, () => {
+            HomeTop.changHomeTop(2);
+            ParkInfoOne.isParkState(1);
+          })
+
+        }
+        break;
+      //over
     }
+
+
 
 
 
     if (this.props.location.search) {
-      //  console.log("")
-
       if (this.props.location.roomId) {
-        ParkInfoThree.showRoomInfo();
-
+        ParkInfoThree.showRoomInfo(this.props.location.roomId);
       } else {
         console.log(222)
       }
-
     } else {
-      ///   console.log(100001)
       let park_id = sessionStorage.getItem("park_id");
-      //  console.log(park_id);
       let room_id = sessionStorage.getItem("room_id");
-      //    console.log(room_id);
       if (room_id) {
-        //    console.log(room_id)
-        //  HomeTop.changHomeTop(3); 
         ParkInfoOne.isParkState(0)
         this.setState({
           InfoTitleIndex: 1
         })
-        ParkInfoThree.showRoomInfo();
+        ParkInfoThree.showRoomInfo(room_id);
       }
-
-
     }
+
+    //over
   }
 
   _handleScroll(scrollTop) {
@@ -147,8 +156,6 @@ class ParkInfo extends React.Component<{ location }> {
       })
     }
   }
-
-
 
   public render() {
     return (
@@ -367,11 +374,12 @@ class LeaseList extends React.Component {
   }
 
   public componentDidMount() {
-    
+
   }
 
   static fromRoomid(id) { };
   public fromRoomid(id) {
+    console.log("fromRoomidL", id)
     let person = this.state.roomList;
     let idY = id
     let inIndex;
@@ -386,15 +394,15 @@ class LeaseList extends React.Component {
 
   static setIndexIn(data) { };
   public setIndexIn(index) {
-    console.log('this',this)
+    console.log('this', this)
     this.setState({
       leaseRoomsState: index
     })
   }
 
 
-  public onLeaseRoom(index) {
-    ParkInfoThree.showRoomInfo();
+  public onLeaseRoom(index, roomid) {
+    ParkInfoThree.showRoomInfo(roomid);
     this.setState({
       leaseRoomsState: index
     })
@@ -496,24 +504,23 @@ class SellList extends React.Component {
   constructor(props) {
     super(props);
 
-       
     SellList.fromRoomid = this.fromRoomid.bind(this);
     SellList.setIndexIn = this.setIndexIn.bind(this);
   }
 
   public componentDidMount() {
- 
+
   }
 
-    static fromRoomid(id) { };
+  static fromRoomid(id) { };
   public fromRoomid(id) {
-    console.log('sell1',id);
+    console.log('sell1', id);
     let person = this.state.sellList;
     let idY = id
     let inIndex;
     $.each(person, function (index, value) {
       if (value.id == idY) {
-    console.log('sell2',index);
+        console.log('sell2', index);
         inIndex = index
         SellList.setIndexIn(inIndex)
       }
@@ -521,32 +528,20 @@ class SellList extends React.Component {
   }
 
   static setIndexIn(data) { };
-  public setIndexIn(index) {
+  public setIndexIn(index, roomid) {
     console.log('sell3', index);
-     this.setState({
-      sellRoomsState: index
-    })
-    //console.log(this)
-    // setTimeout(function () {
-    //    this.setState({
-    //  sellRoomsState: index
-    // }, () => {
-    //   ParkInfoThree.showRoomInfo();
-    //   console.log(this.state.sellRoomsState)
-    //   })
-    //},100)
-    ParkInfoThree.showRoomInfo();
- 
-  }
-
-  public onSellRoom(index) {
-        console.log('sell4',index);
-    ParkInfoThree.showRoomInfo();
     this.setState({
       sellRoomsState: index
     })
+    ParkInfoThree.showRoomInfo(roomid);
+  }
 
-
+  public onSellRoom(index, roomid) {
+    console.log('sell4', index);
+    ParkInfoThree.showRoomInfo(roomid);
+    this.setState({
+      sellRoomsState: index
+    })
   }
 
   public selltypeIndex(index) {
@@ -554,8 +549,6 @@ class SellList extends React.Component {
       typeIndex: index,
     })
   }
-
-
 
   public render() {
     return (
@@ -693,42 +686,33 @@ class CompanyList extends React.Component {
           <ul>
             <li>
               <div className={this.state.companyState == 0 ? "leaseRooms_on" : "leaseRooms"} >
-                <img src="./fangliangbao/image/demo.png" />
+                <img src="./fangliangbao/image/demo.png" style={{"width":"66px"}} />
                 <div className="leaseRoomsRight">
-                  <p className="leaseName">浙江永拓信息科技有限公伏见司播放结束的</p>
-                  <p className="leaseArea" style={{ "margin": "3px 0" }}>
-                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgba(207, 209, 210, 1)" }}>&#xe83c;</i>
-                    E座B区-3F-301</p>
+                  <p className="leaseName3">浙江永拓信息科技有限公司见司播放结束的</p>
                   <p className="leaseArea">
-                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgba(207, 209, 210, 1)" }}>&#xe83c;</i>
+                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgb(152, 159, 168)" }}>&#xe83f;</i>
                     科技服务</p>
                 </div>
               </div>
             </li>
             <li>
               <div className={this.state.companyState == 1 ? "leaseRooms_on" : "leaseRooms"} >
-                <img src="./fangliangbao/image/demo.png" />
+                <img src="./fangliangbao/image/demo.png" style={{"width":"66px"}} />
                 <div className="leaseRoomsRight">
-                  <p className="leaseName">浙江永拓信息科技有限公伏见司播放结束的</p>
-                  <p className="leaseArea" style={{ "margin": "3px 0" }}>
-                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgba(207, 209, 210, 1)" }}>&#xe83c;</i>
-                    E座B区-3F-301</p>
+                  <p className="leaseName3">浙江永拓信息科技有限公司见司播放结束的</p>
                   <p className="leaseArea">
-                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgba(207, 209, 210, 1)" }}>&#xe83c;</i>
+                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgb(152, 159, 168)" }}>&#xe83f;</i>
                     科技服务</p>
                 </div>
               </div>
             </li>
             <li>
               <div className={this.state.companyState == 2 ? "leaseRooms_on" : "leaseRooms"} >
-                <img src="./fangliangbao/image/demo.png" />
+                <img src="./fangliangbao/image/demo.png" style={{"width":"66px"}} />
                 <div className="leaseRoomsRight">
-                  <p className="leaseName">浙江永拓信息科技有限公伏见司播放结束的</p>
-                  <p className="leaseArea" style={{ "margin": "3px 0" }}>
-                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgba(207, 209, 210, 1)" }}>&#xe83c;</i>
-                    E座B区-3F-301</p>
+                  <p className="leaseName3">浙江永拓信息科技有限公司见司播放结束的</p>
                   <p className="leaseArea">
-                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgba(207, 209, 210, 1)" }} >&#xe83c;</i>
+                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgb(152, 159, 168)" }} >&#xe83f;</i>
                     科技服务</p>
                 </div>
               </div>
@@ -760,8 +744,8 @@ class ParkInfoThree extends React.Component {
   }
 
   //RoomInfoState
-  static showRoomInfo() { };
-  public showRoomInfo() {
+  static showRoomInfo(roomid) { };
+  public showRoomInfo(roomid) {
     this.setState({
       RoomInfoState: "RoomInfoShow",
     })
@@ -1698,6 +1682,7 @@ class NearParkList extends React.Component {
       else {
         if (this.getStatus() === 6) {
           console.log("没有权限")
+          _this.setNearList(newArr);
         }
         if (this.getStatus() === 8) {
           console.log("连接超时");

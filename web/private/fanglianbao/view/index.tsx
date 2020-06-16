@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom";
 import "css!./style/index.css";
 import Router from 'router';
 import AllBottom from "allBottom"
+import ParkInfo from "parkInfo"
 import Cascaders from "cascaders"
 import "css!./style/view.css";
 import { Link } from 'react-router-dom';
