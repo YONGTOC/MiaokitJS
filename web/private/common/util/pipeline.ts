@@ -23,9 +23,9 @@ MiaokitJS.ShaderLab.Pipeline = {
 
     Resource: [null,
         /// 1.星空背景贴图
-        { ID: 1, TYPE: "2D", URL: "./data/star.jpg" },
+        { ID: 1, TYPE: "2D", URL: "./data/projects/images/star.jpg" },
         /// 2.默认贴图
-        { ID: 2, TYPE: "2D", URL: "./data/default.png" }
+        { ID: 2, TYPE: "2D", URL: "./data/projects/images/default.png" }
     ],
 
     PassList: [
@@ -230,7 +230,7 @@ MiaokitJS.ShaderLab.Pipeline = {
             //aTarget[3].Height = 1024;
             //aTarget[9].Width = 640;
             //aTarget[9].Height = 1024;
-
+            // 新的方式，rgb做混合参数和色值，不透明高亮，明确的1、0，透明高亮，也给予明确的0或1，
             let aPass = pPipeline.PassList;
             aPass[3].RenderTarget = undefined;
             //aPass[1].ClearTarget.Color = { r: 0.198, g: 0.323, b: 0.45, a: 0.0 };
@@ -344,7 +344,8 @@ vec4 vs()
     
     vec4 mPosition = vec4(a_Position.xyz, 1.0);
     mPosition = u_MatG * a_MatW * mPosition;
-    
+    mPosition.xyz += u_GisBias.xyz;
+
     #ifdef HIGH_QUALITY
     LightVS(mPosition.xyz, ObjectToWorldNormal(a_Normal));
     #endif
@@ -382,6 +383,7 @@ vec4 vs()
 
     vec4 mPosition = vec4(a_Position.xyz, 1.0);
     mPosition = u_MatG * a_MatW * mPosition;
+    mPosition.xyz += u_GisBias.xyz;
 
     return u_MatVP * mPosition;
 }
@@ -480,7 +482,8 @@ vec4 vs()
     
     vec4 mPosition = vec4(a_Position.xyz, 1.0);
     mPosition = u_MatG * a_MatW * mPosition;
-    mPosition.y -= mBuilding.r * (mPosition.y - 1.0 - 167.0);
+    mPosition.y -= mBuilding.r * (mPosition.y - 177.0);
+    mPosition.xyz += u_GisBias.xyz;
     
     // 高品质下，计算法线，计算大气散射
     #ifdef HIGH_QUALITY
@@ -591,7 +594,7 @@ vec4 vs()
 	float nVecX = cos(nLat) * cos(nLng);
 	float nVecZ = cos(nLat) * sin(nLng);
     
-    vec3 mPosition = vec3(nVecX, nVecY, nVecZ);
+    vec3 mPosition = normalize(vec3(nVecX, nVecY, nVecZ));
     
     v_Normal = vec3(nVecX, nVecY, nVecZ);
     v_Normal = normalize((u_MatG * vec4(v_Normal, 0.0)).xyz);
@@ -607,7 +610,7 @@ vec4 vs()
         vec4 mHeight = texture2D(_TerrainTex, _UV);
         
 		nHeight = ((mHeight.r * 256.0 * 256.0 * 256.0) + (mHeight.g * 256.0 * 256.0) + (mHeight.b * 256.0)) * 0.001;
-        nHeight -= 1000.0;
+        nHeight -= 991.0;
         
         // 高品质下，计算地形法线
         #ifdef HIGH_QUALITY
@@ -645,13 +648,16 @@ uniform sampler2D _TerrainTex;
 uniform sampler2D _PhotoTex;
 uniform sampler2D _LabelTex;
 
+uniform vec4 _Inherit;
+
 varying vec3 v_Normal;
 varying vec3 v_UV;
 
 vec4 fs()
 {
-    vec4 mColor = texture(_PhotoTex, v_UV.xy);
-    vec4 mLabel = texture(_LabelTex, v_UV.xy);
+    vec2 mUV = vec2((v_UV.x * _Inherit.z + _Inherit.x), (v_UV.y * _Inherit.z + _Inherit.y));
+    vec4 mColor = texture(_PhotoTex, mUV) * 0.8;
+    vec4 mLabel = texture(_LabelTex, mUV);
 
     mColor.rgb = (mColor.rgb * (1.0 - mLabel.a)) + (mLabel.rgb * mLabel.a);
     mColor.a = 1.0;

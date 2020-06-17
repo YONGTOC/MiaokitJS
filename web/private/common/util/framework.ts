@@ -43,26 +43,17 @@ class App {
         this.m_pPanoramas = MiaokitJS.Miaokit.panoramas;
 
         if (MiaokitJS.m_pConfig.GIS) {
+            let pConfig = MiaokitJS.m_pConfig.GIS[0];
+
             this.m_pGis = MiaokitJS.Miaokit.gis;
-            this.m_pGis.imageServer = MiaokitJS.m_pConfig.GIS.m_pImageServer;
+            this.m_pGis.imageServer = pConfig.m_pImageServer;
 
-            if (MiaokitJS.m_pConfig.GIS.m_pLabelServer) {
-                this.m_pGis.labelServer = MiaokitJS.m_pConfig.GIS.m_pLabelServer;
+            if (pConfig.m_pLabelServer) {
+                this.m_pGis.labelServer = pConfig.m_pLabelServer;
             }
 
-            if (MiaokitJS.m_pConfig.GIS.m_pTerrainServer) {
-                this.m_pGis.terrainServer = MiaokitJS.m_pConfig.GIS.m_pTerrainServer;
-            }
-        }
-
-        if (MiaokitJS.m_pConfig.DIORS) {
-            for (let pDior of MiaokitJS.m_pConfig.DIORS) {
-                pDior.m_pDior = new MiaokitJS.Dioramas3MX(pDior.m_pPath, pDior.m_pMark, !this.m_pGis ? null : {
-                    m_pGis: this.m_pGis,
-                    m_mLngLat: pDior.m_mLngLat,
-                    m_mOffset: pDior.m_nOffset,
-                    m_nHeight: pDior.m_nHeight
-                });
+            if (pConfig.m_pTerrainServer) {
+                this.m_pGis.terrainServer = pConfig.m_pTerrainServer;
             }
         }
 
@@ -78,16 +69,28 @@ class App {
         this.m_pProject.Update();
     }
 
-    /// SVE瓦片激活。
-    public ActiveTile(pTile): void {
-        let pObject = pTile.m_pTile.object3D;
-        this.m_pGis.AddGameObject(pObject, pTile.m_nLng, pTile.m_nLat, pTile.m_nHeight);
+    /// 切换GIS样式。
+    public SwitchGIS(nType): void {
+        if (MiaokitJS.m_pConfig.GIS) {
+            let pConfig = MiaokitJS.m_pConfig.GIS[nType];
+            if (pConfig) {
+                this.m_pGis.SwitchStyle(8 + 4 + 2 + 1);
 
-        pObject.transform.Translate(pTile.m_nOffset, 1);
-        pObject.transform.localEuler = pTile.m_mRotate;
+                this.m_pGis.imageServer = pConfig.m_pImageServer;
 
-        this.m_pProject.ActiveTile(pTile);
+                if (pConfig.m_pLabelServer) {
+                    this.m_pGis.labelServer = pConfig.m_pLabelServer;
+                }
+
+                if (pConfig.m_pTerrainServer) {
+                    this.m_pGis.terrainServer = pConfig.m_pTerrainServer;
+                }
+
+                this.m_pProject.OnGisSwitch();
+            }
+        }
     }
+
 
     /// 绘制2D画布。
     private Draw2D(): void {
