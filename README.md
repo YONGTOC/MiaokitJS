@@ -11,11 +11,6 @@ Github: https://github.com/YONGTOC/MiaokitJS
 
 ## 文件夹结构
 * ./doc                  : 帮助文档文件夹
-* ./unity                : Unity开发样例工程文件夹
-* ./unity/Plugins/x86    : MiaokitJS 32位DLL文件夹
-* ./unity/Plugins/x86_64 : MiaokitJS 64位DLL文件夹
-* ./unity/Assets/Scripts : Unity开发样例程序源码文件夹
-* ./www                  : HTML5开发样例工程文件夹
-* ./www/src              : HTML5开发样例程序源码文件夹
-* ./www/examples         : HTML5开发API使用样例程序集文件夹
-* ./www/js/Miaokit       : HTML5开发核心模块文件夹
+* ./web                  : HTML5开发样例工程文件夹
+* ./web/private          : HTML5开发样例程序源码文件夹
+* ./web/public			 : HTML5开发程序发布文件夹

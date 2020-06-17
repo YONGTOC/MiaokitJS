@@ -38,7 +38,6 @@ class App {
 
         this.m_pCamera = MiaokitJS.Miaokit.camera;
         this.m_pCameraCtrl = new MiaokitJS.UTIL.CameraCtrl(this.m_pCamera);
-        this.m_pPicker = new MiaokitJS.UTIL.EntityPicker(this.m_pCameraCtrl);
 
         this.m_pPanoramas = MiaokitJS.Miaokit.panoramas;
 
@@ -178,22 +177,6 @@ class App {
             if (250 > MiaokitJS.Time() - nPressTime) {
                 /// 鼠标双击
                 if (500 > MiaokitJS.Time() - nClickTime) {
-                    let pSelect = null;
-
-                    if (0 == e.button) {
-                        pSelect = pThis.m_pPicker.Select();
-                    }
-                    else if (2 == e.button) {
-                        pSelect = pThis.m_pPicker.UnSelect();
-                    }
-
-                    if (pSelect) {
-                        if (pSelect && pSelect.m_pViewState) {
-                            pSelect.m_pViewState.m_mTarget = pSelect.m_pObject3D.transform.position;
-                            pThis.m_pCameraCtrl.Fly(MiaokitJS.SVECLASS.CTRL_MODE.PANORAMA, pSelect.m_pViewState);
-                        }
-                    }
-
                     pThis.m_pProject.OnClick(2, e);
                 }
                 /// 鼠标单击
@@ -322,8 +305,6 @@ class App {
     private m_pCamera: any = null;
     /// 摄像机控制器。
     private m_pCameraCtrl: any = null;
-    /// 对象拾取器。
-    private m_pPicker: any = null;
     /// GIS对象。
     private m_pGis: any = null;
     /// 全景图对象。
