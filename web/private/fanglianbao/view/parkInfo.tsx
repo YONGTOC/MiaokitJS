@@ -897,14 +897,14 @@ class ParkInfoThreeLeft extends React.Component {
     this.setState({
       fullViewState: true
     });
-    $(document.body).attr('style', 'height: 100%; margin: 0; padding: 0; overflow: hidden;')
+  //  $(document.body).attr('style', 'height: 100%; margin: 0; padding: 0; overflow: hidden;')
   }
 
   public closeFull() {
     this.setState({
       fullViewState: false
     });
-    $(document.body).attr('style', 'height: 100%; margin: 0; padding: 0; overflow: visible;')
+   // $(document.body).attr('style', 'height: 100%; margin: 0; padding: 0; overflow: visible;')
   }
 
   public upImgFull() {

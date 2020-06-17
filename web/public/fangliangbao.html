@@ -41,7 +41,7 @@
             }
         });
 
-        let MiaokitJS = new MiaokitModule("Sisyphus", "./data/projects/config0.txt");
+        let MiaokitJS = new MiaokitModule("Sisyphus", "./data/projects/config.txt");
 
         if (require) {
             require(['index'], function (view) {
@@ -74,7 +74,7 @@
     </script>
 
     <script src="./common/util.js"></script>
-    <script src="./fangliangbao/js/app.js"></script>
+    <script src="./park_m/js/app.js"></script>
 
     <style>
 
@@ -99,11 +99,25 @@
 
 </head>
 <body style="height: 100%; margin: 0; padding: 0; overflow:visible;">
-
+        <!--幕布，遮挡3d的提前加载 -->
+    <div class="curtain" style="background: #fff; margin: auto; width: 100%; height: 100%;
+    top: 0rem; bottom: 0rem; left: 0rem; right: 0rem; position: absolute; z-index: 103;">
+        <div class="loadEffect">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
     <!-- html,body { height: 100%;margin: 0; padding: 0;} div height: 100% 才会起效，因为继承父级高度-->
     <!-- 微信端不能为任意尺寸，否则会崩溃 -->
     <!--<div id="unityContainer" style="width: 100%; height: 100%; background:#808080; margin: auto"></div>-->
-    <div id="unityContainer" style="width: 1200px; height: 675px; background:#808080; margin: auto; position:relative;top:215px;"></div>
+    <div id="unityContainer" style="width: 1200px; height: 675px; background:#808080; margin: auto; position:relative;top:215px;"
+          onMouseOver="chkIn()" onMouseOut="chkOut()"></div>
     <!--<div id="unityContainer" style="width: 1200px; height: 675px; background:#808080; margin: auto; margin-top: 215px;"></div>-->
     <!--<div id="viewContainer" style="width: 100%; height: 100%; background:blue; margin: auto"></div>-->
 
@@ -199,6 +213,18 @@
         }
     </style>
     <script>
+        function chkIn()
+        {
+            console.log(11111111111);
+             $(document.body).attr('style', 'height: 100%; margin: 0; padding: 0; overflow: hidden;')
+	}
+   function chkOut()
+    {
+       console.log(2222222222)
+       $(document.body).attr('style', 'height: 100%; margin: 0; padding: 0; overflow: visible;')
+	}
+ 
+
 
         //react加载完成，隐藏幕布
         function curtainHide() {

@@ -1043,7 +1043,7 @@ class Index extends React.Component {
   // 添加摆点信息
   public addapplyPut(data) {
     this.props.history.push('/applyPut');
-    ApplyPut.addapplyPut(data);
+   // ApplyPut.addapplyPut(data);
   }
 
   //添加违规点
