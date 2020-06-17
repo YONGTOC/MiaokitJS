@@ -4,6 +4,9 @@ import Router from 'router';
 
 import HomeTop from "HomeTop";
 import AllBottom from "AllBottom";
+import IconBox from "IconBox";
+import ModelBtn from "modelBtn";
+import FloorList from "FloorList";
 
 import InfoTitle from "InfoTitle";
 import { exact } from "prop-types";
@@ -11,42 +14,143 @@ import SendSuccess from "SendSuccess";
 import AlertBox from "AlertBox";
 
 
-class ParkInfo extends React.Component<{location}> {
+class ParkInfo extends React.Component<{ location }> {
   constructor(props) {
     super(props);
 
     this.handleScroll = this.handleScroll.bind(this);
     ParkInfo.closeDefeat = this.closeDefeat.bind(this);
     ParkInfo.successClose = this.successClose.bind(this);
+    ParkInfo.floorListState = this.floorListState.bind(this);
+
   }
 
   public componentDidMount() {
     console.log(this.props.location)
-  //  HomeTop.changHomeTop(2);
     window.addEventListener('scroll', this.handleScroll);
-    if (this.props.location.roomId) {
-        ParkInfoThree.showRoomInfo();
+     if (this.props.location.roomId) {
+      ParkInfoThree.showRoomInfo(this.props.location.roomId);
     }
-    if (this.props.location.from == 'park') {
+
+    switch (this.props.location.from) {
+      case "park":
+        this.setState({
+          InfoTitleIndex: 0
+        })
         HomeTop.changHomeTop(2);
-      this.setState({
-        InfoTitleIndex:0
-      })
-    } else if (this.props.location.from == 'room') {
-         HomeTop.changHomeTop(3);
-       this.setState({
-        InfoTitleIndex:1
-      })
-    } else if (this.props.location.from == 'sell') {
-         HomeTop.changHomeTop(4);
-         this.setState({
-        InfoTitleIndex:2
-      })
+        ParkInfoOne.isParkState(1);
+        break;
+
+      case "room":
+        HomeTop.changHomeTop(3);
+        ParkInfoOne.isParkState(0);
+        this.setState({
+          InfoTitleIndex: 1
+        })
+        ParkInfoThree.showRoomInfo(this.props.location.roomId);
+        ParkInfoTwo.changeTitle(0);
+        LeaseList.fromRoomid(this.props.location.roomId)
+        break;
+
+      case "sell":
+        HomeTop.changHomeTop(4);
+        ParkInfoOne.isParkState(0)
+        this.setState({
+          InfoTitleIndex: 2
+        }, () => {
+          SellList.fromRoomid(this.props.location.roomId)
+        })
+        ParkInfoThree.showRoomInfo(this.props.location.roomId);
+        ParkInfoTwo.changeTitle(1);
+        break;
+
+      case "":
+        //  组件外部跳转
+           console.log(2222222222)
+        let park_id = sessionStorage.getItem("park_id");
+        let room_id = sessionStorage.getItem("room_id");
+        if (room_id) {
+          HomeTop.changHomeTop(3);
+          // ParkInfoOne.isParkState(0);
+          this.setState({
+            InfoTitleIndex: 1
+          }, () => {
+            LeaseList.fromRoomid(room_id);
+            console.log(this.state)
+          })
+          LeaseList.fromRoomid(room_id);
+          ParkInfoThree.showRoomInfo(room_id);
+        }
+        if (park_id) {
+          HomeTop.changHomeTop(2);
+          ParkInfoOne.isParkState(1);
+          this.setState({
+            InfoTitleIndex: 0
+          }, () => {
+            HomeTop.changHomeTop(2);
+            ParkInfoOne.isParkState(1);
+          })
+
+        }
+        break;
+      //over
     }
+
+    if (!this.props.location.from) {
+      console.log(111111111)
+      let park_id = sessionStorage.getItem("park_id");
+        let room_id = sessionStorage.getItem("room_id");
+        if (room_id) {
+          HomeTop.changHomeTop(3);
+          ParkInfoOne.isParkState(0);
+          this.setState({
+            InfoTitleIndex: 1
+          }, () => {
+            LeaseList.fromRoomid(room_id);
+            console.log(this.state);
+            ParkInfoOne.isParkState(0);
+          })
+          LeaseList.fromRoomid(room_id);
+          ParkInfoThree.showRoomInfo(room_id);
+        }
+        if (park_id) {
+          HomeTop.changHomeTop(2);
+          ParkInfoOne.isParkState(1);
+          this.setState({
+            InfoTitleIndex: 0
+          }, () => {
+            HomeTop.changHomeTop(2);
+            ParkInfoOne.isParkState(1);
+          })
+
+        }
+    }
+
+
+
+    if (this.props.location.search) {
+      if (this.props.location.roomId) {
+        ParkInfoThree.showRoomInfo(this.props.location.roomId);
+      } else {
+        console.log(222)
+      }
+    } else {
+      let park_id = sessionStorage.getItem("park_id");
+      let room_id = sessionStorage.getItem("room_id");
+      if (room_id) {
+        ParkInfoOne.isParkState(0)
+        this.setState({
+          InfoTitleIndex: 1
+        })
+        ParkInfoThree.showRoomInfo(room_id);
+      }
+    }
+
+    //over
   }
 
   _handleScroll(scrollTop) {
-    console.log(scrollTop)         //滚动条距离页面的高度
+    //  console.log(scrollTop)         //滚动条距离页面的高度
   }
 
   public handleScroll(event) {
@@ -64,19 +168,50 @@ class ParkInfo extends React.Component<{location}> {
     ParkInfoThreeRight.successClose()
   }
 
+
+  static floorListState(Boolean, data) { };
+  public floorListState(Boolean, data) {
+    // console.log(Boolean)
+    if (Boolean == true) {
+      console.log(11111)
+      this.setState({
+        floorListState: true
+      })
+      FloorList.getFloor(data);
+    } else {
+      console.log(9999999)
+      this.setState({
+        floorListState: false
+      })
+    }
+  }
+
   public render() {
     return (
       <div className="infoPage"  >
         <HomeTop />
         <div className="parkInfo">
           <div className="parkInfoBox_title">
-
             < InfoTitle index={this.state.InfoTitleIndex} />
-
             <ParkInfoOne />
           </div>
           <div className="parkInfoBox_list">
+            <IconBox />
+            <ModelBtn />
+            {this.state.floorListState == true ?
+              <div style={{ "opacity": "1" }}>
+                < FloorList />
+              </div>
+              :
+              <div style={{ "opacity": "0" }}>
+                < FloorList />
+              </div>
+            }
             <ParkInfoTwo />
+
+          </div>
+          <div className="parkInfoBox_BtnBox">
+
           </div>
           <div className="parkInfoBox_text">
             <ParkInfoThree />
@@ -93,7 +228,8 @@ class ParkInfo extends React.Component<{location}> {
   }
 
   public state = {
-    InfoTitleIndex:-1
+    InfoTitleIndex: -1,
+    floorListState: false,
   }
 }
 
@@ -102,6 +238,7 @@ class ParkInfoOne extends React.Component {
   constructor(props) {
     super(props);
 
+    ParkInfoOne.isParkState = this.isParkState.bind(this);
   }
 
   public componentDidMount() {
@@ -109,6 +246,20 @@ class ParkInfoOne extends React.Component {
 
   public collect() {
 
+  }
+
+  static isParkState(data) { };
+  public isParkState(data) {
+    console.log("isParkState", data)
+    if (data == 0) {
+      this.setState({
+        parkState: false
+      })
+    } else {
+      this.setState({
+        parkState: true
+      })
+    }
   }
 
   public render() {
@@ -126,23 +277,26 @@ class ParkInfoOne extends React.Component {
         </div>
         <div className="ParkInfoOne_info">
           <p>信息产业园</p>
-          <ul>
-            <li className={this.state.collectState == true ? "ParkInfoOne_info_li_On" : "ParkInfoOne_info_li"}>
-              <i className="iconfont " onClick={this.collect.bind(this)}>&#xe839;</i>
-              {this.state.collectState == true ? "已收藏" : "收藏"}
-            </li>
-            <li className={this.state.shareState == true ? "ParkInfoOne_info_li_On" : "ParkInfoOne_info_li"}>
-              <i className="iconfont " >&#xe836;</i>分享
+          {this.state.parkState == true ?
+            <ul>
+              <li className={this.state.collectStateP == true ? "ParkInfoOne_info_li_On" : "ParkInfoOne_info_li"}>
+                <i className="iconfont " onClick={this.collect.bind(this)} >&#xe839;</i>
+                {this.state.collectStateP == true ? "已收藏" : "收藏"}
               </li>
-          </ul>
+              <li className={this.state.shareStateP == true ? "ParkInfoOne_info_li_On" : "ParkInfoOne_info_li"}>
+                <i className="iconfont " >&#xe836;</i>分享
+              </li>
+            </ul>
+            : null}
         </div>
       </div>
     )
   }
 
   public state = {
-    collectState: true,
-    shareState: false,
+    collectStateP: true,
+    shareStateP: false,
+    parkState: false,
   }
 }
 
@@ -151,13 +305,15 @@ class ParkInfoTwo extends React.Component {
   constructor(props) {
     super(props);
 
+    ParkInfoTwo.changeTitle = this.changeTitle.bind(this);
   }
 
   public componentDidMount() {
 
   }
 
-  public changeTitle(this, index) {
+  static changeTitle(index) { };
+  public changeTitle(index) {
     if (index == 2) {
       this.setState({
         index: index
@@ -241,14 +397,41 @@ class LeaseList extends React.Component {
   constructor(props) {
     super(props);
 
+    LeaseList.fromRoomid = this.fromRoomid.bind(this);
+    LeaseList.setIndexIn = this.setIndexIn.bind(this);
+    this.onLeaseRoom = this.onLeaseRoom.bind(this);
   }
 
   public componentDidMount() {
-     
+
   }
 
-  public onLeaseRoom(index) {
-    ParkInfoThree.showRoomInfo();
+  static fromRoomid(id) { };
+  public fromRoomid(id) {
+    console.log("fromRoomidL", id)
+    let person = this.state.roomList;
+    let idY = id
+    let inIndex;
+    $.each(person, function (index, value) {
+      if (value.id == idY) {
+        console.log(index);
+        inIndex = index
+        LeaseList.setIndexIn(inIndex);
+      }
+    });
+  }
+
+  static setIndexIn(data) { };
+  public setIndexIn(index) {
+    console.log('this', this)
+    this.setState({
+      leaseRoomsState: index
+    })
+  }
+
+
+  public onLeaseRoom(index, roomid) {
+    ParkInfoThree.showRoomInfo(roomid);
     this.setState({
       leaseRoomsState: index
     })
@@ -292,22 +475,22 @@ class LeaseList extends React.Component {
           </ul>
         </div>
         <div className="leaseRoomList">
-         <ul>
+          <ul>
             {this.state.roomList.map((i, index) => {
               return (
-                     <li onClick={this.onLeaseRoom.bind(this, index,i.id,i.code)}>
-              <div className={this.state.leaseRoomsState == index ? "leaseRooms_on" : "leaseRooms"} >
-                <img src="./fangliangbao/image/demo.png" />
+                <li onClick={this.onLeaseRoom.bind(this, index, i.id, i.code)}>
+                  <div className={this.state.leaseRoomsState == index ? "leaseRooms_on" : "leaseRooms"} >
+                    <img src="./fangliangbao/image/demo.png" />
                     <div className="leaseRoomsRight">
                       <p className="leaseName"><span>{i.area}</span>m²</p>
                       <p><span className="leasePrice">{i.price}</span> 元/m²⋅月</p>
-                      <p className="leaseArea">{i.level}</p>
-                </div>
-              </div>
-            </li>
-                )
+                      <p className="leaseArea">{i.level}-z</p>
+                    </div>
+                  </div>
+                </li>
+              )
             })}
-    
+
           </ul>
           <p className="listOver">到底啦~</p>
         </div>
@@ -318,25 +501,28 @@ class LeaseList extends React.Component {
   public state = {
     typeIndex: 0,
     leaseRoomsState: -1,
-        roomList: [
+    roomList: [
       {
         area: 187,
         price: 80.3,
         level: "简装",
-        id: "id-1",
-        code: "code-1"
-      },    {
+        id: "1",
+        code: "code-1",
+        headimgurl: "./fangliangbao/image/demo.png"
+      }, {
         area: 187,
         price: 80.3,
         level: "简装",
-        id: "id-2",
-        code: "code-2"
-      },    {
+        id: "2",
+        code: "code-2",
+        headimgurl: "./fangliangbao/image/demo.png"
+      }, {
         area: 187,
         price: 80.3,
         level: "简装",
-        id: "id-3",
-        code: "code-4"
+        id: "3",
+        code: "code-4",
+        headimgurl: "./fangliangbao/image/demo.png"
       }
     ]
   }
@@ -347,14 +533,41 @@ class SellList extends React.Component {
   constructor(props) {
     super(props);
 
+    SellList.fromRoomid = this.fromRoomid.bind(this);
+    SellList.setIndexIn = this.setIndexIn.bind(this);
   }
 
   public componentDidMount() {
 
   }
 
-  public onSellRoom(index) {
-    ParkInfoThree.showRoomInfo();
+  static fromRoomid(id) { };
+  public fromRoomid(id) {
+    console.log('sell1', id);
+    let person = this.state.sellList;
+    let idY = id
+    let inIndex;
+    $.each(person, function (index, value) {
+      if (value.id == idY) {
+        console.log('sell2', index);
+        inIndex = index
+        SellList.setIndexIn(inIndex)
+      }
+    });
+  }
+
+  static setIndexIn(data) { };
+  public setIndexIn(index, roomid) {
+    console.log('sell3', index);
+    this.setState({
+      sellRoomsState: index
+    })
+    ParkInfoThree.showRoomInfo(roomid);
+  }
+
+  public onSellRoom(index, roomid) {
+    console.log('sell4', index);
+    ParkInfoThree.showRoomInfo(roomid);
     this.setState({
       sellRoomsState: index
     })
@@ -399,36 +612,20 @@ class SellList extends React.Component {
         </div>
         <div className="leaseRoomList">
           <ul>
-            <li onClick={this.onSellRoom.bind(this, 0)}>
-              <div className={this.state.sellRoomsState == 0 ? "leaseRooms_on" : "leaseRooms"} >
-                <img src="./fangliangbao/image/demo.png" />
-                <div className="leaseRoomsRight">
-                  <p className="leaseName"><span>187</span>m²</p>
-                  <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                  <p className="leaseArea">简装</p>
-                </div>
-              </div>
-            </li>
-            <li onClick={this.onSellRoom.bind(this, 1)}>
-              <div className={this.state.sellRoomsState == 1 ? "leaseRooms_on" : "leaseRooms"} >
-                <img src="./fangliangbao/image/demo.png" />
-                <div className="leaseRoomsRight">
-                  <p className="leaseName"><span>187</span>m²</p>
-                  <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                  <p className="leaseArea">简装</p>
-                </div>
-              </div>
-            </li>
-            <li onClick={this.onSellRoom.bind(this, 2)}>
-              <div className={this.state.sellRoomsState == 2 ? "leaseRooms_on" : "leaseRooms"} >
-                <img src="./fangliangbao/image/demo.png" />
-                <div className="leaseRoomsRight">
-                  <p className="leaseName"><span>187</span>m²</p>
-                  <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                  <p className="leaseArea">简装</p>
-                </div>
-              </div>
-            </li>
+            {this.state.sellList.map((i, index) => {
+              return (
+                <li onClick={this.onSellRoom.bind(this, index)}>
+                  <div className={this.state.sellRoomsState == index ? "leaseRooms_on" : "leaseRooms"} >
+                    <img src={i.headimgurl} />
+                    <div className="leaseRoomsRight">
+                      <p className="leaseName"><span>{i.area}</span>m²</p>
+                      <p><span className="leasePrice">{i.price}</span> 元/m²⋅月</p>
+                      <p className="leaseArea">{i.level}-s</p>
+                    </div>
+                  </div>
+                </li>
+              )
+            })}
           </ul>
           <p className="listOver">到底啦~</p>
         </div>
@@ -439,10 +636,33 @@ class SellList extends React.Component {
   public state = {
     typeIndex: 0,
     sellRoomsState: -1,
+    sellList: [
+      {
+        area: 187,
+        price: 80.3,
+        level: "简装",
+        id: "1",
+        code: "code-1",
+        headimgurl: "./fangliangbao/image/demo.png"
+      }, {
+        area: 187,
+        price: 80.3,
+        level: "简装",
+        id: "2",
+        code: "code-2",
+        headimgurl: "./fangliangbao/image/demo.png"
+      }, {
+        area: 187,
+        price: 80.3,
+        level: "简装",
+        id: "3",
+        code: "code-4",
+        headimgurl: "./fangliangbao/image/demo.png"
+      }
+    ]
   }
 
 }
-
 
 class CompanyList extends React.Component {
 
@@ -495,42 +715,33 @@ class CompanyList extends React.Component {
           <ul>
             <li>
               <div className={this.state.companyState == 0 ? "leaseRooms_on" : "leaseRooms"} >
-                <img src="./fangliangbao/image/demo.png" />
+                <img src="./fangliangbao/image/demo.png" style={{"width":"66px"}} />
                 <div className="leaseRoomsRight">
-                  <p className="leaseName">浙江永拓信息科技有限公伏见司播放结束的</p>
-                  <p className="leaseArea" style={{ "margin": "3px 0" }}>
-                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgba(207, 209, 210, 1)" }}>&#xe83c;</i>
-                    E座B区-3F-301</p>
+                  <p className="leaseName3">浙江永拓信息科技有限公司见司播放结束的</p>
                   <p className="leaseArea">
-                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgba(207, 209, 210, 1)" }}>&#xe83c;</i>
+                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgb(152, 159, 168)" }}>&#xe83f;</i>
                     科技服务</p>
                 </div>
               </div>
             </li>
             <li>
               <div className={this.state.companyState == 1 ? "leaseRooms_on" : "leaseRooms"} >
-                <img src="./fangliangbao/image/demo.png" />
+                <img src="./fangliangbao/image/demo.png" style={{"width":"66px"}} />
                 <div className="leaseRoomsRight">
-                  <p className="leaseName">浙江永拓信息科技有限公伏见司播放结束的</p>
-                  <p className="leaseArea" style={{ "margin": "3px 0" }}>
-                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgba(207, 209, 210, 1)" }}>&#xe83c;</i>
-                    E座B区-3F-301</p>
+                  <p className="leaseName3">浙江永拓信息科技有限公司见司播放结束的</p>
                   <p className="leaseArea">
-                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgba(207, 209, 210, 1)" }}>&#xe83c;</i>
+                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgb(152, 159, 168)" }}>&#xe83f;</i>
                     科技服务</p>
                 </div>
               </div>
             </li>
             <li>
               <div className={this.state.companyState == 2 ? "leaseRooms_on" : "leaseRooms"} >
-                <img src="./fangliangbao/image/demo.png" />
+                <img src="./fangliangbao/image/demo.png" style={{"width":"66px"}} />
                 <div className="leaseRoomsRight">
-                  <p className="leaseName">浙江永拓信息科技有限公伏见司播放结束的</p>
-                  <p className="leaseArea" style={{ "margin": "3px 0" }}>
-                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgba(207, 209, 210, 1)" }}>&#xe83c;</i>
-                    E座B区-3F-301</p>
+                  <p className="leaseName3">浙江永拓信息科技有限公司见司播放结束的</p>
                   <p className="leaseArea">
-                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgba(207, 209, 210, 1)" }} >&#xe83c;</i>
+                    <i className="iconfont " style={{ "font-size": "12px", "color": "rgb(152, 159, 168)" }} >&#xe83f;</i>
                     科技服务</p>
                 </div>
               </div>
@@ -547,7 +758,6 @@ class CompanyList extends React.Component {
   }
 }
 
-
 class ParkInfoThree extends React.Component {
 
   constructor(props) {
@@ -563,8 +773,8 @@ class ParkInfoThree extends React.Component {
   }
 
   //RoomInfoState
-  static showRoomInfo() { };
-  public showRoomInfo() {
+  static showRoomInfo(roomid) { };
+  public showRoomInfo(roomid) {
     this.setState({
       RoomInfoState: "RoomInfoShow",
     })
@@ -619,6 +829,7 @@ class ParkInfoThreeLeft extends React.Component {
   constructor(props) {
     super(props);
 
+    ParkInfoThreeLeft.idGetparkInfo = this.idGetparkInfo.bind(this);
   }
 
   public componentDidMount() {
@@ -686,14 +897,14 @@ class ParkInfoThreeLeft extends React.Component {
     this.setState({
       fullViewState: true
     });
-    $(document.body).attr('style', 'height: 100%; margin: 0; padding: 0; overflow: hidden;')
+  //  $(document.body).attr('style', 'height: 100%; margin: 0; padding: 0; overflow: hidden;')
   }
 
   public closeFull() {
     this.setState({
       fullViewState: false
     });
-    $(document.body).attr('style', 'height: 100%; margin: 0; padding: 0; overflow: visible;')
+   // $(document.body).attr('style', 'height: 100%; margin: 0; padding: 0; overflow: visible;')
   }
 
   public upImgFull() {
@@ -710,6 +921,11 @@ class ParkInfoThreeLeft extends React.Component {
       imgUrl: this.state.imgUrlList[index].url,
       imgNum: index + 1
     })
+  }
+
+  static idGetparkInfo(id) { };
+  public idGetparkInfo(id) {
+    console.log(id);
   }
 
   public render() {
@@ -839,17 +1055,17 @@ class RoomInfoThreeLeft extends React.Component {
   }
   public componentDidMount() {
     let ps2H = $('.ps2').height();
-  //  console.log(ps2H);
+    //  console.log(ps2H);
     if (ps2H > 21) {
       let pst = ps2H - 21;
       let partH = ps2H + 412;
-      $('.ps').attr("style","top:-"+ pst + "px");
-      $('.RoomInfoThreeLeft_part').attr("style","height:"+ partH + "px");
+      $('.ps').attr("style", "top:-" + pst + "px");
+      $('.RoomInfoThreeLeft_part').attr("style", "height:" + partH + "px");
     }
   }
 
   public roomInfoOn(index) {
-  //  console.log('roomInfoOn', index)
+    //  console.log('roomInfoOn', index)
     if (index == 1) {
       this.setState({
         RoomInfoThreeLeft: "RoomInfoThreeLeft_all",
@@ -887,7 +1103,7 @@ class RoomInfoThreeLeft extends React.Component {
         imgUrl: this.state.imgUrlList[this.state.imgIndex - 1].url,
         imgNum: imgNumN
       }, () => {
-    //    console.log(this.state)
+        //    console.log(this.state)
       })
     }
     //over
@@ -905,7 +1121,7 @@ class RoomInfoThreeLeft extends React.Component {
         imgUrl: this.state.imgUrlList[this.state.imgIndex + 1].url,
         imgNum: imgNumN
       }, () => {
-     //   console.log(this.state)
+        //   console.log(this.state)
       })
     }
     //over
@@ -923,7 +1139,7 @@ class RoomInfoThreeLeft extends React.Component {
         vidUrl: this.state.vidUrlList[this.state.vidIndex - 1].url,
         vidNum: vidNumN
       }, () => {
-    //    console.log(this.state)
+        //    console.log(this.state)
       })
     }
     //over
@@ -941,7 +1157,7 @@ class RoomInfoThreeLeft extends React.Component {
         vidUrl: this.state.vidUrlList[this.state.vidIndex + 1].url,
         vidNum: vidNumN
       }, () => {
-    //    console.log(this.state)
+        //    console.log(this.state)
       })
     }
     //over
@@ -977,11 +1193,26 @@ class RoomInfoThreeLeft extends React.Component {
     })
   }
 
-  public render() {
+  public collect() {
 
+  }
+
+  public render() {
     return (
       <div className={this.state.RoomInfoThreeLeft} >
-        <p className="roomInfo_tit">出租！高新区信息产业园豪华装修单元</p>
+        <p className="roomInfo_tit">出租！高新区信息产业园豪华装修单元
+        </p>
+        <p className="roomInfo_btn">
+          <ul>
+            <li className={this.state.collectStateR == true ? "roomInfoOne_info_li_On" : "roomInfoOne_info_li"}>
+              <i className="iconfont " onClick={this.collect.bind(this)}>&#xe839;</i>
+              {this.state.collectStateR == true ? "已收藏" : "收藏"}
+            </li>
+            <li className={this.state.shareStateR == true ? "roomInfoOne_info_li_On" : "roomInfoOne_info_li"}>
+              <i className="iconfont " >&#xe836;</i>分享
+              </li>
+          </ul>
+        </p>
         <div className="ParkInfoThree_left_title">
           <ul>
             <li className={this.state.RoomInfoIndex == 0 ? "ParkInfoIndex_in" : null}
@@ -1018,14 +1249,14 @@ class RoomInfoThreeLeft extends React.Component {
               <li>总共楼层 <span>12层</span></li>
               <li>所在楼层 <span>6层</span></li>
               <li>电<span style={{ "margin-left": "28px", "color": "rgba(152,159,168,1)" }}>梯</span><span>有电梯</span></li>
-                   <p className="po"> <span className="ps">看房时间 </span> <p className="ps2">
+              <p className="po"> <span className="ps">看房时间 </span> <p className="ps2">
                 联系顾问，随时可看
                 </p></p>
 
               <li>更新时间 <span>14小时前</span></li>
 
-            </ul> 
-          </div> 
+            </ul>
+          </div>
           : null
         }
         {this.state.RoomInfoIndex == 1 ?
@@ -1117,7 +1348,9 @@ class RoomInfoThreeLeft extends React.Component {
     vidUrl: "",
     vidUrlList: [
       { url: "https://v-cdn.zjol.com.cn/280443.mp4" }
-    ]
+    ],
+    collectStateR: true,
+    shareStateR: false,
   }
 }
 
@@ -1253,32 +1486,32 @@ class ParkInfoThreeRight extends React.Component {
   }
 
   public sendNeed() {
-   // console.log("sendNeedSuccess", this.state.phone);
+    // console.log("sendNeedSuccess", this.state.phone);
     // 添加判断条件
     var reg01 = /^1[3456789]\d{9}$/;
     if (reg01.test(this.state.phone)) {
-            console.log("手机号或座机号填写正确")
-            //^[0-9]*$ //判断需求内容
-            var reg03 = /^[0-9]*$/;
-            if (reg03.test(this.state.needText)) {
-              //console.log(7777); //全数字
-              this.setState({
-                sendDefeatState: true,
-              }, () => {
-                AlertBox.showAlert("请正确输入您的需求");
-              });
-              return;
-            } else if (this.state.needText == "输入您的需求，如：在广州白云区寻找200m2左右的办公室，租金在80元/m2·天，临近地铁站。") {
-              //  console.log(74444444444);
-              this.setState({
-                sendDefeatState: true,
-              }, () => {
-                AlertBox.showAlert("请输入您的需求");
-              });
-              return;
-            } else {
-              // console.log(78888888);
-            }
+      console.log("手机号或座机号填写正确")
+      //^[0-9]*$ //判断需求内容
+      var reg03 = /^[0-9]*$/;
+      if (reg03.test(this.state.needText)) {
+        //console.log(7777); //全数字
+        this.setState({
+          sendDefeatState: true,
+        }, () => {
+          AlertBox.showAlert("请正确输入您的需求");
+        });
+        return;
+      } else if (this.state.needText == "输入您的需求，如：在广州白云区寻找200m2左右的办公室，租金在80元/m2·天，临近地铁站。") {
+        //  console.log(74444444444);
+        this.setState({
+          sendDefeatState: true,
+        }, () => {
+          AlertBox.showAlert("请输入您的需求");
+        });
+        return;
+      } else {
+        // console.log(78888888);
+      }
     } else if (this.state.phone == "输入您的手机号码") {
       this.setState({
         sendDefeatState: true,
@@ -1428,11 +1661,103 @@ class NearParkList extends React.Component {
   constructor(props) {
     super(props);
 
-
+    this.getNearPark = this.getNearPark.bind(this);
+    this.doLatLong = this.doLatLong.bind(this);
+    this.setNearList = this.setNearList.bind(this);
   }
 
   public componentDidMount() {
+    this.getNearPark();
+  }
 
+  public getNearPark() {
+    this.setState({
+      nearList: [
+        { headimgurl: "./fangliangbao/image/demo.png", name: "商务大厦1", id: "id-1", code: "code-1", price: "12.3", lat: "110.332731", long: "25.273402" },
+        { headimgurl: "./fangliangbao/image/demo.png", name: "商务大厦2", id: "id-2", code: "code-2", price: "12", lat: "110.467836", long: "25.275493" },
+        { headimgurl: "./fangliangbao/image/demo.png", name: "商务大厦3", id: "id-3", code: "code-3", price: "18.5", lat: "110.371825", long: "25.406115" },
+        { headimgurl: "./fangliangbao/image/demo.png", name: "商务大厦4", id: "id-4", code: "code-4", price: "15", lat: "110.626512", long: "25.395148" },
+      ]
+    }, () => {
+      this.doLatLong();
+    })
+  }
+
+  public doLatLong() {
+    let _this = this
+    //  console.log('doLL', this.state);
+
+    // this.state.nearList   score_L.push({
+
+    let person = _this.state.nearList;
+    let newArr = person.map((item, index) => {
+      return Object.assign(item, { distance: 100 })
+    }, () => {
+      _this.setNearList(newArr);
+    })
+
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function (r) {
+      if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+
+        newArr.forEach(item => {
+          item.distance = _this.getFlatternDistance(parseFloat(r.latitude), parseFloat(r.longitude), parseFloat(item.lat), parseFloat(item.long))
+        }, () => {
+          //  console.log("parkArr", newArr);
+        })
+        // console.log("parkArr22", newArr)
+        _this.setNearList(newArr);
+      }
+      else {
+        if (this.getStatus() === 6) {
+          console.log("没有权限")
+          _this.setNearList(newArr);
+        }
+        if (this.getStatus() === 8) {
+          console.log("连接超时");
+          _this.setNearList(newArr);
+        }
+      }
+    });
+  }
+
+  getRad(d) {
+    return d * Math.PI / 180.0;
+  }
+
+  getFlatternDistance(lat1, lng1, lat2, lng2) {
+    var f = this.getRad((lat1 + lat2) / 2);
+    var g = this.getRad((lat1 - lat2) / 2);
+    var l = this.getRad((lng1 - lng2) / 2);
+
+    var sg = Math.sin(g);
+    var sl = Math.sin(l);
+    var sf = Math.sin(f);
+
+    var s, c, w, r, d, h1, h2;
+    var a = 6378137.0;
+    var fl = 1 / 298.257;
+
+    sg = sg * sg;
+    sl = sl * sl;
+    sf = sf * sf;
+
+    s = sg * (1 - sl) + (1 - sf) * sl;
+    c = (1 - sg) * (1 - sl) + sf * sl;
+
+    w = Math.atan(Math.sqrt(s / c));
+    r = Math.sqrt(s * c) / w;
+    d = 2 * w * a;
+    h1 = (3 * r - 1) / 2 / c;
+    h2 = (3 * r + 1) / 2 / s;
+    return d * (1 + fl * (h1 * sf * (1 - sg) - h2 * (1 - sf) * sg));
+  }
+
+  public setNearList(newArr) {
+    // console.log('newArr', newArr)
+    this.setState({
+      nearList: newArr,
+    })
   }
 
   public getNeed() {
@@ -1441,7 +1766,7 @@ class NearParkList extends React.Component {
 
   public nearToLeft() {
     let index = this.state.index;
-    console.log("nearToLeft", index);
+    //  console.log("nearToLeft", index);
     if (index !== 0) {
       this.setState({
         index: this.state.index - 1,
@@ -1463,7 +1788,7 @@ class NearParkList extends React.Component {
   }
 
   public nearToRight() {
-    console.log("nearToRight");
+    //   console.log("nearToRight");
     let index = this.state.index;
     let max = this.state.max;
     if (max - index > 3) {
@@ -1486,6 +1811,10 @@ class NearParkList extends React.Component {
     //over
   }
 
+  public parkIn(id, code) {
+    ParkInfoThreeLeft.idGetparkInfo(id);
+  }
+
   public render() {
     return (
       <div className="nearParkList">
@@ -1493,82 +1822,25 @@ class NearParkList extends React.Component {
         <span className={this.state.nearToLeftState} onClick={this.nearToLeft.bind(this)}>
           <i className="iconfont " >&#xe835;</i>
         </span>
-
         <ul>
-          <li>
-            <img src="./fangliangbao/image/demo.png" />
-            <p>商务大厦0</p>
-            <p>
-              <span>距离205米</span>
-              <span>
-                <span style={{ "color": "rgba(220,26,63,1)", "font-size": "24px" }}> 5.5 </span>
-                元 /m²⋅月
-                </span>
-            </p>
-          </li>
-          <li>
-            <img src="./fangliangbao/image/demo.png" />
-            <p>商务大厦1</p>
-            <p>
-              <span>距离205米</span>
-              <span>
-                <span style={{ "color": "rgba(220,26,63,1)", "font-size": "24px" }}> 5.5 </span>
-                元 /m²⋅月
-                </span>
-
-            </p>
-          </li>
-          <li>
-            <img src="./fangliangbao/image/demo.png" />
-            <p>商务大厦2</p>
-            <p>
-              <span>距离205米</span>
-              <span>
-                <span style={{ "color": "rgba(220,26,63,1)", "font-size": "24px" }}> 5.5 </span>
-                元 /m²⋅月
-                </span>
-            </p>
-          </li>
-          <li>
-            <img src="./fangliangbao/image/demo.png" />
-            <p>商务大厦3</p>
-            <p>
-              <span>距离205米</span>
-              <span>
-                <span style={{ "color": "rgba(220,26,63,1)", "font-size": "24px" }}> 5.5 </span>
-                元 /m²⋅月
-                </span>
-            </p>
-          </li>
-          <li>
-            <img src="./fangliangbao/image/demo.png" />
-            <p>商务大厦4</p>
-            <p>
-              <span>距离205米</span>
-              <span>
-                <span style={{ "color": "rgba(220,26,63,1)", "font-size": "24px" }}> 5.5 </span>
-                元 /m²⋅月
-                </span>
-            </p>
-          </li>
-          <li>
-            <img src="./fangliangbao/image/demo.png" />
-            <p>商务大厦5</p>
-            <p>
-              <span>距离205米</span>
-              <span>
-                <span style={{ "color": "rgba(220,26,63,1)", "font-size": "24px" }}> 5.5 </span>
-                元 /m²⋅月
-                </span>
-            </p>
-          </li>
-
+          {this.state.nearList.map((i, index) => {
+            return (
+              <li onClick={this.parkIn.bind(this, i.id, i.code)}>
+                <img src={i.headimgurl} />
+                <p>{i.name}</p>
+                <p>
+                  <span>距离 {(i.distance * 0.001).toFixed(1)} 米</span>
+                  <span>
+                    <span style={{ "color": "rgba(220,26,63,1)", "font-size": "24px" }}> {i.price} </span>  元 /m²⋅月
+                  </span>
+                </p>
+              </li>
+            )
+          })}
         </ul>
-
         <span className={this.state.nearToRightState} onClick={this.nearToRight.bind(this)}>
           <i className="iconfont " >&#xe835;</i>
         </span>
-
       </div>
     )
   }
@@ -1581,6 +1853,14 @@ class NearParkList extends React.Component {
       //max: length -1
       nearToRightState: "nearToRight",
       nearToLeftState: "nearToLeftHide",
+      myLat: 110.348923,
+      mylong: 25.278551,
+      nearList: [
+        //{ headimgurl: "./fangliangbao/image/demo.png", name: "商务大厦1", id: "id-1", code: "code-1", price: "12.3", lat: "110.332731", long: "25.273402" },
+        //{ headimgurl: "./fangliangbao/image/demo.png", name: "商务大厦2", id: "id-2", code: "code-2", price: "12", lat: "110.467836", long: "25.275493" },
+        //{ headimgurl: "./fangliangbao/image/demo.png", name: "商务大厦3", id: "id-3", code: "code-3", price: "18.5", lat: "110.371825", long: "25.406115" },
+        //{ headimgurl: "./fangliangbao/image/demo.png", name: "商务大厦4", id: "id-4", code: "code-4", price: "15", lat: "110.626512", long: "25.395148" },
+      ]
     }
 }
 

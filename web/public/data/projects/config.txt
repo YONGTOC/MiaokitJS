@@ -1,0 +1,22 @@
+{
+"ID": "WWW.YONGTOC.COM",
+"AUTHORIZATION": "",
+"MODULE": "./common/miaokit/Miaokit.wasm",
+"UNITY": "./common/miaokit/MiaokitU3D/Build/MiaokitU3D.json",
+"SVE_SERVER": "http://base.oss.yongtoc.com/CommonModel/model/",
+"WEBGL": 2,
+"QUALITY": 0,
+"GIS": [
+	{
+		"m_pImageServer": "http://t%d.tianditu.gov.cn/DataServer?T=img_c&tk=70c2460e14a978d29b759a7bb12d197a&x=%d&y=%d&l=%d",
+		"m_pLabelServer": "http://t%d.tianditu.gov.cn/DataServer?T=cia_c&tk=70c2460e14a978d29b759a7bb12d197a&x=%d&y=%d&l=%d",
+		"m_pTerrainServer": "https://t%d.tianditu.gov.cn/DEM/DataServer?T=ele_c&tk=70c2460e14a978d29b759a7bb12d197a&x=%d&y=%d&l=%d"
+	},
+	{
+		"m_pImageServer": "http://t%d.tianditu.gov.cn/DataServer?T=vec_c&tk=70c2460e14a978d29b759a7bb12d197a&x=%d&y=%d&l=%d",
+		"m_pLabelServer": "http://t%d.tianditu.gov.cn/DataServer?T=cia_c&tk=70c2460e14a978d29b759a7bb12d197a&x=%d&y=%d&l=%d"
+	}
+],
+"MAPBOX":[
+]
+}

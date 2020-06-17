@@ -121,122 +121,6 @@ class CameraCtrl {
         }
     }
 
-    /// 飞行切换到指定状态。
-    public Fly(eMode: CTRL_MODE, pParam: any, nSpeed_: any): void {
-        let pThis = this;
-
-        pThis.m_pFlyTask = {
-            m_eMode: eMode,
-            m_pParam: pParam,
-            Update: function () {
-                let bComplete = true;
-                let bSpeed = nSpeed_ ? nSpeed_ : 0.1;
-
-                bSpeed *= MiaokitJS.App.m_nSensitivity;
-
-                if (undefined !== this.m_pParam.m_nLng) {
-                    let nBias = this.m_pParam.m_nLng - pThis.m_nLng;
-                    if (-0.1 > nBias || 0.1 < nBias) {
-                        pThis.m_nLng += nBias * bSpeed;
-                        bComplete = false;
-                    }
-                    else {
-                        pThis.m_nLng = this.m_pParam.m_nLng;
-                    }
-                }
-
-                if (undefined !== this.m_pParam.m_nLat) {
-                    let nBias = this.m_pParam.m_nLat - pThis.m_nLat;
-                    if (-0.1 > nBias || 0.1 < nBias) {
-                        pThis.m_nLat += nBias * bSpeed;
-                        bComplete = false;
-                    }
-                    else {
-                        pThis.m_nLat = this.m_pParam.m_nLat;
-                    }
-                }
-
-                let nDistance = undefined != this.m_pParam.m_nHeight ? this.m_pParam.m_nHeight : this.m_pParam.m_nDistance;
-                if (undefined !== nDistance) {
-                    let nBias = nDistance - pThis.m_nDistance;
-                    if (-1.0 > nBias || 1.0 < nBias) {
-                        pThis.m_nDistance += nBias * bSpeed;
-                        bComplete = false;
-                    }
-                    else {
-                        pThis.m_nDistance = nDistance;
-                    }
-                }
-
-                if (undefined !== this.m_pParam.m_nPitch) {
-                    let nBias = this.m_pParam.m_nPitch - pThis.m_nPitch;
-                    if (-1 > nBias || 1 < nBias) {
-                        pThis.m_nPitch += nBias * bSpeed;
-                        bComplete = false;
-                    }
-                    else {
-                        pThis.m_nPitch = this.m_pParam.m_nPitch;
-                    }
-                }
-
-                if (undefined !== this.m_pParam.m_nYaw) {
-                    let nBias = this.m_pParam.m_nYaw - pThis.m_nYaw;
-                    if (-1 > nBias || 1 < nBias) {
-                        pThis.m_nYaw += nBias * bSpeed;
-                        bComplete = false;
-                    }
-                    else {
-                        pThis.m_nYaw = this.m_pParam.m_nYaw;
-                    }
-                }
-
-                let mTarget = undefined != this.m_pParam.m_mTarget ? this.m_pParam.m_mTarget : this.m_pParam.m_mPosition;
-                if (undefined !== mTarget) {
-                    let nBias = mTarget.x - pThis.m_mTarget.x;
-                    if (-1 > nBias || 1 < nBias) {
-                        pThis.m_mTarget.x += nBias * bSpeed;
-                        bComplete = false;
-                    }
-                    else {
-                        pThis.m_mTarget.x = mTarget.x;
-                    }
-
-                    nBias = mTarget.y - pThis.m_mTarget.y;
-                    if (-1 > nBias || 1 < nBias) {
-                        pThis.m_mTarget.y += nBias * bSpeed;
-                        bComplete = false;
-                    }
-                    else {
-                        pThis.m_mTarget.y = mTarget.y;
-                    }
-
-                    nBias = mTarget.z - pThis.m_mTarget.z;
-                    if (-1 > nBias || 1 < nBias) {
-                        pThis.m_mTarget.z += nBias * bSpeed;
-                        bComplete = false;
-                    }
-                    else {
-                        pThis.m_mTarget.z = mTarget.z;
-                    }
-                }
-
-                if (bComplete) {
-                    pThis.m_eCtrlMode = this.m_eMode;
-                }
-                else {
-                    pThis.m_pTransform.position = { x: 0, y: 0, z: 0 };
-                    pThis.m_pTransform.euler = { x: 0, y: 0, z: 0 };
-                    pThis.m_pTransform.Rotate2({ x: 1, y: 0, z: 0 }, pThis.pitch, 1);
-                    pThis.m_pTransform.Rotate2({ x: 0, y: 1, z: 0 }, pThis.yaw, 0);
-                    pThis.m_pTransform.position = pThis.target;
-                    pThis.m_pTransform.Translate(MiaokitJS.Vector3.Scale(-pThis.distance, { x: 0, y: 0, z: 1 }), 1);
-                }
-
-                return bComplete;
-            }
-        };
-    }
-
     /// 移动摄像机。
     public Move(nOffsetX, nOffsetY, nWidth, nHeight): void {
         if (!this.m_nEnabled) {
@@ -244,7 +128,7 @@ class CameraCtrl {
         }
 
         if (CTRL_MODE.REMOTE === this.ctrlMode || CTRL_MODE.EAGLE === this.ctrlMode) {
-            // 60度视角下，距地面距离为地球半径时视线刚好能切过地球
+            // 60度视角下，距地表距离为地球半径时视线刚好能切过地球，并且垂直可视角度范围为120度
             let nDistance = this.distance;
             let nLng = this.lng;
             let nLat = this.lat;
@@ -259,8 +143,11 @@ class CameraCtrl {
 
             // 可见弧度角性变化
             let nAngle = nDistance / 6378137.0 * 120.0;
-            let offsetLng = nOffsetX / nWidth * nAngle;
+            let offsetLng = nOffsetX / nWidth * (nAngle * nWidth / nHeight);
             let offsetLat = nOffsetY / nHeight * nAngle;
+
+            offsetLng *= 0.6;
+            offsetLat *= 0.6;
 
             let rYaw = (this.yaw / 180.0) * Math.PI;
             nLng += offsetLng * Math.cos(rYaw);
@@ -343,14 +230,6 @@ class CameraCtrl {
             return;
         }
 
-        if (this.m_pFlyTask) {
-            if (this.m_pFlyTask.Update()) {
-                this.m_pFlyTask = null;
-            }
-
-            return;
-        }
-
         let bSpeed = 0.1 * MiaokitJS.App.m_nSensitivity;
 
         /// 非漫游模式：控制类似
@@ -359,7 +238,6 @@ class CameraCtrl {
             if (CTRL_MODE.REMOTE === this.m_eCtrlMode) {
                 if (20000.0 > this.height) {
                     this.m_eCtrlMode = CTRL_MODE.EAGLE;
-                    console.log("自动切换到鹰眼模式");
                 }
                 else {
                     let nBias = this.m_nPitch - 90.0;
@@ -376,7 +254,6 @@ class CameraCtrl {
             else if (CTRL_MODE.EAGLE === this.m_eCtrlMode) {
                 if (20000.0 < this.distance) {
                     this.m_eCtrlMode = CTRL_MODE.REMOTE;
-                    console.log("自动切换到遥感模式");
                 }
                 else {
                     let nBias = this.m_nPitch - 85.0;
@@ -449,6 +326,10 @@ class CameraCtrl {
     public get ctrlMode(): CTRL_MODE {
         return this.m_eCtrlMode;
     }
+    /// 设置当前摄像机控制模式。
+    public set ctrlMode(mode: CTRL_MODE) {
+        this.m_eCtrlMode = mode;
+    }
 
     /// 视图模式。
     public get viewMode(): number {
@@ -478,22 +359,18 @@ class CameraCtrl {
     public get lng(): number {
         return this.m_nLng;
     }
-    /// 设置当前经度参数。仅REMOTE/EAGLE模式下设置生效。
+    /// 设置当前经度参数。
     public set lng(value) {
-        if (CTRL_MODE.REMOTE === this.m_eCtrlMode || CTRL_MODE.EAGLE === this.m_eCtrlMode) {
-            this.m_nLng = value;
-        }
+        this.m_nLng = value;
     }
 
     /// 获取当前经度参数。
     public get lat(): number {
         return this.m_nLat;
     }
-    /// 设置当前经度参数。仅REMOTE/EAGLE模式下设置生效。
+    /// 设置当前经度参数。
     public set lat(value) {
-        if (CTRL_MODE.REMOTE === this.m_eCtrlMode || CTRL_MODE.EAGLE === this.m_eCtrlMode) {
-            this.m_nLat = value;
-        }
+        this.m_nLat = value;
     }
 
     /// 获取当前高度参数。
@@ -590,8 +467,6 @@ class CameraCtrl {
     private m_nYaw: number = 0.0;
     /// 当前目标坐标参数。
     private m_mTarget: any = { x: 0.0, y: 0.0, z: 0.0 };
-    /// 当前飞行任务。
-    private m_pFlyTask: any = null;
 }
 
 

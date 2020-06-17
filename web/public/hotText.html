@@ -20,19 +20,22 @@
                         <span>广州</span>
                     </li>
                     <li>
-                        <a href="" target="_blank">首页</a>
+                        <a href="./fangliangbao.html" target="_blank">首页</a>
                     </li>
                     <li>
-                        <a href="" target="_blank">园区</a>
+                        <a href="./fangliangbao.html#/parkList" target="_blank">园区</a>
                     </li>
                     <li>
-                        <a href="" target="_blank">出租</a>
+                        <a href="./fangliangbao.html#/roomList" target="_blank">出租</a>
                     </li>
                     <li>
-                        <a href="" target="_blank">宝哥推荐</a>
+                        <a href="./fangliangbao.html#/sellList" target="_blank">出售</a>
                     </li>
-                    <li  class="homtop_active">
-                        <a href="" target="_blank">热点资讯</a>
+                    <li>
+                        <a href="./fangliangbao.html#/baoList" target="_blank">宝哥推荐</a>
+                    </li>
+                    <li class="homtop_active">
+                        <a href="./fangliangbao.html#/HotList" target="_blank">热点资讯</a>
                     </li>
                 </ul>
             </div>
@@ -50,18 +53,18 @@
     <div class="ParkInfoOne">
         <div class="ParkInfoOne_title">
             <div style="border: 1px solid #fff">
-                   <img src="./fangliangbao/image/blueLogo.png" />
-            <ul>
-                <li >
-                    <a href="./fangliangbao.html#/baoList" target="_blank">宝哥推荐</a>
-                </li>
-                <li class="oneTitle_active">
-                    <a href="./fangliangbao.html#/hotList" target="_blank">热点资讯</a>
-                </li>
-            </ul>
+                <img src="./fangliangbao/image/blueLogo.png" />
+                <ul>
+                    <li>
+                        <a href="./fangliangbao.html#/baoList" target="_blank">宝哥推荐</a>
+                    </li>
+                    <li class="oneTitle_active">
+                        <a href="./fangliangbao.html#/hotList" target="_blank">热点资讯</a>
+                    </li>
+                </ul>
 
             </div>
-         
+
         </div>
     </div>
     <div class="ParkInfoOne_html">
@@ -110,9 +113,9 @@
             <div class="listRight_one">
                 <p class="listRight_one_p">新上线园区</p>
                 <div class="leaseRoomList">
-                    <ul>
+                    <ul> 
                         <li>
-                            <a href="" target="_blank">
+                            <a onclick="toParkInfo(105,'')" href="./fangliangbao.html#/parkInfo" target="_blank">
                                 <div class="leaseRooms">
                                     <img src="./fangliangbao/image/demo.png" />
                                     <div class="leaseRoomsRight">
@@ -124,7 +127,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="" target="_blank">
+                            <a onclick="toParkInfo(106,'')" href="./fangliangbao.html#/parkInfo" target="_blank">
                                 <div class="leaseRooms">
                                     <img src="./fangliangbao/image/demo.png" />
                                     <div class="leaseRoomsRight">
@@ -136,7 +139,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="" target="_blank">
+                            <a onclick="toParkInfo(107,'')" href="./fangliangbao.html#/parkInfo" target="_blank">
                                 <div class="leaseRooms">
                                     <img src="./fangliangbao/image/demo.png" />
                                     <div class="leaseRoomsRight">
@@ -148,7 +151,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="" target="_blank">
+                            <a onclick="toParkInfo(108,'')" href="./fangliangbao.html#/parkInfo" target="_blank">
                                 <div class="leaseRooms">
                                     <img src="./fangliangbao/image/demo.png" />
                                     <div class="leaseRoomsRight">
@@ -167,7 +170,7 @@
                 <div class="leaseRoomList">
                     <ul>
                         <li>
-                            <a href="" target="_blank">
+                            <a onclick="toParkInfo(106,1)" href="./fangliangbao.html#/parkInfo" target="_blank">
                                 <div class="leaseRooms">
                                     <img src="./fangliangbao/image/demo.png" />
                                     <div class="leaseRoomsRight">
@@ -179,7 +182,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="" target="_blank">
+                            <a onclick="toParkInfo(106,2)" href="./fangliangbao.html#/parkInfo" target="_blank">
                                 <div class="leaseRooms">
                                     <img src="./fangliangbao/image/demo.png" />
                                     <div class="leaseRoomsRight">
@@ -191,7 +194,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="" target="_blank">
+                            <a onclick="toParkInfo(106,3)" href="./fangliangbao.html#/parkInfo" target="_blank">
                                 <div class="leaseRooms">
                                     <img src="./fangliangbao/image/demo.png" />
                                     <div class="leaseRoomsRight">
@@ -203,7 +206,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="" target="_blank">
+                            <a onclick="toParkInfo(106,4)" href="./fangliangbao.html#/parkInfo" target="_blank">
                                 <div class="leaseRooms">
                                     <img src="./fangliangbao/image/demo.png" />
                                     <div class="leaseRoomsRight">
@@ -255,20 +258,27 @@
                     </ul>
                 </div>
             </div>
-            <hr style="opacity:0.5"/>
+            <hr style="opacity:0.5" />
             <div class="homeBottomBox_two">
                 <p>Copyright © 2019 - 2020 yongtoc.com. All Rights Reserved. 浙江永拓信息科技有限公司 版权所有 浙ICP备15025359号</p>
                 <p><img src="./fangliangbao/image/police_haozu.png" style="margin-right: 10px" />浙公网安备 33010502005316号</p>
             </div>
         </div>
     </div>
-        <script>
+    <script>
         window.onload = function () {
             console.log($(".listBox_text").height())
-            var listBoxTextH =  $(".listBox_text").height()
+            var listBoxTextH = $(".listBox_text").height()
             if (listBoxTextH < 763) {
-                $(".listBox_text").attr("style","height:763px")
+                $(".listBox_text").attr("style", "height:763px")
             }
+
+
+        }
+
+        function toParkInfo(park, room) {
+            sessionStorage.setItem("park_id", park);
+            sessionStorage.setItem("room_id", room);
         }
     </script>
 </body>

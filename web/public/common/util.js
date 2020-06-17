@@ -60,7 +60,6 @@ class CameraCtrl {
         this.m_nPitch = 0.0;
         this.m_nYaw = 0.0;
         this.m_mTarget = { x: 0.0, y: 0.0, z: 0.0 };
-        this.m_pFlyTask = null;
         this.m_pCamera = pCamera;
         this.m_pTransform = this.m_pCamera.transform;
     }
@@ -99,108 +98,6 @@ class CameraCtrl {
             this.m_mTarget = { x: pParam.m_mPosition.x, y: pParam.m_mPosition.y, z: pParam.m_mPosition.z };
         }
     }
-    Fly(eMode, pParam, nSpeed_) {
-        let pThis = this;
-        pThis.m_pFlyTask = {
-            m_eMode: eMode,
-            m_pParam: pParam,
-            Update: function () {
-                let bComplete = true;
-                let bSpeed = nSpeed_ ? nSpeed_ : 0.1;
-                bSpeed *= MiaokitJS.App.m_nSensitivity;
-                if (undefined !== this.m_pParam.m_nLng) {
-                    let nBias = this.m_pParam.m_nLng - pThis.m_nLng;
-                    if (-0.1 > nBias || 0.1 < nBias) {
-                        pThis.m_nLng += nBias * bSpeed;
-                        bComplete = false;
-                    }
-                    else {
-                        pThis.m_nLng = this.m_pParam.m_nLng;
-                    }
-                }
-                if (undefined !== this.m_pParam.m_nLat) {
-                    let nBias = this.m_pParam.m_nLat - pThis.m_nLat;
-                    if (-0.1 > nBias || 0.1 < nBias) {
-                        pThis.m_nLat += nBias * bSpeed;
-                        bComplete = false;
-                    }
-                    else {
-                        pThis.m_nLat = this.m_pParam.m_nLat;
-                    }
-                }
-                let nDistance = undefined != this.m_pParam.m_nHeight ? this.m_pParam.m_nHeight : this.m_pParam.m_nDistance;
-                if (undefined !== nDistance) {
-                    let nBias = nDistance - pThis.m_nDistance;
-                    if (-1.0 > nBias || 1.0 < nBias) {
-                        pThis.m_nDistance += nBias * bSpeed;
-                        bComplete = false;
-                    }
-                    else {
-                        pThis.m_nDistance = nDistance;
-                    }
-                }
-                if (undefined !== this.m_pParam.m_nPitch) {
-                    let nBias = this.m_pParam.m_nPitch - pThis.m_nPitch;
-                    if (-1 > nBias || 1 < nBias) {
-                        pThis.m_nPitch += nBias * bSpeed;
-                        bComplete = false;
-                    }
-                    else {
-                        pThis.m_nPitch = this.m_pParam.m_nPitch;
-                    }
-                }
-                if (undefined !== this.m_pParam.m_nYaw) {
-                    let nBias = this.m_pParam.m_nYaw - pThis.m_nYaw;
-                    if (-1 > nBias || 1 < nBias) {
-                        pThis.m_nYaw += nBias * bSpeed;
-                        bComplete = false;
-                    }
-                    else {
-                        pThis.m_nYaw = this.m_pParam.m_nYaw;
-                    }
-                }
-                let mTarget = undefined != this.m_pParam.m_mTarget ? this.m_pParam.m_mTarget : this.m_pParam.m_mPosition;
-                if (undefined !== mTarget) {
-                    let nBias = mTarget.x - pThis.m_mTarget.x;
-                    if (-1 > nBias || 1 < nBias) {
-                        pThis.m_mTarget.x += nBias * bSpeed;
-                        bComplete = false;
-                    }
-                    else {
-                        pThis.m_mTarget.x = mTarget.x;
-                    }
-                    nBias = mTarget.y - pThis.m_mTarget.y;
-                    if (-1 > nBias || 1 < nBias) {
-                        pThis.m_mTarget.y += nBias * bSpeed;
-                        bComplete = false;
-                    }
-                    else {
-                        pThis.m_mTarget.y = mTarget.y;
-                    }
-                    nBias = mTarget.z - pThis.m_mTarget.z;
-                    if (-1 > nBias || 1 < nBias) {
-                        pThis.m_mTarget.z += nBias * bSpeed;
-                        bComplete = false;
-                    }
-                    else {
-                        pThis.m_mTarget.z = mTarget.z;
-                    }
-                }
-                if (bComplete) {
-                    pThis.m_eCtrlMode = this.m_eMode;
-                }
-                else {
-                    pThis.m_pTransform.position = { x: 0, y: 0, z: 0 };
-                    pThis.m_pTransform.euler = { x: 0, y: 0, z: 0 };
-                    pThis.m_pTransform.Rotate2({ x: 1, y: 0, z: 0 }, pThis.pitch, 1);
-                    pThis.m_pTransform.Rotate2({ x: 0, y: 1, z: 0 }, pThis.yaw, 0);
-                    pThis.m_pTransform.position = pThis.target;
-                    pThis.m_pTransform.Translate(MiaokitJS.Vector3.Scale(-pThis.distance, { x: 0, y: 0, z: 1 }), 1);
-                }
-                return bComplete;
-            }
-        };
-    }
     Move(nOffsetX, nOffsetY, nWidth, nHeight) {
         if (!this.m_nEnabled) {
             return;
@@ -216,8 +113,10 @@ class CameraCtrl {
                 nDistance = 0.0;
             }
             let nAngle = nDistance / 6378137.0 * 120.0;
-            let offsetLng = nOffsetX / nWidth * nAngle;
+            let offsetLng = nOffsetX / nWidth * (nAngle * nWidth / nHeight);
             let offsetLat = nOffsetY / nHeight * nAngle;
+            offsetLng *= 0.6;
+            offsetLat *= 0.6;
             let rYaw = (this.yaw / 180.0) * Math.PI;
             nLng += offsetLng * Math.cos(rYaw);
             nLat -= offsetLng * Math.sin(rYaw);
@@ -280,18 +179,11 @@ class CameraCtrl {
         if (!this.m_nEnabled) {
             return;
         }
-        if (this.m_pFlyTask) {
-            if (this.m_pFlyTask.Update()) {
-                this.m_pFlyTask = null;
-            }
-            return;
-        }
         let bSpeed = 0.1 * MiaokitJS.App.m_nSensitivity;
         if (CTRL_MODE.WANDER !== this.m_eCtrlMode) {
             if (CTRL_MODE.REMOTE === this.m_eCtrlMode) {
                 if (20000.0 > this.height) {
                     this.m_eCtrlMode = CTRL_MODE.EAGLE;
-                    console.log("自动切换到鹰眼模式");
                 }
                 else {
                     let nBias = this.m_nPitch - 90.0;
@@ -307,7 +199,6 @@ class CameraCtrl {
             else if (CTRL_MODE.EAGLE === this.m_eCtrlMode) {
                 if (20000.0 < this.distance) {
                     this.m_eCtrlMode = CTRL_MODE.REMOTE;
-                    console.log("自动切换到遥感模式");
                 }
                 else {
                     let nBias = this.m_nPitch - 85.0;
@@ -364,6 +255,9 @@ class CameraCtrl {
     get ctrlMode() {
         return this.m_eCtrlMode;
     }
+    set ctrlMode(mode) {
+        this.m_eCtrlMode = mode;
+    }
     get viewMode() {
         return this.m_nViewMode;
     }
@@ -388,17 +282,13 @@ class CameraCtrl {
         return this.m_nLng;
     }
     set lng(value) {
-        if (CTRL_MODE.REMOTE === this.m_eCtrlMode || CTRL_MODE.EAGLE === this.m_eCtrlMode) {
-            this.m_nLng = value;
-        }
+        this.m_nLng = value;
     }
     get lat() {
         return this.m_nLat;
     }
     set lat(value) {
-        if (CTRL_MODE.REMOTE === this.m_eCtrlMode || CTRL_MODE.EAGLE === this.m_eCtrlMode) {
-            this.m_nLat = value;
-        }
+        this.m_nLat = value;
     }
     get height() {
         return this.m_nDistance;
@@ -506,23 +396,14 @@ class App {
         this.m_pPicker = new MiaokitJS.UTIL.EntityPicker(this.m_pCameraCtrl);
         this.m_pPanoramas = MiaokitJS.Miaokit.panoramas;
         if (MiaokitJS.m_pConfig.GIS) {
+            let pConfig = MiaokitJS.m_pConfig.GIS[0];
             this.m_pGis = MiaokitJS.Miaokit.gis;
-            this.m_pGis.imageServer = MiaokitJS.m_pConfig.GIS.m_pImageServer;
-            if (MiaokitJS.m_pConfig.GIS.m_pLabelServer) {
-                this.m_pGis.labelServer = MiaokitJS.m_pConfig.GIS.m_pLabelServer;
+            this.m_pGis.imageServer = pConfig.m_pImageServer;
+            if (pConfig.m_pLabelServer) {
+                this.m_pGis.labelServer = pConfig.m_pLabelServer;
             }
-            if (MiaokitJS.m_pConfig.GIS.m_pTerrainServer) {
-                this.m_pGis.terrainServer = MiaokitJS.m_pConfig.GIS.m_pTerrainServer;
-            }
-        }
-        if (MiaokitJS.m_pConfig.DIORS) {
-            for (let pDior of MiaokitJS.m_pConfig.DIORS) {
-                pDior.m_pDior = new MiaokitJS.Dioramas3MX(pDior.m_pPath, pDior.m_pMark, !this.m_pGis ? null : {
-                    m_pGis: this.m_pGis,
-                    m_mLngLat: pDior.m_mLngLat,
-                    m_mOffset: pDior.m_nOffset,
-                    m_nHeight: pDior.m_nHeight
-                });
+            if (pConfig.m_pTerrainServer) {
+                this.m_pGis.terrainServer = pConfig.m_pTerrainServer;
             }
         }
         this.RegisterEvent(this.m_pCanvas2D, MiaokitJS.Miaokit.cameraCtrl);
@@ -534,12 +415,21 @@ class App {
         this.m_pCameraCtrl.Update();
         this.m_pProject.Update();
     }
-    ActiveTile(pTile) {
-        let pObject = pTile.m_pTile.object3D;
-        this.m_pGis.AddGameObject(pObject, pTile.m_nLng, pTile.m_nLat, pTile.m_nHeight);
-        pObject.transform.Translate(pTile.m_nOffset, 1);
-        pObject.transform.localEuler = pTile.m_mRotate;
-        this.m_pProject.ActiveTile(pTile);
+    SwitchGIS(nType) {
+        if (MiaokitJS.m_pConfig.GIS) {
+            let pConfig = MiaokitJS.m_pConfig.GIS[nType];
+            if (pConfig) {
+                this.m_pGis.SwitchStyle(8 + 4 + 2 + 1);
+                this.m_pGis.imageServer = pConfig.m_pImageServer;
+                if (pConfig.m_pLabelServer) {
+                    this.m_pGis.labelServer = pConfig.m_pLabelServer;
+                }
+                if (pConfig.m_pTerrainServer) {
+                    this.m_pGis.terrainServer = pConfig.m_pTerrainServer;
+                }
+                this.m_pProject.OnGisSwitch();
+            }
+        }
     }
     Draw2D() {
         this.m_pCanvasCtx2D.clearRect(0, 0, this.m_pCanvas2D.clientWidth, this.m_pCanvas2D.clientHeight);
@@ -944,8 +834,8 @@ MiaokitJS.ShaderLab.Pipeline = {
         { ID: 9, Format: "RGBA16_FLOAT" },
     ],
     Resource: [null,
-        { ID: 1, TYPE: "2D", URL: "./data/star.jpg" },
-        { ID: 2, TYPE: "2D", URL: "./data/default.png" }
+        { ID: 1, TYPE: "2D", URL: "./data/projects/images/star.jpg" },
+        { ID: 2, TYPE: "2D", URL: "./data/projects/images/default.png" }
     ],
     PassList: [
         {
@@ -1225,7 +1115,8 @@ vec4 vs()
     
     vec4 mPosition = vec4(a_Position.xyz, 1.0);
     mPosition = u_MatG * a_MatW * mPosition;
-    
+    mPosition.xyz += u_GisBias.xyz;
+
     #ifdef HIGH_QUALITY
     LightVS(mPosition.xyz, ObjectToWorldNormal(a_Normal));
     #endif
@@ -1262,6 +1153,7 @@ vec4 vs()
 
     vec4 mPosition = vec4(a_Position.xyz, 1.0);
     mPosition = u_MatG * a_MatW * mPosition;
+    mPosition.xyz += u_GisBias.xyz;
 
     return u_MatVP * mPosition;
 }
@@ -1356,7 +1248,8 @@ vec4 vs()
     
     vec4 mPosition = vec4(a_Position.xyz, 1.0);
     mPosition = u_MatG * a_MatW * mPosition;
-    mPosition.y -= mBuilding.r * (mPosition.y - 1.0 - 167.0);
+    mPosition.y -= mBuilding.r * (mPosition.y - 177.0);
+    mPosition.xyz += u_GisBias.xyz;
     
     // 高品质下，计算法线，计算大气散射
     #ifdef HIGH_QUALITY
@@ -1466,7 +1359,7 @@ vec4 vs()
 	float nVecX = cos(nLat) * cos(nLng);
 	float nVecZ = cos(nLat) * sin(nLng);
     
-    vec3 mPosition = vec3(nVecX, nVecY, nVecZ);
+    vec3 mPosition = normalize(vec3(nVecX, nVecY, nVecZ));
     
     v_Normal = vec3(nVecX, nVecY, nVecZ);
     v_Normal = normalize((u_MatG * vec4(v_Normal, 0.0)).xyz);
@@ -1482,7 +1375,7 @@ vec4 vs()
         vec4 mHeight = texture2D(_TerrainTex, _UV);
         
 		nHeight = ((mHeight.r * 256.0 * 256.0 * 256.0) + (mHeight.g * 256.0 * 256.0) + (mHeight.b * 256.0)) * 0.001;
-        nHeight -= 1000.0;
+        nHeight -= 991.0;
         
         // 高品质下，计算地形法线
         #ifdef HIGH_QUALITY
@@ -1520,13 +1413,16 @@ uniform sampler2D _TerrainTex;
 uniform sampler2D _PhotoTex;
 uniform sampler2D _LabelTex;
 
+uniform vec4 _Inherit;
+
 varying vec3 v_Normal;
 varying vec3 v_UV;
 
 vec4 fs()
 {
-    vec4 mColor = texture(_PhotoTex, v_UV.xy);
-    vec4 mLabel = texture(_LabelTex, v_UV.xy);
+    vec2 mUV = vec2((v_UV.x * _Inherit.z + _Inherit.x), (v_UV.y * _Inherit.z + _Inherit.y));
+    vec4 mColor = texture(_PhotoTex, mUV) * 0.8;
+    vec4 mLabel = texture(_LabelTex, mUV);
 
     mColor.rgb = (mColor.rgb * (1.0 - mLabel.a)) + (mLabel.rgb * mLabel.a);
     mColor.a = 1.0;

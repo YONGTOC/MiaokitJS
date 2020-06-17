@@ -1,5 +1,6 @@
 ﻿import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { Link } from 'react-router-dom';
 import { Pagination } from 'antd';
 
 import Router from 'router';
@@ -7,11 +8,11 @@ import HomeTop from "homeTop";
 import InfoTitleRecom from "infoTitleRecom";
 import AllBottom from "AllBottom";
 
-class HotList extends React.Component {
+class HotList extends React.Component<{ history: any }> {
   constructor(props) {
     super(props);
 
-
+    HotList.toParkInfo = this.toParkInfo.bind(this);
   }
 
   public componentDidMount() {
@@ -19,6 +20,10 @@ class HotList extends React.Component {
     InfoTitleRecom.changRecomTitle(1);
   }
 
+  static toParkInfo(from, park, room) { };
+  public toParkInfo(from, park, room) {
+    this.props.history.push({ pathname: "/parkInfo", parkId: park, from: from, roomId: room })
+  }
 
   public render() {
     return (
@@ -56,9 +61,9 @@ class HotLeft extends React.Component {
     if (baoListLength < 4) {
       //height: 850px;  .listBox
       $(".listBox").attr("style", "height: 850px");
-          console.log($(".listBox"))
+      console.log($(".listBox"))
     }
-  
+
   }
 
   public onChangePage(data) {
@@ -74,18 +79,18 @@ class HotLeft extends React.Component {
               return (
                 <li>
                   <a href="./hotText.html" target="_blank">
-              <div className="listBox_Li">
-                    <img src={i.img} />
-                <div className="listBox_Li_r">
-                      <p>{i.title}</p>
-                      <p>{i.date}</p>
-                      <p>{i.context}</p>
-                  <p>了解详情></p>
-                </div>
+                    <div className="listBox_Li">
+                      <img src={i.img} />
+                      <div className="listBox_Li_r">
+                        <p>{i.title}</p>
+                        <p>{i.date}</p>
+                        <p>{i.context}</p>
+                        <p>了解详情></p>
+                      </div>
                     </div>
-                    </a>
-            </li>
-                )
+                  </a>
+                </li>
+              )
             })}
           </ul>
         </div>
@@ -105,19 +110,19 @@ class HotLeft extends React.Component {
   public state = {
     baoList: [
       {
-      img: "./fangliangbao/image/demo.png",
-      title: "优客工场五周年战略转型 由“重”转“轻” 进化共赢",
-      date: "2020/05/19 14:03:45",
-      context:"2020年4月18日下午14:00，优客工场进行了一场名为“起源——优客工场进化论”线上合办公独角兽企业优客工场创立于2015年，以“给你每一个快乐的工作日”为使命，五年来坚持赋能中国创新者."
-    },   {
-      img: "./fangliangbao/image/demo.png",
-      title: "优客工场五周年战略转型 由“重”转“轻” 进化共赢",
-      date: "2020/05/19 14:03:45",
-      context:"2020年4月18日下午14:00，优客工场进行了一场名为“起源——优客工场进化论”线上合办公独角兽企业优客工场创立于2015年，以“给你每一个快乐的工作日”为使命，五年来坚持赋能中国创新者."
-    }
+        img: "./fangliangbao/image/demo.png",
+        title: "优客工场五周年战略转型 由“重”转“轻” 进化共赢",
+        date: "2020/05/19 14:03:45",
+        context: "2020年4月18日下午14:00，优客工场进行了一场名为“起源——优客工场进化论”线上合办公独角兽企业优客工场创立于2015年，以“给你每一个快乐的工作日”为使命，五年来坚持赋能中国创新者."
+      }, {
+        img: "./fangliangbao/image/demo.png",
+        title: "优客工场五周年战略转型 由“重”转“轻” 进化共赢",
+        date: "2020/05/19 14:03:45",
+        context: "2020年4月18日下午14:00，优客工场进行了一场名为“起源——优客工场进化论”线上合办公独角兽企业优客工场创立于2015年，以“给你每一个快乐的工作日”为使命，五年来坚持赋能中国创新者."
+      }
     ]
-  } 
-} 
+  }
+}
 
 
 class HotRight extends React.Component {
@@ -130,130 +135,86 @@ class HotRight extends React.Component {
   public componentDidMount() {
   }
 
+  public toParkInfo(from, park, room) {
+    console.log(park);
+    console.log(room);
+
+    HotList.toParkInfo(from, park, room)
+  }
+
 
   public render() {
     return (
       <div className="listRight">
         <div className="listRight_one">
-          <p className="listRight_one_p">新上线园区 >></p>
+          <Link to="/parkList" >
+            <p className="listRight_one_p">新上线园区 >></p>
+          </Link>
           <div className="leaseRoomList leaseRoomList2">
             <ul>
-              <li>
-                <a href="" target="_blank">
-                  <div className="leaseRooms leaseRooms2"> 
-                    <img src="./fangliangbao/image/demo.png" />
-                    <div className="leaseRoomsRight">
-                      <p className="leaseName2">桂林信息产业园区</p>
-                      <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                      <p className="leaseArea2">七星-朝阳路D-12号</p>
+              {this.state.praklist.map((i, index) => {
+                return (
+                  <li>
+                    <div className="leaseRooms leaseRooms2"
+                      onClick={this.toParkInfo.bind(this, "park", i.id, "")}>
+                      <img src={i.headimgurl} />
+                      <div className="leaseRoomsRight">
+                        <p className="leaseName2">{i.name}</p>
+                        <p><span className="leasePrice">{i.price}</span> 元/m²⋅月</p>
+                        <p className="leaseArea2">{i.address}</p>
+                      </div>
                     </div>
-                  </div>
-                </a>
-              </li>
-                         <li>
-                <a href="" target="_blank">
-                  <div className="leaseRooms leaseRooms2"> 
-                    <img src="./fangliangbao/image/demo.png" />
-                    <div className="leaseRoomsRight">
-                      <p className="leaseName2">桂林信息产业园区</p>
-                      <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                      <p className="leaseArea2">七星-朝阳路D-12号</p>
-                    </div>
-                  </div>
-                </a>
-              </li>
-                         <li>
-                <a href="" target="_blank">
-                  <div className="leaseRooms leaseRooms2"> 
-                    <img src="./fangliangbao/image/demo.png" />
-                    <div className="leaseRoomsRight">
-                      <p className="leaseName2">桂林信息产业园区</p>
-                      <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                      <p className="leaseArea2">七星-朝阳路D-12号</p>
-                    </div>
-                  </div>
-                </a>
-              </li>
-                         <li>
-                <a href="" target="_blank">
-                  <div className="leaseRooms leaseRooms2"> 
-                    <img src="./fangliangbao/image/demo.png" />
-                    <div className="leaseRoomsRight">
-                      <p className="leaseName2">桂林信息产业园区</p>
-                      <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                      <p className="leaseArea2">七星-朝阳路D-12号</p>
-                    </div>
-                  </div>
-                </a>
-              </li>
+                  </li>
+                )
+              })}
             </ul>
           </div>
         </div>
         <div className="listRight_two">
-          <p className="listRight_one_p">热门房源  >></p>
+          <Link to="/roomList" >
+            <p className="listRight_one_p">热门房源  >></p>
+          </Link>
           <div className="leaseRoomList leaseRoomList2">
             <ul>
-              <li>
-                <a href="" target="_blank">
-                  <div className="leaseRooms leaseRooms2">
-                    <img src="./fangliangbao/image/demo.png" />
-                    <div className="leaseRoomsRight">
-                      <p className="leaseName2">出租高新区信息产业桂林信息产业园区</p>
-                      <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                      <p className="leaseArea">189m²</p> 
+              {this.state.roomlist.map((i, index) => {
+                return (
+                  <li>
+                    <div className="leaseRooms leaseRooms2"
+                      onClick={this.toParkInfo.bind(this, "room", i.parkid, i.roomid)}>
+                      <img src={i.headimgurl} />
+                      <div className="leaseRoomsRight">
+                        <p className="leaseName2">{i.name}</p>
+                        <p><span className="leasePrice">{i.price}</span> 元/m²⋅月</p>
+                        <p className="leaseArea">{i.area}m²</p>
+                      </div>
                     </div>
-                  </div>
-                </a>
-              </li>
-                 <li>
-                <a href="" target="_blank">
-                  <div className="leaseRooms leaseRooms2">
-                    <img src="./fangliangbao/image/demo.png" />
-                    <div className="leaseRoomsRight">
-                      <p className="leaseName2">出租高新区信息产业桂林信息产业园区</p>
-                      <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                      <p className="leaseArea">189m²</p> 
-                    </div>
-                  </div>
-                </a>
-              </li>
-                 <li>
-                <a href="" target="_blank">
-                  <div className="leaseRooms leaseRooms2">
-                    <img src="./fangliangbao/image/demo.png" />
-                    <div className="leaseRoomsRight">
-                      <p className="leaseName2">出租高新区信息产业桂林信息产业园区</p>
-                      <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                      <p className="leaseArea">189m²</p> 
-                    </div>
-                  </div>
-                </a>
-              </li>
-                 <li>
-                <a href="" target="_blank">
-                  <div className="leaseRooms leaseRooms2">
-                    <img src="./fangliangbao/image/demo.png" />
-                    <div className="leaseRoomsRight">
-                      <p className="leaseName">出租高新区信息产业桂林信息产业园区</p>
-                      <p><span className="leasePrice">80.3</span> 元/m²⋅月</p>
-                      <p className="leaseArea">189m²</p> 
-                    </div>
-                  </div>
-                </a>
-              </li>
+                  </li>
+                )
+              })}
             </ul>
           </div>
         </div>
-          <div className="listRight_three">
-                <p>房良宝小程序端</p> 
-                <img src="./fangliangbao/image/demo.png" />
-          <p style={{ "font-size":"12px"}}>打开微信扫一扫随时手机体验 </p>
-            </div>
+        <div className="listRight_three">
+          <p>房良宝小程序端</p>
+          <img src="./fangliangbao/image/demo.png" />
+          <p style={{ "font-size": "12px" }}>打开微信扫一扫随时手机体验 </p>
+        </div>
       </div>
     )
   }
   public state = {
-
+    praklist: [
+      { name: "桂林信息产业园区", id: 1, code: "code-1", price: 11.4, address: "七星-朝阳路D-1号", headimgurl: "./fangliangbao/image/demo.png" },
+      { name: "桂林信息产业园区", id: 2, code: "code-2", price: 12.4, address: "七星-朝阳路D-2号", headimgurl: "./fangliangbao/image/demo.png" },
+      { name: "桂林信息产业园区", id: 3, code: "code-3", price: 13.4, address: "七星-朝阳路D-3号", headimgurl: "./fangliangbao/image/demo.png" },
+      { name: "桂林信息产业园区", id: 4, code: "code-4", price: 14.4, address: "七星-朝阳路D-4号", headimgurl: "./fangliangbao/image/demo.png" },
+    ],
+    roomlist: [
+      { name: "桂林信息产业园区", parkid: 1, parkCode: "codeP-1", roomid: 1, roomCode: "codeR-1", price: 11.4, address: "七星-朝阳路D-1号", headimgurl: "./fangliangbao/image/demo.png", area: 101 },
+      { name: "桂林信息产业园区", parkid: 2, parkCode: "codeP-2", roomid: 2, roomCode: "codeR-2", price: 12.4, address: "七星-朝阳路D-2号", headimgurl: "./fangliangbao/image/demo.png", area: 102 },
+      { name: "桂林信息产业园区", parkid: 3, parkCode: "codeP-3", roomid: 3, roomCode: "codeR-3", price: 13.4, address: "七星-朝阳路D-3号", headimgurl: "./fangliangbao/image/demo.png", area: 103 },
+      { name: "桂林信息产业园区", parkid: 4, parkCode: "codeP-4", roomid: 4, roomCode: "codeR-4", price: 14.4, address: "七星-朝阳路D-4号", headimgurl: "./fangliangbao/image/demo.png", area: 104 },
+    ]
   }
 }
 

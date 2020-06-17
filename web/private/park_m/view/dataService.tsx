@@ -1,4 +1,3 @@
-import FindLease from 'findLease';
 import { Toast } from 'antd-mobile';
 
 class DataService {

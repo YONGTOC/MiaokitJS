@@ -1,0 +1,64 @@
+1.切换城市：
+说明：进入应用，或者在使用过程中切换城市，必须调用该接口。其它接口调用仅在设置了城市后有效。
+参数：GET http://infrastructure.yongtoc.com/api/engineering/getInfoByCity?city=桂林 获得城市3D数据。测试阶段仅支持以桂林为URL参数。
+方法：MiaokitJS.App.m_pProject.SwitchCity(jCity);
+
+2.切换园区：
+说明：切换园区后才会显示园区楼栋标签，全景、商圈、公交、停车场、交通标签，才能进一步查看室内和查看全景图。
+参数：园区名称（基础数据库中录入的园区规划名称）。
+方法：MiaokitJS.App.m_pProject.EnterPark("民华科技园");
+
+3.显示隐藏园区兴趣点标签：
+说明：控制显示隐藏全景、商圈、公交、停车场、交通POI。
+参数：pName：标签类型名、bShow：显示开关、aItem：标签数组。
+方法：MiaokitJS.App.m_pProject.ShowOutdoorPOI("全景", false, null);
+
+4.设置当前园区所有房间信息。
+说明：设置园区所有房间信息后，在进入查看室内时，可以正确显示后台录入的房间名称。在切换园区后调用。
+参数：GET 后台接口 获得JSON数据。
+方法：MiaokitJS.App.m_pProject.SetParkInfo(aHierarchical);
+
+5.进入室内房间：
+说明：设置城市和园区后，可以查看楼宇内的房间，并显示楼层房间标签和高亮选中区域。
+参数：以JSON格式提供参数：
+let jRoom = {
+    m_pTile: "创新大厦(A座)",   // 基础数据库录入的SVE工程名称
+    m_pBuilding: "Default",     // SVE工程中录入的楼宇编号
+    m_pLayer: "4F",             // SVE工程中录入的楼层编号
+    m_pRoom: "A401",            // SVE工程中录入的位置点编号
+    m_pPart: [                  // SVE工程中录入的位置点编号，若干个位置点构成一个格局
+        { id: 161, name: "A401-1", position: "A401-1" },
+        { id: 162, name: "A401-2", position: "A401-2" },
+        { id: 163, name: "A401-3", position: "A401-3", panoramaurl: "https://base.oss.yongtoc.com/Park/minhuan_panorama/a_a401_1/" },
+        { id: 164, name: "A401-4", position: "A401-4" },
+        { id: 165, name: "A401-5", position: "A401-5" },
+        { id: 166, name: "A401-6", position: "A401-6" },
+        { id: 172, name: "A401", position: "A401", panoramaurl: "https://base.oss.yongtoc.com/Park/minhuan_panorama/a_a401/" }
+    ]
+}
+方法：MiaokitJS.App.m_pProject.EnterRoom(jRoom);
+
+6.退出室内房间：
+说明：进入室内后，需要退出房间回到园区时调用。
+参数：无。
+方法：MiaokitJS.App.m_pProject.CloseRoom();
+
+7.切换楼层：
+说明：进入室内后，点击楼层按钮调用，可以切换当前查看的楼层。
+参数：SVE工程中录入的楼层编号。
+方法：MiaokitJS.App.m_pProject.SwitchLayer("1F");
+
+8.退出全景图：
+说明：进入全景图后，点击“退出全景图”按钮时调用。
+参数：无。
+方法：MiaokitJS.App.m_pProject.ClosePanoramas();
+
+9.切换摄像机2D/3D模式：
+说明：调用切换摄像机2D/3D模式。
+参数：2：2D，3：3D。
+方法：MiaokitJS.App.m_pProject.SwitchCameraMode(2);
+
+10.重置摄像机最佳视角：
+说明：重置摄像机最佳视角。
+参数：无。
+方法：MiaokitJS.App.m_pProject.ResetCamera();;

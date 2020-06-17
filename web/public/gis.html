@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn" style="height: 100%; width: 100%; margin: 0; padding: 0;">
+<head>
+    <meta name="referrer" content="no-referrer" charset="utf-8" />
+    <meta name="format-detection" content="telephone=yes" />
+
+    <title>GIS 3D</title>
+
+    <script src="./common/miaokit/MiaokitLoader.min.js"></script>
+
+    <script>
+        let MiaokitJS = new MiaokitModule("Sisyphus", "./data/projects/config.txt");
+
+        window.onload = function () {
+            MiaokitJS.Track("Window.onload");
+
+            window.oncontextmenu = function (e) {
+                e.preventDefault();
+            };
+
+            MiaokitJS.Load(function () {
+                MiaokitJS.App.Start();
+            }, function (nEventID) {
+                MiaokitJS.App.Update();
+            });
+        }
+
+        let webgl_call_web_hide_floor_list = function () { };
+        let webgl_call_web_show_floor_list = function () { };
+        let webgl_call_web_active_floor = function () { };
+        let webgl_call_web_showVR = function () { };
+
+        let Test0 = function (nCode) {
+            console.log("Test0:", nCode);
+
+            switch (nCode) {
+                case 0:
+                    MiaokitJS.App.m_pProject.EnterPark("西宁市市民中心");
+                    break;
+                case 1:
+                    MiaokitJS.App.m_pProject.EnterPark("惠阳政务中心");
+                    break;
+                case 2:
+                    MiaokitJS.App.m_pProject.EnterPark("大理政务服务中心");
+                    break;
+                case 3:
+                    MiaokitJS.App.m_pProject.EnterPark("山西体育中心");
+                    break;
+                case 4:
+                    MiaokitJS.App.m_pProject.EnterPark("民华科技园");
+                    break;
+                case 5:
+                    MiaokitJS.App.m_pProject.EnterRoom({
+                        m_pTile: "创新大厦(A座)",
+                        m_pBuilding: "Default",
+                        m_pLayer: "4F",
+                        m_pRoom: "A401",
+                        m_pPart: [
+                            { id: 161, name: "A401-1", position: "A401-1" },
+                            { id: 162, name: "A401-2", position: "A401-2" },
+                            { id: 163, name: "A401-3", position: "A401-3", panoramaurl: "https://base.oss.yongtoc.com/Park/minhuan_panorama/a_a401_1/" },
+                            { id: 164, name: "A401-4", position: "A401-4" },
+                            { id: 165, name: "A401-5", position: "A401-5" },
+                            { id: 166, name: "A401-6", position: "A401-6" },
+                            { id: 172, name: "A401", position: "A401", panoramaurl: "https://base.oss.yongtoc.com/Park/minhuan_panorama/a_a401/" }
+                        ]
+                    });
+                    break;
+                case 6:
+                    MiaokitJS.App.m_pProject.EnterPark("在云端境界");
+                    break;
+                default:
+                    break;
+            }
+        };
+
+        let Test1 = function (nCode) {
+            console.log("Test1:", nCode);
+
+            switch (nCode) {
+                case 0:
+                    MiaokitJS.App.m_pProject.EnterDior("信息产业园");
+                    break;
+                case 1:
+                    MiaokitJS.App.m_pProject.EnterDior("桂电（金鸡岭校区）");
+                    break;
+                case 2:
+                    MiaokitJS.App.m_pProject.EnterDior("桂电（花江校区）");
+                    break;
+                case 3:
+                    MiaokitJS.App.m_pProject.EnterDior("尖山镇政府");
+                    break;
+                case 4:
+                    MiaokitJS.App.m_pProject.EnterDior("江苏大剧院");
+                    break;
+                case 5:
+                    MiaokitJS.App.m_pProject.EnterDior("金秀县");
+                    break;
+                case 9:
+                    MiaokitJS.App.SwitchGIS(1);
+                    break;
+                default:
+                    break;
+            }
+        };
+
+    </script>
+
+    <script src="./common/util.js"></script>
+    <script src="./park_m/js/app.js"></script>
+
+</head>
+<body style="height: 100%; margin: 0; padding: 0;">
+    <!-- html,body { height: 100%; margin: 0; padding: 0;} div height: 100% 才会起效，因为继承父级高度-->
+    <!-- 微信端不能为任意尺寸，否则会崩溃 -->
+    <div id="unityContainer" style="width: 100%; height: 100%; background:#808080; margin: auto"></div>
+    <ul style="position: absolute;top: 230px;left:0px;z-index: 101;">
+        <li>
+            <button onclick="Test0(0)" style="width: 10rem;height: 2rem;font-size: 1rem;">0.西宁-市市民中心</button>
+        </li>
+        <li>
+            <button onclick="Test0(1)" style="width: 10rem;height: 2rem;font-size: 1rem;">1.惠阳-政务中心</button>
+        </li>
+        <li>
+            <button onclick="Test0(2)" style="width: 10rem;height: 2rem;font-size: 1rem;">2.大理-政务中心</button>
+        </li>
+        <li>
+            <button onclick="Test0(3)" style="width: 10rem;height: 2rem;font-size: 1rem;">3.山西-体育中心</button>
+        </li>
+        <li>
+            <button onclick="Test0(4)" style="width: 10rem;height: 2rem;font-size: 1rem;">4.桂林-民华科技园</button>
+        </li>
+        <li>
+            <button onclick="Test0(5)" style="width: 10rem;height: 2rem;font-size: 1rem;">4.1.民华-A401</button>
+        </li>
+        <li>
+            <button onclick="Test0(6)" style="width: 10rem;height: 2rem;font-size: 1rem;">5.在云端·境界</button>
+        </li>
+    </ul>
+    <ul style="position: absolute;top: 460px;left:0px;z-index: 102;">
+        <li>
+            <button onclick="Test1(0)" style="width: 10rem;height: 2rem;font-size: 1rem;">0.桂林-信息产业园</button>
+        </li>
+        <li>
+            <button onclick="Test1(1)" style="width: 10rem;height: 2rem;font-size: 1rem;">1.桂电-金鸡岭校区</button>
+        </li>
+        <li>
+            <button onclick="Test1(2)" style="width: 10rem;height: 2rem;font-size: 1rem;">2.桂电-花江校区</button>
+        </li>
+        <li>
+            <button onclick="Test1(3)" style="width: 10rem;height: 2rem;font-size: 1rem;">3.磐安-尖山镇政府</button>
+        </li>
+        <li>
+            <button onclick="Test1(4)" style="width: 10rem;height: 2rem;font-size: 1rem;">4.南京-江苏大剧院</button>
+        </li>
+        <li>
+            <button onclick="Test1(5)" style="width: 10rem;height: 2rem;font-size: 1rem;">5.来宾-金秀县</button>
+        </li>
+        <li>
+            <button onclick="Test1(9)" style="width: 10rem;height: 2rem;font-size: 1rem;">9.切换GIS样式</button>
+        </li>
+    </ul>
+</body>
+</html>
