@@ -25,7 +25,7 @@ class Index extends React.Component {
     searchValue: "请输入园区名/区域名/商圈名",
     districtArray: [
       { name: "全广州" }, { name: "越秀" }, { name: "海珠" }, { name: "荔湾" }, { name: "天河" }, { name: "白云" }, { name: "黄埔" }, { name: "番禺" }, { name: "南沙" },
-      { name: "南沙" }, { name: "花都" }, { name: "增城" }, { name: "从化" }
+      { name: "花都" }, { name: "增城" }, { name: "从化" }
     ],
     areaArray: [
       { name: "0-100m²" }, { name: "100-300m²" }, { name: "300-500m²" }, { name: "500-1000m²" }, { name: "1000m²以上" }
@@ -50,6 +50,7 @@ class Index extends React.Component {
     isCascaders: false, // 位置选择器
     cityArr: ["广州", "深圳", "长沙"],
     currentCityIndex: 0,
+    focusDistrictIndex: -1, // 聚焦当前区域下标
   }
 
 
@@ -141,7 +142,14 @@ class Index extends React.Component {
               <div style={{ width: "680px", overflow: "hidden", marginLeft: "-16px" }}>
                 <div style={{ float: "left", overflow: "hidden" }}>
                   <img src="./fangliangbao/image/search.png" width="16px" height="16px" style={{ position: "relative", bottom: "2px", left: "35px" }} />
-                  <input className="index-input" value={this.state.searchValue} />
+                  <input className="index-input" value={this.state.searchValue} onChange={e => this.setState({ searchValue: e.target.value })}
+                    onFocus={() =>
+                      this.state.searchValue === "请输入园区名/区域名/商圈名" && this.setState({ searchValue: "" })
+                    }
+                    onBlur={() => 
+                      this.state.searchValue === "" && this.setState({ searchValue: "请输入园区名/区域名/商圈名" })
+                    }
+                  />
                 </div>
                 <div className="index-search-name">搜索</div>
               </div>
@@ -150,7 +158,9 @@ class Index extends React.Component {
                   <div className="index-tag-name">区域</div>
                   {this.state.districtArray.map((item, index) => {
                     return (
-                      <div key={index} className="index-tag">{item.name}</div>
+                      <Link to={{ pathname: "/parkList", districtIndex: index }}><div key={index} className="index-tag"
+                        onMouseMove={() => this.setState({ focusDistrictIndex: index })} style={{ color: this.state.focusDistrictIndex === index ? "#17A1E6" : "" }}
+                      >{item.name}</div></Link>
                       )
                   })
                   }
@@ -191,7 +201,7 @@ class Index extends React.Component {
 
               <div className="index-require">
                 <div className="you-require">您的需求</div>
-                <div className="you-talk ">靠近地铁，靠近大海，有花园。</div>
+                <div className="you-talk">靠近地铁，靠近大海，有花园。</div>
               </div>
               <div className="find-room">宝哥帮找房</div>
             </div>
@@ -211,7 +221,7 @@ class Index extends React.Component {
                     style={{ marginRight: (index + 1) % 4 === 0 ? "0px" : "20px", marginTop: index > 3 ? "28px" : "10px" }}>
                     <img src="./fangliangbao/image/build.png" height="100%" width="100%" className="index-img-t1" />
                   </div>
-                  <div style={{ fontSize: "16px", fontWeight: "bold", marginTop: "10px" }}>{item.name}</div>
+                  <div style={{ fontSize: "16px", fontWeight: "bold", marginTop: "10px", width: "285px" }} className="confine">{item.name}</div>
                   <div style={{ overflow: "hidden", paddingTop: "10px" }}>
                     <img src="./fangliangbao/image/position.png" width="12px" height="12px" style={{ float: "left", margin: "4px 5px 0 0" }} /> <div className="index-address">{item.address}</div>
                     <div className="index-price" style={{ margin: (index + 1) % 4 === 0 ? "-15px 0 0 0" : "-15px 20px 0 0" }}><span style={{ color: "#DC1A3F", fontSize: "24px", marginRight: "5px" }}>{item.price}</span>元/m²·天</div>
@@ -237,27 +247,27 @@ class Index extends React.Component {
                   </div>
                   <div style={{float: "left", marginLeft: "30px", width: "500px"}}>
                     <div className="index-c-a">出租！高新区信息产业园豪华装修单元</div>
-                    <div style={{ marginTop: "22px", fontSize: "14px", overflow: "hidden" }}>
-                      <div style={{ float: "left" }}>桂林信息产业园</div>
-                      <div style={{ color: "#DDDDDD", float: "left", margin: "0 10px 0 10px" }}> / </div>
-                      <div style={{ float: "left" }}>100.5m²</div>
-                      <div style={{ color: "#DDDDDD", float: "left", margin: "0 10px 0 10px" }}> / </div>
-                      <div style={{ float: "left" }}> 豪华装修 </div>
+                    <div style={{ marginTop: "22px", fontSize: "14px", overflow: "hidden" }} className="confine">
+                      <span>桂林信息产业园</span>
+                      <span style={{ color: "#DDDDDD", margin: "0 10px 0 10px" }}> / </span>
+                      <span>100.5m²</span>
+                      <span style={{ color: "#DDDDDD", margin: "0 10px 0 10px" }}> / </span>
+                      <span> 豪华装修 </span>
                     </div>
-                    <div style={{ marginTop: "14px", fontSize: "14px", overflow: "hidden" }}>
-                      <div style={{ float: "left" }}>七星-东二环路</div>
-                      <div style={{ color: "#DDDDDD", float: "left", margin: "0 10px 0 10px" }}> / </div>
-                      <div style={{ float: "left" }}>朝阳路D-12号</div>
+                    <div style={{ marginTop: "14px", fontSize: "14px", overflow: "hidden" }} className="confine">
+                      <span>七星-东二环路</span>
+                      <span style={{ color: "#DDDDDD", margin: "0 10px 0 10px" }}> / </span>
+                      <span>朝阳路D-12号</span>
                     </div>
                     <div style={{ marginTop: "14px", fontSize: "14px", color: "#989FA8" }}>有5位用户正在浏览该房源</div>
                     <div style={{ marginTop: "12px", fontSize: "12px", overflow: "hidden", color: "#849AAE" }}>
-                      <div style={{ backgroundColor: "#F3F5F7", width: "77px", height: "24px", borderRadius: "2px", float: "left", textAlign: "center", lineHeight: "24px", marginRight: "10px" }}>
+                      <div style={{ backgroundColor: "#F3F5F7", minWidth: "77px", height: "24px", borderRadius: "2px", float: "left", textAlign: "center", lineHeight: "24px", marginRight: "10px", padding: "0 8px 0 8px" }}>
                         带办公家具
                       </div>
-                      <div style={{ backgroundColor: "#F3F5F7", width: "77px", height: "24px", borderRadius: "2px", float: "left", textAlign: "center", lineHeight: "24px", marginRight: "10px" }}>
+                      <div style={{ backgroundColor: "#F3F5F7", minWidth: "77px", height: "24px", borderRadius: "2px", float: "left", textAlign: "center", lineHeight: "24px", marginRight: "10px", padding: "0 8px 0 8px" }}>
                         户型方正
                       </div>
-                      <div style={{ backgroundColor: "#F3F5F7", width: "77px", height: "24px", borderRadius: "2px", float: "left", textAlign: "center", lineHeight: "24px", marginRight: "10px" }}>
+                      <div style={{ backgroundColor: "#F3F5F7", minWidth: "77px", height: "24px", borderRadius: "2px", float: "left", textAlign: "center", lineHeight: "24px", marginRight: "10px", padding: "0 8px 0 8px" }}>
                         可注册
                       </div>
                     </div>

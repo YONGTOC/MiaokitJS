@@ -19,6 +19,9 @@ class Contact extends React.Component<{ index: any }> {
   }
 
   public componentDidMount() {
+    if (this.props.location.index) {
+      this.setState({ tagIndex: this.props.location.index })
+    }
   }
 
 

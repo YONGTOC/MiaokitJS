@@ -180,9 +180,9 @@ class RoomList extends React.Component {
                       onChange={event => {
                         const value = event.target.value
                         const reg = /^\d*?$/
-                        if ((reg.test(value) && value.length < 5) || value === "") {
-                          this.setState({ minArea: event.target.value.substring(0, 4) }, () => {
-                            if (this.state.minArea.length === 4 && this.state.maxArea.length === 4) {
+                        if ((reg.test(value) && value.length < 6) || value === "") {
+                          this.setState({ minArea: event.target.value.substring(0, 5) }, () => {
+                            if (this.state.minArea.length > 0 && this.state.maxArea.length > 0 && parseInt(this.state.maxArea) > parseInt(this.state.minArea)) {
                               let selectedArr = this.state.selectedArr
                               selectedArr[1] = { id: "", name: this.state.minArea + "-" + this.state.maxArea + "m²"}
                               this.setState({ selectedArr: selectedArr, areaIndex: -1 })
@@ -196,9 +196,9 @@ class RoomList extends React.Component {
                       onChange={event => {
                         const value = event.target.value
                         const reg = /^\d*?$/
-                        if ((reg.test(value) && value.length < 5) || value === "") {
-                          this.setState({ maxArea: event.target.value.substring(0, 4) }, () => {
-                            if (this.state.minArea.length === 4 && this.state.maxArea.length === 4) {
+                        if ((reg.test(value) && value.length < 6) || value === "") {
+                          this.setState({ maxArea: event.target.value.substring(0, 5) }, () => {
+                            if (this.state.minArea.length > 0 && this.state.maxArea.length > 0 && parseInt(this.state.maxArea) > parseInt(this.state.minArea)) {
                               let selectedArr = this.state.selectedArr
                               selectedArr[1] = { id: "", name: this.state.minArea + "-" + this.state.maxArea + "m²" }
                               this.setState({ selectedArr: selectedArr, areaIndex: -1 })
@@ -230,9 +230,9 @@ class RoomList extends React.Component {
                       onChange={event => {
                         const value = event.target.value
                         const reg = /^\d*?$/
-                        if ((reg.test(value) && value.length < 5) || value === "") {
-                          this.setState({ minPrice: event.target.value.substring(0, 4) }, () => {
-                            if (this.state.minPrice.length === 4 && this.state.maxPrice.length === 4) {
+                        if ((reg.test(value) && value.length < 6) || value === "") {
+                          this.setState({ minPrice: event.target.value.substring(0, 5) }, () => {
+                            if (this.state.minPrice.length > 0 && this.state.maxPrice.length > 0 && parseInt(this.state.maxPrice) > parseInt(this.state.minPrice)) {
                               let selectedArr = this.state.selectedArr
                               let name = this.state.isUnitPrice ? "元/m²·月" : "万元/月"
                               selectedArr[2] = { id: "", name: this.state.minPrice + "-" + this.state.maxPrice + name }
@@ -247,9 +247,9 @@ class RoomList extends React.Component {
                       onChange={event => {
                         const value = event.target.value
                         const reg = /^\d*?$/
-                        if ((reg.test(value) && value.length < 5) || value === "") {
-                          this.setState({ maxPrice: event.target.value.substring(0, 4) }, () => {
-                            if (this.state.minPrice.length === 4 && this.state.maxPrice.length === 4) {
+                        if ((reg.test(value) && value.length < 6) || value === "") {
+                          this.setState({ maxPrice: event.target.value.substring(0, 5) }, () => {
+                            if (this.state.minPrice.length > 0 && this.state.maxPrice.length > 0 && parseInt(this.state.maxPrice) > parseInt(this.state.minPrice)) {
                               let selectedArr = this.state.selectedArr
                               let name = this.state.isUnitPrice ? "元/m²·月" : "万元/月"
                               selectedArr[2] = { id: "", name: this.state.minPrice + "-" + this.state.maxPrice + name }
@@ -388,41 +388,41 @@ class RoomList extends React.Component {
               </div>
               <div style={{ backgroundColor: "#17A1E6", height: "1px", width: "895px" }}></div>
             </div>
-            <div className="room-list-hot-room">热门园区推荐</div>
+            <div className="room-list-hot-room">热门园区推荐 >></div>
           </div>
 
           <div style={{overflow: "hidden"}}>
             <div style={{width: "895px", float: "left"}}>
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => {
                 return (
-                  <div key={index} style={{ marginTop: index === 0 ? "18px" : "30px", overflow: "hidden", cursor: "pointer", width: "895px" }}
+                  <div key={index} style={{ marginTop: index === 0 ? "18px" : "30px", overflow: "hidden", cursor: "pointer", width: "895px", color: "#333333" }}
                     onClick={() => { this.props.history.push({ pathname: "/parkInfo", parkId: 1, roomId: 1, from: "room" }) }}>
                     <div style={{ width: "240px", height: "180px", borderRadius: "5px", float: "left", overflow: "hidden" }} >
                       <img src="./fangliangbao/image/build1.png" className="index-img-t1" width="100%" height="100%" />
                     </div>
                     <div style={{ float: "left", marginLeft: "30px", width: "500px" }}>
                       <div className="index-c-a">出租！高新区信息产业园豪华装修单元</div>
-                      <div style={{ marginTop: "22px", fontSize: "14px", overflow: "hidden" }}>
-                        <div style={{ float: "left" }}>桂林信息产业园</div>
-                        <div style={{ color: "#DDDDDD", float: "left", margin: "0 10px 0 10px" }}> / </div>
-                        <div style={{ float: "left" }}>100.5m²</div>
-                        <div style={{ color: "#DDDDDD", float: "left", margin: "0 10px 0 10px" }}> / </div>
-                        <div style={{ float: "left" }}> 豪华装修 </div>
+                      <div style={{ marginTop: "22px", fontSize: "14px", overflow: "hidden" }} className="confine">
+                        <span>桂林信息产业园</span>
+                        <span style={{ color: "#DDDDDD", margin: "0 10px 0 10px" }}> / </span>
+                        <span>100.5m²</span>
+                        <span style={{ color: "#DDDDDD", margin: "0 10px 0 10px" }}> / </span>
+                        <span> 豪华装修 </span>
                       </div>
-                      <div style={{ marginTop: "14px", fontSize: "14px", overflow: "hidden" }}>
-                        <div style={{ float: "left" }}>七星-东二环路</div>
-                        <div style={{ color: "#DDDDDD", float: "left", margin: "0 10px 0 10px" }}> / </div>
-                        <div style={{ float: "left" }}>朝阳路D-12号</div>
+                      <div style={{ marginTop: "14px", fontSize: "14px", overflow: "hidden" }} className="confine">
+                        <span>七星-东二环路</span>
+                        <span style={{ color: "#DDDDDD", margin: "0 10px 0 10px" }}> / </span>
+                        <span>朝阳路D-12号</span>
                       </div>
                       <div style={{ marginTop: "14px", fontSize: "14px", color: "#989FA8" }}>有5位用户正在浏览该房源</div>
                       <div style={{ marginTop: "12px", fontSize: "12px", overflow: "hidden", color: "#849AAE" }}>
-                        <div style={{ backgroundColor: "#F3F5F7", width: "77px", height: "24px", borderRadius: "2px", float: "left", textAlign: "center", lineHeight: "24px", marginRight: "10px" }}>
+                        <div style={{ backgroundColor: "#F3F5F7", minWidth: "77px", height: "24px", borderRadius: "2px", float: "left", textAlign: "center", lineHeight: "24px", marginRight: "10px", padding: "0 8px 0 8px" }}>
                           带办公家具
                         </div>
-                        <div style={{ backgroundColor: "#F3F5F7", width: "77px", height: "24px", borderRadius: "2px", float: "left", textAlign: "center", lineHeight: "24px", marginRight: "10px" }}>
+                        <div style={{ backgroundColor: "#F3F5F7", minWidth: "77px", height: "24px", borderRadius: "2px", float: "left", textAlign: "center", lineHeight: "24px", marginRight: "10px", padding: "0 8px 0 8px" }}>
                           户型方正
                         </div>
-                        <div style={{ backgroundColor: "#F3F5F7", width: "77px", height: "24px", borderRadius: "2px", float: "left", textAlign: "center", lineHeight: "24px", marginRight: "10px" }}>
+                        <div style={{ backgroundColor: "#F3F5F7", minWidth: "77px", height: "24px", borderRadius: "2px", float: "left", textAlign: "center", lineHeight: "24px", marginRight: "10px", padding: "0 8px 0 8px" }}>
                           可注册
                         </div>
                       </div>
@@ -432,7 +432,7 @@ class RoomList extends React.Component {
                       <div style={{ float: "left", height: "11px", width: "11px", overflow: "hidden", margin: "5.5px 5px 0 8px" }}>
                         <img src={index === 1 ? "./fangliangbao/image/collected.png" : "./fangliangbao/image/collect.png"} width="100%" height="100%" style={{ display: "block" }} />
                       </div>
-                      <div style={{ color: "#B9B9B9", fontSize: "12px", float: "left" }} >收藏</div>
+                      <div style={{ fontSize: "12px", float: "left", color: index === 1 ? "#17A1E6" : "#B9B9B9" }} >收藏</div>
                     </div>
 
                     <div style={{ float: "left", color: "#989FA8", fontSize: "14px", paddingTop: "47px", overflow: "hidden" }}>
@@ -463,18 +463,18 @@ class RoomList extends React.Component {
                 }
               </div>
             </div>
-            <div style={{ float: "left", overflow: "hidden", margin: "0 0 0 60px" }}>
+            <div style={{ float: "left", overflow: "hidden", margin: "0 0 0 60px", width: "235px" }}>
               {this.state.hotPark.map((item, index) => {
                 return (
-                  <div style={{ overflow: "hidden", marginTop: "20px" }} key={index}>
+                  <div style={{ overflow: "hidden", marginTop: index !== 0 ? "20px" : "" }} key={index}>
                     <img src="./fangliangbao/image/build1.png" width="88px" height="66px" style={{ borderRadius: "2px", float: "left" }} />
-                    <div style={{ float: "left", margin: "-1px 0 0 16px" }}>
-                      <div style={{ color: "#333333", fontSize: "14px" }}>{item.name}</div>
+                    <div style={{ float: "left", margin: "-1px 0 0 16px", width: "130px" }}>
+                      <div style={{ color: "#333333", fontSize: "14px" }} className="confine">{item.name}</div>
                       <div style={{ marginTop: "2px" }}>
                         <span style={{ color: "#DC1A3F", fontSize: "16px", marginRight: "5px", fontWeight: 600 }}>{item.price}</span>
                         <span style={{ color: "#989FA8", fontSize: "12px" }}>元/m²⋅月</span>
                       </div>
-                      <div style={{ color: "#989FA8", fontSize: "12px", marginTop: "2px" }}>{item.address}</div>
+                      <div style={{ color: "#989FA8", fontSize: "12px", marginTop: "2px" }} className="confine">{item.address}</div>
                     </div>
                   </div>
                   )

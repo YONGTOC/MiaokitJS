@@ -15,8 +15,8 @@ class ParkList extends React.Component {
   public state = {
     searchValue: "请输入园区名/区域名/商圈名",
     districtArray: [
-      { name: "全部" }, { name: "全广州" }, { name: "越秀" }, { name: "海珠" }, { name: "荔湾" }, { name: "天河" }, { name: "白云" }, { name: "黄埔" }, { name: "番禺" }, { name: "南沙" },
-      { name: "南沙" }, { name: "花都" }, { name: "增城" }, { name: "从化" }
+      { name: "全广州" }, { name: "越秀" }, { name: "海珠" }, { name: "荔湾" }, { name: "天河" }, { name: "白云" }, { name: "黄埔" }, { name: "番禺" }, { name: "南沙" },
+      { name: "花都" }, { name: "增城" }, { name: "从化" }
     ],
     districtChildArray: [
       { name: "全部" }, { name: "环市东/区庄" }, { name: "中山路" }, { name: "北京路" }, { name: "东风路" }, { name: "烈士陵园周边" }, { name: "淘金" }, { name: "五羊新城" }, { name: "小北" }, { name: "沿江路" }
@@ -36,7 +36,7 @@ class ParkList extends React.Component {
     move: "", // 三角形移动位置
     isDistrict: true, // 区域和地铁切换
     districtIndex: 0, // 当前区域下标
-    focusDistrictIndex: 0, // 聚焦当前区域下标
+    focusDistrictIndex: -1, // 聚焦当前区域下标
     districtChildIndex: 0,
     focusDistrictChildIndex: 0, // 聚焦当前区域子集下标
     selectedArr: [{}, {}], // 已选
@@ -49,7 +49,10 @@ class ParkList extends React.Component {
   }
 
   public componentDidMount() {
-    const { clientWidth, clientHeight, children } = this.refDom;
+    if (this.props.location.districtIndex) {
+      this.setState({ districtIndex: this.props.location.districtIndex })
+    }
+    const { children } = this.refDom;
     this.setState({ move: children[0].clientWidth / 2 - 7 });
       HomeTop.changHomeTop(2);
   }
@@ -98,7 +101,7 @@ class ParkList extends React.Component {
                   </div>
                 </div>
                 <div style={{ clear: "both" }}></div>
-                <div style={{ overflow: "hidden", margin: "10px 0 0 56px", height: "16px" }} ref={this.cRef}>
+                <div style={{ overflow: "hidden", margin: "10px 0 0 56px", minHeight: "16px" }} ref={this.cRef}>
                   {this.state.districtArray.map((item, index) => {
                     return (
                       <div key={index} style={{ float: "left", marginRight: "24px", color: index === this.state.districtIndex || index === this.state.focusDistrictIndex ? "#17A1E6" : "", cursor: "pointer" }}
@@ -158,9 +161,9 @@ class ParkList extends React.Component {
                       onChange={event => {
                         const value = event.target.value
                         const reg = /^\d*?$/
-                        if ((reg.test(value) && value.length < 5) || value === "") {
-                          this.setState({ minPrice: event.target.value.substring(0, 4) }, () => {
-                            if (this.state.minPrice.length === 4 && this.state.maxPrice.length === 4) {
+                        if ((reg.test(value) && value.length < 6) || value === "") {
+                          this.setState({ minPrice: event.target.value.substring(0, 5) }, () => {
+                            if (this.state.minPrice.length > 0 && this.state.maxPrice.length > 0 && parseInt(this.state.maxPrice) > parseInt(this.state.minPrice)) {
                               let selectedArr = this.state.selectedArr
                               let name = this.state.isUnitPrice ? "元/m²·月" : "万元/月"
                               selectedArr[1] = { id: "", name: this.state.minPrice + "-" + this.state.maxPrice + name }
@@ -175,9 +178,9 @@ class ParkList extends React.Component {
                       onChange={event => {
                         const value = event.target.value
                         const reg = /^\d*?$/
-                        if ((reg.test(value) && value.length < 5) || value === "") {
-                          this.setState({ maxPrice: event.target.value.substring(0, 4) }, () => {
-                            if (this.state.minPrice.length === 4 && this.state.maxPrice.length === 4) {
+                        if ((reg.test(value) && value.length < 6) || value === "") {
+                          this.setState({ maxPrice: event.target.value.substring(0, 5) }, () => {
+                            if (this.state.minPrice.length > 0 && this.state.maxPrice.length > 0 && parseInt(this.state.maxPrice) > parseInt(this.state.minPrice)) {
                               let selectedArr = this.state.selectedArr
                               let name = this.state.isUnitPrice ? "元/m²·月" : "万元/月"
                               selectedArr[1] = { id: "", name: this.state.minPrice + "-" + this.state.maxPrice + name }
@@ -238,38 +241,43 @@ class ParkList extends React.Component {
             </div>
           </div>
 
-          <div style={{ backgroundColor: "#E6E6E6", height: "1px", clear: "both", marginTop: "30px" }}></div>
+          {JSON.stringify(this.state.selectedArr[0]) !== "{}" || JSON.stringify(this.state.selectedArr[1]) !== "{}" ?
+            <div>
+              <div style={{ backgroundColor: "#E6E6E6", height: "1px", clear: "both", marginTop: "30px" }}></div>
 
-          <div style={{ color: "#989FA8", marginTop: "20px", fontSize: "12px", lineHeight: "28px", overflow: "hidden" }}>
-            <div style={{ float: "left" }}>已选：</div>
+              <div style={{ color: "#989FA8", marginTop: "20px", fontSize: "12px", lineHeight: "28px", overflow: "hidden" }}>
+                <div style={{ float: "left" }}>已选：</div>
 
-            {this.state.selectedArr.map((item, index) => {
-              return (
-                <div className="park-list-x" key={index} style={{ display: JSON.stringify(item) === "{}" ? "none" : "" }}>
-                  <span>{item.name}</span>
-                  <img src="./fangliangbao/image/close.png" width="15px" height="15px" style={{ margin: "0 0 3px 5px" }}
-                    onClick={() => {
-                      let selectedArr = this.state.selectedArr
-                      selectedArr[index] = {}
-                      index ?
-                      this.setState({ selectedArr: selectedArr, priceIndex: 0, minPrice: "", maxPrice: "" }) :
-                      this.setState({ selectedArr: selectedArr, districtIndex: 0, districtChildIndex: 0 })
+                {this.state.selectedArr.map((item, index) => {
+                  return (
+                    <div className="park-list-x" key={index} style={{ display: JSON.stringify(item) === "{}" ? "none" : "" }}>
+                      <span>{item.name}</span>
+                      <img src="./fangliangbao/image/close.png" width="15px" height="15px" style={{ margin: "0 0 3px 5px" }}
+                        onClick={() => {
+                          let selectedArr = this.state.selectedArr
+                          selectedArr[index] = {}
+                          index ?
+                            this.setState({ selectedArr: selectedArr, priceIndex: 0, minPrice: "", maxPrice: "" }) :
+                            this.setState({ selectedArr: selectedArr, districtIndex: 0, districtChildIndex: 0 })
+                        }
+                        }
+                      />
+                    </div>
+                  )
+                })
                 }
-                }
-              />
+
+
+                <div style={{ float: "left", marginLeft: "20px", height: "28px", lineHeight: "28px", cursor: "pointer" }}
+                  onClick={() => {
+                    this.setState({ selectedArr: [{}, {}], districtIndex: 0, districtChildIndex: 0, priceIndex: 0, minPrice: "", maxPrice: "" })
+                  }} >
+                  <img src="./fangliangbao/image/clear.png" width="14px" height="14px" style={{ float: "left", marginTop: "7px" }} />
+                  <div style={{ float: "left", color: "#333333", marginLeft: "5px", height: "28px", lineHeight: "28px" }}>清空条件</div>
                 </div>
-              )
-            })
-            }
-
-            <div style={{ float: "left", marginLeft: "20px", height: "28px", lineHeight: "28px", cursor: "pointer" }}
-              onClick={() => {
-                this.setState({ selectedArr: [{}, {}], districtIndex: 0, districtChildIndex: 0, priceIndex: 0, minPrice: "", maxPrice: "" })
-              }} >
-              <img src="./fangliangbao/image/clear.png" width="14px" height="14px" style={{float: "left", marginTop: "7px"}} />
-              <div style={{ float: "left", color: "#333333", marginLeft: "5px", height: "28px", lineHeight: "28px" }}>清空条件</div>
-            </div>
-          </div>
+              </div>
+            </div> : null
+          }
 
           <div style={{marginTop: "34px", overflow: "hidden"}}>
             <div className="park-list-all-t">全部园区</div>
@@ -284,7 +292,7 @@ class ParkList extends React.Component {
                   <div className="index-img-a" style={{ marginRight: (index + 1) % 4 === 0 ? "0px" : "20px", marginTop: "28px" }}>
                     <img src="./fangliangbao/image/build.png" className="index-img-t1" height="100%" width="100%" />
                   </div>
-                  <div style={{ fontSize: "16px", fontWeight: "bold", marginTop: "10px" }}>{item.name}</div>
+                  <div style={{ fontSize: "16px", fontWeight: "bold", marginTop: "10px", width: "285px" }} className="confine">{item.name}</div>
                   <div style={{ overflow: "hidden", paddingTop: "10px" }}>
                     <img src="./fangliangbao/image/position.png" width="12px" height="12px" style={{ float: "left", margin: "4px 5px 0 0" }} /> <div className="index-address">{item.address}</div>
                     <div className="index-price" style={{ margin: (index + 1) % 4 === 0 ? "-15px 0 0 0" : "-15px 20px 0 0" }}><span style={{ color: "#DC1A3F", fontSize: "24px", marginRight: "5px" }}>{item.price}</span>元/m²·天</div>

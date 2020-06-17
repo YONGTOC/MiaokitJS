@@ -110,6 +110,7 @@
   height: 34px;
   line-height: 34px;
   cursor: pointer;
+  color: #333333;
 }
 .cont-div {
   overflow: hidden;
@@ -148,7 +149,7 @@
   font-size: 12px;
   font-weight: 400;
   color: #989FA8;
-  margin: 5px 0 0 15px;
+  padding: 5px 15px 5px 15px;
 }
 .find-room {
   width: 180px;
@@ -200,10 +201,14 @@
   overflow: hidden;
 }
 .index-address {
+  width: 150px;
   font-size: 12px;
   font-weight: 400;
   color: rgba(140,143,167,1);
   float: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .index-price {
   color: #333333;
@@ -213,6 +218,10 @@
 .index-c-a {
   font-size: 20px;
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #333333;
 }
 .index-collect {
   width: 59px;
@@ -494,4 +503,9 @@ input[type="number"] {
   transition-duration: 0.6s;
   transition-timing-function: ease;
   transition-delay: 0s;
+}
+.confine {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
